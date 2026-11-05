@@ -265,7 +265,7 @@ const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
   if (c.tipo === 'alias' || !frente) return c.de;
   const ids = BLOQUES_POR_FRENTE[frente] || [];
   const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
-  return parte ? parte.de : c.de;
+  return parte ? parte.de : s;
 };
 /** Inversa para MOSTRAR (gemelo node de fechaRealDe del .ts): día real en que se hace la fila con fecha de plan `plan`. */
 const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
@@ -759,7 +759,7 @@ export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
 /**
  * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con \`frente\`, la fecha
  * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
- * si ese día no tiene bloque del frente, el día repartido (su sesión es el otro día del fin de semana) · resto → la propia.
+ * si ese día no tiene bloque del frente, la propia fecha (v6.06d: sin sesión de ese frente ese día) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
   const c = corridaS1De(iso);
@@ -767,7 +767,7 @@ export function fechaPlanDe(iso: string, frente?: string): string {
   if (c.tipo === 'alias' || !frente) return c.de;
   const ids = BLOQUES_POR_FRENTE[frente] ?? [];
   const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
-  return parte ? parte.de : c.de;
+  return parte ? parte.de : iso;
 }
 /**
  * Inversa de fechaPlanDe para MOSTRAR fechas (mar 20-oct-2026, a pedido de Joseph: «dice que empieza el 19 y estamos empezando el 20»):

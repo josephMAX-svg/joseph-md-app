@@ -183,10 +183,10 @@
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-11-04",
-    "version": "v6.06c",
-    "motivo": "Orden de Joseph (mié 4-nov-2026, sin estudio ese día): «que comience desde mañana 5; jueves, viernes, sábado, domingo son apenas 4: el día que falta corre a la semana siguiente, y a esa semana de lunes a viernes agrégale el sábado 14; de ahí continúa normal; a partir del 16 no modifiques nada». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan): lun 2, mar 3 y mié 4 sin sesión · jue 5 = plan del lun 2 (D1, UWSA1) · vie 6 = mar 3 · sáb 7 = mié 4 · dom 8 = jue 5 · lun 9 = vie 6 (mini-sim ENCAPS, OUTPUT S1, caso 1 LIVIANO, eval de cierre) · mar 10 = lun 9 · mié 11 = mar 10 · jue 12 = mié 11 · vie 13 = jue 12 · sáb 14 = vie 13 (NBME 25) · dom 15 = lo propio de los dos sábados, que no tiene otro hueco (las tardes L-V son GYM/BAILE): revisión S01 07:15 · cierre del OUTPUT S1 07:45 · revisión S02 08:15 · OUTPUT S2 entero 08:45 · SHIP S1 09:30-11:30 · Feynman 14:45 · SHIP S2 15:00-17:00 · Anki 17:00. Desde el lun 16-nov nada cambia.",
-    "resumen": "SEMANA CORRIDA v6.06c (orden del mié 4-nov): lun 2, mar 3 y mié 4 sin estudio → jue 5 = plan del lun 2 (D1, UWSA1) · vie 6 = mar 3 · sáb 7 = mié 4 · dom 8 = jue 5 · lun 9 = vie 6 · mar 10 = lun 9 · mié 11 = mar 10 · jue 12 = mié 11 · vie 13 = jue 12 · sáb 14 = vie 13 (NBME 25) · dom 15 = revisiones S01 y S02, OUTPUT y SHIP S1 + S2. Desde el lun 16-nov todo sigue igual.",
+    "decidido": "2026-11-05",
+    "version": "v6.06d",
+    "motivo": "Orden de Joseph (jue 5-nov-2026, sin estudio ese día): «que todo comience mañana; falta un día: toma el 15, que era libre; los días libres recién empiezan el 21 y 22; solamente sacrificamos estos dos próximos sábado y domingo». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan): lun 2 → jue 5 sin sesión · vie 6 = plan del lun 2 (D1, UWSA1) · sáb 7 = mar 3 · dom 8 = mié 4 · lun 9 = jue 5 · mar 10 = vie 6 (mini-sim ENCAPS, OUTPUT S1, caso 1 LIVIANO, eval de cierre) · mié 11 = lun 9 · jue 12 = mar 10 · vie 13 = mié 11 · sáb 14 = jue 12 + revisión S01 19:00 y cierre del OUTPUT S1 19:30 · dom 15 = vie 13 (NBME 25) · lun 16 → vie 20 normal. Lo que queda de los sábados 7 y 14 va a los libres: sáb 21 = revisión S02 07:15 · OUTPUT S2 07:45 · revisión S03 08:30 · cierre S3 09:00 · SHIP S1 09:30-11:30 · SHIP S3 15:00-17:00 · Anki 19:00; dom 22 = Feynman 14:45 · SHIP S2 15:00-17:00 · Anki 17:00. Desde el lun 23-nov nada cambia.",
+    "resumen": "SEMANA CORRIDA v6.06d (orden del jue 5-nov): lun 2 → jue 5 sin estudio → vie 6 = plan del lun 2 (D1, UWSA1) · sáb 7 = mar 3 · dom 8 = mié 4 · lun 9 = jue 5 · mar 10 = vie 6 · mié 11 = lun 9 · jue 12 = mar 10 · vie 13 = mié 11 · sáb 14 = jue 12 · dom 15 = vie 13 (NBME 25) · lun 16 → vie 20 normal · sáb 21 y dom 22: lo pendiente de los sábados (revisiones S02 y S03, SHIP S1, S2 y S3).",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -204,44 +204,93 @@
       "2026-11-01",
       "2026-11-02",
       "2026-11-03",
-      "2026-11-04"
+      "2026-11-04",
+      "2026-11-05"
     ],
     "alias": {
-      "2026-11-05": "2026-11-02",
-      "2026-11-06": "2026-11-03",
-      "2026-11-07": "2026-11-04",
-      "2026-11-08": "2026-11-05",
-      "2026-11-09": "2026-11-06",
-      "2026-11-10": "2026-11-09",
-      "2026-11-11": "2026-11-10",
-      "2026-11-12": "2026-11-11",
-      "2026-11-13": "2026-11-12",
-      "2026-11-14": "2026-11-13"
+      "2026-11-06": "2026-11-02",
+      "2026-11-07": "2026-11-03",
+      "2026-11-08": "2026-11-04",
+      "2026-11-09": "2026-11-05",
+      "2026-11-10": "2026-11-06",
+      "2026-11-11": "2026-11-09",
+      "2026-11-12": "2026-11-10",
+      "2026-11-13": "2026-11-11",
+      "2026-11-15": "2026-11-13"
     },
     "reparto": {
-      "2026-11-15": {
-        "de": "2026-11-14",
-        "titulo": "Domingo · cierre de las 2 semanas: revisiones S01 y S02, OUTPUT y SHIP S1 + S2 (semana corrida)",
-        "nota": "Semana corrida v6.06c: los sábados 7 y 14 fueron días de plan, así que hoy va lo propio de ambos: revisión S01 07:15 · cierre del OUTPUT S1 07:45 · revisión S02 08:15 · OUTPUT S2 entero 08:45 · SHIP S1 09:30-11:30 · Feynman 14:45 (opcional) · SHIP S2 15:00-17:00 · Anki 17:00. Desde mañana, lun 16-nov, todo normal.",
+      "2026-11-14": {
+        "de": "2026-11-12",
+        "titulo": "Sábado · plan del jue 12 (semana corrida) + revisión semanal S01 19:00 y cierre del OUTPUT S1 19:30",
+        "nota": "Semana corrida v6.06d: hoy toca el plan del jue 12 a sus horas + la revisión semanal S01 19:00-19:30 y el cierre del OUTPUT S1 19:30-19:45 (del sáb 7). Mañana, dom 15, NBME 25.",
         "partes": [
+          {
+            "de": "2026-11-12",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "usmle": 0,
+              "syn": 0,
+              "biz": 0,
+              "rd": 0,
+              "aurum": 0,
+              "mir": 0,
+              "encaps": 0,
+              "liv": 0,
+              "eval": 0
+            }
+          },
           {
             "de": "2026-11-07",
             "bloques": {
+              "revision": 705,
+              "biz": 705
+            }
+          }
+        ]
+      },
+      "2026-11-21": {
+        "de": "2026-11-14",
+        "titulo": "Sábado · primer fin de semana sin plan: revisiones S02 y S03, OUTPUT, SHIP S1 y S3 (lo pendiente de la semana corrida)",
+        "nota": "Semana corrida v6.06d: hoy no hay plan diario; va lo pendiente de los sábados: revisión S02 07:15 · OUTPUT S2 entero 07:45 · revisión S03 08:30 · cierre del OUTPUT S3 09:00 · SHIP S1 09:30-11:30 · SHIP S3 15:00-17:00 · Anki 19:00. El resto del día, libre.",
+        "partes": [
+          {
+            "de": "2026-11-14",
+            "bloques": {
               "revision": 0,
-              "biz": 0,
+              "biz": 0
+            }
+          },
+          {
+            "de": "2026-11-07",
+            "bloques": {
               "pc": -330
             }
           },
           {
+            "de": "2026-11-21",
+            "bloques": {
+              "revision": 75,
+              "biz": 75,
+              "pc": 0,
+              "anki-sab": 0
+            }
+          }
+        ]
+      },
+      "2026-11-22": {
+        "de": "2026-11-14",
+        "titulo": "Domingo · libre salvo el SHIP S2 pendiente (15:00-17:00)",
+        "nota": "Semana corrida v6.06d: lo único pendiente hoy es el SHIP S2 15:00-17:00 + Feynman 14:45 (opcional) y Anki 17:00. El resto del día, libre.",
+        "partes": [
+          {
             "de": "2026-11-14",
             "bloques": {
-              "revision": 60,
-              "biz": 60,
               "pc": 0
             }
           },
           {
-            "de": "2026-11-15",
+            "de": "2026-11-22",
             "bloques": {
               "anki-dom": 0,
               "feynman": -15
