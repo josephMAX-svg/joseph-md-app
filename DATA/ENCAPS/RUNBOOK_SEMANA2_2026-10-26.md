@@ -1,6 +1,6 @@
 > ⚠ **v6.06 (sáb 31-oct-2026 · orden de Joseph «reestructura todo a partir del 2 de noviembre … corre nada más, corre con una semana; para
 
-> **v6.06c (mié 4-nov-2026):** las fechas de este runbook son de PLAN. Días reales: pre-test 1/2 jue 5 · 2/2 vie 6 · banco V-2 sáb 7 · banco III-5 dom 8 · **mini-sim #5 lun 9** → cierre semanal y `--semana 2026-11-09` + `--eval 2026-11-09` ese día, antes de las 16:15 del mar 10 (la «semana 2» se hace mar 10 → sáb 14; el mini-sim del vie 13 de plan va el sáb 14). Tanda 0 de stock: antes del lun 9.
+> **v6.06d (jue 5-nov-2026):** las fechas de este runbook son de PLAN. Días reales: pre-test 1/2 vie 6 · 2/2 sáb 7 · banco V-2 dom 8 · banco III-5 lun 9 · **mini-sim #5 mar 10** → cierre semanal y `--semana 2026-11-09` + `--eval 2026-11-09` ese día, antes de las 16:15 del mié 11 (la «semana 2» se hace mié 11 → dom 15; el mini-sim del vie 13 de plan va el dom 15). Tanda 0 de stock: antes del mar 10.
 
 > no perder materias, tan solamente corre»):** la semana del lun 26 al vie 30-oct no se estudió → **D1 = lun 2-nov**. Supabase, el SQL y los
 > runners se re-fecharon el 31-oct POR SESIÓN (+7 días exactos, ítems intactos, `_meta.realineado`). El nombre del fichero (`…_2026-10-26`) se

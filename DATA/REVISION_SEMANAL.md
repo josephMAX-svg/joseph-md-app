@@ -1,6 +1,6 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.06 (31-oct-2026: D1 lun 2-nov · S01 sáb 7-nov · 41 semanas · ⏸ v6.05: D1 lun 26-oct, S01 sáb 31-oct, 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
-> **📌 v6.06c (mié 4-nov-2026) — jue 5 → sáb 14 = plan del lun 2 → vie 13: las revisiones S01 (`S01_2026-11-07.md`) y S02 (`S02_2026-11-14.md`) van juntas el DOM 15-NOV, 07:15 y 08:15.** Desde el sáb 21-nov, como siempre.
+> **📌 v6.06d (jue 5-nov-2026) — vie 6 → dom 15 = plan del lun 2 → vie 13: la revisión S01 (`S01_2026-11-07.md`) va el SÁB 14-NOV 19:00; S02 (`S02_2026-11-14.md`) y S03 (`S03_2026-11-21.md`) van juntas el SÁB 21-NOV, 07:15 y 08:30.** Desde el sáb 28-nov, como siempre.
 >
 > **⏸ v6.06b (mar 3-nov-2026; historial) — S01 el dom 8-nov 19:00.**
 >

@@ -1990,3 +1990,53 @@ Volcado final (≈11:00 Lima): `cal_bk/v606c/volcados/list_02-17nov_after.json` 
 3. ENCAPS del lun 9 → vie 13: los títulos dicen «dia 6 · eval (fallos del mini-sim #5)» y siguientes; la app avisa «runner POR GENERAR» en la semana 2.
 4. Los ⏭ del dom 8 siguen en 20:00 y 20:15 (ANKI dom y PC domingo), porque a las 17:00 chocaría con ENCAPS 16:15.
 5. **Repo:** solo `DATA/RESEARCH/_calendar_overlays.json` (entrada `mentor`) cambia en esta ronda, sin commit. `CAL_V6.md` NO editado (este registro es el texto para su §22). Respaldos, volcados, payloads, ops y scripts en `DATA/_v600/cal/cal_bk/v606c/` (ignorado por git).
+
+## 23. Semana corrida v6.06d (jue 5-nov-2026 · arranque el vie 6 · vie 6 → dom 15 corridos · lun 16 → vie 20 normales · cierres en sáb 14, sáb 21 y dom 22)
+Registro del Google Calendar (josephsototocas@gmail.com · America/Lima) para la orden de Joseph del jue 5-nov (sin estudio ese día): «que todo comience mañana; falta un día: toma el 15, que era libre; los días libres recién empiezan el 21 y 22; solamente sacrificamos estos dos próximos sábado y domingo». La app ya lo aplica (commit `8aec807`).
+
+### Protocolo
+
+- Volcado `list_events` 5 → 24-nov (485 eventos, 2 páginas) el jue 5 ≈11:45 Lima, justo tras mover el UWSA1: `DATA/_v600/cal/cal_bk/v606d/volcados/list_05-24nov_before.json`; respaldo JSON por evento a tocar (127) en `cal_bk/v606d/<id>.json`; `_calendar_overlays.json.bak` antes del `--set`.
+- Plan reproducible: `cal_bk/v606d/build_v606d.js` → `ops_v606d.json` (139 escrituras) + `payloads/`. Patrón: cada día real toma los títulos del día anterior (corrimiento de 1 día).
+- `notificationLevel: NONE` en todo. Ningún master tocado, ninguna serie recreada, RRULE/EXDATE intactos, sin `delete_event`. Rutinas personales y finanzas sin tocar.
+
+### Operaciones (139 escrituras = 127 `update_event` + 12 `create_event`)
+
+| Sec | Día | Ops | Cambio |
+|---|---|---|---|
+| B | vie 6 = plan del lun 2 | 12 | UWSA1 08:50-13:00 + descripción · SYNAPSE 07:25 · ALMUERZO 13:00 · títulos |
+| A | jue 5 = sin sesión | 16 | prefijo «⏭ SIN SESIÓN (v6.06d: arranca el vie 6)» · SYNAPSE 12:30 · ALMUERZO 12:00 con el texto de la serie |
+| C | sáb 7 = plan del mar 3 | 13 | 12 sueltos conservan id y hora, cambian contenido · overlay 🔬 M1 → 13:30-14:15 |
+| D | dom 8 = plan del mié 4 | 14 | 12 sueltos conservan id y hora, cambian contenido · ⏭ Anki y PC domingo |
+| E | lun 9 = plan del jue 5 | 10 | solo títulos |
+| F | mar 10 → vie 13 = plan del vie 6, lun 9, mar 10 y mié 11 | 40 | solo títulos |
+| G | sáb 14 = plan del jue 12 | 15 | 12 sueltos nuevos (`creados_v606d.json`) · S01 19:00 · cierre OUTPUT S1 19:30 · ⏭ Anki → 20:00 |
+| H | dom 15 = plan del vie 13 | 13 | NBME 25 07:00-12:30 · los 10 sueltos del sáb 14 pasan aquí, mismos ids · ⏭ Anki 20:00 y Feynman 20:15 |
+| I | sáb 21 y dom 22 | 6 | S02 07:15 · OUTPUT S2 07:45 · S03 + cierre S3 08:30-09:15 · SHIP S1 09:30 · SHIP S2 dom 22 15:00 · Feynman S3 dom 22 14:45 |
+
+### Research
+
+`gen_research_calendar.js --set mentor=shkul14j3o1bs1a5044u8ge1kk` → **`--check` = 0** (12 hitos, M1 sáb 7).
+
+### Verificación (list_events 5 → 24-nov después de los cambios)
+
+Volcado final: `cal_bk/v606d/volcados/list_05-24nov_after.json` (497 eventos = 485 + 12 creados). Script `cal_bk/v606d/ver_v606d.js`: **1089 OK · 0 FAIL**.
+
+- 139 escrituras comprobadas contra `ops_v606d.json`: título, inicio, fin, descripción byte a byte, color, estado, transparencia y recordatorios.
+- **358/358 eventos no tocados idénticos**; lun 16 → vie 20 y desde el lun 23 iguales al «before». Exactamente 12 eventos nuevos.
+- **Cruce app ↔ Calendar (vie 6 → dom 22): 120/121 bloques.** El que falta es el cierre del OUTPUT S3 de la app (sáb 21 09:00-09:15), que en el Calendar va dentro del evento S03 (08:30-09:15, lo dice el título). No es un error.
+- 0 títulos obsoletos.
+
+### No tocado
+
+- Lun 2 → mié 4 conservan el prefijo «⏭ SIN SESIÓN (v6.06c …)»: días pasados, solo título (45 escrituras sin efecto práctico).
+- Masters: sus descripciones siguen en v6.06. Mandan los títulos «(plan del …)», las descripciones del UWSA1 y del NBME 25 y la app.
+- SHIP S3 del sáb 21 15:00-17:00 conserva el título de la serie.
+
+### Solapes con rutinas personales (decisión de Joseph; no tocados)
+
+Lista completa: `cal_bk/v606d/solapes_v606d.txt` (17).
+- sáb 7 y sáb 14: CREACIÓN DE VIDEO YOUTUBE 17:00-19:00 pisa el final de ENCAPS, LIVIANO y la eval.
+- dom 8 y dom 15: BAILE PRACTICA 17:15, ALISTARSE 17:30, VIAJE 17:45 y BAILE 18:00-19:30 pisan LIVIANO y el Day-After 18:00.
+- dom 15: DESAYUNO 06:45-07:15 pisa los primeros 15′ del NBME 25: adelantarlo ese día.
+- mar 10: ALISTARSE 18:30 pisa el final de la eval, como todos los martes.
