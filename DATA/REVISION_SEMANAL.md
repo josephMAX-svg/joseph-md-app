@@ -1,6 +1,6 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.06 (31-oct-2026: D1 lun 2-nov · S01 sáb 7-nov · 41 semanas · ⏸ v6.05: D1 lun 26-oct, S01 sáb 31-oct, 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
-> **📌 v6.06d (jue 5-nov-2026) — vie 6 → dom 15 = plan del lun 2 → vie 13: la revisión S01 (`S01_2026-11-07.md`) va el SÁB 14-NOV 19:00; S02 (`S02_2026-11-14.md`) y S03 (`S03_2026-11-21.md`) van juntas el SÁB 21-NOV, 07:15 y 08:30.** Desde el sáb 28-nov, como siempre.
+> **📌 v6.06e (vie 6-nov-2026) — semana de domingo a viernes y sábados libres: S01-S04 (`S01_2026-11-07.md` … `S04_2026-11-28.md`) van los DOMINGOS 15, 22, 29-nov y 6-dic a las 20:00 · S05 y S06 el dom 13-dic 07:15 y 08:30 · S07 el dom 20-dic 07:15 · S08 el dom 27-dic 07:15 · S09 el dom 3-ene 07:15.** El nombre del fichero conserva el sábado de plan y se genera con esa fecha: `node DATA/_scripts/gen_revision_semanal.js 2026-11-07`. Los sábados desde el 9-ene siguen como estaban.
 >
 > **⏸ v6.06b (mar 3-nov-2026; historial) — S01 el dom 8-nov 19:00.**
 >

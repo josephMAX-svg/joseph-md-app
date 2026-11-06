@@ -2040,3 +2040,57 @@ Lista completa: `cal_bk/v606d/solapes_v606d.txt` (17).
 - dom 8 y dom 15: BAILE PRACTICA 17:15, ALISTARSE 17:30, VIAJE 17:45 y BAILE 18:00-19:30 pisan LIVIANO y el Day-After 18:00.
 - dom 15: DESAYUNO 06:45-07:15 pisa los primeros 15′ del NBME 25: adelantarlo ese día.
 - mar 10: ALISTARSE 18:30 pisa el final de la eval, como todos los martes.
+
+## 24. Semana corrida v6.06e (vie 6-nov-2026 · arranque el dom 8 · semana de domingo a viernes · sábados libres · plan en fecha desde el lun 7-dic)
+Registro del Google Calendar (josephsototocas@gmail.com · America/Lima) para la orden de Joseph del vie 6-nov (sin estudio ese día): «hoy no comenzamos, comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». La app ya lo aplica (commits `71e041e` y `fd7e63a`).
+
+### Protocolo
+
+- Volcado `list_events` 6-nov → 28-dic (1.285 eventos, 6 páginas) el vie 6 ≈10:15 Lima, justo tras mover el UWSA1: `DATA/_v600/cal/cal_bk/v606e/volcados/list_06nov-28dic_before.json`; respaldo JSON por evento a tocar (166) en `cal_bk/v606e/<id>.json`.
+- Plan reproducible: `cal_bk/v606e/build_v606e.js` → `ops_v606e.json` (193 escrituras) + `payloads/`. Textos de los domingos generados desde las guías de la app (`guias_full_v606e.json`).
+- `notificationLevel: NONE` en todo. Ningún master tocado, ninguna serie recreada, sin `delete_event`: los sueltos se reciclan moviéndolos. Rutinas personales y finanzas sin tocar.
+
+### Operaciones (204 escrituras = 177 `update_event` + 27 `create_event`)
+
+| Sec | Día | Ops | Cambio |
+|---|---|---|---|
+| A | vie 6 = sin sesión | 16 | prefijo «⏭ SIN SESIÓN (v6.06e: arranca el dom 8)» · SYNAPSE 12:30 · ALMUERZO 12:00 |
+| B | dom 8 = plan del lun 2 | 15 | UWSA1 08:50-13:00 · los 12 sueltos del dom 8 cambian de contenido · SYNAPSE 07:25 · preparación 07:15-08:50 |
+| C | dom 22 = plan del mié 18 | 13 | los 12 sueltos del sáb 7 pasan aquí · ⏭ Anki sáb 7 |
+| D | dom 29 = plan del jue 26 · dom 15 noche | 15 | los 12 sueltos del sáb 14 pasan aquí · S01 y cierre S1 dom 15 20:00 · ⏭ Anki sáb 14 |
+| E | dom 15 = plan del mar 10 · dom 6-dic = plan del vie 4 | 22 | 12 sueltos nuevos · los 10 sueltos del dom 15 pasan al dom 6-dic |
+| G | hitos | 27 | NBME 25 mié 18 · NBME 26 dom 6-dic · gate vie 27-nov · Research M1 lun 9, C-2 vie 20, T-1 lun 23, C-6 vie 4-dic · vie 4-dic normal · 15 avisos de todo el día «📅 Hoy = plan del X» (lun 16 → vie 4-dic) |
+| H | domingos de plan | 8 | ⏭ Anki y PC del domingo |
+| I | sábados → domingos | 27 | S02-S08, OUTPUT S2, S5 y S7, SHIP S1-S7 y avance S8 a sus domingos |
+| F | lun 9 → vie 13 | 50 | títulos: plan del mar 3, mié 4, jue 5, vie 6 y lun 9 |
+| J | retoques de la auditoría | 11 | Anki + FSRS Optimize dom 13 20:00 · Feynman S1-S7 tras su SHIP · S09, SHIP S8 y Anki del sáb 2-ene al dom 3-ene |
+
+La instancia Business del mié 18 (`0h8emvdc…_20261118T180000Z`) pasó al vie 4-dic 13:00: el día del NBME no lleva Business y la instancia propia del vie 4 es el OUTPUT S5.
+
+### Research
+
+`gen_research_calendar.js --set mentor=… carta-diana=… tesis-etica=… carta-1=…` → **`--check` = 0** (12 hitos).
+
+### Verificación (list_events 6-nov → 28-dic después de los cambios)
+
+Volcado final: `cal_bk/v606e/volcados/list_06nov-28dic_after.json` (1.312 eventos = 1.285 + 27 creados). Script `cal_bk/v606e/ver_v606e.js`: **1.320 OK · 0 FAIL**.
+
+- Título, inicio, fin, descripción byte a byte, color, estado y transparencia de cada escritura hasta el 28-dic. Las 3 del dom 3-ene quedan fuera del volcado: confirmadas por la respuesta de cada `update_event`.
+- **1.119 eventos no tocados idénticos.** Exactamente 27 eventos nuevos.
+- **Sábados 7-nov → 26-dic: 0 bloques de plan** (solo ⏭ y rutinas personales).
+- **Cruce app ↔ Calendar (dom 8 → dom 27-dic): 464/464 bloques.** Avisos: 15/15.
+
+### No tocado
+
+- Lun 2 → jue 5 conservan el prefijo ⏭ antiguo (días pasados, solo título).
+- Lun 16 → vie 4-dic conservan el título genérico de la serie; el aviso de todo el día dice qué plan toca.
+- Masters: sus descripciones siguen en v6.06. Mandan los títulos, las descripciones del UWSA1 y de los NBME, y la app.
+- Sábados desde el 9-ene (F2 en adelante): sin tocar, decisión pendiente de Joseph.
+- Vista Pulso: el viernes de plan con NBME enseña su OUTPUT el día del NBME (mié 18 y dom 6-dic), aunque el OUTPUT real va el domingo de cierres; manda el Home.
+
+### Solapes con rutinas personales (decisión de Joseph; no tocados)
+
+Lista completa: `cal_bk/v606e/solapes_v606e.txt` (24), más la de YouTube y el baile de los sábados, que siguen en el Calendar por ser rutinas personales.
+- dom 8, 15, 22, 29-nov y 6-dic: BAILE PRACTICA 17:15, ALISTARSE 17:30, VIAJE 17:45 y BAILE 18:00-19:30 pisan LIVIANO y la evaluación de las 18:00.
+- mié 18 y dom 6-dic: el desayuno pisa el inicio del NBME: adelantarlo.
+- mar 10: ALISTARSE 18:30 pisa el final de la evaluación, como todos los martes.
