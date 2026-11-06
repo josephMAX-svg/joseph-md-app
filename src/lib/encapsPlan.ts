@@ -48,7 +48,7 @@
 // reposición del carril B (los 8 de v6.01/v6.02 con sus mismas fechas, ahora dia 83, 84, 86 (mini-sim, sim_n 86), 87, 88, 89, 91, 92 (mini-sim,
 // sim_n 92) + 2 de v6.03: mié 3-mar dia 93 I-3 brote_bloqueo #6 · jue 4-mar dia 94 V-2 residuos_bioseguridad #6). Reposición genérica
 // «filas del carril B dia 51-82 (dia_mant 61-92) sin ✓». sim_n únicos: mini-sims F1 3…43 + 86 + 92; intensiva 55 (pre-test) · 60 … 95 (SIM
-// 100Q) · 99 (dress). La capa v6.02d (fechaPlanDe) queda inerte: _fechas_v6.json corrida_s1 ya no trae alias ni reparto.
+// 100Q) · 99 (dress). La capa v6.02d (fechaPlanDe) elige la fila cuando corrida_s1 trae alias o reparto (v6.06a → v6.06e).
 // v6.05 (24-oct-2026, orden de Joseph «todo inicia el lunes 26»; la semana del 19 no se estudió — ni el D1 del mié 21 ni su alias del jue 22: la
 // corrida por alias v6.04a queda sin efecto, corrida_s1 solo marca sin_sesion 19-25-oct): D1 = LUN 26-OCT-2026 → MANTENIMIENTO = dia 1-47 (lun
 // 26-oct → mié 30-dic; 39 banqueo1h + 8 mini-sims vie 30-oct … vie 18-dic, el del vie 18-dic = dia 40 = CHECKPOINT DEL AÑO; pre-test de arranque
@@ -81,7 +81,7 @@
 // ni postest; registro por --registrar --append) y tipoRondaDe da 'pretest'. Claves D{dia}:m_* sin cambio.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
-import { SKIP_V6, fechaPlanDe } from './fechasV6';
+import { SKIP_V6, fechaPlanDe, fechaRealDe } from './fechasV6';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
@@ -841,8 +841,9 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
 export function antesDelD1(examen: string, d1Override?: string, hoyOverride?: string): string | null {
   const d1 = d1Override || STUDY_D1[examen];
   if (!d1) return null;
-  const hoy = fechaPlanDe(hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO(), 'encaps');
-  return hoy < d1 ? d1 : null;
+  // v6.06e: se compara el día REAL con el día real del D1 (fechaPlanDe ya no sirve: en un día sin sesión da la fila del próximo día con sesión)
+  const hoy = hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO();
+  return hoy < fechaRealDe(d1, 'encaps') ? d1 : null;
 }
 
 // v6.02c (18-oct-2026, E4): sesión de la guía (encapsGuia.ts, GENERADO por gen_encaps_guia.js) SOLO si la fila viva cuadra con ella (mismo dia y
@@ -1672,10 +1673,10 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const ciego = useMemo(() => ciegoSemanal(progressAll), [progressAll]);
   const hoyISO = todayLimaISO();
   const porCodigo = useMemo(() => {
-    const lunes = lunesISO(hoyISO);
+    const lunes = lunesISO(fechaPlanDe(hoyISO, 'encaps')); // v6.06e: los cierres van con fecha de plan
     return ciegoPorCodigo(progressAll, addDaysISO(lunes, -7), addDaysISO(lunes, 6));
   }, [progressAll, hoyISO]);
-  const calientes = useMemo(() => temasCalientes(progressAll, hoyISO), [progressAll, hoyISO]);
+  const calientes = useMemo(() => temasCalientes(progressAll, fechaPlanDe(hoyISO, 'encaps')), [progressAll, hoyISO]);
   const tendencia = useMemo(() => tendenciaCiego(ciego), [ciego]);
   const prevDay = useMemo(() => days.find(d => d.dia === dia - 1) ?? null, [days, dia]);
   const evalHoy = useMemo(() => (today && today.modo === 'MANTENIMIENTO' ? evalAncladaDe(today, prevDay) : null), [today, prevDay]);

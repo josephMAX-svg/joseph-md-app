@@ -10,7 +10,7 @@
  * v6.04 (mié 21-oct-2026): examen Step 1 lun 27-sep-2027 → lun 25-oct-2027 (decisión de Joseph; step1.cambios).
  * v6.05 (sáb 24-oct-2026): corrimiento rígido del D1 mié 21-oct-2026 → lun 26-oct-2026 (perdidos: mié 21-oct · jue 22-oct · vie 23-oct).
  * v6.06 (sáb 31-oct-2026): corrimiento rígido del D1 lun 26-oct-2026 → lun 2-nov-2026 (perdidos: lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct).
- * v6.06e (vie 6-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = parte del mar 10-nov · dom 22-nov = parte del mié 18-nov · dom 29-nov = parte del jue 26-nov · dom 6-dic = parte del vie 4-dic · dom 13-dic = parte del sáb 12-dic · dom 20-dic = parte del sáb 19-dic · dom 27-dic = parte del sáb 26-dic; ningún plan cambia de fecha.
+ * v6.06e (vie 6-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic · sáb 2-ene · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = parte del mar 10-nov · dom 22-nov = parte del mié 18-nov · dom 29-nov = parte del jue 26-nov · dom 6-dic = parte del vie 4-dic · dom 13-dic = parte del sáb 12-dic · dom 20-dic = parte del sáb 19-dic · dom 27-dic = parte del sáb 26-dic · dom 3-ene = parte del sáb 2-ene; ningún plan cambia de fecha.
  * Versión vigente del JSON: v6.06.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -247,8 +247,8 @@ export const FECHAS_V6: FechasV6 = {
   "corrida_s1": {
     "decidido": "2026-11-06",
     "version": "v6.06e",
-    "motivo": "Orden de Joseph (vie 6-nov-2026, sin estudio ese día): «hoy no comenzamos; comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan). Semana de DOMINGO a VIERNES: cada domingo recupera un día hábil y bastan 5 (dom 8, 15, 22, 29-nov y 6-dic) → el plan alcanza su fecha original el LUN 7-DIC. NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic. Revisión semanal S01-S04: domingos 20:00 (la noche libre tras el baile). OUTPUT S2 y SHIP S1-S8: domingos de cierres 13, 20 y 27-dic. Anki de sábado: lo absorbe el Anki AM del domingo. Alcance: hasta el fin de F1; los sábados de F2 en adelante no se tocan.",
-    "resumen": "SEMANA CORRIDA v6.06e (orden del vie 6-nov): hasta el sáb 7 sin estudio · arranque el DOM 8 = plan del lun 2 (D1, UWSA1) · semana de DOMINGO a VIERNES y SÁBADOS LIBRES · cada domingo recupera un día · NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic · desde el lun 7-dic el plan va en su fecha original · revisión semanal: domingos 20:00 · cierres pendientes (OUTPUT y SHIP): dom 13, 20 y 27-dic.",
+    "motivo": "Orden de Joseph (vie 6-nov-2026, sin estudio ese día): «hoy no comenzamos; comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan). Semana de DOMINGO a VIERNES: cada domingo recupera un día hábil y bastan 5 (dom 8, 15, 22, 29-nov y 6-dic) → el plan alcanza su fecha original el LUN 7-DIC. NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic. Revisión semanal S01-S04: domingos 20:00 (la noche libre tras el baile). OUTPUT S2 y SHIP S1-S8: domingos de cierres 13, 20, 27-dic y 3-ene. Anki de sábado: lo absorbe el Anki AM del domingo, salvo el del sáb 5-dic, que lleva FSRS Optimize y va el dom 13-dic 20:00. Feynman S1-S7: tras su SHIP, los domingos de cierres. Alcance: sábados libres hasta el sáb 2-ene; los de F2 en adelante quedan pendientes de decidir con Joseph.",
+    "resumen": "SEMANA CORRIDA v6.06e (orden del vie 6-nov): hasta el sáb 7 sin estudio · arranque el DOM 8 = plan del lun 2 (D1, UWSA1) · semana de DOMINGO a VIERNES y SÁBADOS LIBRES · cada domingo recupera un día · NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic · desde el lun 7-dic el plan va en su fecha original · revisión semanal: domingos 20:00 · cierres pendientes (OUTPUT y SHIP): dom 13, 20, 27-dic y 3-ene.",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -276,7 +276,8 @@ export const FECHAS_V6: FechasV6 = {
       "2026-12-05",
       "2026-12-12",
       "2026-12-19",
-      "2026-12-26"
+      "2026-12-26",
+      "2027-01-02"
     ],
     "alias": {
       "2026-11-08": "2026-11-02",
@@ -403,7 +404,6 @@ export const FECHAS_V6: FechasV6 = {
               "anki": 0,
               "usmle": 0,
               "syn": 0,
-              "biz": 0,
               "rd": 0,
               "aurum": 0,
               "mir": 0,
@@ -424,7 +424,7 @@ export const FECHAS_V6: FechasV6 = {
       "2026-12-13": {
         "de": "2026-12-12",
         "titulo": "Domingo de cierres · revisiones S05 y S06 · OUTPUT S2, S5 y S6 · SHIP S1, S2 y S3",
-        "nota": "Semana corrida v6.06e: el plan ya va en fecha; hoy se ponen al día los cierres: revisión S05 07:15 · OUTPUT S5 07:45 · revisión S06 08:30 · cierre S6 09:00 · OUTPUT S2 09:15 · SHIP S1 10:00-12:00 · SHIP S2 13:00-15:00 · SHIP S3 15:00-17:00.",
+        "nota": "Semana corrida v6.06e: el plan ya va en fecha; hoy se ponen al día los cierres: revisión S05 07:15 · OUTPUT S5 07:45 · revisión S06 08:30 · cierre S6 09:00 · OUTPUT S2 09:15 · SHIP S1 10:00-12:00 · SHIP S2 13:00-15:00 · SHIP S3 15:00-17:00 · Anki con FSRS Optimize 20:00 · Feynman S1, S2 y S3 desde las 20:30.",
         "partes": [
           {
             "de": "2026-12-12",
@@ -438,7 +438,8 @@ export const FECHAS_V6: FechasV6 = {
             "de": "2026-12-05",
             "bloques": {
               "revision": 0,
-              "biz": 0
+              "biz": 0,
+              "anki-sab": 60
             }
           },
           {
@@ -461,9 +462,26 @@ export const FECHAS_V6: FechasV6 = {
             }
           },
           {
+            "de": "2026-11-08",
+            "bloques": {
+              "feynman": 330
+            }
+          },
+          {
+            "de": "2026-11-15",
+            "bloques": {
+              "feynman": 340
+            }
+          },
+          {
+            "de": "2026-11-22",
+            "bloques": {
+              "feynman": 350
+            }
+          },
+          {
             "de": "2026-12-13",
             "bloques": {
-              "feynman": -135,
               "anki-dom": 0
             }
           }
@@ -472,7 +490,7 @@ export const FECHAS_V6: FechasV6 = {
       "2026-12-20": {
         "de": "2026-12-19",
         "titulo": "Domingo de cierres · revisión S07 · OUTPUT S7 · SHIP S4, S5 y S6",
-        "nota": "Semana corrida v6.06e: revisión S07 07:15 · OUTPUT S7 07:45 · SHIP S4 09:30-11:30 · SHIP S5 13:00-15:00 · SHIP S6 15:00-17:00.",
+        "nota": "Semana corrida v6.06e: revisión S07 07:15 · OUTPUT S7 07:45 · SHIP S4 09:30-11:30 · SHIP S5 13:00-15:00 · SHIP S6 15:00-17:00 · Feynman S4, S5 y S6 desde las 20:00.",
         "partes": [
           {
             "de": "2026-12-19",
@@ -501,9 +519,26 @@ export const FECHAS_V6: FechasV6 = {
             }
           },
           {
+            "de": "2026-11-29",
+            "bloques": {
+              "feynman": 300
+            }
+          },
+          {
+            "de": "2026-12-06",
+            "bloques": {
+              "feynman": 310
+            }
+          },
+          {
+            "de": "2026-12-13",
+            "bloques": {
+              "feynman": 320
+            }
+          },
+          {
             "de": "2026-12-20",
             "bloques": {
-              "feynman": -135,
               "anki-dom": 0
             }
           }
@@ -512,7 +547,7 @@ export const FECHAS_V6: FechasV6 = {
       "2026-12-27": {
         "de": "2026-12-26",
         "titulo": "Domingo de cierres · revisión S08 · SHIP S7 · avance S8",
-        "nota": "Semana corrida v6.06e: revisión S08 07:15 · SHIP S7 09:30-11:30 · avance S8 15:00-17:00. Con esto no queda ningún cierre pendiente.",
+        "nota": "Semana corrida v6.06e: revisión S08 07:15 · SHIP S7 09:30-11:30 · Feynman S7 14:30 · Feynman S8 14:45 · avance S8 15:00-17:00.",
         "partes": [
           {
             "de": "2026-12-26",
@@ -529,10 +564,36 @@ export const FECHAS_V6: FechasV6 = {
             }
           },
           {
+            "de": "2026-12-20",
+            "bloques": {
+              "feynman": -30
+            }
+          },
+          {
             "de": "2026-12-27",
             "bloques": {
               "feynman": -15,
               "anki-dom": 0
+            }
+          }
+        ]
+      },
+      "2027-01-03": {
+        "de": "2027-01-02",
+        "titulo": "Domingo de cierres · revisión S09 · SHIP S8",
+        "nota": "Semana corrida v6.06e: revisión S09 07:15 · SHIP S8 09:30-11:30 · Feynman 15:00 (opcional). El lun 4-ene empieza la intensiva ENCAPS.",
+        "partes": [
+          {
+            "de": "2027-01-02",
+            "bloques": {
+              "revision": 0,
+              "pc": -330
+            }
+          },
+          {
+            "de": "2027-01-03",
+            "bloques": {
+              "feynman": 0
             }
           }
         ]
@@ -778,7 +839,7 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic sin sesión · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mar 10-nov / revision+biz del sáb 7-nov · dom 22-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mié 18-nov / revision del sáb 14-nov · dom 29-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del jue 26-nov / revision+biz del sáb 21-nov · dom 6-dic = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del vie 4-dic / revision+biz del sáb 28-nov · dom 13-dic = anki-sab+revision+biz del sáb 12-dic / revision+biz del sáb 5-dic / biz+pc del sáb 14-nov / pc del sáb 7-nov / pc del sáb 21-nov / feynman+anki-dom del dom 13-dic · dom 20-dic = anki-sab+revision+biz del sáb 19-dic / pc del sáb 28-nov / pc del sáb 5-dic / pc del sáb 12-dic / feynman+anki-dom del dom 20-dic · dom 27-dic = anki-sab+revision+pc del sáb 26-dic / pc del sáb 19-dic / feynman+anki-dom del dom 27-dic.
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic · sáb 2-ene sin sesión · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mar 10-nov / revision+biz del sáb 7-nov · dom 22-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mié 18-nov / revision del sáb 14-nov · dom 29-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del jue 26-nov / revision+biz del sáb 21-nov · dom 6-dic = vibe+anki+usmle+syn+rd+aurum+mir+encaps+liv+eval del vie 4-dic / revision+biz del sáb 28-nov · dom 13-dic = anki-sab+revision+biz del sáb 12-dic / revision+biz+anki-sab del sáb 5-dic / biz+pc del sáb 14-nov / pc del sáb 7-nov / pc del sáb 21-nov / feynman del dom 8-nov / feynman del dom 15-nov / feynman del dom 22-nov / anki-dom del dom 13-dic · dom 20-dic = anki-sab+revision+biz del sáb 19-dic / pc del sáb 28-nov / pc del sáb 5-dic / pc del sáb 12-dic / feynman del dom 29-nov / feynman del dom 6-dic / feynman del dom 13-dic / anki-dom del dom 20-dic · dom 27-dic = anki-sab+revision+pc del sáb 26-dic / pc del sáb 19-dic / feynman del dom 20-dic / feynman+anki-dom del dom 27-dic · dom 3-ene = revision+pc del sáb 2-ene / feynman del dom 3-ene.
  * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {
@@ -797,15 +858,24 @@ export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
 /**
  * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con `frente`, la fecha
  * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
- * si ese día no tiene bloque del frente, la propia fecha (v6.06d: sin sesión de ese frente ese día) · resto → la propia.
+ * si ese día no tiene bloque del frente, la propia fecha (v6.06d) · día sin sesión → la fila del próximo día con sesión (v6.06e) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
   const c = corridaS1De(iso);
-  if (!c || c.tipo === 'sin_sesion') return iso;
+  if (!c) return iso;
+  // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
+  if (c.tipo === 'sin_sesion') {
+    const s1 = FECHAS_V6.corrida_s1;
+    const sig = [...Object.keys(s1.alias), ...Object.keys(s1.reparto)].filter((r) => r > iso).sort()[0];
+    return sig ? fechaPlanDe(sig, frente) : iso;
+  }
   if (c.tipo === 'alias' || !frente) return c.de;
   const ids = BLOQUES_POR_FRENTE[frente] ?? [];
-  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
-  return parte ? parte.de : iso;
+  const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
+  // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
+  const vig = ds.filter((d) => d >= c.de);
+  if (vig.length) return vig[vig.length - 1] as string;
+  return frente === 'revision' && ds.length ? ds[ds.length - 1] as string : iso;
 }
 /**
  * Inversa de fechaPlanDe para MOSTRAR fechas (mar 20-oct-2026, a pedido de Joseph: «dice que empieza el 19 y estamos empezando el 20»):
@@ -818,5 +888,7 @@ export function fechaRealDe(plan: string, frente?: string): string {
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
+  if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 }

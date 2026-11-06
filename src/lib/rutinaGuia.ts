@@ -65,7 +65,7 @@ import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
 import { guiaEncapsDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde
-import { FECHAS_V6, DERIVADOS_V6, faseV6, ultimoHabilAntes } from './fechasV6';
+import { FECHAS_V6, DERIVADOS_V6, faseV6, ultimoHabilAntes, fechaRealDe } from './fechasV6';
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -80,6 +80,8 @@ const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'o
 const fCorta = (iso: string): string => `${WD_C[dow(iso)]} ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`;
 /** Siguiente día de la semana `wd` (0 = dom … 6 = sáb) estrictamente posterior a `iso`. */
 const siguienteDow = (iso: string, wd: number): string => addDias(iso, ((wd - dow(iso) + 6) % 7) + 1);
+/** v6.06e: cuándo se cierra el OUTPUT: el sábado de plan, o su domingo real si ese sábado se corrió (la fecha de plan la traduce fechasRealesEnTexto). */
+const cierreOutput = (iso: string): string => { const sab = addDias(iso, 6 - dow(iso)); return fechaRealDe(sab, 'business') === sab ? `el sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'}` : `en el cierre del ${fCorta(sab)}`; };
 const yt = (id: string, seg?: number): string => `https://www.youtube.com/watch?v=${id}${seg ? `&t=${seg}s` : ''}`;
 const mmss = (s: number): string => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const minDe = (seg: number): number => Math.ceil(seg / 60);
@@ -206,7 +208,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     dia.min >= 45 ? 'paso del día hecho + commit [S…] o stash a las 04:55 + entrada del journal con los 6 campos' : 'entrada del journal del día',
     {
       flex: Math.max(0, pasos.length - 2),
-      planB: 'Si el día se recorta: pierde el proyecto, nunca el Anki de las 05:00. Sin PC: journal en el móvil (3 líneas) y el paso pasa al sábado PC.',
+      planB: 'Si el día se recorta: pierde el proyecto, nunca el Anki de las 05:00. Sin PC: journal en el móvil (3 líneas) y el paso pasa al bloque PC de la semana.',
       aviso: [
         dia.deload ? 'Semana DELOAD del vibecoding: carga al 50 % (2 días de 45′ + 3 de 15′).' : '',
         iso === VIBE_META.inicio ? `Primer día: el journal de esta semana (${sem}.md) todavía no existe; lo crea el comando del paso 1.` : '',
@@ -333,7 +335,7 @@ function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
   if (b.tag === 'B') return P(b.min, `B (audio) · ${b.material} — ${b.leccion}`,
     `Auriculares, 1,0×. Exactamente ${b.min}′ ${b.dur ? `(${b.dur})` : 'desde donde quedaste'}; anota el minuto donde paras.`, enl);
   return P(b.min, `C (lectura) · ${b.material} — ${b.leccion}`,
-    `≈${b.min * PPM_EN} palabras (${b.min}′ a ${PPM_EN} palabras/min en inglés). Marca dónde quedas; el resto en el próximo C o en el comodín del sábado.`, enl);
+    `≈${b.min * PPM_EN} palabras (${b.min}′ a ${PPM_EN} palabras/min en inglés). Marca dónde quedas; el resto en el próximo C o en el comodín de la semana.`, enl);
 }
 /** v6.05 (fix 24-oct): días de F2 con el ENCAPS a la hora real del examen, 11:00-13:00 — los SIM 100Q #7 y #8 (los 2 últimos viernes del
  *  núcleo: v6.05 = v6.06 vie 26-feb y vie 5-mar-2027) y el D-2 dress rehearsal (jue antes del D-1 hábil). FUENTE ÚNICA: plantillasV6 la importa para
@@ -365,7 +367,7 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
   return bloque(franja, 'synapse', `SYNAPSE S${s.semana} · ${s.fase.split('·')[0].trim()} — A pantalla · B audio · C lectura`, pasos, recursos,
     'A, B y C hechos con su minuto/punto de parada anotado en el journal + ✓ del día en Estudio › SYNAPSE',
     { aviso: [aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''].filter(Boolean).join(' ') || undefined,
-      planB: 'Sin PC: B y C en el móvil y A pasa al sábado (bloque PC). Academy/Skilljar caído: adelanta B + C y deja A para mañana.' });
+      planB: 'Sin PC: B y C en el móvil y A pasa al bloque PC de la semana. Academy/Skilljar caído: adelanta B + C y deja A para mañana.' });
 }
 
 // ═══════════════════════════════ sábado 15:00 · SHIP + SYNAPSE · domingo · FEYNMAN ═══════════════════════════════
@@ -777,7 +779,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       );
     }
     return bloque(franja, 'business', `BUSINESS · cierre del OUTPUT de la semana (tracker semanal)`, pasos, [R('◆ Pulso · concepto madre', PULSO_OBS)],
-      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso: 'El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ el sábado tras la revisión semanal (o entero el sábado si ese día fue NBME o SIM 100Q de las 11:00).' });
+      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso: 'El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ tras la revisión semanal (o entero en el cierre de la semana si ese día fue NBME o SIM 100Q de las 11:00).' });
   }
   const r = bizDiaDe(iso) as DiaBiz;
   const modo = bizModo(r);
@@ -793,7 +795,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       P(2, 'Guardar', `El sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'} (tras la revisión semanal): tracker semanal + cierre (15′).`),
     ];
     return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.lectura.split(':')[0]} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
-      { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ el sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'} (tracker + cierre).`].join(' ') });
+      { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ ${cierreOutput(iso)} (tracker + cierre).`].join(' ') });
   }
   const tramo = bizTramoDe(r); // v6.03: por fila del plan (libro + nº de lectura), no por fecha
   const pasos: GuiaPaso[] = [P(1, `OBJETIVO · ${r.materia}${modo === 'CRITICA' ? ' (lectura CRÍTICA)' : ''}`, `Lee la lectura y la acción de hoy: ${r.accion}`)];
@@ -840,7 +842,7 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
     ? `Semana 2: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4) · velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea el lunes journal_hoy.js.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
   return bloque('07:15–07:45', 'revision', `REVISIÓN SEMANAL · ${fichero.replace('.md', '')}`, [
-    P(3, `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: \`node DATA/_scripts/gen_revision_semanal.js\` → crea DATA/USMLE/REVISIONES/${fichero} y actualiza _semanas.json.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
+    P(3, `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: \`node DATA/_scripts/gen_revision_semanal.js ${iso}\` → crea DATA/USMLE/REVISIONES/${fichero} y actualiza _semanas.json.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
     P(8, 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (UWSA1 = baseline, sin juicio)' : ''} · 4 ENCAPS mini-sim /25 del viernes · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
     P(6, 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),

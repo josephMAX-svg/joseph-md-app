@@ -29,10 +29,11 @@ export const USMLE_META = {
 export const USMLE_KPIS = { systems: 11, pathologyPct: 50, beginnerWeeks: 8, readiness: 4 };
 
 // ── v6.00: fechas de hitos para los textos (leídas del plan, no escritas a mano) ──
+import { fechaRealDe } from './fechasV6';
 const _DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const _MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtCorta = (iso: string): string => { const d = new Date(iso + 'T12:00:00Z'); return `${_DOW[d.getUTCDay()]} ${d.getUTCDate()}-${_MES[d.getUTCMonth()]}`; };
-const hitoTxt = (nombre: string): string => { const h = hitosStep1().find((x) => x.nombre === nombre || x.nombre.startsWith(nombre + ' ')); return h ? fmtCorta(h.fecha) : '—'; };
+const hitoTxt = (nombre: string): string => { const h = hitosStep1().find((x) => x.nombre === nombre || x.nombre.startsWith(nombre + ' ')); return h ? fmtCorta(fechaRealDe(h.fecha, 'usmle')) : '—'; }; // v6.06e: fecha real
 const _BIOQ = DIAS_TODOS.filter((x) => esFilaT2(x) && (x.dOrig === 80 || x.dOrig === 81));
 const _BIOQ_TXT = _BIOQ.length ? `${fmtCorta(_BIOQ[0]!.fecha)} → ${fmtCorta(_BIOQ[_BIOQ.length - 1]!.fecha)}-${_BIOQ[_BIOQ.length - 1]!.fecha.slice(0, 4)}` : '—';
 

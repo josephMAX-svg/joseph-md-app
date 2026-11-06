@@ -29,8 +29,11 @@ const arg = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1
 
 const pad = (n) => String(n).padStart(2, '0');
 const hoy = new Date();
-const FECHA = arg('--fecha', `${hoy.getFullYear()}-${pad(hoy.getMonth() + 1)}-${pad(hoy.getDate())}`);
-if (!/^20\d\d-\d\d-\d\d$/.test(FECHA)) throw new Error('--fecha inválida (YYYY-MM-DD): ' + FECHA);
+const REAL = arg('--fecha', `${hoy.getFullYear()}-${pad(hoy.getMonth() + 1)}-${pad(hoy.getDate())}`);
+if (!/^20\d\d-\d\d-\d\d$/.test(REAL)) throw new Error('--fecha inválida (YYYY-MM-DD): ' + REAL);
+// v6.06e: la guía y el botón 📓 usan la fecha de plan → el fichero, el proyecto y el paso del día salen de ella
+const _V6 = require('./gen_fechas_v6');
+const FECHA = _V6.fechaPlanDe(REAL, _V6.cargarFechasV6(), 'vibecoding');
 
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -94,7 +97,7 @@ if (!fs.existsSync(file)) {
 
 // ─── sección del día ───
 let txt = fs.readFileSync(file, 'utf8');
-const titulo = `## ${fmt(FECHA)}${diaHoy ? ` · D${diaHoy.d} · S${diaHoy.semana}` : ''}`;
+const titulo = `## ${fmt(FECHA)}${REAL !== FECHA ? ` (hecho el ${fmt(REAL)})` : ''}${diaHoy ? ` · D${diaHoy.d} · S${diaHoy.semana}` : ''}`;
 let anadido = false;
 if (!txt.includes(titulo)) {
   const S = [];

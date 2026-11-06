@@ -154,7 +154,15 @@ async function retencion30(q) {
 // > 05:10 = ámbar; sin review en L-V ya pasadas las 05:00 = rojo; sáb/dom = 'finde' (Anki 19:00/17:00, no aplica);
 // antes de las 05:00 = 'pendiente'. Fuente: revlog vía getReviewsOfCards (min id ≥ medianoche local) sobre `rated:1`.
 async function primeraReviewHoy(q) {
-  const finde = WD_HOY === 0 || WD_HOY === 6;
+  // v6.06e: un domingo con plan corrido lleva Anki AM 05:00 → el KPI se mide como un día de semana
+  let conAnkiAM = false;
+  try {
+    const c1 = JSON.parse(fs.readFileSync(path.join(__dirname, '_fechas_v6.json'), 'utf8')).corrida_s1;
+    const z = (n) => String(n).padStart(2, '0');
+    const h = `${now.getFullYear()}-${z(now.getMonth() + 1)}-${z(now.getDate())}`;
+    conAnkiAM = !!c1.alias[h] || !!(c1.reparto[h] && c1.reparto[h].partes.some((p) => 'anki' in p.bloques));
+  } catch { /* sin fechas: regla de siempre */ }
+  const finde = (WD_HOY === 0 || WD_HOY === 6) && !conAnkiAM;
   try {
     const cards = await anki('findCards', { query: `${q} rated:1` });
     let min = null;

@@ -267,7 +267,7 @@ function BibliotecaView({ isDesktop }: { isDesktop: boolean }) {
 function ProtocoloView() {
   return (
     <View>
-      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V; desde el {fechaRealDe(AURUM_PLAN_META.min30Desde, 'aurum')} = 30' núcleo 14:15-14:45, DJ-4) + lectura en tus huecos · sáb/dom libres · fin {fechaRealDe(AURUM_PLAN_META.fin, 'aurum')}</AurumLabel>{/* v6.02d: fecha real visible (semana corrida) */}
+      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V; desde el {fechaRealDe(AURUM_PLAN_META.min30Desde, 'aurum')} = 30' núcleo 14:15-14:45, DJ-4) + lectura en tus huecos · fin {fechaRealDe(AURUM_PLAN_META.fin, 'aurum')}</AurumLabel>{/* v6.02d: fecha real visible (semana corrida) */}
       <AurumPanel accent={C.gold} glow style={{ marginBottom: S['2xl'] }}>
         {AURUM_PROTOCOLO.map((h, i) => {
           const audio = h.formato.includes('audio');

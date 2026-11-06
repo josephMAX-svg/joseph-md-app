@@ -217,7 +217,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             {t2 && t2.adapt && <Chip label="inducción SERUMS (50 %)" color={Colors.muted} small />}
             <Chip label={`Fase ${faseDe(dia.d)}`} color={Colors.muted} small />
             <Chip label={`Nivel UW ${dia.nivelUW} · ${qHoy}Q${t2 && t2.qDiaT != null ? ` (M/L/G ${t2.qDia} · T ${t2.qDiaT})` : ''}`} color={niv.color} small />
-            {viernesN4 && <Chip label={`Viernes N4 · S${semanaDe(dia.fecha)}`} color={Colors.gold} small />}
+            {viernesN4 && <Chip label={`N4 semanal · S${semanaDe(dia.fecha)}`} color={Colors.gold} small />}
             {taper && <Chip label={t2?.dOrig === 95 ? 'TAPER · D95 sesión MÍNIMA (≤1 h)' : t2?.dOrig === 94 ? 'TAPER · D94 · última sesión de banco' : 'TAPER · semana previa (≤2 h, solo bloque A)'} color={RED} small />}
             {ritual && <Chip label="RITUAL · sin estudio" color={RED} small />}
             {!hitoHoy && faseDe(dia.d) === 'A' && (dia.nivelUW === 2 || dia.nivelUW === 3) && sv.total > 0 && <Chip label={`${sv.n}/${sv.objetivo} subtemas validados · ${dia.system}`} color={sv.n >= sv.objetivo ? GREEN : Colors.gold} small />}
@@ -658,7 +658,7 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
               <View style={{ flex: 1 }}>
                 <Text style={st.franjaFase}>{fechasRealesEnTexto(f.fase, 'usmle') /* v6.02d: fecha real visible (semana corrida) */}</Text>
                 {det ? <Text style={st.franjaDet}>↳ {fechasRealesEnTexto(det, 'usmle')}</Text> : null}
-                {f.nivel && f.nivel !== '—' ? <Text style={st.franjaNivel}>🎚️ nivel UW {f.nivel}{f.gate && f.gate !== '—' ? ` · gate: ${f.gate}` : ''}</Text> : null}
+                {f.nivel && f.nivel !== '—' ? <Text style={st.franjaNivel}>🎚️ nivel UW {f.nivel}{f.gate && f.gate !== '—' ? ` · gate: ${fechasRealesEnTexto(f.gate, 'usmle')}` : ''}</Text> : null}
                 {f.hora.startsWith('11:00') && dia.franjaNota ? <Text style={[st.franjaDet, { color: esDiaTaper(dia) ? RED : Colors.gold }]}>↳ HOY: {fechasRealesEnTexto(dia.franjaNota, 'usmle')}</Text> : null}
                 {f.hora.startsWith('07:15') && esDiaDermaStep1(dia) ? <Text style={[st.franjaDet, { color: Colors.gold }]}>↳ HOY (cuenta doble Derma): {DERMA_STEP1_QUERY} + fallos del ledger derma</Text> : null}
                 {(FRANJAS_REGLAS[i] || []).map((r, k) => <Text key={k} style={st.franjaRegla}>⚙ {fechasRealesEnTexto(r, 'usmle')}</Text>)}

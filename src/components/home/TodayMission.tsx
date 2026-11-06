@@ -396,11 +396,11 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       if (b.id === 'pc') {
         const g = guiaShipDe(iso);
         const synA = primerEnlace(g, /skilljar|academy|anthropic/);
-        return { tema: g ? g.titulo : tema, sub: `PC 15:00 · ${sub}`, acciones: [...acciones, ...(synA ? [{ lbl: 'SYNAPSE A ↗', color: OBS, url: synA }] : [])], ...(g ? { guias: [g] } : {}) };
+        return { tema: g ? g.titulo : tema, sub: `PC · ${sub}`, acciones: [...acciones, ...(synA ? [{ lbl: 'SYNAPSE A ↗', color: OBS, url: synA }] : [])], ...(g ? { guias: [g] } : {}) };
       }
       if (b.id === 'feynman') {
         const g = guiaFeynmanDe(iso);
-        return { tema: g ? g.titulo : 'Feynman del proyecto (opcional)', sub: 'domingo libre · 10′ opcionales', acciones: [{ lbl: '📓 journal', color: OBS, url: vibeJournalUrl(iso), fill: true }], ...(g ? { guias: [g] } : {}) };
+        return { tema: g ? g.titulo : 'Feynman del proyecto (opcional)', sub: '10′ opcionales', acciones: [{ lbl: '📓 journal', color: OBS, url: vibeJournalUrl(iso), fill: true }], ...(g ? { guias: [g] } : {}) };
       }
       const gV = guiaVibeDe(iso);
       return { tema, sub, acciones, ...(gV ? { guias: [gV] } : {}) };
@@ -625,7 +625,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       const gR = guiaRevisionDe(iso);
       return {
         tema: `${revisionFicheroDe(iso)} · 10 métricas + checklist G + 4 decisiones`,
-        sub: 'node DATA/_scripts/gen_revision_semanal.js → abre el fichero · método: DATA/REVISION_SEMANAL.md',
+        sub: `node DATA/_scripts/gen_revision_semanal.js ${iso} → abre el fichero · método: DATA/REVISION_SEMANAL.md`,
         acciones: [{ lbl: `${revisionFicheroDe(iso).slice(0, 3)} ↗`, color: Colors.champagne, url: vsRevision(iso), fill: true }, { lbl: 'Método ↗', color: Colors.champagne, url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/REVISION_SEMANAL.md' }],
         ...(gR ? { guias: [gR] } : {}),
       };
@@ -792,7 +792,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           {usmleFuera.map((g, k) => <GuiaBloqueCard key={k} g={g} color={GREEN} compacto={!enFranja(g.franja, ahora)} ahora={enFranja(g.franja, ahora)} />)}
         </View>
       )}
-      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · sáb 07:15-07:45 = revisión semanal (DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
+      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · revisión semanal = sáb 07:15-07:45 (hasta el 2-ene, los domingos; DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
     </View>
   );
 }

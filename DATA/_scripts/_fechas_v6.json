@@ -185,8 +185,8 @@
   "corrida_s1": {
     "decidido": "2026-11-06",
     "version": "v6.06e",
-    "motivo": "Orden de Joseph (vie 6-nov-2026, sin estudio ese día): «hoy no comenzamos; comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan). Semana de DOMINGO a VIERNES: cada domingo recupera un día hábil y bastan 5 (dom 8, 15, 22, 29-nov y 6-dic) → el plan alcanza su fecha original el LUN 7-DIC. NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic. Revisión semanal S01-S04: domingos 20:00 (la noche libre tras el baile). OUTPUT S2 y SHIP S1-S8: domingos de cierres 13, 20 y 27-dic. Anki de sábado: lo absorbe el Anki AM del domingo. Alcance: hasta el fin de F1; los sábados de F2 en adelante no se tocan.",
-    "resumen": "SEMANA CORRIDA v6.06e (orden del vie 6-nov): hasta el sáb 7 sin estudio · arranque el DOM 8 = plan del lun 2 (D1, UWSA1) · semana de DOMINGO a VIERNES y SÁBADOS LIBRES · cada domingo recupera un día · NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic · desde el lun 7-dic el plan va en su fecha original · revisión semanal: domingos 20:00 · cierres pendientes (OUTPUT y SHIP): dom 13, 20 y 27-dic.",
+    "motivo": "Orden de Joseph (vie 6-nov-2026, sin estudio ese día): «hoy no comenzamos; comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan). Semana de DOMINGO a VIERNES: cada domingo recupera un día hábil y bastan 5 (dom 8, 15, 22, 29-nov y 6-dic) → el plan alcanza su fecha original el LUN 7-DIC. NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic. Revisión semanal S01-S04: domingos 20:00 (la noche libre tras el baile). OUTPUT S2 y SHIP S1-S8: domingos de cierres 13, 20, 27-dic y 3-ene. Anki de sábado: lo absorbe el Anki AM del domingo, salvo el del sáb 5-dic, que lleva FSRS Optimize y va el dom 13-dic 20:00. Feynman S1-S7: tras su SHIP, los domingos de cierres. Alcance: sábados libres hasta el sáb 2-ene; los de F2 en adelante quedan pendientes de decidir con Joseph.",
+    "resumen": "SEMANA CORRIDA v6.06e (orden del vie 6-nov): hasta el sáb 7 sin estudio · arranque el DOM 8 = plan del lun 2 (D1, UWSA1) · semana de DOMINGO a VIERNES y SÁBADOS LIBRES · cada domingo recupera un día · NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic · desde el lun 7-dic el plan va en su fecha original · revisión semanal: domingos 20:00 · cierres pendientes (OUTPUT y SHIP): dom 13, 20, 27-dic y 3-ene.",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -214,7 +214,8 @@
       "2026-12-05",
       "2026-12-12",
       "2026-12-19",
-      "2026-12-26"
+      "2026-12-26",
+      "2027-01-02"
     ],
     "alias": {
       "2026-11-08": "2026-11-02",
@@ -341,7 +342,6 @@
               "anki": 0,
               "usmle": 0,
               "syn": 0,
-              "biz": 0,
               "rd": 0,
               "aurum": 0,
               "mir": 0,
@@ -362,7 +362,7 @@
       "2026-12-13": {
         "de": "2026-12-12",
         "titulo": "Domingo de cierres · revisiones S05 y S06 · OUTPUT S2, S5 y S6 · SHIP S1, S2 y S3",
-        "nota": "Semana corrida v6.06e: el plan ya va en fecha; hoy se ponen al día los cierres: revisión S05 07:15 · OUTPUT S5 07:45 · revisión S06 08:30 · cierre S6 09:00 · OUTPUT S2 09:15 · SHIP S1 10:00-12:00 · SHIP S2 13:00-15:00 · SHIP S3 15:00-17:00.",
+        "nota": "Semana corrida v6.06e: el plan ya va en fecha; hoy se ponen al día los cierres: revisión S05 07:15 · OUTPUT S5 07:45 · revisión S06 08:30 · cierre S6 09:00 · OUTPUT S2 09:15 · SHIP S1 10:00-12:00 · SHIP S2 13:00-15:00 · SHIP S3 15:00-17:00 · Anki con FSRS Optimize 20:00 · Feynman S1, S2 y S3 desde las 20:30.",
         "partes": [
           {
             "de": "2026-12-12",
@@ -376,7 +376,8 @@
             "de": "2026-12-05",
             "bloques": {
               "revision": 0,
-              "biz": 0
+              "biz": 0,
+              "anki-sab": 60
             }
           },
           {
@@ -399,9 +400,26 @@
             }
           },
           {
+            "de": "2026-11-08",
+            "bloques": {
+              "feynman": 330
+            }
+          },
+          {
+            "de": "2026-11-15",
+            "bloques": {
+              "feynman": 340
+            }
+          },
+          {
+            "de": "2026-11-22",
+            "bloques": {
+              "feynman": 350
+            }
+          },
+          {
             "de": "2026-12-13",
             "bloques": {
-              "feynman": -135,
               "anki-dom": 0
             }
           }
@@ -410,7 +428,7 @@
       "2026-12-20": {
         "de": "2026-12-19",
         "titulo": "Domingo de cierres · revisión S07 · OUTPUT S7 · SHIP S4, S5 y S6",
-        "nota": "Semana corrida v6.06e: revisión S07 07:15 · OUTPUT S7 07:45 · SHIP S4 09:30-11:30 · SHIP S5 13:00-15:00 · SHIP S6 15:00-17:00.",
+        "nota": "Semana corrida v6.06e: revisión S07 07:15 · OUTPUT S7 07:45 · SHIP S4 09:30-11:30 · SHIP S5 13:00-15:00 · SHIP S6 15:00-17:00 · Feynman S4, S5 y S6 desde las 20:00.",
         "partes": [
           {
             "de": "2026-12-19",
@@ -439,9 +457,26 @@
             }
           },
           {
+            "de": "2026-11-29",
+            "bloques": {
+              "feynman": 300
+            }
+          },
+          {
+            "de": "2026-12-06",
+            "bloques": {
+              "feynman": 310
+            }
+          },
+          {
+            "de": "2026-12-13",
+            "bloques": {
+              "feynman": 320
+            }
+          },
+          {
             "de": "2026-12-20",
             "bloques": {
-              "feynman": -135,
               "anki-dom": 0
             }
           }
@@ -450,7 +485,7 @@
       "2026-12-27": {
         "de": "2026-12-26",
         "titulo": "Domingo de cierres · revisión S08 · SHIP S7 · avance S8",
-        "nota": "Semana corrida v6.06e: revisión S08 07:15 · SHIP S7 09:30-11:30 · avance S8 15:00-17:00. Con esto no queda ningún cierre pendiente.",
+        "nota": "Semana corrida v6.06e: revisión S08 07:15 · SHIP S7 09:30-11:30 · Feynman S7 14:30 · Feynman S8 14:45 · avance S8 15:00-17:00.",
         "partes": [
           {
             "de": "2026-12-26",
@@ -467,10 +502,36 @@
             }
           },
           {
+            "de": "2026-12-20",
+            "bloques": {
+              "feynman": -30
+            }
+          },
+          {
             "de": "2026-12-27",
             "bloques": {
               "feynman": -15,
               "anki-dom": 0
+            }
+          }
+        ]
+      },
+      "2027-01-03": {
+        "de": "2027-01-02",
+        "titulo": "Domingo de cierres · revisión S09 · SHIP S8",
+        "nota": "Semana corrida v6.06e: revisión S09 07:15 · SHIP S8 09:30-11:30 · Feynman 15:00 (opcional). El lun 4-ene empieza la intensiva ENCAPS.",
+        "partes": [
+          {
+            "de": "2027-01-02",
+            "bloques": {
+              "revision": 0,
+              "pc": -330
+            }
+          },
+          {
+            "de": "2027-01-03",
+            "bloques": {
+              "feynman": 0
             }
           }
         ]

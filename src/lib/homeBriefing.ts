@@ -12,7 +12,7 @@
  * NO editar cronogramas: esto es contenido/encuadre, no reprogramación.
  */
 import { DAILY_META, hitosDelPlan, esFilaT2 } from './usmleStep1Daily';
-import { FECHAS_V6, STEP1_SEMANAS, semanaStep1 as semanaStep1V6, faseV6 } from './fechasV6';
+import { FECHAS_V6, STEP1_SEMANAS, semanaStep1 as semanaStep1V6, faseV6, fechaPlanDe } from './fechasV6';
 import type { SemanaStep1 } from './fechasV6';
 import { HITOS_ONTRACK, hitoOnTrackDe, minimoTexto } from './usmleScores';
 
@@ -161,7 +161,8 @@ export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
 export function semanaStep1(iso: string): SemanaStep1 {
   let hitos: { fecha: string; nombre: string }[] = [];
   try { hitos = hitosStep1(); } catch { hitos = []; }
-  return semanaStep1V6(iso, { hitos, deloads: DELOAD_SEMANAS });
+  // v6.06e: los hitos están en fecha de plan → la semana se calcula con la fecha de plan del día real (en una fecha sin corrida, la misma)
+  return semanaStep1V6(fechaPlanDe(iso), { hitos, deloads: DELOAD_SEMANAS });
 }
 /** Etiqueta corta para el instrumento del cockpit: "S3/41" (v6.06; v6.05: /42 · v6.04: /43 · v6.03 = v6.02: /39 · v6.01: /40 · v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
 export function semanaLabel(s: SemanaStep1): string {

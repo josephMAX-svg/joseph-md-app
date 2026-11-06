@@ -22,6 +22,7 @@ import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
 import ResearchTodayPlan from './ResearchTodayPlan';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import { esResearchMinimo } from '../../lib/plantillasV6';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
@@ -233,7 +234,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
   const pct = Math.round((info.paso / PASOS_ENTREGABLE) * 100);
   const obs = researchObsUrlEntregable(e.id);
   const hoy = todayISO();
-  const atrasado = !!hito && hoy > hito.fecha && !ENVIADO_O_MAS.has(estado);
+  const atrasado = !!hito && hoy > fechaRealDe(hito.fecha, 'research-derma') && !ENVIADO_O_MAS.has(estado); // v6.06e: se compara con la fecha real
   const [ref, setRef] = useState<string>(r?.ref ?? '');
   const [journal, setJournal] = useState<string>(rx?.journal ?? '');
   const [decision, setDecision] = useState<string>(rx?.decision ?? '');
@@ -290,7 +291,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
         ))}
       </View>
 
-      <Text style={st.entNota}>{e.nota}</Text>
+      <Text style={st.entNota}>{fechasRealesEnTexto(e.nota, 'research-derma')}</Text>
 
       <Text style={[st.entLbl, { marginTop: 10 }]}>ESTADO (se guarda en este dispositivo y en Supabase · {TABLA_ENTREGABLES})</Text>
       <View style={{ marginTop: 6 }}><EstadoSelector value={estado} onChange={cambiarEstado} /></View>

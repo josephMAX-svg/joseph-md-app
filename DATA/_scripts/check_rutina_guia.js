@@ -328,7 +328,8 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     // v6.06a: si el D1 cae en la semana corrida como día sin sesión, el bloque ENCAPS 16:15 lo pinta el día REAL del D1 (fechaRealDe)
     const d1Real = FV.fechaRealDe(D1, 'encaps');
     const encReal = PL.plantillaDelDia(d1Real).bloques.some((b) => b.plan === 'encaps');
-    if (iso === D1 && (a !== null || (d1Real === D1 ? !enc : !encReal))) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${a} (debe ser null) o el Home no pinta el bloque 16:15 (día real ${d1Real})`);
+    const aReal = EP2.antesDelD1('ENCAPS', D1, d1Real); // v6.06e: antesDelD1 compara días reales
+    if (iso === D1 && (aReal !== null || (d1Real === D1 ? !enc : !encReal))) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${aReal} (debe ser null) o el Home no pinta el bloque 16:15 (día real ${d1Real})`);
   }
   console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));

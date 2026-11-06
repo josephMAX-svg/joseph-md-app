@@ -77,7 +77,10 @@ const media = (xs) => { const v = xs.filter((x) => typeof x === 'number' && !Num
 const pct = (x) => (x == null ? '—' : `${x}%`);
 const sd = (x, suf = '') => (x == null ? 'sin dato' : `${x}${suf}`);
 
-const FECHA = fechaArg || hoyISO();
+// v6.06e: sin fecha, si la revisión está corrida a un domingo (corrida_s1.reparto), se genera la próxima pendiente: el sábado de plan, no la semana real
+const _C1 = require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || { reparto: {} };
+const _sigRev = Object.keys(_C1.reparto).filter((r) => r >= hoyISO()).sort().flatMap((r) => _C1.reparto[r].partes.filter((p) => 'revision' in p.bloques).map((p) => p.de))[0];
+const FECHA = fechaArg || _sigRev || hoyISO();
 const off = dow(FECHA) === 0 ? -6 : 1 - dow(FECHA);
 const LUNES = addDays(FECHA, off), VIERNES = addDays(LUNES, 4), SABADO = addDays(LUNES, 5), DOMINGO = addDays(LUNES, 6);
 
@@ -129,7 +132,9 @@ const NN = String(Math.max(0, N)).padStart(2, '0');
 // v6.06 (31-oct-2026): corrida_s1.sin_sesion = lun 19-oct → dom 1-nov → el sáb 31-oct tampoco tiene revisión (nada de S00_2026-10-31.md); la
 // 1.ª revisión con plan es la S01 del sáb 7-nov (semana lun 2 → vie 6-nov).
 const SIN_SESION = new Set((F6.corrida_s1 && F6.corrida_s1.sin_sesion) || []);
-if (SIN_SESION.has(SABADO) && !has('--forzar')) {
+// v6.06e: los sábados libres cuya revisión se corrió a un domingo SÍ la tienen
+const REV_CORRIDA = Object.values(_C1.reparto).some((x) => x.partes.some((p) => p.de === SABADO && 'revision' in p.bloques));
+if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar')) {
   const sab1 = addDays(LUNES_D1, 5);
   console.log(`${fmt(SABADO)}: sin revisión semanal — semana corrida ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion): el plan arranca el ${fmt(D1)} y la 1.ª revisión con plan es S01_${sab1}.md (${fmt(sab1)}). Nada escrito (--forzar para generarla igual).`);
   process.exit(0);

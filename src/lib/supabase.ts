@@ -1,6 +1,7 @@
 import 'react-native-url-polyfill/auto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
+import { corridaS1De, fechaPlanDe } from './fechasV6';
 
 /**
  * Supabase client for Joseph MD
@@ -248,7 +249,13 @@ export async function getStreak(): Promise<number> {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
       const iso = d.toISOString().split('T')[0];
-      if (dates.has(iso)) {
+      // v6.06e: un día sin sesión (sábado libre) no corta la racha; un día de plan corrido también cuenta si el registro lleva la fecha de plan
+      const corrida = corridaS1De(iso);
+      if (corrida?.tipo === 'sin_sesion') {
+        if (dates.has(iso)) streak++;
+        continue;
+      }
+      if (dates.has(iso) || (corrida && dates.has(fechaPlanDe(iso)))) {
         streak++;
       } else {
         break;

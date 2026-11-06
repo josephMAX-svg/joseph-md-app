@@ -261,11 +261,19 @@ const BLOQUES_POR_FRENTE = {
 /** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
 const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
   const c = corridaS1De(s, F);
-  if (!c || c.tipo === 'sin_sesion') return s;
+  if (!c) return s;
+  // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
+  if (c.tipo === 'sin_sesion') {
+    const sig = [...Object.keys(F.corrida_s1.alias), ...Object.keys(F.corrida_s1.reparto)].filter((r) => r > s).sort()[0];
+    return sig ? fechaPlanDe(sig, F, frente) : s;
+  }
   if (c.tipo === 'alias' || !frente) return c.de;
   const ids = BLOQUES_POR_FRENTE[frente] || [];
-  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
-  return parte ? parte.de : s;
+  const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
+  // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
+  const vig = ds.filter((d) => d >= c.de);
+  if (vig.length) return vig[vig.length - 1];
+  return frente === 'revision' && ds.length ? ds[ds.length - 1] : s;
 };
 /** Inversa para MOSTRAR (gemelo node de fechaRealDe del .ts): día real en que se hace la fila con fecha de plan `plan`. */
 const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
@@ -274,6 +282,8 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] || []) : null;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
+  if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 };
 /** Contexto de derivación a partir del JSON. */
@@ -759,15 +769,24 @@ export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
 /**
  * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con \`frente\`, la fecha
  * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
- * si ese día no tiene bloque del frente, la propia fecha (v6.06d: sin sesión de ese frente ese día) · resto → la propia.
+ * si ese día no tiene bloque del frente, la propia fecha (v6.06d) · día sin sesión → la fila del próximo día con sesión (v6.06e) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
   const c = corridaS1De(iso);
-  if (!c || c.tipo === 'sin_sesion') return iso;
+  if (!c) return iso;
+  // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
+  if (c.tipo === 'sin_sesion') {
+    const s1 = FECHAS_V6.corrida_s1;
+    const sig = [...Object.keys(s1.alias), ...Object.keys(s1.reparto)].filter((r) => r > iso).sort()[0];
+    return sig ? fechaPlanDe(sig, frente) : iso;
+  }
   if (c.tipo === 'alias' || !frente) return c.de;
   const ids = BLOQUES_POR_FRENTE[frente] ?? [];
-  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
-  return parte ? parte.de : iso;
+  const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
+  // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
+  const vig = ds.filter((d) => d >= c.de);
+  if (vig.length) return vig[vig.length - 1] as string;
+  return frente === 'revision' && ds.length ? ds[ds.length - 1] as string : iso;
 }
 /**
  * Inversa de fechaPlanDe para MOSTRAR fechas (mar 20-oct-2026, a pedido de Joseph: «dice que empieza el 19 y estamos empezando el 20»):
@@ -780,6 +799,8 @@ export function fechaRealDe(plan: string, frente?: string): string {
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
+  if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 }
 `;

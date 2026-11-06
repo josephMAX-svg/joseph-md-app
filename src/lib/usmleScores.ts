@@ -39,7 +39,7 @@
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
-import { FECHAS_V6 } from './fechasV6';
+import { FECHAS_V6, fechaRealDe } from './fechasV6';
 
 export type TipoErrorUW = 'knowledge' | 'transfer' | 'proceso';
 /** Fix por categoría (§6.1) + QUÉ TARJETA se hace (§4.4 · §6.2 · §6.5; 2.ª capa #18, 19-sep-2026): la tarjeta apunta al motivo exacto del fallo, nunca al dato aislado. */
@@ -313,7 +313,7 @@ const GONOGO_V6 = fCorta(FECHAS_V6.step1.gonogo);   // lun 6-sep (E-49; v6.03: l
 // v6.05 (24-oct-2026): fechas de F1 DERIVADAS de las filas (antes se reescribían a mano en cada corrimiento): D1 = UWSA1, D9 = fin del
 //   protocolo Jay, D10 = NBME 25 y el NBME 28 en el último slot de F1 (hitos anclados).
 const F1_FILAS = DIAS_TODOS.filter((x) => !esFilaT2(x));
-const fF1 = (d: number): string => { const x = F1_FILAS.find((y) => y.d === d); return x ? fCorta(x.fecha) : 'D' + d; };
+const fF1 = (d: number): string => { const x = F1_FILAS.find((y) => y.d === d); return x ? fCorta(fechaRealDe(x.fecha, 'usmle')) : 'D' + d; }; // v6.06e: fecha real
 const NBME28_F1 = F1_FILAS.find((x) => /NBME 28/.test(x.sub));
 const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : 'último slot de F1';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
@@ -448,7 +448,7 @@ export function readinessDesdeHitos(scores: UsmleScore[]): { pct: number; label:
   const u = ultimoHitoRegistrado(scores);
   if (!u || u.valor == null) return null;
   const ok = u.min == null ? '' : u.valor >= u.min ? ' ✓' : ' ✗';
-  return { pct: Math.round(u.valor), label: `${u.clave} (${u.fecha.slice(5)}): ${Math.round(u.valor)}%${u.min != null ? ` · mín ${u.min}%${ok}` : ' · baseline'}` };
+  return { pct: Math.round(u.valor), label: `${u.clave} (${fechaRealDe(u.fecha, 'usmle').slice(5)}): ${Math.round(u.valor)}%${u.min != null ? ` · mín ${u.min}%${ok}` : ' · baseline'}` };
 }
 
 // ── Gate de HITOS + protocolo de burnout (DIVERGENCIAS #29 → REGLA §E-7 · METODO §9.12) · 12-sep-2026 ──

@@ -194,7 +194,7 @@ function bloquePCSabado(iso: string): BloqueV6 | null {
   const g = guiaShipDe(iso);
   const m = g ? /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja) : null;
   if (!g || !m) return null;
-  return bloque('pc', m[1] as string, m[2] as string, `IA · ${g.titulo} (PC sábado)`, 'vibecoding', 'vibecoding');
+  return bloque('pc', m[1] as string, m[2] as string, `IA · ${g.titulo} (bloque PC)`, 'vibecoding', 'vibecoding');
 }
 /** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00, sin loop, sin eval, sin carril B (§C3). v6.05 (fix): D2_ENCAPS sale de
  *  rutinaGuia (fuente única con el SYNAPSE de 13:00). */

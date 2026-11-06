@@ -14,6 +14,7 @@ import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de cada átomo (GENERADA por gen_research_plan.js → researchGuia.ts) en el formato común
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
@@ -117,7 +118,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
                 const icon = c.startsWith('GATE') ? '⛔' : c.startsWith('sesión') ? '⏱' : '⚑';
                 return (
                   <View key={i} style={[st.depChip, { borderColor: cc + '77' }]}>
-                    <Text style={[st.depChipTxt, { color: cc }]}>{icon} {c}</Text>
+                    <Text style={[st.depChipTxt, { color: cc }]}>{icon} {fechasRealesEnTexto(c, 'research-derma')}</Text>
                   </View>
                 );
               })}

@@ -12,6 +12,7 @@ import {
 } from '../../lib/usmleData';
 import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1 } from '../../lib/usmleStep1Daily';
 import { FECHAS_V6, reservaStep1, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
@@ -79,8 +80,9 @@ export default function UsmleHub() {
     pullScores().then((s) => { if (vivo) setScores(s); }).catch(() => {});
     return () => { vivo = false; off(); };
   }, []);
-  const media = mediaMovil7d(scores, iso);
-  const dist = distanciaOnTrack(scores, iso);
+  const isoPlan = fechaPlanDe(iso, 'usmle'); // v6.06e: los scores se guardan con fecha de plan
+  const media = mediaMovil7d(scores, isoPlan);
+  const dist = distanciaOnTrack(scores, isoPlan);
   const rd = readinessDesdeHitos(scores);
   const mediaVal = media ? (media.evalPct ?? media.consolPct ?? media.pretestPct) : null;
   // REGLA §E-7 (12-sep-2026): 2 hitos consecutivos bajo mínimo → ALERTA BURNOUT visible en todas las pestañas.
@@ -148,7 +150,7 @@ function NivelesTable() {
           <Text style={st.nivLine}><Text style={st.nivKey}>Formato · </Text>{n.formato}</Text>
           <Text style={st.nivLine}><Text style={st.nivKey}>Q/día · </Text>{n.qDia}</Text>
           <Text style={st.nivLine}><Text style={[st.nivKey, { color: Colors.gold }]}>Umbral para subir · </Text>{n.umbral}</Text>
-          <Text style={st.nivLine}><Text style={[st.nivKey, { color: JADE }]}>Dónde vive · </Text>{n.dondeVive}</Text>
+          <Text style={st.nivLine}><Text style={[st.nivKey, { color: JADE }]}>Dónde vive · </Text>{fechasRealesEnTexto(n.dondeVive, 'usmle')}</Text>
         </View>
       ))}
       <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Si falla el gate: {USMLE_GATE.siFalla}</Text>
@@ -215,8 +217,8 @@ function WorstCaseCard() {
 // ── #30 · CHECKLIST §11.5 pre-marcado con los datos de la semana + #8 regla del tercio + #5 Day-After ──
 function ChecklistCard({ scores }: { scores: UsmleScore[] }) {
   const iso = todayISO();
-  const items = checklist115(scores, iso);
-  const tercio = reglaDelTercio(scores, iso);
+  const items = checklist115(scores, fechaPlanDe(iso, 'usmle'));
+  const tercio = reglaDelTercio(scores, fechaPlanDe(iso, 'usmle'));
   const marcadas = items.filter((x) => x.marcada === true).length;
   const color = marcadas ? Colors.coral : Colors.green;
   return (
