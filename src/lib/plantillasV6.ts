@@ -582,6 +582,10 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
   const c = corridaS1De(iso);
   if (!c) return plantillaBase(iso, turno);
   const base = plantillaBase(iso, turno);
+  // v6.06e (vie 6-nov): semana de domingo a viernes → los sábados de la corrida son LIBRES: ni plan ni revisión (lo suyo va los domingos)
+  if (c.tipo === 'sin_sesion' && dow(iso) === 6 && iso >= FECHAS_V6.corrida_s1.decidido) {
+    return { ...base, plantilla: 'CORRIDO', titulo: 'Sábado libre · hoy no hay plan', usmle: null, bloques: [], corrida: 'sin_sesion', notas: ['Sábado libre: ni plan ni revisión; lo de los sábados va los domingos.', NOTA_CORRIDA] };
+  }
   if (c.tipo === 'sin_sesion') {
     const alias = Object.entries(FECHAS_V6.corrida_s1.alias).find(([, de]) => de === iso)?.[0];
     const sig = alias ?? (iso <= FECHAS_V6.f1.inicio ? fechaRealDe(FECHAS_V6.f1.inicio) : undefined); // v6.04: el día real en que arranca el plan (D1 corrido)

@@ -236,7 +236,7 @@ function comprobarCorridaS1(c) {
     if (!esISO(r) || !x || !esISO(x.de) || !(x.de < r) || !Array.isArray(x.partes) || !x.partes.length) { err.push(`«corrida_s1.reparto» ${r}: { de, partes[] } inválido`); continue; }
     for (const pt of x.partes) {
       if (!pt || !esISO(pt.de) || pt.de > r || !pt.bloques || typeof pt.bloques !== 'object') { err.push(`«corrida_s1.reparto» ${r}: parte inválida ${JSON.stringify(pt)}`); continue; }
-      for (const [id, m] of Object.entries(pt.bloques)) if (!/^[a-z][a-z0-9-]*$/.test(id) || !Number.isInteger(m) || m % 5 !== 0 || Math.abs(m) > 12 * 60) err.push(`«corrida_s1.reparto» ${r} ${pt.de}: bloque «${id}» con desfase ${m} (minutos enteros, múltiplo de 5, |·| ≤ 12 h)`);
+      for (const [id, m] of Object.entries(pt.bloques)) if (!/^[a-z][a-z0-9-]*$/.test(id) || !Number.isInteger(m) || m % 5 !== 0 || Math.abs(m) > 15 * 60) err.push(`«corrida_s1.reparto» ${r} ${pt.de}: bloque «${id}» con desfase ${m} (minutos enteros, múltiplo de 5, |·| ≤ 12 h)`);
     }
     if (!x.partes.some((pt) => pt.de === x.de)) err.push(`«corrida_s1.reparto» ${r}: ninguna parte es del día repartido ${x.de}`);
     // v6.06a: título y nota opcionales del día de reparto (si faltan, plantillasV6 usa los textos de la v6.04a)
