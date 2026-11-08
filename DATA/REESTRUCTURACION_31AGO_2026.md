@@ -4581,3 +4581,50 @@ título de §29) · `DATA/PENDIENTES_JOSEPH.md` (bloque v6.06 con las decisiones
 árbol de trabajo, sin commit, al cerrar esta pasada): `DATA/ENCAPS/` (`CALENDAR_SEGMENTOS_V5_6.md`, `FASE_INTENSIVA_2027-I.md`, `PROTOCOLO_HORA_MANTENIMIENTO.md`,
 `RUTINA_EXTREMA_MILITARIZADA.md`, `BANCO_PROPIO/README.md`) y retoques en `DATA/DERMATOLOGIA/`, `DATA/RESEARCH/`, `DATA/SYNAPSE/` y `DATA/BUSINESS/` →
 `DATA/VERIFICACION_V606.md` §10.
+
+## 31 · v6.07 — ENCAPS PRIMER PUESTO · TODO ARRANCA EL LUN 9-NOV-2026 (dom 8-nov-2026) — **séptimo ajuste bajo v6 y el primero que cambia el REPARTO (no solo corre fechas)**: la semana corrida v6.06a-e queda SIN EFECTO (del lun 19-oct al dom 8-nov no hubo estudio; `corrida_s1` inerte) · D1 de todo = **lun 9-nov** · mañana 07:15-12:00 = **ENCAPS lun · mié · vie** y **Step 1 mar · jue** (≈ 2/3 ENCAPS) · F1 del Step = **15 filas** · **examen Step 1 lun 25-oct → LUN 6-DIC-2027** · ENCAPS F1 `dia` 1-37 + intensiva `dia` 38-87 · secundarios +5 hábiles
+
+**Orden de Joseph (dom 8-nov):** «la mitad (o más: 60-80 %) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; en el ENCAPS tenemos que sacar
+el primer puesto (más de 17,5; 18-19); empezamos mañana 9; los sábados de 14:00 a 17:00 libres para el en vivo de Theomed; los domingos 4 h opcionales;
+en enero, la base del ENCAPS; el Step 1 puede correrse, pero no más allá de 2027; reestructura calendarios, medidas y la app».
+
+**31.1 Investigación y plan.** `DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md` (meta ≥ 95 aciertos; listo dom 28-feb; reparto; semana tipo; protocolo de la
+mañana; modo por material —vídeo 1,75× para lo conceptual, texto primero para normas y datos, vivo en diferido—; mapa de recuperación del atraso de
+Theomed hasta el vie 27-nov; fuentes de preguntas; simulacros de domingo; gates) + 4 informes en `DATA/ENCAPS/INVESTIGACION_2027-1/` (campus Theomed y
+Drive, material local, fecha y reglas del examen, estrategias de primeros puestos con NotebookLM). Material de academias: no se copia al repo.
+
+**31.2 App.** `_encaps_manana_v607.json` → `gen_encaps_manana.js` (`--check`, `--informe`) → `src/lib/encapsManana.ts` (22 mañanas · 152 franjas · 22
+guías de las 18:00 · 37 Anki de las 05:30 · 6 sábados en vivo · 8 domingos · `ENCAPS_MINIMO`). `plantillasV6.ts`: F1 por día de la semana
+(`step1.f1_dias_semana` [2, 4]: lun · mié · vie `encaps-am` 07:15-12:00 + `encaps-pm` 18:00; mar · jue USMLE; NBME de F1 con su franja 07:00-12:30),
+sábado de F1 (SYNAPSE 13:30 · revisión 14:00 · Business 14:30 · `theomed-prep` 14:45 · `theomed-vivo` 15:00-17:00 · Anki 19:00), domingo flexible
+(`encaps-dom`, PC/SHIP y Feynman sin hora fija). `rutinaGuia.ts` (`sabadoTheomed`, `revisionIniDe`, SHIP en domingo), `TodayMission.tsx` (guías y botones
+del campus, bloques flexibles, mínimos por modo). Anki de F1 = USMLE 30′ (05:00-05:30, también los días de Step) + ENCAPS 15′. Nuevo
+`DATA/_scripts/sim_plantilla_dia.js` (simula plantilla + guías del Home; 9-nov → 31-mar: 0 problemas).
+
+**31.3 Step 1.** `gen_tramo2.js` + referencia: F1 conserva la serie más larga de hitos que cabe con su Day-After completo (UWSA1 D1 mar 10-nov · NBME 25
+D10 jue 10-dic); los hitos que no caben pasan al tramo 2 en su orden (NBME 26 T12 vie 2-abr · NBME 27 T27 vie 23-abr · NBME 28 T59 mié 2-jun; Day-After
+repartido en F3, fila propia en F4); gates del núcleo T5 lun 22-mar y T25 mié 21-abr; NBME 29/30 se comparan con el NBME 25. Con el examen el 25-oct
+faltaban **11 unidades** (R1: nada se recorta) → `explorar_fecha_examen.js`: 22-nov (colchón 2 filas) · 29-nov (8) · **6-dic (14 filas ≈ 37 h)** ·
+13-dic (20). **DJ-1 v6.07 = lun 6-dic-2027** para todo ENCAPS. Hitos 2027: NBME 30 lun 24-may y UWSA3 mar 29-jun fijos · NBME 31 lun 4-oct · NBME 32
+lun 11-oct · **GO/NO-GO lun 18-oct** (≥ 294 h; checkpoints 30-jun ≥ 37 · 31-jul ≥ 114 · 31-ago ≥ 187 · 30-sep ≥ 255) · UWSA2 mar 19-oct · **NBME 33 + 3
+bloques (ensayo 7 bloques) lun 1-nov, feriado** · Free 120 lun 22-nov (E-14) · ritual sáb 4-dic · viaje dom 5-dic. Tramo 2 = 218 filas (F3 32 · F4 186),
+`STEP1_SEMANAS` 46, elegibilidad oct-nov-dic 2027 (sin inscribir). Feriados nuevos en `_fechas_v6.json`: 2027-11-01, 12-08, 12-09, 12-25. Referencia
+`ref_v6/tramo2_14mar_2027-12-06_v607.json`; `verificar_v6.js` 50/50; `usmleScores.GONOGO_HORAS` con la fila del 6-dic.
+
+**31.4 ENCAPS.** Supabase re-sembrado en una transacción con guardas (backups `study_schedule_bk_v607_20261108`, `…_int_20261108`,
+`study_metrics_bk_v607_20261108`): F1 `dia` 1-37 (lun 9-nov → mié 30-dic; 31 bancos + 6 mini-sims; CHECKPOINT vie 18-dic = dia 30) + intensiva `dia`
+38-87 (mismas fechas; pre-test 2026-II vie 8-ene = dia 42); huella `encaps_huella.js` 87 · `a50afd468b8c30a5f070ce8c5fc03da3`. `encaps.nucleo_hasta` =
+2027-02-26 (núcleo 32 → 28 slots, recorte de los códigos más repetidos sin dejar ninguno a 0); 1-12 mar = SIM 11:00 lun 1 · mié 3 · vie 5 + repaso.
+Las 5 sesiones que no caben: sáb 13, 20, 27-feb y 6-mar 09:30 + carril viernes vie 5-mar 16:15 (`_pendientes_f1.json` 23). 11 runners re-fechados.
+
+**31.5 Secundarios (+5 hábiles; `remap_inicio.js 2026-11-09`, la aserción USMLE ahora acepta el primer día de Step ≥ START).** MIR diario lun 9-nov →
+lun 1-mar · mantenimiento mar 2-mar → mar 25-may · extensión → **vie 3-dic-2027 sin repuestas** (225 sesiones; `gen_mir_mantenimiento.js` admite 0
+repuestas) · Research c1 → jue 8-abr, c2 lun 12-abr → jue 16-sep (lun 9-nov = Research) · Derma c1 mar 10-nov → mié 2-jun, c2 → mié 11-ago · SYNAPSE →
+mar 23-mar (PC el domingo) · vibecoding → mar 30-mar (SHIP domingos 15-nov … 7-feb) · AURUM → mar 18-may · LIVIANO → lun 22-mar · Business → mar 9-mar.
+
+**31.6 Comprobaciones (dom 8-nov).** `gen_fechas_v6.js --check --calculo` ✓ · `npx tsc` ✓ · `verificar_v6.js` 50/50 · `gen_usmle_guia.js --check` ✓ ·
+`check_rutina_guia.js` 0 errores (1 aviso: lun 1-nov-2027 con turno T marcado → lo parte el motor de hitos) · `gen_encaps_manana --check`,
+`gen_encaps_guia --check`, `sync_encaps_bp_web --check` ✓ · daemon ENCAPS `--dry-run` ✓ · `sim_plantilla_dia.js` 9-nov → 31-mar: 0 problemas (de abril en
+adelante hay huecos de guía en «tiempo muerto» de F4 y en Research c2 que ya existían y no son de esta versión). Commit `9f958d1` (desplegado; Home del
+lun 9 comprobado en el navegador). Estado previo = tag `regimen-v6.06e`. Calendar: `DATA/_v600/cal/CAL_V6.md` §25. Decisiones: `DATA/PENDIENTES_JOSEPH.md`
+bloque v6.07 (a)-(k).

@@ -1,5 +1,8 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.06 (31-oct-2026: D1 lun 2-nov · S01 sáb 7-nov · 41 semanas · ⏸ v6.05: D1 lun 26-oct, S01 sáb 31-oct, 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
+> **📌 v6.07 (dom 8-nov-2026, vigente) — la v6.06e queda sin efecto.** D1 = lun 9-nov · `STEP1_SEMANAS` = **46** · **hasta el sáb 2-ene la revisión es el SÁBADO 14:00-14:30** (antes de la clase en vivo de Theomed de las 15:00); desde el sáb 9-ene vuelve a las 07:15. **S01 sáb 14-nov** (`S01_2026-11-14.md`, S1/46, cubre lun 9 → vie 13-nov, UWSA1 mar 10-nov) · S02 sáb 21-nov · S05 sáb 12-dic · **S08 sáb 2-ene = DELOAD** · el SHIP del vibecoding va el domingo (flexible). Nombres comprobados con `gen_revision_semanal.js <fecha> --dry-run` (8-nov). Registra también lo del ENCAPS: post-tests, banqueo (n y % ciego), mini-sim, simulacro del domingo y errores nuevos / repetidos (`DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md` §8).
+>
+
 > **📌 v6.06e (vie 6-nov-2026) — semana de domingo a viernes y sábados libres: S01-S04 (`S01_2026-11-07.md` … `S04_2026-11-28.md`) van los DOMINGOS 15, 22, 29-nov y 6-dic a las 20:00 · S05 y S06 el dom 13-dic 07:15 y 08:30 · S07 el dom 20-dic 07:15 · S08 el dom 27-dic 07:15 · S09 el dom 3-ene 07:15.** El nombre del fichero conserva el sábado de plan y se genera con esa fecha: `node DATA/_scripts/gen_revision_semanal.js 2026-11-07`. Los sábados desde el 9-ene siguen como estaban.
 >
 > **⏸ v6.06b (mar 3-nov-2026; historial) — S01 el dom 8-nov 19:00.**
