@@ -36,6 +36,10 @@
  *  · v6.06 (31-oct-2026): corrimiento del D1 al lun 2-nov (la semana del 26-oct sin estudio; sin lógica nueva aquí): UWSA1 D1 lun 2-nov ·
  *    protocolo Jay D1-D9 lun 2 → jue 12-nov · NBME 25 D10 vie 13-nov · NBME 26 D25 vie 4-dic · NBME 27 D35 vie 18-dic (adelantado por la
  *    regla del Day-After completo de gen_tramo2.slotsHitosF1) · NBME 28 = D42 mié 30-dic. Todo sale de las filas (fF1 / NBME28_TXT).
+ *  · v6.07 (8-nov-2026): Step 1 en F1 solo mar · jue (UWSA1 D1 mar 10-nov · NBME 25 D10 jue 10-dic); NBME 26, 27 y 28 pasan al tramo 2 (no
+ *    caben en F1 con su Day-After completo). La línea base ANTES DE LA PAUSA ya no es siempre el NBME 28: NBME_PAUSA = el último NBME que
+ *    queda en F1 (v6.00-v6.06: NBME 28 · v6.07: NBME 25) → NBME 29 ≥ NBME_PAUSA − 5 (+ alerta de caída > 8) y NBME 30 ≥ NBME_PAUSA. El NBME 28
+ *    se sigue leyendo por tramos (checkpoint de fecha) en su fila real (F1 «D42 mié 30-dic» o tramo 2 «T<n> <fecha>»).
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
@@ -315,7 +319,11 @@ const GONOGO_V6 = fCorta(FECHAS_V6.step1.gonogo);   // lun 6-sep (E-49; v6.03: l
 const F1_FILAS = DIAS_TODOS.filter((x) => !esFilaT2(x));
 const fF1 = (d: number): string => { const x = F1_FILAS.find((y) => y.d === d); return x ? fCorta(fechaRealDe(x.fecha, 'usmle')) : 'D' + d; }; // v6.06e: fecha real
 const NBME28_F1 = F1_FILAS.find((x) => /NBME 28/.test(x.sub));
-const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : 'último slot de F1';
+// v6.07: el NBME 28 puede ir en el tramo 2 (no cabe en F1 con su Day-After) → su fila real «T<n> <fecha>»
+const NBME28_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /NBME 28/.test(x.sub));
+/** v6.07: último NBME que queda en F1 = línea base antes de la pausa (v6.00-v6.06: NBME 28 · v6.07: NBME 25). */
+const NBME_PAUSA = [...F1_FILAS].reverse().map((x) => (/NBME \d+/.exec(x.sub) || [''])[0]).find(Boolean) || 'NBME 28';
+const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : NBME28_T2 && esFilaT2(NBME28_T2) ? `T${NBME28_T2.t} ${fCorta(NBME28_T2.fecha)}, tramo 2` : 'último slot de F1';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `baseline (D1, ${fF1(1)}): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)`, tramos: [
     { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: `D1-D9 (${fF1(1)} → ${fF1(9)}, hasta el NBME 25 = D10 ${fF1(10)}) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo ${fF1(1)} con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.` },
@@ -325,14 +333,15 @@ export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
-  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: `CHECKPOINT DE FECHA (${NBME28_TXT} = última sesión de F1, §B5): se lee por tramos`, tramos: [
+  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: NBME28_F1 ? `CHECKPOINT DE FECHA (${NBME28_TXT} = última sesión de F1, §B5): se lee por tramos` : `CHECKPOINT DE FECHA (${NBME28_TXT}: no cupo en F1 con su Day-After, v6.07): se lee por tramos`, tramos: [
     // v6.04: la base YA es el último mes de la elegibilidad (v6.00-v6.03: <50 % movía la base del 27-sep al plan B 25-oct)
     { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN`, accion: `La base ya es el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} (DJ-1 v6.04, último mes de la elegibilidad): no hay fecha posterior dentro de la ventana → decidirlo con Joseph al registrar el NBME 28 (extensión de la elegibilidad nov-dic-ene, la única permitida, §B5); el temario no se toca.` },
     { desde: 50, hasta: 57, label: `50-57 % · ${EXAMEN_V6} con GATE ESTRICTO`, accion: `Base ${EXAMEN_V6} con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.` },
     { desde: 58, label: `≥58 % · EN RUTA ${EXAMEN_V6}`, accion: `Base ${EXAMEN_V6} en ruta: seguir el plan; reservar el ${EXAMEN_V6} (DJ-1) al salir la convocatoria.` },
   ] },
-  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: 'NBME 28', delta: -5 }, alertaCaida: { ref: 'NBME 28', delta: 8, accion: 'CAÍDA > 8 puntos frente al NBME 28 tras la pausa → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)' }, nota: 'NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ NBME 28 − 5' },
-  { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: null, minRel: { ref: 'NBME 28', delta: 0 }, nota: '≥ NBME 28 · ritmo medido ≥ 18 h/sem (§B4.5) · con NBME 28 en 50-57 % el GO/NO-GO exige NBME 30 ≥ NBME 28 + 5' },
+  // v6.07: la referencia es el último NBME de F1 (NBME_PAUSA): v6.00-v6.06 = NBME 28 · v6.07 = NBME 25
+  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: NBME_PAUSA, delta: -5 }, alertaCaida: { ref: NBME_PAUSA, delta: 8, accion: `CAÍDA > 8 puntos frente al ${NBME_PAUSA} tras la pausa → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)` }, nota: `NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ ${NBME_PAUSA} − 5` },
+  { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: null, minRel: { ref: NBME_PAUSA, delta: 0 }, nota: `≥ ${NBME_PAUSA} · ritmo medido ≥ 18 h/sem (§B4.5) · con NBME 28 en 50-57 % el GO/NO-GO exige NBME 30 ≥ NBME 28 + 5` },
   { clave: 'UWSA3', match: /UWSA3|Self-Assessment 3/i, min: null, nota: 'formativa (opcional, sin mínimo)' },
   { clave: 'NBME 31', match: /NBME (CBS Form )?31\b/i, min: 65, nota: 'GO/NO-GO: NBME 31 y 32 ≥ 68 % con uno ≥ 70 % + horas (§B4.5)' },
   { clave: 'NBME 32', match: /NBME (CBS Form )?32\b/i, min: 68, nota: '31 y 32 ≥ 68 %, uno ≥ 70 % (GO/NO-GO del lunes siguiente)' },
@@ -612,6 +621,8 @@ export const GONOGO_HORAS: UmbralGoNoGo[] = [
   { examen: '2027-08-31', gonogo: '2027-07-13', quedanPiso: 109, umbral: 290, checkpoints: [{ fecha: '2027-05-31', requerido: 192 }, { fecha: '2027-06-30', requerido: 264 }] },
   { examen: '2027-09-27', gonogo: '2027-08-09', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 127 }, { fecha: '2027-06-30', requerido: 199 }, { fecha: '2027-07-31', requerido: 276 }] },
   { examen: '2027-10-25', gonogo: '2027-09-06', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 62 }, { fecha: '2027-06-30', requerido: 134 }, { fecha: '2027-07-31', requerido: 211 }] },
+  // v6.07 (8-nov-2026): examen lun 6-dic-2027 · mismo modelo (399 h, PISO de E-49 al D-1 = 106 h → umbral 294) · checkpoints = 399 − PISO desde el checkpoint (v600/espec/b_gate.js)
+  { examen: '2027-12-06', gonogo: '2027-10-18', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-06-30', requerido: 37 }, { fecha: '2027-07-31', requerido: 114 }, { fecha: '2027-08-31', requerido: 187 }, { fecha: '2027-09-30', requerido: 255 }] },
 ];
 /** Horas netas de Step 1 registradas (extra.horas) en [desde, hasta] (por defecto desde el reinicio del tramo 2). */
 export function horasDesde(scores: UsmleScore[], desde: string = FECHAS_V6.step1.reinicio, hasta?: string): number {
@@ -643,7 +654,7 @@ export function evaluarGoNoGo(scores: UsmleScore[], hoy?: string, tipo: EvalGoNo
     criterios.push({ texto: `NBME 31 y 32 ≥ 68 % con uno ≥ 70 % (${a ?? '—'} % · ${b ?? '—'} %)`, ok: a == null || b == null ? null : a >= 68 && b >= 68 && Math.max(a, b) >= 70 });
     const n28 = v('NBME 28');
     if (n28 != null && n28 >= 50 && n28 <= 57) { const n30 = v('NBME 30'); criterios.push({ texto: `gate estricto (NBME 28 = ${n28} %): NBME 30 ≥ NBME 28 + 5 (${n30 ?? '—'} %)`, ok: n30 == null ? null : n30 >= n28 + 5 }); }
-  } else if (examen === '2027-10-25') {
+  } else if (examen >= '2027-10-25') { // v6.04 25-oct · v6.07 6-dic: NBME 33 + UWSA2
     const n33 = v('NBME 33'), w2 = v('UWSA2');
     criterios.push({ texto: `NBME 33 ≥ 68 % (${n33 ?? '—'} %) + UWSA2 «low risk» (${w2 ?? '—'} %)`, ok: n33 == null || w2 == null ? null : n33 >= 68 && w2 >= 70 });
   } else {

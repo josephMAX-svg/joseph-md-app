@@ -77,7 +77,7 @@ if (!fs.existsSync(file)) {
   L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : ''}`);
   L.push('');
   if (proySemana) {
-    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · L-V ${fmt(proySemana.ini)} → ${fmt(proySemana.fin)}${proySemana.tipo ? '' : ` · SHIP sáb ${fmt(proySemana.ship)} (PC SYNAPSE 15:00) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
+    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · L-V ${fmt(proySemana.ini)} → ${fmt(proySemana.fin)}${proySemana.tipo ? '' : ` · SHIP dom ${fmt(proySemana.ship)} (PC del domingo, flexible; v6.07) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
     if (proySemana.aceptacion.length) { L.push(''); L.push('Criterios de aceptación (definition of done):'); for (const a of proySemana.aceptacion) L.push(`- [ ] ${a}`); }
   } else {
     L.push('**Proyecto de la semana**: fuera del plan del vibecoding (src/lib/vibecodingPlan.ts) — semana libre o pre-D1.');

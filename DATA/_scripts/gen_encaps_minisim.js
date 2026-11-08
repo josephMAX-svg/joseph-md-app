@@ -132,6 +132,13 @@
  *   tiene fila (v6.06: --semana 2027-01-04 arma eval_/banco_2027-01-09 III-5 … --semana 2027-02-01 arma minisim_2027-02-06 II-9 + II-7, título
  *   «REPOSICIÓN F1 (carril SÁBADO 09:30-10:30 …)») y --inventario lo cuenta como demanda (86 días: 42 F1 + 26 carril B + 13 reposición + 5 sábados).
  *   CARRIL B: 13 pendientes F1 con sus mismas fechas (dia − 5); regla genérica «filas del carril B dia 43-74 (dia_mant 61-92) sin ✓».
+ * v6.07 (8-nov-2026, «empezamos mañana 9»; la semana del lun 2 al vie 6-nov no se estudió): D1 = LUN 9-NOV-2026 · F1 = dia 1-37 → mié 30-dic (31
+ *   banqueo1h + 6 mini-sims vie 13-nov … vie 18-dic = CHECKPOINT DEL AÑO) · pre-test de arranque lun 9 + mar 10-nov · INTENSIVA dia 38-87 con las mismas
+ *   fechas. Runners re-fechados POR SESIÓN (+7 días; ítems intactos, _meta.realineado v6.07): pretest_arranque 2/3 → 9/10-nov · eval 2-5 → 9-12-nov ·
+ *   banco 4/5 → 11/12-nov (fila_sql.dia 3/4 sin cambio) · minisim 6 / 13 / 20 → 13 / 20 / 27-nov · reservado_para del pool 6 / 13-nov → 13 / 20-nov (una
+ *   sola pasada); HTML re-emitidos con --refrescar. Sin cambio de código: filasRunner() ya lee por FECHA el carril B (también el nuevo CARRIL VIERNES
+ *   16:15 del vie 5-mar, V-2 #5, que va en extra.carril_b de esa fila) y el carril SÁBADO (ahora 9 sábados: + 13, 20 y 27-feb y 6-mar, este último el
+ *   MINI-SIM III-1 + III-9). Regla genérica «filas del carril B dia 38-69 (dia_mant 61-92) sin ✓».
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.

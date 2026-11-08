@@ -71,6 +71,16 @@
  * nivel 2 v6.06, ver su cabecera). MIR D78 lun 22-feb → mantenimiento mar 23-feb → mar 18-may (47 lun-jue + 10 viernes + sáb 8 y 15-may = 59) y la
  * extensión (tope vie 22-oct-2027) absorbe; lo que falta frente a la v6.05 se repone tras el examen Step 1. corrida_s1 = solo los días sin sesión
  * lun 19-oct → dom 1-nov (sin alias ni reparto). Solo comentario: la lógica de este script no cambia.
+ *
+ * v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov, orden de Joseph del dom 8-nov; la semana lun 2 → vie 6-nov no se estudió y la semana corrida por alias
+ * v6.06e queda sin efecto → secundarios +5 hábiles con sus fechas límite corridas): mismo pipeline con START = 2026-11-09, en dos pasadas
+ * (`remap_inicio.js 2026-11-09 --bloques research,derma --usmle-aparte` y `--bloques business,liviano --usmle-aparte`; el USMLE lo regenera otro lote);
+ * MIR con sus generadores (STUDY_HUB/_scrape/gen_mir_daily.js 2026-11-09 + gen_mir_mantenimiento.js 2027-03-02 2027-05-25). Con 5 hábiles la paridad
+ * Research↔Derma se INVIERTE: el lun 9-nov es día-RESEARCH (d1 Research = M1 lun 9-nov · d1 Derma mar 10-nov): frente a la v6.06 Research pierde 2 ranuras
+ * (mar 3 y jue 5-nov) y Derma 3 (lun 2, mié 4 y vie 6-nov). Research c1 → jue 8-abr, c2 lun 12-abr → jue 16-sep · Derma c1 → mié 2-jun, c2 vie 4-jun →
+ * mié 11-ago. MIR D78 lun 1-mar → mantenimiento 60 filas → extensión → 14 repuestas hasta el vie 12-nov-2027 (203). Business → mar 9-mar · LIVIANO → lun
+ * 22-mar (gen_liviano_plan.js, que ahora salta también los PROTEGIDOS y el D-2 del ENCAPS; el bloque 7 de este script solo deja un borrador que el
+ * generador reescribe). Solo comentario: la lógica de este script no cambia.
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).
@@ -124,9 +134,9 @@ function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=
 {const f='src/lib/usmleStep1Daily.ts';let src='';try{src=fs.readFileSync(path.join(ROOT,f),'utf8');}catch{}
  const m=src.match(/export const DIAS\b[^=\n]*=\s*\[[\s\S]*?fecha:\s*["'](20\d\d-\d\d-\d\d)["']/);
  if(!m)console.warn('⚠ USMLE: no encuentro DIAS[0].fecha en '+f+' (aserción de solo lectura omitida)');
- else if(m[1]!==START){const msg='USMLE: DIAS[0].fecha = '+m[1]+' ≠ START '+START+' → el USMLE se regenera con gen_usmle_v5.js (v6: remap ya no lo re-fecha)';
+ else if(m[1]!==(()=>{/* v6.07: el Step de F1 va solo los días step1.f1_dias_semana (mar · jue) → su D1 = 1.er día ≥ START con día de Step */const FJ=JSON.parse(fs.readFileSync(path.join(ROOT,'DATA/_scripts/_fechas_v6.json'),'utf8'));const ds=FJ.step1&&FJ.step1.f1_dias_semana;if(!ds||!ds.length)return START;let d=new Date(START+'T12:00:00Z');for(let i=0;i<7&&!ds.includes(d.getUTCDay());i++)d=new Date(d.getTime()+864e5);return d.toISOString().slice(0,10);})()){const msg='USMLE: DIAS[0].fecha = '+m[1]+' ≠ START '+START+' → el USMLE se regenera con gen_usmle_v5.js (v6: remap ya no lo re-fecha)';
   if(USMLE_APARTE)console.warn('⚠ '+msg+' · v6.01 --usmle-aparte: el lote USMLE corre en paralelo → re-correr remap sin la opción al cerrarlo');else throw new Error(msg);}
- else console.log('USMLE (solo lectura) ✓ DIAS[0].fecha = '+START+' · el USMLE NO se re-fecha aquí desde la v6.00');}
+ else console.log('USMLE (solo lectura) ✓ DIAS[0].fecha = '+m[1]+' (START '+START+') · el USMLE NO se re-fecha aquí desde la v6.00');}
 // 2) MIR (78)
 if(corre('mir')){const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);
  // v5.10b: el mantenimiento (mirMantenimiento.ts, generado) arranca el día hábil siguiente a D78; si D78 lo pisa, regenerar con otra fecha de inicio.

@@ -32,6 +32,11 @@
  *   (mar 16-mar-2027) cambia: se derivan otra vez gonogo (E-49 = lun 6-sep), viaje (dom 24-oct), ritual (sáb 23-oct) y los protegidos del
  *   examen; la tabla DJ-1 pasa a «DJ-1 v6.04: examen 25-oct en todos los escenarios ENCAPS» (adelanto = base = plan B; la de v6.00-v6.03
  *   queda en DJ1_V600, solo histórico y fechas de prueba). Bitácora nueva `step1.cambios` (fecha, versión, examen previo → nuevo, motivo).
+ * v6.07 (dom 8-nov-2026): CAMPO NUEVO `step1.f1_dias_semana` (días de la semana con mañana de Step 1 en F1; 1 = lun … 5 = vie). Orden de
+ *   Joseph: la mañana 07:15-12:00 de F1 es ENCAPS lun · mié · vie y Step 1 mar · jue → [2, 4]. F1 sigue siendo la fase L-V de TODOS los planes
+ *   (f1.dias = sus hábiles); el Step 1 solo tiene fila los días de f1_dias_semana: diasStepF1De(F) / DERIVADOS_V6.diasStepF1 (v6.07: 15) y
+ *   esDiaPlan(iso, 'usmle') es falso en F1 los demás días. Validación: lista no vacía de enteros 1-5, sin repetir y en orden. Con [1, 2, 3, 4, 5]
+ *   todo queda como en la v6.06 (F1 L-V).
  */
 const fs = require('fs');
 const path = require('path');
@@ -108,13 +113,16 @@ function protegidosDe({ encaps, encapsProvisional, examen, serumsInicio, skip, a
 }
 /**
  * DJ-1 — tabla literal de la fecha a RESERVAR por fecha del ENCAPS (§B4.4).
+ * v6.07 (dom 8-nov-2026) · DJ-1 v6.07: examen LUN 6-DIC-2027 (orden de Joseph: «la mitad o más del Step pasa al ENCAPS … el Step 1 puede
+ * correrse, pero no más allá de 2027»; con el Step solo mar · jue en F1 el 25-oct deja un déficit de 11 u → 6-dic = colchón 14 filas ≈ 37 h y
+ * 3 lunes de margen dentro de 2027). La elegibilidad se elige al inscribirse (oct-nov-dic 2027).
  * v6.04 (mié 21-oct-2026) · DJ-1 v6.04: examen lun 25-oct-2027 por decisión de Joseph («si iba a ser septiembre, que sea octubre; simplemente
  * alarga las fechas»), la MISMA fecha en todos los escenarios del ENCAPS: sin adelanto (una fecha anterior volvería a comprimir lo que se
  * alarga) y el plan B coincide con la base (25-oct es el último mes de la elegibilidad ago-sep-oct: un NO-GO ya no tiene fecha posterior
  * gratuita → extensión de la elegibilidad, §B5). Las semanas extra van al COLCHÓN del tramo 2.
  */
 const DJ1 = [
-  { encapsHasta: null, examen: '2027-10-25' }, // v6.04: cualquier ENCAPS → lun 25-oct (base = adelanto = plan B)
+  { encapsHasta: null, examen: '2027-12-06' }, // v6.07: cualquier ENCAPS → lun 6-dic-2027 (base = adelanto = plan B; v6.04-v6.06: lun 25-oct)
 ];
 /** DJ-1 de Joseph del 6-oct-2026 (v6.00-v6.03), SUSTITUIDA por DJ-1 v6.04 · solo histórico y fechas de prueba de compararTS. */
 const DJ1_V600 = [
@@ -176,7 +184,7 @@ const CLAVES = {
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
-  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios'], // v6.04: + cambios (bitácora del examen)
+  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios', 'f1_dias_semana'], // v6.04: + cambios (bitácora del examen) · v6.07: + f1_dias_semana
   serums: ['inicio', 'supuesto', 'dias_plan', 'domingo', 'adaptacion_hasta'],
 };
 const FECHAS_SUELTAS = ['decidido', 'f1.inicio', 'f1.fin', 'transicion.desde', 'transicion.hasta', 'encaps.examen', 'encaps.intensiva_desde', 'encaps.pretest',
@@ -205,6 +213,9 @@ function comprobarForma(F) {
   const cam = F.step1.cambios;
   if (!Array.isArray(cam) || !cam.every((c) => c && Object.keys(c).length === 5 && esISO(c.fecha) && typeof c.version === 'string' && esISO(c.examen_previo) && esISO(c.examen) && typeof c.motivo === 'string')) err.push('«step1.cambios» debe ser una lista de { fecha, version, examen_previo, examen, motivo }');
   else if (cam.length && cam[cam.length - 1].examen !== F.step1.examen) err.push(`«step1.cambios»: el último cambio (${cam[cam.length - 1].examen}) ≠ step1.examen (${F.step1.examen})`);
+  // v6.07 (8-nov-2026): días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie), sin repetir y en orden
+  const ds = F.step1.f1_dias_semana;
+  if (!Array.isArray(ds) || !ds.length || !ds.every((x, i) => Number.isInteger(x) && x >= 1 && x <= 5 && (i === 0 || x > ds[i - 1]))) err.push('«step1.f1_dias_semana» debe ser una lista no vacía de días 1-5 (1 = lun … 5 = vie), sin repetir y en orden');
   err.push(...comprobarCorridaS1(F.corrida_s1));
   return err;
 }
@@ -255,7 +266,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
 }
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
@@ -286,6 +297,10 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 };
+/** v6.07 · días de Step 1 de F1 = hábiles de F1 cuyo día de la semana está en step1.f1_dias_semana (v6.07: mar · jue → 15; L-V = f1.dias). */
+const diasStepF1De = (F) => habLV(F.f1.inicio, F.f1.fin, new Set(F.skip)).filter((s) => F.step1.f1_dias_semana.includes(wd(s)));
+/** v6.07 · texto corto de step1.f1_dias_semana («mar · jue»; «L-V» si son los 5). */
+const diasSemanaTxt = (ds) => (ds.length === 5 ? 'L-V' : ds.map((w) => DN[w]).join(' · '));
 /** Contexto de derivación a partir del JSON. */
 function ctxDe(F) {
   return {
@@ -326,6 +341,7 @@ function derivar(F, opts = {}) {
     semanasF1: semanasF1De(F.f1.inicio, F.f1.fin), step1Semanas: step1SemanasDe(reinicio, c.examen, F.f1.inicio, F.f1.fin),
     diasF1: diasF1.length, diasF2: diasF2.length, diasF3: diasF3.length, diasF4: diasF4.length,
     ultimoDiaF1: diasF1[diasF1.length - 1], ultimoDiaF3: diasF3[diasF3.length - 1],
+    diasStepF1: diasStepF1De(F).length, // v6.07: filas del tramo 1 del Step (mañanas de step1.f1_dias_semana)
   };
 }
 /** Compara cada valor GUARDADO con su derivado. Devuelve la lista de diferencias (vacía = todo cuadra). */
@@ -355,6 +371,10 @@ function validar(F, opts = {}) {
   const orden = [['f1.inicio', F.f1.inicio], ['f1.fin', F.f1.fin], ['encaps.intensiva_desde', F.encaps.intensiva_desde], ['encaps.examen', F.encaps.examen],
     ['step1.reinicio', d.reinicio], ['serums.inicio', F.serums.inicio], ['step1.ritual', d.ritual], ['step1.viaje_d1', d.viajeD1], ['step1.examen', F.step1.examen]];
   for (let i = 1; i < orden.length; i++) if (!(orden[i - 1][1] < orden[i][1])) dif.push({ campo: `orden ${orden[i - 1][0]} < ${orden[i][0]}`, guardado: `${orden[i - 1][1]} / ${orden[i][1]}`, derivado: 'creciente' });
+  // v6.07 (8-nov-2026): encaps.nucleo_hasta = cierre del CONTENIDO de la intensiva (v6.07: vie 26-feb; «listo» el dom 28-feb; lo que queda hasta el
+  //   examen es la quincena final de simulacros y repaso, gen_encaps_intensivo_2027.js). Debe ser un viernes entre el pre-test y el D-1 hábil del examen.
+  if (wd(F.encaps.nucleo_hasta) !== 5 || !(F.encaps.pretest < F.encaps.nucleo_hasta && F.encaps.nucleo_hasta < d.d1HabilEncaps))
+    dif.push({ campo: 'encaps.nucleo_hasta (viernes entre el pre-test y el D-1 hábil del examen)', guardado: F.encaps.nucleo_hasta, derivado: `vie > ${F.encaps.pretest} y < ${d.d1HabilEncaps}` });
   return dif;
 }
 let _F = null;
@@ -371,7 +391,10 @@ const fechasPorDefecto = () => _F || (_F = cargarFechasV6());
 function fasesV6(F = fechasPorDefecto(), d = derivar(F)) {
   const enc = F.encaps.examen, provEnc = F.encaps.provisional, provSer = F.serums.supuesto, provS1 = F.step1.provisional;
   return [
-    { id: 'F1', nombre: 'Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)', etiqueta: `F1 · STEP 1 TRAMO 1 (D1-D${d.diasF1})`,
+    // v6.07: con step1.f1_dias_semana distinto de L-V el Step 1 solo tiene las mañanas de esos días (D1-D<diasStepF1>); con L-V, el texto de siempre
+    { id: 'F1', nombre: F.step1.f1_dias_semana.length === 5 ? 'Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)'
+      : `Step 1 tramo 1 los ${diasSemanaTxt(F.step1.f1_dias_semana)} (07:15-12:00 + 18:00; Anki 05:00 todos los días) + ENCAPS las demás mañanas y la 16:15`,
+    etiqueta: F.step1.f1_dias_semana.length === 5 ? `F1 · STEP 1 TRAMO 1 (D1-D${d.diasF1})` : `F1 · STEP 1 TRAMO 1 (D1-D${d.diasStepF1}, ${diasSemanaTxt(F.step1.f1_dias_semana)})`,
       desde: F.f1.inicio, hasta: F.f1.fin, ultimoDiaPlan: d.ultimoDiaF1, diasPlan: d.diasF1, diasSemana: 'L-V', provisional: false },
     { id: 'TRANSICION', nombre: 'Transición sin sesión (Anki opcional)', etiqueta: 'TRANSICIÓN',
       desde: add(F.f1.fin, 1), hasta: add(F.encaps.intensiva_desde, -1), ultimoDiaPlan: null, diasPlan: 0, diasSemana: null, provisional: false },
@@ -419,7 +442,8 @@ function esDiaPlan(s, plan, F = fechasPorDefecto()) {
     if (plan === 'encaps') return s === ultimoHabilAntes(F.encaps.examen, new Set(F.skip));
     return false;
   }
-  if (plan === 'usmle') return !enPausaStep1(s, F) && s <= F.step1.ritual;
+  // v6.07: en F1 el Step 1 solo tiene fila los días de step1.f1_dias_semana
+  if (plan === 'usmle') return !enPausaStep1(s, F) && s <= F.step1.ritual && (s > F.f1.fin || F.step1.f1_dias_semana.includes(wd(s)));
   if (plan === 'encaps') return s < F.encaps.examen;
   return true;
 }
@@ -497,6 +521,8 @@ export interface FechasV6 {
     viaje_d1: string; ritual: string; provisional: boolean; reserva_por_encaps: Record<string, string>;
     /** v6.04: bitácora de cambios de la fecha del examen (el último = examen vigente) */
     cambios: { fecha: string; version: string; examen_previo: string; examen: string; motivo: string }[];
+    /** v6.07: días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie; v6.07: [2, 4] = mar · jue) */
+    f1_dias_semana: number[];
   };
   serums: { inicio: string; supuesto: boolean; dias_plan: string; domingo: string; adaptacion_hasta: string };
   skip: string[];
@@ -540,6 +566,8 @@ export const DERIVADOS_V6 = {
   semanasF1: ${d.semanasF1},
   step1Semanas: ${d.step1Semanas},
   diasF1: ${d.diasF1}, diasF2: ${d.diasF2}, diasF3: ${d.diasF3}, diasF4: ${d.diasF4},
+  /** v6.07: filas del tramo 1 del Step 1 = hábiles de F1 en step1.f1_dias_semana (${diasSemanaTxt(F.step1.f1_dias_semana)}) */
+  diasStepF1: ${d.diasStepF1},
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -679,10 +707,13 @@ export function esDiaPlan(iso: string, plan?: PlanV6): boolean {
     if (plan === 'encaps') return iso === DERIVADOS_V6.d1HabilEncaps;
     return false;
   }
-  if (plan === 'usmle') return !enPausaStep1(iso) && iso <= FECHAS_V6.step1.ritual;
+  // v6.07: en F1 el Step 1 solo tiene fila los días de step1.f1_dias_semana (${diasSemanaTxt(F.step1.f1_dias_semana)})
+  if (plan === 'usmle') return !enPausaStep1(iso) && iso <= FECHAS_V6.step1.ritual && (iso > FECHAS_V6.f1.fin || FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso)));
   if (plan === 'encaps') return iso < FECHAS_V6.encaps.examen;
   return true;
 }
+/** v6.07 · ¿tiene el Step 1 mañana de plan en F1 este día de la semana? (step1.f1_dias_semana; fuera de F1, siempre true) */
+export function esDiaStepF1(iso: string): boolean { return iso < FECHAS_V6.f1.inicio || iso > FECHAS_V6.f1.fin || FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso)); }
 /** Fase v6 de una fecha. Antes del D1 (≤ ${fy(add(F.f1.inicio, -1))}) devuelve 'F1' (la app ya muestra F1 la víspera). */
 export function faseV6(iso: string): FaseV6 {
   if (iso < FECHAS_V6.f1.inicio) return 'F1';
@@ -763,7 +794,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /**
@@ -830,13 +861,14 @@ function compararTS(T, F, d) {
   eq('reservaStep1()', T.reservaStep1(), d.reservaActual);
   for (const [k, v] of Object.entries({ d1HabilEncaps: d.d1HabilEncaps, lunesLibre: d.lunesLibre, reinicio: d.reinicio, f3Fin: d.f3Fin, adaptacionHasta: d.adaptacionHasta,
     ultimoDiaEstudio: d.ultimoDiaEstudio, ritual: d.ritual, viajeD1: d.viajeD1, gonogo: d.gonogo, convocatoriaTope: d.convocatoriaTope, reserva: d.reservaActual,
-    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4 })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
+    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4, diasStepF1: d.diasStepF1 })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
   // predicados, día a día
   const extras = { hitos: [{ fecha: '2026-12-22', nombre: 'NBME 28' }, { fecha: '2027-08-09', nombre: 'GO/NO-GO' }], deloads: [{ lunes: '2026-11-16', motivo: 'x' }] };
   for (const s of rango('2026-09-01', '2028-01-31')) {
     eq('faseV6 ' + s, T.faseV6(s), faseV6(s, F));
     eq('esProtegido ' + s, T.esProtegido(s), esProtegido(s, F));
     eq('enPausaStep1 ' + s, T.enPausaStep1(s), enPausaStep1(s, F));
+    eq('esDiaStepF1 ' + s, T.esDiaStepF1(s), s < F.f1.inicio || s > F.f1.fin || F.step1.f1_dias_semana.includes(wd(s))); // v6.07
     for (const p of [undefined, 'usmle', 'encaps', 'mir', 'research', 'derma', 'aurum']) eq(`esDiaPlan ${s} ${p}`, T.esDiaPlan(s, p), esDiaPlan(s, p, F));
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
@@ -896,7 +928,7 @@ function main() {
     }
   }
   console.log('  fases: ' + fasesV6(F, d).map((x) => `${x.id} ${f(x.desde)}→${x.hasta ? f(x.hasta) : '…'}${x.diasPlan ? ' (' + x.diasPlan + ')' : ''}`).join(' · '));
-  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)}`);
+  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${diasSemanaTxt(F.step1.f1_dias_semana)} = ${d.diasStepF1} mañanas (v6.07)`);
   const ts = emitirTS(F, d);
   const T = cargarTS(ts);
   if (!T) console.warn('⚠ typescript no disponible en node_modules: no se pudo comprobar el .ts contra node');
@@ -919,7 +951,7 @@ module.exports = {
   // rutas
   JSON_FILE, OUT,
   // calendario
-  add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase,
+  add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase, diasStepF1De, diasSemanaTxt,
   // derivaciones §A4
   reinicioDe, lunesLibreDe, ultimoHabilAntes, f3FinDe, adaptacionHastaDe, gonogoDe, convocatoriaTopeDe, viajeD1De, ritualDe, protegidosDe,
   DJ1, DJ1_V600, EXAMENES_PRUEBA, dj1Texto, reservaDJ1, reservaCalculo, colchonPiso, semanasF1De, step1SemanasDe, RX_ADJUDICACION,

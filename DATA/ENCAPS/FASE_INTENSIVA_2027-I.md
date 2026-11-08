@@ -1,6 +1,24 @@
-# 🔥 FASE INTENSIVA ENCAPS 2027-I — diseño completo (v6.06: lun 4-ene-2027 → D-1 del examen, `dia` 43-92 + carril SÁBADO · ⏸ v6.05: `dia` 48-97 · ⏸ v6.03 (= v6.04): `dia` 51-100 · ⏸ v6.02: `dia` 53-102 · ⏸ v6.01: mismas fechas, `dia` 58-107 · ⏸ v6.00: `dia` 61-110 · antes: feb → D-1)
+# 🔥 FASE INTENSIVA ENCAPS 2027-I — diseño completo (v6.07: lun 4-ene-2027 → D-1 del examen, `dia` 38-87, contenido cerrado el vie 26-feb + quincena final de simulacros · ⏸ v6.06: `dia` 43-92 + carril SÁBADO · ⏸ v6.05: `dia` 48-97 · ⏸ v6.03 (= v6.04): `dia` 51-100 · ⏸ v6.02: `dia` 53-102 · ⏸ v6.01: mismas fechas, `dia` 58-107 · ⏸ v6.00: `dia` 61-110 · antes: feb → D-1)
 
-> ## ✅ v6.06 VIGENTE (31-oct-2026, re-fecha a D1 = LUN 2-NOV-2026) — corrige la NUMERACIÓN, el carril B y añade el CARRIL SÁBADO sobre los bloques v6.05, v6.02, v6.01 y v6.00; las FECHAS de la intensiva no cambian
+> ## ✅ v6.07 VIGENTE (dom 8-nov-2026, D1 = LUN 9-NOV-2026) — renumera, CIERRA EL CONTENIDO EL VIE 26-FEB y convierte el 1-12 de marzo en simulacros y repaso
+> Orden de Joseph (dom 8-nov): «empezamos mañana 9; 2/3 del tiempo hasta fin de año al ENCAPS; meta primer puesto». Plan: `PLAN_PRIMER_PUESTO_2027-I.md`.
+> - **F1** `dia` 1-37 (lun 9-nov → mié 30-dic) · **intensiva** `dia` 38-87 con las MISMAS fechas (lun 4-ene → vie 12-mar; pre-test 2026-II vie 8-ene = `dia` 42).
+> - **Núcleo hasta el vie 26-feb** (`_fechas_v6.json` `encaps.nucleo_hasta`; «listo» el dom 28-feb): 28 slots de barrido (antes 32) + 7 SIM 100Q de viernes
+>   (vie 19 y vie 26-feb a las 11:00). Recorte de los códigos más repetidos: I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3 (IV 4 · III-5 3 · II-4 3 · II-5 2; ninguno
+>   sin slot). Orden = r2 de S2-S8; solo cambia el lun 22-feb (I-3 → IV-1+IV-2).
+> - **Quincena final (lun 1 → vie 12-mar, sin material nuevo):** SIM 100Q a las 11:00 el **lun 1, mié 3 y vie 5-mar** (#8 propio #3 · #9 academia con clave ·
+>   #10 Theomed) y **repaso** el mar 2 y el jue 4; después la cola de siempre (lun 8 pasada profunda · mar 9 / mié 10 repaso final · **jue 11 DRESS 2026-I**
+>   11:00 · vie 12 medio día). = 4 simulacros de 100Q en la última quincena + 2 mini-sims de 25Q.
+> - **Carril B 16:15:** los 13 pendientes F1 conservan sus fechas (mié 17-feb → mié 10-mar); los SIM lun / mié de la quincena conservan su 16:15.
+> - **5 pendientes nuevos** (los que no caben en la F1 de 37): sáb 13-feb II-8 · sáb 20-feb II-3 · sáb 27-feb I-3 (09:30) · **vie 5-mar 16:15 V-2** (CARRIL
+>   VIERNES, nuevo) · sáb 6-mar 09:30 MINI-SIM 25Q III-1 + III-9. Ya no queda ningún sábado libre antes del examen.
+> - Supabase re-sembrado el 8-nov (una transacción con guardas): 37 + 50 filas, huella `87 · a50afd468b8c30a5f070ce8c5fc03da3` (= SQL versionado) con
+>   `md5(string_agg(concat_ws('|', dia, fecha, weekday, tipo, coalesce(codigo,'∅'), subtema, prioridad, modo, coalesce(nts,'∅'), videos::text, theomed::text,
+>   material_comp::text, coalesce(temas_secundarios::text,'∅'), coalesce(extra::text,'∅')), E'\n' ORDER BY dia))` sobre `examen = 'ENCAPS'` (antes: 92 · `601f38c4…`
+>   = v6.06); en node se reproduce serializando el jsonb como Postgres (claves por longitud y luego por bytes, «, » y «: »). Backups `study_schedule_bk_v607_20261108`, `study_schedule_bk_v607_int_20261108`,
+>   `study_metrics_bk_v607_20261108` (RLS activado).
+
+> ## ⏸ v6.06 (SUPERSEDIDO por v6.07) (31-oct-2026, re-fecha a D1 = LUN 2-NOV-2026) — corrige la NUMERACIÓN, el carril B y añade el CARRIL SÁBADO sobre los bloques v6.05, v6.02, v6.01 y v6.00; las FECHAS de la intensiva no cambian
 > Orden de Joseph (sáb 31-oct): *«Reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada
 > más … para no perder materias, tan solamente corre. Todo comienza el 2 de noviembre.»* La semana del lun 26 al vie 30-oct no se estudió → el mantenimiento F1
 > arranca el **lun 2-nov** y tiene **42 hábiles (`dia` 1-42)**; como la F1 no se alarga (el lun 4-ene empieza la intensiva), la intensiva conserva sus fechas y

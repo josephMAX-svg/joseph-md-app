@@ -146,6 +146,21 @@
  *   Siembra v6.06: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v606_mant_20261031
  *     --pendientes-de git:regimen-v6.05:DATA/_scripts/_encaps_mantenimiento_2027.sql
  *   (aplicada el 31-oct en UNA transacción con guardas DELETE ENCAPS + 42 + 50, vía staging; backup completo previo study_schedule_bk_v606_20261031).
+ *
+ * v6.07 (8-nov-2026, orden de Joseph «empezamos mañana 9; 2/3 del tiempo al ENCAPS»; la semana del lun 2-nov no se estudió y la corrida v6.06a-e
+ *   queda sin efecto): D1 = LUN 9-NOV-2026 (= _fechas_v6.json f1.inicio, `corrimientos[5]`). F1 anclada → dia 1-37 (lun 9-nov → mié 30-dic) = 31
+ *   banqueo1h + 6 mini_sim (vie 13-nov = D5 … vie 18-dic = dia 30 = CHECKPOINT DEL AÑO; el vie 25-dic es SKIP). Rígido por slots, sin cambio de
+ *   lógica: --de-hasta DERIVADO = jue 18-mar-2027 (slot lun-jue nº 75 desde el lun 9-nov) → extra.de idéntico. Pre-test de arranque = lun 9 (parte 1,
+ *   fila dia 1 II-3) + mar 10 (parte 2, fila dia 2 I-3); mié 11 / jue 12 = bancos V-2 / III-5. La hora sigue siendo las 16:15 (la mañana ENCAPS de lun ·
+ *   mié · vie 07:15-12:00 es aparte: DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md §4-§5).
+ *   · PENDIENTES F1 v6.07 (--pendientes-de git:regimen-v6.06e:…_encaps_mantenimiento_2027.sql, F1 v6.06 de 42 filas) = 4 banqueo1h (fila mant. 39
+ *     II-8 metas_hta_dm #2 · 40 II-3 esavi_kit #3 · 41 I-3 sala_situacional_asis #5 · 42 V-2 clima_calidad #5 de la F1 v6.06) + 1 mini-sim (fila mant.
+ *     35, vie 18-dic de la v6.06 = su CHECKPOINT DEL AÑO, cola larga III-1 + III-9; la copia pierde solo ese rótulo) → se AÑADEN a los 18 de v6.01-v6.06
+ *     (conservados): _pendientes_f1.json = 23 filas (18 banqueo1h + 5 mini-sims). gen_encaps_intensivo_2027.js los repone con fecha: sáb 13, 20 y
+ *     27-feb (09:30), vie 5-mar 16:15 (nuevo CARRIL VIERNES de la quincena final) y sáb 6-mar 09:30 (el mini-sim).
+ *   Siembra v6.07: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v607_mant_20261108
+ *     --pendientes-de git:regimen-v6.06e:DATA/_scripts/_encaps_mantenimiento_2027.sql
+ *   (aplicada el 8-nov en UNA transacción con guardas DELETE ENCAPS + 37 + 50; backup completo previo study_schedule_bk_v607_20261108).
  */
 const fs = require('fs');
 const path = require('path');

@@ -1,7 +1,13 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v6.06 · CORRIMIENTO D1 = LUN 2-NOV-2026 (31-oct-2026, vigente)**: la semana del lun 26-oct tampoco se estudió → `node DATA/_scripts/gen_synapse_plan.js
+> **v6.07 · CORRIMIENTO D1 = LUN 9-NOV-2026 (8-nov-2026, vigente)**: la semana del lun 2-nov no se estudió → `node DATA/_scripts/gen_synapse_plan.js 2026-11-09`
+> (después de `gen_vibecoding_plan.js 2026-11-09`) → **135 días · 19 semanas · lun 9-nov-2026 → mar 23-mar-2027** (FIN_PLAN 2027-03-23; las mismas 110 A-units).
+> **REGLA NUEVA: el bloque PC (SHIP del vibecoding · avance · PC opcional del taper) pasa del SÁBADO 15:00-17:00 al DOMINGO, flexible (2 h)**: el sábado
+> 15:00-17:00 es la clase EN VIVO de Theomed. El sábado conserva su A/B/C (30′); el domingo = Feynman + PC (`DIA_PC = 'Dom'`, `SYN_PLAN_META.diaPC`,
+> `VIBE_META.diaShip = 0`, `vibePCDomingo`). 19 bloques PC en 18 domingos (dom 15-nov … dom 21-mar; dom 14-mar = ENCAPS, protegido).
+>
+> **⏸ v6.06 · CORRIMIENTO D1 = LUN 2-NOV-2026 (31-oct-2026)**: la semana del lun 26-oct tampoco se estudió → `node DATA/_scripts/gen_synapse_plan.js
 > 2026-11-02` (después de `gen_vibecoding_plan.js 2026-11-02`) → **135 días · 19 semanas · lun 2-nov-2026 → mar 16-mar-2027** (FIN_PLAN 2027-03-16; las mismas
 > **110 A-units**, nada se recorta ni se comprime). REGLA NUEVA: los días PROTEGIDOS (vie 12 → lun 15-mar, semana del ENCAPS) son como un feriado (bloque R «🛡 Día
 > protegido», 0′, sin A-unit) → la última A-unit (cierre F2 + CCA-F) va al **mar 16-mar** (F3, reinicio del Step 1; el Home pinta el SYNAPSE 12:30 en F3 mientras dure

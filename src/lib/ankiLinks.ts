@@ -105,7 +105,7 @@ const sysSlug = (system: string): string =>
   || 'General';
 /** Tag compartido USMLE ↔ MIR ↔ Derma: 'sys::<usmleSystem>'. MIR pasa `dia.usmleSystem`; '—' / vacío → 'sys::General'. */
 export const sysTag = (system: string): string => `sys::${!system || system === '—' ? 'General' : sysSlug(system)}`;
-/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff (v6.06: vie 5-nov-2027, fin de la extensión MIR con sus 9 repuestas · v6.05: vie 29-oct-2027 · v6.00-v6.03: vie 24-sep-2027; v5.20: 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
+/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff (v6.07: vie 12-nov-2027, fin de la extensión MIR con sus 14 repuestas · v6.06: vie 5-nov-2027 · v6.05: vie 29-oct-2027 · v6.00-v6.03: vie 24-sep-2027; v5.20: 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
 export const sysFilteredQuery = (system: string): string => `${sysTag(system).replace(/^/, 'tag:')} (deck:APEX::USMLE OR deck:APEX::MIR)`;
 /** Los 14 sistemas del plan Step 1 con su tag (para el checklist de arranque y la tabla de SYNC_ANKI). */
 export const SYS_TAGS: { system: string; tag: string }[] = Object.keys(SYS_TAG_SLUG).map((system) => ({ system, tag: sysTag(system) }));
@@ -121,7 +121,7 @@ export const encapsAnkiDeck = (blockId: string, subtemaId: string): string =>
  *    LIV_ANKI_DECK / livAnkiDeck — aquí se RE-EXPORTA para que ankiLinks.ts siga siendo el catálogo único).
  *  · 216 tarjetas en DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv (#deck column:3 · tags `liviano::<modulo> dNN mecanismo`).
  *    ⚠ A VERIFICAR (19-sep): los 8 sub-decks NO están creados en Anki (Anki cerrado; sin AnkiConnect). Se crean solos al
- *    importar el CSV (D16 lun 23-nov-2026 en v6.06 · lun 16-nov en v6.05 · mié 11-nov en v6.03 · lun 9-nov en v6.02 · lun 2-nov en v6.01 — el día de las 10 tarjetas de MECANISMO; v6.00 = v5.20: D16 mié 28-oct; v5.19: D16 mar 27-oct · v5.18: D16 lun 26-oct · v5.17: D15 mié 21-oct · v5.16: D16 lun 19-oct; ver LIVIANO_ACADEMIA.md) o antes con createDeck.
+ *    importar el CSV (D16 lun 30-nov-2026 en v6.07 · lun 23-nov en v6.06 · lun 16-nov en v6.05 · mié 11-nov en v6.03 · lun 9-nov en v6.02 · lun 2-nov en v6.01 — el día de las 10 tarjetas de MECANISMO; v6.00 = v5.20: D16 mié 28-oct; v5.19: D16 mar 27-oct · v5.18: D16 lun 26-oct · v5.17: D15 mié 21-oct · v5.16: D16 lun 19-oct; ver LIVIANO_ACADEMIA.md) o antes con createDeck.
  *  · Mismo motor FSRS que el resto del sistema APEX; sin deck de pago.
  * ───────────────────────────────────────────────────────────────── */
 export { LIV_ANKI_DECK_ROOT as LIVIANO_ANKI_ROOT, LIV_ANKI_DECK as LIVIANO_DECK_POR_MODULO, livAnkiDeck as livianoAnkiDeck } from './livianoCasos';

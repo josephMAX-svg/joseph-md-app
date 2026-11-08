@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "version": "v6.07",
+    "decidido": "2026-11-08",
+    "fuente": "DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md §4-§7 (inventario: DATA/ENCAPS/INVESTIGACION_2027-1/THEOMED_Y_DRIVE.md)",
+    "protocolo_manana": [
+      {"franja": "07:15–07:30", "que": "Arranque en frío", "como": "10 tarjetas de ayer + las reglas de los errores de ayer, de memoria (sin mirar)"},
+      {"franja": "07:30–09:15", "que": "Teoría del día", "como": "el modo de cada sesión (texto primero o vídeo 1,75× con pausa-predicción); notas SOLO en forma de pregunta"},
+      {"franja": "09:15–09:30", "que": "Post-test de Theomed de esa sesión", "como": "primer intento CIEGO, sin apuntes; la nota va al registro"},
+      {"franja": "09:30–09:45", "que": "Pausa", "como": "de pie, agua, sin pantalla"},
+      {"franja": "09:45–10:45", "que": "Banqueo temático del mismo tema", "como": "30-40 preguntas en modo examen (72 s c/u), sin mirar nada"},
+      {"franja": "10:45–11:40", "que": "Corrección y reglas", "como": "cada fallo y cada dudosa: tipo de error (concepto · cifra · lectura · confusión entre vecinos) + regla de 1 línea en el registro + verificación en la NORMA (definición, tabla o flujograma)"},
+      {"franja": "11:40–12:00", "que": "Tarjetas", "como": "5-10 tarjetas nuevas de lo que falló (cifra o definición textual)"}
+    ],
+    "modos": {
+      "video": "vídeo a 1,75× con el PPT abierto; pausa antes de cada diapositiva de concepto e intenta explicarla",
+      "texto": "texto primero: PPT de la sesión + Theoesencial del tema + la NORMA (definiciones de las primeras páginas, tablas, flujogramas, cifras); vídeo a 2× solo en lo que no entiendas",
+      "activo": "banqueo grabado: pausa ANTES de cada respuesta, responde, luego escucha la explicación",
+      "vivo_diferido": "grabación a 1,75-2× SOLO en los tramos que el PPT no explica; el resto en audio en tiempos muertos"
+    },
+    "banqueo_fuentes": "por orden: post-tests de Theomed de la sesión (primer intento ciego) → DR LOPEZ post-test del área (Drive u/4 › SERUMS 2026 II › DR LOPEZ › PosTest) → Qx banqueo F2 del área (Drive u/4 › SERUMS 2026 II › Qx MEDIC › Fase 2 › Banqueo). El material de academias no se copia al repo ni a la app.",
+    "campus": {"curso": "https://campus.academiatheomed.com/course/view.php?id=99", "simulacros": "https://campus.academiatheomed.com/course/view.php?id=105", "adicionales": "https://campus.academiatheomed.com/course/view.php?id=116"}
+  },
+  "mananas": [
+    {"fecha": "2026-11-09", "n": 1, "fase": "recuperacion", "teoria": [{"item": "INV S1-S3 (asíncronas)", "area": "INV", "duracion": "2 h 10", "modo": "video", "codigos": ["IV-1+IV-2", "IV-4", "III-3"]}], "banqueo": {"area": "INV", "n": 30}, "norma": null, "extra": "Primero 15′ de orientación en el campus: cronograma en vivo y asíncrono, dónde están PPT, post-tests, Theoesenciales y normas. Hoy 19:30 en vivo INV 1/4 (en diferido: audio en tiempos muertos; el PPT el domingo). 16:15 = PRE-TEST DE ARRANQUE 1/2 (línea base)."},
+    {"fecha": "2026-11-11", "n": 2, "fase": "recuperacion", "teoria": [{"item": "GES S1-S2", "area": "GES", "duracion": "50′", "modo": "video", "velocidad": "2×", "codigos": ["V-2"]}, {"item": "GES S3-S4", "area": "GES", "duracion": "1 h 27", "modo": "texto", "codigos": ["V-1", "V-2", "V-3", "V-7+V-10"]}], "banqueo": {"area": "GES", "n": 35}, "norma": "Guía de planeamiento institucional (CEPLAN): definiciones y ciclo", "extra": null},
+    {"fecha": "2026-11-13", "n": 3, "fase": "recuperacion", "teoria": [{"item": "GES S5-S7", "area": "GES", "duracion": "2 h 02", "modo": "texto", "codigos": ["V-6", "I-11+I-12", "V-7+V-10"]}, {"item": "Banqueo 1/19 grabado (SESIONES ADICIONALES)", "area": "mixto", "duracion": "28′", "modo": "activo"}, {"item": "Revisión normativa 1: Modelo de Cuidado Integral (MCI) + PDF 11 p", "area": "CI", "duracion": "35′", "modo": "texto", "codigos": ["II-5"]}], "banqueo": {"area": "GES + MCI", "n": 30}, "norma": "MCI (definiciones)", "extra": "Hoy 16:00 Theomed abre simulacro (si se publica): se rinde el DOMINGO 15 (cuenta el primer intento dentro de 89 h). 16:15 = mini-sim 1."},
+    {"fecha": "2026-11-16", "n": 4, "fase": "recuperacion", "teoria": [{"item": "Banqueo 4/19 (vie 13, grabado)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "CI S1 (APS · MCI)", "area": "CI", "duracion": "1 h 19", "modo": "video", "codigos": ["I-10", "II-5", "I-8", "V-3"]}, {"item": "CI S2", "area": "CI", "duracion": "1 h 14", "modo": "texto", "codigos": ["II-2", "II-10", "II-12"]}], "banqueo": {"area": "CI", "n": 30}, "norma": null, "extra": null},
+    {"fecha": "2026-11-18", "n": 5, "fase": "recuperacion", "teoria": [{"item": "CI S3", "area": "CI", "duracion": "1 h 12", "modo": "texto", "codigos": ["II-11", "II-12", "II-13", "II-6", "II-9"]}, {"item": "CI S4 (denso)", "area": "CI", "duracion": "1 h 25", "modo": "video", "codigos": ["II-8", "II-9", "II-13", "II-7", "III-5"]}, {"item": "CI S5", "area": "CI", "duracion": "51′", "modo": "texto", "codigos": ["II-3", "II-6"]}], "banqueo": {"area": "CI", "n": 30}, "norma": "NT de vacunas 2026 (esquema, intervalos, cadena de frío, ESAVI)", "extra": null},
+    {"fecha": "2026-11-20", "n": 6, "fase": "recuperacion", "teoria": [{"item": "CI S6", "area": "CI", "duracion": "1 h 09", "modo": "video", "codigos": ["II-11", "II-3", "II-1"]}, {"item": "CI S7", "area": "CI", "duracion": "1 h 21", "modo": "texto", "codigos": ["II-1", "II-4", "II-8"]}, {"item": "CI S8", "area": "CI", "duracion": "1 h 42", "modo": "texto", "codigos": ["I-4", "II-10", "II-13"]}], "banqueo": {"area": "CI", "n": 30}, "norma": "NTS de anemia (suplementación por grupo, cifras) + GPC de dengue (clasificación, signos de alarma)", "extra": null},
+    {"fecha": "2026-11-23", "n": 7, "fase": "recuperacion", "teoria": [{"item": "Banqueo 5/19 (vie 20, grabado)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "ET S1-S3", "area": "ET", "duracion": "2 h 09", "modo": "texto", "velocidad": "2× donde haga falta", "codigos": ["III-1", "III-2", "III-8", "III-5", "III-6+III-10"]}], "banqueo": {"area": "ET", "n": 30}, "norma": "Adecuación de servicios con pertinencia cultural (definiciones)", "extra": null},
+    {"fecha": "2026-11-25", "n": 8, "fase": "recuperacion", "teoria": [{"item": "SP S1-S4", "area": "SP", "duracion": "3 h 01", "modo": "video", "codigos": ["I-2", "II-8", "I-3", "I-4", "IV-6+IV-7"]}], "banqueo": {"area": "SP", "n": 30}, "norma": "Directiva de notificación (046) y vigilancia: definiciones de caso", "extra": "La S4 es vigilancia (I-3, el código más pesado del examen): cadena epidemiológica y tipos de vigilancia sin mirar antes del banqueo."},
+    {"fecha": "2026-11-27", "n": 9, "fase": "recuperacion", "teoria": [{"item": "SP S5-S8", "area": "SP", "duracion": "3 h 07", "modo": "video", "codigos": ["I-1", "I-5+I-6", "I-11+I-12", "II-9"]}, {"item": "SP 1/11 en vivo (lun 2-nov)", "area": "SP", "duracion": "2 h 14", "modo": "vivo_diferido"}], "banqueo": {"area": "SP", "n": 30}, "norma": null, "extra": "Hoy 16:00 Theomed abre simulacro → domingo 29. Con esto queda al día el atraso de Theomed."},
+    {"fecha": "2026-11-30", "n": 10, "fase": "ciclo", "teoria": [{"item": "Banqueo 6/19 (vie 27)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "INV 3/4 (vie 27, grabación)", "area": "INV", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "INV + mixto", "n": 40}, "norma": null, "extra": null},
+    {"fecha": "2026-12-02", "n": 11, "fase": "ciclo", "teoria": [{"item": "INV 4/4 (lun 30, grabación)", "area": "INV", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "SP (I-3) + INV", "n": 40}, "norma": "RENACE: definiciones, notificación inmediata y semanal, plazos", "extra": "La teoría de INV termina aquí."},
+    {"fecha": "2026-12-04", "n": 12, "fase": "ciclo", "teoria": [{"item": "Normas de la semana (CI): inmunizaciones, libreta CRED, anemia", "area": "CI", "duracion": "1 h 45", "modo": "texto"}], "banqueo": {"area": "mezcla del vector", "n": 50, "cronometrado": true}, "norma": "verificación", "extra": "50Q en bloque cronometrado (60′) en vez de 30-40 sueltas."},
+    {"fecha": "2026-12-07", "n": 13, "fase": "ciclo", "teoria": [{"item": "Banqueo 7/19 (vie 4)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "SP 3/11 (vie 4, grabación)", "area": "SP", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "SP", "n": 40}, "norma": null, "extra": "Feriado nacional mañana y el miércoles: el plan sigue."},
+    {"fecha": "2026-12-09", "n": 14, "fase": "ciclo", "teoria": [{"item": "GES 5/6 (lun 7, grabación)", "area": "GES", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "GES", "n": 40}, "norma": "Categorías de EESS, referencia y contrarreferencia, calidad y auditoría (definiciones)", "extra": null},
+    {"fecha": "2026-12-11", "n": 15, "fase": "ciclo", "teoria": [{"item": "Normas de la semana (ET e INV): interculturalidad, consentimiento, ética de la investigación", "area": "ET", "duracion": "1 h 45", "modo": "texto"}], "banqueo": {"area": "mezcla del vector", "n": 50, "cronometrado": true}, "norma": "verificación", "extra": "Hoy 16:00 Theomed abre simulacro → domingo 13 (ranking)."},
+    {"fecha": "2026-12-14", "n": 16, "fase": "ciclo", "teoria": [{"item": "Banqueo 8/19 (vie 11)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "SP 4/11 (vie 11, grabación)", "area": "SP", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "SP", "n": 40}, "norma": null, "extra": null},
+    {"fecha": "2026-12-16", "n": 17, "fase": "ciclo", "teoria": [{"item": "SP 5/11 (lun 14, grabación)", "area": "SP", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "SP", "n": 40}, "norma": "ASIS y sala situacional; indicadores (definiciones y fórmulas)", "extra": null},
+    {"fecha": "2026-12-18", "n": 18, "fase": "ciclo", "teoria": [{"item": "Normas de la semana (CI): TBC, ITS/VIH, ECNT (DM 2024, HTA)", "area": "CI", "duracion": "1 h 45", "modo": "texto"}], "banqueo": {"area": "mezcla del vector", "n": 50, "cronometrado": true}, "norma": "verificación", "extra": "CHECKPOINT DEL AÑO a las 16:15 (mini-sim). GATE: si el simulacro Theomed del 13-dic < 16,5 o el ciego de los críticos < 70 %, las 2 últimas semanas de diciembre pasan a 4 mañanas ENCAPS."},
+    {"fecha": "2026-12-21", "n": 19, "fase": "ciclo", "teoria": [{"item": "Banqueo 9/19 (vie 18)", "area": "mixto", "duracion": "1 h", "modo": "activo"}, {"item": "GES 6/6 (vie 18, grabación)", "area": "GES", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "GES", "n": 40}, "norma": null, "extra": "La teoría de GES termina aquí (ET terminó el 12-dic)."},
+    {"fecha": "2026-12-23", "n": 20, "fase": "ciclo", "teoria": [{"item": "CI 4/8 (lun 21, grabación)", "area": "CI", "duracion": "2 h 30", "modo": "vivo_diferido"}, {"item": "CI 3/8 (sáb 19, si no la viste en vivo)", "area": "CI", "duracion": "2 h 30", "modo": "vivo_diferido"}], "banqueo": {"area": "CI", "n": 40}, "norma": null, "extra": null},
+    {"fecha": "2026-12-28", "n": 21, "fase": "ciclo", "teoria": [{"item": "Hoja de reglas del trimestre: relectura activa de TODAS las reglas de error (tapar la regla, decirla, comprobar)", "area": "mixto", "duracion": "1 h 45", "modo": "texto"}], "banqueo": {"area": "mezcla del vector · los 8 críticos", "n": 60, "cronometrado": true}, "norma": null, "extra": null},
+    {"fecha": "2026-12-30", "n": 22, "fase": "cierre", "teoria": [], "banqueo": {"area": "SIMULACRO DE CIERRE DE AÑO 100Q / 2 h (DR LOPEZ simulacro 1) + corrección", "n": 100, "cronometrado": true}, "norma": null, "extra": "SP 6/11 (lun 28) queda para la intensiva. Mañana jue 31 empieza la transición."}
+  ],
+  "sabados": [
+    {"fecha": "2026-11-14", "vivo": "Cuidado Integral 2/8"},
+    {"fecha": "2026-11-21", "vivo": "Ética e Interculturalidad 2/3"},
+    {"fecha": "2026-11-28", "vivo": "Gestión 3/6"},
+    {"fecha": "2026-12-05", "vivo": "Gestión 4/6"},
+    {"fecha": "2026-12-12", "vivo": "Ética e Interculturalidad 3/3"},
+    {"fecha": "2026-12-19", "vivo": "Cuidado Integral 3/8"},
+    {"fecha": "2026-12-26", "vivo": null},
+    {"fecha": "2027-01-02", "vivo": null}
+  ],
+  "domingos": [
+    {"fecha": "2026-11-15", "simulacro": "Theomed (el del vie 13-nov si se publicó; si no, el antiguo del 18/09)", "ranking": true},
+    {"fecha": "2026-11-22", "simulacro": "Theomed antiguo 18/09 (o 02/10 si el 15 ya hiciste el 18/09)", "ranking": false},
+    {"fecha": "2026-11-29", "simulacro": "Theomed del vie 27-nov", "ranking": true},
+    {"fecha": "2026-12-06", "simulacro": "Theomed antiguo 02/10 o 16/10", "ranking": false},
+    {"fecha": "2026-12-13", "simulacro": "Theomed del vie 11-dic", "ranking": true},
+    {"fecha": "2026-12-20", "simulacro": "Theomed antiguo 16/10", "ranking": false},
+    {"fecha": "2026-12-27", "simulacro": "Theomed antiguo 30/10", "ranking": false},
+    {"fecha": "2027-01-03", "simulacro": "DR LOPEZ simulacro 2 (o descanso antes de la intensiva)", "ranking": false}
+  ]
+}

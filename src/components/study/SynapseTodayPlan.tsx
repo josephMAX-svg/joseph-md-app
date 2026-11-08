@@ -13,7 +13,7 @@ import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
-  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibePCSabado, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibePCDomingo, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
   VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
 } from '../../lib/vibecodingPlan';
 import GuiaBloqueCard from '../GuiaBloqueCard';
@@ -97,7 +97,7 @@ function BloqueRow({ b }: { b: SynBloque }) {
 }
 
 /** VibeCard — proyecto de la semana del VIBECODING 04:15 (src/lib/vibecodingPlan.ts) para la fecha del run
- *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP (sáb) / Feynman (dom).
+ *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP + Feynman (dom; v6.07 —hasta v6.06 el SHIP era el sábado—).
  *  v5.10-b: el ✓ manual solo cuenta días; SHIPPED lo dice el último verify (node DATA/_scripts/verify_vibecoding.js <s> →
  *  VIBE_SHIP_LOG horneado + localStorage 'jmd-vibe-ship'). S13-S20 (taper) se pintan desde VIBE_TAPER. Botón 📓 journal.
  *  v6.01 (10-oct-2026): el sábado se pinta con vibePCSabado = los mismos bloques PC que el SYNAPSE de ese día (SHIP · AVANCE si el proyecto
@@ -110,11 +110,15 @@ function BloqueRow({ b }: { b: SynBloque }) {
  *  sáb 23-ene · taper S13 sáb 30-ene · S14 6-feb · S15 13-feb · sáb 20-feb = PC propio de S16 + PC 0' de S17 · S18 27-feb (S19 sáb 6-mar y S20
  *  sáb 13-mar, PROTEGIDO, cierran después del SYNAPSE). v6.06 (31-oct-2026, D1 lun 2-nov): SHIP S1 sáb 7-nov … S7 sáb 19-dic · sáb 26-dic = AVANCE
  *  S8 · S8 sáb 2-ene · S9 9-ene · S10 16-ene · S11 23-ene · S12 30-ene · taper S13 6-feb · S14 13-feb · S15 20-feb · sáb 27-feb = PC propio de S16 +
- *  PC 0' de S17 · S18 6-mar (sáb 13-mar PROTEGIDO: sin PC, vibePCSabado devuelve [] · S19 sáb 20-mar y S20 sáb 27-mar, ya en F3, sin PC). */
+ *  PC 0' de S17 · S18 6-mar (sáb 13-mar PROTEGIDO: sin PC, vibePCSabado devuelve [] · S19 sáb 20-mar y S20 sáb 27-mar, ya en F3, sin PC).
+ *  v6.07 (8-nov-2026, D1 lun 9-nov): el PC (SHIP del vibecoding) pasa al DOMINGO, flexible, 2 h (el sábado 15:00-17:00 es la clase EN VIVO de
+ *  Theomed) → la card usa vibePCDomingo y VIBE_META.diaShip: SHIP S1 dom 15-nov … S6 dom 20-dic · dom 27-dic = AVANCE S7 · S7 dom 3-ene … S12 dom
+ *  7-feb · taper S13 dom 14-feb · S14 21-feb · S15 28-feb · dom 7-mar = PC propio de S16 + PC 0' de S17 · S18 dom 21-mar (dom 14-mar = ENCAPS,
+ *  PROTEGIDO; S19 y S20 cierran después del SYNAPSE, sin PC). El sábado ya no lleva PC. */
 function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const p = vibeProyectoEnFecha(fecha);
   const t = vibeTaperEnFecha(fecha);
-  const pcSab = vibePCSabado(fecha);
+  const pcSab = vibePCDomingo(fecha); // v6.07: el PC es el domingo (nombre de la variable, histórico)
   const pcMain = pcSab.length ? pcSab[pcSab.length - 1] : undefined;
   const pcExtra = pcSab.slice(0, -1).map((x) => x.taper ? (
     <Text key={'pc' + x.s} style={st.vibeStep}>› + PC propio de S{x.s} · {x.taper.nombre} ({x.taper.tipo === 'mantenimiento' ? "30' opcional" : "0'"}): {x.taper.shipTxt}</Text>
@@ -152,10 +156,12 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
         <Text style={st.vibeTitle}>{t.nombre}</Text>
         {vd ? (
           <Text style={st.vibeStep}>› {wdDe(fechaRealDe(vd.fecha, 'vibecoding'))} · {VIBE_TIPO_LABEL[vd.tipo]} ({vd.min}'): {vd.paso}</Text>
+        ) : wd === VIBE_META.diaShip ? (
+          <Text style={st.vibeStep}>› DOMINGO (flexible): {t.shipTxt}</Text>
         ) : wd === 6 ? (
-          <Text style={st.vibeStep}>› SÁBADO: {t.shipTxt}</Text>
+          <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). El PC opcional va el domingo.</Text>
         ) : (
-          <Text style={st.vibeStep}>› DOMINGO libre: {t.shipTxt}</Text>
+          <Text style={st.vibeStep}>› Hoy no hay paso del vibecoding (feriado).</Text>
         )}
         {pcExtra}
         <Text style={st.vibeSub} numberOfLines={2}>{t.semanaStep1} · {t.objetivo}</Text>
@@ -184,14 +190,16 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
       <Text style={st.vibeTitle}>{p.nombre}</Text>
       {vd ? (
         <Text style={st.vibeStep}>› {wdDe(fechaRealDe(vd.fecha, 'vibecoding'))} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
-      ) : wd === 6 && pcMain?.tipo === 'avance' ? (
-        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = AVANCE (el proyecto aún no termina: último día {fmtFecha(fechaRealDe(p.fin, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}): avanza los pasos que faltan; sin verify hoy.</Text>
-      ) : wd === 6 && !pcMain ? (
-        <Text style={st.vibeStep}>› SÁBADO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(fechaRealDe(p.ini, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}).</Text>
+      ) : wd === VIBE_META.diaShip && pcMain?.tipo === 'avance' ? (
+        <Text style={st.vibeStep}>› DOMINGO PC (2 h, a la hora que puedas) = AVANCE. El proyecto aún no termina: último día {fmtFecha(fechaRealDe(p.fin, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}. Avanza los pasos que faltan; hoy no hay verify. Feynman (10′) opcional.</Text>
+      ) : wd === VIBE_META.diaShip && !pcMain ? (
+        <Text style={st.vibeStep}>› DOMINGO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(fechaRealDe(p.ini, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}). Feynman (10′) opcional.</Text>
+      ) : wd === VIBE_META.diaShip ? (
+        <Text style={st.vibeStep}>› DOMINGO PC (2 h, a la hora que puedas) = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}. Después, Feynman (10′, opcional): explica en voz alta qué construiste.</Text>
       ) : wd === 6 ? (
-        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}</Text>
+        <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). El SHIP de S{p.s} es el domingo {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.</Text>
       ) : (
-        <Text style={st.vibeStep}>› DOMINGO (opcional): Feynman del proyecto — explica en voz alta qué construiste y cómo funciona.</Text>
+        <Text style={st.vibeStep}>› Hoy no hay paso del vibecoding (feriado). SHIP de S{p.s}: {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.</Text>
       )}
       {pcExtra}
       <Text style={st.vibeSub} numberOfLines={2}>entregable: {p.entregable}</Text>
@@ -352,10 +360,10 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.06: por el corrimiento del D1 al lun 2-nov el FIN se corre del vie 5-mar al mar 16-mar, con las mismas 110 A-units en {SYN_PLAN_META.totalDias} días de plan —v6.05: 131—: los PROTEGIDOS vie 12 → lun 15-mar no tienen SYNAPSE y la última A-unit va al mar 16-mar, ya tras el ENCAPS · v6.05: D1 lun 26-oct → vie 5-mar, dentro de la intensiva ENCAPS · v6.03: +2 días, D1 mié 21-oct → lun 1-mar · v6.02: +6 días, D1 lun 19-oct → vie 26-feb · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.07: por el corrimiento del D1 al lun 9-nov el FIN se corre del mar 16-mar al mar 23-mar, ya en F3, con las mismas 110 A-units; el PC del SHIP pasa al domingo · v6.06: por el corrimiento del D1 al lun 2-nov el FIN se corre del vie 5-mar al mar 16-mar, con las mismas 110 A-units en {SYN_PLAN_META.totalDias} días de plan —v6.05: 131—: los PROTEGIDOS vie 12 → lun 15-mar no tienen SYNAPSE y la última A-unit va al mar 16-mar, ya tras el ENCAPS · v6.05: D1 lun 26-oct → vie 5-mar, dentro de la intensiva ENCAPS · v6.03: +2 días, D1 mié 21-oct → lun 1-mar · v6.02: +6 días, D1 lun 19-oct → vie 26-feb · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

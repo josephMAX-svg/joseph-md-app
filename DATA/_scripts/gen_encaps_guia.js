@@ -52,6 +52,10 @@
  *   las tareas D{dia}:s_* no cuentan en el total del viernes host y sí el sábado (itemsDelTotal; useEncapsPlan lo usa) · los ejemplos --banco /
  *   --eval de la tabla de BANCO_PROPIO/README.md son sesiones válidas del régimen (decían 2026-10-28 → 2026-11-09 / 2026-11-10). Las guías F1
  *   no cambian (decodificadas, idénticas).
+ * v6.07 (8-nov-2026, «empezamos mañana 9»): sin cambio de lógica. F1 dia 1-37 desde el lun 9-nov (runners re-fechados por sesión, +7 días) y
+ *   carril SÁBADO con 9 guías (las 5 de v6.06 + sáb 13, 20 y 27-feb y sáb 6-mar de los pendientes v6.07; el V-2 #5 del vie 5-mar va en el CARRIL
+ *   VIERNES 16:15 de la quincena final, extra.carril_b de esa fila, y la app lo pinta como un banco del carril B). El ejemplo `--banco` del README
+ *   de BANCO_PROPIO pasa a 2026-11-16 (el lun 9-nov es pre-test de arranque).
  */
 'use strict';
 const fs = require('fs');

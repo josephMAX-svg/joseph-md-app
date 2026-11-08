@@ -1,6 +1,15 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 2-NOV-2026, v6.06 · ⏸ v6.05: lun 26-oct · ⏸ v6.03: mié 21-oct (corrido por alias al jue 22-oct, v6.04) · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 9-NOV-2026, v6.07 · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.03: mié 21-oct (corrido por alias al jue 22-oct, v6.04) · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
 
-> **✅ v6.06 VIGENTE (sáb 31-oct-2026) — D1 = LUN 2-NOV-2026.** La semana del lun 26-oct tampoco se estudió; orden de Joseph: «reestructura todo a partir del 2 de
+> **✅ v6.07 VIGENTE (dom 8-nov-2026) — D1 = LUN 9-NOV-2026.** La semana del lun 2-nov no se estudió; orden de Joseph del dom 8-nov. Secundarios +5 hábiles,
+> contenido intacto (`node DATA/_scripts/gen_vibecoding_plan.js 2026-11-09` → `node DATA/_scripts/gen_synapse_plan.js 2026-11-09`):
+> - **Vibecoding (04:15, 45')**: **95 días lun 9-nov-2026 → mar 30-mar-2027** (sin los protegidos vie 12 / lun 15-mar ni la Semana Santa). S1 lun 9 → vie 13-nov …
+>   S12 jue 28-ene → mié 3-feb · taper S13-S20 jue 4-feb → mar 30-mar.
+> - **CAMBIO DE SEMANA TIPO: el SHIP pasa al DOMINGO, flexible (2 h, sin hora fija).** El sábado 15:00-17:00 es la clase EN VIVO de Theomed. SHIP S1 **dom
+>   15-nov** … S6 dom 20-dic · dom 27-dic = AVANCE de S7 · S7 dom 3-ene … S12 dom 7-feb · PC opcional del taper dom 14-feb … dom 21-mar. El domingo lleva el SHIP
+>   + el Feynman (10′, opcional). El sábado conserva solo el A/B/C del SYNAPSE (30′ en tiempo muerto).
+> - **SYNAPSE**: **135 días lun 9-nov-2026 → mar 23-mar-2027**, mismas 110 A-units.
+>
+> **⏸ v6.06 (sáb 31-oct-2026) — D1 = LUN 2-NOV-2026.** La semana del lun 26-oct tampoco se estudió; orden de Joseph: «reestructura todo a partir del 2 de
 > noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre». Secundarios +5 hábiles sobre v6.05, contenido intacto
 > (`node DATA/_scripts/gen_vibecoding_plan.js 2026-11-02` → `node DATA/_scripts/gen_synapse_plan.js 2026-11-02`):
 > - **Vibecoding (04:15, 45')**: **95 días lun 2-nov-2026 → vie 19-mar-2027**. S1-S12 = bloques lun → vie (S1 lun 2 → vie 6-nov, **SHIP sáb 7-nov** … S7 lun 14 →

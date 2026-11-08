@@ -1,5 +1,19 @@
-// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.06: D1-D42 = lun 2-nov → mié 30-dic-2026
-//   + T1…T182 (d 101-282) = mar 16-mar → sáb 23-oct-2027 · examen lun 25-oct-2027 (DJ-1 v6.04; PROVISIONAL).
+// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.07: D1-D15 = mar 10-nov → mar 29-dic-2026
+//   (solo martes y jueves) + tramo 2 desde el mar 16-mar-2027 · examen lun 25-oct-2027 (DJ-1 v6.04; PROVISIONAL).
+// v6.07 (dom 8-nov-2026): F1 DEL STEP = SOLO LAS MAÑANAS DE MARTES Y JUEVES. Joseph (dom 8-nov): «la mitad (o más) del tiempo del Step 1 hasta
+//   fin de año pasa al ENCAPS … empezamos mañana 9 … el Step 1 puede correrse, pero no más allá de 2027». La semana del lun 2-nov no se
+//   estudió: D1 de todo = lun 9-nov (_fechas_v6.json f1.inicio · f1.dias 37 = hábiles L-V de la fase F1, que comparten todos los planes). La
+//   mañana 07:15-12:00 es ENCAPS lun · mié · vie y Step 1 mar · jue → campo nuevo step1.f1_dias_semana = [2, 4]: los slots del Step en F1 son
+//   V6.diasStepF1De(FV6) = mar 10, jue 12, mar 17, jue 19, mar 24, jue 26-nov, mar 1, jue 3, mar 8, jue 10, mar 15, jue 17, mar 22, jue 24 y
+//   mar 29-dic = 15 (D1-D15). REGLA NUEVA de la colocación (gen_tramo2.slotsHitosF1, v6.07): «un hito de F1 que no cabe con su Day-After completo
+//   pasa al tramo 2» (antes: «un hito de F1 nunca sale de F1»): F1 se queda con el prefijo más largo de hitos que cabe (el último, si no es el
+//   NBME 28, también con su Day-After dentro de F1) → D1 = UWSA1 mar 10-nov (09:00-13:00; la guía 08:50-13:00 con SYNAPSE 07:25) · D10 = NBME 25
+//   jue 10-dic con su Day-After D11-D14 (mar 15 → jue 24-dic) · D15 = v5.20 D15 (mar 29-dic). DESPLAZADAS al tramo 2 (43, en orden v5.20):
+//   D16-D24, NBME 26, D26-D39, NBME 27, D41-D54, NBME 28, D56, D57, D79; cada NBME con su Day-After detrás (en F3, repartido en las franjas de las
+//   4 filas siguientes como en F1 y el NBME 29; en F4, fila day_after propia: con el 25-oct, NBME 26 T12 vie 2-abr · 27 T27 vie 23-abr en F3 y
+//   NBME 28 T59 mié 2-jun + Day-After T60 en F4). Gates de núcleo v5.20 D18/D38 → con su fila T (T5 lun 22-mar · T25 mié 21-abr). Sin viernes en
+//   F1 → ningún viernes N3/N4. Gates F1 D18/D38: ya no existen en F1 (ver homeBriefing). Con el examen del lun 25-oct-2027 el tramo 2 tiene
+//   DÉFICIT (la cola-atrás no cabe) → este generador ABORTA con exit 2 (R1: nunca se recorta) y no escribe nada hasta que Joseph decida la fecha.
 // v6.06 (fix, 31-oct-2026): la 16:15 REENTRADA de F3 rota solo por los sistemas que F1 estudia (7) y cada desplazado entra tras su última
 //   fila T (gen_tramo2.sistemasRotacionF1 / sistemaRot(s)): antes T9 mar 30-mar pedía «20Q timed de Hematology & Oncology» antes de estudiar
 //   hematología (T12-T17). T1 dice «de los 7 sistemas de F1». --rotacion-9 (rotación fija de antes, para las referencias v6.03-v6.05) solo
@@ -142,9 +156,10 @@ const aborta = (msg, code = 1) => { console.error('✗ ' + msg + ' — ABORTO, n
 let FV6;
 try { FV6 = V6.cargarFechasV6(); } catch (e) { aborta(e.message); }
 const SKIP = new Set(FV6.skip);
-const F = V6.habLV(FV6.f1.inicio, FV6.f1.fin, SKIP); // v6.06: lun 2-nov → mié 30-dic-2026 = 42 hábiles (D1-D42) · v6.05: lun 26-oct → mié 30-dic-2026 = 47 hábiles (D1-D47) · v6.03: mié 21-oct → mié 30-dic-2026 = 50 hábiles (D1-D50) · v6.02: lun 19-oct → 52 · v6.01: lun 12-oct → 57 · v6.00: mié 7-oct → 60 · v5.20: 7-oct → 19-feb = 95
-if (F.length !== FV6.f1.dias) aborta(`F1 tiene ${F.length} hábiles y _fechas_v6.json dice f1.dias = ${FV6.f1.dias}`);
-console.log('// total dias F1:', F.length, '(' + F[0] + ' → ' + F[F.length - 1] + ')');
+// v6.07: los slots del Step en F1 = hábiles de F1 en step1.f1_dias_semana (mar · jue → 15); con [1-5] = todos los hábiles (f1.dias), como hasta la v6.06
+const F = V6.diasStepF1De(FV6); // v6.07: mar 10-nov → mar 29-dic-2026 = 15 mañanas (D1-D15, mar · jue) · v6.06: lun 2-nov → mié 30-dic-2026 = 42 hábiles (D1-D42) · v6.05: lun 26-oct → mié 30-dic-2026 = 47 hábiles (D1-D47) · v6.03: mié 21-oct → mié 30-dic-2026 = 50 hábiles (D1-D50) · v6.02: lun 19-oct → 52 · v6.01: lun 12-oct → 57 · v6.00: mié 7-oct → 60 · v5.20: 7-oct → 19-feb = 95
+if (F.length !== V6.derivar(FV6).diasStepF1 || (FV6.step1.f1_dias_semana.length === 5 && F.length !== FV6.f1.dias)) aborta(`F1 del Step tiene ${F.length} días y _fechas_v6.json dice f1.dias = ${FV6.f1.dias} (step1.f1_dias_semana ${JSON.stringify(FV6.step1.f1_dias_semana)})`);
+console.log('// total dias F1 del Step:', F.length, '(' + F[0] + ' → ' + F[F.length - 1] + ' · ' + V6.diasSemanaTxt(FV6.step1.f1_dias_semana) + ' · F1 de la fase: ' + FV6.f1.dias + ' hábiles)');
 
 // helpers de material
 const AM = 'AMBOSS + First Aid', PA = 'Pathoma (Sattar) + First Aid', SM = 'Sketchy Micro + First Aid',
@@ -345,20 +360,23 @@ const EN_F1 = COL_F1.enF1;                  // D# v5.20 (o 'C1'/'C2') de cada d 
 const F1_FILAS_TEMARIO = COL_F1.f1Filas;    // v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50 · v6.05: 47 · v6.06: 42
 const COLCHON_CONSUMIDO = COL_F1.consumido; // v6.01/v6.02: C1, C2
 const DESPLAZADAS_F1 = COL_F1.desplazadas;  // v6.01: [79] · v6.02: [52, 53, 54, 56, 57, 79] · v6.03: [50, 51, 52, 53, 54, 56, 57, 79] · v6.05: [47-54, 56, 57, 79] · v6.06: [42-54, 56, 57, 79] (D# v5.20)
-for (const o of DESPLAZADAS_F1) if (/🎯/.test(SEQ_V520[o].sub)) aborta(`F1 de ${F.length} hábiles deja fuera el hito D${o} v5.20: un hito de F1 no se desplaza (decisión de Joseph)`);
-{ // los 5 hitos de F1 (v5.20 D1/D10/D25/D40/D55) están TODOS en F1, en orden; el que cabe por su D# conserva su D#
+// v6.07: un hito de F1 solo sale de F1 si no cabe con su Day-After completo (COL_F1.hitosFuera; antes: nunca)
+for (const o of DESPLAZADAS_F1) if (/🎯/.test(SEQ_V520[o].sub) && !COL_F1.hitosFuera.includes(o)) aborta(`F1 de ${F.length} días deja fuera el hito D${o} v5.20, que cabía con su Day-After`);
+if (COL_F1.hitosFuera.length) console.log(`// v6.07 · hitos de F1 que NO caben con su Day-After completo → tramo 2 (con su Day-After detrás): ${COL_F1.hitosFuera.map((o) => SEQ_V520[o].sub.split(' (')[0].replace('🎯 ', '') + ' (v5.20 D' + o + ')').join(' · ')}`);
+{ // los hitos de F1 (v5.20 D1/D10/D25/D40/D55) que quedan en F1 = un PREFIJO, en orden; el que cabe por su D# conserva su D#
   // v6.06: salvo que su DAY-AFTER (DAY_AFTER_FILAS filas) alcanzara al hito siguiente → adelantado semanas de plan enteras (SEMANA_PLAN
   //   filas) hasta que el Day-After quepa entero (gen_tramo2.slotsHitosF1). Aquí se comprueba la regla, no se copia el resultado.
+  // v6.07: m = hitos que quedan (prefijo); el último va sin Day-After SOLO si es el NBME 28 (m = H); si no, su Day-After termina dentro de F1
   const hF1 = EN_F1.map((o, i) => [i + 1, o]).filter(([, o]) => typeof o === 'number' && /🎯/.test(SEQ_V520[o].sub));
-  const H = COL_F1.hitos.length;
+  const H = COL_F1.hitos.length, m = hF1.length;
   const mal = hF1.filter(([d, o], k) => {
-    const base = Math.min(o, F.length - (H - 1 - k));
-    if (k === H - 1) return d !== base; // el último (NBME 28) no tiene Day-After en F1: siempre en su base
-    const sig = hF1[k + 1] ? hF1[k + 1][0] : Infinity;
+    const base = Math.min(o, F.length - (m - 1 - k));
+    if (k === m - 1 && m === H) return d !== base; // el último (NBME 28) no tiene Day-After en F1: siempre en su base
+    const sig = hF1[k + 1] ? hF1[k + 1][0] : F.length + 1;
     return d > base || (base - d) % SEMANA_PLAN !== 0 || d + DAY_AFTER_FILAS >= sig || (d < base && d + SEMANA_PLAN + DAY_AFTER_FILAS < sig);
   });
-  if (JSON.stringify(hF1.map(([, o]) => o)) !== JSON.stringify(COL_F1.hitos) || mal.length) aborta('hitos de F1 mal colocados: ' + JSON.stringify(hF1) + (mal.length ? ' · fuera de regla: ' + JSON.stringify(mal) : ''));
-  const adel = hF1.filter(([d, o], k) => k < H - 1 && d < Math.min(o, F.length - (H - 1 - k)));
+  if (JSON.stringify(hF1.map(([, o]) => o)) !== JSON.stringify(COL_F1.hitos.slice(0, m)) || JSON.stringify(COL_F1.hitos.slice(m)) !== JSON.stringify(COL_F1.hitosFuera) || mal.length) aborta('hitos de F1 mal colocados: ' + JSON.stringify(hF1) + (mal.length ? ' · fuera de regla: ' + JSON.stringify(mal) : ''));
+  const adel = hF1.filter(([d, o], k) => !(k === m - 1 && m === H) && d < Math.min(o, F.length - (m - 1 - k)));
   if (adel.length) console.log('// v6.06 · hitos F1 ADELANTADOS para que su Day-After (' + DAY_AFTER_FILAS + ' filas) quepa antes del hito siguiente: ' + adel.map(([d, o]) => `v5.20 D${o} → D${d} ${F[d - 1]}`).join(' · '));
 }
 const COLCHON_F1 = (n) => ({
@@ -488,7 +506,7 @@ T2.log.forEach((l) => console.log('// ' + l));
 if (OPT2.json) fs.writeFileSync(OPT2.json, JSON.stringify(T2.out, null, 1));
 if (OPT2.md) fs.writeFileSync(OPT2.md, mdTramo2(T2.out));
 if (T2.deficitFwd || T2.deficitBwd) {
-  if (!OPT2.permitirDeficit) aborta(`DÉFICIT ${T2.deficitFwd + T2.deficitBwd} u en el tramo 2: fecha NO viable (R1: no se recorta) → siguiente fecha de la ventana (§B4.4)`, 2);
+  if (!OPT2.permitirDeficit) aborta(`DÉFICIT ${T2.deficitFwd + T2.deficitBwd} u en el tramo 2: fecha NO viable (R1: no se recorta) → siguiente fecha de la ventana (§B4.4) · v6.07: node explorar_fecha_examen.js lista la primera fecha sin déficit`, 2);
   console.log('// ⚠ déficit permitido (--seco --permitir-deficit): nada se escribe');
 }
 if (T2.faltan.length && !SECO) aborta('el tramo 2 no cubre los dOrig ' + T2.faltan.join(', ') + ' (R1)');
@@ -496,7 +514,8 @@ if (T2.faltan.length && !SECO) aborta('el tramo 2 no cubre los dOrig ' + T2.falt
 {
   const enF1 = new Set(EN_F1.filter((o) => typeof o === 'number'));
   const repe = T2.out.filter((x) => x.dOrig != null && enF1.has(x.dOrig)).map((x) => `T${x.t} D${x.dOrig}`);
-  const malD = DESPLAZADAS_F1.filter((d) => T2.out.filter((x) => x.dOrig === d && x.tipo === 'contenido').length < 1);
+  // v6.07: un hito desplazado va como fila 'hito' (con su Day-After en la fila de cola siguiente)
+  const malD = DESPLAZADAS_F1.filter((d) => T2.out.filter((x) => x.dOrig === d && x.tipo === (COL_F1.hitosFuera.includes(d) ? 'hito' : 'contenido')).length < 1);
   if (repe.length || malD.length || JSON.stringify(T2.desplazadasF1) !== JSON.stringify(DESPLAZADAS_F1) || JSON.stringify(T2.origenF1) !== JSON.stringify(EN_F1.filter((o) => typeof o === 'number'))) aborta(`tramo 2 ↔ F1: dOrig de F1 repetidos en el tramo 2 [${repe.join(', ')}] · desplazadas sin fila [${malD.join(', ')}] · gen_tramo2 desplazó [${T2.desplazadasF1}] y F1 [${DESPLAZADAS_F1}]`);
   if (DESPLAZADAS_F1.length) console.log('// desplazadas de F1 en el tramo 2: ' + DESPLAZADAS_F1.map((d) => { const x = T2.out.find((y) => y.dOrig === d); return `v5.20 D${d} → T${x.t} ${x.fecha} (d ${x.d}, N${x.nivelUW}·${x.qDia}Q)`; }).join(' · '));
 }

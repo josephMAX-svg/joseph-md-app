@@ -33,6 +33,9 @@ import {
  * desde el lun 4-ene-2027 (`min30`) · fin jue 15-abr-2027 (AURUM_PLAN_META.fin).
  * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): lun 26-oct → mar 4-may-2027 (130 lecciones, mismo orden; pitch v1 D15 vie 13-nov ·
  * v5 D95 mié 10-mar · v6 D115 mar 13-abr · v7 D130 mar 4-may, 2.º día del SERUMS; min30 desde el lun 4-ene, 83 filas).
+ * v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): lun 9-nov → mar 18-may-2027 (130 lecciones, mismo orden; pitch v1 D15 vie 27-nov · v2 D35 lun 28-dic ·
+ * v3 D55 mié 27-ene · v4 D75 mié 24-feb · v5 D95 mar 30-mar · v6 D115 mar 27-abr · v7 D130 mar 18-may; D119-D130 = lun 3 → mar 18-may, ya en el SERUMS,
+ * a 30′ en tiempo muerto; min30 desde el lun 4-ene, 93 filas).
  * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): lun 2-nov → mar 11-may-2027 (130 lecciones, mismo orden; pitch v1 D15 vie 20-nov ·
  * v2 D35 vie 18-dic · v3 D55 mié 20-ene · v4 D75 mié 17-feb · v5 D95 vie 19-mar · v6 D115 mar 20-abr · v7 D130 mar 11-may; D124-D130 = lun 3 →
  * mar 11-may, ya en el SERUMS, a 30′ en tiempo muerto; min30 desde el lun 4-ene, 88 filas).

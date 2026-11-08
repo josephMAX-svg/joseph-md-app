@@ -67,7 +67,19 @@
 //    lun 4-ene; sin caso en medio); revisión trimestral I = D44 mar 5-ene (v6.05: D45 lun 28-dic). Drills D37 · D56 · D75 · D88 = mar 22-dic · jue
 //    21-ene · mié 17-feb · lun 8-mar. Síntesis M1 D19 · M2 D38 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 → src/lib/empresaData.ts
 //    re-sincronizado a mano. CSV Anki: importar el D16 lun 23-nov-2026 (10 tarjetas de MECANISMO del módulo 1).
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-02   (v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov no se estudió; orden de Joseph del dom 8-nov; secundarios +5 hábiles):
+//    90 hábiles lun 9-nov → el fin se AMPLÍA (mismo contenido en el mismo orden, mismos 16 casos, pre-tests y drills; nada se recorta). REGLA NUEVA:
+//    el plan ya cruza la semana del ENCAPS → no son días de plan los SKIP y los PROTEGIDOS de _fechas_v6.json (vie 12 y lun 15-mar; jue 25 / vie
+//    26-mar, Semana Santa) ni el D-2 del ENCAPS (jue 11-mar, dress rehearsal: plantillasV6 no pinta LIVIANO ese día). Lo que no cabe antes va
+//    después, en F3 (mar 16-mar →). Con START ≤ 2-nov el plan terminaba antes del jue 11-mar: las fechas de v6.00-v6.06 se reproducen igual.
+//    Resultado: lun 9-nov → LUN 22-MAR-2027 (90). Siguen saliendo EXACTAMENTE 16 viernes (6 hasta el vie 18-dic + 10 desde el vie 8-ene; el vie 12-mar
+//    es PROTEGIDO) → un caso por viernes: caso 1 = D5 vie 13-nov … caso 6 D30 vie 18-dic · caso 7 D42 vie 8-ene (en medio del módulo 7) · caso 8 D47
+//    vie 15-ene · caso 9 (acceso) D52 vie 22-ene … caso 15 D82 vie 5-mar · caso 16 (integral) D89 vie 19-mar, ya en F3 y DESPUÉS del repaso integral
+//    D87 mié 17-mar y del capstone D88 jue 18-mar (el 16.º viernes cae ahí; antes de la revisión trimestral II + cierre D90 lun 22-mar). Módulo 7
+//    (Acceso en Perú) = D38-D41 + D43 (lun 4 → lun 11-ene). Revisión trimestral I = D44 mar 12-ene. Drills D36 · D56 · D75 · D87 = mar 29-dic ·
+//    jue 28-ene · mié 24-feb · mié 17-mar. Síntesis M1 D19 · M2 D37 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 · capstone D88 →
+//    src/lib/empresaData.ts re-sincronizado a mano. CSV Anki: importar el D16 lun 30-nov-2026 (10 tarjetas de MECANISMO del módulo 1).
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-09   (v6.07; v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
@@ -81,7 +93,10 @@ const CUR = JSON.parse(fs.readFileSync(CUR_PATH, 'utf8'));
 const START = process.argv[2] || CUR.inicioDefault;
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 const TOTAL = CUR.totalDias || 90;
-const SKIP = new Set(CUR.skipFijos || []);
+// v6.07: + SKIP y PROTEGIDOS de _fechas_v6.json + el D-2 del ENCAPS (ver cabecera)
+const V6 = require('./gen_fechas_v6'); const F6 = V6.cargarFechasV6();
+const D2_ENCAPS = V6.ultimoHabilAntes(V6.derivar(F6).d1HabilEncaps, F6.skip);
+const SKIP = new Set([...(CUR.skipFijos || []), ...F6.skip, ...F6.protegidos.map((x) => x.fecha), D2_ENCAPS]);
 
 // ─── calendario (UTC, sin DST) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -189,7 +204,7 @@ const planTS = `/**
  * ruido de comida, ladrillo, GPS). Cada VIERNES real: 1 caso del banco LIV_CASOS (casoId) con
  * rúbrica 0-2 × 4. Cada LUNES (desde la semana 2): pre-test ciego 5Q sobre D-7 (pretest:true).
  * Drill de cifras ancla ciego cada ~20 días (drill:true). Módulos (días de contenido):
- * ${modulosResumen}. Sin sesión: fines de semana + ${[...SKIP].join(' / ')}.
+ * ${modulosResumen}. Sin sesión: fines de semana + ${[...SKIP].filter((x) => x >= rows[0].fecha && x <= finISO).sort().join(' / ')} (feriados, días protegidos y D-2 del ENCAPS dentro del plan).
  * Inicio ${rows[0].fecha} → fin ${finISO}. Casos en viernes: ${casos.length}/${casos.length}.
  */
 export interface DiaLiviano {

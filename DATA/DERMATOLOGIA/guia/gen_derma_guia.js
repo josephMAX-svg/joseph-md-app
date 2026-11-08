@@ -22,6 +22,8 @@
  *    6-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 30-oct · D15 vie 13-nov), ya regenerados.
  *  · v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; d1 Derma lun 2-nov = día del UWSA1): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 lun 2-nov →
  *    jue 12-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 6-nov · D15 la que dé el plan USMLE v6.06), ya regenerados por sus lotes.
+ *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; d1 Derma mar 10-nov): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 mar 10 → vie 20-nov).
+ *    La velocidad de vídeo sale de usmleStep1Daily (D5/D15), que regenera el lote USMLE: volver a correr este script (o --check) cuando ese lote cierre.
  */
 'use strict';
 const fs = require('fs');

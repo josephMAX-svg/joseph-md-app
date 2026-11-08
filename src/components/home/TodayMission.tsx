@@ -33,6 +33,10 @@ import { livDiaDe } from '../../lib/livianoStudyPlan';
 import { synDiaDe } from '../../lib/synapseDailyPlan';
 // v6.02c (E4 · ENCAPS 16:15 + Research): guías «qué · cuánto · cómo» + botones directos (runner BANCO_PROPIO · recurso del átomo · Obsidian)
 import { guiaEncapsDe, sesionEncapsDe, encapsSabadoDe, guiaEncapsSabadoDe, sesionEncapsSabadoDe } from '../../lib/encapsGuia'; // v6.06: + carril SÁBADO de la intensiva · v6.06 (fix): + su guía y sus runners
+import {
+  encapsMananaDe, guiaEncapsMananaDe, guiaEncapsTardeDe, guiaEncapsAnkiDe, theomedSabadoDe, guiaTheomedPrepDe, guiaTheomedVivoDe, encapsDomingoDe,
+  guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO,
+} from '../../lib/encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + 18:00 + Anki 05:30 + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
@@ -141,6 +145,13 @@ const nombreBase = (n: string): string => {
  *  franjas (lun 19: USMLE 07:15 → 13:00), nombre sin la descripción genérica de la plantilla, tema = título(s) de la guía con su hora y la
  *  línea «🧭 la guía manda» (AHORA/✓ por las franjas de la guía) · MIR D1: botón «5Q extra ↗» (1.ª de las 5 preguntas ciegas de las 15:23) ·
  *  el SYNAPSE del lun 19 (07:25) sale una sola vez: la guía USMLE parte la preparación del UWSA1 en 07:15-07:25 y 07:55-08:50.
+ * v6.07 (dom 8-nov-2026 · D1 = lun 9-nov · PLAN_PRIMER_PUESTO_2027-I): bloques ENCAPS nuevos de plantillasV6 con su guía (src/lib/encapsManana.ts,
+ *  GENERADO por gen_encaps_manana.js): encaps-am (lun · mié · vie 07:15-12:00, las 7 franjas del protocolo) · encaps-pm (18:00 «cifras, normas y
+ *  flashcards») · theomed-prep + theomed-vivo (sáb 14:45 / 15:00-17:00) · encaps-dom (domingo, opcional 4 h, FLEXIBLE) + los 15′ de repasos ENCAPS
+ *  dentro del Anki 05:00 (05:30-05:45, si la guía USMLE no ocupa ya esa franja) · botones solo al campus de Theomed. Bloques FLEXIBLES sin hora fija
+ *  (encaps-dom · PC y Feynman del domingo): la cabecera muestra su hora «flexible · …» (sin AHORA/✓ por reloj) y sus guías la misma etiqueta en vez
+ *  de la franja de ejemplo. Mínimo del modo (ÁMBAR/ROJO) de los bloques ENCAPS nuevos = encapsManana.ENCAPS_MINIMO (la mañana ENCAPS es el bloque
+ *  PRINCIPAL de lun · mié · vie: en ROJO conserva su mínimo); el ENCAPS del domingo es opcional (sin mínimo). Pie: revisión del sábado a las 14:00.
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
  */
@@ -194,11 +205,18 @@ export function mirLabelDe(iso: string): string | null {
  */
 export function encapsLabelDe(iso: string): string | null {
   if (corridaS1De(iso)?.tipo === 'sin_sesion') return null;
+  // v6.07: lun · mié · vie de F1 = MAÑANA ENCAPS (07:15-12:00) además de la sesión de las 16:15 · sábado = clase EN VIVO · domingo = opcional
+  const am = encapsMananaDe(iso);
+  const pre = am ? `ENCAPS mañana ${am.n}/${am.de} · ${am.resumen.split(' · ')[0]}` : null;
   const s = sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
-    if (s.tipo === 'pretest') return `ENCAPS D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}`;
-    return s.tipo === 'minisim' ? `ENCAPS D${s.dia} · mini-sim 25Q` : `ENCAPS D${s.dia} · banco ${s.codigo ?? ''}`.trim();
+    const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
+    return pre ? `${pre} + 16:15 ${tarde}` : `ENCAPS ${tarde}`;
   }
+  if (pre) return pre;
+  const viv = theomedSabadoDe(iso);
+  if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
+  if (encapsDomingoDe(iso)) return 'ENCAPS · domingo opcional 4 h (simulacro 100Q)';
   // v6.06: carril SÁBADO de la intensiva (09:30, pendiente F1 que no cupo en el carril B lun-jue)
   const sab = encapsSabadoDe(iso);
   if (sab) return `ENCAPS · sáb ${sab.ini} · reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim();
@@ -373,8 +391,13 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
   const desplazar = (h: string | null): string | null => (h && d ? `${String(Math.floor((hm(h) - d) / 60)).padStart(2, '0')}:${String((hm(h) - d) % 60).padStart(2, '0')}` : h);
   const bPlan: BloqueV6 = d ? { ...b, ini: desplazar(b.ini), fin: desplazar(b.fin) } : b;
   const c = contenidoBloquePlan(bPlan, p, f);
+  // v6.07: bloque FLEXIBLE sin hora fija (domingo: ENCAPS opcional · PC · Feynman) → sus guías muestran «flexible · …» en vez de la franja de
+  //   ejemplo (así la cabecera no pinta una hora ni AHORA/✓ por reloj; los minutos y los pasos no cambian)
+  if (esFlexible(b) && c.guias) return { ...c, guias: c.guias.map((g) => ({ ...g, franja: b.hora })) };
   return d && c.guias ? { ...c, guias: c.guias.map((g) => moverGuia(g, d)) } : c;
 }
+/** v6.07: bloque sin hora fija cuya hora es «flexible · …» (plantillasV6: domingo). */
+const esFlexible = (b: BloqueV6): boolean => !b.ini && /^flexible/.test(b.hora);
 /** Contenido de un bloque en su fecha y hora de PLAN (lo que era contenidoBloque hasta v6.02c). */
 function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema: string; sub: string; acciones: Accion[]; guias?: GuiaBloque[] } {
   const us = p.usmle && (p.corrida !== 'reparto' || p.usmle.fecha === iso) ? p.usmle : null; // v6.02d: en el reparto, el Anki sáb/dom no es del D5
@@ -384,7 +407,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       const tema = vibeP
         ? (vibeDia
           ? `S${vibeP.s} · ${vibeP.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]}${vibeDia.min !== 45 ? ` ${vibeDia.min}'` : ''}): ${vibeDia.paso}`
-          : `S${vibeP.s} · ${vibeP.nombre} — fuera de L-V · SHIP sáb ${vibeP.ship.slice(8)}-${vibeP.ship.slice(5, 7)} (PC 15:00 · node DATA/_scripts/verify_vibecoding.js ${vibeP.s}) · dom = Feynman`) // v6.01 (10-oct): la fecha real del SHIP (sáb 26-dic = avance de S11, su SHIP es el sáb 2-ene; ver vibePCSabado)
+          : `S${vibeP.s} · ${vibeP.nombre} — fuera de L-V · SHIP dom ${vibeP.ship.slice(8)}-${vibeP.ship.slice(5, 7)} (PC del domingo, 2 h, flexible · node DATA/_scripts/verify_vibecoding.js ${vibeP.s}) + Feynman`) // v6.01 (10-oct): la fecha real del SHIP (sáb 26-dic = avance de S11, su SHIP es el sáb 2-ene; ver vibePCSabado) · v6.07: el SHIP es el DOMINGO (vibePCDomingo; el sábado 15:00-17:00 es la clase EN VIVO de Theomed)
         : vibeT
           ? (vibeDia ? `S${vibeT.s} · ${vibeT.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]} ${vibeDia.min}'): ${vibeDia.paso}` : `S${vibeT.s} · ${vibeT.nombre} — ${vibeT.shipTxt}`)
           : `fuera del rango del plan (${VIBE_META.inicio.slice(8)}-${VIBE_META.inicio.slice(5, 7)} → ${VIBE_META.finTaper.slice(8)}-${VIBE_META.finTaper.slice(5, 7)})`;
@@ -411,7 +434,10 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       const guiasEn = (ini: string, fin: string): GuiaBloque[] => guiaUsmleEnRango(iso, ini, fin);
       if (b.frente === 'usmle-anki') {
         // v6.02c (E5): botón directo también en el Anki (AnkiWeb en cualquier navegador + el vídeo/recurso pendiente de la guía si lo hay)
-        const gA = guiasEn(b.ini ?? '05:00', b.fin ?? '05:45');
+        const gU = guiasEn(b.ini ?? '05:00', b.fin ?? '05:45');
+        // v6.07: los 15′ de repasos ENCAPS (05:30-05:45, encapsManana) van en este bloque si la guía USMLE no ocupa ya esa franja
+        const gEA = guiaEncapsAnkiDe(iso);
+        const gA = gEA && !gU.some((g) => { const q = partesFranja(g.franja); return !!q && aMinutos(q.fin) > aMinutos('05:30'); }) ? [...gU, gEA] : gU;
         const vidA = gA.map((g) => primerEnlace(g, /youtube|qbankly/)).find(Boolean);
         return { tema: b.detalle ?? 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min', sub: us ? `Step 1 · ${etiquetaDiaUSMLE(us)}` : 'Step 1',
           acciones: [{ lbl: 'AnkiWeb ↗', color: GREEN, url: ANKIWEB, fill: true }, ...(vidA ? [{ lbl: 'Vídeo ↗', color: EDGE, url: vidA }] : [])], guias: gA };
@@ -470,6 +496,33 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       };
     }
     case 'encaps': {
+      // v6.07: bloques ENCAPS nuevos de F1 (encapsManana, GENERADO): mañana 07:15-12:00 (lun · mié · vie) · 18:00 · sábado en vivo · domingo opcional
+      const campus = (lbl: string, url: string, fill = false): Accion => ({ lbl, color: TEAL, url, fill });
+      if (b.id === 'encaps-am') {
+        const am = encapsMananaDe(iso);
+        const gs = guiaEncapsMananaDe(iso);
+        if (am && gs.length) return {
+          tema: `Mañana ${am.n}/${am.de} · ${am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
+          sub: am.fase === 'cierre' ? 'simulacro 100Q en 2 h → corrección → reglas → tarjetas' : 'teoría (texto primero o vídeo 1,75×) → post-test ciego → banqueo 72 s/Q → corrección + norma → tarjetas',
+          acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true),
+            ...(am.teoria.some((t) => /^Banqueo|^Revisión normativa/.test(t.item)) ? [campus('Adicionales ↗', ENCAPS_MANANA_META.campus.adicionales)] : [])],
+          guias: gs,
+        };
+      }
+      if (b.id === 'encaps-pm') {
+        const g = guiaEncapsTardeDe(iso);
+        if (g) return { tema: g.titulo, sub: 'Anki ENCAPS::Flashcards + ENCAPS::Cifras · la norma del día', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso)], guias: [g] };
+      }
+      if (b.id === 'theomed-prep' || b.id === 'theomed-vivo') {
+        const viv = theomedSabadoDe(iso);
+        const g = b.id === 'theomed-prep' ? guiaTheomedPrepDe(iso) : guiaTheomedVivoDe(iso);
+        if (viv?.vivo && g) return { tema: `${viv.vivo} · ${viv.area ?? ''}`.replace(/ · $/, ''), sub: b.id === 'theomed-prep' ? 'PPT de la clase + 3 preguntas' : 'en vivo, participando · notas en forma de pregunta · el tramo 17:00-17:30 en la grabación', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
+      }
+      if (b.id === 'encaps-dom') {
+        const dom = encapsDomingoDe(iso);
+        const g = guiaEncapsDomingoDe(iso);
+        if (dom && g) return { tema: dom.simulacro, sub: `opcional y flexible · 2 h de simulacro + 2 h de corrección${dom.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`, acciones: /^Theomed/.test(dom.simulacro) ? [campus('Simulacros ↗', ENCAPS_MANANA_META.campus.simulacros, true)] : [], guias: [g] };
+      }
       // v6.06 (fix): CARRIL SÁBADO de la intensiva (bloque encaps-sab de plantillasV6, sáb 9/16/23/30-ene y 6-feb 09:30) → guía «qué · cuánto ·
       // cómo» de encapsGuia (guiaEncapsSabadoDe: la receta de 60′ de F1 + nota de reposición; movida a la hora real del bloque si Business lo
       // empuja) + runners del sábado (sesionEncapsSabadoDe). Antes el bloque solo traía su detalle de texto (sin guía).
@@ -733,7 +786,11 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         const color = PLAN_COLOR[b.plan];
         const enCurso = !!b.ini && !!b.fin && ahora >= hm(b.ini) && ahora < hm(b.fin);
         const pasado = !!b.fin && ahora >= hm(b.fin) && b.ini !== b.fin;
-        const minimo = b.frente && !/^(feynman|anki-dom)$/.test(b.id) ? minimoPorFrente(b.frente as Frente, modo, iso) : null; // v6.02c (E5): los opcionales del domingo no tienen «mínimo»
+        // v6.02c (E5): los opcionales del domingo no tienen «mínimo» · v6.07: + el ENCAPS opcional del domingo; los bloques ENCAPS nuevos usan
+        //   encapsManana.ENCAPS_MINIMO (la mañana ENCAPS es el bloque PRINCIPAL de lun · mié · vie: en ROJO conserva su mínimo, no «Omitido»)
+        const minimo = !b.frente || /^(feynman|anki-dom|encaps-dom)$/.test(b.id) ? null
+          : ENCAPS_MINIMO[b.id] ? (modo === 'VERDE' ? null : ENCAPS_MINIMO[b.id]![modo === 'AMBAR' ? 'AMBAR' : 'ROJO'])
+            : minimoPorFrente(b.frente as Frente, modo, iso);
         const omitido = !!minimo && /^Omitid/.test(minimo);
         if (!b.frente && b.plan !== 'usmle' && b.plan !== 'encaps') {
           // SERUMS · gimnasio · vida · revisión: fila compacta
@@ -792,7 +849,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           {usmleFuera.map((g, k) => <GuiaBloqueCard key={k} g={g} color={GREEN} compacto={!enFranja(g.franja, ahora)} ahora={enFranja(g.franja, ahora)} />)}
         </View>
       )}
-      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · revisión semanal = sáb 07:15-07:45 (hasta el 2-ene, los domingos; DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
+      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · revisión semanal = sáb 14:00-14:30 hasta el 2-ene (antes de la clase EN VIVO de Theomed 15:00-17:00; desde el 9-ene, sáb 07:15; DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · el SHIP del vibecoding (PC) es el DOMINGO, flexible · ENCAPS: mañana lun · mié · vie 07:15-12:00 (Step 1: mar · jue) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
     </View>
   );
 }

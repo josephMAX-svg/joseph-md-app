@@ -10,24 +10,26 @@
  * v6.04 (mié 21-oct-2026): examen Step 1 lun 27-sep-2027 → lun 25-oct-2027 (decisión de Joseph; step1.cambios).
  * v6.05 (sáb 24-oct-2026): corrimiento rígido del D1 mié 21-oct-2026 → lun 26-oct-2026 (perdidos: mié 21-oct · jue 22-oct · vie 23-oct).
  * v6.06 (sáb 31-oct-2026): corrimiento rígido del D1 lun 26-oct-2026 → lun 2-nov-2026 (perdidos: lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct).
- * v6.06e (vie 6-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic · sáb 2-ene · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = parte del mar 10-nov · dom 22-nov = parte del mié 18-nov · dom 29-nov = parte del jue 26-nov · dom 6-dic = parte del vie 4-dic · dom 13-dic = parte del sáb 12-dic · dom 20-dic = parte del sáb 19-dic · dom 27-dic = parte del sáb 26-dic · dom 3-ene = parte del sáb 2-ene; ningún plan cambia de fecha.
- * Versión vigente del JSON: v6.06.
+ * v6.07 (dom 8-nov-2026): corrimiento rígido del D1 lun 2-nov-2026 → lun 9-nov-2026 (perdidos: lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov).
+ * v6.07 (dom 8-nov-2026): examen Step 1 lun 25-oct-2027 → lun 6-dic-2027 (decisión de Joseph; step1.cambios).
+ * v6.07 (dom 8-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov (solo días sin sesión: los planes ya están re-fechados por el corrimiento).
+ * Versión vigente del JSON: v6.07.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
  *
  * Fases (tabla A1 resuelta):
- *   F1                lun 2-nov-2026 → mié 30-dic-2026 · 42 días de plan L-V (último mié 30-dic)
+ *   F1                lun 9-nov-2026 → mié 30-dic-2026 · 37 días de plan L-V (último mié 30-dic)
  *   TRANSICION        jue 31-dic-2026 → dom 3-ene-2027
  *   F2                lun 4-ene-2027 → dom 14-mar-2027 · 50 días de plan L-V (último vie 12-mar) · PROVISIONAL
  *   LIBRE_POST_ENCAPS lun 15-mar-2027 → lun 15-mar-2027 · PROVISIONAL
  *   F3                mar 16-mar-2027 → dom 2-may-2027 · 32 días de plan L-V (último vie 30-abr) · PROVISIONAL
- *   F4                lun 3-may-2027 → sáb 23-oct-2027 · 150 días de plan L-S (último sáb 23-oct) · PROVISIONAL
- *   EXAMEN            dom 24-oct-2027 → lun 25-oct-2027 · PROVISIONAL
- *   F5                mar 26-oct-2027 → abierta · PROVISIONAL
+ *   F4                lun 3-may-2027 → sáb 4-dic-2027 · 186 días de plan L-S (último sáb 4-dic) · PROVISIONAL
+ *   EXAMEN            dom 5-dic-2027 → lun 6-dic-2027 · PROVISIONAL
+ *   F5                mar 7-dic-2027 → abierta · PROVISIONAL
  * ENCAPS dom 14-mar-2027 PROVISIONAL (sin convocatoria al mié 17-feb → descartado) · reinicio Step 1 mar 16-mar-2027
- * SERUMS lun 3-may-2027 [supuesto] (inducción → dom 16-may) · GO/NO-GO lun 6-sep-2027 (E-49) · ritual sáb 23-oct · viaje dom 24-oct
- * EXAMEN Step 1 lun 25-oct-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = lun 25-oct-2027 (DJ-1) · STEP1_SEMANAS = 41
- * Protegidos: vie 12-mar (D-1 hábil ENCAPS) · sáb 13-mar (D-1 ENCAPS) · dom 14-mar (ENCAPS (provisional)) · lun 15-mar (lunes libre post-ENCAPS) · sáb 23-oct (ritual test-day) · dom 24-oct (viaje D-1) · lun 25-oct (EXAMEN Step 1) · la adjudicación SERUMS se añadirá al conocerse (motivo «adjudicación …»).
+ * SERUMS lun 3-may-2027 [supuesto] (inducción → dom 16-may) · GO/NO-GO lun 18-oct-2027 (E-49) · ritual sáb 4-dic · viaje dom 5-dic
+ * EXAMEN Step 1 lun 6-dic-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = lun 6-dic-2027 (DJ-1) · STEP1_SEMANAS = 46
+ * Protegidos: vie 12-mar (D-1 hábil ENCAPS) · sáb 13-mar (D-1 ENCAPS) · dom 14-mar (ENCAPS (provisional)) · lun 15-mar (lunes libre post-ENCAPS) · sáb 4-dic (ritual test-day) · dom 5-dic (viaje D-1) · lun 6-dic (EXAMEN Step 1) · la adjudicación SERUMS se añadirá al conocerse (motivo «adjudicación …»).
  * SKIP (sin sesión de ningún plan): vie 25-dic · jue 31-dic · vie 1-ene · jue 25-mar · vie 26-mar.
  */
 
@@ -43,6 +45,8 @@ export interface FechasV6 {
     viaje_d1: string; ritual: string; provisional: boolean; reserva_por_encaps: Record<string, string>;
     /** v6.04: bitácora de cambios de la fecha del examen (el último = examen vigente) */
     cambios: { fecha: string; version: string; examen_previo: string; examen: string; motivo: string }[];
+    /** v6.07: días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie; v6.07: [2, 4] = mar · jue) */
+    f1_dias_semana: number[];
   };
   serums: { inicio: string; supuesto: boolean; dias_plan: string; domingo: string; adaptacion_hasta: string };
   skip: string[];
@@ -61,12 +65,12 @@ export interface FechasV6 {
   };
 }
 export const FECHAS_V6: FechasV6 = {
-  "version": "v6.06",
+  "version": "v6.07",
   "decidido": "2026-10-06",
   "f1": {
-    "inicio": "2026-11-02",
+    "inicio": "2026-11-09",
     "fin": "2026-12-30",
-    "dias": 42
+    "dias": 37
   },
   "transicion": {
     "desde": "2026-12-31",
@@ -77,7 +81,7 @@ export const FECHAS_V6: FechasV6 = {
     "provisional": true,
     "intensiva_desde": "2027-01-04",
     "pretest": "2027-01-08",
-    "nucleo_hasta": "2027-03-05",
+    "nucleo_hasta": "2027-02-26",
     "convocatoria_tope": "2027-02-17",
     "escenarios": [
       "2027-03-14",
@@ -90,21 +94,21 @@ export const FECHAS_V6: FechasV6 = {
   },
   "step1": {
     "reinicio": "2027-03-16",
-    "examen": "2027-10-25",
-    "adelanto": "2027-10-25",
-    "planB": "2027-10-25",
-    "gonogo": "2027-09-06",
-    "eligibility": "2027-08..2027-10",
-    "viaje_d1": "2027-10-24",
-    "ritual": "2027-10-23",
+    "examen": "2027-12-06",
+    "adelanto": "2027-12-06",
+    "planB": "2027-12-06",
+    "gonogo": "2027-10-18",
+    "eligibility": "2027-10..2027-12",
+    "viaje_d1": "2027-12-05",
+    "ritual": "2027-12-04",
     "provisional": true,
     "reserva_por_encaps": {
-      "2027-03-14": "2027-10-25",
-      "2027-03-21": "2027-10-25",
-      "2027-04-04": "2027-10-25",
-      "2027-04-11": "2027-10-25",
-      "2027-04-18": "2027-10-25",
-      "2027-04-25": "2027-10-25"
+      "2027-03-14": "2027-12-06",
+      "2027-03-21": "2027-12-06",
+      "2027-04-04": "2027-12-06",
+      "2027-04-11": "2027-12-06",
+      "2027-04-18": "2027-12-06",
+      "2027-04-25": "2027-12-06"
     },
     "cambios": [
       {
@@ -113,7 +117,18 @@ export const FECHAS_V6: FechasV6 = {
         "examen_previo": "2027-09-27",
         "examen": "2027-10-25",
         "motivo": "Orden de Joseph (mié 21-oct-2026): «con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas». Examen lun 27-sep → LUN 25-OCT-2027 (dentro de la elegibilidad ago-sep-oct). Nada antes del reinicio (mar 16-mar-2027) cambia; el tramo 2 se regenera con E = 25-oct y las semanas extra van al COLCHÓN (no se comprime nada). DJ-1 v6.04: 25-oct en todos los escenarios ENCAPS (sin adelanto; el plan B coincide con la base: un NO-GO del lun 6-sep ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5)."
+      },
+      {
+        "fecha": "2026-11-08",
+        "version": "v6.07",
+        "examen_previo": "2027-10-25",
+        "examen": "2027-12-06",
+        "motivo": "Orden de Joseph (dom 8-nov-2026): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS … el Step 1 puede correrse, pero no más allá de 2027» (meta ENCAPS: primer puesto). Con el Step solo los martes y jueves de F1 (15 mañanas) el tramo 2 con el 25-oct deja un DÉFICIT de 11 unidades (R1: nada se recorta) → primera fecha sin déficit lun 22-nov (colchón 2 filas ≈ 5 h). Elegido LUN 6-DIC-2027: colchón 14 filas ≈ 37 h + 3 lunes (13, 20 y 27-dic) de margen dentro de 2027. Hitos 2027: NBME 30 (24-may) y UWSA3 (29-jun) fijos; NBME 31 (4-oct), NBME 32 (11-oct) y UWSA2 (19-oct) + 6 semanas; NBME 33 + 3 bloques (ensayo de 7 bloques) en el feriado lun 1-nov (sin turno) y Free 120 lun 22-nov (E-14), como en la tabla del 27-sep. GO/NO-GO lun 18-oct (E-49, ≥ 294 h). La elegibilidad (aún sin inscribir) pasa a oct-nov-dic 2027."
       }
+    ],
+    "f1_dias_semana": [
+      2,
+      4
     ]
   },
   "serums": {
@@ -148,15 +163,15 @@ export const FECHAS_V6: FechasV6 = {
       "motivo": "lunes libre post-ENCAPS"
     },
     {
-      "fecha": "2027-10-23",
+      "fecha": "2027-12-04",
       "motivo": "ritual test-day"
     },
     {
-      "fecha": "2027-10-24",
+      "fecha": "2027-12-05",
       "motivo": "viaje D-1"
     },
     {
-      "fecha": "2027-10-25",
+      "fecha": "2027-12-06",
       "motivo": "EXAMEN Step 1"
     }
   ],
@@ -177,7 +192,11 @@ export const FECHAS_V6: FechasV6 = {
     "2027-07-29",
     "2027-08-06",
     "2027-08-30",
-    "2027-10-08"
+    "2027-10-08",
+    "2027-11-01",
+    "2027-12-08",
+    "2027-12-09",
+    "2027-12-25"
   ],
   "corrimientos": [
     {
@@ -242,13 +261,26 @@ export const FECHAS_V6: FechasV6 = {
         "2026-10-30"
       ],
       "regla": "Orden de Joseph (sáb 31-oct): «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada más: lo que era la semana anterior, esta semana; para no perder materias, tan solamente corre». La semana del 26-oct no se estudió. Mismo patrón que v6.05: F1 anclada (42 hábiles lun 2-nov → mié 30-dic) con hitos F1 (UWSA1 D1 lun 2-nov · NBME 28 = último slot; NBME 25-27 en su D# salvo que el Day-After no quepa antes del siguiente hito); las filas de temario que no caben pasan al tramo 2 con fecha (nada se quita); ENCAPS: las filas F1 que no caben se reponen con fecha; secundarios +5 hábiles con el contenido intacto y sus fechas límite corridas. Examen Step 1 lun 25-oct-2027 y ENCAPS dom 14-mar-2027 sin cambio (fechas externas)."
+    },
+    {
+      "fecha": "2026-11-08",
+      "version": "v6.07",
+      "d1_previo": "2026-11-02",
+      "d1": "2026-11-09",
+      "perdidos": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "regla": "Orden de Joseph (dom 8-nov): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer puesto (> 17,5, ideal 19); empezamos mañana 9; sábados 14-17 libres para el en vivo de Theomed; domingos 4 h opcionales; el Step 1 puede correrse, pero no más allá de 2027». La semana del lun 2-nov no se estudió (la corrida v6.06a-e queda sin efecto). D1 de todo = lun 9-nov (F1 37 hábiles → mié 30-dic). Mañana 07:15-12:00: ENCAPS lun · mié · vie y Step 1 mar · jue (≈ 2/3 ENCAPS); el tramo 1 del Step se reduce a las mañanas de martes y jueves y lo que no cabe (hitos incluidos) pasa al tramo 2 con fecha; ENCAPS: la rotación F1 de las 16:15 corre +5 hábiles y lo que no cabe pasa a la intensiva con fecha; secundarios +5 hábiles. Plan: DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md."
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-11-06",
-    "version": "v6.06e",
-    "motivo": "Orden de Joseph (vie 6-nov-2026, sin estudio ese día): «hoy no comenzamos; comenzamos el domingo 8; quita lo planeado en los sábados, los sábados no se avanza y son los únicos días libres; aumenta los domingos que sean necesarios para cumplir el plan en sus tiempos». Alias en la CONSULTA sobre v6.06 (planes, Supabase, runners y guías conservan su fecha de plan). Semana de DOMINGO a VIERNES: cada domingo recupera un día hábil y bastan 5 (dom 8, 15, 22, 29-nov y 6-dic) → el plan alcanza su fecha original el LUN 7-DIC. NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic. Revisión semanal S01-S04: domingos 20:00 (la noche libre tras el baile). OUTPUT S2 y SHIP S1-S8: domingos de cierres 13, 20, 27-dic y 3-ene. Anki de sábado: lo absorbe el Anki AM del domingo, salvo el del sáb 5-dic, que lleva FSRS Optimize y va el dom 13-dic 20:00. Feynman S1-S7: tras su SHIP, los domingos de cierres. Alcance: sábados libres hasta el sáb 2-ene; los de F2 en adelante quedan pendientes de decidir con Joseph.",
-    "resumen": "SEMANA CORRIDA v6.06e (orden del vie 6-nov): hasta el sáb 7 sin estudio · arranque el DOM 8 = plan del lun 2 (D1, UWSA1) · semana de DOMINGO a VIERNES y SÁBADOS LIBRES · cada domingo recupera un día · NBME 25 mié 18-nov · gate vie 27-nov · NBME 26 dom 6-dic · desde el lun 7-dic el plan va en su fecha original · revisión semanal: domingos 20:00 · cierres pendientes (OUTPUT y SHIP): dom 13, 20, 27-dic y 3-ene.",
+    "decidido": "2026-11-08",
+    "version": "v6.07",
+    "motivo": "v6.07 (dom 8-nov-2026): la semana corrida v6.06a-e queda sin efecto; del lun 19-oct al dom 8-nov no hubo estudio y el plan entero se re-fecha con D1 = lun 9-nov (corrimiento real, no alias). Capa de alias inerte (sin alias ni reparto).",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -270,335 +302,10 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-05",
       "2026-11-06",
       "2026-11-07",
-      "2026-11-14",
-      "2026-11-21",
-      "2026-11-28",
-      "2026-12-05",
-      "2026-12-12",
-      "2026-12-19",
-      "2026-12-26",
-      "2027-01-02"
+      "2026-11-08"
     ],
-    "alias": {
-      "2026-11-08": "2026-11-02",
-      "2026-11-09": "2026-11-03",
-      "2026-11-10": "2026-11-04",
-      "2026-11-11": "2026-11-05",
-      "2026-11-12": "2026-11-06",
-      "2026-11-13": "2026-11-09",
-      "2026-11-16": "2026-11-11",
-      "2026-11-17": "2026-11-12",
-      "2026-11-18": "2026-11-13",
-      "2026-11-19": "2026-11-16",
-      "2026-11-20": "2026-11-17",
-      "2026-11-23": "2026-11-19",
-      "2026-11-24": "2026-11-20",
-      "2026-11-25": "2026-11-23",
-      "2026-11-26": "2026-11-24",
-      "2026-11-27": "2026-11-25",
-      "2026-11-30": "2026-11-27",
-      "2026-12-01": "2026-11-30",
-      "2026-12-02": "2026-12-01",
-      "2026-12-03": "2026-12-02",
-      "2026-12-04": "2026-12-03"
-    },
-    "reparto": {
-      "2026-11-15": {
-        "de": "2026-11-10",
-        "titulo": "Domingo · plan del mar 10 (semana corrida) + revisión semanal S01 20:00 y cierre del OUTPUT S1 20:30",
-        "nota": "Semana corrida v6.06e: hoy toca el plan del mar 10 a sus horas + la revisión semanal S01 20:00-20:30 y el cierre del OUTPUT S1 20:30-20:45 (del sáb 7). El SHIP S1 va el dom 13-dic.",
-        "partes": [
-          {
-            "de": "2026-11-10",
-            "bloques": {
-              "vibe": 0,
-              "anki": 0,
-              "usmle": 0,
-              "syn": 0,
-              "biz": 0,
-              "rd": 0,
-              "aurum": 0,
-              "mir": 0,
-              "encaps": 0,
-              "liv": 0,
-              "eval": 0
-            }
-          },
-          {
-            "de": "2026-11-07",
-            "bloques": {
-              "revision": 765,
-              "biz": 765
-            }
-          }
-        ]
-      },
-      "2026-11-22": {
-        "de": "2026-11-18",
-        "titulo": "Domingo · plan del mié 18 (semana corrida) + revisión semanal S02 20:00",
-        "nota": "Semana corrida v6.06e: hoy toca el plan del mié 18 a sus horas + la revisión semanal S02 20:00-20:30 (del sáb 14). El OUTPUT S2 y el SHIP S2 van el dom 13-dic.",
-        "partes": [
-          {
-            "de": "2026-11-18",
-            "bloques": {
-              "vibe": 0,
-              "anki": 0,
-              "usmle": 0,
-              "syn": 0,
-              "biz": 0,
-              "rd": 0,
-              "aurum": 0,
-              "mir": 0,
-              "encaps": 0,
-              "liv": 0,
-              "eval": 0
-            }
-          },
-          {
-            "de": "2026-11-14",
-            "bloques": {
-              "revision": 765
-            }
-          }
-        ]
-      },
-      "2026-11-29": {
-        "de": "2026-11-26",
-        "titulo": "Domingo · plan del jue 26 (semana corrida) + revisión semanal S03 20:00 y cierre del OUTPUT S3 20:30",
-        "nota": "Semana corrida v6.06e: hoy toca el plan del jue 26 a sus horas + la revisión semanal S03 20:00-20:30 y el cierre del OUTPUT S3 20:30-20:45 (del sáb 21). El SHIP S3 va el dom 13-dic.",
-        "partes": [
-          {
-            "de": "2026-11-26",
-            "bloques": {
-              "vibe": 0,
-              "anki": 0,
-              "usmle": 0,
-              "syn": 0,
-              "biz": 0,
-              "rd": 0,
-              "aurum": 0,
-              "mir": 0,
-              "encaps": 0,
-              "liv": 0,
-              "eval": 0
-            }
-          },
-          {
-            "de": "2026-11-21",
-            "bloques": {
-              "revision": 765,
-              "biz": 765
-            }
-          }
-        ]
-      },
-      "2026-12-06": {
-        "de": "2026-12-04",
-        "titulo": "Domingo · plan del vie 4 (NBME 26) + revisión semanal S04 20:00 y cierre del OUTPUT S4 20:30",
-        "nota": "Semana corrida v6.06e: hoy toca el plan del vie 4 a sus horas (NBME 26) + la revisión semanal S04 20:00-20:30 y el cierre del OUTPUT S4 20:30-20:45 (del sáb 28). Mañana, lun 7-dic, el plan ya va en su fecha original. El SHIP S4 va el dom 20-dic.",
-        "partes": [
-          {
-            "de": "2026-12-04",
-            "bloques": {
-              "vibe": 0,
-              "anki": 0,
-              "usmle": 0,
-              "syn": 0,
-              "rd": 0,
-              "aurum": 0,
-              "mir": 0,
-              "encaps": 0,
-              "liv": 0,
-              "eval": 0
-            }
-          },
-          {
-            "de": "2026-11-28",
-            "bloques": {
-              "revision": 765,
-              "biz": 765
-            }
-          }
-        ]
-      },
-      "2026-12-13": {
-        "de": "2026-12-12",
-        "titulo": "Domingo de cierres · revisiones S05 y S06 · OUTPUT S2, S5 y S6 · SHIP S1, S2 y S3",
-        "nota": "Semana corrida v6.06e: el plan ya va en fecha; hoy se ponen al día los cierres: revisión S05 07:15 · OUTPUT S5 07:45 · revisión S06 08:30 · cierre S6 09:00 · OUTPUT S2 09:15 · SHIP S1 10:00-12:00 · SHIP S2 13:00-15:00 · SHIP S3 15:00-17:00 · Anki con FSRS Optimize 20:00 · Feynman S1, S2 y S3 desde las 20:30.",
-        "partes": [
-          {
-            "de": "2026-12-12",
-            "bloques": {
-              "anki-sab": -840,
-              "revision": 75,
-              "biz": 75
-            }
-          },
-          {
-            "de": "2026-12-05",
-            "bloques": {
-              "revision": 0,
-              "biz": 0,
-              "anki-sab": 60
-            }
-          },
-          {
-            "de": "2026-11-14",
-            "bloques": {
-              "biz": 90,
-              "pc": -120
-            }
-          },
-          {
-            "de": "2026-11-07",
-            "bloques": {
-              "pc": -300
-            }
-          },
-          {
-            "de": "2026-11-21",
-            "bloques": {
-              "pc": 0
-            }
-          },
-          {
-            "de": "2026-11-08",
-            "bloques": {
-              "feynman": 330
-            }
-          },
-          {
-            "de": "2026-11-15",
-            "bloques": {
-              "feynman": 340
-            }
-          },
-          {
-            "de": "2026-11-22",
-            "bloques": {
-              "feynman": 350
-            }
-          },
-          {
-            "de": "2026-12-13",
-            "bloques": {
-              "anki-dom": 0
-            }
-          }
-        ]
-      },
-      "2026-12-20": {
-        "de": "2026-12-19",
-        "titulo": "Domingo de cierres · revisión S07 · OUTPUT S7 · SHIP S4, S5 y S6",
-        "nota": "Semana corrida v6.06e: revisión S07 07:15 · OUTPUT S7 07:45 · SHIP S4 09:30-11:30 · SHIP S5 13:00-15:00 · SHIP S6 15:00-17:00 · Feynman S4, S5 y S6 desde las 20:00.",
-        "partes": [
-          {
-            "de": "2026-12-19",
-            "bloques": {
-              "anki-sab": -840,
-              "revision": 0,
-              "biz": 0
-            }
-          },
-          {
-            "de": "2026-11-28",
-            "bloques": {
-              "pc": -330
-            }
-          },
-          {
-            "de": "2026-12-05",
-            "bloques": {
-              "pc": -120
-            }
-          },
-          {
-            "de": "2026-12-12",
-            "bloques": {
-              "pc": 0
-            }
-          },
-          {
-            "de": "2026-11-29",
-            "bloques": {
-              "feynman": 300
-            }
-          },
-          {
-            "de": "2026-12-06",
-            "bloques": {
-              "feynman": 310
-            }
-          },
-          {
-            "de": "2026-12-13",
-            "bloques": {
-              "feynman": 320
-            }
-          },
-          {
-            "de": "2026-12-20",
-            "bloques": {
-              "anki-dom": 0
-            }
-          }
-        ]
-      },
-      "2026-12-27": {
-        "de": "2026-12-26",
-        "titulo": "Domingo de cierres · revisión S08 · SHIP S7 · avance S8",
-        "nota": "Semana corrida v6.06e: revisión S08 07:15 · SHIP S7 09:30-11:30 · Feynman S7 14:30 · Feynman S8 14:45 · avance S8 15:00-17:00.",
-        "partes": [
-          {
-            "de": "2026-12-26",
-            "bloques": {
-              "anki-sab": -840,
-              "revision": 0,
-              "pc": 0
-            }
-          },
-          {
-            "de": "2026-12-19",
-            "bloques": {
-              "pc": -330
-            }
-          },
-          {
-            "de": "2026-12-20",
-            "bloques": {
-              "feynman": -30
-            }
-          },
-          {
-            "de": "2026-12-27",
-            "bloques": {
-              "feynman": -15,
-              "anki-dom": 0
-            }
-          }
-        ]
-      },
-      "2027-01-03": {
-        "de": "2027-01-02",
-        "titulo": "Domingo de cierres · revisión S09 · SHIP S8",
-        "nota": "Semana corrida v6.06e: revisión S09 07:15 · SHIP S8 09:30-11:30 · Feynman 15:00 (opcional). El lun 4-ene empieza la intensiva ENCAPS.",
-        "partes": [
-          {
-            "de": "2027-01-02",
-            "bloques": {
-              "revision": 0,
-              "pc": -330
-            }
-          },
-          {
-            "de": "2027-01-03",
-            "bloques": {
-              "feynman": 0
-            }
-          }
-        ]
-      }
-    }
+    "alias": {},
+    "reparto": {}
   }
 };
 
@@ -615,17 +322,19 @@ export const DERIVADOS_V6 = {
   /** fin de la inducción SERUMS (inicio + 13 d) */
   adaptacionHasta: "2027-05-16",
   /** último día con estudio (D95: sesión mínima) = día de plan anterior al ritual */
-  ultimoDiaEstudio: "2027-10-22",
+  ultimoDiaEstudio: "2027-12-03",
   /** ritual de test-day = último día de plan < E−1 */
-  ritual: "2027-10-23",
-  viajeD1: "2027-10-24",
-  gonogo: "2027-09-06",
+  ritual: "2027-12-04",
+  viajeD1: "2027-12-05",
+  gonogo: "2027-10-18",
   convocatoriaTope: "2027-02-17",
   /** fecha a RESERVAR (FSMB/Prometric) con el ENCAPS vigente — DJ-1 */
-  reserva: "2027-10-25",
-  semanasF1: 9,
-  step1Semanas: 41,
-  diasF1: 42, diasF2: 50, diasF3: 32, diasF4: 150,
+  reserva: "2027-12-06",
+  semanasF1: 8,
+  step1Semanas: 46,
+  diasF1: 37, diasF2: 50, diasF3: 32, diasF4: 186,
+  /** v6.07: filas del tramo 1 del Step 1 = hábiles de F1 en step1.f1_dias_semana (mar · jue) */
+  diasStepF1: 15,
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -646,14 +355,14 @@ export interface FaseV6Info {
   provisional: boolean;
 }
 export const FASES_V6: FaseV6Info[] = [
-  {"id":"F1","nombre":"Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)","etiqueta":"F1 · STEP 1 TRAMO 1 (D1-D42)","desde":"2026-11-02","hasta":"2026-12-30","ultimoDiaPlan":"2026-12-30","diasPlan":42,"diasSemana":"L-V","provisional":false},
+  {"id":"F1","nombre":"Step 1 tramo 1 los mar · jue (07:15-12:00 + 18:00; Anki 05:00 todos los días) + ENCAPS las demás mañanas y la 16:15","etiqueta":"F1 · STEP 1 TRAMO 1 (D1-D15, mar · jue)","desde":"2026-11-09","hasta":"2026-12-30","ultimoDiaPlan":"2026-12-30","diasPlan":37,"diasSemana":"L-V","provisional":false},
   {"id":"TRANSICION","nombre":"Transición sin sesión (Anki opcional)","etiqueta":"TRANSICIÓN","desde":"2026-12-31","hasta":"2027-01-03","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":false},
   {"id":"F2","nombre":"ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki 30' L-V + sáb 07:45 20Q)","etiqueta":"F2 · ENCAPS INTENSIVA (examen dom 14-mar PROVISIONAL)","desde":"2027-01-04","hasta":"2027-03-14","ultimoDiaPlan":"2027-03-12","diasPlan":50,"diasSemana":"L-V","provisional":true},
   {"id":"LIBRE_POST_ENCAPS","nombre":"Lunes libre post-ENCAPS (protegido, DJ-2)","etiqueta":"LIBRE post-ENCAPS","desde":"2027-03-15","hasta":"2027-03-15","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
   {"id":"F3","nombre":"Step 1 tiempo completo 7h15 (F1 + 16:15 REENTRADA)","etiqueta":"F3 · STEP 1 TIEMPO COMPLETO","desde":"2027-03-16","hasta":"2027-05-02","ultimoDiaPlan":"2027-04-30","diasPlan":32,"diasSemana":"L-V","provisional":true},
-  {"id":"F4","nombre":"SERUMS 6 h (turno M/T variable) + Step 1 por plantilla de turno · L-S, domingo libre","etiqueta":"F4 · STEP 1 + SERUMS","desde":"2027-05-03","hasta":"2027-10-23","ultimoDiaPlan":"2027-10-23","diasPlan":150,"diasSemana":"L-S","provisional":true},
-  {"id":"EXAMEN","nombre":"D-1 viaje a Lima + EXAMEN Step 1","etiqueta":"EXAMEN STEP 1","desde":"2027-10-24","hasta":"2027-10-25","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
-  {"id":"F5","nombre":"Post-Step 1 (esbozo): MIR principal hasta el fin del SERUMS (~abr-2028)","etiqueta":"F5 · post-Step 1","desde":"2027-10-26","hasta":null,"ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
+  {"id":"F4","nombre":"SERUMS 6 h (turno M/T variable) + Step 1 por plantilla de turno · L-S, domingo libre","etiqueta":"F4 · STEP 1 + SERUMS","desde":"2027-05-03","hasta":"2027-12-04","ultimoDiaPlan":"2027-12-04","diasPlan":186,"diasSemana":"L-S","provisional":true},
+  {"id":"EXAMEN","nombre":"D-1 viaje a Lima + EXAMEN Step 1","etiqueta":"EXAMEN STEP 1","desde":"2027-12-05","hasta":"2027-12-06","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
+  {"id":"F5","nombre":"Post-Step 1 (esbozo): MIR principal hasta el fin del SERUMS (~abr-2028)","etiqueta":"F5 · post-Step 1","desde":"2027-12-07","hasta":null,"ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
 ];
 
 // ── conjuntos de días ──
@@ -738,15 +447,15 @@ export function protegidosDe(p: { encaps?: string; encapsProvisional?: boolean; 
   const vistos = new Set<string>();
   return lista.filter((x) => !vistos.has(x.fecha) && !!vistos.add(x.fecha)).sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
 }
-/** DJ-1 (Joseph): fecha a RESERVAR por fecha del ENCAPS — todos los escenarios ENCAPS → lun 25-oct-2027 (DJ-1 v6.04: examen lun 25-oct por decisión de Joseph; v6.00-v6.03: ≤ 21-mar → mar 31-ago · ≤ 11-abr → lun 27-sep · después → lun 25-oct). */
-export const DJ1_V6: { encapsHasta: string | null; examen: string }[] = [{"encapsHasta":null,"examen":"2027-10-25"}];
+/** DJ-1 (Joseph): fecha a RESERVAR por fecha del ENCAPS — todos los escenarios ENCAPS → lun 6-dic-2027 (DJ-1 v6.04: examen lun 6-dic por decisión de Joseph; v6.00-v6.03: ≤ 21-mar → mar 31-ago · ≤ 11-abr → lun 27-sep · después → lun 25-oct). */
+export const DJ1_V6: { encapsHasta: string | null; examen: string }[] = [{"encapsHasta":null,"examen":"2027-12-06"}];
 export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
   for (const x of DJ1_V6) if (x.encapsHasta === null || encaps <= x.encapsHasta) return x.examen;
   return FECHAS_V6.step1.planB; // inalcanzable: la última fila de DJ-1 no tiene tope
 }
 /** Fecha a RESERVAR guardada en el JSON (validada = DJ-1, o la regla de cálculo si fue más tardía) o, si el escenario no está, DJ-1. */
 export function reservaStep1(encaps: string = FECHAS_V6.encaps.examen): string { return FECHAS_V6.step1.reserva_por_encaps[encaps] ?? reservaDJ1(encaps); }
-/** STEP1_SEMANAS de un escenario = SEMANAS_F1 (9, derivado de f1.inicio → f1.fin; v6.00: 13) + semanas(lunes del reinicio → lunes del examen). */
+/** STEP1_SEMANAS de un escenario = SEMANAS_F1 (8, derivado de f1.inicio → f1.fin; v6.00: 13) + semanas(lunes del reinicio → lunes del examen). */
 export function step1SemanasDe(reinicio: string = FECHAS_V6.step1.reinicio, examen: string = FECHAS_V6.step1.examen): number {
   return SEMANAS_F1 + _diff(_lunesDe(reinicio), _lunesDe(examen)) / 7;
 }
@@ -772,11 +481,14 @@ export function esDiaPlan(iso: string, plan?: PlanV6): boolean {
     if (plan === 'encaps') return iso === DERIVADOS_V6.d1HabilEncaps;
     return false;
   }
-  if (plan === 'usmle') return !enPausaStep1(iso) && iso <= FECHAS_V6.step1.ritual;
+  // v6.07: en F1 el Step 1 solo tiene fila los días de step1.f1_dias_semana (mar · jue)
+  if (plan === 'usmle') return !enPausaStep1(iso) && iso <= FECHAS_V6.step1.ritual && (iso > FECHAS_V6.f1.fin || FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso)));
   if (plan === 'encaps') return iso < FECHAS_V6.encaps.examen;
   return true;
 }
-/** Fase v6 de una fecha. Antes del D1 (≤ dom 1-nov-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
+/** v6.07 · ¿tiene el Step 1 mañana de plan en F1 este día de la semana? (step1.f1_dias_semana; fuera de F1, siempre true) */
+export function esDiaStepF1(iso: string): boolean { return iso < FECHAS_V6.f1.inicio || iso > FECHAS_V6.f1.fin || FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso)); }
+/** Fase v6 de una fecha. Antes del D1 (≤ dom 8-nov-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
 export function faseV6(iso: string): FaseV6 {
   if (iso < FECHAS_V6.f1.inicio) return 'F1';
   for (const x of FASES_V6) if (iso >= x.desde && (x.hasta === null || iso <= x.hasta)) return x.id;
@@ -785,12 +497,12 @@ export function faseV6(iso: string): FaseV6 {
 export function faseV6Info(iso: string): FaseV6Info { const id = faseV6(iso); return FASES_V6.find((x) => x.id === id) ?? (FASES_V6[0] as FaseV6Info); }
 
 // ── semana del Step 1 (definición única; antes en homeBriefing — §F, r2 · I7) ──
-/** Semanas de F1 (S1 = semana del lun 2-nov → S9 = semana del lun 28-dic). */
-export const SEMANAS_F1 = 9;
-/** 41 = 9 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 25-oct); la semana del examen queda fuera (etiqueta 'examen'). */
-export const STEP1_SEMANAS = 41;
+/** Semanas de F1 (S1 = semana del lun 9-nov → S8 = semana del lun 28-dic). */
+export const SEMANAS_F1 = 8;
+/** 46 = 8 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 6-dic); la semana del examen queda fuera (etiqueta 'examen'). */
+export const STEP1_SEMANAS = 46;
 export interface SemanaStep1 {
-  /** 0 = antes del D1 · 1-9 = F1 · 9 durante la PAUSA (no avanza) · 10-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
+  /** 0 = antes del D1 · 1-8 = F1 · 8 durante la PAUSA (no avanza) · 9-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
   n: number;
   /** STEP1_SEMANAS */
   total: number;
@@ -811,8 +523,8 @@ export interface SemanaStep1Extras {
   deloads?: { lunes: string; motivo: string }[];
 }
 /**
- * Semana del Step 1 (lunes→domingo; determinista, sin reloj): S1-S9 = F1 · pausa (lun 4-ene → semana del ENCAPS) →
- * { pausa: true } · desde la semana del reinicio 9 + k · semana del examen → { examen: true }.
+ * Semana del Step 1 (lunes→domingo; determinista, sin reloj): S1-S8 = F1 · pausa (lun 4-ene → semana del ENCAPS) →
+ * { pausa: true } · desde la semana del reinicio 8 + k · semana del examen → { examen: true }.
  */
 export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): SemanaStep1 {
   const lunes = _lunesDe(iso), lunRein = _lunesDe(FECHAS_V6.step1.reinicio);
@@ -831,7 +543,7 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
   };
 }
 
-// ── v6.06e: semana 1 corrida (orden de Joseph del vie 6-nov-2026) ──
+// ── v6.07: semana 1 corrida (orden de Joseph del dom 8-nov-2026) ──
 /** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
 export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
@@ -839,8 +551,8 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · sáb 14-nov · sáb 21-nov · sáb 28-nov · sáb 5-dic · sáb 12-dic · sáb 19-dic · sáb 26-dic · sáb 2-ene sin sesión · dom 8-nov = plan del lun 2-nov · lun 9-nov = plan del mar 3-nov · mar 10-nov = plan del mié 4-nov · mié 11-nov = plan del jue 5-nov · jue 12-nov = plan del vie 6-nov · vie 13-nov = plan del lun 9-nov · lun 16-nov = plan del mié 11-nov · mar 17-nov = plan del jue 12-nov · mié 18-nov = plan del vie 13-nov · jue 19-nov = plan del lun 16-nov · vie 20-nov = plan del mar 17-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · jue 26-nov = plan del mar 24-nov · vie 27-nov = plan del mié 25-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · dom 15-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mar 10-nov / revision+biz del sáb 7-nov · dom 22-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del mié 18-nov / revision del sáb 14-nov · dom 29-nov = vibe+anki+usmle+syn+biz+rd+aurum+mir+encaps+liv+eval del jue 26-nov / revision+biz del sáb 21-nov · dom 6-dic = vibe+anki+usmle+syn+rd+aurum+mir+encaps+liv+eval del vie 4-dic / revision+biz del sáb 28-nov · dom 13-dic = anki-sab+revision+biz del sáb 12-dic / revision+biz+anki-sab del sáb 5-dic / biz+pc del sáb 14-nov / pc del sáb 7-nov / pc del sáb 21-nov / feynman del dom 8-nov / feynman del dom 15-nov / feynman del dom 22-nov / anki-dom del dom 13-dic · dom 20-dic = anki-sab+revision+biz del sáb 19-dic / pc del sáb 28-nov / pc del sáb 5-dic / pc del sáb 12-dic / feynman del dom 29-nov / feynman del dom 6-dic / feynman del dom 13-dic / anki-dom del dom 20-dic · dom 27-dic = anki-sab+revision+pc del sáb 26-dic / pc del sáb 19-dic / feynman del dom 20-dic / feynman+anki-dom del dom 27-dic · dom 3-ene = revision+pc del sáb 2-ene / feynman del dom 3-ene.
- * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov sin sesión.
+ * null fuera de esos días (sin alias ni reparto: los planes, Supabase, runners y guías ya están re-fechados por el corrimiento).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {
   const c = FECHAS_V6.corrida_s1;
@@ -852,7 +564,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /**

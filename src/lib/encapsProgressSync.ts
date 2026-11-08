@@ -1,5 +1,5 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.06: MANTENIMIENTO D1-D42 lun 2-nov → mié 30-dic-2026 + INTENSIVA dia 43-92 + carril SÁBADO 09:30 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.07: MANTENIMIENTO D1-D37 lun 9-nov → mié 30-dic-2026 + INTENSIVA dia 38-87 + carril SÁBADO 09:30 + carril VIERNES 16:15 · v6.06: D1-D42 lun 2-nov + INTENSIVA 43-92 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
  * INTENSIVA dia 53-102 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v6.01: D1-D57 lun 12-oct →
  * mié 30-dic + INTENSIVA dia 58-107 (mismas fechas) · v6.00: D1-D60 mié 7-oct →
  * mié 30-dic + INTENSIVA dia 61-110 (mismas fechas) · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
@@ -45,6 +45,10 @@
  * v6.05 con sus mismas fechas (dia − 5: 75, 76, 78 mini-sim, 79, 80, 81, 83, 84 mini-sim, 85, 86, 88, 89, 90 mini-sim) + 5 de v6.06 en el CARRIL SÁBADO
  * 09:30 (fila del viernes host, claves D{dia}:s_*): sáb 9-ene III-5 · 16-ene II-5 · 23-ene I-4 · 30-ene IV-1 (cierre 'carril_b') · sáb 6-feb MINI-SIM
  * 25Q II-9 + II-7 (cierre 'mini_sim', sim_n 1067 = 1000 + dia del viernes host).
+ * v6.07 (8-nov-2026): corrimiento a D1 = lun 9-nov (la semana del 2-nov sin estudio) → F1 D1-D37 + INTENSIVA dia 38-87 (mismas fechas). Sin cambio de
+ * código: sim_n = dia de la fila (mini-sims F1 5…30 · pre-test 42 · SIM 100Q 47-82, los de la quincena final lun 1 / mié 3 / vie 5-mar = 78 / 80 / 82 ·
+ * dress 86). Pendientes F1: 13 lun-jue con sus fechas (dia 70 … 85; mini-sims sim_n 73 / 79 / 85) + 9 sábados (sim_n 1062 y 1082 para los mini-sims del
+ * sáb 6-feb y del sáb 6-mar) + el CARRIL VIERNES del vie 5-mar (V-2 #5, claves D82:b_*, cierre 'carril_b').
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

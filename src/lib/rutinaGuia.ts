@@ -9,9 +9,10 @@
  *   13:00 BUSINESS (L-V, NUEVA)       guiaBusinessDe      · 25′ (L) · OUTPUT viernes 25′ + sábado 15′ (ver «Business» abajo)
  *   14:15 AURUM (L-V)                 guiaAurumDe         · 60′ en F1 (30′ desde el 4-ene, DJ-4) · vídeo CONCRETO + drill + lectura
  *   17:15 LIVIANO (L-V)               guiaLivianoDe       · 45′ = 25′ estudio (sección + palabras) + 20′ aplicación · viernes = caso
- *   sáb 07:15 REVISIÓN SEMANAL        guiaRevisionDe      · 30′ con el fichero S<NN>_<sábado>.md
- *   sáb 15:00 SHIP + SYNAPSE (PC)     guiaShipDe          · 120′ = SHIP del proyecto 90′ + SYNAPSE A/B/C 30′ (taper: PC 30′/0′ + A/B/C)
- *   dom 15:00 FEYNMAN (opcional)      guiaFeynmanDe       · 10′
+ *   sáb 14:00 REVISIÓN SEMANAL        guiaRevisionDe      · 30′ con el fichero S<NN>_<sábado>.md (v6.07: 14:00 en F1 y la transición; 07:15 en el resto)
+ *   sáb 13:30 SYNAPSE A/B/C           guiaSynapseDe       · 30′ (v6.07; en F2/F3 a las 15:00) — hasta v6.06 iba dentro del PC del sábado 15:00
+ *   dom SHIP del vibecoding (PC)      guiaShipDe          · 120′ flexible, sin hora fija (v6.07; hasta v6.06 sáb 15:00 con el SYNAPSE A/B/C)
+ *   dom FEYNMAN (opcional)            guiaFeynmanDe       · 10′ flexible
  * Hecho A MANO (no es un .ts generado): REGLAS para todos los días de cada plan (lee las filas de los .ts generados, que NO cambian) +
  * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.05: lun 26-oct → dom 1-nov; v6.06: lun 2 → dom 8-nov; desde v6.03 la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
  * sigue al plan cuando corre — ver vibeS1(k), SYN_CUR_PIEZAS, BIZ_TRAMO y LIV_LECT) y de los recursos con URL verificada el dom 18-oct-2026 (YouTube: título, canal y
@@ -31,6 +32,13 @@
  * v6.06 (fix 31-oct-2026): guiaAurumDe avisa (1.er aviso) cuando AURUM cae en un día de HITO USMLE de F1/F3 (hitoUsmleDe: nombre y franja del `sub`
  * de la fila 🎯): el hito es por la mañana y AURUM va a su hora, tras el hito — sin mover la fecha. Caso que lo motivó: D35 = PITCH v2 el vie 18-dic,
  * día del NBME 27 (07:00-12:30) y del CHECKPOINT DEL AÑO de ENCAPS (16:15, encapsGuia), los tres nombrados. Control en check_rutina_guia.js.
+ * v6.07 (dom 8-nov-2026 · D1 = lun 9-nov · orden de Joseph: «sábados 14-17 libres para el en vivo de Theomed; domingos flexibles»): el SÁBADO de F1 y
+ * de la transición (sabadoTheomed) = 13:30 SYNAPSE A/B/C (guiaSynapseDe, ya no dentro del PC) · 14:00 REVISIÓN SEMANAL (guiaRevisionDe; antes 07:15) ·
+ * 14:30 cierre Business (bizFranjaDe; antes 07:45; un OUTPUT entero de 40′ va a las 17:15, tras la clase) · 14:45-15:00 preparar la clase y 15:00-17:00
+ * THEOMED EN VIVO (encapsManana) · 19:00 Anki. El PC (SHIP del vibecoding · avance · PC del taper) pasa al DOMINGO, flexible y sin hora fija
+ * (guiaShipDe lee vibePCDomingo; su franja 15:00-17:00 es solo un ejemplo), con el Feynman (guiaFeynmanDe, ejemplo 14:50-15:00). En F2 el sábado
+ * conserva la revisión 07:15 y el Business 09:15 (decisión abierta de Joseph para los sábados de 2027) y su SYNAPSE A/B/C va a las 15:00 (donde
+ * estaba dentro del PC).
  *
  * Decisiones de carga (v6.02c, E5 — escritas también en los avisos de cada bloque):
  *  · BUSINESS no tenía franja ni aparecía en el Home: va a 13:00-13:25 (L-V), la franja «LECTURA DE LIBRO 13:00-13:15» del Calendar (cuya
@@ -51,7 +59,7 @@
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { minutosFranja } from './guia';
 import {
-  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCSabado, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCDomingo, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
 import { SYN_DIAS, synDiaDe } from './synapseDailyPlan';
@@ -80,8 +88,16 @@ const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'o
 const fCorta = (iso: string): string => `${WD_C[dow(iso)]} ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`;
 /** Siguiente día de la semana `wd` (0 = dom … 6 = sáb) estrictamente posterior a `iso`. */
 const siguienteDow = (iso: string, wd: number): string => addDias(iso, ((wd - dow(iso) + 6) % 7) + 1);
-/** v6.06e: cuándo se cierra el OUTPUT: el sábado de plan, o su domingo real si ese sábado se corrió (la fecha de plan la traduce fechasRealesEnTexto). */
-const cierreOutput = (iso: string): string => { const sab = addDias(iso, 6 - dow(iso)); return fechaRealDe(sab, 'business') === sab ? `el sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'}` : `en el cierre del ${fCorta(sab)}`; };
+/** v6.07: sábado de F1 o de la transición = sábado con la clase EN VIVO de Theomed 15:00-17:00 (14:00 revisión · 14:30 Business · 13:30 SYNAPSE).
+ *  En F2+ el sábado sigue como estaba (07:15 revisión · F2 09:15 Business) hasta que Joseph decida los sábados de 2027. */
+export const sabadoTheomed = (iso: string): boolean => dow(iso) === 6 && iso >= FECHAS_V6.f1.inicio && iso <= FECHAS_V6.transicion.hasta;
+/** v6.07: hora de inicio de la REVISIÓN SEMANAL del sábado `iso` (14:00 con la clase en vivo · 07:15 en el resto). */
+export const revisionIniDe = (iso: string): string => (sabadoTheomed(iso) ? '14:00' : '07:15');
+/** v6.07: inicio del cierre de Business del sábado `sab` (tras la revisión): 14:30 con la clase en vivo · F2 09:15 (tras el STEP 1 VIVO) · resto 07:45. */
+const bizSabIni = (sab: string): string => (sabadoTheomed(sab) ? '14:30' : faseV6(sab) === 'F2' ? '09:15' : '07:45');
+/** v6.06e: cuándo se cierra el OUTPUT: el sábado de plan, o su domingo real si ese sábado se corrió (la fecha de plan la traduce fechasRealesEnTexto).
+ *  v6.07: la hora del sábado sale de bizSabIni (14:30 en F1). */
+const cierreOutput = (iso: string): string => { const sab = addDias(iso, 6 - dow(iso)); return fechaRealDe(sab, 'business') === sab ? `el sábado ${bizSabIni(sab)}` : `en el cierre del ${fCorta(sab)}`; };
 const yt = (id: string, seg?: number): string => `https://www.youtube.com/watch?v=${id}${seg ? `&t=${seg}s` : ''}`;
 const mmss = (s: number): string => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const minDe = (seg: number): number => Math.ceil(seg / 60);
@@ -348,6 +364,11 @@ export const encapsOnceATrece = (iso: string): boolean => SIM_F2_11.has(iso) || 
 /** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30) ·
  *  v6.05 (fix): ENCAPS 11:00-13:00 de F2 (SIM #7/#8 · D-2) → 13:00 (antes 12:30, solapado 30′ con el SIM). */
 export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: string } {
+  // v6.07: el SÁBADO el SYNAPSE A/B/C ya no va dentro del PC (el PC pasó al domingo): 13:30-14:00 los sábados con la clase en vivo (antes de la
+  //   revisión de las 14:00) · 15:00 en el resto (F2/F3: donde estaba dentro del PC)
+  if (dow(iso) === 6) return sabadoTheomed(iso)
+    ? { franja: franjaDesde('13:30', min), aviso: 'Sábado: A/B/C a las 13:30, antes de la revisión semanal (o en cualquier tiempo muerto del sábado). El SHIP del vibecoding pasó al domingo: 15:00-17:00 es la clase EN VIVO de Theomed.' }
+    : { franja: franjaDesde('15:00', min), aviso: 'Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto). El SHIP del vibecoding es el domingo.' };
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
   if (h?.nbme) return { franja: franjaDesde('13:00', min), aviso: 'Día de NBME (07:00-12:30): almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (guía USMLE del hito).' };
@@ -357,7 +378,7 @@ export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: st
 export function guiaSynapseDe(iso: string): GuiaBloque | null {
   const s = synDiaDe(iso);
   const w = dow(iso);
-  if (!s || w === 0 || w === 6) return null; // sábado → guiaShipDe · domingo → guiaFeynmanDe
+  if (!s || w === 0) return null; // domingo → guiaShipDe (PC) + guiaFeynmanDe · v6.07: el sábado (A/B/C sin PC) sí sale de aquí
   const abc = s.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   if (!abc.length) return null;
   const min = abc.reduce((a, b) => a + b.min, 0);
@@ -370,10 +391,12 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
       planB: 'Sin PC: B y C en el móvil y A pasa al bloque PC de la semana. Academy/Skilljar caído: adelanta B + C y deja A para mañana.' });
 }
 
-// ═══════════════════════════════ sábado 15:00 · SHIP + SYNAPSE · domingo · FEYNMAN ═══════════════════════════════
+// ═══════════════════════ domingo (flexible) · SHIP del vibecoding (PC) + FEYNMAN — v6.07; hasta v6.06, sábado 15:00 ═══════════════════════
+/** v6.07: PC del DOMINGO (SHIP · avance · PC opcional del taper; vibePCDomingo), flexible y sin hora fija: la franja 15:00-17:00 de la guía es
+ *  solo un ejemplo (el bloque de plantillasV6 no tiene hora). Si ese día el SYNAPSE trajera A/B/C, van detrás (hoy el domingo solo trae R + PC). */
 export function guiaShipDe(iso: string): GuiaBloque | null {
-  if (dow(iso) !== 6) return null;
-  const pcs = vibePCSabado(iso);
+  if (dow(iso) !== 0) return null;
+  const pcs = vibePCDomingo(iso);
   const s = synDiaDe(iso);
   const abc = (s?.bloques ?? []).filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   const pcMin = (s?.bloques ?? []).filter((b) => b.tag === 'PC').reduce((a, b) => a + b.min, 0);
@@ -382,7 +405,8 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
   const main = pcs[pcs.length - 1];
   const pasos: GuiaPaso[] = [];
   const recursos: GuiaRecurso[] = [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))];
-  let titulo = 'SYNAPSE del sábado';
+  const masABC = abc.length ? ' + SYNAPSE A/B/C' : '';
+  let titulo = 'SYNAPSE del domingo';
   let hecho = 'A/B/C del SYNAPSE hechos';
   let aviso: string | undefined;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
@@ -390,32 +414,34 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     const p = main.proyecto;
     const shipMin = (pcMin >= 120 ? 120 : pcMin || 120) - abcMin;
     const manual = p.verificacion.map((v, i) => (v.tipo === 'manual' ? i + 1 : 0)).filter(Boolean);
-    titulo = main.tipo === 'ship' ? `SHIP S${p.s} · ${p.nombre} + SYNAPSE A/B/C` : `AVANCE S${p.s} (aún no termina) + SYNAPSE A/B/C`;
+    titulo = `${main.tipo === 'ship' ? `SHIP S${p.s} · ${p.nombre}` : `AVANCE S${p.s} (aún no termina)`}${masABC} · domingo, sin hora fija`;
     p.docs.forEach((d) => recursos.push(R(d.label, d.url)));
     if (main.tipo === 'ship') {
       pasos.push(
         P(5, 'ABRIR el journal de la semana + leer los criterios de aceptación', `\`${JOURNAL_CMD}\` → cabecera «Criterios de aceptación» (${p.aceptacion.length}).`, journal),
         P(10, `VERIFY en seco: node DATA/_scripts/verify_vibecoding.js ${p.s} --dry`, 'Desde D:\\joseph-md-app. Lista los criterios ✓/✗ sin escribir nada.'),
-        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `En el orden de los criterios: ${p.aceptacion.map((a, i) => `(${i + 1}) ${a.split('→')[0].slice(0, 70).trim()}`).join(' · ')}. Si todo está verde, el tiempo que sobra es libre (o adelantas el Feynman del domingo).`),
+        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `En el orden de los criterios: ${p.aceptacion.map((a, i) => `(${i + 1}) ${a.split('→')[0].slice(0, 70).trim()}`).join(' · ')}. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
         P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
           manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
             : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
         P(15, 'JOURNAL · «Cierre de semana»', `shipped sí/no · criterios x/${p.verificacion.length} · evidencia (commit/URL/test) · lección de la semana (1 línea). Lo que no cerró NO pasa a S${p.s + 1}.`, journal),
       );
-      hecho = `verify_vibecoding.js ${p.s} con SHIPPED ${p.verificacion.length}/${p.verificacion.length} (o el fallo escrito en el journal) + SYNAPSE A/B/C`;
+      hecho = `verify_vibecoding.js ${p.s} con SHIPPED ${p.verificacion.length}/${p.verificacion.length} (o el fallo escrito en el journal)${masABC}`;
     } else {
       pasos.push(
         P(5, 'ABRIR el journal y ver qué paso del proyecto falta', `\`${JOURNAL_CMD}\`; el proyecto termina el ${p.fin} y su SHIP es el ${p.ship}.`, journal),
         P(shipMin - 15, `AVANZAR S${p.s}: los pasos que faltan`, `${VIBE_COMO_TIPO.construir} Hoy no hay verify (aún no termina).`),
         P(10, 'JOURNAL · qué avanzó + qué falta', '3 líneas.', journal),
       );
-      hecho = 'avance del proyecto escrito en el journal + SYNAPSE A/B/C';
+      hecho = `avance del proyecto escrito en el journal${masABC}`;
     }
-    if (pcMin && pcMin + abcMin > 120) aviso = `El plan suma ${pcMin + abcMin}′ (PC ${pcMin}′ + A/B/C ${abcMin}′) y el Calendar reserva 120′ (15:00-17:00): ${main.tipo === 'ship' ? 'SHIP' : 'avance'} ${shipMin}′ + SYNAPSE ${abcMin}′. Si el verify da verde antes, el resto es libre.`;
+    if (pcMin && pcMin + abcMin > 120) aviso = `El plan suma ${pcMin + abcMin}′ (PC ${pcMin}′ + A/B/C ${abcMin}′) y el PC del domingo son 2 h: ${main.tipo === 'ship' ? 'SHIP' : 'avance'} ${shipMin}′ + SYNAPSE ${abcMin}′. Si el verify da verde antes, el resto es libre.`;
   } else if (pcs.length) {
     // taper: PC opcional (30′ mantenimiento · 0′ deload) — pueden ser 2 (S16 desplazado + S17).
     // v6.05 (fix 24-oct): la guía nombra TODAS las piezas PC del sábado (sáb 20-feb-2027: S16 30′ + S17 0′); antes la de 0′ no aparecía en
     //   ningún sitio (sin paso, sin título, sin aviso). Las de 0′ van en el título y en el aviso (un paso no puede durar 0′).
+    //   v6.07: lo mismo el DOMINGO (dom 7-mar-2027: S16 30′ + S17 0′). Un domingo con SOLO piezas de 0′ y sin A/B/C no tiene guía (Σ = 0′):
+    //   plantillasV6 lo dice en las notas del día.
     const piezas: string[] = []; const ceros: string[] = [];
     for (const x of pcs) {
       const t = x.taper;
@@ -427,16 +453,17 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     }
     const hayPC = pasos.length > 0;
     const lista = piezas.length > 1 ? ` (${piezas.join(' · ')})` : '';
-    titulo = hayPC ? `PC opcional del taper${lista} + SYNAPSE A/B/C` : `SYNAPSE A/B/C del sábado (taper: PC de 0′${lista})`;
-    hecho = hayPC ? 'sensores en verde (o el rojo anotado) + SYNAPSE A/B/C' : 'SYNAPSE A/B/C del sábado';
+    titulo = hayPC ? `PC opcional del taper${lista}${masABC} · domingo, sin hora fija` : `SYNAPSE A/B/C (taper: PC de 0′${lista})`;
+    hecho = hayPC ? `sensores en verde (o el rojo anotado)${masABC}` : 'SYNAPSE A/B/C';
     if (ceros.length) aviso = `Además hoy: ${ceros.join(' · ')}`;
   }
   abc.forEach((b) => pasos.push(pasoSyn(b, iso)));
   abc.filter((b) => b.url).forEach((b) => recursos.push(R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })));
   const total = sumMin(pasos);
   if (!total) return null;
-  return bloque(franjaDesde('15:00', total), 'vibecoding', titulo, pasos, recursos, hecho, { aviso, flex: 2,
-    planB: 'Sin PC el sábado: el SHIP se hace el domingo 15:00 (franja «repaso + PC domingo» del Calendar); nunca se arrastra al proyecto siguiente.' });
+  const flexTxt = `Domingo flexible: sin hora fija, a la hora que puedas (la franja ${franjaDesde('15:00', total).replace('–', '-')} es solo un ejemplo).`;
+  return bloque(franjaDesde('15:00', total), 'vibecoding', titulo, pasos, recursos, hecho, { aviso: [flexTxt, aviso].filter(Boolean).join(' '), flex: 2,
+    planB: 'Sin PC el domingo: el lunes 04:15 empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.' });
 }
 export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   if (dow(iso) !== 0) return null;
@@ -444,11 +471,12 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   const r = s?.bloques.find((b) => b.tag === 'R' && b.min >= 10 && /^Feynman/.test(b.material));
   if (!s || !r) return null;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
-  return bloque(franjaDesde('15:00', r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
+  // v6.07: el domingo es flexible (sin hora fija): la franja 14:50-15:00 es solo un ejemplo, justo antes del SHIP (lo que no sabes explicar = lo que falta)
+  return bloque(franjaDesde('14:50', r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
     P(Math.ceil(r.min / 2), 'Explica en voz alta qué construiste esta semana y CÓMO funciona (sin mirar el código)', 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
     P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
   ], [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
-    aviso: 'Domingo LIBRE: esto es opcional. El Calendar reserva 15:00-17:00 («repaso + PC domingo») pero el plan solo pide 10′; el resto no se rellena.',
+    aviso: `Opcional y sin hora fija (${franjaDesde('14:50', r.min).replace('–', '-')} es solo un ejemplo): mejor justo antes del SHIP del vibecoding, porque lo que no sabes explicar es lo que falta.`,
   });
 }
 
@@ -747,8 +775,11 @@ export function bizFranjaDe(iso: string): { ini: string; fin: string; sabado?: b
   if (w === 6) {
     const outs = bizOutputsDeSemana(iso);
     if (!outs.length) return null;
-    const ini = faseV6(iso) === 'F2' ? '09:15' : '07:45';
-    return { ini, fin: aHHMM(aMin(ini) + outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0)), sabado: true };
+    const total = outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0);
+    // v6.07: con la clase en vivo (F1 y transición) el cierre va a las 14:30, tras la revisión de las 14:00 y antes de preparar la clase (14:45);
+    //   si no cabe en esos 15′ (OUTPUT entero de 40′), va a las 17:15, después de la clase
+    const ini = sabadoTheomed(iso) && total > 15 ? '17:15' : bizSabIni(iso);
+    return { ini, fin: aHHMM(aMin(ini) + total), sabado: true };
   }
   const r = bizDiaDe(iso);
   if (!r || bizModo(r) === 'DESCANSO' || w === 0) return null;
@@ -770,11 +801,11 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       if (entero) pasos.push(
         P(1, `${/^OUTPUT/.test(nom) ? nom : `OUTPUT · ${nom}`} (${r.wd} ${r.fecha.slice(8)})`, `El ${r.wd.toLowerCase()} fue día de ${hitoDe(r.fecha)?.nbme ? 'NBME' : 'SIM 100Q del ENCAPS a las 11:00 (SYNAPSE a las 13:00)'}: el OUTPUT entero se hace hoy.`),
         P(25, `Escribir el entregable: ${r.lectura}`, `1 página en Obsidian (01_PULSO): ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
-        P(10, 'TRACKER semanal (1 fila): sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · lecturas L 4/4 · output 1', 'Con los datos de la semana que acaba de cerrar (los mismos de la revisión semanal de las 07:15).'),
+        P(10, 'TRACKER semanal (1 fila): sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · lecturas L 4/4 · output 1', `Con los datos de la semana que acaba de cerrar (los mismos de la revisión semanal de las ${revisionIniDe(iso)}).`),
         P(4, 'Cerrar: releer y marcar ✓', 'Empresa › Business (Estudio Pulso) › HOY.'),
       );
       else pasos.push(
-        P(10, `TRACKER semanal (1 fila) del ${nom}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${r.fecha.slice(8)}: la fila se llena con la semana cerrada (mismos datos de la revisión de las 07:15).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
+        P(10, `TRACKER semanal (1 fila) del ${nom}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${r.fecha.slice(8)}: la fila se llena con la semana cerrada (mismos datos de la revisión de las ${revisionIniDe(iso)}).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
         P(5, `Releer la página del ${nom} y cerrarla`, 'Corrige 1 cosa; ✓ en Empresa › Business › HOY.'),
       );
     }
@@ -792,7 +823,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     const pasos = [
       P(1, `${/^OUTPUT/.test(r.lectura) ? r.lectura.split(':')[0] : `OUTPUT · ${r.lectura.split(':')[0]}`}`, 'Lee el entregable y la acción.'),
       P(22, `Escribir: ${r.lectura}`, `Página nueva en Obsidian › 02_EMPRESA FINANZAS › 01_PULSO. ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00). Terminado > perfecto.`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
-      P(2, 'Guardar', `El sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'} (tras la revisión semanal): tracker semanal + cierre (15′).`),
+      P(2, 'Guardar', `El sábado ${bizSabIni(addDias(iso, 6 - dow(iso)))} (tras la revisión semanal): tracker semanal + cierre (15′).`),
     ];
     return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.lectura.split(':')[0]} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
       { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ ${cierreOutput(iso)} (tracker + cierre).`].join(' ') });
@@ -841,9 +872,10 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const prep = primera
     ? `Semana 2: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4) · velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea el lunes journal_hoy.js.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
-  return bloque('07:15–07:45', 'revision', `REVISIÓN SEMANAL · ${fichero.replace('.md', '')}`, [
+  const ini = revisionIniDe(iso); // v6.07: 14:00 los sábados con la clase en vivo de Theomed (F1 y transición) · 07:15 en el resto
+  return bloque(franjaDesde(ini, 30), 'revision', `REVISIÓN SEMANAL · ${fichero.replace('.md', '')}`, [
     P(3, `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: \`node DATA/_scripts/gen_revision_semanal.js ${iso}\` → crea DATA/USMLE/REVISIONES/${fichero} y actualiza _semanas.json.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
-    P(8, 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (UWSA1 = baseline, sin juicio)' : ''} · 4 ENCAPS mini-sim /25 del viernes · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
+    P(8, 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (UWSA1 = baseline, sin juicio)' : ''} · 4 ENCAPS: mini-sim /25 del viernes${sabadoTheomed(iso) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
     P(6, 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),
     P(5, 'PREPARAR la semana siguiente', prep),

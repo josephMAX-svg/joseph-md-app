@@ -14,6 +14,9 @@
 //   Misma regla (sin cambio de lógica).
 // v6.06 (31-oct-2026): F1 = {D1-D41, D55} (42 hábiles, lun 2-nov → mié 30-dic; el NBME 27 = v5.20 D40 sigue en F1, adelantado al slot 35) y
 //   el tramo 2 lleva D42-D54, D56, D57, D79 → 53 dOrig. Misma regla; por defecto lee la referencia v6.06.
+// v6.07 (8-nov-2026): F1 del Step = 15 mañanas (mar · jue) y regla nueva: un hito de F1 que no cabe con su Day-After completo va al tramo 2
+//   (fila 'hito' con su dOrig). Regla general: las filas de F1 en el tramo 2 = las ÚLTIMAS de temario no-hito + los ÚLTIMOS hitos de F1 (v6.07:
+//   D16-D24, D26-D39, D41-D54, D56, D57, D79 + NBME 26/27/28 = D25, D40, D55 → 80 dOrig). Con 42 slots (v6.06) no hay hitos en el tramo 2.
 // Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.06)
 const V = require('./dias_v520.json');
 const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_25oct_v606.json');
@@ -30,8 +33,10 @@ const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43 �
 const esHito = (d) => /^🎯/.test(V.find((y) => y.d === d).sub);
 const noHito = ORIGEN_F1_TEMARIO.filter((d) => !esHito(d));
 const despl = ORIGEN_F1_TEMARIO.filter((d) => enT2.has(d));
-const prefijo = !despl.some(esHito) && JSON.stringify(despl) === JSON.stringify(noHito.slice(noHito.length - despl.length));
-if (!prefijo) console.log('las filas de F1 en el tramo 2 no son las últimas de temario no-hito del orden D1-D57 · D79 (o hay un hito de F1 en el tramo 2): ' + despl.join(','));
+// v6.07: + los hitos de F1 que salen al tramo 2 tienen que ser los ÚLTIMOS hitos de F1 (sufijo de D1, D10, D25, D40, D55)
+const hitosF1 = ORIGEN_F1_TEMARIO.filter(esHito), desplH = despl.filter(esHito), desplN = despl.filter((d) => !esHito(d));
+const prefijo = JSON.stringify(desplN) === JSON.stringify(noHito.slice(noHito.length - desplN.length)) && JSON.stringify(desplH) === JSON.stringify(hitosF1.slice(hitosF1.length - desplH.length));
+if (!prefijo) console.log('las filas de F1 en el tramo 2 no son las últimas de temario no-hito del orden D1-D57 · D79 más los últimos hitos de F1: ' + despl.join(','));
 const tramos = F1.reduce((a, d) => { const u = a[a.length - 1]; if (u && u[1] === d - 1) u[1] = d; else a.push([d, d]); return a; }, []).map(([a, b]) => (a === b ? 'D' + a : `D${a}-D${b}`)).join(' + ');
 const seen = new Set(); let noIncluye = 0;
 for (const r of T2) {
