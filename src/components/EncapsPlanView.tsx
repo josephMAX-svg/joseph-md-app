@@ -267,7 +267,7 @@ export default function EncapsPlanView() {
         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => setJumpOpen(o => !o)} activeOpacity={0.7}>
           <Text style={styles.dayNavTitle}>
             {/* v6.05 (fix): antes del D1 (sáb 24 / dom 25-oct) el Día 1 no es «HOY» → «empieza el lun 26-oct» (el Home dice «sin sesión») */}
-            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? (plan.antesD1 ? ` · empieza el ${fechaCorta(plan.antesD1).replace(/-\d{4}$/, '')}` : ' · HOY') : ''} {jumpOpen ? '▴' : '▾'}
+            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? (plan.antesD1 ? ` · empieza el ${fechaCorta(fechaRealDe(plan.antesD1, 'encaps')).replace(/-\d{4}$/, '')}` : ' · HOY') : ''} {jumpOpen ? '▴' : '▾'}
           </Text>
           {!!plan.today?.fecha && (() => {
             // v6.02d: fecha real visible (semana corrida)
@@ -437,7 +437,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <Text style={styles.hoyTema}>{tema}</Text>
         <View style={styles.hoyMetaRow}>
           {/* v6.05 (fix): antes del D1 esta es la PRIMERA sesión, no la de hoy */}
-          {!!plan.antesD1 && <Pill text={`aún sin sesión · empieza el ${fechaCorta(plan.antesD1).replace(/-\d{4}$/, '')}`} color={Colors.gold} />}
+          {!!plan.antesD1 && <Pill text={`aún sin sesión · empieza el ${fechaCorta(fechaRealDe(plan.antesD1, 'encaps')).replace(/-\d{4}$/, '')}`} color={Colors.gold} />}
           {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.gold : Colors.brass} />}
           {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.blue} />}
           {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.green} />}

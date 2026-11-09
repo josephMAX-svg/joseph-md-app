@@ -4691,3 +4691,40 @@ El detalle del fin de semana:
     - los `--check` de los generadores al día;
     - `gen_research_calendar --check` 0 (overlay M1 → mar 10).
 - **Calendar:** 78 `update_event`, cada evento de estudio movido a su día real (CAL_V6 §26). La verificación da 634 OK · 0 FAIL, con 93 eventos no tocados idénticos.
+
+**Ronda 2 (revisión independiente de 2 agentes, lun 9-nov):** encontró 1 fallo alto, 7 medios y varios bajos. Todos están arreglados.
+
+- **Alto · briefing del Home («Today at a glance»):** `TodayMission.encapsLabelDe` mostraba un ENCAPS equivocado casi toda la semana. Usaba la mañana de la fecha real y, en los días de reparto, la parte del propio fin de semana. Ahora, en la semana corrida, sale de los bloques del día y de su fecha de plan:
+  - mar 10: mañana 1/22 + D1 pre-test 1/2;
+  - mié 11: D2 pre-test 2/2;
+  - jue 12: mañana 2/22 + D3;
+  - vie 13: D4;
+  - sáb 14: mañana 3/22;
+  - dom 15: D5 mini-sim.
+- **Bloque PRINCIPAL por frente (`PRINCIPAL_POR_FRENTE`,** en `gen_fechas_v6.js`, su gemelo node y `fechasV6.ts`): en un reparto con varias partes del mismo frente manda la que lleva el bloque principal; si hay varias, la más antigua. Así:
+  - ENCAPS → Plan pone el D5 el dom 15 y lo marca como «hoy» (antes lo rotulaba el sáb 14);
+  - los hubs de SYNAPSE, vibecoding y Business marcan el sáb 14 como «hoy» el d5 del vie 13 (antes el d6 o un día libre);
+  - `fechaRealDe(vie 13, encaps)` da el dom 15.
+- **`corridaTexto`:**
+  - traduce también las fechas sin mes («mar 10 18:00» → «mié 11 18:00»);
+  - no toca las fechas reales externas, como el en vivo de Theomed o la publicación de un simulacro;
+  - tiene una función nueva, `reemplazosCorrida`, que aplica `corrida_s1.reemplazos` (campo opcional nuevo, validado en el generador) a la guía de un día de plan pintada otro día. Cubre:
+    - «Hoy 19:30 en vivo INV 1/4» el mar 10;
+    - «Hoy 16:00 Theomed abre simulacro … 16:15 = mini-sim 1» y «Lo que no veas hoy va a las 18:00» el sáb 14;
+    - «del lunes» y «del miércoles» en las mañanas del jue 12 y el sáb 14;
+    - «y las 18:00 son de ENCAPS» en el Anki del sáb 14;
+    - «paraste el lunes» en el SYNAPSE d6.
+- **Otros arreglos:**
+  - **Revisión semanal del sáb 14:** la nota del sábado y la del domingo avisan de que el mini-sim #5 y la MIR D5 se apuntan el domingo.
+  - **ENCAPS → Plan, hoy lun 9:** dice «empieza el mar 10-nov» (fecha real).
+  - **Títulos de los días alias:** llevan «· plan del <día>».
+  - **`rutinaGuia.vibeS1`:** «SHIP del sáb dom 15-nov» → «SHIP del dom 15-nov (flexible)».
+- **No se arregla (cosmético, preexistente):** las horas fijas de algunos hubs (MIR 15:27, ENCAPS → Plan 16:17) no siguen el desfase del domingo. Las notas de la corrida lo explican.
+- **Comprobaciones:**
+  - `tsc` 0;
+  - `sim --rango` del 9-nov-2026 al 6-dic-2027: 393 días, 0 problemas;
+  - `check_rutina_guia` 0;
+  - `verificar_v6` OK;
+  - los `--check` de los generadores al día;
+  - `gen_research_calendar --check` 0.
+- **Calendar:** 17 `update_event` más (CAL_V6 §26, ronda 2), con 256 OK · 0 FAIL.

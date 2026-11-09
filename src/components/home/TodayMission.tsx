@@ -9,7 +9,7 @@ import { guiaUsmleDe, guiaUsmleEnRango } from '../../lib/usmleGuia';
 import type { GuiaBloque } from '../../lib/guia';
 import { fmtMin, partesFranja, aMinutos, moverGuia } from '../../lib/guia';
 import GuiaBloqueCard from '../GuiaBloqueCard';
-import { fechasRealesEnTexto } from '../../lib/corridaTexto';
+import { fechasRealesEnTexto, reemplazosCorrida } from '../../lib/corridaTexto';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
 import { vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeJournalUrl, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
 import {
@@ -206,9 +206,13 @@ export function mirLabelDe(iso: string): string | null {
 export function encapsLabelDe(iso: string): string | null {
   if (corridaS1De(iso)?.tipo === 'sin_sesion') return null;
   // v6.07: lun · mié · vie de F1 = MAÑANA ENCAPS (07:15-12:00) además de la sesión de las 16:15 · sábado = clase EN VIVO · domingo = opcional
-  const am = encapsMananaDe(iso);
+  // v6.07a (lun 9-nov, revisión): en la semana corrida la mañana y la sesión de las 16:15 salen de los BLOQUES del día (su fecha de plan): antes la
+  //   mañana iba con la fecha real (el mié 11 del UWSA1 decía «mañana 2/22») y el reparto tomaba la parte del propio fin de semana
+  const pc = corridaS1De(iso) ? plantillaDelDia(iso) : null;
+  const bAm = pc?.bloques.find((b) => b.id === 'encaps-am'), b16 = pc?.bloques.find((b) => b.id === 'encaps');
+  const am = pc ? (bAm ? encapsMananaDe(bAm.fechaPlan ?? iso) : null) : encapsMananaDe(iso);
   const pre = am ? `ENCAPS mañana ${am.n}/${am.de} · ${am.resumen.split(' · ')[0]}` : null;
-  const s = sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
+  const s = pc ? (b16 ? sesionEncapsDe(b16.fechaPlan ?? iso) : null) : sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
     const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
     return pre ? `${pre} + 16:15 ${tarde}` : `ENCAPS ${tarde}`;
@@ -390,7 +394,9 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
   const d = b.desfaseMin ?? 0;
   const desplazar = (h: string | null): string | null => (h && d ? `${String(Math.floor((hm(h) - d) / 60)).padStart(2, '0')}:${String((hm(h) - d) % 60).padStart(2, '0')}` : h);
   const bPlan: BloqueV6 = d ? { ...b, ini: desplazar(b.ini), fin: desplazar(b.fin) } : b;
-  const c = contenidoBloquePlan(bPlan, p, f);
+  const c0 = contenidoBloquePlan(bPlan, p, f);
+  // v6.07a: la guía de un día de plan pintada otro día real → los textos de corrida_s1.reemplazos de esa fecha de plan («Hoy 19:30 en vivo…»)
+  const c = b.fechaPlan && c0.guias ? { ...c0, guias: c0.guias.map((g) => reemplazosCorrida(g, f)) } : c0;
   // v6.07: bloque FLEXIBLE sin hora fija (domingo: ENCAPS opcional · PC · Feynman) → sus guías muestran «flexible · …» en vez de la franja de
   //   ejemplo (así la cabecera no pinta una hora ni AHORA/✓ por reloj; los minutos y los pasos no cambian)
   if (esFlexible(b) && c.guias) return { ...c, guias: c.guias.map((g) => ({ ...g, franja: b.hora })) };

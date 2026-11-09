@@ -20,19 +20,63 @@ const _FECHAS = [..._C.sin_sesion, ...Object.keys(_C.alias), ...Object.values(_C
   ...Object.values(_C.reparto).flatMap((x) => x.partes.map((pt) => pt.de))].sort();
 const DESDE = _FECHAS[0] ?? '', HASTA = _FECHAS[_FECHAS.length - 1] ?? '';
 
-/** Texto con las menciones «<día> <n>-<mes>» de la semana corrida (fechas de plan) cambiadas por su día real para `frente`. */
+// v6.07a (lun 9-nov): «<día> <n>» SIN mes («Day-After 1/6 mar 10 18:00 · 2/6 jue 12 05:00») → el mes sale del rango de la corrida (DESDE-HASTA
+//   abarca < 1 mes: el día del mes y el día de la semana lo fijan). Detrás no puede venir dígito, letra, «-» ni «/» (eso es la otra forma o una fracción).
+const RX2 = /(^|[^\p{L}])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})(?![\d\p{L}\-\/])/giu;
+// v6.07a: fechas REALES externas (en vivo de Theomed, apertura y publicación de simulacros) no se traducen: no son fechas de plan
+const EXTERNA = /theomed|en vivo|se public/i;
+const externa = (s: string, i: number): boolean => EXTERNA.test(s.slice(Math.max(0, i - 60), i));
+const planSinMes = (dd: string, dow: string): string | null => {
+  for (const base of [DESDE, HASTA]) {
+    const p = `${base.slice(0, 7)}-${String(Number(dd)).padStart(2, '0')}`;
+    if (p >= DESDE && p <= HASTA && DOW[dowDe(p)] === dow.toLowerCase()) return p;
+  }
+  return null;
+};
+const diaReal = (real: string, dow: string): string => {
+  const dr = DOW[dowDe(real)] ?? dow;
+  return dow[0] !== dow[0]?.toLowerCase() ? (dow === dow.toUpperCase() ? dr.toUpperCase() : dr.charAt(0).toUpperCase() + dr.slice(1)) : dr;
+};
+
+/** Texto con las menciones «<día> <n>-<mes>» (y v6.07a «<día> <n>» sin mes) de la semana corrida (fechas de plan) cambiadas por su día real para `frente`. */
 export function fechasRealesEnTexto(t: string, frente?: string): string {
   if (!t || !_ACTIVA) return t;
-  return t.replace(RX, (m, pre: string, dow: string, punto: string, dd: string, mes: string) => {
+  const t1 = t.replace(RX, (m, pre: string, dow: string, punto: string, dd: string, mes: string, i: number, s: string) => {
     const plan = `${DESDE.slice(0, 4)}-${String(MES.indexOf(mes.toLowerCase()) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
     if (plan < DESDE || plan > HASTA) return m;
     if (DOW[dowDe(plan)] !== dow.toLowerCase()) return m; // el día de la semana no cuadra: no es una fecha de esta semana
+    if (externa(s, i)) return m;
     const real = fechaRealDe(plan, frente);
     if (real === plan) return m;
-    let dr = DOW[dowDe(real)] ?? dow;
-    if (dow[0] !== dow[0]?.toLowerCase()) dr = dr.charAt(0).toUpperCase() + dr.slice(1);
-    return `${pre}${dr}${punto} ${Number(real.slice(8))}-${MES[Number(real.slice(5, 7)) - 1]}`;
+    const mr = MES[Number(real.slice(5, 7)) - 1] ?? mes;
+    return `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}-${mes === mes.toUpperCase() ? mr.toUpperCase() : mr}`;
   });
+  return t1.replace(RX2, (m, pre: string, dow: string, punto: string, dd: string, i: number, s: string) => {
+    const plan = planSinMes(dd, dow);
+    if (!plan || externa(s, i)) return m;
+    const real = fechaRealDe(plan, frente);
+    return real === plan ? m : `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}`;
+  });
+}
+
+/**
+ * v6.07a (lun 9-nov): la guía de un día de PLAN pintada otro día real con los textos de corrida_s1.reemplazos[fechaPlan] (los que dicen «hoy»
+ * de algo real que no se mueve: «Hoy 19:30 en vivo INV 1/4» del lun 9 pintado el mar 10, «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el
+ * sáb 14…). Cada entrada vale para su `frente` (si lo trae) y se aplica a todas sus apariciones. Sin entradas = la guía tal cual.
+ */
+export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque {
+  const xs = (_C.reemplazos?.[fechaPlan] ?? []).filter((x) => !x.frente || x.frente === g.plan);
+  if (!xs.length) return g;
+  const f = (t: string): string => xs.reduce((acc, x) => acc.split(x.a).join(x.por), t);
+  return {
+    ...g,
+    titulo: f(g.titulo),
+    pasos: g.pasos.map((p) => ({ ...p, que: f(p.que), como: f(p.como) })),
+    recursos: g.recursos.map((r) => ({ ...r, t: f(r.t), ...(r.cantidad ? { cantidad: f(r.cantidad) } : {}) })),
+    hecho: f(g.hecho),
+    ...(g.planB ? { planB: f(g.planB) } : {}),
+    ...(g.aviso ? { aviso: f(g.aviso) } : {}),
+  };
 }
 
 /** La guía con sus textos visibles pasados por fechasRealesEnTexto (frente = g.plan). Franja, minutos y enlaces intactos. */

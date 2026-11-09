@@ -173,7 +173,7 @@ const JOURNAL_CMD = 'node DATA/_scripts/journal_hoy.js --abrir';
 function vibeS1(k: number): GuiaPaso[] | undefined {
   const dia = (kk: number): string => { const x = VIBE_DIAS.find((y) => y.semana === 1 && y.k === kk); return x ? fCorta(x.fecha) : `paso ${kk}`; };
   const p1 = vibeProyectoDe(1);
-  const ship = p1 ? `el SHIP del sáb ${fCorta(p1.ship).replace(/^sáb /, '')}` : 'el SHIP del sábado';
+  const ship = p1 ? `el SHIP del ${fCorta(p1.ship)}` : 'el SHIP del domingo'; // v6.07a: el SHIP es el domingo desde la v6.07 (antes «del sáb dom 15-nov»)
   switch (k) {
     case 1: return [
       P(10, 'Test del parser: `node scripts\\test_parser_multilinea.js` en D:\\agente_estudio', 'Terminal: `cd /d D:\\agente_estudio` → `node scripts\\test_parser_multilinea.js` → debe terminar en «0 failed» (13/13). Si algo falla, NO lo arregles hoy: copia el nombre del test al journal.'),
@@ -200,7 +200,7 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
     case 5: return [
       P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy parser v2.3 + evidencia"`. D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
       P(10, 'node DATA/_scripts/verify_vibecoding.js 1', `Desde D:\\joseph-md-app. Esperado hoy: 3/4 (el 4.º es MANUAL: se acepta en ${ship} con --ok-manual 4 tras mirarlo). Anota en el journal qué criterio falla.`),
-      P(15, 'Cerrar lo que el verify marque en rojo (no manual)', `Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso 4 (${dia(4)}). Lo que no cierre hoy va a ${ship} 15:00; nunca a S2.`),
+      P(15, 'Cerrar lo que el verify marque en rojo (no manual)', `Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso 4 (${dia(4)}). Lo que no cierre hoy va al ${ship.replace(/^el /, '')} (flexible); nunca a S2.`),
     ];
     default: return undefined;
   }

@@ -230,8 +230,17 @@ function comprobarCorridaS1(c) {
   const ks = ['decidido', 'version', 'motivo', 'sin_sesion', 'alias', 'reparto'];
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
   // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
+  // v6.07a: «reemplazos» opcional = { fechaPlan: [{ frente?, a, por }] } → textos de la guía de ese día de plan que no valen en el día real
+  //   (p. ej. «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el sáb 14); los aplica corridaTexto.reemplazosCorrida en TodayMission
+  if ('reemplazos' in c) {
+    if (!c.reemplazos || typeof c.reemplazos !== 'object' || Array.isArray(c.reemplazos)) err.push('«corrida_s1.reemplazos» debe ser un objeto { fechaPlan: [...] }');
+    else for (const [d, xs] of Object.entries(c.reemplazos)) {
+      if (!esISO(d) || !Array.isArray(xs)) { err.push(`«corrida_s1.reemplazos» ${d}: fecha y lista`); continue; }
+      for (const x of xs) if (!x || typeof x.a !== 'string' || !x.a || typeof x.por !== 'string' || ('frente' in x && typeof x.frente !== 'string')) err.push(`«corrida_s1.reemplazos» ${d}: entrada inválida ${JSON.stringify(x)}`);
+    }
+  }
   if (err.length) return err;
   if (!esISO(c.decidido) || typeof c.version !== 'string' || typeof c.motivo !== 'string') err.push('«corrida_s1»: decidido (fecha), version y motivo (texto)');
   if (!Array.isArray(c.sin_sesion) || !c.sin_sesion.every(esISO)) err.push('«corrida_s1.sin_sesion» debe ser una lista de fechas');
@@ -269,6 +278,10 @@ const BLOQUES_POR_FRENTE = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
+/** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). Mismo literal que el .ts. */
+const PRINCIPAL_POR_FRENTE = {
+  encaps: ['encaps'], synapse: ['syn'], vibecoding: ['vibe'], business: ['biz'], 'research-derma': ['rd'], mir: ['mir'], aurum: ['aurum'], liviano: ['liv'], revision: ['revision'],
+};
 /** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
 const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
   const c = corridaS1De(s, F);
@@ -279,6 +292,10 @@ const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
     return sig ? fechaPlanDe(sig, F, frente) : s;
   }
   if (c.tipo === 'alias' || !frente) return c.de;
+  // v6.07a: la parte con el bloque PRINCIPAL del frente; entre varias vigentes, la más antigua (lo que se recupera ese día)
+  const pri = PRINCIPAL_POR_FRENTE[frente] || [];
+  const dp = c.partes.filter((p) => Object.keys(p.bloques).some((id) => pri.includes(id))).map((p) => p.de).filter((d) => d >= c.de).sort();
+  if (dp.length) return dp[0];
   const ids = BLOQUES_POR_FRENTE[frente] || [];
   const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
   // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
@@ -292,6 +309,9 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   if (!c) return plan;
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] || []) : null;
+  // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
+  const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] || []) : [];
+  if (pri.length) for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && Object.keys(p.bloques).some((id) => pri.includes(id))) return r;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
   // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
@@ -538,6 +558,8 @@ export interface FechasV6 {
     reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[]; titulo?: string; nota?: string }>;
     /** v6.06a: texto de la nota de la semana corrida (opcional; si falta, plantillasV6 la arma con los datos) */
     resumen?: string;
+    /** v6.07a: textos de la guía de un día de PLAN que no valen el día real en que se pinta (corridaTexto.reemplazosCorrida) */
+    reemplazos?: Record<string, { frente?: string; a: string; por: string }[]>;
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -797,6 +819,10 @@ export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
+/** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */
+export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
+  encaps: ['encaps'], synapse: ['syn'], vibecoding: ['vibe'], business: ['biz'], 'research-derma': ['rd'], mir: ['mir'], aurum: ['aurum'], liviano: ['liv'], revision: ['revision'],
+};
 /**
  * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con \`frente\`, la fecha
  * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
@@ -812,6 +838,11 @@ export function fechaPlanDe(iso: string, frente?: string): string {
     return sig ? fechaPlanDe(sig, frente) : iso;
   }
   if (c.tipo === 'alias' || !frente) return c.de;
+  // v6.07a: la parte con el bloque PRINCIPAL del frente; entre varias vigentes, la más antigua (lo que se recupera ese día: sáb 14 SYNAPSE/Business =
+  //   el d5 del vie 13; dom 15 ENCAPS = la sesión de las 16:15 del vie 13)
+  const pri = PRINCIPAL_POR_FRENTE[frente] ?? [];
+  const dp = c.partes.filter((p) => Object.keys(p.bloques).some((id) => pri.includes(id))).map((p) => p.de).filter((d) => d >= c.de).sort();
+  if (dp.length) return dp[0] as string;
   const ids = BLOQUES_POR_FRENTE[frente] ?? [];
   const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
   // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
@@ -829,6 +860,9 @@ export function fechaRealDe(plan: string, frente?: string): string {
   const c = FECHAS_V6.corrida_s1;
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
+  // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
+  const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] ?? []) : [];
+  if (pri.length) for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && Object.keys(p.bloques).some((id) => pri.includes(id))) return r;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
   // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
@@ -855,6 +889,7 @@ function compararTS(T, F, d) {
   eq('SEMANAS_F1', T.SEMANAS_F1, d.semanasF1);
   eq('DIAS_PROTEGIDOS', [...T.DIAS_PROTEGIDOS], F.protegidos.map((p) => p.fecha));
   eq('BLOQUES_POR_FRENTE', T.BLOQUES_POR_FRENTE, BLOQUES_POR_FRENTE);
+  eq('PRINCIPAL_POR_FRENTE', T.PRINCIPAL_POR_FRENTE, PRINCIPAL_POR_FRENTE);
   eq('reinicioStep1()', T.reinicioStep1(), d.reinicio);
   eq('protegidosDe()', T.protegidosDe(), d.protegidos);
   eq('ritualDe()', T.ritualDe(), d.ritual);

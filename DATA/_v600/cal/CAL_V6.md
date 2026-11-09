@@ -2387,3 +2387,29 @@ Del mar 10 al dom 15, los bloques coinciden en hora con `sim_plantilla_dia.js`, 
 - Las descripciones de las rutinas personales (GYM, BAILE, ALMUERZO) siguen con su historial antiguo, por diseño.
 - El sábado 14 hay dos SYNAPSE (12:30 del vie 13 y 13:30 del sábado) y dos Anki (05:00 y 19:00).
 - El ENCAPS opcional del domingo se solapa en el Calendar con la recuperación de 07:15 a 12:30. Es flexible y transparente, y el título lo explica.
+
+### Ronda 2 (revisión independiente, lun 9-nov ≈ 14:50 Lima · 17 `update_event`)
+
+Una revisión independiente de 2 agentes (app y Calendar, solo lectura) encontró textos del Calendar que no cuadraban con el día real. Se arreglaron con `cal_bk/v607a/build_ops2.js` → `ops2.json`. El script parte del texto original del día de plan y le aplica lo mismo que la app al pintar, en este orden: primero `corrida_s1.reemplazos` de esa fecha de plan y luego `corridaTexto.fechasRealesEnTexto`, que ahora también traduce las fechas sin mes y no toca las fechas reales de Theomed.
+
+- **Fechas sin mes:**
+  - Day-After «mar 10 18:00 · jue 12 …» → «mié 11 18:00 · vie 13 …» el mié 11 a las 18:00 y el vie 13 a las 07:15.
+  - «mini-sim del vie 13-nov» → «del dom 15-nov» el mar 10 y el mié 11 a las 16:15.
+- **Textos de «hoy»:**
+  - mar 10 07:15: «El en vivo INV 1/4 fue el lunes 9 a las 19:30».
+  - sáb 14 07:15: «Ojo» nuevo: el simulacro de Theomed se abrió el viernes, el mini-sim #5 es el dom 15 a las 10:00 y hoy hay Theomed en vivo de 15:00 a 17:00.
+  - sáb 14 05:00, en el Anki: «las cifras de las 18:00 van mañana domingo a las 11:45».
+- **Días de la semana en el arranque:**
+  - jue 12: «del lunes» → «del martes».
+  - sáb 14: «del miércoles» → «del jueves».
+- **Textos del sábado:**
+  - SYNAPSE d6: «Retoma donde paraste el martes 10 (el d1)».
+  - Business tracker: «Del OUTPUT del sáb 14».
+- **Domingo 15:**
+  - MIR D5: las horas de los pasos se adelantan 6 h 15′ (de 09:00 a 10:00), como `moverGuia`.
+  - Títulos «ENCAPS (16:15 del vie → dom 10:00)» y «ENCAPS (18:00 del vie → dom 11:45)».
+- **Vibecoding S1 5/5:** «SHIP del sáb dom 15-nov» → «SHIP del dom 15-nov». Era un error previo de `rutinaGuia.vibeS1`, arreglado también en la app.
+- **UWSA1:** se añade «(esta semana, por la corrida, el vie 13 sí: es el plan del jue 12)».
+- **ENCAPS opcional del dom 15** (`prkrv2dghr6jgerjfv5vaournc`): pasa a evento de **día completo** para no tapar la recuperación de 07:15 a 12:30, y su texto dice «por la tarde, después de la recuperación».
+
+**Verificación:** `volcados/list_09-16nov_after2.json` da **256 OK · 0 FAIL**. Los 17 eventos tienen el título, la descripción, el color, el estado, la transparencia y la hora (o el día completo) que se pidió. Los 153 eventos restantes de la semana están idénticos.

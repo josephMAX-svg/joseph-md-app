@@ -62,6 +62,8 @@ export interface FechasV6 {
     reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[]; titulo?: string; nota?: string }>;
     /** v6.06a: texto de la nota de la semana corrida (opcional; si falta, plantillasV6 la arma con los datos) */
     resumen?: string;
+    /** v6.07a: textos de la guía de un día de PLAN que no valen el día real en que se pinta (corridaTexto.reemplazosCorrida) */
+    reemplazos?: Record<string, { frente?: string; a: string; por: string }[]>;
   };
 }
 export const FECHAS_V6: FechasV6 = {
@@ -338,7 +340,7 @@ export const FECHAS_V6: FechasV6 = {
           }
         ],
         "titulo": "Sábado · MAÑANA del vie 13 + Theomed en vivo 15:00 (semana corrida)",
-        "nota": "Hoy: la mañana del vie 13 a sus horas (04:15 vibecoding · 05:00 Anki + repasos ENCAPS · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business OUTPUT S1 1/2) y después lo del sábado sin cambios (13:30 SYNAPSE · 14:00 revisión semanal · 14:30 Business · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 19:00 Anki). La tarde del vie 13 va mañana domingo desde las 07:15."
+        "nota": "Hoy: la mañana del vie 13 a sus horas (04:15 vibecoding · 05:00 Anki + repasos ENCAPS · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business OUTPUT S1 1/2) y después lo del sábado sin cambios (13:30 SYNAPSE · 14:00 revisión semanal · 14:30 Business · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 19:00 Anki). La tarde del vie 13 va mañana domingo desde las 07:15. En la revisión de las 14:00, el mini-sim #5 y la MIR D5 aún no están hechos (van mañana domingo): déjalos «pendiente» y apúntalos el domingo."
       },
       "2026-11-15": {
         "de": "2026-11-13",
@@ -365,10 +367,70 @@ export const FECHAS_V6: FechasV6 = {
           }
         ],
         "titulo": "Domingo · TARDE del vie 13 desde las 07:15 + SHIP S1 (semana corrida)",
-        "nota": "Hoy: la tarde del vie 13 adelantada 6 h 15′ (07:15 Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 ENCAPS mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras ENCAPS) y después lo del domingo: el SHIP S1 (obligatorio, a la hora que quieras), el Feynman y el Anki (opcionales). El ENCAPS de 4 h sigue siendo opcional: solo si te sobra energía después de la recuperación."
+        "nota": "Hoy: la tarde del vie 13 adelantada 6 h 15′ (07:15 Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 ENCAPS mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras ENCAPS) y después lo del domingo: el SHIP S1 (obligatorio, a la hora que quieras), el Feynman y el Anki (opcionales). El ENCAPS de 4 h sigue siendo opcional: solo si te sobra energía después de la recuperación. Después del mini-sim #5 (10:00) y la MIR D5 (09:00), apunta sus notas en la revisión S01 (lo que ayer quedó pendiente)."
       }
     },
-    "resumen": "SEMANA CORRIDA v6.07a (orden del lun 9-nov): el lun 9 no se estudió → mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte: su mañana el sáb 14 (antes del en vivo de Theomed) y su tarde el dom 15 desde las 07:15. Desde el lun 16-nov todo vuelve a su fecha; nada se quita."
+    "resumen": "SEMANA CORRIDA v6.07a (orden del lun 9-nov): el lun 9 no se estudió → mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte: su mañana el sáb 14 (antes del en vivo de Theomed) y su tarde el dom 15 desde las 07:15. Desde el lun 16-nov todo vuelve a su fecha; nada se quita.",
+    "reemplazos": {
+      "2026-11-09": [
+        {
+          "frente": "encaps",
+          "a": "Hoy 19:30 en vivo INV 1/4 (en diferido:",
+          "por": "El en vivo INV 1/4 fue el lunes 9 a las 19:30 (va en diferido:"
+        }
+      ],
+      "2026-11-11": [
+        {
+          "frente": "encaps",
+          "a": "tarjetas del lunes",
+          "por": "tarjetas del martes"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del lunes",
+          "por": "errores del martes"
+        }
+      ],
+      "2026-11-13": [
+        {
+          "frente": "encaps",
+          "a": "Hoy 16:00 Theomed abre simulacro (si se publica): se rinde el DOMINGO 15 (cuenta el primer intento dentro de 89 h). 16:15 = mini-sim 1.",
+          "por": "El viernes 13 a las 16:00 Theomed abrió el simulacro (si se publicó): cuenta el primer intento dentro de 89 h (hasta el martes 17 ≈ 09:00) → el domingo por la tarde, después de la recuperación, solo si te sobra energía. El mini-sim #5 va el domingo 15 a las 10:00; hoy de 15:00 a 17:00, Theomed en vivo."
+        },
+        {
+          "frente": "encaps",
+          "a": "Lo que no veas hoy va a las 18:00.",
+          "por": "Lo que no veas hoy va mañana domingo a las 11:45 (las cifras del viernes)."
+        },
+        {
+          "frente": "encaps",
+          "a": "tarjetas del miércoles",
+          "por": "tarjetas del jueves"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del miércoles",
+          "por": "errores del jueves"
+        },
+        {
+          "frente": "encaps",
+          "a": "la mañana 07:15-12:00 y las 18:00 son de ENCAPS.",
+          "por": "la mañana 07:15-12:00 es de ENCAPS; las cifras de las 18:00 van mañana domingo a las 11:45."
+        },
+        {
+          "frente": "usmle",
+          "a": "la mañana 07:15-12:00 y las 18:00 son de ENCAPS.",
+          "por": "la mañana 07:15-12:00 es de ENCAPS; las cifras de las 18:00 van mañana domingo a las 11:45."
+        }
+      ],
+      "2026-11-14": [
+        {
+          "frente": "synapse",
+          "a": "Retoma donde paraste el lunes.",
+          "por": "Retoma donde paraste el martes 10 (el d1)."
+        }
+      ]
+    }
   }
 };
 
@@ -630,6 +692,10 @@ export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
+/** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */
+export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
+  encaps: ['encaps'], synapse: ['syn'], vibecoding: ['vibe'], business: ['biz'], 'research-derma': ['rd'], mir: ['mir'], aurum: ['aurum'], liviano: ['liv'], revision: ['revision'],
+};
 /**
  * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con `frente`, la fecha
  * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
@@ -645,6 +711,11 @@ export function fechaPlanDe(iso: string, frente?: string): string {
     return sig ? fechaPlanDe(sig, frente) : iso;
   }
   if (c.tipo === 'alias' || !frente) return c.de;
+  // v6.07a: la parte con el bloque PRINCIPAL del frente; entre varias vigentes, la más antigua (lo que se recupera ese día: sáb 14 SYNAPSE/Business =
+  //   el d5 del vie 13; dom 15 ENCAPS = la sesión de las 16:15 del vie 13)
+  const pri = PRINCIPAL_POR_FRENTE[frente] ?? [];
+  const dp = c.partes.filter((p) => Object.keys(p.bloques).some((id) => pri.includes(id))).map((p) => p.de).filter((d) => d >= c.de).sort();
+  if (dp.length) return dp[0] as string;
   const ids = BLOQUES_POR_FRENTE[frente] ?? [];
   const ds = c.partes.filter((p) => Object.keys(p.bloques).some((id) => ids.includes(id))).map((p) => p.de).sort();
   // v6.06e: entre varias partes del frente, la vigente; lo atrasado (SHIP de semanas pasadas) no mueve la posición del frente, salvo la revisión
@@ -662,6 +733,9 @@ export function fechaRealDe(plan: string, frente?: string): string {
   const c = FECHAS_V6.corrida_s1;
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
+  // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
+  const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] ?? []) : [];
+  if (pri.length) for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && Object.keys(p.bloques).some((id) => pri.includes(id))) return r;
   for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
   // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
