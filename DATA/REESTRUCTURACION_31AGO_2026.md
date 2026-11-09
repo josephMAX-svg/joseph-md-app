@@ -4648,3 +4648,46 @@ bloque v6.07 (a)-(k).
 - **Calendar:** lotes 1a (296), 2 (115), 1b (389), 2b (76), 2c (227), 2d (491) y 2e (8), cada uno con su verificación, más 4 verificaciones independientes de solo lectura (la última, `verif4`: 8/8 controles OK). Los textos viejos de 2027 pasan de 433 a 0 y no hay regresión del 9-nov al 3-ene (CAL_V6 §25).
   - Hallazgo: `update_event` sobre la descripción de un MASTER pisa la de todas sus instancias, también la de las excepciones. Desde ahora se escribe instancia a instancia.
 - Decisiones nuevas: PENDIENTES v6.07 (l)-(o).
+
+
+### 31.8 v6.07a — semana corrida (lun 9-nov-2026)
+
+Orden de Joseph (lun 9-nov): «El día de hoy no se avanzó, se empieza mañana … trata de reestructurar … o busca un hueco … o simplemente corre un día a todo, o ve tú la mejor forma para que sea más simple … que los temas de hoy se corran, corran nada más».
+
+**Decisión: semana corrida por ALIAS (regla viva: los días perdidos de la semana en curso se resuelven con alias, sin re-fechar).** Es el patrón v6.02d / v6.06a. Las otras opciones eran peores:
+
+- **Re-fechar todo un día:** con lun · mié · vie de ENCAPS y mar · jue de Step, correr la plantilla un día rompe la alternancia y obliga a regenerar F1, Supabase y unos 450 eventos.
+- **Repartir los temas del lunes entre semana:** no hay hueco; los días hábiles están llenos de 04:15 a 18:45.
+
+Los huecos reales son la mañana del sábado y el domingo (el ENCAPS de 4 h es opcional).
+
+| Día real | Qué hace |
+|---|---|
+| lun 9 | sin sesión |
+| mar 10 | plan del lun 9 (ENCAPS mañana 1/22 + PRE-TEST 1/2) |
+| mié 11 | plan del mar 10 (UWSA1 08:50-13:00 + PRE-TEST 2/2) |
+| jue 12 | plan del mié 11 (ENCAPS mañana 2/22) |
+| vie 13 | plan del jue 12 (Step D2) |
+| sáb 14 | la mañana del vie 13 a sus horas, después lo del sábado sin cambios |
+| dom 15 | la tarde del vie 13 desde las 07:15, después lo del domingo |
+
+El detalle del fin de semana:
+
+- **sáb 14, mañana del vie 13:** 04:15 vibecoding · 05:00 Anki · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business OUTPUT 1/2.
+- **sáb 14, lo del sábado:** 13:30 SYNAPSE · 14:00 revisión · 14:30 Business · 15:00-17:00 Theomed en vivo · 19:00 Anki.
+- **dom 15, tarde del vie 13:** 07:15 Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras.
+- **dom 15, lo del domingo:** SHIP S1, el Feynman y el Anki opcionales, y el ENCAPS de 4 h, que sigue siendo opcional.
+
+**Desde el lun 16-nov todo vuelve a su fecha.** No se quita nada. No cambia ninguna fecha: ni F1 (37), ni los hitos, ni el NBME 25 (jue 10-dic), ni el examen Step 1 (lun 6-dic-2027), ni el ENCAPS de referencia (dom 14-mar). Supabase y los planes no se tocan.
+
+- **App:**
+  - `_fechas_v6.json` → `corrida_s1` v6.07a (alias + reparto + resumen) → `gen_fechas_v6.js` → `fechasV6.ts`.
+  - `sim_plantilla_dia.js` consulta cada bloque con su fecha y hora de plan, como TodayMission.
+  - Comprobaciones:
+    - `tsc` 0;
+    - `sim --rango` del 9-nov-2026 al 6-dic-2027: 393 días, 0 problemas;
+    - `check_rutina_guia` 0;
+    - `verificar_v6` OK;
+    - los `--check` de los generadores al día;
+    - `gen_research_calendar --check` 0 (overlay M1 → mar 10).
+- **Calendar:** 78 `update_event`, cada evento de estudio movido a su día real (CAL_V6 §26). La verificación da 634 OK · 0 FAIL, con 93 eventos no tocados idénticos.

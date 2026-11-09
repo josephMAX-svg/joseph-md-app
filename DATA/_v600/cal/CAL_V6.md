@@ -2305,3 +2305,85 @@ Los masters de revisión F4 y STEP 1 VIVO se pudieron tocar porque el volcado nu
   - con Business en audio el mar 10-nov y el jue 10-dic;
   - con los SIM 11:00-13:00 del 19 y 26-feb y del 1, 3 y 5-mar, y con el DRESS del 11-mar.
 - **ALISTARSE y VIAJE:** pisan el CIERRE SEMANAL del vie 5-mar, de 18:45 a 19:00.
+
+
+## 26. Semana corrida v6.07a (lun 9-nov-2026 · el lun 9 no se estudió · todo arranca el mar 10)
+
+Orden de Joseph (lun 9-nov): «El día de hoy no se avanzó, se empieza mañana … que los temas de hoy se corran, corran nada más … ve tú la mejor forma para que sea más simple».
+
+La app lo aplica como alias en la consulta, con el patrón v6.02d / v6.06a: `corrida_s1` v6.07a de `DATA/_scripts/_fechas_v6.json`. No se re-fecha ningún plan, ni Supabase, ni hitos.
+
+| Día real | Qué hace |
+|---|---|
+| lun 9 | sin sesión |
+| mar 10 | plan del lun 9 |
+| mié 11 | plan del mar 10 (UWSA1) |
+| jue 12 | plan del mié 11 |
+| vie 13 | plan del jue 12 |
+| sáb 14 | la mañana del vie 13 a sus horas + lo del sábado |
+| dom 15 | la tarde del vie 13 desde las 07:15 + lo del domingo |
+
+Desde el lun 16-nov todo vuelve a su fecha.
+
+### Protocolo
+
+- **Antes de escribir:** volcado `list_events` del 9 al 16-nov, con 170 eventos.
+- **Respaldos:** cada evento tocado en `cal_bk/v607a/bk/<id>.json` (`cal_bk/` está en `.gitignore`).
+- **Cómo se escribe:**
+  - por instancia, sin tocar ningún master;
+  - sin `create_event` ni `delete_event`;
+  - con `notificationLevel` NONE;
+  - sin tocar las rutinas personales, salvo la hora de dos ALMUERZO.
+- **Operaciones:** salen de `cal_bk/v607a/build_ops.js`, que genera `ops.json`.
+
+### Operaciones (78 `update_event`)
+
+En vez de reescribir el texto de cada evento, cada evento de estudio se **mueve** al día real en que se hace. Así conserva su serie, su color y su descripción (la guía de su día de plan, escrita en los lotes v6.07).
+
+Al título se le añade « (plan del <día>)». En título y descripción, las fechas de plan de la semana pasan a su fecha real, como hace `corridaTexto` en la app: lun 9 → mar 10, mar 10 → mié 11, mié 11 → jue 12 y jue 12 → vie 13. Las fechas reales externas no se tocan (en vivo de Theomed, apertura de simulacros).
+
+- **Del lun 9 al mar 10:** 16 eventos.
+  - vibecoding, Anki, las 4 franjas de ENCAPS mañana 1/22, SYNAPSE y Business;
+  - R↔D Research M1 y el overlay 🔬 M1 `shkul14j3o1bs1a5044u8ge1kk`;
+  - AURUM y MIR ×2;
+  - ENCAPS 16:15: PRE-TEST 1/2, con «mini-sim del vie 13-nov» → «del dom 15-nov (10:00)»;
+  - LIVIANO y ENCAPS 18:00.
+- **Del mar 10 al mié 11:** 13 eventos.
+  - vibecoding y Anki (configuración);
+  - preparación del UWSA1 `1j4q1t25allju66uj92067b1ho` y SYNAPSE 07:25;
+  - 🎯 UWSA1 `o1gla7846uae4tgngvc4q45osg` el mié 11, de 08:50 a 13:00. Su título dice «D1 mié 11-nov (v6.07a · plan del mar 10)» y su descripción lleva 6 reemplazos, cada uno aplicado una sola vez:
+    - el D1 se hace el mié 11;
+    - Day-After 2/6, 3/6 y 4/6 → vie 13;
+    - noche anterior → mar 10;
+    - historial y pie v6.07a;
+  - Business, Derma d1, AURUM y MIR ×2;
+  - ENCAPS 16:15 (PRE-TEST 2/2), LIVIANO y Day-After 1/6 a las 18:00.
+- **Del mié 11 al jue 12:** 15 eventos (ENCAPS mañana 2/22 y lo demás del día).
+- **Del jue 12 al vie 13:** 15 eventos (Step D2 con el Day-After 2/6 y 3/6 por la mañana, y 4/6 a las 18:00).
+- **Del vie 13 al sáb 14, a la misma hora:** 8 eventos.
+  - vibecoding 04:15 y Anki 05:00;
+  - las 4 franjas de ENCAPS mañana 3/22, con «Ojo: el vie 13 a las 16:00 Theomed abrió el simulacro…»;
+  - SYNAPSE 12:30 y Business 13:00 (OUTPUT 1/2).
+- **Del vie 13 al dom 15, 6 h 15′ antes:** 7 eventos.
+  - Research R1 a las 07:15, AURUM a las 08:00 y MIR a las 09:00 y 09:15;
+  - ENCAPS mini-sim #5 a las 10:00, LIVIANO a las 11:00 y cifras ENCAPS de 11:45 a 12:30.
+- **ALMUERZO** (`43dq3oib…`, solo la hora): el mar 10 pasa de 13:00 a 12:00 y el mié 11 de 12:00 a 13:00, por el UWSA1.
+- **ENCAPS opcional 4 h del dom 15** (`prkrv2dghr6jgerjfv5vaournc`): cambia solo el título, que ahora dice «esta semana la mañana es de la tarde del vie 13: solo si te sobra energía».
+- **Overlay M1:** el título se repuso al de la serie y se registró con `gen_research_calendar.js --set mentor=shkul14j3o1bs1a5044u8ge1kk`. Queda fecha 2026-11-10 y `fechaPlan` 2026-11-09, y `--check` da 0.
+
+### Verificación
+
+`cal_bk/v607a/ver_v607a.js` sobre el volcado posterior (`volcados/list_09-16nov_after.json`):
+
+- **634 comprobaciones OK · 0 FAIL.** Cubren título, inicio, fin, descripción, color, estado y transparencia de los 77 eventos.
+- Los 93 eventos no tocados están idénticos.
+- No hay ningún evento nuevo.
+- El lun 9 ya no tiene ningún bloque de estudio.
+
+Del mar 10 al dom 15, los bloques coinciden en hora con `sim_plantilla_dia.js`, que ahora consulta cada bloque con su fecha y hora de plan, como TodayMission.
+
+### No tocado / notas
+
+- Las descripciones de las rutinas personales (GYM, BAILE, ALMUERZO) siguen con su historial antiguo, por diseño.
+- El sábado 14 hay dos SYNAPSE (12:30 del vie 13 y 13:30 del sábado) y dos Anki (05:00 y 19:00).
+- El ENCAPS opcional del domingo se solapa en el Calendar con la recuperación de 07:15 a 12:30. Es flexible y transparente, y el título lo explica.

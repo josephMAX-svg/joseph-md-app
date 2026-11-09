@@ -7,30 +7,31 @@
   "colorId": "6",
   "availability": "FREE/transparent",
   "regla": "tras cada corrimiento: node gen_research_plan.js <D1> → node gen_research_calendar.js → update_event (o delete+create) de los `recrear` con su payload → --set hito=eventId",
-  "actualizado": "2026-11-08",
+  "actualizado": "2026-11-09",
   "nHitos": 12
  },
  "overlays": {
   "mentor": {
    "eventId": "shkul14j3o1bs1a5044u8ge1kk",
-   "fechaCreada": "2026-11-09",
-   "hash": "fd539fb7cb0d",
+   "fechaCreada": "2026-11-10",
+   "hash": "5c5fb27fa031",
    "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
-   "registrado": "2026-11-08",
+   "registrado": "2026-11-09",
    "accionPendiente": null,
    "payload": {
     "code": "M1",
     "d": 1,
     "ciclo": 1,
-    "fecha": "2026-11-09",
+    "fecha": "2026-11-10",
+    "fechaPlan": "2026-11-09",
     "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
-    "startTime": "2026-11-09T13:30:00-05:00",
-    "endTime": "2026-11-09T14:15:00-05:00",
+    "startTime": "2026-11-10T13:30:00-05:00",
+    "endTime": "2026-11-10T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · M1 · d1 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo): propuesta CONCRETA de 3 coautorías — tesis→research letter (él senior), carta al editor (coautor) y case report de SU consulta (él senior author)\nENTREGABLE: Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo)\nARTEFACTO: DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)\nAVISOS: ⏸ plazo interno del 31-oct-2026 (caso + consentimiento + senior author del case report) VENCIDO: la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct → v6.06 lo hace en la 1.ª sesión Research, sin plazo nuevo: pide el caso EN este mensaje · antes de T-1 (mié 25-nov-2026): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "fd539fb7cb0d"
+    "hash": "5c5fb27fa031"
    }
   },
   "carta-diana": {

@@ -212,9 +212,9 @@
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-11-08",
-    "version": "v6.07",
-    "motivo": "v6.07 (dom 8-nov-2026): la semana corrida v6.06a-e queda sin efecto; del lun 19-oct al dom 8-nov no hubo estudio y el plan entero se re-fecha con D1 = lun 9-nov (corrimiento real, no alias). Capa de alias inerte (sin alias ni reparto).",
+    "decidido": "2026-11-09",
+    "version": "v6.07a",
+    "motivo": "v6.07a (lun 9-nov-2026, orden de Joseph): «El día de hoy no se avanzó, se empieza mañana … que los temas de hoy se corran, corran nada más … ve tú la mejor forma para que sea más simple». Semana corrida por ALIAS en la consulta (patrón v6.02d / v6.06a; no se re-fecha nada): lun 9 sin sesión · mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte entre la mañana del sáb 14 (antes del en vivo de Theomed) y el dom 15 desde las 07:15 (su tarde adelantada 6 h 15′). Desde el lun 16-nov todo en su fecha; nada se quita. (Historial: del lun 19-oct al dom 8-nov sin estudio → re-fecha real v6.07 con D1 = lun 9-nov.)",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -236,9 +236,72 @@
       "2026-11-05",
       "2026-11-06",
       "2026-11-07",
-      "2026-11-08"
+      "2026-11-08",
+      "2026-11-09"
     ],
-    "alias": {},
-    "reparto": {}
+    "alias": {
+      "2026-11-10": "2026-11-09",
+      "2026-11-11": "2026-11-10",
+      "2026-11-12": "2026-11-11",
+      "2026-11-13": "2026-11-12"
+    },
+    "reparto": {
+      "2026-11-14": {
+        "de": "2026-11-13",
+        "partes": [
+          {
+            "de": "2026-11-13",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "encaps-am": 0,
+              "syn": 0,
+              "biz": 0
+            }
+          },
+          {
+            "de": "2026-11-14",
+            "bloques": {
+              "syn": 0,
+              "revision": 0,
+              "biz": 0,
+              "theomed-prep": 0,
+              "theomed-vivo": 0,
+              "anki-sab": 0
+            }
+          }
+        ],
+        "titulo": "Sábado · MAÑANA del vie 13 + Theomed en vivo 15:00 (semana corrida)",
+        "nota": "Hoy: la mañana del vie 13 a sus horas (04:15 vibecoding · 05:00 Anki + repasos ENCAPS · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business OUTPUT S1 1/2) y después lo del sábado sin cambios (13:30 SYNAPSE · 14:00 revisión semanal · 14:30 Business · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 19:00 Anki). La tarde del vie 13 va mañana domingo desde las 07:15."
+      },
+      "2026-11-15": {
+        "de": "2026-11-13",
+        "partes": [
+          {
+            "de": "2026-11-13",
+            "bloques": {
+              "rd": -375,
+              "aurum": -375,
+              "mir": -375,
+              "encaps": -375,
+              "liv": -375,
+              "encaps-pm": -375
+            }
+          },
+          {
+            "de": "2026-11-15",
+            "bloques": {
+              "anki-dom": 0,
+              "encaps-dom": 0,
+              "pc": 0,
+              "feynman": 0
+            }
+          }
+        ],
+        "titulo": "Domingo · TARDE del vie 13 desde las 07:15 + SHIP S1 (semana corrida)",
+        "nota": "Hoy: la tarde del vie 13 adelantada 6 h 15′ (07:15 Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 ENCAPS mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras ENCAPS) y después lo del domingo: el SHIP S1 (obligatorio, a la hora que quieras), el Feynman y el Anki (opcionales). El ENCAPS de 4 h sigue siendo opcional: solo si te sobra energía después de la recuperación."
+      }
+    },
+    "resumen": "SEMANA CORRIDA v6.07a (orden del lun 9-nov): el lun 9 no se estudió → mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte: su mañana el sáb 14 (antes del en vivo de Theomed) y su tarde el dom 15 desde las 07:15. Desde el lun 16-nov todo vuelve a su fecha; nada se quita."
   }
 }

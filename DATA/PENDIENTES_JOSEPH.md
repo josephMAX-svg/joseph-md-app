@@ -1,5 +1,21 @@
 # PENDIENTES DE JOSEPH · régimen v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · TODO ARRANCA EL LUN 9-NOV-2026 · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
 
+**⚡ v6.07a (lun 9-nov-2026, VIGENTE esta semana) — SEMANA CORRIDA: el lun 9 no se estudió → todo arranca el MAR 10-NOV.** Orden de Joseph: «el día de hoy no se avanzó, se empieza mañana … que los temas de hoy se corran, corran nada más … ve tú la mejor forma para que sea más simple». No se re-fecha nada: la app consulta el plan del día anterior (alias, patrón v6.02d / v6.06a) y el Calendar ya está movido (CAL_V6 §26).
+
+| Día real | Qué toca |
+|---|---|
+| mar 10 | plan del lun 9: ENCAPS mañana 1/22 · 16:15 PRE-TEST 1/2 |
+| mié 11 | plan del mar 10: **UWSA1 08:50-13:00**, almuerzo 13:00 · 16:15 PRE-TEST 2/2 · 18:00 Day-After 1/6 |
+| jue 12 | plan del mié 11: ENCAPS mañana 2/22 |
+| vie 13 | plan del jue 12: Step D2 + Day-After 2/6, 3/6 y 4/6 |
+| **sáb 14** | la MAÑANA del vie 13 a sus horas: 04:15 vibecoding · 05:00 Anki · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business. Después, lo del sábado sin cambios: 13:30 SYNAPSE · 14:00 revisión · 14:30 Business · 15:00-17:00 Theomed en vivo · 19:00 Anki |
+| **dom 15** | la TARDE del vie 13 desde las 07:15: Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras. Después, SHIP S1 (flexible). El ENCAPS de 4 h sigue siendo opcional |
+
+**Desde el lun 16-nov todo vuelve a su fecha.** No se quita nada y ninguna fecha cambia: F1, NBME 25 (jue 10-dic), examen Step 1 (lun 6-dic-2027) y ENCAPS (dom 14-mar). Lo que te toca a ti:
+- [ ] Esta semana el sábado empieza a las 04:15 (la mañana del vie 13).
+- [ ] El simulacro con RANKING de Theomed (abre el vie 13 a las 16:00 si se publica; cuenta el primer intento dentro de 89 h, hasta ≈ mar 17 09:00) solo cabe el domingo por la tarde, después de la recuperación, si te sobra energía.
+- [ ] El en vivo INV 1/4 de hoy, lun 9 a las 19:30, queda en diferido: escúchalo en tiempos muertos.
+
 **✅ v6.07 (dom 8-nov-2026, VIGENTE; sustituye a v6.06a-e) — ENCAPS PRIMER PUESTO: arranque LUN 9-NOV, mañanas ENCAPS lun · mié · vie y Step 1 mar · jue; EXAMEN STEP 1 → LUN 6-DIC-2027.** Orden de Joseph: «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer puesto (> 17,5, ideal 19); empezamos mañana 9; sábados 14-17 libres para el en vivo de Theomed; domingos 4 h opcionales; en enero, la base del ENCAPS; el Step 1 puede correrse, pero no más allá de 2027». Plan maestro: `DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md` (investigación en `DATA/ENCAPS/INVESTIGACION_2027-1/`). Re-fecha REAL (sin alias): `corrida_s1` inerte (sin sesión 19-oct → 8-nov). Commits `9f958d1` + arreglos de cierre `e5fd4bd` y `f4f611a` (quincena final, franjas F2 de una sola fuente, cierre semanal de los viernes, guías del Anki 05:00 y del Feynman); detalle en `DATA/REESTRUCTURACION_31AGO_2026.md` §31; Calendar en `DATA/_v600/cal/CAL_V6.md` §25.
 - **Semana tipo hasta el mié 30-dic:** lun · mié · vie = MAÑANA ENCAPS 07:15-12:00 (22 mañanas: teoría Theomed → post-test → banqueo 72 s/Q → corrección + norma → tarjetas; recuperación del atraso de Theomed hasta el vie 27-nov; mié 30-dic simulacro de cierre) + ENCAPS 16:15 + ENCAPS 18:00 (cifras, normas, flashcards) · mar · jue = Step 1 (15 mañanas: UWSA1 mar 10-nov · NBME 25 jue 10-dic) · Anki 05:00 = USMLE 30′ + ENCAPS 15′ · sábado: 14:00 revisión · 14:30 Business · 15:00-17:00 THEOMED EN VIVO · domingo: ENCAPS 4 h opcional (simulacro) + SHIP flexibles. ≈ 65 % del tiempo de estudio es ENCAPS (69 % con el domingo).
 - **Coste en el Step 1:** el examen pasa del lun 25-oct al **lun 6-dic-2027** (con el 25-oct faltaban 11 unidades; el 22-nov era la primera fecha posible, con 5 h de colchón) · colchón del tramo 2 **32 → 14 filas (≈ 84 → 37 h)** · NBME 26/27/28 → vie 2-abr / vie 23-abr / jue 3-jun · GO/NO-GO lun 18-oct · el SERUMS convive 6 semanas más con el Step · F5 (MIR principal, post-Step) empieza el mar 7-dic en vez del mar 26-oct · `STEP1_SEMANAS` 46.

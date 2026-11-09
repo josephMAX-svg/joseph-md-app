@@ -12,7 +12,7 @@
  * v6.06 (sáb 31-oct-2026): corrimiento rígido del D1 lun 26-oct-2026 → lun 2-nov-2026 (perdidos: lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct).
  * v6.07 (dom 8-nov-2026): corrimiento rígido del D1 lun 2-nov-2026 → lun 9-nov-2026 (perdidos: lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov).
  * v6.07 (dom 8-nov-2026): examen Step 1 lun 25-oct-2027 → lun 6-dic-2027 (decisión de Joseph; step1.cambios).
- * v6.07 (dom 8-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov (solo días sin sesión: los planes ya están re-fechados por el corrimiento).
+ * v6.07a (lun 9-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov = plan del lun 9-nov · mié 11-nov = plan del mar 10-nov · jue 12-nov = plan del mié 11-nov · vie 13-nov = plan del jue 12-nov · sáb 14-nov = parte del vie 13-nov · dom 15-nov = parte del vie 13-nov; ningún plan cambia de fecha.
  * Versión vigente del JSON: v6.07.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -278,9 +278,9 @@ export const FECHAS_V6: FechasV6 = {
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-11-08",
-    "version": "v6.07",
-    "motivo": "v6.07 (dom 8-nov-2026): la semana corrida v6.06a-e queda sin efecto; del lun 19-oct al dom 8-nov no hubo estudio y el plan entero se re-fecha con D1 = lun 9-nov (corrimiento real, no alias). Capa de alias inerte (sin alias ni reparto).",
+    "decidido": "2026-11-09",
+    "version": "v6.07a",
+    "motivo": "v6.07a (lun 9-nov-2026, orden de Joseph): «El día de hoy no se avanzó, se empieza mañana … que los temas de hoy se corran, corran nada más … ve tú la mejor forma para que sea más simple». Semana corrida por ALIAS en la consulta (patrón v6.02d / v6.06a; no se re-fecha nada): lun 9 sin sesión · mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte entre la mañana del sáb 14 (antes del en vivo de Theomed) y el dom 15 desde las 07:15 (su tarde adelantada 6 h 15′). Desde el lun 16-nov todo en su fecha; nada se quita. (Historial: del lun 19-oct al dom 8-nov sin estudio → re-fecha real v6.07 con D1 = lun 9-nov.)",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -302,10 +302,73 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-05",
       "2026-11-06",
       "2026-11-07",
-      "2026-11-08"
+      "2026-11-08",
+      "2026-11-09"
     ],
-    "alias": {},
-    "reparto": {}
+    "alias": {
+      "2026-11-10": "2026-11-09",
+      "2026-11-11": "2026-11-10",
+      "2026-11-12": "2026-11-11",
+      "2026-11-13": "2026-11-12"
+    },
+    "reparto": {
+      "2026-11-14": {
+        "de": "2026-11-13",
+        "partes": [
+          {
+            "de": "2026-11-13",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "encaps-am": 0,
+              "syn": 0,
+              "biz": 0
+            }
+          },
+          {
+            "de": "2026-11-14",
+            "bloques": {
+              "syn": 0,
+              "revision": 0,
+              "biz": 0,
+              "theomed-prep": 0,
+              "theomed-vivo": 0,
+              "anki-sab": 0
+            }
+          }
+        ],
+        "titulo": "Sábado · MAÑANA del vie 13 + Theomed en vivo 15:00 (semana corrida)",
+        "nota": "Hoy: la mañana del vie 13 a sus horas (04:15 vibecoding · 05:00 Anki + repasos ENCAPS · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business OUTPUT S1 1/2) y después lo del sábado sin cambios (13:30 SYNAPSE · 14:00 revisión semanal · 14:30 Business · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 19:00 Anki). La tarde del vie 13 va mañana domingo desde las 07:15."
+      },
+      "2026-11-15": {
+        "de": "2026-11-13",
+        "partes": [
+          {
+            "de": "2026-11-13",
+            "bloques": {
+              "rd": -375,
+              "aurum": -375,
+              "mir": -375,
+              "encaps": -375,
+              "liv": -375,
+              "encaps-pm": -375
+            }
+          },
+          {
+            "de": "2026-11-15",
+            "bloques": {
+              "anki-dom": 0,
+              "encaps-dom": 0,
+              "pc": 0,
+              "feynman": 0
+            }
+          }
+        ],
+        "titulo": "Domingo · TARDE del vie 13 desde las 07:15 + SHIP S1 (semana corrida)",
+        "nota": "Hoy: la tarde del vie 13 adelantada 6 h 15′ (07:15 Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 ENCAPS mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras ENCAPS) y después lo del domingo: el SHIP S1 (obligatorio, a la hora que quieras), el Feynman y el Anki (opcionales). El ENCAPS de 4 h sigue siendo opcional: solo si te sobra energía después de la recuperación."
+      }
+    },
+    "resumen": "SEMANA CORRIDA v6.07a (orden del lun 9-nov): el lun 9 no se estudió → mar 10 = plan del lun 9 · mié 11 = plan del mar 10 (UWSA1) · jue 12 = plan del mié 11 · vie 13 = plan del jue 12 · el plan del vie 13 se reparte: su mañana el sáb 14 (antes del en vivo de Theomed) y su tarde el dom 15 desde las 07:15. Desde el lun 16-nov todo vuelve a su fecha; nada se quita."
   }
 };
 
@@ -543,7 +606,7 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
   };
 }
 
-// ── v6.07: semana 1 corrida (orden de Joseph del dom 8-nov-2026) ──
+// ── v6.07a: semana 1 corrida (orden de Joseph del lun 9-nov-2026) ──
 /** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
 export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
@@ -551,8 +614,8 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov sin sesión.
- * null fuera de esos días (sin alias ni reparto: los planes, Supabase, runners y guías ya están re-fechados por el corrimiento).
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov sin sesión · mar 10-nov = plan del lun 9-nov · mié 11-nov = plan del mar 10-nov · jue 12-nov = plan del mié 11-nov · vie 13-nov = plan del jue 12-nov · sáb 14-nov = vibe+anki+encaps-am+syn+biz del vie 13-nov / syn+revision+biz+theomed-prep+theomed-vivo+anki-sab del sáb 14-nov · dom 15-nov = rd+aurum+mir+encaps+liv+encaps-pm del vie 13-nov / anki-dom+encaps-dom+pc+feynman del dom 15-nov.
+ * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {
   const c = FECHAS_V6.corrida_s1;

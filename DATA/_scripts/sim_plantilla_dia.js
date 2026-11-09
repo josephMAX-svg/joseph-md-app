@@ -88,7 +88,12 @@ for (const iso of dias) {
   if (!rango) console.log(`\n══ ${WD[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${iso} · ${p.plantilla} · ${p.titulo}${p.usmle ? ` · Step D${p.usmle.d}` : ''}`);
   if (!rango) for (const n of p.notas) console.log(`   • ${n}`);
   for (const b of p.bloques) {
-    let gs; try { gs = guiasDe(b, p, iso); } catch (e) { gs = null; console.log(`   ✗ ${b.id}: ${e.message}`); }
+    // v6.07a (lun 9-nov): semana corrida → como TodayMission.contenidoBloque: el contenido se consulta con la FECHA DE PLAN del bloque
+    // (b.fechaPlan) y a la HORA DE PLAN (hora real − b.desfaseMin); después las guías se mueven a la hora real (moverGuia)
+    const fP = b.fechaPlan || iso, dP = b.desfaseMin || 0;
+    const aHM = (h) => (h && dP ? `${String(Math.floor((hm(h) - dP) / 60)).padStart(2, '0')}:${String((hm(h) - dP) % 60).padStart(2, '0')}` : h);
+    const bPlan = dP ? { ...b, ini: aHM(b.ini), fin: aHM(b.fin) } : b;
+    let gs; try { gs = guiasDe(bPlan, p, fP); if (gs && dP) gs = gs.map((g) => G.moverGuia(g, dP)); } catch (e) { gs = null; console.log(`   ✗ ${b.id}: ${e.message}`); }
     const flexible = !b.ini;
     const fuera = (gs || []).filter((g) => { const q = G.partesFranja(g.franja); return !flexible && (!q || hm(q.ini) < hm(b.ini) || hm(q.fin) > hm(b.fin) + (b.frente === 'usmle-principal' ? 60 : 0)); });
     const sinContenido = gs === null;
