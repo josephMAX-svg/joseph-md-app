@@ -44,7 +44,7 @@ import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe } from '../lib/encapsPlan';
 import { fechaPlanDe, fechaRealDe } from '../lib/fechasV6';
-import { franjaCorrSim11De } from '../lib/rutinaGuia'; // v6.07 (fix 3): hora de la corrección del SIM 11:00 = la del Home (plantillasV6.bloqueCorrSim11)
+import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from '../lib/encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de TODO simulacro + cierre semanal = Home (plantillasV6.bloqueCorrSim / bloqueCierreSemanal) = ítems
 
 // v6.02d: fecha real visible (semana corrida) — día de la semana a MOSTRAR de una fila: el guardado (weekday) si su fecha real es la de
 // plan; si la fila se corrió, el de su fecha real. Recibe la fecha real ya calculada (fechaRealDe en la llamada).
@@ -1086,18 +1086,24 @@ function bloquesIntensivoBase(day: StudyScheduleDay): HorarioBlock[] {
     const dur = Math.round(sim.n * sim.segPorQ / 60);
     const h0 = sim.hora; // v6.00: extra.sim.hora (antes 08:00 fijo)
     const corrTit = `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)`;
-    // v6.07 (fix 3): SIM de las 11:00 (#6-#10 y dress rehearsal D-2) → la corrección va a la MISMA hora que en el Home (rutinaGuia.franjaCorrSim11De:
-    //   16:15-17:15 si la fila no trae extra.carril_b · 18:00-18:45 si lo trae); antes h0 + 2 h 15′ = 13:15-14:15, donde el Home tiene SYNAPSE + R↔D.
-    //   El viernes con carril B (vie 5-mar) ese bloque sustituye a la EVAL 18:00 y lleva el cierre semanal (--pull → --semana), como en el Home.
-    const corr = h0 === '11:00' ? franjaCorrSim11De(!!carrilBDe(day)) : null;
-    const viernes = !!day.fecha && /^\d{4}-\d{2}-\d{2}$/.test(day.fecha) && new Date(`${day.fecha}T12:00:00Z`).getUTCDay() === 5;
+    // v6.07 (fix 3): SIM de las 11:00 (#6-#10 y dress rehearsal D-2) → la corrección va a la MISMA hora que en el Home; antes h0 + 2 h 15′ =
+    //   13:15-14:15, donde el Home tiene SYNAPSE + R↔D. v6.07 (fix rev. e5fd4bd #3/#5): TODO simulacro con la franja de encapsFranjasF2 (= Home =
+    //   hora y duración del ítem D{dia}:i_sim_corr): 07:15 (SIM y PRE-TEST) → 09:30-12:00 con sus 2 tramos (corrección + cierre 09:30-11:00 · 2 códigos
+    //   peores 11:00-12:00; antes 09:30-10:30) · 11:00 → 16:15-17:15 o, con carril B, 18:00-18:45 · + el CIERRE SEMANAL (ítem D{dia}:i_semana) el día de
+    //   SIM que cierra la semana (18:00-18:45, o 18:45-19:00 tras la corrección de las 18:00); antes no salía en el Horario.
+    const cb = !!carrilBDe(day);
+    const corr = franjaCorrSimDe(h0, cb);
+    const semanal = !!day.fecha && /^\d{4}-\d{2}-\d{2}$/.test(day.fecha) && sim.tipo !== 'dress_rehearsal' && ultimoHabilDeSemana(day.fecha) ? franjaCierreSemanalDe(h0, cb) : null;
     return [
       { hora: `${h0}-${hhmmMas(h0, dur)}`, titulo: `🔥 ${sim.label} · ${sim.n}Q · ${sim.segPorQ} s/Q`, apex: true },
-      corr
-        ? { hora: `${corr.ini}-${corr.fin}`, titulo: sim.tipo === 'dress_rehearsal'
+      { hora: `${corr.ini}-${corr.fin}`, titulo: sim.tipo === 'dress_rehearsal'
           ? `📊 Corrección del dress rehearsal por código v3 + cierre (umbral ≥${sim.umbral}/100) → hoja de errores que mañana (D-1) solo se lee`
-          : `${corrTit} + 2 códigos peores${viernes && corr.ini === '18:00' ? ' · cierre semanal (gen_encaps_semana.js --pull → --semana)' : ''}` }
-        : { hora: `${hhmmMas(h0, dur + 15)}-${hhmmMas(h0, dur + 75)}`, titulo: corrTit },
+          : `${corrTit} + 2 códigos peores`,
+        ...(corr.peoresDesde ? { pasos: [
+          { t: corr.ini, d: `Corrección por código v3 y por formato (viñeta / viñeta+cifra / directa / cifra) + CIERRE tipo ${sim.tipo === 'pretest' ? 'pretest' : 'simulacro'} → nota /${sim.n} en study_sim_scores (sim_n = ${sim.simN}) + % ciego en study_progress` },
+          { t: corr.peoresDesde, d: `Los 2 códigos peores del ${sim.tipo === 'pretest' ? 'pre-test' : 'SIM'}: banco de esos 2 códigos (16-20Q ciegas, corrección inmediata)` },
+        ] } : {}) },
+      ...(semanal ? [{ hora: `${semanal.ini}-${semanal.fin}`, titulo: '📈 CIERRE SEMANAL: node DATA/_scripts/gen_encaps_semana.js --pull → --semana (% ciego de la semana por código, temas calientes, alerta de mini-sims)' }] : []),
     ];
   }
   const loop = loopDe(day);
@@ -1113,10 +1119,11 @@ function bloquesIntensivoBase(day: StudyScheduleDay): HorarioBlock[] {
     { min: 120, titulo: `📡 ${day.subtema || 'RE-SCAN DE SEÑALES 2027-I'}`, apex: true },
     { min: 15, titulo: '📝 Cierre: pesos v3 revisados + RM/NTS nuevas → Anki ENCAPS::Cifras' },
   ]);
-  if (day.tipo === 'medio_dia') return [
-    { hora: '09:00-09:30', titulo: '🧠 D-1 · 30 min de cifras (Anki ENCAPS::Cifras + CIFRAS_CRITICAS_2027-I.md)' },
-    { hora: '09:30-10:00', titulo: '📋 Hoja de errores del dress rehearsal (solo lectura) · logística del examen · dormir 7 h' },
-  ];
+  // v6.07 (fix rev. e5fd4bd #6): el D-1 (medio día) también en serie desde las 07:15, dentro de su bloque del Home (07:15-12:00; antes 09:00-10:00)
+  if (day.tipo === 'medio_dia') return enSerie([
+    { min: 30, titulo: '🧠 D-1 · 30 min de cifras (Anki ENCAPS::Cifras + CIFRAS_CRITICAS_2027-I.md)' },
+    { min: 30, titulo: '📋 Hoja de errores del dress rehearsal (solo lectura) · logística del examen · dormir 7 h' },
+  ]);
   if (day.tipo === 'repaso_final') {
     const quincena = !!(day.extra as Record<string, unknown> | undefined)?.quincena;
     return enSerie([

@@ -537,8 +537,16 @@ function bloquePC(semana, fecha) {
   return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
 }
 // ─── Domingo = Feynman del proyecto (10', opcional; no rompe la racha si se salta) ───
-function bloqueDom(semana) {
-  const tp = TAPER.find((x) => x.s === semana);
+// v6.07 (fix lote 1b del Calendar, 8-nov-2026): el Feynman explica el proyecto del PC de ESE domingo —el que hace SHIP o, si ninguno cierra, el
+//   que está en curso: la MISMA regla que bloquePC (vibeDe / vibeEnCurso sobre las fechas de vibecodingPlan.ts)—, no el de la semana del SYNAPSE.
+//   Con el SKIP del vie 25-dic las semanas del vibecoding se desfasan de las del SYNAPSE: dom 3-ene = SHIP S7 (sem 8; antes «Feynman · proyecto
+//   S8», que aún no termina) · dom 10-ene → 31-ene = SHIP S8 → S11 (antes S9 → S12) · dom 7-feb = SHIP S12 (sem 13; antes «Domingo libre · taper
+//   S13», sin Feynman). En el taper, el rótulo del domingo libre es el de la entrada del PC de ese domingo (el mismo que pinta bloquePC).
+function bloqueDom(semana, fecha) {
+  const vs = fecha ? vibeDe(fecha) : null;
+  const vc = fecha && !vs ? vibeEnCurso(fecha) : null;
+  const n = (vs || vc || {}).s || semana;
+  const tp = TAPER.find((x) => x.s === n);
   if (tp) {
     return {
       tag: 'R', min: 5, formato: 'repaso',
@@ -547,11 +555,12 @@ function bloqueDom(semana) {
       url: assertUrl(ccDoc(13).url), real: true,
     };
   }
-  const p = VIBE.find((x) => x.s === Math.min(semana, 12));
+  const p = VIBE.find((x) => x.s === Math.min(n, 12));
+  const queTxt = vs ? `qué construiste en S${p.s} (el proyecto que hace SHIP hoy)` : vc ? `lo que llevas construido de S${p.s} (su SHIP es el ${vc.ship})` : 'qué construiste esta semana';
   return {
     tag: 'R', min: 10, formato: 'repaso',
     material: `Feynman · proyecto S${p.s}: ${p.nombre}`,
-    leccion: `Explica en voz alta, 5', qué construiste esta semana y CÓMO funciona (sin mirar el código); 5' más: la línea "qué falta" en synapse-journal. Opcional: si descansas, márcalo ✓ igual — el domingo es libre (v5 sáb/dom libres).`,
+    leccion: `Explica en voz alta, 5', ${queTxt} y CÓMO funciona (sin mirar el código); 5' más: la línea "qué falta" en synapse-journal. Opcional: si descansas, márcalo ✓ igual — el domingo es libre (v5 sáb/dom libres).`,
     url: assertUrl(p.docs[0].url), real: true,
   };
 }
@@ -605,7 +614,7 @@ for (let d = 1; d <= TOTAL; d++) {
     bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `🎄 Feriado libre · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: 'Sin misión. Marca ✓ para conservar la racha; el Anki sigue (due × 20 s).', real: true });
   } else if (wd === 'Dom') {
     // v5.7: domingo = Feynman del proyecto de la semana (10', opcional). Sigue siendo día libre: sin A/B/C.
-    bloques.push(bloqueDom(semana));
+    bloques.push(bloqueDom(semana, fecha));
     // v6.07 (8-nov-2026): el PC (SHIP del vibecoding, 2 h, flexible) va el DOMINGO; el sábado 15:00-17:00 es la clase EN VIVO de Theomed
     if (DIA_PC === 'Dom') {
       for (const x of pcDesplazadosDe(fecha)) bloques.push(x); // v6.01: PC propio de una entrada del taper que cerró la semana anterior junto con otra

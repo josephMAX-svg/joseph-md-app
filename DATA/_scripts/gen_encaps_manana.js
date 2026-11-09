@@ -23,6 +23,9 @@
  *    «ENCAPS · cifras, normas y flashcards»), con su post-test. Si sobra tiempo (≥ 5′), va a «Theoesencial + norma del tema» (lectura activa);
  *    si sobran < 5′, se suma a la última sesión (es redondeo).
  *  · Banqueo: n × 72 s. Si es cronometrado y no cabe en 60′ (28-dic: 60Q = 72′), la franja del banqueo crece y la corrección se acorta (≥ 30′).
+ *  · Arranque 07:15 (fix lote 1b del Calendar): las 10 tarjetas y las reglas son de la mañana ENCAPS anterior: «de ayer» solo si fue el día
+ *    anterior · «del viernes» / «del lunes» / «del miércoles» si es la anterior de la rotación · «del último día ENCAPS, mié 23-dic» si un SKIP
+ *    se comió una mañana ENCAPS (lun 28-dic). Las ★ de las cifras de las 18:00 van al PRIMER Anki 05:30 siguiente («mañana» · «el lunes»).
  *  · Enlaces SOLO al campus de Theomed (cursos 99, 105 y 116 del JSON). El material de academias del Drive se nombra por su ruta, sin enlace
  *    (el repo es público: no se copia nada al repo ni a public/).
  * Controles (aborta y no escribe): las mañanas del JSON = los días de F1 L-V sin Step (step1.f1_dias_semana) y sin SKIP · sábados = los de
@@ -224,6 +227,29 @@ const CRITICOS = 'I-3 · V-2 · IV-1+IV-2 · I-4 · II-3 · III-5 · II-5 · II-
 /** «sábado 14:00» (F1 y transición, con la clase en vivo) o «sáb 9-ene 07:15» (F2): la revisión semanal que recoge el registro de `iso`. */
 const revSab = (iso) => { const s = addDias(iso, ((6 - dow(iso)) + 7) % 7 || 7); return s <= F6.transicion.hasta ? 'sábado 14:00' : `${corta(s)} 07:15`; };
 const VIGENCIA = 'Si dos fuentes no coinciden, manda la norma más reciente del campus Theomed 2027-I / MINSA.';
+const WDL = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+/** v6.07 (fix lote 1b del Calendar): de qué mañana ENCAPS son las tarjetas y los errores del arranque de `hoy` (la anterior es `prev`):
+ *  «de ayer» solo si fue el día anterior · «del viernes» / «del lunes» / «del miércoles» si es la mañana ENCAPS anterior de la rotación
+ *  (lun · mié · vie: hasta la v6.07 ponía «de ayer» los mié y vie, que siguen a un día de Step) · «del último día ENCAPS, mié 23-dic» si
+ *  entre medias un SKIP se comió una mañana ENCAPS (lun 28-dic: el vie 25-dic es SKIP; antes decía «del viernes» y remitía al mié 23-dic). */
+function prevMananaTxt(prev, hoy) {
+  if (addDias(prev, 1) === hoy) return { de: 'de ayer', saltadas: [] };
+  let esperada = addDias(hoy, -1); // la mañana ENCAPS anterior según la rotación (L-V sin Step), ignorando los SKIP
+  while (dow(esperada) === 0 || dow(esperada) === 6 || STEP_DIAS.includes(dow(esperada))) esperada = addDias(esperada, -1);
+  if (esperada === prev) return { de: `del ${WDL[dow(prev)]}`, saltadas: [] };
+  const saltadas = [];
+  for (let d = addDias(prev, 1); d < hoy; d = addDias(d, 1)) if (SKIP.has(d) && dow(d) >= 1 && dow(d) <= 5 && !STEP_DIAS.includes(dow(d))) saltadas.push(d);
+  return { de: `del último día ENCAPS, ${corta(prev)}`, saltadas };
+}
+/** v6.07 (fix): la próxima sesión del Anki 05:30 de ENCAPS tras `iso` (para las ★ de las cifras de las 18:00): «mañana» · «el lunes» · «el jue 24-dic». */
+const proxAnkiTxt = (iso, gaFechas) => {
+  const n = gaFechas.find((d) => d > iso);
+  if (!n) return null;
+  return n === addDias(iso, 1) ? 'mañana a las 05:30' : dow(iso) === 5 && n === addDias(iso, 3) ? 'el lunes a las 05:30' : `el ${corta(n)} a las 05:30`;
+};
+// días con el Anki 05:30 de ENCAPS (L-V de F1 sin SKIP): los mismos que GA más abajo
+const GA_FECHAS = [];
+for (let d = F6.f1.inicio; d <= F6.f1.fin; d = addDias(d, 1)) { const w = dow(d); if (w >= 1 && w <= 5 && !SKIP.has(d)) GA_FECHAS.push(d); }
 
 // ── guías de la MAÑANA ─────────────────────────────────────────────────────────────────────────────────────────
 const GM = {}, GT = {}, MD = {};
@@ -261,13 +287,15 @@ for (const dia of J.mananas) {
     const rep = repartir(dia);
     // 07:15 arranque en frío
     const primera = dia.n === 1;
+    const pv = primera ? null : prevMananaTxt(prevM.fecha, dia.fecha);
+    const porSkip = pv && pv.saltadas.length ? ` —${pv.saltadas.map((x) => 'el ' + corta(x)).join(' y ')} ${pv.saltadas.length > 1 ? 'fueron' : 'fue'} SKIP, sin mañana ENCAPS—` : '';
     gs.push(guia(fr('07:15', '07:30'), `${tag} · ARRANQUE EN FRÍO`, primera
       ? [
         P(15, 'Orientación en el campus (es el primer día: no hay tarjetas de ayer)', 'Cronograma en vivo y asíncrono; dónde están PPT, post-tests, Theoesenciales, glosarios y las 100 normas técnicas. Ruta: Campus › curso 99 (y el 116 de sesiones adicionales).', L99),
       ]
       : [
-        P(8, `10 tarjetas ${lunes ? 'del viernes' : 'de ayer'}, de memoria`, `Las de las 11:40 del ${corta(prevM.fecha)}${lunes ? ' (y las del simulacro del domingo, si lo hiciste)' : ''}. Tapa la respuesta, dila en voz alta, comprueba.`),
-        P(7, `Reglas de los errores ${lunes ? 'del viernes' : 'de ayer'}, sin mirar`, 'Lee solo el error en el registro y di la regla. Si no sale, márcala ★: va primero en el banqueo de hoy.'),
+        P(8, `10 tarjetas ${pv.de}, de memoria`, `Las de las 11:40 del ${corta(prevM.fecha)}${porSkip}${lunes ? ' (y las del simulacro del domingo, si lo hiciste)' : ''}. Tapa la respuesta, dila en voz alta, comprueba.`),
+        P(7, `Reglas de los errores ${pv.de}, sin mirar`, 'Lee solo el error en el registro y di la regla. Si no sale, márcala ★: va primero en el banqueo de hoy.'),
       ], [R99], primera ? 'sabes dónde está cada cosa del campus' : 'las 10 tarjetas dichas y las reglas repasadas (las que no salieron, con ★)', { aviso: dia.extra || undefined }));
     // 07:30 teoría
     const pasosT = rep.manana.map((u) => P(u.min, typeof u.que === 'function' ? u.que(u.min) : u.que, u.como, u.enlace));
@@ -331,7 +359,7 @@ for (const dia of J.mananas) {
     : P(m, `Flashcards ENCAPS::Flashcards · ${m >= 20 ? '30' : '15'} nuevas del tema de hoy + vencidas`, 'Anki. Las nuevas del área de hoy, en el orden del temario. Si aún no importaste el mazo de DR LOPEZ (decisión tuya), haz las nuevas de ENCAPS::Cifras.'));
   const cifras = (m) => (cierre
     ? P(m, 'Cifras de lo que fallaste en el simulacro', 'Busca cada cifra fallada en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para la transición.')
-    : P(m, `Cifras y plazos de ${codTxt}`, 'Las filas de esos códigos en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para mañana a las 05:30.'));
+    : P(m, `Cifras y plazos de ${codTxt}`, `Las filas de esos códigos en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para ${proxAnkiTxt(dia.fecha, GA_FECHAS) || 'la próxima sesión de Anki'}.`));
   if (Rr >= 30) {
     pasosR.push(flash(Rr - 20), cifras(10));
     pasosR.push(normaTxt(dia) ? P(10, `Norma del día: ${normaTxt(dia)}`, `Una tabla o flujograma más de esa norma → tarjeta. Ruta: ${RUTA.normas}.`, L99)
@@ -346,10 +374,16 @@ function normaTxt(dia) { return dia.norma && dia.norma !== 'verificación' ? dia
 
 // ── 05:30 · repasos ENCAPS (15′) tras el Anki USMLE · todos los días de plan de F1 (L-V sin SKIP) ──────────────────
 const GA = {};
+const GT_FECHAS = J.mananas.map((x) => x.fecha);
 for (let d = F6.f1.inicio; d <= F6.f1.fin; d = addDias(d, 1)) {
   const w = dow(d); if (w < 1 || w > 5 || SKIP.has(d)) continue;
+  // v6.07 (fix): las ★ de las cifras de las 18:00 (lun · mié · vie) se repasan en el PRIMER Anki 05:30 que sigue: «de ayer» solo el día
+  //   siguiente a una tarde ENCAPS, «del viernes» el lunes; si ya hubo otro Anki 05:30 en medio (mié, vie, lun 28-dic), no hay ★ pendientes
+  const ultT = [...GT_FECHAS].reverse().find((x) => x < d);
+  const pend = ultT && !GA_FECHAS.some((x) => x > ultT && x < d);
+  const deT = !pend ? null : ultT === addDias(d, -1) ? 'de ayer' : w === 1 && ultT === addDias(d, -3) ? 'del viernes' : `del ${corta(ultT)}`;
   GA[d] = guia(fr('05:30', '05:45'), 'ANKI · repasos ENCAPS 15′ (después del USMLE)', [
-    P(10, 'ENCAPS::Cifras · vencidas (y las ★ de ayer)', 'Responde en voz alta antes de girar. FSRS: Good / Again, nunca Hard ni Easy.'),
+    P(10, deT ? `ENCAPS::Cifras · vencidas (y las ★ ${deT})` : 'ENCAPS::Cifras · vencidas', 'Responde en voz alta antes de girar. FSRS: Good / Again, nunca Hard ni Easy.'),
     P(5, 'ENCAPS::Flashcards · vencidas', 'Si aún no importaste el mazo de DR LOPEZ (decisión tuya), estos 5′ van a ENCAPS::Cifras.'),
   ], [], '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: STEP_DIAS.includes(w) ? undefined : 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' });
 }

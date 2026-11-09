@@ -175,6 +175,9 @@
  *   (--bk-base por defecto) · intensiva.backup = study_schedule_bk_v607_int_20261108. Horarios por ruta: D1 lun 9-nov (eval_2026-11-09 + parte 1) ·
  *   D2 mar 10 · D3 mié 11 = eval del código de la fila dia 2 · vie 13-nov (D5) = primer mini-sim.
  *   Siembra v6.07: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → se combina con la F1 en una transacción.
+ *   v6.07 (fix rev. e5fd4bd #2): un pendiente MINI-SIM nunca va a un SIM 100Q lun / mié de la quincena (REPO_FECHAS los incluye para los banqueo1h):
+ *   cada día de reposición recibe el PRIMER pendiente de la cola que admite; el mini-sim espera al siguiente día sin SIM. Con el examen el 21-mar o el
+ *   11-abr el mini-sim de la v6.05 caía en mié 10-mar (dia 85) / mié 31-mar (dia 98) y abortaba («sim_n repetidos»). Con el 14-mar: SQL idéntico.
  *
  * Histórico (antes de v6.00):
  * v5.20 (6-oct-2026, DEFINITIVA): Joseph FIJA el examen ENCAPS 2027-I = MIÉ 10-MAR-2027 y la intensiva arranca el día siguiente al examen
@@ -417,9 +420,24 @@ const SAB_FECHAS = plan.filter((p) => p.dow === 5).map((p) => ({ fecha: addDays(
 const VIE_QUINCENA = QUINCENA_SIMS.filter((f) => dowDe(f) === 5 && f > cbUltima && f <= COLA[2]);
 const DESBORDE = [...SAB_FECHAS.map((x) => ({ ...x, carril: 'sab' })), ...VIE_QUINCENA.map((f) => ({ fecha: f, host: f, carril: 'vie' }))]
   .sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
-const pendLJ = pendF1Cola.slice(0, REPO_FECHAS.length), pendSab = pendF1Cola.slice(REPO_FECHAS.length);
+// v6.07 (fix rev. e5fd4bd #2): un MINI-SIM pendiente nunca va a un SIM 100Q lun / mié de la QUINCENA (REPO_FECHAS los incluye para que sus
+// banqueo1h sigan en fecha): serían 125Q en un día y sim_n repetido (el mini-sim usa sim_n = dia, como el SIM). Con el examen el 21-mar o el
+// 11-abr el mini-sim de la v6.05 caía en mié 10-mar (dia 85) / mié 31-mar (dia 98) y el generador abortaba («sim_n repetidos»). Reparto por día
+// de reposición, en orden: el PRIMER pendiente de la cola que ese día admite (un SIM de la quincena solo admite banqueo1h); el mini-sim espera al
+// siguiente día de reposición sin SIM o, si no queda, al desborde (sábados). Si en un SIM solo quedan mini-sims, ese día se queda con la regla
+// genérica (REPO_SIN_PEND). Con el examen 14-mar ningún mini-sim cae en un SIM: el reparto es el de antes (pendiente k → día k).
+const admitePend = (f, p) => p.tipo !== 'mini_sim' || !QUINCENA_SIMS.includes(f);
+const PEND_POR_FECHA = {}, REPO_SIN_PEND = [];
+const colaPendLJ = pendF1Cola.slice();
+for (const f of REPO_FECHAS) {
+  if (!colaPendLJ.length) break;
+  const k = colaPendLJ.findIndex((p) => admitePend(f, p));
+  if (k < 0) { REPO_SIN_PEND.push(f); continue; }
+  PEND_POR_FECHA[f] = colaPendLJ.splice(k, 1)[0];
+}
+const REPO_OCUPABLES = REPO_FECHAS.filter((f) => !REPO_SIN_PEND.includes(f)); // días de reposición lun-jue que pueden llevar un pendiente
+const pendSab = colaPendLJ;
 if (pendSab.length > DESBORDE.length) throw new Error(`--pendientes-f1: ${pendF1Cola.length} pendientes F1 y solo ${REPO_FECHAS.length} días de reposición lun-jue en el carril B + ${SAB_FECHAS.length} sábados (carril SÁBADO ${SAB_FRANJA}) + ${VIE_QUINCENA.length} viernes de la quincena final (carril VIERNES 16:15)`);
-const PEND_POR_FECHA = Object.fromEntries(pendLJ.map((p, k) => [REPO_FECHAS[k], p]));
 const PEND_SAB_POR_HOST = {}, PEND_VIE_POR_FECHA = {};
 pendSab.forEach((p, k) => {
   const d = DESBORDE[k];
@@ -744,13 +762,13 @@ const nPendSab = filas.filter((r) => r.extra.carril_sabado && r.extra.carril_sab
 const nPendVie = filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1 && PEND_VIE_POR_FECHA[r.fecha]).length; // v6.07
 const nPendF1 = nPendLJ + nPendSab + nPendVie;
 ok(nPendF1 === pendF1.length, `pendientes F1 sembrados ${nPendF1} ≠ ${pendF1.length} del JSON`);
-ok(filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1 && !PEND_VIE_POR_FECHA[r.fecha]).every((r, k) => r.fecha === REPO_FECHAS[k] && r.extra.carril_b.tipo === 'reposicion'), 'pendientes F1 fuera de los primeros días de reposición');
+ok(filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1 && !PEND_VIE_POR_FECHA[r.fecha]).every((r, k) => r.fecha === REPO_OCUPABLES[k] && r.extra.carril_b.tipo === 'reposicion'), 'pendientes F1 fuera de los primeros días de reposición'); // v6.07 (fix #2): REPO_OCUPABLES = REPO_FECHAS sin los SIM en los que solo quedaba un mini-sim
 // v6.07: el CARRIL VIERNES solo con el lun-jue LLENO, en un viernes con SIM de la quincena final, banqueo1h (nunca mini-sim) y en orden de fecha con los sábados
-ok(!nPendVie || nPendLJ === REPO_FECHAS.length, 'carril VIERNES usado con días de reposición lun-jue libres');
+ok(!nPendVie || nPendLJ === REPO_OCUPABLES.length, 'carril VIERNES usado con días de reposición lun-jue libres');
 ok(filas.filter((r) => r.extra.carril_b && PEND_VIE_POR_FECHA[r.fecha]).every((r) => r.dow === 5 && VIE_QUINCENA.includes(r.fecha) && r.tipo === 'sim100' && r.extra.carril_b.pendiente_f1.tipo === 'banqueo1h' && r.extra.carril_b.pendiente_f1.reposicion.carril === 'VIE 16:15'), 'carril VIERNES: día, tipo o carril del pendiente F1 incorrectos');
 { const des = pendF1.filter((p) => /^(SÁB|VIE)/.test(String(p.reposicion && p.reposicion.carril))); ok(des.every((p, k) => k === 0 || p.reposicion.fecha > des[k - 1].reposicion.fecha), 'desborde (sábados + viernes de la quincena) fuera de orden de fecha'); }
 // v6.06: el carril SÁBADO solo se usa cuando el lun-jue está LLENO, en orden de sábados, con host = el viernes de plan anterior y copia idéntica
-ok(!nPendSab || nPendLJ === REPO_FECHAS.length, 'carril SÁBADO usado con días de reposición lun-jue libres');
+ok(!nPendSab || nPendLJ === REPO_OCUPABLES.length, 'carril SÁBADO usado con días de reposición lun-jue libres');
 ok(filas.filter((r) => r.extra.carril_sabado).every((r, k) => { const s = r.extra.carril_sabado; const p = PEND_SAB_POR_HOST[r.fecha] && PEND_SAB_POR_HOST[r.fecha].p;
   return r.dow === 5 && s.fecha === addDays(r.fecha, 1) && s.fecha === SAB_FECHAS[k].fecha && !PROTEGIDOS_V6.has(s.fecha) && !SKIP_INT.has(s.fecha) && s.fecha < EXAMEN
     && s.host.dia === r.dia && p && JSON.stringify(s.pendiente_f1) === JSON.stringify(p) && p.reposicion.dia === r.dia && p.reposicion.fecha === s.fecha

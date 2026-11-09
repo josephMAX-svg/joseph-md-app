@@ -98,6 +98,7 @@ import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTE
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT } from './encapsRentabilidad';
 import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion, type TipoRonda } from './encapsProgressSync';
+import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): hora y duración de la corrección de los simulacros y del cierre semanal de F2 (= Home = Horario)
 import { sesionEncapsDe, sesionEncapsCuadra, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque
 
 // ── D1 por examen (para calcular el día actual) ──
@@ -983,12 +984,28 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
         url: sim.url || banco?.url, source: sim.fuente ? sim.fuente.split(' · ')[0] : (banco?.fuente || 'Banco'),
         dur: Math.round(sim.n * sim.segPorQ / 60),
       });
+      // v6.07 (fix rev. e5fd4bd #3/#4): hora y duración = la franja de la corrección en el Home y en el Horario (encapsFranjasF2.franjaCorrSimDe):
+      //   07:15 → 09:30-12:00 (150′: corrección + cierre 09:30-11:00 + los 2 códigos peores 11:00-12:00) · 11:00 → 16:15-17:15 (60′) o, con el 16:15
+      //   del carril B, 18:00-18:45 (45′); antes 60′ siempre y sin hora
+      const cb = !!carrilBDe(day);
+      const fc = franjaCorrSimDe(sim.hora, cb);
       items.push({
         key: `D${N}:i_sim_corr`, kind: 'eval',
         label: `📊 Corrección + CIERRE tipo ${tipoRondaDe(day)} (nota /${sim.n} → study_sim_scores sim_n = ${sim.simN} · % ciego → study_progress)`,
-        detail: `${sim.correccion || 'corrección por código v3 y por formato (viñeta / viñeta+cifra / directa / cifra)'} · umbral ≥${sim.umbral}/100 · alerta <${sim.alerta}/100${sim.registro ? ` · ${sim.registro}` : ''} · cada fallo → subtipo (knowledge/transfer/proceso) → _registro_resoluciones.json`,
-        dur: 60,
+        detail: `${sim.correccion || 'corrección por código v3 y por formato (viñeta / viñeta+cifra / directa / cifra)'} · umbral ≥${sim.umbral}/100 · alerta <${sim.alerta}/100${sim.registro ? ` · ${sim.registro}` : ''} · cada fallo → subtipo (knowledge/transfer/proceso) → _registro_resoluciones.json${sim.tipo === 'dress_rehearsal' ? ' → hoja de errores del D-1' : fc.peoresDesde ? ` · ${fc.peoresDesde}-${fc.fin}: los 2 códigos peores (banco de esos 2 códigos)` : ' + los 2 códigos peores'}`,
+        dur: fc.min, hora: `${fc.ini}–${fc.fin}`,
       });
+      // v6.07 (fix rev. e5fd4bd #5): CIERRE SEMANAL el día de SIM / pre-test que cierra la semana (el viernes), con la hora del Home y del Horario
+      //   (encapsFranjasF2.franjaCierreSemanalDe: 18:00-18:45 · 18:45-19:00 tras la corrección de las 18:00); antes solo existía en el Home
+      if (sim.tipo !== 'dress_rehearsal' && day.fecha && /^\d{4}-\d{2}-\d{2}$/.test(day.fecha) && ultimoHabilDeSemana(day.fecha)) {
+        const fcs = franjaCierreSemanalDe(sim.hora, cb);
+        items.push({
+          key: `D${N}:i_semana`, kind: 'eval',
+          label: '📈 CIERRE SEMANAL del ENCAPS: node DATA/_scripts/gen_encaps_semana.js --pull → --semana',
+          detail: '--pull trae las rondas de la semana de la app (study_progress, fuente app:cierre) al registro v3 sin duplicar; --semana: % ciego por código vs vector v3, temas calientes y alerta de mini-sims → TRACKING_ERRORES/SEMANAS/semana_<lunes>.md, para la revisión del sábado · hoy no hay EVAL 20Q: la evaluación del día es el simulacro',
+          dur: fcs.min, hora: `${fcs.ini}–${fcs.fin}`,
+        });
+      }
       return items;
     }
     if (day.tipo === 'senales') {

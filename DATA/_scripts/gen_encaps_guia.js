@@ -230,9 +230,29 @@ const evalDesc = (r, fila, prev) => {
   // v6.03: el código y la sesión anterior salen del propio runner (_meta.sesion_anterior); «AYER» solo si fue el día anterior
   const sa = r.meta.sesion_anterior || {}; const cod = r.j.codigo && r.j.codigo !== 'MIX' ? r.j.codigo : (prev ? prev.codigo : '');
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
-  if (sa.fecha && sa.fecha !== ayer) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}; tras el mini-sim del viernes: si ya registraste sus fallos, rehaz esos primero) (3 cifras + 2 viñetas)`;
+  if (sa.fecha && sa.fecha !== ayer) {
+    // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
+    const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
+    const sk = saltadosEntre(sa.fecha, fila.fecha);
+    return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, rehaz esos primero` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
+  }
   return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
 };
+/** v6.07 (fix lote 1b): días L-V SKIP / protegidos estrictamente entre dos fechas (vie 25-dic entre el jue 24 y el lun 28-dic). */
+const saltadosEntre = (a, b) => { const out = []; for (let d = new Date(a + 'T12:00:00Z'); ; ) { d.setUTCDate(d.getUTCDate() + 1); const iso = d.toISOString().slice(0, 10); if (iso >= b) break; if (d.getUTCDay() >= 1 && d.getUTCDay() <= 5 && NO_PLAN.has(iso)) out.push(iso); } return out; };
+/** v6.07 (fix lote 1b): EVAL ANCLADA de un banco SIN runner = la regla de gen_encaps_minisim.js (modoEval): la sesión anterior es un mini-sim o
+ *  no tiene código → 5Q de fallos previos con otro enfoque · si no → 5Q de su código, «de AYER» solo si fue el día anterior. Antes: «lunes» =
+ *  fallos del mini-sim del viernes, y el lun 28-dic (sesión anterior jue 24-dic, banco III-8; vie 25-dic SKIP, sin mini-sim) lo decía mal. */
+function evalSinRunner(fila, prev) {
+  if (!prev || prev.tipo === 'mini_sim' || !prev.codigo) {
+    const de = !prev || prev.tipo !== 'mini_sim' ? 'del registro' : (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 3); return d.getUTCDay() === 5 && d.toISOString().slice(0, 10) === prev.fecha ? 'del mini-sim del viernes' : `del mini-sim del ${corta(prev.fecha)}`; })();
+    return `5Q REHECHAS con otro enfoque de los fallos ${de}`;
+  }
+  const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
+  if (prev.fecha === ayer) return `5Q del código de AYER ${prev.codigo} (3 cifras + 2 viñetas)`;
+  const sk = saltadosEntre(prev.fecha, fila.fecha);
+  return `5Q de ${prev.codigo} = código de la sesión anterior (${corta(prev.fecha)}${sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
+}
 
 // ── construcción por sesión ───────────────────────────────────────────────────────────────────────────────────
 const SES = {}; const GUIA = {}; const TABLA = [];
@@ -326,7 +346,7 @@ function construirGuia(fila, sab = null) {
       const mat1 = mat.items[0];
       const matSec = secCods.flatMap((c) => materialDe(c, null).items.slice(0, 1).map((m) => ({ ...m, t: `${c} · ${m.t}` })));
       const obsSec = secCods.map((c) => obsidianDe(c, null)).filter(Boolean);
-      const evalTxt = ePrev || (sab ? sab.evalSin : lunes ? '5Q REHECHAS con otro enfoque de los fallos del mini-sim del viernes' : `5Q del código de AYER ${prev && prev.codigo ? prev.codigo : ''} (3 cifras + 2 viñetas)`);
+      const evalTxt = ePrev || (sab ? sab.evalSin : evalSinRunner(fila, prev));
       const qPri = nPri != null ? `${nPri}Q` : '16-20Q';
       const qSec = nSec != null ? `${nSec}Q` : '4-5Q';
       const subTxt = Object.keys(porSub).length ? ` (${Object.entries(porSub).map(([k, v]) => `${v} ${k}`).join(' · ')})` : '';

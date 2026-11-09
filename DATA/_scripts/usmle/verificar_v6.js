@@ -697,7 +697,8 @@ if (!argv.includes('--sin-matriz')) {
   // (c) fechas huérfanas y franjas del tramo 2 fuera de F3
   const F1F = new Set(DIAS.map((x) => x.fecha));
   // v6.07: «sin Step» dentro de F1 = fines de semana y, con Step solo mar · jue, también lun · mié · vie (guía = Anki 05:00-05:30)
-  const finde = (iso) => iso >= DIAS[0].fecha && iso <= DIAS[DIAS.length - 1].fecha && !F.skip.includes(iso) && ([0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay()) || !F.step1.f1_dias_semana.includes(new Date(iso + 'T12:00:00Z').getUTCDay()));
+  //   (fix lote 1b: el rango es f1.inicio → f1.fin, no la 1.ª → última fila de Step: el lun 9-nov, antes del D1, y el mié 30-dic, tras el D15, llevan su Anki)
+  const finde = (iso) => iso >= F.f1.inicio && iso <= F.f1.fin && !F.skip.includes(iso) && ([0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay()) || !F.step1.f1_dias_semana.includes(new Date(iso + 'T12:00:00Z').getUTCDay()));
   const filaT = Object.fromEntries(DIAS_T2.map((x) => [x.fecha, x]));
   const huerf = G.GUIA_USMLE_FECHAS.filter((f) => !F1F.has(f) && !finde(f) && !filaT[f]); // v6.07: + días de cola de F4 (bloque A)
   const fuera = [];

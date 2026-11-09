@@ -427,12 +427,8 @@ export const encapsOnceATrece = (iso: string): boolean => SIM_F2_11.has(iso) || 
  *  hasta las 15:15) antes del MIR 15:15 — el único hueco de 25′ que existe en TODA plantilla L-V de F2 entre el SYNAPSE 13:00-13:30 (empujado por el
  *  SIM), el R↔D 13:30-14:15, AURUM, MIR 15:15, el carril B 16:15 y LIVIANO 17:15 (07:15-11:00 queda libre a propósito: mañana de examen). */
 export const BIZ_ENCAPS_11 = { ini: '14:45', fin: '15:10' } as const;
-/** v6.07 (fix 3, 8-nov-2026): franja de la CORRECCIÓN + CIERRE de un simulacro de las 11:00 (SIM 100Q #6-#10 y dress rehearsal D-2; ítem
- *  D{dia}:i_sim_corr de ENCAPS → Plan): 16:15-17:15 si la fila NO trae extra.carril_b (16:15 libre) · 18:00-18:45 si lo trae (el 16:15 es del carril
- *  B; va donde iría la EVAL). FUENTE ÚNICA del Home (plantillasV6.bloqueCorrSim11) y de ENCAPS → Plan › Horario (EncapsPlanView.bloquesIntensivoBase,
- *  con la fila viva): antes el Horario pintaba la corrección a h0 + 2 h 15′ (13:15-14:15) y el Home a las 16:15 o a las 18:00. */
-export const franjaCorrSim11De = (conCarrilB: boolean): { ini: '16:15' | '18:00'; fin: '17:15' | '18:45' } =>
-  conCarrilB ? { ini: '18:00', fin: '18:45' } : { ini: '16:15', fin: '17:15' };
+// v6.07 (fix rev. e5fd4bd): la franja de la CORRECCIÓN + CIERRE de los simulacros de F2 (antes franjaCorrSim11De, solo los de las 11:00) y la del
+//   CIERRE SEMANAL viven en encapsFranjasF2.ts (franjaCorrSimDe / franjaCierreSemanalDe), fuente única del Home, del Horario y de los ítems.
 /** v6.07 (fix): ¿el OUTPUT de Business de `f` va ENTERO al sábado? → día de NBME de F1 o VIERNES con el ENCAPS 11:00-13:00 (SIM #6/#7/#10);
  *  un OUTPUT de lunes-jueves con el SIM 11:00 va a 14:45 (BIZ_ENCAPS_11) y se cierra el sábado como cualquier otro (25′ + 15′). */
 const outputEnteroAlSabado = (f: string): boolean => !!hitoDe(f)?.nbme || (encapsOnceATrece(f) && dow(f) === 5);
@@ -546,9 +542,17 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   const r = s?.bloques.find((b) => b.tag === 'R' && b.min >= 10 && /^Feynman/.test(b.material));
   if (!s || !r) return null;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
+  // v6.07 (fix lote 1b del Calendar): el Feynman es del proyecto del PC de ESE domingo (gen_synapse_plan.js › bloqueDom, misma regla que el PC:
+  //   el que hace SHIP o, si ninguno cierra, el que está en curso) y el «qué» lo nombra — antes «qué construiste esta semana», y el dom 3-ene el
+  //   SHIP es de S7 (terminó el lun 28-dic) mientras S8 ya está en curso. check_rutina_guia.js comprueba que Feynman y PC hablan del mismo S.
+  const pcs = vibePCDomingo(iso); const main = pcs[pcs.length - 1];
+  const sFey = Number((/proyecto S(\d+)/.exec(r.material) ?? [])[1]);
+  const quePy = main?.proyecto && main.s === sFey
+    ? (main.tipo === 'ship' ? `qué construiste en S${sFey} (el proyecto que hace SHIP hoy)` : `lo que llevas construido de S${sFey} (su SHIP es el ${fCorta(main.proyecto.ship)})`)
+    : 'qué construiste esta semana';
   // v6.07: el domingo es flexible (sin hora fija): la franja 14:50-15:00 es solo un ejemplo, justo antes del SHIP (lo que no sabes explicar = lo que falta)
   return bloque(franjaDesde('14:50', r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
-    P(Math.ceil(r.min / 2), 'Explica en voz alta qué construiste esta semana y CÓMO funciona (sin mirar el código)', 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
+    P(Math.ceil(r.min / 2), `Explica en voz alta ${quePy} y CÓMO funciona (sin mirar el código)`, 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
     P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
   ], [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
     aviso: `Opcional y sin hora fija (${franjaDesde('14:50', r.min).replace('–', '-')} es solo un ejemplo): mejor justo antes del SHIP del vibecoding, porque lo que no sabes explicar es lo que falta.`,
