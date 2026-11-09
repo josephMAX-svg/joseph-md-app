@@ -77,6 +77,26 @@
  *   19:00 Anki. Domingo (F1 · transición · F2; F3 si hay PC): bloques FLEXIBLES sin hora fija (ini/fin null, hora «flexible · …»): «ENCAPS · opcional 4 h»
  *   (encaps-dom, con el simulacro del día; F1 y transición) · SHIP del vibecoding (pc; antes el sábado 15:00) · Feynman · Anki 17:00 (F1). En F2/F3 el
  *   sábado conserva su revisión 07:15 (decisión abierta de Joseph para los sábados de 2027) y su SYNAPSE A/B/C va a las 15:00 (antes dentro del PC).
+ * v6.07 (fix 8-nov-2026 · QUINCENA FINAL del ENCAPS, = _encaps_intensivo_2027.sql; control: check_rutina_guia.js): (a) lun 1 · mié 3-mar-2027 (SIM
+ *  100Q #8 · #9, rutinaGuia.SIM_QUINCENA_F2) = «ENCAPS · QUINCENA FINAL · SIM 100Q» 11:00-13:00 en vez del LOOP 07:15-12:00 (07:15-11:00 sin bloque:
+ *  mañana de examen; corrección después, como los viernes de SIM 11:00) + CARRIL B 16:15 (pendientes F1 V-7 #3 · I-3 #6) y sin EVAL 18:00 (la fila
+ *  sim100 no la trae); SYNAPSE 13:00-13:30 y Business 14:45-15:10 (rutinaGuia.synFranjaDe / bizFranjaDe); (b) mar 2 · jue 4-mar (REPASO_QUINCENA_F2)
+ *  = «ENCAPS · QUINCENA FINAL · REPASO» 07:15-12:00 + CARRIL B 16:15, sin EVAL 18:00; (c) vie 5-mar (SIM #10) = SIM 11:00-13:00 (antes 07:15-09:15 +
+ *  corrección 09:30-12:00) + CARRIL VIERNES 16:15-17:15 (V-2 #5, mismo id 'carrilb' → ítems D82:b_* de ENCAPS → Plan); (d) F3: LIVIANO 17:15-18:00
+ *  mientras dure su plan (mar 16 → lun 22-mar-2027), como en F2.
+ * v6.07 (fix 2, 8-nov-2026 · revisión independiente): los bloques ENCAPS de F2 salen de la FILA SEMBRADA del día (encapsGuia.encapsF2De = índice
+ *  generado de _encaps_intensivo_2027.sql = Supabase): (H2) CARRIL B 16:15 solo si la fila trae extra.carril_b, con título del dato (H8: «MINI-SIM
+ *  25Q» lun 22-feb · mar 2 · mié 10-mar; «CARRIL VIERNES» vie 5-mar); (H3) todo L-J cuya fila es repaso_final sin loop = REPASO 07:15-12:00 con su
+ *  texto y sin EVAL 18:00 (también mar 9 · mié 10-mar, D-4 / D-3; el D-5 lun 8 sigue LOOP + EVAL); (H4) la corrección + CIERRE del SIM 100Q de las
+ *  11:00 (ítem D{dia}:i_sim_corr) tiene bloque propio 'encaps-corr': 16:15-17:15 si el 16:15 está libre (vie 19 · 26-feb, con su EVAL 18:00 de cierre
+ *  semanal) y 18:00-18:45 si el 16:15 es del carril B (lun 1 · mié 3-mar; vie 5-mar en lugar de la EVAL); (H6) el CARRIL SÁBADO va SIEMPRE a la
+ *  hora del SQL (09:30-10:30) y el OUTPUT entero de Business de los viernes de SIM 11:00 va tras él, 10:30-11:10 (sáb 20 · 27-feb · 6-mar), con
+ *  aviso en las notas del viernes (rutinaGuia.bizAvisoOutputEnteroDe). La quincena y la cola salen de rutinaGuia.quincenaF2De (= regla del generador).
+ * v6.07 (fix 3, 8-nov-2026 · 2.ª revisión): la franja de la corrección del simulacro de las 11:00 sale de rutinaGuia.franjaCorrSim11De (la misma que
+ *  usa ENCAPS → Plan › Horario); el D-2 (jue 11-mar, dress rehearsal) lleva su corrección + CIERRE 16:15-17:15 (ítem D86:i_sim_corr; antes sin bloque)
+ *  → hoja de errores del D-1; cuando la corrección de las 18:00 SUSTITUYE a la EVAL del viernes (vie 5-mar) el bloque lleva también el CIERRE SEMANAL
+ *  (gen_encaps_semana.js --pull → --semana, V6_ESPEC: «viernes: --pull y cierre semanal»); en L-J la EVAL 18:00 solo si la fila trae el segmento de
+ *  las 18:00 del loop (f2.eval18) y el día de señales (lun 4-ene, fila 38) = «ENCAPS · RE-SCAN DE SEÑALES» en vez del LOOP (antes LOOP + EVAL).
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
@@ -93,11 +113,12 @@ import { LIV_META } from './livianoStudyPlan';
 import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
-import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00
+import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, franjaCorrSim11De } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
-import { encapsSabadoDe } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue)
+import { encapsSabadoDe, encapsF2De } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue) · v6.07 (fix): índice F2 (fila sembrada del día)
+import type { EncapsF2Dia } from './encapsGuia';
 
 export type PlanBloque = 'usmle' | 'encaps' | 'mir' | 'research-derma' | 'aurum' | 'liviano' | 'synapse' | 'vibecoding'
   | 'serums' | 'gimnasio' | 'vida' | 'revision' | 'business';
@@ -207,11 +228,12 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
   if (biz) bs.push(biz);
   return bs;
 }
-/** v6.02c (E5): Business del día (null si hoy no toca) — franja de rutinaGuia.bizFranjaDe. */
+/** v6.02c (E5): Business del día (null si hoy no toca) — franja de rutinaGuia.bizFranjaDe. v6.07 (fix H5): el CIERRE semanal puede ir a un día hábil
+ *  (sábado protegido: mié 10-mar 13:00-13:30) → mismo nombre que el del sábado (f.cierre). */
 function bloqueBiz(iso: string): BloqueV6 | null {
   const f = bizFranjaDe(iso);
   if (!f) return null;
-  const nombre = f.sabado ? 'BUSINESS · tracker semanal + cierre del OUTPUT (Estudio Pulso)' : f.ini === '12:30' ? 'BUSINESS · Estudio Pulso (audio en el almuerzo: hoy hay NBME)' : 'BUSINESS · Estudio Pulso (1 tramo del libro + acción)';
+  const nombre = f.cierre ? 'BUSINESS · tracker semanal + cierre del OUTPUT (Estudio Pulso)' : f.ini === '12:30' ? 'BUSINESS · Estudio Pulso (audio en el almuerzo: hoy hay NBME)' : 'BUSINESS · Estudio Pulso (1 tramo del libro + acción)';
   return bloque('biz', f.ini, f.fin, nombre, 'business', 'business');
 }
 /** v6.07: PC del DOMINGO (SHIP del vibecoding · avance · PC del taper) = bloque FLEXIBLE sin hora fija (antes: sábado 15:00 con el SYNAPSE A/B/C,
@@ -239,11 +261,51 @@ function bloquesTheomedSabado(iso: string): BloqueV6[] {
   ];
 }
 /** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00, sin loop, sin eval, sin carril B (§C3). v6.05 (fix): D2_ENCAPS sale de
- *  rutinaGuia (fuente única con el SYNAPSE de 13:00). */
-/** Viernes del núcleo con SIM a las 11:00 (#7 y #8 = los dos últimos viernes del núcleo, §C3); el resto 07:15. v6.05 (fix): = rutinaGuia.SIM_F2_11. */
+ *  rutinaGuia (fuente única con el SYNAPSE de 13:00). v6.07 (fix 3): + su corrección + CIERRE 16:15-17:15 (bloqueCorrSim11, ítem D{dia}:i_sim_corr). */
+/** Viernes del núcleo con SIM a las 11:00 (#7 y #8 = los dos últimos viernes del núcleo, §C3); el resto 07:15. v6.05 (fix): = rutinaGuia.SIM_F2_11.
+ *  v6.07 (fix): + los 3 SIM de la quincena final (lun 1 · mié 3 · vie 5-mar-2027 = rutinaGuia.SIM_QUINCENA_F2). */
 const SIM_11 = SIM_F2_11;
-function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[] } {
+const SIM_QUINCENA = new Set(SIM_QUINCENA_F2);
+const CARRIL_B_TIT = 'ENCAPS · CARRIL B (fila de mantenimiento 61-92 o reposición)';
+/** v6.07 (fix H2/H8): CARRIL B 16:15 de la intensiva SOLO si la fila sembrada del día lo trae (encapsGuia.encapsF2De = _encaps_intensivo_2027.sql =
+ *  Supabase: extra.carril_b); si no lo trae, no hay bloque. Sin índice para la fecha (no debería pasar en F2: lo controla check_rutina_guia), la regla
+ *  de antes (lun-jue antes del D-2). Mismo id 'carrilb' y frente 'encaps': TodayMission lo pinta igual y ENCAPS → Plan sirve sus ítems desde la fila
+ *  viva (encapsPlan.itemsCarrilB, claves D{dia}:b_*). El TÍTULO sale del dato: pendiente F1 mini_sim → «MINI-SIM 25Q» (v6.07: lun 22-feb · mar 2 ·
+ *  mié 10-mar, claves b_msim / b_msim_corr) · viernes con carril B → «CARRIL VIERNES» (vie 5-mar, V-2 #5, D82:b_*) · el resto, el título de siempre. */
+function bloqueCarrilBDe(iso: string, f2: EncapsF2Dia | null): BloqueV6 | null {
   const w = dow(iso);
+  if (!f2) return w >= 1 && w <= 4 && iso < D2_ENCAPS ? bloque('carrilb', '16:15', '17:15', CARRIL_B_TIT, 'encaps', 'encaps', 'claves b_ · cierre APP_CARRIL_B_<fecha>_<código>') : null;
+  const cb = f2.carrilB;
+  if (!cb) return null;
+  if (cb.pendiente === 'mini_sim') return bloque('carrilb', '16:15', '17:15', 'ENCAPS · CARRIL B · MINI-SIM 25Q (72 s/Q) + corrección · REPOSICIÓN F1', 'encaps', 'encaps',
+    `MINI-SIMULACRO 25Q cronometrado (72 s/Q) 16:15-16:45 + corrección y cierre tipo mini_sim 16:45-17:15 (nota /25 → study_sim_scores sim_n = ${f2.dia}) · cola larga ${cb.colaLarga.join(' + ')} · mini-sim de la F1 que no cupo · ítems D${f2.dia}:b_msim y D${f2.dia}:b_msim_corr en ENCAPS → Plan`);
+  if (w === 5) return bloque('carrilb', '16:15', '17:15', 'ENCAPS · CARRIL VIERNES · REPOSICIÓN F1 (quincena final, tras el SIM)', 'encaps', 'encaps',
+    `banco ${cb.codigo ?? ''} del carril B (eval 5Q + banco 16-20Q + secundario + registro) tras el SIM 100Q de las 11:00 · ítems D${f2.dia}:b_* · cierre APP_CARRIL_B_<fecha>_<código>`);
+  return bloque('carrilb', '16:15', '17:15', CARRIL_B_TIT, 'encaps', 'encaps', 'claves b_ · cierre APP_CARRIL_B_<fecha>_<código>');
+}
+/** v6.07 (fix H4): CORRECCIÓN + CIERRE del simulacro de las 11:00 con hora propia (en la fila es el ítem D{dia}:i_sim_corr de ENCAPS → Plan, 60′).
+ *  v6.07 (fix 3): la franja sale de rutinaGuia.franjaCorrSim11De, la MISMA que pinta ENCAPS → Plan › Horario con la fila viva: 16:15-17:15 si ese
+ *  16:15 está libre (vie 19 · vie 26-feb: sin carril B, y la EVAL 18:00 de cierre semanal se queda, diseño V6_ESPEC; jue 11-mar, D-2: corrección del
+ *  dress rehearsal → hoja de errores del D-1) y, si el 16:15 es del carril B, 18:00-18:45, donde iría la EVAL (lun 1 · mié 3-mar: la fila sim100 no
+ *  la trae; vie 5-mar: SUSTITUYE a la EVAL del viernes → el bloque lleva también el CIERRE SEMANAL --pull → --semana, que esa EVAL traía). Si mañana
+ *  es REPASO de la quincena, la corrección A FONDO es ese repaso de las 07:15. */
+function bloqueCorrSim11(iso: string, f2: EncapsF2Dia | null, conCarrilB: boolean): BloqueV6 {
+  const { ini, fin } = franjaCorrSim11De(conCarrilB);
+  const it = f2 ? `ítem D${f2.dia}:i_sim_corr de ENCAPS → Plan` : 'ítem i_sim_corr del día en ENCAPS → Plan';
+  const cierre = `CIERRE tipo simulacro (nota /100 → study_sim_scores sim_n = ${f2?.simN ?? f2?.dia ?? 'dia'} · % ciego → study_progress)`;
+  if (iso === D2_ENCAPS || f2?.tipo === 'dress_rehearsal') return bloque('encaps-corr', ini, fin, 'ENCAPS · corrección del DRESS REHEARSAL (D-2) → hoja de errores', 'encaps', 'encaps',
+    `📊 ${it}: corrección por código v3 y por formato + ${cierre} → la hoja de errores que mañana (D-1, medio día) solo se LEE · sin material nuevo ni banco`);
+  const semanal = dow(iso) === 5 && conCarrilB; // v6.07 (fix 3): sustituye a la EVAL 18:00 del viernes («viernes: --pull y cierre semanal»)
+  return bloque('encaps-corr', ini, fin, `ENCAPS · corrección del SIM 100Q + 2 códigos peores${semanal ? ' · cierre semanal (--pull)' : ''}`, 'encaps', 'encaps',
+    `📊 ${it}: corrección por código v3 y por formato + ${cierre} + los 2 códigos peores${REPASO_QUINCENA_F2.has(addDias(iso, 1)) ? ' · la corrección A FONDO es mañana 07:15 (REPASO de la quincena)' : ''}${semanal ? ' · al terminar, el CIERRE SEMANAL del ENCAPS (hoy no hay EVAL 18:00: el 16:15 es del carril B): node DATA/_scripts/gen_encaps_semana.js --pull → --semana (registro v3, % ciego y temas calientes de la semana al día antes del lunes)' : ''}`);
+}
+/** v6.07 (fix): SIM 100Q de las 11:00 (detalle común): 07:15-11:00 queda SIN bloque en la quincena (mañana de examen) y la corrección tiene su bloque. */
+const detalleSim11 = (iso: string, conCarrilB: boolean): string => { const c = franjaCorrSim11De(conCarrilB); return `corrección + CIERRE en su bloque (${c.ini}-${c.fin}) + 2 códigos peores${SIM_QUINCENA.has(iso) ? ' · 07:15-11:00 sin bloque: mañana de examen (desayuno, traslado simulado), como el D-2' : ''}`; };
+/** v6.07 (fix H3): «D-4» / «D-3» de una fecha de la cola (COLA_F2 = [D-5 … D-1]). */
+const dColaDe = (iso: string): string => { const k = COLA_F2.indexOf(iso); return k >= 0 ? `D-${COLA_F2.length - k}` : ''; };
+function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[]; titulo?: string; notas?: string[] } {
+  const w = dow(iso);
+  const f2 = encapsF2De(iso); // v6.07 (fix): fila sembrada del día (resumen del SQL = Supabase) · null fuera del índice
   const comunes = (): BloqueV6[] => {
     const bs: BloqueV6[] = [];
     if (enRango(iso, VIBE_META.finTaper)) bs.push(bloque('vibe', '04:15', '05:00', 'IA · VIBECODING (taper por el ENCAPS)', 'vibecoding', 'vibecoding'));
@@ -261,27 +323,67 @@ function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[] } {
   };
   if (iso === D2_ENCAPS) {
     const bs = comunes().filter((b) => b.id !== 'liv');
-    bs.push(bloque('encaps', '11:00', '13:00', 'ENCAPS · DRESS REHEARSAL (D-2) 11:00-13:00 · examen completo a la hora real', 'encaps', 'encaps', 'sin loop, sin eval 18:00 y sin carril B (§C3)'));
+    bs.push(bloque('encaps', '11:00', '13:00', 'ENCAPS · DRESS REHEARSAL (D-2) 11:00-13:00 · examen completo a la hora real', 'encaps', 'encaps', `sin loop, sin eval 18:00 y sin carril B (§C3) · corrección + CIERRE en su bloque (${franjaCorrSim11De(false).ini}-${franjaCorrSim11De(false).fin})`));
+    // v6.07 (fix 3): la corrección + CIERRE del dress (ítem D{dia}:i_sim_corr, 60′) no tenía hora en el Home → 16:15-17:15 (sin carril B ni LIVIANO)
+    bs.push(bloqueCorrSim11(iso, f2, false));
     return { id: 'F2-D2', bs };
   }
   if (w === 5) {
     const pretest = iso === FECHAS_V6.encaps.pretest;
     const once = SIM_11.has(iso);
+    const quincena = SIM_QUINCENA.has(iso);
+    const cb = bloqueCarrilBDe(iso, f2); // v6.07 (fix H2): vie 5-mar = CARRIL VIERNES 16:15 porque su fila (dia 82) trae extra.carril_b (V-2 #5)
+    const corr = franjaCorrSim11De(!!cb); // v6.07 (fix H4 / fix 3): la corrección del SIM 11:00 va al 16:15 libre o, si es del carril B, a las 18:00 (sin EVAL)
     const bs = comunes();
     bs.push(pretest
       ? bloque('encaps', '07:15', '09:15', 'ENCAPS · PRE-TEST 2026-II 100Q (clave oficial)', 'encaps', 'encaps', 'reordena el núcleo por índice de brecha (--pretest)')
       : once
-        ? bloque('encaps', '11:00', '13:00', 'ENCAPS · SIM 100Q (11:00-13:00, hora del 2026-I)', 'encaps', 'encaps', 'corrección después del SIM + 2 códigos peores')
+        ? bloque('encaps', '11:00', '13:00', quincena ? 'ENCAPS · QUINCENA FINAL · SIM 100Q (11:00-13:00, hora del examen)' : 'ENCAPS · SIM 100Q (11:00-13:00, hora del 2026-I)', 'encaps', 'encaps', detalleSim11(iso, !!cb))
         : bloque('encaps', '07:15', '09:15', 'ENCAPS · SIM 100Q (07:15-09:15)', 'encaps', 'encaps'));
     if (!pretest && !once) bs.push(bloque('encaps-corr', '09:30', '12:00', 'ENCAPS · corrección 09:30-11:00 + 2 códigos peores 11:00-12:00', 'encaps', 'encaps'));
-    bs.push(bloque('eval', '18:00', '18:45', 'ENCAPS · EVAL 20Q (10 + 10) · cierre semanal (--pull)', 'encaps', 'encaps', 'viernes: sin carril B (16:15 libre tras el SIM)'));
-    return { id: 'F2-vie', bs };
+    if (cb) bs.push(cb);
+    if (once) bs.push(bloqueCorrSim11(iso, f2, !!cb));
+    // EVAL 18:00 de cierre semanal (diseño V6_ESPEC) salvo que la corrección del SIM 11:00 ocupe las 18:00 (vie 5-mar: el 16:15 es el CARRIL VIERNES;
+    //   v6.07 fix 3: entonces el cierre semanal --pull → --semana va en ese bloque de corrección)
+    if (!(once && corr.ini === '18:00')) bs.push(bloque('eval', '18:00', '18:45', 'ENCAPS · EVAL 20Q (10 + 10) · cierre semanal (--pull)', 'encaps', 'encaps', once ? 'viernes de SIM 11:00: la corrección fue a las 16:15 (16:15 libre: sin carril B)' : 'viernes: sin carril B (16:15 libre tras el SIM)'));
+    const aviso = bizAvisoOutputEnteroDe(iso); // v6.07 (fix H6): el OUTPUT de Business de este viernes va entero al sábado (tras el carril SÁBADO)
+    return { id: 'F2-vie', bs, ...(quincena ? { titulo: 'F2 · QUINCENA FINAL · SIM 100Q a la hora del examen (Step 1 en PAUSA)' } : {}), ...(aviso ? { notas: [aviso] } : {}) };
+  }
+  const cb = bloqueCarrilBDe(iso, f2);
+  // v6.07 (fix): QUINCENA FINAL (lun 1 → vie 5-mar-2027; contenido cerrado el vie 26-feb) — lun · mié = SIM 100Q 11:00-13:00 (hora del examen) en vez
+  //   del LOOP 07:15-12:00: 07:15-11:00 sin bloque (mañana de examen, como el D-2 y los viernes de SIM 11:00: la fila del SIM no trae nada antes),
+  //   CARRIL B 16:15 si la fila lo trae (v6.07: pendientes F1 lun 1 V-7 #3 · mié 3 I-3 #6) y, en vez de la EVAL 18:00 (la fila sim100 no la trae: sin
+  //   extra.loop), la CORRECCIÓN del SIM 18:00-18:45 (v6.07 fix H4: ítem D78 / D80:i_sim_corr).
+  if (SIM_QUINCENA.has(iso)) {
+    const bs = comunes();
+    bs.push(bloque('encaps', '11:00', '13:00', 'ENCAPS · QUINCENA FINAL · SIM 100Q (11:00-13:00, hora del examen)', 'encaps', 'encaps', detalleSim11(iso, !!cb)));
+    if (cb) bs.push(cb);
+    bs.push(bloqueCorrSim11(iso, f2, !!cb));
+    return { id: 'F2', bs, titulo: 'F2 · QUINCENA FINAL · SIM 100Q a la hora del examen (Step 1 en PAUSA)' };
+  }
+  // v6.07 (fix H3): todo L-J cuya fila es repaso_final SIN loop (quincena: mar 2 · jue 4-mar · cola D-4 / D-3: mar 9 · mié 10-mar) = REPASO 07:15-12:00
+  //   con el texto de la fila y sin EVAL 18:00 (el D-5 lun 8-mar, pasada profunda, trae loop y sigue como LOOP + EVAL). Sin índice: la regla (quincena +
+  //   D-4 / D-3 de COLA_F2).
+  const repaso = f2 ? f2.tipo === 'repaso_final' && !f2.loop : REPASO_QUINCENA_F2.has(iso) || ['D-4', 'D-3'].includes(dColaDe(iso));
+  if (repaso) {
+    const q = f2 ? f2.quincena === 'repaso' : REPASO_QUINCENA_F2.has(iso);
+    const bs = comunes();
+    bs.push(bloque('encaps', '07:15', '12:00', q ? 'ENCAPS · QUINCENA FINAL · REPASO (sin material nuevo)' : `ENCAPS · REPASO FINAL ${dColaDe(iso)} (sin material nuevo)`.replace('  ', ' '), 'encaps', 'encaps',
+      `${f2?.subtema ?? (q ? 'corrección a fondo del SIM de ayer + errores del registro + cifras + mapas en blanco de los 8 críticos' : 'REPASO FINAL · sin material nuevo: errores del registro + cifras + mapas en blanco de los 8 críticos')} — ítems en ENCAPS → Plan (registro 90′ · cifras 30′ · mapas 60′ · cierre 10′)`));
+    if (cb) bs.push(cb);
+    return { id: 'F2', bs, titulo: q ? 'F2 · QUINCENA FINAL · repaso (Step 1 en PAUSA)' : `F2 · REPASO FINAL ${dColaDe(iso)} (Step 1 en PAUSA)`.replace('  ', ' ') };
   }
   const bs = comunes();
-  bs.push(bloque('encaps', '07:15', '12:00', 'ENCAPS · LOOP (repaso D-1/D-7/D-21 · pre-test 10Q · deep prime · 30Q)', 'encaps', 'encaps', '05:00 Anki cifras · 07:15 repaso espaciado (60\') · 08:15 PRE-TEST 10Q ciegas (45\') · 09:00 DEEP PRIME norma/NTS + cifras (120\') · 11:00 CONSOLIDACIÓN 30Q + cierre (60\') · 12:00 registro (15\') — el tipo del día (señales, calentamiento, barrido, repaso final…) está en ENCAPS → Plan'));
-  if (iso < D2_ENCAPS) bs.push(bloque('carrilb', '16:15', '17:15', 'ENCAPS · CARRIL B (fila de mantenimiento 61-92 o reposición)', 'encaps', 'encaps', 'claves b_ · cierre APP_CARRIL_B_<fecha>_<código>'));
-  bs.push(bloque('eval', '18:00', '18:45', 'ENCAPS · EVAL modo examen 20Q a 72 s (10 del sub-eje + 10 de hace 7-21 días)', 'encaps', 'encaps'));
-  return { id: 'F2', bs };
+  // v6.07 (fix 3): el día de SEÑALES (lun 4-ene, fila 38: RE-SCAN 120′ + cierre 15′, sin extra.loop ni EVAL) ya no se pinta como LOOP + EVAL 18:00
+  const senales = f2?.tipo === 'senales';
+  bs.push(senales
+    ? bloque('encaps', '07:15', '12:00', 'ENCAPS · RE-SCAN DE SEÑALES 2027-I (sin banco nuevo)', 'encaps', 'encaps',
+      `${f2?.subtema ?? 'RE-SCAN DE SEÑALES 2027-I'} — ítems en ENCAPS → Plan (re-scan 120′ · cierre 15′: pesos v3 revisados + RM/NTS nuevas → Anki ENCAPS::Cifras)`)
+    : bloque('encaps', '07:15', '12:00', 'ENCAPS · LOOP (repaso D-1/D-7/D-21 · pre-test 10Q · deep prime · 30Q)', 'encaps', 'encaps', '05:00 Anki cifras · 07:15 repaso espaciado (60\') · 08:15 PRE-TEST 10Q ciegas (45\') · 09:00 DEEP PRIME norma/NTS + cifras (120\') · 11:00 CONSOLIDACIÓN 30Q + cierre (60\') · 12:00 registro (15\') — el tipo del día (señales, calentamiento, barrido, repaso final…) está en ENCAPS → Plan'));
+  if (cb) bs.push(cb);
+  // v6.07 (fix 3): EVAL 18:00 solo si la fila trae el segmento de las 18:00 del loop (f2.eval18); sin índice para la fecha, la regla de antes (siempre)
+  if (!f2 || f2.eval18) bs.push(bloque('eval', '18:00', '18:45', 'ENCAPS · EVAL modo examen 20Q a 72 s (10 del sub-eje + 10 de hace 7-21 días)', 'encaps', 'encaps'));
+  return { id: 'F2', bs, ...(senales ? { titulo: 'F2 · ENCAPS intensiva · RE-SCAN DE SEÑALES (Step 1 en PAUSA)' } : {}) };
 }
 function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   const hito = !!usmle && esHito(usmle);
@@ -304,6 +406,9 @@ function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   if (enRango(iso, AURUM_PLAN_META.fin)) bs.push(bloque('aurum', '14:15', '14:45', "AURUM · 30' (núcleo · DJ-4)", 'aurum', 'aurum'));
   bs.push(bloque('mir', '15:15', '16:15', 'MIR · 1 h (DJ-4)', 'mir', 'mir'));
   bs.push(bloque('reentrada', ri ?? '16:15', rf ?? '17:15', 'USMLE · 16:15 REENTRADA (20Q timed del sistema de la rotación)', 'usmle', 'usmle-principal', usmle?.franjaNota));
+  // v6.07 (fix): LIVIANO llega a F3 (LIV_META.fin = lun 22-mar-2027: D86-D90 = mar 16 → lun 22-mar) → 17:15-18:00, su franja de F1/F2, entre la
+  //   REENTRADA (16:15-17:15) y la evaluación de las 18:00; antes la plantilla F3 no lo pintaba y esas 5 sesiones no salían en el Home
+  if (enRango(iso, LIV_META.fin)) bs.push(bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (cierre del plan, tras el ENCAPS)', 'liviano', 'liviano'));
   bs.push(bloque('eval', '18:00', '18:45', hito ? 'USMLE · registrar el % del hito + corrección' : 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval'));
   return bs;
 }
@@ -312,15 +417,16 @@ const SABADO_REVISION = (iso: string): BloqueV6 => { const ini = revisionIniDe(i
 /**
  * v6.06 (31-oct-2026): CARRIL SÁBADO de la intensiva ENCAPS (09:30-10:30, gen_encaps_intensivo_2027.js → encapsGuia.encapsSabadoDe): los
  * pendientes F1 que ya no caben en los días de reposición lun-jue del carril B (v6.06: sáb 9, 16, 23, 30-ene y 6-feb). Va tras la revisión
- * 07:15, el STEP 1 VIVO 07:45-09:15 y el cierre Business 09:15; si ese sábado Business termina más tarde, el bloque empieza al terminar Business
- * (misma duración). Los ítems (claves D{dia del viernes}:s_*) los pinta ENCAPS → Plan desde la fila viva del viernes host.
+ * 07:15, el STEP 1 VIVO 07:45-09:15 y el cierre Business 09:15. v6.07 (fix H6): MANDA EL SQL — el bloque va SIEMPRE a la hora de extra.carril_sabado
+ * (09:30-10:30) y es Business el que se mueve tras el carril si no cabe antes (rutinaGuia.bizCierreDe: el OUTPUT entero de los viernes de SIM 11:00 →
+ * sáb 20 · 27-feb · 6-mar 10:30-11:10); antes el carril se corría al terminar Business (09:55-10:55) y el Home no cuadraba con ENCAPS → Plan.
+ * Los ítems (claves D{dia del viernes}:s_*) los pinta ENCAPS → Plan desde la fila viva del viernes host.
  */
 function bloqueEncapsSabado(iso: string): BloqueV6[] {
   const s = encapsSabadoDe(iso);
   if (!s) return [];
-  const biz = bizFranjaDe(iso);
   const dur = aMin(s.fin) - aMin(s.ini);
-  const ini = biz && aMin(biz.fin) > aMin(s.ini) ? biz.fin : s.ini;
+  const ini = s.ini; // v6.07 (fix H6): la hora del SQL (Business se mueve, no el carril)
   const que = s.tipo === 'mini_sim' ? `MINI-SIMULACRO 25Q (72 s/Q) + corrección · cola larga ${s.colaLarga.join(' + ')} · nota /25 sim_n ${s.simN ?? s.host.dia}`
     : `banco ${s.codigo}${s.subEje ? ` · ${s.subEje}` : ''} (eval 5Q + 16-20Q + secundario ${s.secundarios.join(' + ') || '—'} + registro)`;
   return [bloque('encaps-sab', ini, aHHMM(aMin(ini) + dur), `ENCAPS · CARRIL SÁBADO · REPOSICIÓN F1 (${s.tipo === 'mini_sim' ? 'mini-sim 25Q' : s.codigo})`, 'encaps', 'encaps',
@@ -540,8 +646,8 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       if (w === 6) return out('F2-sáb', 'Sábado · revisión semanal + STEP 1 VIVO', [SABADO_REVISION(iso),
         bloque('vivo', '07:45', '09:15', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco'),
         ...extrasSabado(iso, false), ...bloqueEncapsSabado(iso)]); // v6.06: + carril SÁBADO ENCAPS 09:30 (pendientes F1)
-      const { id, bs } = bloquesF2(iso);
-      return out(id, 'F2 · ENCAPS intensiva (Step 1 en PAUSA)', bs, { usmle: null });
+      const { id, bs, titulo: titF2, notas: notasF2 } = bloquesF2(iso);
+      return out(id, titF2 ?? 'F2 · ENCAPS intensiva (Step 1 en PAUSA)', bs, { usmle: null, ...(notasF2 ? { notas: notasF2 } : {}) });
     }
     case 'F3':
       if (w === 6) return out('F3-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION(iso), ...bloqueSynSabado(iso)]); // v6.07: + SYNAPSE A/B/C 15:00 (el plan llega al mar 23-mar)

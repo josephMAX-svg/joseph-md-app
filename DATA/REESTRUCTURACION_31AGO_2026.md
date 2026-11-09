@@ -4602,7 +4602,7 @@ del campus, bloques flexibles, mínimos por modo). Anki de F1 = USMLE 30′ (05:
 `DATA/_scripts/sim_plantilla_dia.js` (simula plantilla + guías del Home; 9-nov → 31-mar: 0 problemas).
 
 **31.3 Step 1.** `gen_tramo2.js` + referencia: F1 conserva la serie más larga de hitos que cabe con su Day-After completo (UWSA1 D1 mar 10-nov · NBME 25
-D10 jue 10-dic); los hitos que no caben pasan al tramo 2 en su orden (NBME 26 T12 vie 2-abr · NBME 27 T27 vie 23-abr · NBME 28 T59 mié 2-jun; Day-After
+D10 jue 10-dic); los hitos que no caben pasan al tramo 2 en su orden (NBME 26 T12 vie 2-abr · NBME 27 T27 vie 23-abr · NBME 28 T60 jue 3-jun; Day-After
 repartido en F3, fila propia en F4); gates del núcleo T5 lun 22-mar y T25 mié 21-abr; NBME 29/30 se comparan con el NBME 25. Con el examen el 25-oct
 faltaban **11 unidades** (R1: nada se recorta) → `explorar_fecha_examen.js`: 22-nov (colchón 2 filas) · 29-nov (8) · **6-dic (14 filas ≈ 37 h)** ·
 13-dic (20). **DJ-1 v6.07 = lun 6-dic-2027** para todo ENCAPS. Hitos 2027: NBME 30 lun 24-may y UWSA3 mar 29-jun fijos · NBME 31 lun 4-oct · NBME 32

@@ -44,6 +44,7 @@ import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe } from '../lib/encapsPlan';
 import { fechaPlanDe, fechaRealDe } from '../lib/fechasV6';
+import { franjaCorrSim11De } from '../lib/rutinaGuia'; // v6.07 (fix 3): hora de la corrección del SIM 11:00 = la del Home (plantillasV6.bloqueCorrSim11)
 
 // v6.02d: fecha real visible (semana corrida) — día de la semana a MOSTRAR de una fila: el guardado (weekday) si su fecha real es la de
 // plan; si la fila se corrió, el de su fecha real. Recibe la fecha real ya calculada (fechaRealDe en la llamada).
@@ -1072,7 +1073,7 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
     pasos: cb.tipo === 'mini_sim'
       ? [{ t: '16:15', d: `Mini-simulacro 25Q mixto cronometrado, modo examen sin pausa${recCB ? ` · receta ${miniSimRecetaTexto(recCB)}` : ''}` }, { t: '16:45', d: `Corrección (área · tipo de fallo) + CIERRE tipo mini_sim → nota /25 en study_sim_scores (sim_n = ${recCB?.simN ?? day.dia}) + % ciego en study_progress` }]
       : cb.tipo === 'banqueo1h'
-      ? [{ t: '16:15', d: 'Eval anclada 5Q (código del carril B de ayer; lunes: fallos del SIM 100Q del viernes)' }, { t: '16:30', d: `Banco del día ${cb.codigo || ''} 16-25Q ciegas + secundario de cola larga` }, { t: '17:10', d: 'Cierre tipo «Carril B 16:15» → study_progress' }]
+      ? [{ t: '16:15', d: 'Eval anclada 5Q (código del carril B de ayer; tras un SIM 100Q, 5Q de sus fallos: el SIM de ayer o, el lunes, el del viernes)' }, { t: '16:30', d: `Banco del día ${cb.codigo || ''} 16-25Q ciegas + secundario de cola larga` }, { t: '17:10', d: 'Cierre tipo «Carril B 16:15» → study_progress' }]
       : [{ t: '16:15', d: cb.regla || CARRIL_B_REPOSICION_REGLA }],
   };
   // en orden de hora: el 16:15 va antes de los bloques que empiezan después (18:00 EVAL)
@@ -1084,25 +1085,47 @@ function bloquesIntensivoBase(day: StudyScheduleDay): HorarioBlock[] {
   if (sim) {
     const dur = Math.round(sim.n * sim.segPorQ / 60);
     const h0 = sim.hora; // v6.00: extra.sim.hora (antes 08:00 fijo)
+    const corrTit = `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)`;
+    // v6.07 (fix 3): SIM de las 11:00 (#6-#10 y dress rehearsal D-2) → la corrección va a la MISMA hora que en el Home (rutinaGuia.franjaCorrSim11De:
+    //   16:15-17:15 si la fila no trae extra.carril_b · 18:00-18:45 si lo trae); antes h0 + 2 h 15′ = 13:15-14:15, donde el Home tiene SYNAPSE + R↔D.
+    //   El viernes con carril B (vie 5-mar) ese bloque sustituye a la EVAL 18:00 y lleva el cierre semanal (--pull → --semana), como en el Home.
+    const corr = h0 === '11:00' ? franjaCorrSim11De(!!carrilBDe(day)) : null;
+    const viernes = !!day.fecha && /^\d{4}-\d{2}-\d{2}$/.test(day.fecha) && new Date(`${day.fecha}T12:00:00Z`).getUTCDay() === 5;
     return [
       { hora: `${h0}-${hhmmMas(h0, dur)}`, titulo: `🔥 ${sim.label} · ${sim.n}Q · ${sim.segPorQ} s/Q`, apex: true },
-      { hora: `${hhmmMas(h0, dur + 15)}-${hhmmMas(h0, dur + 75)}`, titulo: `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)` },
+      corr
+        ? { hora: `${corr.ini}-${corr.fin}`, titulo: sim.tipo === 'dress_rehearsal'
+          ? `📊 Corrección del dress rehearsal por código v3 + cierre (umbral ≥${sim.umbral}/100) → hoja de errores que mañana (D-1) solo se lee`
+          : `${corrTit} + 2 códigos peores${viernes && corr.ini === '18:00' ? ' · cierre semanal (gen_encaps_semana.js --pull → --semana)' : ''}` }
+        : { hora: `${hhmmMas(h0, dur + 15)}-${hhmmMas(h0, dur + 75)}`, titulo: corrTit },
     ];
   }
   const loop = loopDe(day);
   if (loop.length) return loop.map(s => ({ hora: `${s.h}-${hhmmMas(s.h, s.min)}`, titulo: s.seg, apex: /DEEP PRIME/i.test(s.seg) }));
-  if (day.tipo === 'senales') return [
-    { hora: '09:00-11:00', titulo: `📡 ${day.subtema || 'RE-SCAN DE SEÑALES 2027-I'}`, apex: true },
-    { hora: '11:00-11:15', titulo: '📝 Cierre: pesos v3 revisados + RM/NTS nuevas → Anki ENCAPS::Cifras' },
-  ];
+  // v6.07 (fix 3): señales y repaso_final desde las 07:15 (el Home pinta su bloque ENCAPS 07:15-12:00) con los ítems de la fila en orden
+  //   (encapsPlan.itemsBase: señales 120′ + cierre 15′ · repaso registro 90′ + cifras 30′ + mapas 60′ + cierre 10′); antes desde las 09:00 y, en el
+  //   repaso, sin los mapas ni el cierre
+  const enSerie = (segs: { min: number; titulo: string; apex?: boolean }[]): HorarioBlock[] => {
+    let h = '07:15';
+    return segs.map((s) => { const b: HorarioBlock = { hora: `${h}-${hhmmMas(h, s.min)}`, titulo: s.titulo, ...(s.apex ? { apex: true } : {}) }; h = hhmmMas(h, s.min); return b; });
+  };
+  if (day.tipo === 'senales') return enSerie([
+    { min: 120, titulo: `📡 ${day.subtema || 'RE-SCAN DE SEÑALES 2027-I'}`, apex: true },
+    { min: 15, titulo: '📝 Cierre: pesos v3 revisados + RM/NTS nuevas → Anki ENCAPS::Cifras' },
+  ]);
   if (day.tipo === 'medio_dia') return [
     { hora: '09:00-09:30', titulo: '🧠 D-1 · 30 min de cifras (Anki ENCAPS::Cifras + CIFRAS_CRITICAS_2027-I.md)' },
     { hora: '09:30-10:00', titulo: '📋 Hoja de errores del dress rehearsal (solo lectura) · logística del examen · dormir 7 h' },
   ];
-  if (day.tipo === 'repaso_final') return [
-    { hora: '09:00-10:30', titulo: '🔁 REPASO FINAL · errores del registro rehechos con otro enfoque', apex: true },
-    { hora: '10:30-11:00', titulo: '🧠 Drill de cifras de los 8 críticos' },
-  ];
+  if (day.tipo === 'repaso_final') {
+    const quincena = !!(day.extra as Record<string, unknown> | undefined)?.quincena;
+    return enSerie([
+      { min: 90, titulo: quincena ? '🔁 REPASO · corrección a fondo del SIM de ayer + errores del registro rehechos con otro enfoque' : '🔁 REPASO FINAL · errores del registro rehechos con otro enfoque', apex: true },
+      { min: 30, titulo: '🧠 Drill de cifras de los 8 críticos' },
+      { min: 60, titulo: '🗺 Mapas en blanco de los 8 críticos v3 (uno por hoja, sin mirar)' },
+      { min: 10, titulo: '📝 Cierre de sesión tipo repaso → study_progress' },
+    ]);
+  }
   return [];
 }
 

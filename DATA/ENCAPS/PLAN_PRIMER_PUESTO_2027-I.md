@@ -62,7 +62,7 @@ normas) y el Step 1 no se va más allá de 2027. Con 1 sola mañana de Step (≈
   (≈ 37 h)** y además **3 lunes de margen dentro de 2027** (13, 20 y 27-dic) por si algo se tuerce. Antes del 25-oct el colchón era de 32 filas (≈ 84 h).
 - **F1 (15 filas):** D1 = UWSA1 **mar 10-nov** (08:50-13:00) · D10 = NBME 25 **jue 10-dic** (07:00-12:30) · Day-After D11-D14 · D15 mar 29-dic.
 - **Tramo 2:** T1 mar 16-mar (reentrada) · T2 NBME 29 mié 17-mar (se compara con el NBME 25) · las filas de F1 que no cupieron desde el T3 jue 18-mar ·
-  NBME 26 vie 2-abr · NBME 27 vie 23-abr · NBME 28 mié 2-jun · gates del núcleo lun 22-mar y mié 21-abr.
+  NBME 26 vie 2-abr · NBME 27 vie 23-abr · NBME 28 jue 3-jun (T60) · gates del núcleo lun 22-mar y mié 21-abr.
 - **Hitos 2027:** NBME 30 lun 24-may y UWSA3 mar 29-jun (sin cambio) · NBME 31 lun 4-oct · NBME 32 lun 11-oct · **GO/NO-GO lun 18-oct** (≥ 294 h
   reales desde el reinicio + NBME 31 y 32 ≥ 68 %, uno ≥ 70 %) · UWSA2 mar 19-oct · **NBME 33 + 3 bloques (ensayo de 7 bloques) lun 1-nov**
   (feriado: sin turno) · Free 120 lun 22-nov · ritual sáb 4-dic · viaje dom 5-dic · **examen lun 6-dic**.
@@ -197,9 +197,10 @@ El material de academias **no se copia al repo ni a la app** (el repo es públic
 
 Condiciones de examen (de los primeros puestos): 2 h sin parar, sin reloj a la vista (no hay reloj en el aula), primero las preguntas básicas e
 intermedias y después las atípicas; marca las dudosas y vuelve al final; **no dejes ninguna en blanco** (no restan); 72 s por pregunta con 10-15′ de
-reserva. **Corrección:** por cada error, regla de 1 línea + verificación en la norma. **Desde febrero, los simulacros a las 11:00** (la hora real del
-examen), en papel y con hoja de respuestas cuando se pueda. Meta: **≥ 12 simulacros completos** antes del examen (8 en domingos hasta el 3-ene +
-8 SIM 100Q de la intensiva + los de las 2 últimas semanas). En la intensiva, las 2 últimas semanas (1-12 mar) son de simulacros y repaso.
+reserva. **Corrección:** por cada error, regla de 1 línea + verificación en la norma. **Desde el vie 19-feb, los SIM 100Q a las 11:00** (la hora real
+del examen: vie 19 y 26-feb, lun 1, mié 3 y vie 5-mar, y el ensayo general del jue 11-mar), en papel y con hoja de respuestas cuando se pueda; los de
+los vie 5 y 12-feb siguen a las 07:15 salvo que decidas pasarlos a las 11:00 (decisión (g) del bloque v6.07 de `DATA/PENDIENTES_JOSEPH.md`).
+Meta: **≥ 12 simulacros completos** antes del examen (8 en domingos hasta el 3-ene + 8 SIM 100Q de la intensiva + los de las 2 últimas semanas). En la intensiva, las 2 últimas semanas (1-12 mar) son de simulacros y repaso.
 
 ### 7.1 Banqueo en 4 pasadas (lo hizo el 1.er puesto nacional 2026-I)
 1. **1.ª pasada: a ciegas y a 72 s** — es la única que MIDE el nivel (junto con los simulacros nuevos).
@@ -238,12 +239,15 @@ carreras de procesos anteriores sí sirven desde enero (comparten bloques).
 
 La intensiva sigue sembrada (lun 4-ene → vie 12-mar; ENCAPS es el bloque principal; Step 1 en mantenimiento). Cambios v6.07:
 - **contenido cerrado el vie 26-feb** («listo» el dom 28-feb). El barrido del núcleo baja de 32 a 28 sesiones: los códigos más repetidos pierden
-  una pasada (I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3) y ninguno se queda sin sesión. SIM 100Q a las 11:00 los vie 19 y 26-feb;
+  una pasada (I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3) y ninguno se queda sin sesión. SIM 100Q a las 11:00 los vie 19 y 26-feb (los de los vie 5 y
+  12-feb, a las 07:15 salvo la decisión (g) de `DATA/PENDIENTES_JOSEPH.md`);
 - **1-12 mar = simulacros y repaso:** SIM 100Q a las 11:00 el lun 1 (banco propio), mié 3 (academia con clave) y vie 5-mar (Theomed); repaso el
   mar 2 y jue 4; lun 8 pasada profunda; mar 9 y mié 10 repaso final; **jue 11 ensayo general (2026-I)**; vie 12 medio día;
 - las clases en vivo de Theomed de enero (CI 5-8, SP 7-11) y los repasos de febrero entran en las mañanas de la intensiva con el mismo protocolo;
-- las 5 sesiones de la rotación F1 que no caben antes del 30-dic, con fecha: II-8 **sáb 13-feb** 09:30 · II-3 **sáb 20-feb** 09:30 · I-3
-  **sáb 27-feb** 09:30 · V-2 **vie 5-mar** 16:15 (tras el SIM de la mañana) · mini-sim III-1 + III-9 **sáb 6-mar** 09:30.
+- las 5 sesiones de la rotación F1 que no caben antes del 30-dic, con fecha: II-8 **sáb 13-feb** 09:30-10:30 · II-3 **sáb 20-feb** 09:30-10:30 ·
+  I-3 **sáb 27-feb** 09:30-10:30 · V-2 **vie 5-mar** 16:15 (tras el SIM de la mañana) · mini-sim III-1 + III-9 **sáb 6-mar** 09:30-10:30. El carril
+  del sábado no se mueve: el cierre de Business del sábado va después de él (o antes, 09:15-09:30, si es el cierre corto de 15′); el OUTPUT entero de
+  los viernes de SIM 11:00 va el sábado 10:30-11:10 (sáb 20 y 27-feb, 6-mar).
   **Ya no queda ningún sábado libre antes del examen:** si se pierde otra semana, hace falta una regla nueva.
 - **Supabase re-sembrado (dom 8-nov):** 37 sesiones de F1 (lun 9-nov → mié 30-dic) + 50 de la intensiva (lun 4-ene → vie 12-mar; pre-test 2026-II
   vie 8-ene = dia 42). Respaldo previo: `study_schedule_bk_v607_20261108` (+ `_int_` y `study_metrics_bk_v607_20261108`).
@@ -256,7 +260,7 @@ La intensiva sigue sembrada (lun 4-ene → vie 12-mar; ENCAPS es el bloque princ
 2. Rendir el **pre-test de arranque** (lun 9 y mar 10, 16:15): es la línea base de los 8 críticos.
 3. Los simulacros de Theomed de ranking se rinden el **domingo siguiente** (cuenta el primer intento dentro de 89 h desde el viernes 16:00).
 4. Decisiones abiertas: reducir los secundarios (≈ 5 h/día) si quieres aún más ENCAPS; sábados de 2027 (STEP 1 VIVO y carril ENCAPS) a decidir antes del 4-ene;
-   hora de los SIM de los vie 5 y 12-feb (hoy 07:15; el plan pide 11:00 desde febrero).
+   hora de los SIM de los vie 5 y 12-feb (hoy 07:15; desde el vie 19-feb ya van a las 11:00: decisión (g)).
 5. **Step 1:** el examen pasa al **lun 6-dic-2027**; al inscribirte, elige la ventana **oct-nov-dic 2027**. El ensayo de 7 bloques es el feriado
    lun 1-nov-2027: si la posta pone turno ese día, pide el día libre.
 6. **Stock ENCAPS:** el banco de III-5 se agota después del jue 12-nov; V-2 e I-3 repiten preguntas en marzo. Antes del lun 16-nov hay que generar

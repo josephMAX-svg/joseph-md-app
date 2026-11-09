@@ -56,6 +56,12 @@
  *   carril SÁBADO con 9 guías (las 5 de v6.06 + sáb 13, 20 y 27-feb y sáb 6-mar de los pendientes v6.07; el V-2 #5 del vie 5-mar va en el CARRIL
  *   VIERNES 16:15 de la quincena final, extra.carril_b de esa fila, y la app lo pinta como un banco del carril B). El ejemplo `--banco` del README
  *   de BANCO_PROPIO pasa a 2026-11-16 (el lun 9-nov es pre-test de arranque).
+ * v6.07 (fix 8-nov-2026): NUEVO export ENCAPS_F2_FECHAS / encapsF2De(fecha) = ÍNDICE F2 de la intensiva (las 50 filas INTENSIVO del SQL resumidas:
+ *   tipo · hora del SIM y sim_n · loop y EVAL 18:00 · cola / quincena · carril B con su pendiente F1 y la cola larga del mini-sim · subtema de los
+ *   repaso_final). Lo usa plantillasV6 (síncrona, sin la fila viva) para decidir los bloques ENCAPS de F2: carril B 16:15 solo si la fila lo trae,
+ *   REPASO sin EVAL en los repaso_final sin loop, corrección del SIM 100Q con su sim_n. Controles: modo INTENSIVO, fecha única, tipo del carril B,
+ *   pendiente con código / cola larga y SIM de la quincena a las 11:00. v6.07 (fix 3): el índice lleva también el subtema del día de SEÑALES (lun
+ *   4-ene, fila 38: la plantilla lo pinta como «ENCAPS · RE-SCAN DE SEÑALES», sin LOOP ni EVAL 18:00).
  */
 'use strict';
 const fs = require('fs');
@@ -107,9 +113,28 @@ const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^
 const SQL_INT = path.join(ROOT, 'DATA', '_scripts', '_encaps_intensivo_2027.sql');
 const SABADOS = {};
 const SAB_CTX = {}; // v6.06 (fix): fecha del sábado → { p: pendiente_f1 completo, hostTipo, host: fila del viernes host } (guía + control de la app)
+// v6.07 (fix 8-nov-2026): ÍNDICE F2 = las filas INTENSIVO del SQL (= Supabase) resumidas para la PLANTILLA del día (plantillasV6 es síncrona y no
+//   tiene la fila viva): tipo · hora del SIM y sim_n · loop (y si trae la EVAL de las 18:00) · cola / quincena · carril B (extra.carril_b: banqueo1h
+//   de la fila 61-92, reposición genérica o pendiente F1 banqueo1h / mini-sim con su cola larga) · subtema de los repaso_final. Decide QUÉ bloques
+//   ENCAPS lleva el Home en F2 (carril B 16:15 solo si la fila lo trae · REPASO sin EVAL · corrección del SIM · título del mini-sim); los ÍTEMS los
+//   sigue pintando ENCAPS → Plan desde la fila viva (encapsPlan.itemsForDay, claves D{dia}:i_* / b_*).
+const F2_DIAS = {};
 for (const l of (fs.existsSync(SQL_INT) ? fs.readFileSync(SQL_INT, 'utf8') : '').split(/\r?\n/)) {
   if (!l.startsWith("('ENCAPS',")) continue;
   const t = tupla(l); const r = {}; COLS.forEach((c, k) => { r[c] = t[k]; });
+  {
+    const e = r.extra || {}; const cb = e.carril_b || null; const p = (cb && cb.pendiente_f1) || null;
+    if (r.modo !== 'INTENSIVO' || !/^\d{4}-\d\d-\d\d$/.test(r.fecha) || F2_DIAS[r.fecha]) aborta(`índice F2: fila ${r.dia} (${r.fecha}) no es INTENSIVO, sin fecha o repetida`);
+    if (cb && !['banqueo1h', 'reposicion'].includes(cb.tipo)) aborta(`índice F2 ${r.fecha}: extra.carril_b.tipo desconocido (${cb.tipo})`);
+    if (p && !(p.tipo === 'banqueo1h' ? p.codigo : p.tipo === 'mini_sim' ? Array.isArray((p.extra || {}).cola_larga) && p.extra.cola_larga.length : false)) aborta(`índice F2 ${r.fecha}: pendiente F1 del carril B sin código / cola larga`);
+    if (e.quincena && r.tipo === 'sim100' && (e.sim || {}).hora !== '11:00') aborta(`índice F2 ${r.fecha}: SIM de la quincena final que no es a las 11:00`);
+    F2_DIAS[r.fecha] = {
+      fecha: r.fecha, dia: r.dia, tipo: r.tipo, simHora: e.sim ? (e.sim.hora || null) : null, simN: e.sim ? Number(e.sim.sim_n ?? r.dia) : null,
+      loop: Array.isArray(e.loop), eval18: Array.isArray(e.loop) && e.loop.some((s) => s.h === '18:00'), cola: e.cola || null, quincena: e.quincena ? e.quincena.rol : null,
+      carrilB: cb ? { tipo: cb.tipo, pendiente: p ? p.tipo : null, codigo: cb.codigo || (p && p.codigo) || null, colaLarga: p && p.tipo === 'mini_sim' ? p.extra.cola_larga : [] } : null,
+      ...(['repaso_final', 'senales'].includes(r.tipo) ? { subtema: r.subtema } : {}), // v6.07 (fix 3): + el día de SEÑALES (bloque «RE-SCAN DE SEÑALES»)
+    };
+  }
   const cs = r.extra && r.extra.carril_sabado; if (!cs) continue;
   const p = cs.pendiente_f1 || {}; const ex = p.extra || {};
   const hostEsperado = new Date(cs.fecha + 'T12:00:00Z'); hostEsperado.setUTCDate(hostEsperado.getUTCDate() - 1);
@@ -427,7 +452,7 @@ const conRunner = Object.values(SES).filter((s) => s.principal && s.principal.ur
 const HOY_LIMA = new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const META = {
   version: F6.version, generado: HOY_LIMA, fuente: 'DATA/_scripts/gen_encaps_guia.js + encaps_guia_catalogo.js · ' + cabSql.slice(0, 120),
-  sesiones: FILAS.length, conRunnerPublicado: conRunner, web: WEB, carrilSabado: Object.keys(GUIA_SAB).length,
+  sesiones: FILAS.length, conRunnerPublicado: conRunner, web: WEB, carrilSabado: Object.keys(GUIA_SAB).length, intensivaF2: Object.keys(F2_DIAS).length,
   reparto: { pretest: '2 arranque · 10 eval 5Q · 24 pre-test 20Q · 15 corrección · 5 registro · 4 APEX', banco: '2 arranque · 8 eval 5Q · 30 banco principal · 8 secundario · 7 material (solo si ≥2 fallos) · 3 registro · 2 APEX', minisim: '2 arranque · 30 mini-sim 25Q · 18 corrección · 5 registro + cierre semanal · 5 APEX + material de los calientes' },
   tecnicaSimulacro: CAT.TECNICA_SIM.doc,
 };
@@ -508,6 +533,22 @@ export function sabadoEncapsCuadra(fecha: string, hostDia: number, codigo: strin
   return !!s && s.host.dia === hostDia && (s.tipo === 'mini_sim' ? !codigo : s.codigo === (codigo || null));
 }
 
+/**
+ * v6.07 (fix): ÍNDICE F2 de la intensiva (${Object.keys(F2_DIAS).length} filas INTENSIVO de _encaps_intensivo_2027.sql = Supabase, ${Object.keys(F2_DIAS)[0] || '—'} → ${Object.keys(F2_DIAS).at(-1) || '—'}) para la PLANTILLA
+ * del día (plantillasV6 es síncrona y no tiene la fila viva): el carril B 16:15 solo si la fila trae extra.carril_b (título del mini-sim 25Q incluido),
+ * REPASO 07:15-12:00 sin EVAL en los repaso_final sin loop, EVAL 18:00 solo con el segmento de las 18:00 del loop y la corrección del SIM con su sim_n.
+ * Los ítems siguen saliendo de la fila viva (encapsPlan.itemsForDay, claves D{dia}:i_* / b_*). Clave = la fecha de la fila.
+ */
+export interface EncapsF2CarrilB { tipo: 'banqueo1h' | 'reposicion'; pendiente: 'banqueo1h' | 'mini_sim' | null; codigo: string | null; colaLarga: string[] }
+export interface EncapsF2Dia {
+  fecha: string; dia: number; tipo: string; simHora: string | null; simN: number | null; loop: boolean; eval18: boolean; cola: string | null;
+  quincena: 'sim100' | 'repaso' | null; carrilB: EncapsF2CarrilB | null; subtema?: string;
+}
+const F2: Record<string, EncapsF2Dia> = ${JSON.stringify(F2_DIAS)};
+/** Fila de la intensiva ENCAPS (resumen para la plantilla) de una fecha ISO, o null (fuera de F2 o fin de semana). */
+export function encapsF2De(fecha: string): EncapsF2Dia | null { return F2[fecha.slice(0, 10)] ?? null; }
+export const ENCAPS_F2_FECHAS: string[] = Object.keys(F2);
+
 /** Sesión ENCAPS (16:15) de una fecha ISO, o null. */
 export function sesionEncapsDe(fecha: string): EncapsSesionGuia | null { return S[fecha.slice(0, 10)] ?? null; }
 /** ¿La fila viva (Supabase) es la misma sesión que la guía? (mismo dia y código; un corrimiento futuro la invalida hasta regenerar). */
@@ -548,11 +589,11 @@ const sinGen = (s) => s.replace(/("generado": ")20\d\d-\d\d-\d\d(")/g, '$1$2').r
 if (CHECK) {
   const old = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
   if (sinGen(old) !== sinGen(ts)) { console.error('✗ src/lib/encapsGuia.ts no coincide con lo que genera gen_encaps_guia.js'); process.exit(1); }
-  console.log(`OK — src/lib/encapsGuia.ts al día (${FILAS.length} sesiones · ${conRunner} con runner publicado · carril SÁBADO ${Object.keys(GUIA_SAB).length} guías)`);
+  console.log(`OK — src/lib/encapsGuia.ts al día (${FILAS.length} sesiones · ${conRunner} con runner publicado · carril SÁBADO ${Object.keys(GUIA_SAB).length} guías · índice F2 ${Object.keys(F2_DIAS).length} filas)`);
 } else {
   const old = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
   if (old && sinGen(old) === sinGen(ts)) console.log(`= src/lib/encapsGuia.ts (sin cambios de contenido; conserva su fecha de generación)`);
-  else { fs.writeFileSync(OUT, ts); console.log(`✓ src/lib/encapsGuia.ts (${FILAS.length} sesiones · ${conRunner} con runner publicado · carril SÁBADO ${Object.keys(GUIA_SAB).length} guías · ${Math.round(ts.length / 1024)} KB)`); }
+  else { fs.writeFileSync(OUT, ts); console.log(`✓ src/lib/encapsGuia.ts (${FILAS.length} sesiones · ${conRunner} con runner publicado · carril SÁBADO ${Object.keys(GUIA_SAB).length} guías · índice F2 ${Object.keys(F2_DIAS).length} filas · ${Math.round(ts.length / 1024)} KB)`); }
 }
 if (avisos.length) console.warn([...new Set(avisos)].map((a) => '⚠ ' + a).join('\n'));
 if (!vaultMontado) console.warn('⚠ vault de Obsidian no montado: no se comprobó que las notas existan');

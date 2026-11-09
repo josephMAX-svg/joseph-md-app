@@ -44,6 +44,21 @@
 //   sábado: revisión 14:00, theomed-prep 14:45 + theomed-vivo 15:00-17:00 si hay clase, SYNAPSE 13:30, ningún PC el sábado · domingo: encaps-dom,
 //   PC y Feynman FLEXIBLES (sin hora) y todo PC del vibecoding del domingo con bloque o nombrado en las notas · todo sábado con A/B/C tiene su
 //   bloque SYNAPSE; (4) los bloques ENCAPS nuevos tienen guía (encapsManana) y entran en el control «guía dentro de su bloque».
+// v6.07 (fix 8-nov-2026 · quincena final del ENCAPS, lun 1 → vie 5-mar-2027): (1) INTENSIVA ↔ PLANTILLA F2 leída del SQL sembrado
+//   (_encaps_intensivo_2027.sql): SIM 100Q de las 11:00 = RG.SIM_F2_11 (los 5) · dress = D2_ENCAPS · quincena = SIM_QUINCENA_F2 + REPASO_QUINCENA_F2 ·
+//   cada SIM a su hora (11:00 sin LOOP y con SYNAPSE 13:00) · repaso = «QUINCENA FINAL · REPASO» 07:15-12:00 · CARRIL B 16:15 ⇔ extra.carril_b con
+//   ítems D{dia}:b_* en encapsPlan.itemsForDay (CARRIL VIERNES vie 5-mar = D82:b_*) · EVAL 18:00 de la quincena solo si la fila la trae; (2) LIVIANO:
+//   toda sesión con su bloque 17:15-18:00, también en F3 (mar 16 → lun 22-mar); (3) 0 solapes Business ⟂ SYNAPSE (guías de todos los días y bloques
+//   de la plantilla) · Business de un día con el ENCAPS 11:00 que no es viernes de OUTPUT a 14:45-15:10 (RG.BIZ_ENCAPS_11).
+// v6.07 (fix 2, 8-nov-2026 · revisión independiente): la quincena / cola de rutinaGuia (quincenaF2De = regla del generador, COLA_F2) = el SQL · el
+//   índice F2 de encapsGuia (encapsF2De) = el SQL · CARRIL B 16:15 ⇔ extra.carril_b con título del dato (MINI-SIM 25Q · CARRIL VIERNES) · todo L-J
+//   repaso_final sin loop = REPASO sin EVAL · EVAL 18:00 de la quincena Y la cola ⇔ la fila la trae · corrección del SIM 100Q de las 11:00 con bloque
+//   propio que nombra D{dia}:i_sim_corr (16:15 libre o 18:00) · EVAL ANCLADA tras un SIM de lun / mié sin rótulo de lunes / viernes · CARRIL SÁBADO a la
+//   hora del SQL con Business detrás (y aviso en el viernes) · cierre de Business nunca en un día protegido / SKIP (va al día hábil de bizCierreDe y
+//   el aviso del OUTPUT lo cita) · guiaBusinessDe(protegido / SKIP) = null.
+// v6.07 (fix 3, 8-nov-2026 · 2.ª revisión): ENCAPS → Plan › Horario (EncapsPlanView.bloquesIntensivo, cargado con un export solo en memoria) = Home
+//   en la corrección del simulacro de las 11:00, el carril B y la serie 07:15 de señales / repaso · corrección también en el D-2 · EVAL 18:00 ⇔
+//   segmento 18:00 del loop en todo L-J de F2 (y señales = RE-SCAN) · «mini-sim absorbido» ⇔ extra.minisim_absorbido · cierre semanal en toda semana F2.
 // Sin dependencias nuevas (typescript del repo vía usmle/cargar_ts.js). Solo lectura: no escribe nada.
 'use strict';
 const path = require('path');
@@ -102,9 +117,11 @@ for (const x of B.BIZ_DIAS) {
   if (m === 'DESCANSO') continue;
   const hoy = RG.guiaBusinessDe(x.fecha);
   const sabado = addDias(x.fecha, 6 - dow(x.fecha));
-  const sab = m === 'OUTPUT' ? RG.guiaBusinessDe(sabado) : null;
+  // v6.07 (fix H5): el cierre del OUTPUT va el sábado o, si el sábado es PROTEGIDO / SKIP, el día hábil que da bizCierreDe (mié 10-mar 13:00)
+  const cierre = m === 'OUTPUT' ? RG.bizCierreDe(sabado) : null;
+  const sab = cierre ? RG.guiaBusinessDe(cierre.fecha) : null;
   if (!hoy && !sab) falta('business', x.fecha, `D${x.d} ${m}`);
-  if (m === 'OUTPUT' && !sab) falta('business', sabado, `cierre del OUTPUT D${x.d}`);
+  if (m === 'OUTPUT' && (!sab || sab.franja !== `${cierre.ini}–${cierre.fin}`)) falta('business', cierre ? cierre.fecha : sabado, `cierre del OUTPUT D${x.d}${sab ? ` (franja ${sab.franja} ≠ ${cierre.ini}–${cierre.fin})` : ''}`);
 }
 // v6.03 (20-oct-2026): las fechas de las expectativas SALEN DEL PLAN (D1 = f1.inicio, UWSA1/NBME de usmleStep1Daily, OUTPUT de Business,
 // 1.er sábado ≥ D1) en vez de estar cableadas a la semana del lun 19-oct (v6.02); así el checker sigue valiendo si el plan vuelve a correr.
@@ -140,15 +157,61 @@ for (const n of NBMES) {
   else esperado.push([n, RG.guiaBusinessDe, '12:30–12:55']);
 }
 // v6.06: OUTPUT de Business en un viernes con el ENCAPS 11:00-13:00 de F2 (SIM #7, vie 26-feb) → entero el sábado 09:15-09:55 (F2) y nada ese viernes
-for (const x of B.BIZ_DIAS.filter((r) => B.bizModo(r) === 'OUTPUT' && RG.encapsOnceATrece(r.fecha))) {
-  esperado.push([addDias(x.fecha, 6 - dow(x.fecha)), RG.guiaBusinessDe, '09:15–09:55']);
-  if (RG.guiaBusinessDe(x.fecha)) errores.push(`${x.fecha} guiaBusinessDe: OUTPUT en día de SIM 100Q 11:00 → debe ir entero al sábado (hoy sin guía)`);
+// v6.07 (fix): solo en VIERNES (v6.07: vie 19-feb · vie 26-feb · vie 5-mar); un día con el ENCAPS 11:00-13:00 que no es viernes de OUTPUT (SIM lun 1 /
+//   mié 3-mar de la quincena, D-2) lleva Business a 14:45-15:10 (RG.BIZ_ENCAPS_11), fuera del SYNAPSE 13:00-13:30
+const BIZ11 = `${RG.BIZ_ENCAPS_11.ini}–${RG.BIZ_ENCAPS_11.fin}`;
+// v6.07 (fix H6): si ese sábado tiene el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL) el OUTPUT entero va al terminar el carril (10:30-11:10)
+const EGc = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'), cache);
+const hm1 = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+const hh1 = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+for (const x of B.BIZ_DIAS.filter((r) => B.bizModo(r) !== 'DESCANSO' && RG.encapsOnceATrece(r.fecha))) {
+  if (B.bizModo(x) === 'OUTPUT' && dow(x.fecha) === 5) {
+    const sabX = addDias(x.fecha, 6 - dow(x.fecha)), cs = EGc.encapsSabadoDe(sabX);
+    esperado.push([sabX, RG.guiaBusinessDe, cs && hm1(cs.ini) < hm1('09:15') + 40 ? `${cs.fin}–${hh1(hm1(cs.fin) + 40)}` : '09:15–09:55']);
+    if (RG.guiaBusinessDe(x.fecha)) errores.push(`${x.fecha} guiaBusinessDe: OUTPUT en viernes de SIM 100Q 11:00 → debe ir entero al sábado (hoy sin guía)`);
+  } else esperado.push([x.fecha, RG.guiaBusinessDe, BIZ11]);
+}
+// v6.07 (fix): 0 solapes Business ⟂ SYNAPSE (guías) en TODOS los días de los planes (antes de la v6.07 fix el lun 1 y el mié 3-mar-2027 los dos iban
+//   a las 13:00 si el SYNAPSE se movía por el SIM de las 11:00)
+{
+  const hm0 = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+  const fr = (g) => { const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec((g && g.franja) || ''); return m ? [hm0(m[1]), hm0(m[2])] : null; };
+  let nBS = 0;
+  for (let iso = INI; iso <= FIN; iso = addDias(iso, 1)) {
+    const b = fr(RG.guiaBusinessDe(iso)), s = fr(RG.guiaSynapseDe(iso));
+    if (!b || !s) continue;
+    nBS++;
+    if (b[0] < s[1] && s[0] < b[1]) errores.push(`${iso} Business ${RG.guiaBusinessDe(iso).franja} ⟂ SYNAPSE ${RG.guiaSynapseDe(iso).franja}`);
+  }
+  console.log(`Business ⟂ SYNAPSE: ${nBS} día(s) con los dos, 0 solapes esperados`);
 }
 // v6.06: ningún plan de este checker en un día PROTEGIDO (el SYNAPSE solo con su bloque R de 0′)
 {
   const PROT = new Set(FV.FECHAS_V6.protegidos.map((p) => p.fecha));
   for (const [n, xs] of [['vibecoding', V.VIBE_DIAS], ['aurum', A.AURUM_DIAS], ['liviano', L.LIV_DIAS], ['business', B.BIZ_DIAS.filter((r) => B.bizModo(r) !== 'DESCANSO')]]) for (const x of xs) if (PROT.has(x.fecha)) errores.push(`${x.fecha} ${n}: fila en día PROTEGIDO`);
   for (const x of S.SYN_DIAS) if (PROT.has(x.fecha) && x.bloques.some((b) => b.tag !== 'R' || b.min > 0)) errores.push(`${x.fecha} synapse: A/B/C/PC en día PROTEGIDO`);
+  // v6.07 (fix H5): guiaBusinessDe(protegido / SKIP) = null (antes el sáb 13-mar, D-1 ENCAPS, llevaba el cierre de los OUTPUT D120 / D121) y el cierre
+  //   de una semana cuyo sábado es protegido / SKIP va a un día hábil entre el último OUTPUT y ese sábado, nunca protegido ni SKIP, con su guía, y el
+  //   aviso del OUTPUT lo cita («25′ hoy + 15′ el mié 10-mar 13:00»)
+  const SKIPc = new Set(FV.FECHAS_V6.skip);
+  for (const pr of [...PROT, ...SKIPc]) { const g = RG.guiaBusinessDe(pr); if (g) errores.push(`${pr} guiaBusinessDe: Business ${g.franja} en un día ${PROT.has(pr) ? 'PROTEGIDO' : 'SKIP'}`); }
+  let nMov = 0;
+  const sabs = [...new Set(B.BIZ_DIAS.filter((r) => B.bizModo(r) === 'OUTPUT').map((r) => addDias(r.fecha, 6 - dow(r.fecha))))];
+  for (const sb of sabs) {
+    const c = RG.bizCierreDe(sb);
+    if (!c) { errores.push(`${sb}: semana con OUTPUT sin cierre (bizCierreDe = null)`); continue; }
+    if (PROT.has(c.fecha) || SKIPc.has(c.fecha)) errores.push(`${sb}: el cierre de la semana cae el ${c.fecha}, día ${PROT.has(c.fecha) ? 'PROTEGIDO' : 'SKIP'}`);
+    if (c.fecha === sb) continue;
+    nMov++;
+    const ult = c.outs.map((o) => o.r.fecha).sort().pop();
+    if (!(c.fecha > ult && c.fecha < sb) || [0, 6].includes(dow(c.fecha))) errores.push(`${sb}: cierre movido al ${c.fecha}, fuera de (último OUTPUT ${ult}, sábado) o en fin de semana`);
+    const g = RG.guiaBusinessDe(c.fecha);
+    if (!g || g.franja !== `${c.ini}–${c.fin}` || !/PROTEGIDO/.test(g.aviso || '')) errores.push(`${c.fecha} guiaBusinessDe: cierre movido sin guía ${c.ini}–${c.fin} o sin el aviso del sábado protegido (${g ? g.franja : '—'})`);
+    const WDc = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'], MESc = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const cita = `15′ el ${WDc[dow(c.fecha)]} ${Number(c.fecha.slice(8))}-${MESc[Number(c.fecha.slice(5, 7)) - 1]} ${c.ini}`;
+    for (const o of c.outs.filter((o) => !o.entero)) { const go = RG.guiaBusinessDe(o.r.fecha); if (!go || !(go.aviso || '').includes(cita)) errores.push(`${o.r.fecha} guiaBusinessDe D${o.r.d}: el aviso del OUTPUT no cita «${cita}» (cierre movido)`); }
+  }
+  console.log(`Business en días protegidos / SKIP: 0 esperado · ${sabs.length} semana(s) con OUTPUT · ${nMov} cierre(s) movido(s) a un día hábil (sábado protegido / SKIP)`);
 }
 for (const [iso, f, fr] of esperado) { const g = f(iso); if (!g || g.franja !== fr) errores.push(`${iso} ${f.name}: franja ${g ? g.franja : 'null'} ≠ ${fr}`); }
 // v6.06 (fix): AURUM en un día de HITO USMLE de F1/F3 (filas 🎯 de DIAS + DIAS_T2; en F4 el hito se reordena por turno) → la guía lo avisa en su 1.er
@@ -390,6 +453,226 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     const encReal = PL.plantillaDelDia(d1Real).bloques.some((b) => b.plan === 'encaps');
     const aReal = EP2.antesDelD1('ENCAPS', D1, d1Real); // v6.06e: antesDelD1 compara días reales
     if (iso === D1 && (aReal !== null || (d1Real === D1 ? !enc : !encReal))) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${aReal} (debe ser null) o el Home no pinta el bloque 16:15 (día real ${d1Real})`);
+  }
+  // v6.07 (fix) · INTENSIVA ENCAPS ↔ PLANTILLA F2, leída del SQL sembrado (_encaps_intensivo_2027.sql = Supabase): (1) los SIM 100Q a las 11:00 del SQL
+  //   = RG.SIM_F2_11 (v6.07: #6 vie 19 · #7 vie 26-feb · #8 lun 1 · #9 mié 3 · #10 vie 5-mar) y el dress = D2_ENCAPS; la quincena (extra.quincena) =
+  //   SIM_QUINCENA_F2 + REPASO_QUINCENA_F2 (rutinaGuia.quincenaF2De = regla del generador) y la cola = COLA_F2; (2) cada SIM se pinta a SU hora (07:15-09:15
+  //   + corrección 09:30 · 11:00-13:00 sin LOOP) con el SYNAPSE 13:00-13:30 los de las 11:00; (3) todo L-J con fila repaso_final SIN loop (quincena mar 2 ·
+  //   jue 4 · cola D-4 / D-3 mar 9 · mié 10-mar) = REPASO 07:15-12:00 sin LOOP ni EVAL; (4) CARRIL B 16:15-17:15 (id 'carrilb') ⇔ la fila trae
+  //   extra.carril_b, ENCAPS → Plan tiene sus ítems D{dia}:b_* (encapsPlan.itemsForDay), el viernes se llama «CARRIL VIERNES» y el pendiente mini_sim
+  //   «MINI-SIM 25Q» (v6.07 fix H8: lun 22-feb · mar 2 · mié 10-mar, con D{dia}:b_msim); (5) en la quincena Y en la cola (L-J) la EVAL 18:00 ⇔ la
+  //   fila trae el segmento de las 18:00 del loop (v6.07 fix H3: antes solo la quincena); (6) v6.07 fix H4: todo SIM 100Q de las 11:00 (y, desde el fix 3, el dress)
+  //   tiene su bloque de corrección 'encaps-corr' que nombra el ítem D{dia}:i_sim_corr (y el ítem existe en itemsForDay): 16:15-17:15 si no hay carril
+  //   B (vie 19 · 26-feb, con la EVAL 18:00 de cierre semanal) y 18:00-18:45 si lo hay (lun 1 · mié 3 · vie 5-mar, sin EVAL); (7) el índice F2 de
+  //   encapsGuia (encapsF2De) = el SQL; (8) v6.07 fix H7: la EVAL ANCLADA del carril B tras un SIM de lun / mié no dice «(lunes)» ni «mini-sim de ese
+  //   viernes absorbido»; (9) v6.07 fix H6: el CARRIL SÁBADO a la hora del SQL y Business ese sábado sin solape (tras el carril si no cabe antes);
+  //   (10) LIVIANO: toda sesión (LIV_DIAS) con su bloque 17:15-18:00 —también las 5 de F3 (mar 16 → lun 22-mar-2027)—; (11) 0 solapes Business ⟂
+  //   SYNAPSE en los bloques.
+  //   v6.07 (fix 3, 2.ª revisión): (5) en TODO L-J de F2 la EVAL 18:00 ⇔ la fila trae el segmento de las 18:00 del loop, sin LOOP si la fila no trae
+  //   loop y el día de señales = «RE-SCAN DE SEÑALES» (lun 4-ene se pintaba LOOP + EVAL); (6) también el dress rehearsal (D-2) tiene su corrección
+  //   16:15-17:15 con D{dia}:i_sim_corr; (6b) ENCAPS → Plan › Horario (EncapsPlanView.bloquesIntensivo con la fila) = Home: la corrección del simulacro
+  //   de las 11:00 a la misma hora, el CARRIL B a la misma hora y, en señales / repaso_final, los ítems de la fila en serie desde la hora del bloque
+  //   del Home (07:15) con sus duraciones; (8) tras un SIM de VIERNES «mini-sim absorbido» ⇔ la fila del viernes trae extra.minisim_absorbido (también
+  //   en la EVAL ANCLADA del carril SÁBADO, D{dia}:s_eval); (12) toda semana de F2 con SIM / pre-test el viernes tiene el CIERRE SEMANAL (--pull) en
+  //   algún bloque ENCAPS (vie 5-mar: en el de la corrección de las 18:00, que sustituye a la EVAL, con --semana).
+  {
+    const SQL = path.join(__dirname, '_encaps_intensivo_2027.sql');
+    const COLS = ['examen', 'dia', 'fecha', 'weekday', 'tipo', 'codigo', 'subtema', 'prioridad', 'modo', 'videos', 'theomed', 'material_comp', 'temas_secundarios', 'extra'];
+    const tupla = (l) => {
+      const s = l.trim().replace(/^\(/, '').replace(/\)[,;]?$/, '');
+      const out = []; let i = 0;
+      while (i < s.length) {
+        if (s[i] === "'") {
+          let j = i + 1, v = '';
+          for (;;) { if (s[j] === "'" && s[j + 1] === "'") { v += "'"; j += 2; } else if (s[j] === "'" || j >= s.length) break; else v += s[j++]; }
+          i = j + 1;
+          if (s.startsWith('::jsonb', i)) { out.push(JSON.parse(v)); i += 7; } else out.push(v);
+        } else { let j = s.indexOf(',', i); if (j < 0) j = s.length; const t = s.slice(i, j).trim(); out.push(t === 'NULL' ? null : Number(t)); i = j; }
+        if (s[i] === ',') i++;
+      }
+      return Object.fromEntries(COLS.map((c, k) => [c, out[k]]));
+    };
+    const ROWS = fs.readFileSync(SQL, 'utf8').split('\n').filter((l) => l.startsWith("('ENCAPS',")).map(tupla).sort((a, b) => a.dia - b.dia);
+    if (ROWS.length < 10 || ROWS.some((r) => !/^\d{4}-\d{2}-\d{2}$/.test(r.fecha) || !r.extra || typeof r.extra !== 'object')) errores.push(`_encaps_intensivo_2027.sql: ${ROWS.length} filas leídas o alguna sin fecha / extra (parser)`);
+    const igualSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
+    const lista = (s) => [...s].sort().join(' ');
+    const sim11 = new Set(ROWS.filter((r) => r.tipo === 'sim100' && r.extra.sim && r.extra.sim.hora === '11:00').map((r) => r.fecha));
+    if (!igualSet(sim11, RG2.SIM_F2_11)) errores.push(`SIM 100Q 11:00 del SQL (${lista(sim11)}) ≠ rutinaGuia.SIM_F2_11 (${lista(RG2.SIM_F2_11)})`);
+    const dress = ROWS.find((r) => r.tipo === 'dress_rehearsal');
+    if (!dress || dress.fecha !== RG2.D2_ENCAPS || (dress.extra.sim || {}).hora !== '11:00') errores.push(`dress rehearsal del SQL (${dress && dress.fecha} ${dress && (dress.extra.sim || {}).hora}) ≠ D2_ENCAPS ${RG2.D2_ENCAPS} 11:00`);
+    const qSim = new Set(ROWS.filter((r) => r.extra.quincena && r.tipo === 'sim100').map((r) => r.fecha));
+    const qRep = new Set(ROWS.filter((r) => r.extra.quincena && r.tipo === 'repaso_final').map((r) => r.fecha));
+    if (!igualSet(qSim, new Set(RG2.SIM_QUINCENA_F2))) errores.push(`SIM de la quincena del SQL (${lista(qSim)}) ≠ rutinaGuia.SIM_QUINCENA_F2 (${lista(RG2.SIM_QUINCENA_F2)})`);
+    if (!igualSet(qRep, RG2.REPASO_QUINCENA_F2)) errores.push(`REPASO de la quincena del SQL (${lista(qRep)}) ≠ rutinaGuia.REPASO_QUINCENA_F2 (${lista(RG2.REPASO_QUINCENA_F2)})`);
+    const COLA = ROWS.slice(-5).map((r) => r.fecha);
+    if (COLA.join() !== RG2.COLA_F2.join()) errores.push(`cola del SQL (${COLA.join(' ')}) ≠ rutinaGuia.COLA_F2 (${RG2.COLA_F2.join(' ')})`);
+    const cbVie = new Set(ROWS.filter((r) => r.extra.carril_b && dow(r.fecha) === 5).map((r) => r.fecha));
+    // (7) índice F2 de encapsGuia = el SQL (dia · tipo · hora · loop / EVAL 18:00 · carril B y su pendiente)
+    for (const r of ROWS) {
+      const x = EG2.encapsF2De(r.fecha), cbr = r.extra.carril_b, pe = cbr && cbr.pendiente_f1;
+      const esperado = { dia: r.dia, tipo: r.tipo, simHora: (r.extra.sim || {}).hora || null, loop: Array.isArray(r.extra.loop), eval18: Array.isArray(r.extra.loop) && r.extra.loop.some((s) => s.h === '18:00'),
+        cb: cbr ? `${cbr.tipo}/${pe ? pe.tipo : '-'}` : null };
+      const visto = x && { dia: x.dia, tipo: x.tipo, simHora: x.simHora, loop: x.loop, eval18: x.eval18, cb: x.carrilB ? `${x.carrilB.tipo}/${x.carrilB.pendiente || '-'}` : null };
+      if (JSON.stringify(esperado) !== JSON.stringify(visto)) errores.push(`${r.fecha} encapsGuia.encapsF2De ≠ SQL (${JSON.stringify(visto)} vs ${JSON.stringify(esperado)}): regenera con gen_encaps_guia.js`);
+    }
+    if (EG2.ENCAPS_F2_FECHAS.length !== ROWS.length) errores.push(`encapsGuia: índice F2 con ${EG2.ENCAPS_F2_FECHAS.length} filas y el SQL tiene ${ROWS.length}`);
+    // (6b) ENCAPS → Plan › Horario: bloquesIntensivo de EncapsPlanView.tsx (privado del componente) se expone SOLO en esta carga añadiendo un export
+    //   al fuente en memoria; react / react-native y demás imports no relativos = stub, los relativos con cargarConStubs (mismas instancias de src/lib)
+    const horarioDe = (() => {
+      const file = path.join(__dirname, '..', '..', 'src', 'components', 'EncapsPlanView.tsx');
+      const m = { exports: {} };
+      const req = (spec) => {
+        if (!spec.startsWith('.')) return stub();
+        let d = path.resolve(path.dirname(file), spec);
+        for (const e of ['', '.ts', '.tsx']) if (fs.existsSync(d + e) && fs.statSync(d + e).isFile()) { d += e; break; }
+        return d.endsWith('.json') ? JSON.parse(fs.readFileSync(d, 'utf8')) : cargarConStubs(d);
+      };
+      try {
+        new Function('exports', 'module', 'require', ts.transpileModule(fs.readFileSync(file, 'utf8') + '\nexports.__bloquesIntensivo = bloquesIntensivo;\n', { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.React, esModuleInterop: true } }).outputText)(m.exports, m, req);
+      } catch (e) { errores.push(`EncapsPlanView.tsx: no se pudo cargar bloquesIntensivo para el control del Horario (${e.message})`); }
+      return typeof m.exports.__bloquesIntensivo === 'function' ? m.exports.__bloquesIntensivo : null;
+    })();
+    const finHM = (h) => { const x = /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(h); return x ? [x[1], x[2]] : null; };
+    let nF2 = 0, nCB = 0, nCorr = 0, nRep = 0, nMs = 0, nEv7 = 0, nHor = 0, nSen = 0, nAbs = 0;
+    for (const r of ROWS) {
+      const p = PL.plantillaDelDia(r.fecha);
+      if (p.fase !== 'F2' || p.corrida) continue;
+      nF2++;
+      const bs = p.bloques, tag = `${r.fecha} ${WDC[dow(r.fecha)]} D${r.dia} ${r.tipo}`, w = dow(r.fecha);
+      const hb = (b) => (b ? `${b.ini}–${b.fin}` : '—');
+      const enc = bs.find((b) => b.id === 'encaps'), cb = bs.find((b) => b.id === 'carrilb'), ev = bs.find((b) => b.id === 'eval'), corr = bs.find((b) => b.id === 'encaps-corr');
+      const prev = ROWS.find((x) => x.dia === r.dia - 1) || null;
+      let its = [];
+      try { its = EP2.itemsForDay(r, {}, prev, null); } catch (e) { errores.push(`${tag}: encapsPlan.itemsForDay lanzó ${e.message}`); }
+      // (6b) Horario de ENCAPS → Plan (fila viva = la del SQL) ⇔ Home
+      let hor = null;
+      if (horarioDe) { try { hor = horarioDe(r); } catch (e) { errores.push(`${tag}: EncapsPlanView.bloquesIntensivo lanzó ${e.message}`); } }
+      if (hor) {
+        nHor++;
+        const hCorr = hor.find((b) => /^📊/.test(b.titulo)), hCB = hor.find((b) => /^◈ CARRIL B/.test(b.titulo));
+        if ((r.extra.sim || {}).hora === '11:00' && corr && (!hCorr || hCorr.hora !== `${corr.ini}-${corr.fin}`)) errores.push(`${tag}: ENCAPS → Plan › Horario pinta la corrección del simulacro de las 11:00 ${hCorr ? hCorr.hora : '—'} y el Home ${hb(corr)}`);
+        if (!!hCB !== !!cb || (hCB && hCB.hora !== `${cb.ini}-${cb.fin}`)) errores.push(`${tag}: CARRIL B en el Horario ${hCB ? hCB.hora : '—'} ≠ Home ${hb(cb)}`);
+        if (['senales', 'repaso_final'].includes(r.tipo) && !Array.isArray(r.extra.loop)) {
+          // los ítems de la fila (i_*) en serie desde la hora del bloque ENCAPS del Home, con sus duraciones, y dentro de ese bloque
+          const base = hor.filter((b) => !/^◈ /.test(b.titulo) && !/^SÁB /.test(b.hora)), iIt = its.filter((it) => /^D\d+:i_/.test(it.key));
+          let h = enc ? enc.ini : '—', ok = !!enc && base.length === iIt.length;
+          for (let k = 0; ok && k < base.length; k++) { const fr = finHM(base[k].hora); if (!fr || fr[0] !== h || hm(fr[1]) - hm(fr[0]) !== iIt[k].dur) ok = false; else h = fr[1]; }
+          if (!ok || hm(h) > hm(enc.fin)) errores.push(`${tag}: Horario ${base.map((b) => b.hora).join(' + ')} ≠ ítems ${iIt.map((it) => `${it.key.split(':')[1]} ${it.dur}′`).join(' + ')} en serie desde el bloque del Home ${hb(enc)}`);
+        }
+      }
+      if (['sim100', 'pretest', 'dress_rehearsal'].includes(r.tipo)) { // v6.07 (fix 3): + dress rehearsal (D-2)
+        const h = (r.extra.sim || {}).hora || '07:15';
+        const fin = h === '11:00' ? '13:00' : '09:15';
+        if (hb(enc) !== `${h}–${fin}`) errores.push(`${tag}: el SIM de la fila es a las ${h} y la plantilla lo pinta ${hb(enc)}`);
+        if (h === '11:00') {
+          if (bs.some((b) => /LOOP/.test(b.nombre))) errores.push(`${tag}: SIM 11:00 con LOOP en la plantilla`);
+          const s = bs.find((b) => b.plan === 'synapse');
+          if (s && hb(s) !== '13:00–13:30') errores.push(`${tag}: SIM 11:00 con el SYNAPSE ${hb(s)} (≠ 13:00–13:30)`);
+          // (6) corrección del SIM 11:00 con su ítem D{dia}:i_sim_corr: 16:15 libre → 16:15-17:15 (+ EVAL de cierre semanal el viernes); 16:15 del carril B
+          //   → 18:00-18:45, sin EVAL
+          const kCorr = `D${r.dia}:i_sim_corr`;
+          const esperaCorr = r.extra.carril_b ? '18:00–18:45' : '16:15–17:15';
+          if (!corr || hb(corr) !== esperaCorr) errores.push(`${tag}: corrección del SIM 11:00 ${hb(corr)} (≠ ${esperaCorr}: ${r.extra.carril_b ? 'el 16:15 es del carril B' : '16:15 libre'})`);
+          else if (!String(corr.detalle || '').includes(kCorr)) errores.push(`${tag}: el bloque de corrección no nombra el ítem ${kCorr} (TodayMission lo muestra como tema)`);
+          else nCorr++;
+          if (!its.some((it) => it.key === kCorr)) errores.push(`${tag}: ENCAPS → Plan sin el ítem ${kCorr}`);
+          const esperaEval = w === 5 && !r.extra.carril_b;
+          if (!!ev !== esperaEval) errores.push(`${tag}: EVAL 18:00 ${ev ? 'pintada' : 'ausente'} en un SIM 11:00 ${r.extra.carril_b ? 'con' : 'sin'} carril B (${esperaEval ? 'debe ir: cierre semanal del viernes' : 'no va: las 18:00 son la corrección o la fila no la trae'})`);
+        } else if (r.tipo === 'sim100' && (!corr || hb(corr) !== '09:30–12:00')) errores.push(`${tag}: SIM 07:15 sin la corrección 09:30-12:00`);
+      }
+      // (3) repaso_final sin loop (L-J) = REPASO 07:15-12:00 sin LOOP ni EVAL
+      if (r.tipo === 'repaso_final' && !Array.isArray(r.extra.loop) && w >= 1 && w <= 4) {
+        nRep++;
+        const re = RG2.REPASO_QUINCENA_F2.has(r.fecha) ? /QUINCENA FINAL · REPASO/ : /REPASO FINAL D-\d/;
+        if (hb(enc) !== '07:15–12:00' || !re.test(enc.nombre) || bs.some((b) => /LOOP/.test(b.nombre)) || ev) errores.push(`${tag}: repaso_final sin loop y la plantilla no pinta «${re.source}» 07:15-12:00 sin LOOP ni EVAL (hay ${enc ? `${hb(enc)} ${enc.nombre.slice(0, 50)}` : '—'}${ev ? ' + EVAL 18:00' : ''})`);
+      }
+      // (4) carril B ⇔ extra.carril_b · ítems D{dia}:b_* en ENCAPS → Plan · título del dato
+      if (!!r.extra.carril_b !== !!cb) errores.push(`${tag}: ${r.extra.carril_b ? 'la fila trae extra.carril_b y la plantilla no pinta el CARRIL B 16:15' : `la plantilla pinta ${cb.nombre.slice(0, 40)} y la fila no trae extra.carril_b`}`);
+      if (cb && (hb(cb) !== '16:15–17:15' || cb.plan !== 'encaps' || cb.frente !== 'encaps')) errores.push(`${tag}: CARRIL B ${hb(cb)} ${cb.plan}/${cb.frente} (≠ 16:15–17:15 encaps/encaps)`);
+      if (r.extra.carril_b) {
+        nCB++;
+        if (!its.some((it) => it.key.startsWith(`D${r.dia}:b_`))) errores.push(`${tag}: ENCAPS → Plan sin ítems D${r.dia}:b_* del carril B (itemsCarrilB)`);
+        if (w === 5 && !/CARRIL VIERNES/.test(cb ? cb.nombre : '')) errores.push(`${tag}: viernes con extra.carril_b y el bloque no se llama «CARRIL VIERNES»`);
+        const msim = (r.extra.carril_b.pendiente_f1 || {}).tipo === 'mini_sim';
+        if (msim) {
+          nMs++;
+          if (!cb || !/MINI-SIM 25Q/.test(cb.nombre) || !String(cb.detalle || '').includes(`D${r.dia}:b_msim`)) errores.push(`${tag}: carril B = MINI-SIM 25Q (pendiente F1) y el bloque no lo dice en el título / no nombra D${r.dia}:b_msim (${cb ? cb.nombre.slice(0, 50) : '—'})`);
+          if (!its.some((it) => it.key === `D${r.dia}:b_msim`)) errores.push(`${tag}: ENCAPS → Plan sin el ítem D${r.dia}:b_msim`);
+        } else if (cb && /MINI-SIM/.test(cb.nombre)) errores.push(`${tag}: el bloque del carril B dice MINI-SIM y la fila es un banco`);
+        // (8) EVAL ANCLADA del carril B tras un SIM: «(lunes) … mini-sim de ese viernes absorbido» solo si el SIM fue un viernes
+        const bev = its.find((it) => it.key === `D${r.dia}:b_eval`);
+        if (bev && prev && ['sim100', 'pretest'].includes(prev.tipo)) {
+          nEv7++;
+          const deViernes = dow(prev.fecha) === 5;
+          if (!deViernes && (/\(lunes\)|absorbido/.test(`${bev.label} ${bev.detail || ''}`) || !bev.label.includes(`${WDC[dow(prev.fecha)]} · D${prev.dia}`))) errores.push(`${tag}: EVAL ANCLADA tras el SIM del ${WDC[dow(prev.fecha)]} (D${prev.dia}) con rótulo de lunes / viernes: «${bev.label.slice(0, 90)}»`);
+          if (deViernes && !/EVAL ANCLADA \(lunes\)/.test(bev.label)) errores.push(`${tag}: EVAL ANCLADA tras el SIM del viernes sin el rótulo de siempre «(lunes)»`);
+        }
+      }
+      // (8) v6.07 fix 3: tras un SIM / pre-test de VIERNES, «el mini-sim de ese viernes quedó absorbido» ⇔ la fila del viernes trae extra.minisim_absorbido
+      //   (vie 8-ene → 12-feb; no los vie 19 · 26-feb · 5-mar) — en la EVAL ANCLADA del carril B del lunes (D{dia}:b_eval, fila anterior = el viernes) y
+      //   en la del carril SÁBADO (D{dia del viernes}:s_eval, la fila es el propio viernes)
+      for (const [k, sim] of [[`D${r.dia}:b_eval`, prev], [`D${r.dia}:s_eval`, r]]) {
+        const it = its.find((x) => x.key === k);
+        if (!it || !sim || !['sim100', 'pretest'].includes(sim.tipo) || dow(sim.fecha) !== 5) continue;
+        nAbs++;
+        const dice = /absorbido/.test(`${it.label} ${it.detail || ''}`), hay = !!sim.extra.minisim_absorbido;
+        if (dice !== hay) errores.push(`${tag}: ${k} ${dice ? 'dice' : 'no dice'} «mini-sim absorbido» y la fila del vie ${sim.fecha} (D${sim.dia}) ${hay ? 'sí' : 'no'} trae extra.minisim_absorbido`);
+      }
+      // (5) TODO L-J de F2 (v6.07 fix 3; antes solo quincena y cola): EVAL 18:00 ⇔ la fila trae el segmento de las 18:00 del loop · sin loop en la fila
+      //   → ningún LOOP en la plantilla · día de señales → «RE-SCAN DE SEÑALES»
+      if (w >= 1 && w <= 4) {
+        const ev18 = Array.isArray(r.extra.loop) && r.extra.loop.some((sg) => sg.h === '18:00');
+        if (ev18 !== !!ev) errores.push(`${tag}: EVAL 18:00 ${ev ? 'pintada' : 'ausente'} y la fila ${ev18 ? 'sí' : 'no'} la trae`);
+        if (!Array.isArray(r.extra.loop) && bs.some((b) => /LOOP/.test(b.nombre))) errores.push(`${tag}: la fila no trae extra.loop y la plantilla pinta un LOOP`);
+        if (r.tipo === 'senales') { nSen++; if (!enc || !/RE-SCAN DE SEÑALES/.test(enc.nombre)) errores.push(`${tag}: día de señales y el bloque ENCAPS es «${enc ? enc.nombre.slice(0, 60) : '—'}» (≠ RE-SCAN DE SEÑALES)`); }
+      }
+    }
+    // (12) CIERRE SEMANAL del ENCAPS (gen_encaps_semana.js --pull → --semana; V6_ESPEC: EVAL 18:00 «viernes: --pull y cierre semanal») en toda semana de
+    //   F2 cuyo viernes es SIM 100Q / pre-test: algún bloque ENCAPS de esa semana lo nombra (vie 5-mar: el de la corrección de las 18:00, con --semana)
+    let nSem = 0;
+    for (const r of ROWS.filter((x) => dow(x.fecha) === 5 && ['sim100', 'pretest'].includes(x.tipo))) {
+      const bs = [];
+      for (let k = -4; k <= 0; k++) { const p = PL.plantillaDelDia(addDias(r.fecha, k)); if (p.fase === 'F2' && !p.corrida) bs.push(...p.bloques.filter((b) => b.plan === 'encaps')); }
+      const b = bs.find((x) => /cierre semanal/i.test(`${x.nombre} ${x.detalle || ''}`) && /--pull/.test(`${x.nombre} ${x.detalle || ''}`));
+      if (!b) errores.push(`${r.fecha} vie D${r.dia}: la semana no tiene el CIERRE SEMANAL del ENCAPS (--pull → --semana) en ningún bloque`);
+      else if (b.id !== 'eval' && !/--semana/.test(b.detalle || '')) errores.push(`${r.fecha} vie D${r.dia}: el cierre semanal va en «${b.nombre.slice(0, 50)}» y su detalle no dice --semana`);
+      else nSem++;
+    }
+    // (9) CARRIL SÁBADO a la hora del SQL (extra.carril_sabado) y Business de ese sábado sin solape con él (v6.07 fix H6)
+    let nSab = 0;
+    for (const r of ROWS.filter((x) => x.extra.carril_sabado)) {
+      const cs = r.extra.carril_sabado, p = PL.plantillaDelDia(cs.fecha), tag = `${cs.fecha} sáb (carril SÁBADO, host D${r.dia})`;
+      const b = p.bloques.find((x) => x.id === 'encaps-sab'), biz = p.bloques.find((x) => x.plan === 'business');
+      if (!b || b.ini !== cs.ini || b.fin !== cs.fin) { errores.push(`${tag}: el Home pinta el carril ${b ? b.hora : '—'} y el SQL dice ${cs.ini}-${cs.fin}`); continue; }
+      nSab++;
+      if (biz && hm(biz.ini) < hm(b.fin) && hm(b.ini) < hm(biz.fin)) errores.push(`${tag}: Business ${biz.hora} ⟂ carril SÁBADO ${b.hora}`);
+      const g = RG2.guiaBusinessDe(cs.fecha);
+      if (biz && (!g || g.franja !== biz.hora)) errores.push(`${tag}: guía de Business ${g ? g.franja : '—'} ≠ bloque ${biz.hora}`);
+      if (biz && biz.ini === cs.fin && !/al terminar el carril SÁBADO ENCAPS/.test((g && g.aviso) || '')) errores.push(`${tag}: Business va tras el carril y su guía no lo avisa`);
+      const vie = PL.plantillaDelDia(r.fecha);
+      if (biz && biz.ini === cs.fin && !vie.notas.some((n) => n.includes(`${biz.ini}-${biz.fin}`))) errores.push(`${r.fecha} vie: el OUTPUT va entero al sábado ${biz.hora} (tras el carril) y las notas del viernes no lo avisan con esa hora`);
+    }
+    // (10) LIVIANO: cada sesión con su bloque (fuera de la semana corrida)
+    let nLiv = 0;
+    for (const x of LV2.LIV_DIAS) {
+      const p = PL.plantillaDelDia(x.fecha);
+      if (p.corrida) continue;
+      const b = p.bloques.find((y) => y.plan === 'liviano');
+      if (!b) errores.push(`${x.fecha} ${WDC[dow(x.fecha)]} ${p.plantilla}: sesión LIVIANO D${x.d} sin bloque en la plantilla`);
+      else if (b.ini !== '17:15' || b.fin !== '18:00') errores.push(`${x.fecha} LIVIANO D${x.d}: bloque ${b.hora} (≠ 17:15–18:00)`);
+      else if (F62.faseV6(x.fecha) === 'F3') nLiv++;
+    }
+    if (LV2.LIV_META.fin > F62.FECHAS_V6.step1.reinicio && !nLiv) errores.push(`LIVIANO llega a F3 (fin ${LV2.LIV_META.fin}) y ninguna sesión de F3 tiene bloque`);
+    // (11) bloques Business ⟂ SYNAPSE en la plantilla (el control general de solapes también lo cubre; aquí se cuenta)
+    let nBS2 = 0;
+    for (let iso = SIM_INI; iso <= FIN; iso = addDias(iso, 1)) {
+      const p = PL.plantillaDelDia(iso);
+      const b = p.bloques.find((y) => y.plan === 'business' && y.ini), s = p.bloques.find((y) => y.plan === 'synapse' && y.ini);
+      if (!b || !s) continue;
+      nBS2++;
+      if (hm(b.ini) < hm(s.fin) && hm(s.ini) < hm(b.fin)) errores.push(`${iso} plantilla: Business ${b.hora} ⟂ SYNAPSE ${s.hora}`);
+    }
+    console.log(`intensiva ENCAPS ↔ plantilla F2 (SQL ${ROWS.length} filas = índice F2): ${nF2} día(s) F2 · SIM 11:00 ${lista(sim11)} · quincena SIM ${lista(qSim)} · repaso ${lista(qRep)} · cola ${COLA.join(' ')} · REPASO sin loop ${nRep} · corrección del SIM 11:00 ${nCorr} · carril B ${nCB} día(s) (viernes: ${lista(cbVie) || '—'} · mini-sim ${nMs}) · EVAL ANCLADA tras SIM ${nEv7} · «mini-sim absorbido» comprobado en ${nAbs} · Horario = Home en ${nHor} día(s) · señales ${nSen} · cierre semanal en ${nSem} semana(s) · carril SÁBADO ${nSab} a la hora del SQL · LIVIANO en F3 ${nLiv} sesión(es) · Business+SYNAPSE ${nBS2} día(s) sin solape`);
   }
   console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));

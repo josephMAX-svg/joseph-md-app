@@ -39,6 +39,19 @@
  * (guiaShipDe lee vibePCDomingo; su franja 15:00-17:00 es solo un ejemplo), con el Feynman (guiaFeynmanDe, ejemplo 14:50-15:00). En F2 el sábado
  * conserva la revisión 07:15 y el Business 09:15 (decisión abierta de Joseph para los sábados de 2027) y su SYNAPSE A/B/C va a las 15:00 (donde
  * estaba dentro del PC).
+ * v6.07 (fix 8-nov-2026 · QUINCENA FINAL del ENCAPS, lun 1 → vie 5-mar-2027): SIM_F2_11 = los 2 últimos SIM del núcleo (nucleo_hasta − 7 · nucleo_hasta)
+ * + los 3 SIM de la quincena (SIM_QUINCENA_F2), = las filas sim100 con extra.sim.hora '11:00' del SQL de la intensiva; se exporta también
+ * REPASO_QUINCENA_F2 para plantillasV6. La quincena sale de quincenaF2De = la REGLA del generador copiada tal cual (gen_encaps_intensivo_2027.js
+ * QUINCENA / QUINCENA_SIMS: L-V fuera de SKIP con f > nucleo_hasta, f ≥ examen − 13 y f < D-5; SIM = lun · mié · vie + último hábil de cada
+ * semana; repaso = el resto), no de nucleo_hasta + 3/5/7 (eso solo valía con el examen del 14-mar y el núcleo hasta el 26-feb). Con ello synFranjaDe
+ * pone el SYNAPSE a 13:00-13:30 esos 5 días (antes 12:30 en lun 1 · mié 3 · vie 5-mar, solapado con el SIM real de las 11:00) y bizFranjaDe saca a
+ * Business de 13:00: en un día con el ENCAPS 11:00-13:00 que no es viernes de OUTPUT (lun 1 · mié 3-mar = lectura L) va a 14:45-15:10
+ * (BIZ_ENCAPS_11: la media hora que AURUM deja libre en F2 antes del MIR 15:15); el OUTPUT del viernes con el SIM 11:00 (vie 19 · 26-feb · 5-mar) va
+ * entero al sábado (outputEnteroAlSabado: NBME o viernes con el SIM 11:00) y, si ese sábado tiene el CARRIL SÁBADO ENCAPS (09:30-10:30, la hora del
+ * SQL: manda el SQL), va al terminar el carril: 10:30-11:10 (sáb 20 · 27-feb · 6-mar). CIERRE de la semana (bizCierreDe): si el sábado es PROTEGIDO
+ * o SKIP (sáb 13-mar = D-1 ENCAPS, OUTPUT D120 lun 8 · D121 mar 9-mar) va al primer día hábil tras el último OUTPUT con hueco a las 13:00 antes del
+ * protegido (mié 10-mar 13:00-13:30) y guiaBusinessDe(protegido) = null. Control: check_rutina_guia.js (SQL ↔ SIM_F2_11 · quincena · 0 solapes
+ * Business ⟂ SYNAPSE · Business ⟂ carril SÁBADO · ningún Business en un día protegido).
  *
  * Decisiones de carga (v6.02c, E5 — escritas también en los avisos de cada bloque):
  *  · BUSINESS no tenía franja ni aparecía en el Home: va a 13:00-13:25 (L-V), la franja «LECTURA DE LIBRO 13:00-13:15» del Calendar (cuya
@@ -72,8 +85,8 @@ import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiD
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
-import { guiaEncapsDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde
-import { FECHAS_V6, DERIVADOS_V6, faseV6, ultimoHabilAntes, fechaRealDe } from './fechasV6';
+import { guiaEncapsDe, encapsSabadoDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido } from './fechasV6';
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -97,7 +110,14 @@ export const revisionIniDe = (iso: string): string => (sabadoTheomed(iso) ? '14:
 const bizSabIni = (sab: string): string => (sabadoTheomed(sab) ? '14:30' : faseV6(sab) === 'F2' ? '09:15' : '07:45');
 /** v6.06e: cuándo se cierra el OUTPUT: el sábado de plan, o su domingo real si ese sábado se corrió (la fecha de plan la traduce fechasRealesEnTexto).
  *  v6.07: la hora del sábado sale de bizSabIni (14:30 en F1). */
-const cierreOutput = (iso: string): string => { const sab = addDias(iso, 6 - dow(iso)); return fechaRealDe(sab, 'business') === sab ? `el sábado ${bizSabIni(sab)}` : `en el cierre del ${fCorta(sab)}`; };
+/*  v6.07 (fix H5): si el sábado es PROTEGIDO o SKIP, el cierre va al día hábil que da bizCierreDe («el mié 10-mar 13:00»); la hora del sábado sale
+ *  de bizCierreDe (tras el carril SÁBADO ENCAPS si no cabe antes). */
+const cierreOutput = (iso: string): string => {
+  const sab = addDias(iso, 6 - dow(iso));
+  const c = bizCierreDe(sab);
+  if (c && c.fecha !== sab) return `el ${fCorta(c.fecha)} ${c.ini}`;
+  return fechaRealDe(sab, 'business') === sab ? `el sábado ${c ? c.ini : bizSabIni(sab)}` : `en el cierre del ${fCorta(sab)}`;
+};
 const yt = (id: string, seg?: number): string => `https://www.youtube.com/watch?v=${id}${seg ? `&t=${seg}s` : ''}`;
 const mmss = (s: number): string => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const minDe = (seg: number): number => Math.ceil(seg / 60);
@@ -353,14 +373,69 @@ function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
   return P(b.min, `C (lectura) · ${b.material} — ${b.leccion}`,
     `≈${b.min * PPM_EN} palabras (${b.min}′ a ${PPM_EN} palabras/min en inglés). Marca dónde quedas; el resto en el próximo C o en el comodín de la semana.`, enl);
 }
+/** Domingo de Pascua (Meeus/Jones/Butcher), como pascua() de gen_encaps_intensivo_2027.js. */
+function pascuaDe(y: number): string {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+    g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4,
+    l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451), mo = Math.floor((h + l - 7 * m + 114) / 31),
+    da = ((h + l - 7 * m + 114) % 31) + 1;
+  return `${y}-${String(mo).padStart(2, '0')}-${String(da).padStart(2, '0')}`;
+}
+const lunesDeIso = (f: string): string => addDias(f, dow(f) === 0 ? -6 : 1 - dow(f));
+/** v6.07 (fix H1): QUINCENA FINAL de la intensiva ENCAPS = la REGLA de gen_encaps_intensivo_2027.js copiada tal cual (QUINCENA / QUINCENA_SIMS, ~l. 391-420):
+ *  · calendario = L-V fuera de SKIP (el generador usa SKIP_V6 + Jueves y Viernes Santo del año del examen: aquí igual);
+ *  · COLA = los 5 últimos hábiles antes del examen: D-1 = último hábil antes del examen (DERIVADOS_V6.d1HabilEncaps con el examen vigente) y D-5 =
+ *    ultimoHabilAntes × 4 sobre el D-1;
+ *  · quincena = los hábiles con f > nucleo_hasta, f ≥ examen − 13 y f < D-5 (los de antes son MÓDULOS DE EXTENSIÓN);
+ *  · SIM 100Q 11:00-13:00 = lun · mié · vie + el último hábil de cada semana de la quincena · REPASO (tipo repaso_final, extra.cola 'quincena') = el resto.
+ *  v6.07 (examen dom 14-mar, núcleo hasta el vie 26-feb): SIM lun 1 · mié 3 · vie 5-mar y REPASO mar 2 · jue 4-mar. Parametrizada (examen,
+ *  nucleo_hasta, skip) para compararla con el generador en los 6 escenarios de §A5; check_rutina_guia.js la compara con _encaps_intensivo_2027.sql. */
+export function quincenaF2De(examen: string = FECHAS_V6.encaps.examen, nucleoHasta: string = FECHAS_V6.encaps.nucleo_hasta, skip: Set<string> = SKIP_V6): { dias: string[]; sims: string[]; repasos: string[]; cola: string[] } {
+  const p = pascuaDe(Number(examen.slice(0, 4)));
+  const sk = new Set<string>([...skip, addDias(p, -3), addDias(p, -2)]);
+  const d1 = examen === FECHAS_V6.encaps.examen && skip === SKIP_V6 && sk.size === skip.size ? DERIVADOS_V6.d1HabilEncaps : ultimoHabilAntes(examen, sk);
+  const cola = [d1];
+  for (let k = 0; k < 4; k++) cola.unshift(ultimoHabilAntes(cola[0] as string, sk));
+  const d5 = cola[0] as string, desde = addDias(examen, -13);
+  const dias: string[] = [];
+  for (let f = addDias(nucleoHasta, 1); f < d5; f = addDias(f, 1)) if (dow(f) >= 1 && dow(f) <= 5 && !sk.has(f) && f >= desde) dias.push(f);
+  const ultimoDeSemana = (f: string): string | undefined => dias.filter((x) => lunesDeIso(x) === lunesDeIso(f)).pop();
+  const sims = dias.filter((f) => [1, 3, 5].includes(dow(f)) || f === ultimoDeSemana(f));
+  return { dias, sims, repasos: dias.filter((f) => !sims.includes(f)), cola };
+}
+const QUINCENA_F2 = quincenaF2De();
+/** v6.07 (fix): SIM 100Q 11:00-13:00 de la quincena final (lun 1 · mié 3 · vie 5-mar-2027 en v6.07). */
+export const SIM_QUINCENA_F2: string[] = QUINCENA_F2.sims;
+/** v6.07 (fix): días de REPASO de la quincena final, 07:15-12:00 sin material nuevo (mar 2 · jue 4-mar-2027 en v6.07). */
+export const REPASO_QUINCENA_F2 = new Set<string>(QUINCENA_F2.repasos);
+/** v6.07 (fix): COLA anclada del ENCAPS = los 5 últimos hábiles antes del examen [D-5 … D-1] (v6.07: lun 8 → vie 12-mar-2027): D-5 pasada profunda
+ *  (loop) · D-4 / D-3 repaso final (sin loop) · D-2 dress rehearsal · D-1 medio día (protegido). plantillasV6 la usa si el índice F2 no trae la fila. */
+export const COLA_F2: string[] = QUINCENA_F2.cola;
 /** v6.05 (fix 24-oct): días de F2 con el ENCAPS a la hora real del examen, 11:00-13:00 — los SIM 100Q #7 y #8 (los 2 últimos viernes del
  *  núcleo: v6.05 = v6.06 vie 26-feb y vie 5-mar-2027) y el D-2 dress rehearsal (jue antes del D-1 hábil). FUENTE ÚNICA: plantillasV6 la importa para
- *  pintar el SIM a las 11:00 y para mover el SYNAPSE (antes cada fichero calculaba su SIM_11 y el SYNAPSE 12:30-13:00 se solapaba con el SIM). */
-export const SIM_F2_11 = new Set<string>([FECHAS_V6.encaps.nucleo_hasta, addDias(FECHAS_V6.encaps.nucleo_hasta, -7)]);
+ *  pintar el SIM a las 11:00 y para mover el SYNAPSE (antes cada fichero calculaba su SIM_11 y el SYNAPSE 12:30-13:00 se solapaba con el SIM).
+ *  v6.07 (fix): = los 2 últimos SIM del núcleo (nucleo_hasta − 7 y nucleo_hasta: #6 vie 19 y #7 vie 26-feb) + los 3 de la quincena final
+ *  (SIM_QUINCENA_F2: #8 lun 1 · #9 mié 3 · #10 vie 5-mar), = SIM_11 del generador (extra.sim.hora '11:00'). Antes solo los 2 del núcleo: los 3 de la
+ *  quincena se pintaban como LOOP 07:15 (lun / mié) o SIM 07:15 (vie) y el SYNAPSE quedaba a las 12:30, solapado con el SIM real de las 11:00. */
+export const SIM_F2_11 = new Set<string>([addDias(FECHAS_V6.encaps.nucleo_hasta, -7), FECHAS_V6.encaps.nucleo_hasta, ...SIM_QUINCENA_F2]);
 /** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00 (§C3). */
 export const D2_ENCAPS = ultimoHabilAntes(DERIVADOS_V6.d1HabilEncaps);
-/** ¿Hoy el ENCAPS ocupa 11:00-13:00 (SIM 100Q #7/#8 o dress rehearsal)? → SYNAPSE 13:00-13:30, como en los NBME. */
+/** ¿Hoy el ENCAPS ocupa 11:00-13:00 (SIM 100Q de las 11:00 —v6.07: #6-#10— o dress rehearsal)? → SYNAPSE 13:00-13:30, como en los NBME. */
 export const encapsOnceATrece = (iso: string): boolean => SIM_F2_11.has(iso) || iso === D2_ENCAPS;
+/** v6.07 (fix): franja de Business en un día con el ENCAPS 11:00-13:00 que no manda el OUTPUT entero al sábado (SIM de lunes / miércoles de la
+ *  quincena, D-2, o un viernes de lectura): 14:45-15:10 = la media hora que AURUM deja libre en F2 (14:15-14:45, 30′ desde el 4-ene; en F1 iba
+ *  hasta las 15:15) antes del MIR 15:15 — el único hueco de 25′ que existe en TODA plantilla L-V de F2 entre el SYNAPSE 13:00-13:30 (empujado por el
+ *  SIM), el R↔D 13:30-14:15, AURUM, MIR 15:15, el carril B 16:15 y LIVIANO 17:15 (07:15-11:00 queda libre a propósito: mañana de examen). */
+export const BIZ_ENCAPS_11 = { ini: '14:45', fin: '15:10' } as const;
+/** v6.07 (fix 3, 8-nov-2026): franja de la CORRECCIÓN + CIERRE de un simulacro de las 11:00 (SIM 100Q #6-#10 y dress rehearsal D-2; ítem
+ *  D{dia}:i_sim_corr de ENCAPS → Plan): 16:15-17:15 si la fila NO trae extra.carril_b (16:15 libre) · 18:00-18:45 si lo trae (el 16:15 es del carril
+ *  B; va donde iría la EVAL). FUENTE ÚNICA del Home (plantillasV6.bloqueCorrSim11) y de ENCAPS → Plan › Horario (EncapsPlanView.bloquesIntensivoBase,
+ *  con la fila viva): antes el Horario pintaba la corrección a h0 + 2 h 15′ (13:15-14:15) y el Home a las 16:15 o a las 18:00. */
+export const franjaCorrSim11De = (conCarrilB: boolean): { ini: '16:15' | '18:00'; fin: '17:15' | '18:45' } =>
+  conCarrilB ? { ini: '18:00', fin: '18:45' } : { ini: '16:15', fin: '17:15' };
+/** v6.07 (fix): ¿el OUTPUT de Business de `f` va ENTERO al sábado? → día de NBME de F1 o VIERNES con el ENCAPS 11:00-13:00 (SIM #6/#7/#10);
+ *  un OUTPUT de lunes-jueves con el SIM 11:00 va a 14:45 (BIZ_ENCAPS_11) y se cierra el sábado como cualquier otro (25′ + 15′). */
+const outputEnteroAlSabado = (f: string): boolean => !!hitoDe(f)?.nbme || (encapsOnceATrece(f) && dow(f) === 5);
 /** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30) ·
  *  v6.05 (fix): ENCAPS 11:00-13:00 de F2 (SIM #7/#8 · D-2) → 13:00 (antes 12:30, solapado 30′ con el SIM). */
 export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: string } {
@@ -766,51 +841,105 @@ function bizOutputsDeSemana(sabado: string): Array<{ r: DiaBiz; entero: boolean 
   for (let k = 5; k >= 1; k--) {
     const f = addDias(sabado, -k);
     const r = bizDiaDe(f);
-    if (r && bizModo(r) === 'OUTPUT') out.push({ r, entero: !!hitoDe(f)?.nbme || encapsOnceATrece(f) }); // v6.06: + SIM 100Q 11:00 de F2
+    if (r && bizModo(r) === 'OUTPUT') out.push({ r, entero: outputEnteroAlSabado(f) }); // v6.06: + SIM 100Q 11:00 de F2 · v6.07 (fix): solo en viernes
   }
   return out;
 }
-export function bizFranjaDe(iso: string): { ini: string; fin: string; sabado?: boolean } | null {
-  const w = dow(iso);
-  if (w === 6) {
-    const outs = bizOutputsDeSemana(iso);
-    if (!outs.length) return null;
-    const total = outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0);
+/** v6.07 (fix H5/H6): CIERRE de los OUTPUT de la semana que acaba el sábado `sab` (tracker + cierre: 15′ por OUTPUT; 40′ si va entero).
+ *  · Sábado de plan → ese sábado, tras la revisión (bizSabIni: 14:30 F1 · 09:15 F2 · 07:45 resto; con la clase en vivo y > 15′ → 17:15). En F2, si el
+ *    CARRIL SÁBADO ENCAPS (encapsGuia.encapsSabadoDe = extra.carril_sabado del SQL, 09:30-10:30) no le deja sitio antes, va al TERMINAR el carril: manda
+ *    el SQL y el carril no se mueve (v6.07: el OUTPUT entero de los viernes de SIM 11:00 → sáb 20 · 27-feb · 6-mar 10:30-11:10).
+ *  · Sábado PROTEGIDO o SKIP (v6.07: sáb 13-mar = D-1 ENCAPS, con los OUTPUT D120 lun 8 y D121 mar 9-mar) → el PRIMER día hábil tras el último OUTPUT
+ *    de la semana y antes de ese sábado con hueco a las 13:00: ni protegido ni SKIP, sin fila de Business propia, sin el ENCAPS 11:00-13:00 (SYNAPSE a
+ *    las 13:00) ni NBME, y que termine antes del R↔D de las 13:30 (v6.07: mié 10-mar 13:00-13:30; el jue 11 es el D-2 y el vie 12 el D-1 hábil).
+ *    Sin hueco → null (check_rutina_guia lo marca como OUTPUT sin cierre).
+ *  null también si la semana no tiene OUTPUT. `motivo` = por qué no va el sábado (null si va el sábado). */
+export function bizCierreDe(sab: string): { fecha: string; ini: string; fin: string; outs: Array<{ r: DiaBiz; entero: boolean }>; motivo: string | null } | null {
+  const outs = bizOutputsDeSemana(sab);
+  if (!outs.length) return null;
+  const total = outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0);
+  const motivo = motivoProtegido(sab) ?? (SKIP_V6.has(sab) ? 'día sin sesión (SKIP)' : null);
+  if (!motivo) {
     // v6.07: con la clase en vivo (F1 y transición) el cierre va a las 14:30, tras la revisión de las 14:00 y antes de preparar la clase (14:45);
     //   si no cabe en esos 15′ (OUTPUT entero de 40′), va a las 17:15, después de la clase
-    const ini = sabadoTheomed(iso) && total > 15 ? '17:15' : bizSabIni(iso);
-    return { ini, fin: aHHMM(aMin(ini) + total), sabado: true };
+    let ini = sabadoTheomed(sab) && total > 15 ? '17:15' : bizSabIni(sab);
+    const cs = faseV6(sab) === 'F2' ? encapsSabadoDe(sab) : null;
+    if (cs && aMin(ini) < aMin(cs.fin) && aMin(ini) + total > aMin(cs.ini)) ini = cs.fin;
+    return { fecha: sab, ini, fin: aHHMM(aMin(ini) + total), outs, motivo: null };
+  }
+  const ultimo = outs.map((o) => o.r.fecha).sort().pop() as string;
+  for (let d = addDias(ultimo, 1); d < sab; d = addDias(d, 1)) {
+    const w = dow(d), r = bizDiaDe(d);
+    if (w < 1 || w > 5 || SKIP_V6.has(d) || motivoProtegido(d)) continue;
+    if ((r && bizModo(r) !== 'DESCANSO') || encapsOnceATrece(d) || hitoDe(d)?.nbme || aMin('13:00') + total > aMin('13:30')) continue;
+    return { fecha: d, ini: '13:00', fin: aHHMM(aMin('13:00') + total), outs, motivo };
+  }
+  return null;
+}
+/** v6.07 (fix H6): aviso del VIERNES (o día de NBME) cuyo OUTPUT va ENTERO al cierre de la semana: dónde y a qué hora (sábado tras la revisión o,
+ *  en F2 con el carril SÁBADO ENCAPS, al terminar el carril). null si hoy no hay OUTPUT entero. Lo pinta plantillasV6 en las notas del día. */
+export function bizAvisoOutputEnteroDe(iso: string): string | null {
+  const r = bizDiaDe(iso);
+  if (!r || bizModo(r) !== 'OUTPUT' || !outputEnteroAlSabado(iso)) return null;
+  const sab = addDias(iso, 6 - dow(iso));
+  const c = bizCierreDe(sab);
+  if (!c) return null;
+  const cs = c.fecha === sab && faseV6(sab) === 'F2' ? encapsSabadoDe(sab) : null;
+  const tras = cs && c.ini === cs.fin ? `, al terminar el carril SÁBADO ENCAPS (${cs.ini}-${cs.fin}, la hora del SQL)` : '';
+  return `Business: el OUTPUT de hoy (D${r.d} · ${((/^OUTPUT[^·:—]*/.exec(r.lectura) || [r.lectura.split(':')[0]])[0] as string).trim()}) no cabe hoy (${hitoDe(iso)?.nbme ? 'NBME' : 'ENCAPS 11:00-13:00 → SYNAPSE 13:00-13:30'}): va ENTERO (40′) el ${fCorta(c.fecha)} ${c.ini}-${c.fin}${tras}.`;
+}
+export function bizFranjaDe(iso: string): { ini: string; fin: string; sabado?: boolean; cierre?: boolean } | null {
+  const w = dow(iso);
+  if (w === 6) {
+    const c = bizCierreDe(iso); // v6.07 (fix H5): un sábado PROTEGIDO / SKIP no lleva el cierre (va al día que da bizCierreDe)
+    return c && c.fecha === iso ? { ini: c.ini, fin: c.fin, sabado: true, cierre: true } : null;
   }
   const r = bizDiaDe(iso);
-  if (!r || bizModo(r) === 'DESCANSO' || w === 0) return null;
+  if (!r || bizModo(r) === 'DESCANSO' || w === 0) {
+    // v6.07 (fix H5): día hábil sin fila de Business que recibe el CIERRE de la semana porque su sábado es protegido / SKIP (mié 10-mar 13:00)
+    if (w >= 1 && w <= 5) { const c = bizCierreDe(addDias(iso, 6 - w)); if (c && c.fecha === iso) return { ini: c.ini, fin: c.fin, cierre: true }; }
+    return null;
+  }
   const h = hitoDe(iso);
   if (h?.nbme) return bizModo(r) === 'OUTPUT' ? null : { ini: '12:30', fin: '12:55' };
   // v6.06 (31-oct-2026): el SIM 100Q de las 11:00 de F2 (SIM_F2_11) empuja el SYNAPSE a 13:00-13:30 → un OUTPUT ese viernes va ENTERO al
   //   sábado (09:15 en F2), como el de un viernes de NBME (v6.06: vie 26-feb, SIM #7; antes Business terminaba antes del 1.er SIM de las 11:00).
-  if (encapsOnceATrece(iso) && bizModo(r) === 'OUTPUT') return null;
+  // v6.07 (fix): con los SIM de la quincena final (lun 1 · mié 3 · vie 5-mar) en SIM_F2_11, el resto de días con el ENCAPS 11:00-13:00 (lectura
+  //   L / CRÍTICA, o un OUTPUT que no es de viernes) ya no puede ir a 13:00-13:25 (SYNAPSE 13:00-13:30): pasa a 14:45-15:10 (BIZ_ENCAPS_11).
+  if (encapsOnceATrece(iso)) return outputEnteroAlSabado(iso) && bizModo(r) === 'OUTPUT' ? null : { ...BIZ_ENCAPS_11 };
   return { ini: '13:00', fin: '13:25' };
 }
 export function guiaBusinessDe(iso: string): GuiaBloque | null {
   const f = bizFranjaDe(iso);
   if (!f) return null;
   const franja = `${f.ini}–${f.fin}`;
-  if (f.sabado) {
+  if (f.cierre) {
+    // v6.07 (fix H5): el cierre puede ir a un día hábil (sábado PROTEGIDO / SKIP → bizCierreDe); v6.07 (fix H6): en F2, tras el carril SÁBADO ENCAPS
+    const sab = f.sabado ? iso : addDias(iso, 6 - dow(iso));
+    const c = bizCierreDe(sab);
+    const movido = !f.sabado && !!c && !!c.motivo;
+    const cs = f.sabado && faseV6(iso) === 'F2' ? encapsSabadoDe(iso) : null;
+    const trasCarril = !!cs && f.ini === cs.fin;
+    const datos = movido ? `con los datos de la semana hasta hoy: el ${fCorta(sab)} es ${c?.motivo} y no hay revisión semanal` : `los mismos de la revisión semanal de las ${revisionIniDe(iso)}`;
     const pasos: GuiaPaso[] = [];
-    for (const { r, entero } of bizOutputsDeSemana(iso)) {
+    for (const { r, entero } of c ? c.outs : bizOutputsDeSemana(sab)) {
       const nom = r.lectura.split(':')[0];
       if (entero) pasos.push(
-        P(1, `${/^OUTPUT/.test(nom) ? nom : `OUTPUT · ${nom}`} (${r.wd} ${r.fecha.slice(8)})`, `El ${r.wd.toLowerCase()} fue día de ${hitoDe(r.fecha)?.nbme ? 'NBME' : 'SIM 100Q del ENCAPS a las 11:00 (SYNAPSE a las 13:00)'}: el OUTPUT entero se hace hoy.`),
+        P(1, `${/^OUTPUT/.test(nom) ? nom : `OUTPUT · ${nom}`} (${r.wd} ${r.fecha.slice(8)})`, `El ${r.wd.toLowerCase()} fue día de ${hitoDe(r.fecha)?.nbme ? 'NBME' : 'SIM 100Q del ENCAPS a las 11:00 (SYNAPSE a las 13:00)'}: el OUTPUT entero se hace hoy${trasCarril && cs ? `, a las ${f.ini}, al terminar el carril SÁBADO ENCAPS (${cs.ini}-${cs.fin})` : ''}.`),
         P(25, `Escribir el entregable: ${r.lectura}`, `1 página en Obsidian (01_PULSO): ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
-        P(10, 'TRACKER semanal (1 fila): sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · lecturas L 4/4 · output 1', `Con los datos de la semana que acaba de cerrar (los mismos de la revisión semanal de las ${revisionIniDe(iso)}).`),
+        P(10, 'TRACKER semanal (1 fila): sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · lecturas L 4/4 · output 1', `Con los datos de la semana que acaba de cerrar (${datos}).`),
         P(4, 'Cerrar: releer y marcar ✓', 'Empresa › Business (Estudio Pulso) › HOY.'),
       );
       else pasos.push(
-        P(10, `TRACKER semanal (1 fila) del ${nom}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${r.fecha.slice(8)}: la fila se llena con la semana cerrada (mismos datos de la revisión de las ${revisionIniDe(iso)}).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
+        P(10, `TRACKER semanal (1 fila) del ${nom}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${r.fecha.slice(8)}: la fila se llena con la semana cerrada (${movido ? datos : `mismos datos de la revisión de las ${revisionIniDe(iso)}`}).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
         P(5, `Releer la página del ${nom} y cerrarla`, 'Corrige 1 cosa; ✓ en Empresa › Business › HOY.'),
       );
     }
+    const aviso = movido && c
+      ? `El ${fCorta(sab)} es PROTEGIDO (${c.motivo}): el cierre de los OUTPUT de esta semana (${c.outs.map((o) => `D${o.r.d} ${o.r.wd.toLowerCase()} ${Number(o.r.fecha.slice(8))}`).join(' · ')}; 15′ cada uno) va hoy ${f.ini}-${f.fin}, el primer día hábil tras el último OUTPUT con hueco a las 13:00 antes del protegido (hoy Business no tiene lectura propia; termina antes del R↔D de las 13:30).`
+      : `El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ tras la revisión semanal (o entero en el cierre de la semana si ese día fue NBME o SIM 100Q de las 11:00).${trasCarril && cs ? ` Hoy va a las ${f.ini}-${f.fin}, al terminar el carril SÁBADO ENCAPS (${cs.ini}-${cs.fin}, la hora del SQL: el carril no se mueve).` : ''}`;
     return bloque(franja, 'business', `BUSINESS · cierre del OUTPUT de la semana (tracker semanal)`, pasos, [R('◆ Pulso · concepto madre', PULSO_OBS)],
-      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso: 'El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ tras la revisión semanal (o entero en el cierre de la semana si ese día fue NBME o SIM 100Q de las 11:00).' });
+      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso });
   }
   const r = bizDiaDe(iso) as DiaBiz;
   const modo = bizModo(r);
@@ -819,11 +948,18 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   const avisos: string[] = [];
   if (h?.uwsa) avisos.push('Hoy UWSA1: Business se ESCUCHA durante el almuerzo (13:00-13:30); la nota, al terminar.');
   if (h?.nbme) avisos.push('Hoy NBME: almuerzo 12:30-13:00 → Business se escucha durante el almuerzo; SYNAPSE 13:00.');
+  // v6.07 (fix): día con el ENCAPS 11:00-13:00 (SIM 100Q de lunes / miércoles de la quincena final, D-2) → Business a las 14:45 (BIZ_ENCAPS_11)
+  const once = f.ini === BIZ_ENCAPS_11.ini;
+  if (once) avisos.push(`Hoy el ENCAPS va a la hora del examen (${iso === D2_ENCAPS ? 'D-2 · DRESS REHEARSAL' : 'SIM 100Q'} 11:00-13:00) y el SYNAPSE pasa a 13:00-13:30: Business se hace a las ${BIZ_ENCAPS_11.ini}-${BIZ_ENCAPS_11.fin}, la media hora que AURUM (14:15-14:45) deja libre antes del MIR de las 15:15.`);
   if (modo === 'OUTPUT') {
     const pasos = [
       P(1, `${/^OUTPUT/.test(r.lectura) ? r.lectura.split(':')[0] : `OUTPUT · ${r.lectura.split(':')[0]}`}`, 'Lee el entregable y la acción.'),
       P(22, `Escribir: ${r.lectura}`, `Página nueva en Obsidian › 02_EMPRESA FINANZAS › 01_PULSO. ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00). Terminado > perfecto.`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
-      P(2, 'Guardar', `El sábado ${bizSabIni(addDias(iso, 6 - dow(iso)))} (tras la revisión semanal): tracker semanal + cierre (15′).`),
+      P(2, 'Guardar', (() => { // v6.07 (fix H5): el cierre va donde diga bizCierreDe (sábado tras la revisión, o el día hábil si el sábado es protegido)
+        const sabO = addDias(iso, 6 - dow(iso)), cO = bizCierreDe(sabO);
+        return cO && cO.motivo ? `El ${fCorta(cO.fecha)} ${cO.ini} (el ${fCorta(sabO)} es ${cO.motivo}: sin revisión semanal): tracker semanal + cierre (15′).`
+          : `El sábado ${cO ? cO.ini : bizSabIni(sabO)} (tras la revisión semanal): tracker semanal + cierre (15′).`;
+      })()),
     ];
     return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.lectura.split(':')[0]} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
       { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ ${cierreOutput(iso)} (tracker + cierre).`].join(' ') });
@@ -847,7 +983,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   }
   pasos.push(P(25 - sumMin(pasos), `ACCIÓN + NOTA · ${r.accion}`, 'Nota de 3 líneas en Obsidian (01_PULSO) o 1 tarjeta de mecanismo (¿por qué?), no datos sueltos.', { t: '◆ 01_PULSO', url: PULSO_OBS }));
   return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.materia} — ${r.lectura.split(':')[0]}`, pasos, recursos, `tramo escuchado/leído + «${r.accion.slice(0, 80)}» hecho`,
-    { aviso: [...avisos, minutosFranja(franja) === 25 && !h ? 'Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.' : ''].filter(Boolean).join(' ') || undefined,
+    { aviso: [...avisos, minutosFranja(franja) === 25 && !h && !once ? 'Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.' : ''].filter(Boolean).join(' ') || undefined,
       planB: 'Sin datos/YouTube: el libro en papel o PDF, 20′ del capítulo indicado. Sin tiempo hoy: el tramo pasa al de mañana (Business es 1 tramo por día, en orden).' });
 }
 

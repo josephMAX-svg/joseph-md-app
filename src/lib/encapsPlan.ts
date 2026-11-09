@@ -1481,8 +1481,26 @@ function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): Pla
     let { label, detail, code } = it;
     if (/:m_eval$/.test(it.key) && prevEsSim && prev) {
       const que = prev.tipo === 'pretest' ? 'PRE-TEST 2026-II' : 'SIM 100Q';
-      label = `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del ${que} del ${String(prev.weekday || 'viernes').toLowerCase()} (D${prev.dia})`;
-      detail = `El mini-sim de ese viernes quedó absorbido por el ${que} (no se hizo) → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+      // v6.07 (fix H7): el SIM de ayer puede ser de LUNES o MIÉRCOLES (quincena final: lun 1 · mié 3-mar → carril B del mar 2 · jue 4-mar); el rótulo
+      //   «(lunes) … del viernes · el mini-sim de ese viernes quedó absorbido» solo vale tras un SIM de VIERNES (el de siempre: lo usa también el carril
+      //   SÁBADO, que lo cambia a «(sábado)»). Tras un SIM de otro día → rótulo genérico con el día real del SIM.
+      const fp = ISO_RE.test(String(prev.fecha || '')) ? new Date(`${prev.fecha}T12:00:00Z`) : null;
+      const wdPrev = fp ? fp.getUTCDay() : 5;
+      if (wdPrev === 5) {
+        label = `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del ${que} del ${String(prev.weekday || 'viernes').toLowerCase()} (D${prev.dia})`;
+        // v6.07 (fix 3): «el mini-sim de ese viernes quedó absorbido» solo si la fila del viernes lo dice (extra.minisim_absorbido: vie 8-ene → 12-feb);
+        //   desde el vie 19-feb (filas 72 · 77 · 82) no hay mini-sim que absorber —y el vie 5-mar sí hubo sesión a las 16:15, el CARRIL VIERNES—
+        detail = minisimAbsorbidoDe(prev)
+          ? `El mini-sim de ese viernes quedó absorbido por el ${que} (no se hizo) → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`
+          : `El viernes fue día de ${que} (D${prev.dia}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' · quincena final' : ''}): 5Q de sus fallos → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+      } else {
+        const wdTxt = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][wdPrev];
+        const fd = ISO_RE.test(String(day.fecha || '')) ? new Date(`${day.fecha}T12:00:00Z`) : null;
+        const ayer = !!fp && !!fd && Math.round((fd.getTime() - fp.getTime()) / 864e5) === 1;
+        const cuando = ayer ? `de ayer (${wdTxt} · D${prev.dia})` : `del ${wdTxt} (D${prev.dia})`;
+        label = `🎯 EVAL ANCLADA: 5Q REHECHAS con otro enfoque de los fallos del ${que} ${cuando}`;
+        detail = `${ayer ? 'Ayer' : `El ${wdTxt}`} fue día de ${que}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' de la quincena final' : ''}: 5Q de sus fallos → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+      }
       code = undefined;
     } else if (/:m_eval$/.test(it.key) && prev && prevPseudo && esMiniSimRepuesto(prevPseudo)) {
       // v6.02: ayer fue un MINI-SIM F1 repuesto (no es viernes: p.ej. mar 23-feb tras el mini-sim del lun 22-feb) → misma eval que tras un
