@@ -4644,4 +4644,7 @@ bloque v6.07 (a)-(k).
   - Business: sin solapes y nunca en un día protegido (el cierre del sáb 13-mar pasa al mié 10-mar 13:00); el carril sábado va de 09:30 a 10:30 y el OUTPUT, después (10:30-11:10); LIVIANO 17:15 en F3.
 - **`check_rutina_guia.js`:** controles nuevos de SQL ↔ plantilla F2, Horario = Home, corrección de simulacro (Home = Horario = ítem), cierre semanal con bloque e ítem, D-1 en serie y Feynman = PC del domingo.
 - **Comprobaciones:** `tsc` ✓ · `check_rutina_guia` 0 errores · `sim_plantilla_dia` 9-nov → 11-abr: 154 días, 0 problemas · `gen_encaps_guia`, `gen_encaps_manana`, `gen_usmle_guia`, `gen_fechas_v6` y `sync_encaps_bp_web` con `--check` ✓ · `verificar_v6` ✓.
-- **Calendar:** lotes 1a, 1b, 2, 2b y 2c, más dos verificaciones independientes (CAL_V6 §25). Decisiones nuevas en PENDIENTES v6.07 (l)-(o).
+- **`sim_plantilla_dia.js`:** solo leía el ciclo 1 de Research, así que los «huecos de guía» de abril en adelante que cita el §31.6 eran **falsos positivos** del simulador (el Home lee los dos ciclos). Ahora replica TodayMission (dos ciclos, `moverGuia` en F4 y la guía «RESEARCH · mínimo»): **9-nov-2026 → 6-dic-2027 = 393 días, 0 problemas**.
+- **Calendar:** lotes 1a (296), 2 (115), 1b (389), 2b (76), 2c (227), 2d (491) y 2e (8), cada uno con su verificación, más 4 verificaciones independientes de solo lectura (la última, `verif4`: 8/8 controles OK). Los textos viejos de 2027 pasan de 433 a 0 y no hay regresión del 9-nov al 3-ene (CAL_V6 §25).
+  - Hallazgo: `update_event` sobre la descripción de un MASTER pisa la de todas sus instancias, también la de las excepciones. Desde ahora se escribe instancia a instancia.
+- Decisiones nuevas: PENDIENTES v6.07 (l)-(o).

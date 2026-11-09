@@ -21,7 +21,7 @@ function cargar(file) {
 }
 const L = (n) => cargar(path.join(ROOT, 'src', 'lib', n + '.ts'));
 const P = L('plantillasV6'), G = L('guia'), U = L('usmleGuia'), MG = L('mirGuia'), MD = L('mirDailyPlan'), EG = L('encapsGuia'), EM = L('encapsManana'),
-  RD = L('researchDailyPlan'), RG = L('researchGuia'), DC = L('dermaCiclo2'), DG = L('dermaGuia'), AU = L('aurumDailyPlan'), LV = L('livianoStudyPlan'),
+  RD = L('researchDailyPlan'), RD2 = L('researchDailyPlan2027'), RG = L('researchGuia'), DC = L('dermaCiclo2'), DG = L('dermaGuia'), AU = L('aurumDailyPlan'), LV = L('livianoStudyPlan'),
   SY = L('synapseDailyPlan'), RT = L('rutinaGuia'), VB = L('vibecodingPlan'), F6 = L('fechasV6');
 const hm = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
 const addDias = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
@@ -66,10 +66,17 @@ function guiasDe(b, p, iso) {
       return U.guiaUsmleEnRango(iso, b.ini || '18:00', b.fin || '18:45');
     }
     case 'research-derma': {
-      const r = RD.DIAS.find((x) => x.fecha === iso);
-      if (r) return [RG.guiaResearchDe(r)];
+      // réplica de TodayMission (v6.07 fix, 8-nov): 1) bloque con `detalle` (pausa de átomos) → solo la guía «RESEARCH · mínimo» si cuadra;
+      // 2) átomo de Research de los DOS ciclos (antes solo el ciclo 1 → 67 falsos «SIN contenido» abr-dic 2027); en F4 la guía se mueve al
+      // inicio del bloque del turno (moverGuia), como TodayMission; 3) Derma con 30′ en F4 y 45′ en el resto.
+      if (b.detalle) return /RESEARCH · mínimo/.test(b.nombre) && b.ini && b.fin && hm(b.fin) - hm(b.ini) === RG.GUIA_RESEARCH_MINIMO.totalMin ? [{ ...RG.GUIA_RESEARCH_MINIMO, franja: `${b.ini}–${b.fin}` }] : [];
+      const r = [...RD.DIAS, ...RD2.DIAS_2027].find((x) => x.fecha === iso);
+      if (r) {
+        const g0 = RG.guiaResearchDe(r), pR = G.partesFranja(g0.franja);
+        return [F6.faseV6(iso) === 'F4' && b.ini && b.fin && pR && pR.ini !== b.ini ? G.moverGuia(g0, hm(b.ini) - hm(pR.ini)) : g0];
+      }
       const dd = DC.dermaDiaDeConCiclo2(iso);
-      return dd ? [DG.dermaGuiaPar(dd, { ini: b.ini || '13:30', minutos: b.min || 45 }).planB] : (b.detalle ? [] : null);
+      return dd ? [DG.dermaGuiaPar(dd, { ini: b.ini || '13:30', minutos: F6.faseV6(iso) === 'F4' ? 30 : 45 }).planB] : null;
     }
     default: return [];
   }

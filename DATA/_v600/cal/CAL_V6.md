@@ -2094,3 +2094,214 @@ Lista completa: `cal_bk/v606e/solapes_v606e.txt` (24), más la de YouTube y el b
 - dom 8, 15, 22, 29-nov y 6-dic: BAILE PRACTICA 17:15, ALISTARSE 17:30, VIAJE 17:45 y BAILE 18:00-19:30 pisan LIVIANO y la evaluación de las 18:00.
 - mié 18 y dom 6-dic: el desayuno pisa el inicio del NBME: adelantarlo.
 - mar 10: ALISTARSE 18:30 pisa el final de la evaluación, como todos los martes.
+
+
+## 25. v6.07 — ENCAPS PRIMER PUESTO (dom 8-nov-2026 · todo arranca el lun 9-nov · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · examen Step 1 lun 6-dic-2027)
+Registro del Google Calendar (josephsototocas@gmail.com · America/Lima) para la v6.07. La app manda: commits `9f958d1`, `e5fd4bd` y `f4f611a` (REESTRUCTURACION §31).
+**La v6.06a-e queda SIN EFECTO.** El §24 es historial: ya no hay alias, ni «plan del X», ni domingos de recuperación. Desde el lun 9-nov cada día hace el plan de su propia fecha.
+
+### Protocolo (común a todos los lotes)
+- Brief común: `cal_bk/v607/BRIEF_COMUN.md`.
+- Fuente de cada día: `node DATA/_scripts/sim_plantilla_dia.js <fecha>`, a través del exportador de cada lote.
+- Antes de escribir, cada lote hace un volcado `list_events` y un respaldo JSON de cada evento que va a tocar.
+- Cada lote genera con `build_ops.js` un `ops.json` reproducible y apunta en `hecho.json` el resultado de cada escritura.
+- Al final, cada lote verifica con un volcado nuevo.
+- `notificationLevel: NONE` en todas las escrituras.
+- Rutinas personales y finanzas: sin tocar. El ALMUERZO solo se mueve los días de hito.
+- Masters: no se cambian títulos ni recurrencias; solo se reescribe la descripción, y solo después de probar que las excepciones la conservan.
+- Para alargar una serie se crea una serie de continuación con EXDATE.
+- Todo queda en `cal_bk/v607/<lote>/` (en .gitignore; el repo es público): `INFORME.md`, `ops.json`, `hecho.json`, `bk/`, `volcados/`.
+
+### Lote 1a — lun 9 → dom 29-nov: 296 escrituras = 255 `update_event` + 41 `delete_event` (296/296 OK) · verificación **300 OK · 0 FAIL**
+- **Días L-V:** se actualizaron las instancias de las 15 series del plan.
+  - Lunes, miércoles y viernes: las 4 franjas USMLE de la mañana pasan a ser la **MAÑANA ENCAPS** (07:15-09:15 · 09:15-09:45 · 09:45-10:45 · 10:45-12:00) y las 18:00 pasan a «🇵🇪 ENCAPS 18:00 · cifras, normas y flashcards».
+  - Martes y jueves: Step 1.
+- **UWSA1** `o1gla7846uae4tgngvc4q45osg`: pasa al **mar 10-nov 08:50-13:00**, con su preparación `1j4q1t25allju66uj92067b1ho` de 07:15 a 08:50.
+  - Se borran las 4 franjas USMLE de esa mañana.
+  - El ALMUERZO del mar 10 pasa a las 13:00.
+- **Sábados 14, 21 y 28-nov:** SYNAPSE 13:30 · REVISIÓN S01-S03 14:00 · Business 14:30 · preparar la clase 14:45 · **THEOMED EN VIVO 15:00-17:00** (CI 2/8 · ET 2/3 · GES 3/6) · ANKI 19:00. Se reciclaron 18 sueltos de la v6.06e y no se creó ninguno.
+- **Domingos 15, 22 y 29-nov:** ENCAPS opcional 08:00-12:00, FEYNMAN 14:50 y SHIP 15:00-17:00, los tres «(flexible)» y FREE · ANKI 17:00.
+- **Borrados:**
+  - 19 sueltos v6.06e de los domingos;
+  - los 15 avisos «📅 Hoy = plan del X»;
+  - 3 instancias PC SÁBADO;
+  - las 4 franjas USMLE del mar 10.
+
+### Lote 2 — 2027 + hitos Step 1 + Research + fines de serie: 115 escrituras = 85 `update_event` + 17 `create_event` + 13 `delete_event` (115/115 OK · 0 FAIL)
+- **Intensiva ENCAPS: dia 43-92 pasa a dia 38-87.**
+  - Se actualizaron el banner y los masters de las 05:00, LOOP, carril B y reposición.
+  - SIM #1-#10: el #6 del vie 19-feb pasa a las 11:00-13:00; el #8 (lun 1-mar), el #9 (mié 3-mar) y el #10 (vie 5-mar) van de 11:00 a 13:00.
+  - También se actualizaron el pre-test (dia 42), el DRESS (dia 86), el D-1 07:15-12:00, el 🛡 12-mar y el EXAMEN ENCAPS del dom 14-mar.
+  - Carril sábado de 09:30 a 10:30. Carril VIERNES el vie 5-mar a las 16:15.
+- **Hitos Step 1 (mismos ids):**
+
+  | Hito | Fecha |
+  |---|---|
+  | NBME 26 | vie 2-abr |
+  | NBME 27 | vie 23-abr |
+  | NBME 28 | jue 3-jun |
+  | gates | lun 22-mar y mié 21-abr |
+  | NBME 31 | lun 4-oct |
+  | NBME 32 | lun 11-oct |
+  | GO/NO-GO | lun 18-oct |
+  | UWSA2 | mar 19-oct |
+  | NBME 33 + 3 bloques | **lun 1-nov 07:00-16:30**, feriado |
+  | Free 120 | lun 22-nov |
+  | D94 / D95 | 2-dic / 3-dic |
+  | ritual | sáb 4-dic |
+  | viaje | dom 5-dic |
+  | **EXAMEN** `oinh139dsnbuma9r3kfu56dhkc` | **lun 6-dic-2027 07:00-16:00** |
+  | regreso | mar 7-dic |
+
+  Cada hito tiene su ventana 🪟. NBME 29, NBME 30 y UWSA3 se quedan en su fecha; solo cambia el texto.
+- **Series de continuación:**
+  - vibecoding: lun 22 → mar 30-mar;
+  - SYNAPSE: mié 17 → mar 23-mar;
+  - LIVIANO: mar 16 → lun 22-mar;
+  - Business: mié 3 → mar 9-mar;
+  - Revisión semanal F4: sáb 23-oct → 27-nov.
+- **Series nuevas:**
+  - corrección del SIM de los viernes, 09:30-12:00 (15-ene → 12-feb);
+  - cierre de Business del sábado;
+  - SYNAPSE del sábado (9-ene → 20-mar);
+  - FEYNMAN de enero.
+- **Research:** los 12 overlays salen de `gen_research_calendar.js --print` y `--check` da 12/12.
+
+### Lote 1b — lun 30-nov → dom 3-ene: 389 escrituras = 364 `update_event` + 13 `create_event` + 12 `delete_event` (389/389 OK) · verificación **398 OK · 0 FAIL**
+- **Días L-V:** las 22 jornadas, con la misma convención que el lote 1a.
+- **NBME 25** `4hjv5lkvluj06ahc2qndtsi6as`: pasa del mié 18-nov al **jue 10-dic 07:00-12:30**.
+  - Se borran las 4 franjas USMLE de esa mañana.
+  - ALMUERZO 12:30, Business 12:30-12:55 en audio y SYNAPSE 13:00.
+- **CHECKPOINT DEL AÑO** vie 18-dic (dia 30). Avisos C1 (mar 29-dic) y C2 (mié 30-dic, simulacro de cierre).
+- **Sábados 5-dic → 2-ene:**
+  - REVISIÓN S04-S08 a las 14:00;
+  - THEOMED EN VIVO 5-dic GES 4/6 · 12-dic ET 3/3 · 19-dic CI 3/8;
+  - el 26-dic y el 2-ene no hay clase.
+- **Domingos 6-dic → 3-ene:** SHIP/AVANCE, ENCAPS opcional y FEYNMAN, flexibles.
+- **Borrados:**
+  - las 4 franjas USMLE del jue 10-dic;
+  - 6 instancias PC SÁBADO;
+  - el PC DOMINGO sobrante «Feynman S1»;
+  - la REVISIÓN «S09» del dom 3-ene.
+- El lote 1b resolvió los pendientes del lote 1a: el Business del vie 4-dic, la cadena de revisiones y el SHIP S1 viejo.
+
+### Lote 2b — 4-ene → 23-mar contra la app final (tras `e5fd4bd`): 76 escrituras = 64 `update_event` + 7 `create_event` + 5 `delete_event` (76/76 OK · 0 FAIL)
+- **Lun 4-ene:** el LOOP pasa a RE-SCAN DE SEÑALES.
+- **Viernes 8-ene → 26-feb:** la EVAL de las 18:00 pasa a **CIERRE SEMANAL**.
+- **Lun 1, mié 3 y vie 5-mar:** la EVAL de las 18:00 pasa a la corrección del SIM #8, #9 y #10. Business de esos días a las 14:45-15:10.
+- **Sábados 20 y 27-feb y 6-mar:** carril 09:30-10:30 y OUTPUT de Business 10:30-11:10.
+- **Repasos (2, 4, 9 y 10-mar):** sin LOOP.
+- **R↔D de 9 días de enero y febrero:** 13:30-14:00 (RESEARCH mínimo, pausa de átomos).
+- **Creados:**
+  - corrección del PRE-TEST, vie 8-ene 09:30-12:00 (`thgd5l39uh0l89ripmn6c1dt4o`);
+  - FEYNMAN S12, dom 7-feb;
+  - corrección del SIM #6 (19-feb) y del #7 (26-feb) a las 16:15;
+  - CIERRE SEMANAL, vie 5-mar 18:45-19:00;
+  - cierre de Business, mié 10-mar 13:00 (el sáb 13-mar está protegido);
+  - corrección del DRESS, jue 11-mar 16:15.
+- **Borrados:** 5 instancias EVAL (4-ene, 2, 4, 9 y 10-mar).
+- **9-nov → 3-ene:** solo cambia el título del FEYNMAN del dom 3-ene (S8 pasa a S7).
+
+### Lote 2c — descripciones de los pasos (9-nov → 3-ene), textos viejos de 2027, títulos de instancias, ANKI tras el examen y D94
+227 escrituras = 221 `update_event` + 6 `delete_event` (227/227 = `ops.json`; nada cambió fuera de las ops).
+
+| Grupo | Ops | Qué |
+|---|---|---|
+| A | 44 | Solo descripciones, 9-nov → 3-ene: ANKI 05:00 ×22, mañana ENCAPS 07:15 ×14, FEYNMAN ×7 y ENCAPS 16:15 del 28-dic. Ni títulos ni horas. |
+| C1 | 26 | Carril B 16:15, 4-ene → 16-feb: pasa a «CARRIL B (fila de mantenimiento N · …) · dia N». |
+| C2 | 32 | EVAL 18:00 lun-jue de F2: pasa a «EVAL modo examen 20Q a 72 s … · dia N». |
+| C3 | 80 | MIR 2-mar → 30-abr, en 2 eventos (15:15-15:30 + 15:30-16:15): mantenimiento según la app. |
+| E | 1 | D94 `neboplchsaua4snj39nrl480nc`, jue 2-dic-2027: pasa a 04:05-05:55. |
+| D | 6 | Borradas las instancias ANKI de fin de semana posteriores al examen (11/12, 18/19 y 25/26-dic-2027). Las del 4/5-dic ya las había borrado el lote 2. |
+| B | 1 + 37 | Master SYNAPSE `n8641e63c3msrkbaq3mqdtbmj0` + restauración de sus 37 excepciones (ver abajo). |
+
+**Hallazgo (`lote2c/prueba_B.json`):** un `update_event` sobre un MASTER sobrescribe la descripción de TODAS sus instancias, también la de las excepciones que tienen texto propio. Los títulos y las horas sobreviven.
+- Tras el master de SYNAPSE, las 37 excepciones se restauraron desde el respaldo y quedaron idénticas a como estaban.
+- El resto del grupo B se suspendió.
+- **Regla desde ahora:** no se toca la descripción de un master que tenga excepciones con texto propio. Se escribe instancia a instancia.
+
+### Verificación final (solo lectura)
+- **9-nov → 3-ene** (`cal_bk/v607/verif/`): **7/7 controles OK.**
+  - 455/455 bloques de la app con su evento. 382 casan con un solo evento; 73 están repartidos en varios eventos que cubren el bloque exacto (mañanas ENCAPS y de Step, MIR 15:15 + 15:30).
+  - Los contadores de los títulos coinciden en 330/330.
+  - Ningún evento de plan sobra. Hay 10 sin bloque, a propósito: 5 marcas 🔬 de Research, 3 avisos de todo el día y 2 Anki opcionales del 2/3-ene.
+  - No queda ningún resto de la v6.06e.
+  - Hitos: UWSA1 y NBME 25 en su sitio.
+  - Sábados con THEOMED 6/6. Domingos 8/8.
+  - Rutinas personales intactas: solo se movieron 4 ALMUERZOS de días de hito.
+- **2027** (`cal_bk/v607/verif2/`):
+  - Los 18 hitos están bien, con sus 7 ventanas.
+  - Las series alargadas terminan bien en 6 de 8 (vibecoding, SYNAPSE L-V y sábado, LIVIANO, Business y revisión).
+  - Research: 12/12.
+  - Intensiva: los 40 títulos con «dia N» están bien.
+  - Lo que falta es lo diferido por diseño (abajo) y los textos viejos, que arreglaron los lotes 2c y 2d.
+- **Tras el lote 2c** (`cal_bk/v607/verif3/`, volcado de 6 669 eventos): 4 de 5 controles OK.
+  - 9-nov → 3-ene: las **622 descripciones casan con la guía de la app**.
+  - 4-ene → 23-mar: OK, con las diferencias aceptadas (abajo).
+  - Hitos y fin de series: OK.
+  - Ningún enlace a Drive ni email.
+  - **FAIL:** 433 instancias de 2027 heredan textos viejos («D1 = lun 2-nov», «examen 25-oct», NBME 31-33 en ago/sep…) de 11 masters. Las corrige el lote 2d, instancia a instancia.
+
+### Lote 2d — las 433 instancias de 2027 con texto viejo, instancia a instancia
+Dos escritores en paralelo, sobre series distintas: **491 `update_event`, los 491 OK.** No se creó ni se borró nada, y no se tocó ningún master con excepciones.
+
+**Escritor A (229)**
+
+| Serie | Ops | Fechas |
+|---|---|---|
+| R↔D | 72 | 4-ene → 30-abr |
+| vibecoding | 53 | 4-ene → 19-mar |
+| LIVIANO | 48 | 4-ene → 10-mar |
+| Business | 40 | 4-ene → 2-mar |
+| REVISIÓN | 16 | S09-S25, 9-ene → 1-may |
+
+Cada instancia lleva el título y la descripción del bloque de la app de ese día.
+
+**Escritor B (262)**
+
+| Serie | Ops | Qué cambió |
+|---|---|---|
+| MIR diario | 41 + 41 | 4-ene → 1-mar, D38-D78, en 2 eventos |
+| ANKI de fin de semana | 45 + 45 | 9-ene → 28-nov: «🇺🇸 ANKI · opcional (fin de semana)», FREE |
+| Revisión F4 `55474jts1urh7s9j1nrtdkvfdg` | 1 + 24 | Solo la descripción del master, y los títulos S26-S49 |
+| STEP 1 VIVO `2fvbkunh0nfhvhbn1b6iqvpifs` | 1 + 9 | Solo la descripción del master, y los títulos |
+| SYNAPSE | 50 | Solo títulos «misión del día · dN SN» |
+| Sueltos con «· v6.00» | 5 | Pasan a «· v6.07» |
+
+Los masters de revisión F4 y STEP 1 VIVO se pudieron tocar porque el volcado nuevo confirmó que no tienen excepciones: 24/24 y 9/9 instancias iguales al master.
+
+### Lote 2e — 8 instancias de RESEARCH de abril (8 `update_event`, los 8 OK)
+- **Qué se arregló:** el lote 2d_a había titulado las R↔D del 12, 14, 16, 20, 22, 26, 28 y 30-abr «sin átomo en la app (ciclo 2 sin fechar)».
+- **Por qué era falso:**
+  - `sim_plantilla_dia.js` solo leía el ciclo 1 de Research; el Home real (`TodayMission.tsx`) lee los dos.
+  - Con el simulador arreglado (los dos ciclos, y `moverGuia` en F4), el horizonte 9-nov-2026 → 6-dic-2027 da **393 días y 0 problemas**.
+  - Los 67 «SIN contenido» de abril a diciembre eran falsos positivos del simulador, no huecos de la app.
+- **Ahora:** las 8 instancias llevan el átomo de la app: R6b · R8b · X-9 · R9b · R10 · K1 · R11 · K2.
+
+### Verificación final tras el lote 2d (`cal_bk/v607/verif4/`): 8/8 controles OK
+1. **9-nov → 3-ene:** idéntico a verif3. 455/455 bloques con su evento y 622/622 descripciones que casan con la guía.
+2. **4-ene → 23-mar:** 615/638 bloques con su evento; los 23 que faltan son de §G4. Flexibles 14/14 · carril B 40/40 · ENCAPS 18:00 43/43 · MIR 81/81 · «dia N» 98/98.
+3. **Hitos 2027:** 18/18. D94 y D95 bien. ANKI de fin de semana: ninguno después del examen.
+4. **Textos viejos:** de 433 a **0**. Ningún título de plan del 9-nov-2026 al 31-dic-2027 lleva «v6.00-v6.06». Las 7 menciones que el barrido todavía marca son hechos v6.07 o historial explícito.
+5. **Drive y emails:** 0 enlaces a Drive y 0 emails.
+6. **Regresión 9-nov → 3-ene:** 0. En 283 eventos solo cambió el campo `updated`: Google vuelve a sellar las excepciones hermanas cuando se escribe otra instancia de la serie.
+7. **Cambios en 2027:** cada uno de los 489 eventos cambiados tiene su op.
+8. **App → Calendar, 4-ene → 30-abr:** 703/828 bloques. Los 125 que faltan son todos USMLE de F3 (§G4, diferidos).
+
+### Diferido por diseño (no es un fallo)
+- **Series de F3** (§G4: Step 1 diario desde el mar 16-mar) y **de F4** (§G5: AURUM del 3 al 18-may y banqueo MIR del 3-may al 3-dic) se crean cuando salga la convocatoria del ENCAPS, como dice el §19.
+  - Mientras tanto faltan a propósito los bloques USMLE de F3: 23 del 16 al 23-mar, y 125 si se cuenta hasta el 30-abr.
+  - Las series de MIR y AURUM siguen con su fin provisional, el 30-abr.
+- **ANKI de sábado y domingo en 2027:** la app no los pinta y se quedan como recordatorio opcional (decide Joseph: PENDIENTES (m)).
+  - Quedan 53 por serie; la última es el sáb 27 y el dom 28-nov-2027.
+  - Las dos series siguen en 2028. Cortarlas exige la interfaz de Calendar («este evento y los siguientes», desde el sáb 1 y el dom 2-ene-2028, porque las de diciembre tras el examen ya se borraron), porque el MCP no cambia recurrencias.
+  - El 23 y el 24-oct-2027 no hay instancia: es un EXDATE heredado de v6.04-v6.06 y no se recrea.
+- **Masters con descripción vieja:** R↔D, vibecoding, LIVIANO, MIR ×2, REVISIÓN, Business, ENCAPS 16:15 y ANKI ×2. No se tocan, por el hallazgo del lote 2c; las instancias llevan el texto v6.07.
+### Solapes con rutinas personales (decide Joseph: PENDIENTES (l); no tocados)
+- **ALISTARSE 18:30:** pisa la evaluación USMLE de 18:00 a 18:45 todos los martes, del 10-nov al 29-dic.
+- **IBKR:** lun 16-nov 09:30 y jue 19-nov 09:30.
+- **DESAYUNO 07:00:** pisa el NBME 25 del jue 10-dic.
+- **ALMUERZO:**
+  - con Business en audio el mar 10-nov y el jue 10-dic;
+  - con los SIM 11:00-13:00 del 19 y 26-feb y del 1, 3 y 5-mar, y con el DRESS del 11-mar.
+- **ALISTARSE y VIAJE:** pisan el CIERRE SEMANAL del vie 5-mar, de 18:45 a 19:00.
