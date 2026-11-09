@@ -241,6 +241,10 @@ La intensiva sigue sembrada (lun 4-ene → vie 12-mar; ENCAPS es el bloque princ
 - **contenido cerrado el vie 26-feb** («listo» el dom 28-feb). El barrido del núcleo baja de 32 a 28 sesiones: los códigos más repetidos pierden
   una pasada (I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3) y ninguno se queda sin sesión. SIM 100Q a las 11:00 los vie 19 y 26-feb (los de los vie 5 y
   12-feb, a las 07:15 salvo la decisión (g) de `DATA/PENDIENTES_JOSEPH.md`);
+- **Viernes de la intensiva:**
+  - La corrección del SIM de las 07:15 y la del pre-test del vie 8-ene van de 09:30 a 12:00: 1 h 30 de corrección y 1 h de los 2 códigos peores.
+  - De 18:00 a 18:45, **CIERRE SEMANAL**: `--pull`, luego `gen_encaps_semana.js --semana`, y override de la semana siguiente. Va del vie 8-ene al vie 26-feb; el vie 5-mar es de 18:45 a 19:00, al terminar la corrección del SIM.
+  - Los SIM de las 11:00 se corrigen a las 16:15, o a las 18:00 (45′) los días con carril B.
 - **1-12 mar = simulacros y repaso:** SIM 100Q a las 11:00 el lun 1 (banco propio), mié 3 (academia con clave) y vie 5-mar (Theomed); repaso el
   mar 2 y jue 4; lun 8 pasada profunda; mar 9 y mié 10 repaso final; **jue 11 ensayo general (2026-I)**; vie 12 medio día;
 - las clases en vivo de Theomed de enero (CI 5-8, SP 7-11) y los repasos de febrero entran en las mañanas de la intensiva con el mismo protocolo;
@@ -260,7 +264,12 @@ La intensiva sigue sembrada (lun 4-ene → vie 12-mar; ENCAPS es el bloque princ
 2. Rendir el **pre-test de arranque** (lun 9 y mar 10, 16:15): es la línea base de los 8 críticos.
 3. Los simulacros de Theomed de ranking se rinden el **domingo siguiente** (cuenta el primer intento dentro de 89 h desde el viernes 16:00).
 4. Decisiones abiertas: reducir los secundarios (≈ 5 h/día) si quieres aún más ENCAPS; sábados de 2027 (STEP 1 VIVO y carril ENCAPS) a decidir antes del 4-ene;
-   hora de los SIM de los vie 5 y 12-feb (hoy 07:15; desde el vie 19-feb ya van a las 11:00: decisión (g)).
+   hora de los SIM de los vie 5 y 12-feb (hoy 07:15; desde el vie 19-feb ya van a las 11:00: decisión (g)). Además, en el mismo bloque de
+   `DATA/PENDIENTES_JOSEPH.md`:
+   - (l) solapes con tus rutinas: ALISTARSE los martes, desayuno del NBME 25 y almuerzo de los SIM de las 11:00;
+   - (m) ANKI de los fines de semana de 2027;
+   - (n) Calendar de F3 y F4, que se crea con la convocatoria;
+   - (o) qué hacer si la convocatoria es el 21-mar.
 5. **Step 1:** el examen pasa al **lun 6-dic-2027**; al inscribirte, elige la ventana **oct-nov-dic 2027**. El ensayo de 7 bloques es el feriado
    lun 1-nov-2027: si la posta pone turno ese día, pide el día libre.
 6. **Stock ENCAPS:** el banco de III-5 se agota después del jue 12-nov; V-2 e I-3 repiten preguntas en marzo. Antes del lun 16-nov hay que generar

@@ -4628,3 +4628,20 @@ mar 23-mar (PC el domingo) · vibecoding → mar 30-mar (SHIP domingos 15-nov �
 adelante hay huecos de guía en «tiempo muerto» de F4 y en Research c2 que ya existían y no son de esta versión). Commit `9f958d1` (desplegado; Home del
 lun 9 comprobado en el navegador). Estado previo = tag `regimen-v6.06e`. Calendar: `DATA/_v600/cal/CAL_V6.md` §25. Decisiones: `DATA/PENDIENTES_JOSEPH.md`
 bloque v6.07 (a)-(k).
+
+**31.7 Ronda de cierre (dom 8-nov, noche): revisión adversarial y remate; commits `e5fd4bd` y `f4f611a` (desplegados).**
+- **Quincena final ENCAPS (1-12 mar):** SIM 100Q a las 11:00 el lun 1, mié 3 y vie 5-mar, con la regla del generador. Los repasos (2, 4, 9 y 10-mar) y la cola van sin LOOP ni EVAL. RE-SCAN DE SEÑALES el lun 4-ene (con regla de respaldo si falta su fila). D-1 (vie 12-mar) en serie desde las 07:15.
+- **Franjas de F2 de una sola fuente:** `src/lib/encapsFranjasF2.ts` (`franjaCorrSimDe`, `franjaCierreSemanalDe`, `ultimoHabilDeSemana`), que usan el Home, ENCAPS → Plan › Horario y la hora y la duración de los ítems.
+  - La corrección de los SIM de las 07:15 y del pre-test del vie 8-ene es de 09:30 a 12:00; la de los SIM de las 11:00, a las 16:15 o a las 18:00 (45′).
+  - Los viernes del 8-ene al 26-feb llevan «CIERRE SEMANAL (--pull → --semana)» de 18:00 a 18:45, con su ítem `D{dia}:i_semana`; el vie 5-mar es de 18:45 a 19:00.
+  - Un día de SIM o de pre-test sigue a su fila en cualquier día de lunes a viernes; antes, un SIM de miércoles de un escenario con Semana Santa salía como LOOP.
+- **Generador de la intensiva:** un SIM de la quincena solo admite pendientes `banqueo1h`; el mini-sim pasa al siguiente día sin SIM. Con el examen el 14-mar salen las mismas 50 filas que en el SQL versionado. Los escenarios del 4, 11, 18 y 25-abr ya generan; el del 21-mar no (ver PENDIENTES (o)).
+- **Guías:**
+  - Anki 05:00-05:30 del lun 9-nov (mazo aún vacío: inventario de lo que configura el D1 y vencidas de ENCAPS) y del mié 30-dic (día de ENCAPS; pausa del Step desde el 31-dic).
+  - Feynman del domingo = el proyecto que hace SHIP ese día; el dom 7-feb tiene Feynman de S12.
+  - «De ayer», «del lunes» o «del último día ENCAPS» según el día real, también tras un SKIP; las ★ de las cifras del viernes son «para el lunes».
+  - El 16:15 del lun 28-dic ya no remite al mini-sim del vie 25-dic, que es SKIP.
+  - Business: sin solapes y nunca en un día protegido (el cierre del sáb 13-mar pasa al mié 10-mar 13:00); el carril sábado va de 09:30 a 10:30 y el OUTPUT, después (10:30-11:10); LIVIANO 17:15 en F3.
+- **`check_rutina_guia.js`:** controles nuevos de SQL ↔ plantilla F2, Horario = Home, corrección de simulacro (Home = Horario = ítem), cierre semanal con bloque e ítem, D-1 en serie y Feynman = PC del domingo.
+- **Comprobaciones:** `tsc` ✓ · `check_rutina_guia` 0 errores · `sim_plantilla_dia` 9-nov → 11-abr: 154 días, 0 problemas · `gen_encaps_guia`, `gen_encaps_manana`, `gen_usmle_guia`, `gen_fechas_v6` y `sync_encaps_bp_web` con `--check` ✓ · `verificar_v6` ✓.
+- **Calendar:** lotes 1a, 1b, 2, 2b y 2c, más dos verificaciones independientes (CAL_V6 §25). Decisiones nuevas en PENDIENTES v6.07 (l)-(o).
