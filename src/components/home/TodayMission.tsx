@@ -217,6 +217,9 @@ export function encapsLabelDe(iso: string): string | null {
     const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
     return pre ? `${pre} + 16:15 ${tarde}` : `ENCAPS ${tarde}`;
   }
+  // v6.07a ronda 3: sáb 14 de la corrida = mañana del vie 13 + la clase EN VIVO de Theomed del propio sábado
+  const vivPc = pc?.bloques.some((b) => b.id === 'theomed-vivo') ? theomedSabadoDe(iso) : null;
+  if (pre && vivPc?.vivo) return `${pre} + 15:00 Theomed EN VIVO · ${vivPc.vivo}`;
   if (pre) return pre;
   const viv = theomedSabadoDe(iso);
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
@@ -396,7 +399,8 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
   const bPlan: BloqueV6 = d ? { ...b, ini: desplazar(b.ini), fin: desplazar(b.fin) } : b;
   const c0 = contenidoBloquePlan(bPlan, p, f);
   // v6.07a: la guía de un día de plan pintada otro día real → los textos de corrida_s1.reemplazos de esa fecha de plan («Hoy 19:30 en vivo…»)
-  const c = b.fechaPlan && c0.guias ? { ...c0, guias: c0.guias.map((g) => reemplazosCorrida(g, f)) } : c0;
+  //   ronda 3: también fuera de la corrida (f = el propio día: el lun 16 cita la mañana del vie 13, que se hizo el sáb 14)
+  const c = c0.guias ? { ...c0, guias: c0.guias.map((g) => reemplazosCorrida(g, f)) } : c0;
   // v6.07: bloque FLEXIBLE sin hora fija (domingo: ENCAPS opcional · PC · Feynman) → sus guías muestran «flexible · …» en vez de la franja de
   //   ejemplo (así la cabecera no pinta una hora ni AHORA/✓ por reloj; los minutos y los pasos no cambian)
   if (esFlexible(b) && c.guias) return { ...c, guias: c.guias.map((g) => ({ ...g, franja: b.hora })) };

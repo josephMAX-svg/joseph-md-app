@@ -377,6 +377,11 @@ export const FECHAS_V6: FechasV6 = {
           "frente": "encaps",
           "a": "Hoy 19:30 en vivo INV 1/4 (en diferido:",
           "por": "El en vivo INV 1/4 fue el lunes 9 a las 19:30 (va en diferido:"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 15 (mini-sim #5)"
         }
       ],
       "2026-11-11": [
@@ -389,6 +394,11 @@ export const FECHAS_V6: FechasV6 = {
           "frente": "encaps",
           "a": "errores del lunes",
           "por": "errores del martes"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 15 (mini-sim #5)"
         }
       ],
       "2026-11-13": [
@@ -428,6 +438,49 @@ export const FECHAS_V6: FechasV6 = {
           "frente": "synapse",
           "a": "Retoma donde paraste el lunes.",
           "por": "Retoma donde paraste el martes 10 (el d1)."
+        },
+        {
+          "frente": "revision",
+          "a": "mini-sim /25 del viernes",
+          "por": "mini-sim /25 (esta semana va mañana domingo a las 10:00: déjalo «pendiente»)"
+        }
+      ],
+      "2026-11-10": [
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 15 (mini-sim #5)"
+        }
+      ],
+      "2026-11-12": [
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 15 (mini-sim #5)"
+        }
+      ],
+      "2026-11-15": [
+        {
+          "frente": "encaps",
+          "a": "(08:00-12:00 es solo un ejemplo)",
+          "por": "(esta semana, después de la recuperación de 07:15-12:30)"
+        }
+      ],
+      "2026-11-16": [
+        {
+          "frente": "encaps",
+          "a": "Las de las 11:40 del vie 13-nov",
+          "por": "Las de las 11:40 del sábado 14"
+        },
+        {
+          "frente": "encaps",
+          "a": "10 tarjetas del viernes",
+          "por": "10 tarjetas del sábado"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del viernes",
+          "por": "errores del sábado"
         }
       ]
     }

@@ -2413,3 +2413,18 @@ Una revisión independiente de 2 agentes (app y Calendar, solo lectura) encontr�
 - **ENCAPS opcional del dom 15** (`prkrv2dghr6jgerjfv5vaournc`): pasa a evento de **día completo** para no tapar la recuperación de 07:15 a 12:30, y su texto dice «por la tarde, después de la recuperación».
 
 **Verificación:** `volcados/list_09-16nov_after2.json` da **256 OK · 0 FAIL**. Los 17 eventos tienen el título, la descripción, el color, el estado, la transparencia y la hora (o el día completo) que se pidió. Los 153 eventos restantes de la semana están idénticos.
+
+### Ronda 3 (segunda revisión independiente, lun 9-nov ≈ 15:10 Lima · 6 `update_event`)
+
+La segunda revisión (2 agentes, solo lectura) confirmó que la semana del 10 al 15 cuadra en hora y en texto entre el Calendar y la app. Encontró regresiones de la ronda 2 fuera de la semana; todas están arregladas en la app (ver REESTRUCTURACION §31.8, ronda 3).
+
+**Calendar** (`cal_bk/v607a/build_ops3.js` → `ops3.json`): eventos de estudio del lun 16-nov al dom 3-ene, tomados del volcado de verif4 (que en ese rango no ha cambiado desde los lotes v6.07). Se les aplica el mismo pipeline que la app; solo 6 cambian.
+
+- **lun 16, 05:00 Anki:** «NUEVAS: solo las del jue 12-nov» → «vie 13-nov».
+- **lun 16, 07:15 ENCAPS mañana 4/22:** «10 tarjetas / errores del viernes» → «del sábado» y «Las de las 11:40 del vie 13-nov» → «del sábado 14». El «Banqueo 4/19 (vie 13, grabado)» no se toca: es una fecha real de Theomed.
+- **mar 17, 07:15 USMLE D3:** «notas del jue 12-nov» y «Mehlman, activo desde el jue 12-nov» → «vie 13-nov».
+- **Research del 25-nov, el 27-nov y el 1-dic:** «M1 (lun 09-nov-2026)» → «M1 (mar 10-nov-2026)».
+
+Las 6 respuestas de `update_event` coinciden con `ops3.json`.
+
+El «SHIP del sábado» del ship-prep y la «regla: el vie 13-nov» de las 16:15 quedan fuera de las descripciones recortadas del Calendar, así que solo cambian en la app.

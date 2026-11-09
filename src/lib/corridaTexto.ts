@@ -22,10 +22,13 @@ const DESDE = _FECHAS[0] ?? '', HASTA = _FECHAS[_FECHAS.length - 1] ?? '';
 
 // v6.07a (lun 9-nov): «<día> <n>» SIN mes («Day-After 1/6 mar 10 18:00 · 2/6 jue 12 05:00») → el mes sale del rango de la corrida (DESDE-HASTA
 //   abarca < 1 mes: el día del mes y el día de la semana lo fijan). Detrás no puede venir dígito, letra, «-» ni «/» (eso es la otra forma o una fracción).
-const RX2 = /(^|[^\p{L}])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})(?![\d\p{L}\-\/])/giu;
-// v6.07a: fechas REALES externas (en vivo de Theomed, apertura y publicación de simulacros) no se traducen: no son fechas de plan
-const EXTERNA = /theomed|en vivo|se public/i;
-const externa = (s: string, i: number): boolean => EXTERNA.test(s.slice(Math.max(0, i - 60), i));
+// v6.07a ronda 3: ni detrás de un dígito o «-» («jue 11-mar 10:00») ni delante de «:» («vie 13:00» es una hora)
+const RX2 = /(^|[^\p{L}\d\-])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})(?![\d\p{L}\-\/]|:\d)/giu;
+// v6.07a: fechas REALES externas (en vivo de Theomed, apertura y publicación de simulacros, banqueos grabados de Theomed) y la bitácora de
+//   versiones viejas (v5.x) no se traducen: no son fechas de plan. Se mira el texto de antes (60) y el de después (25: «(vie 13, grabado)»)
+const EXTERNA = /theomed|en vivo|se public|banqueo \d+\/\d+|\bv5\.\d+/i;
+const EXTERNA_DESPUES = /^.{0,25}grabad/i;
+const externa = (s: string, i: number, n = 0): boolean => EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40));
 const planSinMes = (dd: string, dow: string): string | null => {
   for (const base of [DESDE, HASTA]) {
     const p = `${base.slice(0, 7)}-${String(Number(dd)).padStart(2, '0')}`;
@@ -45,7 +48,7 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
     const plan = `${DESDE.slice(0, 4)}-${String(MES.indexOf(mes.toLowerCase()) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
     if (plan < DESDE || plan > HASTA) return m;
     if (DOW[dowDe(plan)] !== dow.toLowerCase()) return m; // el día de la semana no cuadra: no es una fecha de esta semana
-    if (externa(s, i)) return m;
+    if (externa(s, i, m.length)) return m;
     const real = fechaRealDe(plan, frente);
     if (real === plan) return m;
     const mr = MES[Number(real.slice(5, 7)) - 1] ?? mes;
@@ -53,7 +56,7 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
   });
   return t1.replace(RX2, (m, pre: string, dow: string, punto: string, dd: string, i: number, s: string) => {
     const plan = planSinMes(dd, dow);
-    if (!plan || externa(s, i)) return m;
+    if (!plan || externa(s, i, m.length)) return m;
     const real = fechaRealDe(plan, frente);
     return real === plan ? m : `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}`;
   });
@@ -63,6 +66,7 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
  * v6.07a (lun 9-nov): la guía de un día de PLAN pintada otro día real con los textos de corrida_s1.reemplazos[fechaPlan] (los que dicen «hoy»
  * de algo real que no se mueve: «Hoy 19:30 en vivo INV 1/4» del lun 9 pintado el mar 10, «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el
  * sáb 14…). Cada entrada vale para su `frente` (si lo trae) y se aplica a todas sus apariciones. Sin entradas = la guía tal cual.
+ * Ronda 3: vale también para días FUERA de la corrida (fechaPlan = el propio día; p. ej. el lun 16 cita «las 11:40 del vie 13», que fue el sáb 14).
  */
 export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque {
   const xs = (_C.reemplazos?.[fechaPlan] ?? []).filter((x) => !x.frente || x.frente === g.plan);

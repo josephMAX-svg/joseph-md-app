@@ -209,7 +209,7 @@ const VIBE_COMO_TIPO: Record<string, string> = {
   definir: 'SPEC del día: abre Claude Code en el repo del proyecto y pídele que lea los ficheros citados y te devuelva QUÉ fichero tocar, QUÉ test/comando lo demuestra y el criterio de «hecho». Hoy no se escribe código salvo ese test.',
   construir: 'Construye con Claude Code: pega el paso como objetivo, pídele primero un plan de 3 pasos y un test que él pueda correr (best practices) y ejecútalo. A las 04:55 paras aunque falte.',
   verificar: 'Verifica EN VIVO (test, URL o dato real) y guarda la evidencia (salida del comando o captura) en el journal.',
-  'ship-prep': 'Commit [S<n>] en el repo declarado + node DATA/_scripts/verify_vibecoding.js <n> (+ --ok-manual <i> si ya viste el criterio manual) + journal. Lo que falle va al SHIP del sábado.',
+  'ship-prep': 'Commit [S<n>] en el repo declarado + node DATA/_scripts/verify_vibecoding.js <n> (+ --ok-manual <i> si ya viste el criterio manual) + journal. Lo que falle va al SHIP del domingo.',
   sensores: 'node DATA/_scripts/verify_vibecoding.js --sensores → todo verde o anota el rojo; nada más de teclado.',
   mejora: '1 mejora pequeña al sensor que dio rojo (o ninguna si todo está verde).',
   lectura: 'Journal + lectura de la doc del proyecto (sin construir).',

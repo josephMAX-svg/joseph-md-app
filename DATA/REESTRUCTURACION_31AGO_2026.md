@@ -4728,3 +4728,38 @@ El detalle del fin de semana:
   - los `--check` de los generadores al día;
   - `gen_research_calendar --check` 0.
 - **Calendar:** 17 `update_event` más (CAL_V6 §26, ronda 2), con 256 OK · 0 FAIL.
+
+**Ronda 3 (segunda revisión independiente, lun 9-nov):**
+
+- **Semana del 10 al 15 en la app:** todas las traducciones son correctas y los 11 reemplazos se aplican en su bloque.
+- **Calendar ↔ app:** coinciden los 84 eventos de estudio del 10 al 15, en día, hora y texto.
+- **Regresiones que se arreglan:**
+  - **`fechaRealDe(vie 13, encaps)` = dom 15:** hacía que el lun 16 pintara «las 11:40 del dom 15-nov». Esa mañana se hizo el sáb 14.
+  - **RX2 traducía de más:**
+    - el banqueo grabado de Theomed («Banqueo 4/19 (vie 13, grabado)» → «dom 15»);
+    - la bitácora v5.x de una nota de Research;
+    - posibles horas («vie 13:00») y «11-mar 10:00».
+- **Arreglos en la app:**
+  - **RX2 más estricto:** no se aplica detrás de un dígito o de «-», ni delante de «:» seguido de dígito.
+  - **EXTERNA:** suma los banqueos «N/19», «grabad…» (también mirando el texto de después) y la bitácora `v5.x`.
+  - **`reemplazosCorrida`:** se aplica en todos los días, no solo en los de la corrida. Así el lun 16 dice «las 11:40 del sábado 14» y «del sábado».
+  - **Reemplazos nuevos:**
+    - «override del viernes» → «override del domingo 15 (mini-sim #5)» (16:15 de los planes del 9 al 12);
+    - la revisión del sáb 14 («mini-sim /25 … déjalo pendiente»);
+    - el ENCAPS opcional del dom 15 («después de la recuperación de 07:15-12:30»).
+  - **Briefing del sáb 14:** añade «+ 15:00 Theomed EN VIVO».
+  - **Ship-prep de S2 en adelante:** «Lo que falle va al SHIP del domingo».
+  - **Nota de los días alias:** «las fechas que citan las guías ya salen con su día real».
+- **Barrido de regresión:** las 1.773 guías del 1-oct-2026 al 6-dic-2027 se compararon con la versión anterior a la ronda 2 (ae052ad). Hay 30 diferencias: 22 dentro de la semana, todas previstas, y 8 fuera, también previstas:
+  - lun 16 ×3;
+  - «regla: el dom 15-nov» de las 16:15 del 16 al 19-nov (el cierre semanal con el mini-sim #5 es el dom 15);
+  - la nota v5.x de Research, que ya no se traduce.
+- **Comprobaciones:**
+  - `tsc` 0;
+  - `sim --rango`: 393 días, 0 problemas;
+  - `check_rutina_guia` 0;
+  - `verificar_v6` OK;
+  - `gen_fechas_v6 --check` al día;
+  - `gen_research_calendar --check` 0.
+- **Calendar:** 6 `update_event` del 16-nov al 1-dic (CAL_V6 §26, ronda 3).
+- **No se arregla:** el Anki del sábado a las 19:00 dice «a la revisión semanal de las 14:00 lleva…». Viene de antes de la corrida y es igual todos los sábados. Las horas fijas de algunos hubs tampoco siguen el desfase del domingo.

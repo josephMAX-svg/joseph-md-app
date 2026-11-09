@@ -788,7 +788,7 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
     return {
       ...p, fecha: iso, corrida: 'alias', bloques: p.bloques.map((b) => bloqueCorrido(b, c.de, 0)),
       titulo: `${p.titulo} · plan del ${fCorta(c.de)}`, // v6.07a: un martes con «mañana ENCAPS (lun · mié · vie)» tiene que decir de qué día es
-      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas (las guías conservan el día del plan en sus textos).`, NOTA_CORRIDA, ...p.notas],
+      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas (las fechas que citan las guías ya salen con su día real).`, NOTA_CORRIDA, ...p.notas],
     };
   }
   const bs: BloqueV6[] = [];
