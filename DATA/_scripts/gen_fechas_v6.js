@@ -230,10 +230,15 @@ function comprobarCorridaS1(c) {
   const ks = ['decidido', 'version', 'motivo', 'sin_sesion', 'alias', 'reparto'];
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
   // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
   // v6.07a: «reemplazos» opcional = { fechaPlan: [{ frente?, a, por }] } → textos de la guía de ese día de plan que no valen en el día real
   //   (p. ej. «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el sáb 14); los aplica corridaTexto.reemplazosCorrida en TodayMission
+  // v6.07a ronda 4: «notas» opcional = { día real: [textos] } → notas que el Home pinta arriba ese día (plantillasV6.plantillaDelDia)
+  if ('notas' in c) {
+    if (!c.notas || typeof c.notas !== 'object' || Array.isArray(c.notas)) err.push('«corrida_s1.notas» debe ser un objeto { día: [textos] }');
+    else for (const [d, xs] of Object.entries(c.notas)) if (!esISO(d) || !Array.isArray(xs) || !xs.every((x) => typeof x === 'string' && x)) err.push(`«corrida_s1.notas» ${d}: fecha y lista de textos`);
+  }
   if ('reemplazos' in c) {
     if (!c.reemplazos || typeof c.reemplazos !== 'object' || Array.isArray(c.reemplazos)) err.push('«corrida_s1.reemplazos» debe ser un objeto { fechaPlan: [...] }');
     else for (const [d, xs] of Object.entries(c.reemplazos)) {
@@ -560,6 +565,8 @@ export interface FechasV6 {
     resumen?: string;
     /** v6.07a: textos de la guía de un día de PLAN que no valen el día real en que se pinta (corridaTexto.reemplazosCorrida) */
     reemplazos?: Record<string, { frente?: string; a: string; por: string }[]>;
+    /** v6.07a ronda 4: notas del Home por día real (las pinta plantillaDelDia arriba de las demás) */
+    notas?: Record<string, string[]>;
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};

@@ -296,6 +296,12 @@
               "pc": 0,
               "feynman": 0
             }
+          },
+          {
+            "de": "2026-11-09",
+            "bloques": {
+              "vibe": 600
+            }
           }
         ],
         "titulo": "Domingo · TARDE del vie 13 desde las 07:15 + SHIP S1 (semana corrida)",
@@ -414,6 +420,20 @@
           "a": "errores del viernes",
           "por": "errores del sábado"
         }
+      ]
+    },
+    "notas": {
+      "2026-11-10": [
+        "HOY EMPIEZAS A LAS 11:00 (orden de Joseph, mar 10 a las 10:00): lo de antes de las 11 va a huecos y el resto del día no cambia.",
+        "ENCAPS mañana 1/22: a las 11:00 empieza por su PRIMERA franja (orientación 15′) y sigue EN ORDEN (INV S1 → S2 → …) hasta las 12:00. Las horas de la tarjeta (07:15…) son las del plan: manda el orden, no la hora. Lo que falte continúa el sáb 14 17:15-18:15 (la teoría) → dom 15 04:15-05:45 (post-test + banqueo 30Q) → dom 15 13:00-14:15 (corrección + tarjetas).",
+        "Vibecoding 1/5 (04:15) → dom 15 14:15-15:00, antes del SHIP. Anki: hoy solo 15′ de ENCAPS::Cifras en el viaje de las 18:45; el inventario USMLE se hace mañana a las 05:00 con la configuración.",
+        "Desde las 12:00, igual que siempre: almuerzo · 12:30 SYNAPSE · 13:00 Business · 13:30 Research M1 · 14:15 AURUM · 15:15 MIR · 16:15 pre-test 1/2 · 17:15 LIVIANO · 18:00 cifras."
+      ],
+      "2026-11-14": [
+        "Además (recuperación del martes 10): 17:15-18:15 ENCAPS mañana 1/22, continuación: la teoría que te faltó (INV S3 + Theoesencial de Investigación, o donde te quedaste). Pisa la 1.ª hora del bloque de YouTube (17:00-19:00): ese bloque queda de 18:15 a 19:00 (lo decides tú)."
+      ],
+      "2026-11-15": [
+        "Además (recuperación del martes 10): 04:15-05:45 ENCAPS mañana 1/22, continuación: post-test de Theomed INV S1-S3 + banqueo 30Q INV · 13:00-14:15 corrección y reglas + tarjetas · 14:15-15:00 vibecoding 1/5 (definir), justo antes del SHIP. El ENCAPS opcional de 4 h no cabe esta semana."
       ]
     }
   }

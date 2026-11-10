@@ -2428,3 +2428,27 @@ La segunda revisión (2 agentes, solo lectura) confirmó que la semana del 10 al
 Las 6 respuestas de `update_event` coinciden con `ops3.json`.
 
 El «SHIP del sábado» del ship-prep y la «regla: el vie 13-nov» de las 16:15 quedan fuera de las descripciones recortadas del Calendar, así que solo cambian en la app.
+
+### Ronda 4 · mar 10-nov, 10:00: «hoy empiezo a las 11» (6 `update_event` + 1 `create_event`, ≈10:03 Lima)
+
+Orden de Joseph (mar 10, 10:00): «Hoy voy a empezar a las 11 de la mañana … lo de antes de las 11 córrelo o colócalo … agregando 2 horas el domingo, una hora más el sábado … sin modificar todo el formato, busca espacios, huecos».
+
+De 12:00 en adelante el día no cambia. Lo de antes de las 11:00 va a huecos:
+
+- **ENCAPS mañana 1/22 (4 h 45′), dividida en cuatro tramos.** Se hace en orden: lo que no se termina en un tramo se sigue en el siguiente.
+
+  | Cuándo | Qué | Evento |
+  |---|---|---|
+  | Hoy 11:00-12:00 | Orientación + la teoría que dé tiempo | `76dn…_20261109T121500Z` movido |
+  | **Sáb 14 17:15-18:15** | Teoría restante | evento suelto nuevo `j3d6ep6iemi1nmir0ul393jm40` |
+  | **Dom 15 04:15-05:45** | Post-test 04:15-04:45 + banqueo 30Q 04:45-05:45 | `c24k…_20261109T131500Z` y `iuhj…_20261109T140000Z` movidos |
+  | **Dom 15 13:00-14:15** | Corrección + tarjetas | `q72k…_20261109T160000Z` movido |
+
+- **Vibecoding 1/5** (`b2qg…_20261109T091500Z`): pasa al **dom 15 de 14:15 a 15:00**, antes del SHIP.
+- **Anki** (`9274…_20261109T100000Z`): hoy de 18:45 a 19:00, en el viaje, solo con 15′ de ENCAPS::Cifras. El inventario USMLE se hace mañana a las 05:00 con la configuración.
+
+Respaldos en `cal_bk/v607a/r4/bk/` y operaciones en `r4/ops4.json`.
+
+El bloque del sábado pisa la primera hora de «CREACIÓN DE VIDEO YOUTUBE» (17:00-19:00), que es un evento personal y no se tocó. Decide Joseph.
+
+**App:** campo nuevo `corrida_s1.notas`, que son notas por día real; las pinta `plantillaDelDia` arriba de las demás. Hay notas para el mar 10, el sáb 14 y el dom 15. El domingo 15, el reparto incluye además una parte con `{de: lun 9, bloques: {vibe: +600}}`, de modo que el bloque de vibecoding 1/5 queda de 14:15 a 15:00 con su guía.

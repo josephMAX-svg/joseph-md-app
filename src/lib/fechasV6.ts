@@ -64,6 +64,8 @@ export interface FechasV6 {
     resumen?: string;
     /** v6.07a: textos de la guía de un día de PLAN que no valen el día real en que se pinta (corridaTexto.reemplazosCorrida) */
     reemplazos?: Record<string, { frente?: string; a: string; por: string }[]>;
+    /** v6.07a ronda 4: notas del Home por día real (las pinta plantillaDelDia arriba de las demás) */
+    notas?: Record<string, string[]>;
   };
 }
 export const FECHAS_V6: FechasV6 = {
@@ -364,6 +366,12 @@ export const FECHAS_V6: FechasV6 = {
               "pc": 0,
               "feynman": 0
             }
+          },
+          {
+            "de": "2026-11-09",
+            "bloques": {
+              "vibe": 600
+            }
           }
         ],
         "titulo": "Domingo · TARDE del vie 13 desde las 07:15 + SHIP S1 (semana corrida)",
@@ -482,6 +490,20 @@ export const FECHAS_V6: FechasV6 = {
           "a": "errores del viernes",
           "por": "errores del sábado"
         }
+      ]
+    },
+    "notas": {
+      "2026-11-10": [
+        "HOY EMPIEZAS A LAS 11:00 (orden de Joseph, mar 10 a las 10:00): lo de antes de las 11 va a huecos y el resto del día no cambia.",
+        "ENCAPS mañana 1/22: a las 11:00 empieza por su PRIMERA franja (orientación 15′) y sigue EN ORDEN (INV S1 → S2 → …) hasta las 12:00. Las horas de la tarjeta (07:15…) son las del plan: manda el orden, no la hora. Lo que falte continúa el sáb 14 17:15-18:15 (la teoría) → dom 15 04:15-05:45 (post-test + banqueo 30Q) → dom 15 13:00-14:15 (corrección + tarjetas).",
+        "Vibecoding 1/5 (04:15) → dom 15 14:15-15:00, antes del SHIP. Anki: hoy solo 15′ de ENCAPS::Cifras en el viaje de las 18:45; el inventario USMLE se hace mañana a las 05:00 con la configuración.",
+        "Desde las 12:00, igual que siempre: almuerzo · 12:30 SYNAPSE · 13:00 Business · 13:30 Research M1 · 14:15 AURUM · 15:15 MIR · 16:15 pre-test 1/2 · 17:15 LIVIANO · 18:00 cifras."
+      ],
+      "2026-11-14": [
+        "Además (recuperación del martes 10): 17:15-18:15 ENCAPS mañana 1/22, continuación: la teoría que te faltó (INV S3 + Theoesencial de Investigación, o donde te quedaste). Pisa la 1.ª hora del bloque de YouTube (17:00-19:00): ese bloque queda de 18:15 a 19:00 (lo decides tú)."
+      ],
+      "2026-11-15": [
+        "Además (recuperación del martes 10): 04:15-05:45 ENCAPS mañana 1/22, continuación: post-test de Theomed INV S1-S3 + banqueo 30Q INV · 13:00-14:15 corrección y reglas + tarjetas · 14:15-15:00 vibecoding 1/5 (definir), justo antes del SHIP. El ENCAPS opcional de 4 h no cabe esta semana."
       ]
     }
   }
@@ -729,7 +751,7 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov sin sesión · mar 10-nov = plan del lun 9-nov · mié 11-nov = plan del mar 10-nov · jue 12-nov = plan del mié 11-nov · vie 13-nov = plan del jue 12-nov · sáb 14-nov = vibe+anki+encaps-am+syn+biz del vie 13-nov / syn+revision+biz+theomed-prep+theomed-vivo+anki-sab del sáb 14-nov · dom 15-nov = rd+aurum+mir+encaps+liv+encaps-pm del vie 13-nov / anki-dom+encaps-dom+pc+feynman del dom 15-nov.
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov sin sesión · mar 10-nov = plan del lun 9-nov · mié 11-nov = plan del mar 10-nov · jue 12-nov = plan del mié 11-nov · vie 13-nov = plan del jue 12-nov · sáb 14-nov = vibe+anki+encaps-am+syn+biz del vie 13-nov / syn+revision+biz+theomed-prep+theomed-vivo+anki-sab del sáb 14-nov · dom 15-nov = rd+aurum+mir+encaps+liv+encaps-pm del vie 13-nov / anki-dom+encaps-dom+pc+feynman del dom 15-nov / vibe del lun 9-nov.
  * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {

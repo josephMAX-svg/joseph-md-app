@@ -765,6 +765,12 @@ const NOTA_CORRIDA = _C1.resumen ? _C1.resumen : _C1_ALIAS.length || _C1_REPARTO
  * v6.05: corrida_s1 solo con sin_sesion (lun 19 → dom 25-oct) → esos 7 días = CORRIDO (sin bloques); desde el lun 26-oct = plantillaBase.
  */
 export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
+  // v6.07a ronda 4 (mar 10-nov: «hoy empiezo a las 11»): notas del día de corrida_s1.notas, arriba de las demás
+  const p = plantillaDelDiaCorrida(iso, turno);
+  const extra = FECHAS_V6.corrida_s1.notas?.[iso];
+  return extra?.length ? { ...p, notas: [...extra, ...p.notas] } : p;
+}
+function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
   const c = corridaS1De(iso);
   if (!c) return plantillaBase(iso, turno);
   const base = plantillaBase(iso, turno);
