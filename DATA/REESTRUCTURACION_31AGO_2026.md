@@ -4845,3 +4845,66 @@ Respaldos en `r5/bk/` y operaciones en `r5/ops5.json` (`build_ops5.js`).
    - «DORMIR» a las 21:00: el sábado se estudia de 21:00 a 22:00 por oferta de Joseph, así que el domingo arranca a las 05:00.
    - «CREACIÓN DE VIDEO YOUTUBE» de 17:00 a 19:00: ya no choca con nada.
    - «BAILE» del sábado: el Calendar lo tiene de 20:00 a 20:30, pero según Joseph la clase es de 17:00 a 20:00.
+
+### Ronda 6 · v6.07c · mar 10-nov ≈11:00: «último cambio: todo inicia mañana» (176 `update_event` + 1 `delete_event`, ≈12:30-13:15 Lima)
+
+Orden de Joseph (mar 10, ≈11:00):
+
+> «Para ordenarnos mejor, último cambio: que todo inicie el día de mañana … el día de mañana es el primero, para no estar haciendo medio a mitad … amontona todo … tal vez en horarios vacíos, o si hay necesidad de correr, corremos».
+
+**Cuenta.** Perder dos días (lun 9 y mar 10) son 2 × 745′ ≈ 25 h de bloques. Entre semana no hay huecos: de 04:00 a 20:45 todo está lleno y a las 21:00 se duerme. Con el gimnasio (sáb 08:30-14:00), el baile (sáb y dom 17:00-20:00) y 7 h de sueño, un fin de semana deja ≈ 13 h. Ni un fin de semana ni dos alcanzan para meter dos días enteros y en orden. Una re-fecha real habría obligado a regenerar F1 y los secundarios y a recrear ≈ 450 eventos.
+
+**Solución: alias + reparto en `corrida_s1` v6.07c.** El plan corre dos días y lo recuperan dos domingos de plan:
+
+| Día real | Plan |
+|---|---|
+| mar 10 | sin sesión |
+| mié 11 | plan del lun 9, **D1 completo** |
+| jue 12 | plan del mar 10 (UWSA1) |
+| vie 13 | plan del mié 11 |
+| sáb 14 | del plan del jue 12: vibe, SYNAPSE, Business y LIVIANO, antes del gimnasio (04:15 · 05:00 · 07:15 · 07:40) |
+| dom 15 | resto del plan del jue 12, de 05:00 a 17:00: Day-After 2/6-4/6 y Step D2; eval −330′; R/D, AURUM, MIR y ENCAPS de la tarde −15′ |
+| lun 16 | plan del vie 13 |
+| mar 17 → vie 20 | plan del lun 16 → jue 19 |
+| sáb 21 | igual que el sáb 14 con el plan del vie 20, más el cierre del OUTPUT S1 a las 05:30 |
+| dom 22 | resto del plan del vie 20 (ENCAPS 6/22) |
+| desde el lun 23 | en fecha |
+| dom 29 | SHIP S1 y S2 pendientes + SHIP S3 |
+
+Ninguna fecha final cambia y no se quita nada.
+
+**Calendar (`build_ops6.js`).** Fuente de los textos: el ORIGINAL v6.07 (`v607/verif4/volcados/all.json`). Para cada evento de estudio del plan del 9 al 21-nov, el bloque (fechaPlan, id) se busca en `plantillaDelDia` y el evento va a ese día y hora. Si el bloque tiene varios eventos, se respeta el desfase de cada uno dentro del bloque. Los textos pasan por el mismo pipeline que la app:
+
+1. `reemplazos[fechaPlan]`, filtrados por los frentes del evento.
+2. Desplazamiento de las HH:MM del propio evento según el desfase de la app.
+3. `fechasRealesEnTexto`.
+
+El título lleva « (plan del <día>)». Casos especiales:
+
+- **ALMUERZO:** el mié 11 vuelve a las 12:00 y el jue 12 pasa a las 13:00, por el UWSA1.
+- **ENCAPS opcional de los domingos 15 y 22** (`prkrv…`, `kd2a…`): día completo y «NO cabe (domingo de plan)».
+- **Anki del domingo 15 y 22:** marcador de día completo «⏭ … hoy es el de las 05:00».
+- **SHIP S1/S2 y Feynman S1/S2:** pasan al dom 29 (07:15-09:25 y 09:30-11:40, flexibles). El ENCAPS opcional del dom 29 (`ejjj…`) queda como día completo, «solo si te sobra energía».
+- **Del lun 23-nov al 1-dic:** solo textos (fechas de la semana corrida que traduce la app).
+- **Borrado:** el evento suelto de la ronda 4 `j3d6…` (continuación ENCAPS 1/22), creado por mí ese mismo día.
+- **Overlay M1** (`shkul…`): con el payload de `gen_research_calendar.js` (mié 11 13:30) y `--set mentor=…` (`--check`: 0 por recrear).
+- **Overlays T-1, CR-1 y NBME 25:** solo cambian sus menciones del M1 (mié 11-nov) y del D1 (jue 12-nov). No se les pasa el traductor, porque reescribiría su historial ⏸.
+- **SYNAPSE y cierre del OUTPUT S2 del sáb 21:** pasan por el pipeline (lo propio de los sábados se detecta por el título).
+- **Aviso del simulacro de Theomed:** añadido al bloque de las 16:15 del vie 13 y del vie 20.
+
+**Textos de la app.** Barrido de las guías que la app pinta del 10-nov al 3-ene (texto original frente a lo que se ve), revisado por 2 agentes en paralelo (workflow `wf_e053abc2-790`): 100 (68 propuestos por la revisión + 13 casos simétricos del sáb 21 / dom 22 + 19 de la revisión adversarial) reemplazos nuevos en `corrida_s1.reemplazos`.
+
+**Revisión adversarial antes de ejecutar** (workflow `wf_b2e16dd0-25b`, 2 agentes: app y Calendar). Encontró 25 puntos, todos de texto: horas de ejemplo de los SHIP del dom 29, las ★ de cifras del vie 13, el Day-After 4/6 del UWSA1 «dom 15 18:00», el SYNAPSE y el cierre del OUTPUT del sáb 21, los overlays M1, T-1, CR-1 y NBME 25, la errata «sáb dom», el aviso del Anki del sábado (corregido en `gen_usmle_guia.js`) y el historial del 11-dic, protegido con espacio duro. Se corrigieron todos. Simulación de las ops sobre el estado actual: 1.842 comprobaciones de `ver6.js` OK.
+
+**Ejecución:** 12 operaciones a mano y 164 con 2 agentes (workflow `wf_c1227839-9b0`, 82 + 82, 0 fallos), más el borrado de `j3d6…`.
+
+**Verificación tras ejecutar** (volcado nuevo del 9 al 29-nov en `r6/despues/`): `ver6.js` da 1.849 comprobaciones OK.
+
+- Del 11 al 27-nov, cada bloque de la app tiene su evento a su hora.
+- Nada queda en el gimnasio, en el baile, el lun 9 ni el mar 10.
+- Los dos únicos FAIL son inocuos:
+  - Los «nuevos» del 28-29, porque esos días no estaban en el volcado previo.
+  - El historial del UWSA1: el agente puso espacios normales en lugar de espacios duros. El texto se ve igual y nada vuelve a traducir el Calendar.
+- Leídos aparte, con búsqueda de texto: Research del 1-dic, overlay CR-1 y NBME 25, correctos.
+
+Respaldos en `r6/bk/`, operaciones en `r6/ops6.json`, volcados previos en `r6/volcados/` y posteriores en `r6/despues/`.
