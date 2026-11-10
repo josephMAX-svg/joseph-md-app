@@ -154,7 +154,7 @@ const SAB_F2_ABC = (S.SYN_DIAS.find((d) => dow(d.fecha) === 6 && FV.faseV6(d.fec
 const esperado = [
   [UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00'], ...NBMES.map((n) => [n, RG.guiaSynapseDe, '13:00–13:30']),
   [D1, RG.guiaBusinessDe, '13:00–13:25'], [OUT1, RG.guiaBusinessDe, '13:00–13:25'], [addDias(OUT1, 1), RG.guiaBusinessDe, bizSab(addDias(OUT1, 1), false)],
-  [addDias(SAB1, 1), RG.guiaShipDe, '15:00–17:00'], [addDias(SAB1, 1), RG.guiaFeynmanDe, '14:50–15:00'], [SAB1, RG.guiaSynapseDe, '13:30–14:00'],
+  [addDias(SAB1, 1), RG.guiaShipDe, '15:00–17:00'], [addDias(SAB1, 1), RG.guiaFeynmanDe, '14:50–15:00'], [SAB1, RG.guiaSynapseDe, '21:00–21:30'] /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 → 21:00 */,
   ...(SAB_F2_ABC ? [[SAB_F2_ABC, RG.guiaSynapseDe, '15:00–15:30'], [SAB_F2_ABC, RG.guiaRevisionDe, '07:15–07:45']] : []),
   [SAB1, RG.guiaRevisionDe, '14:00–14:30'], [D1, RG.guiaAurumDe, '14:15–15:15'], [D1, RG.guiaLivianoDe, '17:15–18:00'],
   [D1, RG.guiaVibeDe, '04:15–05:00'],
@@ -423,7 +423,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
           if (hora('revision') !== '14:00–14:30') errores.push(`${tag}: revisión semanal ${hora('revision')} ≠ 14:00–14:30`);
           if (viv && viv.vivo && (hora('theomed-prep') !== '14:45–15:00' || hora('theomed-vivo') !== '15:00–17:00')) errores.push(`${tag}: clase en vivo «${viv.vivo}» sin theomed-prep 14:45 + theomed-vivo 15:00-17:00`);
           if ((!viv || !viv.vivo) && (B_('theomed-prep') || B_('theomed-vivo'))) errores.push(`${tag}: bloque de clase en vivo un sábado sin clase`);
-          if (RG2.guiaSynapseDe(iso) && hora('syn') !== '13:30–14:00') errores.push(`${tag}: SYNAPSE del sábado ${hora('syn')} ≠ 13:30–14:00`);
+          if (RG2.guiaSynapseDe(iso) && hora('syn') !== '21:00–21:30') errores.push(`${tag}: SYNAPSE del sábado ${hora('syn')} ≠ 21:00–21:30`); // v6.07b: al volver del baile
         }
         if (w === 6 && B_('pc')) errores.push(`${tag}: bloque PC el sábado (v6.07: el SHIP del vibecoding es el domingo)`);
         if (w === 6 && SY2.synDiaDe(iso) && RG2.guiaSynapseDe(iso) && !B_('syn') && bs.length) errores.push(`${tag}: sábado con SYNAPSE A/B/C sin bloque SYNAPSE`);

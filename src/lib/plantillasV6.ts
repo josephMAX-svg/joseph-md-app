@@ -455,7 +455,7 @@ function extrasSabado(iso: string, conAnki: boolean): BloqueV6[] {
   const bs: BloqueV6[] = [];
   bs.push(...bloqueSynSabado(iso));
   const biz = bloqueBiz(iso); if (biz) bs.push(biz);
-  if (conAnki) bs.push(bloque('anki-sab', '19:00', '19:30', 'USMLE · ANKI del sábado (cola FSRS)', 'usmle', 'usmle-anki', 'Solo vencidas de APEX::USMLE (nuevas = 0 el sábado) · telemetría al terminar'));
+  if (conAnki) bs.push(bloque('anki-sab', '21:30', '22:00', /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 */ 'USMLE · ANKI del sábado (cola FSRS)', 'usmle', 'usmle-anki', 'Solo vencidas de APEX::USMLE (nuevas = 0 el sábado) · telemetría al terminar'));
   return bs;
 }
 function extrasDomingo(iso: string): BloqueV6[] {
@@ -470,7 +470,7 @@ function extrasDomingo(iso: string): BloqueV6[] {
   const pc = bloquePCDomingo(iso); if (pc) bs.push(pc);
   const g = guiaFeynmanDe(iso);
   if (g) bs.push(bloque('feynman', null, null, 'IA · FEYNMAN del proyecto (opcional, 10′)', 'vibecoding', 'vibecoding', undefined, g.totalMin, `flexible · ${fmtH(g.totalMin)}`));
-  if (fase === 'F1') bs.push(bloque('anki-dom', '17:00', '17:15', "USMLE · ANKI del domingo (opcional, ≤15')", 'usmle', 'usmle-anki', 'Opcional y no se registra: solo vencidas (el lunes 05:00 lo absorbe)'));
+  if (fase === 'F1') bs.push(bloque('anki-dom', '16:45', '17:00', /* v6.07b: dom baile 17:00-20:00 */ "USMLE · ANKI del domingo (opcional, ≤15')", 'usmle', 'usmle-anki', 'Opcional y no se registra: solo vencidas (el lunes 05:00 lo absorbe)'));
   return bs;
 }
 
@@ -653,6 +653,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     }
     case 'F1':
       // v6.07: sábado = 13:30 SYNAPSE · 14:00 revisión · 14:30 Business · 14:45 preparar la clase · 15:00-17:00 THEOMED EN VIVO · 19:00 Anki
+      // v6.07b (mar 10-nov): con el horario real (gimnasio 08:30-14:00 · baile 17:00-20:00) → SYNAPSE 21:00 y Anki 21:30, al volver
       if (w === 6) {
         const viv = theomedSabadoDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',

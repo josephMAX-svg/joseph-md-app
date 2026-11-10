@@ -438,7 +438,8 @@ export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: st
   // v6.07: el SÁBADO el SYNAPSE A/B/C ya no va dentro del PC (el PC pasó al domingo): 13:30-14:00 los sábados con la clase en vivo (antes de la
   //   revisión de las 14:00) · 15:00 en el resto (F2/F3: donde estaba dentro del PC)
   if (dow(iso) === 6) return sabadoTheomed(iso)
-    ? { franja: franjaDesde('13:30', min), aviso: 'Sábado: A/B/C a las 13:30, antes de la revisión semanal (o en cualquier tiempo muerto del sábado). El SHIP del vibecoding pasó al domingo: 15:00-17:00 es la clase EN VIVO de Theomed.' }
+    // v6.07b (mar 10-nov): sábado real de Joseph = gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 en vivo · baile 17:00-20:00 → A/B/C a las 21:00, al volver
+    ? { franja: franjaDesde('21:00', min), aviso: 'Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 Theomed en vivo · baile 17:00-20:00); después, el Anki de las 21:30. El SHIP del vibecoding es el domingo.' }
     : { franja: franjaDesde('15:00', min), aviso: 'Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto). El SHIP del vibecoding es el domingo.' };
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };

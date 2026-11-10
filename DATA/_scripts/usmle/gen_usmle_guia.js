@@ -854,7 +854,7 @@ function findes() {
   for (let t = new Date(FV6.f1.inicio + 'T12:00:00Z'); t <= new Date(ULT_F1 + 'T12:00:00Z'); t = new Date(t.getTime() + 86400000)) {
     const iso = t.toISOString().slice(0, 10); const w = t.getUTCDay();
     if ((w === 0 || w === 6) && iso < DD(1)) continue;
-    if (w === 6) out[iso] = [B(iso, '19:00–19:30', `ANKI del sábado · cola FSRS + preset${iso === SAB_OPT ? ' + FSRS Optimize' : ''} + Stats`, [
+    if (w === 6) out[iso] = [B(iso, '21:30–22:00', /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 → al volver, tras el SYNAPSE de las 21:00 */ `ANKI del sábado · cola FSRS + preset${iso === SAB_OPT ? ' + FSRS Optimize' : ''} + Stats`, [
       P(22, 'TODAS las vencidas de APEX::USMLE (padre › Study Now)', 'Solo vencidas · Good ≈90 % / Again solo olvido real · nunca Hard/Easy · cuando el contador de repasos llegue a 0, cierra: el sábado no se crean ni se estudian nuevas (las del viernes esperan al lunes).'),
       P(3, iso === SAB_OPT ? 'Preset en los submazos nuevos + FSRS › Optimize del preset' : 'Preset en los submazos nuevos', `El motor APEX crea los submazos al vuelo con el preset Default (sin tus ajustes): Deck Options del padre APEX::USMLE › Save ▾ «Save to All Subdecks».${iso === SAB_OPT ? ` Hoy además, con 4 semanas de repasos del preset: FSRS › «Optimize» y deja Desired retention en ${AK.ret}.` : ''}`),
       P(5, 'Telemetría + Stats de la semana', `node DATA/_scripts/anki_telemetria.js · Anki › Stats del padre: % Again (≈10 % sano; > 20 % → tarjetas largas o perfeccionismo: divídelas; ≈0 % → no te estás examinando) · ALARMA G (backlog > 100 o retención < 85 %) → el lunes, protocolo de backlog (${METODO_MD} §7).`),
@@ -882,7 +882,7 @@ function findes() {
         P(1, 'Sync final', 'Sync y cierra: a las 05:30 siguen los 15′ de repasos ENCAPS.'),
       ], [R_ANKI], '0 vencidas en APEX::USMLE', { aviso: `${VER}: en F1 el Step 1 tiene mañana solo los ${DSEM}; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El Anki USMLE sigue TODOS los días (Palmerton: repasos a cero cada día).${finF1 ? ` Último Anki AM de F1: desde el ${fd(FV6.transicion.desde)} el Step 1 está en PAUSA con 0 nuevas (${(() => { const sk = FV6.skip.filter((x) => x > iso && x < FV6.encaps.intensiva_desde); return sk.length ? `${sk.map(fd).join(' y ')} SKIP; el resto de la transición, Anki opcional; ` : 'transición con Anki opcional; '; })()}mantenimiento USMLE 30′ desde el ${fd(FV6.encaps.intensiva_desde)}): las nuevas del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que no entren hoy esperan al reinicio del ${fd(FV6.step1.reinicio)}.` : ''}` })];
     }
-    if (w === 0) out[iso] = [B(iso, '17:00–17:15', 'ANKI del domingo · OPCIONAL (≤15′)', [
+    if (w === 0) out[iso] = [B(iso, '16:45–17:00', /* v6.07b: dom baile 17:00-20:00 → antes */ 'ANKI del domingo · OPCIONAL (≤15′)', [
       P(15, 'Solo vencidas de APEX::USMLE (si hay)', 'Opcional en el plan (domingo libre) y no se registra. Postura de Palmerton: repasos a cero TODOS los días (saltarse 1-2 días le costó caro) → si hay vencidas, hazlas y el lunes empieza limpio. Nuevas no.'),
     ], [R_ANKI], 'opcional: vencidas a 0 o descanso')];
   }

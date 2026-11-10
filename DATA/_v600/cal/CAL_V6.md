@@ -2452,3 +2452,61 @@ Respaldos en `cal_bk/v607a/r4/bk/` y operaciones en `r4/ops4.json`.
 El bloque del sábado pisa la primera hora de «CREACIÓN DE VIDEO YOUTUBE» (17:00-19:00), que es un evento personal y no se tocó. Decide Joseph.
 
 **App:** campo nuevo `corrida_s1.notas`, que son notas por día real; las pinta `plantillaDelDia` arriba de las demás. Hay notas para el mar 10, el sáb 14 y el dom 15. El domingo 15, el reparto incluye además una parte con `{de: lun 9, bloques: {vibe: +600}}`, de modo que el bloque de vibecoding 1/5 queda de 14:15 a 15:00 con su guía.
+
+### Ronda 5 · v6.07b · mar 10-nov ≈10:20: fines de semana con el horario real (42 `update_event`, ≈10:33-10:38 Lima)
+
+Orden de Joseph, con una captura del Calendar:
+
+- **Sábado:** gimnasio de 08:30 a 14:00 (clases de 09:30 a 13:00 más el viaje) y baile de 17:00 a 20:00. Libre de 14:00 a 17:00 y de ≈21:00 a 22:00.
+- **Domingo:** baile de 17:00 a 20:00.
+- Si ya no queda hueco, alargar 1 o 2 días al final, pero solo si hace falta.
+
+**No se alarga el plan.** La mañana ENCAPS 3/22 del vie 13 (4 h 45′ más las cifras) no cabe en el fin de semana 14-15 y pasa al **dom 22**, el siguiente domingo libre: de 07:15 a 12:00 a sus horas y las cifras de 13:00 a 13:45 (`76dn`/`c24k`/`iuhj`/`q72k…_20261113`, `c5e7…_20261113T230000Z`). Lo demás queda en los huecos:
+
+| Día | Hora | Qué |
+|---|---|---|
+| sáb 14 | 04:15 · 05:00 | vibecoding 5/5 · Anki (del vie 13; el Anki del sábado va aquí y su evento `r9eg…_20261115` queda como aviso «⏭ … hoy va a las 05:00») |
+| sáb 14 | 07:15 · 07:40 | Business OUTPUT S1 1/2 (`0h8e…`) · Research R1 (`6us7…`), antes del gimnasio |
+| sáb 14 | 14:00 → 17:00 | revisión · Business · preparar la clase · Theomed en vivo (sin cambio) |
+| sáb 14 | 21:00 · 21:30 | SYNAPSE d5 del vie 13 (`n864…`) · SYNAPSE d6 (`h04k…`), al volver del baile |
+| dom 15 | 05:00-05:45 · 07:15-10:00 | ENCAPS mañana 1/22, continuación EN ORDEN del mar 10 (`j3d6…` y `c24k`/`iuhj`/`q72k…_20261109`) |
+| dom 15 | 10:00 · 11:00 · 12:30 · 13:30 · 14:15 | mini-sim #5 · MIR D5 (`uidu`/`hos0`, con horas de la descripción +120′) · AURUM D5 · LIVIANO d5 · vibecoding 1/5 |
+| dom 15 | 15:00-17:00 · 19:30 | SHIP S1 (flexible) · Anki opcional en el viaje (`5s64…_20261115`) |
+| dom 15 | — | ENCAPS opcional (`prkrv…`): «esta semana NO cabe» |
+| dom 22 | día completo | ENCAPS opcional (`kd2a…`) como evento de día completo, «después de la mañana 3/22» |
+
+**Plantilla general del sáb 21-nov al dom 3-ene:**
+
+- SYNAPSE del sábado: de 13:30 a **21:00**, en 7 eventos sueltos con el aviso reescrito.
+- Anki del sábado: de 19:00 a **21:30**, instancias `r9eg…`.
+- Anki del domingo: de 17:00 a **16:45**, instancias `5s64…`.
+
+**Cambios en la app (`corrida_s1` v6.07b):**
+
+- Reparto del sáb 14, del dom 15 y del dom 22 (nuevo).
+- Notas del mar 10 reescritas. Las del sáb 14 y el dom 15 se quitan porque su texto ya va en la nota del reparto.
+- Reemplazos para el 11, el 13, el 16 y el 22-nov (aviso del ENCAPS opcional).
+- `resumen` nuevo.
+
+**Cambios en la plantilla:**
+
+- `plantillasV6`: `anki-sab` de 21:30 a 22:00 y `anki-dom` de 16:45 a 17:00.
+- `rutinaGuia.synFranjaDe`: el sábado con en vivo pasa a las 21:00.
+- `gen_usmle_guia` y `usmleGuia.ts`: franjas del Anki del sábado y del domingo.
+- `check_rutina_guia`: ahora espera 21:00-21:30.
+
+**Verificación:**
+
+- Calendar vuelto a volcar del sáb 14 al dom 3-ene (`r5/verif/` + lecturas puntuales). No queda ningún bloque de estudio entre las 08:30 y las 14:00 del sábado ni entre las 17:00 y las 20:00 del sábado o el domingo. El chequeo solo marca el evento personal «VIAJE (PODCAST O ANKI)».
+- Checks verdes: `tsc`, `sim_plantilla_dia` (393 días, 0 problemas), `check_rutina_guia` (0 errores), `verificar_v6`, los `--check` de los generadores y el de Research.
+
+Respaldos en `r5/bk/` y operaciones en `r5/ops5.json` (`build_ops5.js`).
+
+**Queda abierto (PENDIENTES v6.07b):**
+
+1. **Sábados de F2 (9-ene → 6-mar).** El STEP 1 VIVO de las 07:45, el cierre de Business de las 09:15, el carril sábado de 09:30 a 10:30 (Supabase `extra.carril_sabado`) y el OUTPUT de 10:30 a 11:10 caen dentro del gimnasio. Hay una propuesta en PENDIENTES; se mueve cuando Joseph la confirme.
+2. **Recordatorios opcionales de Anki del fin de semana en 2027.** El del sábado a las 19:00 cae en el baile. No se toca la serie madre: actualizarla sobrescribiría las descripciones de las instancias ya ajustadas.
+3. **Eventos personales, sin tocar:**
+   - «DORMIR» a las 21:00: el sábado se estudia de 21:00 a 22:00 por oferta de Joseph, así que el domingo arranca a las 05:00.
+   - «CREACIÓN DE VIDEO YOUTUBE» de 17:00 a 19:00: ya no choca con nada.
+   - «BAILE» del sábado: el Calendar lo tiene de 20:00 a 20:30, pero según Joseph la clase es de 17:00 a 20:00.
