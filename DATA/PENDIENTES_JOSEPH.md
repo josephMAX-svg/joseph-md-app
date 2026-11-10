@@ -11,6 +11,9 @@
 | **sáb 14** | la MAÑANA del vie 13 a sus horas: 04:15 vibecoding · 05:00 Anki · 07:15-12:00 ENCAPS mañana 3/22 · 12:30 SYNAPSE · 13:00 Business. Después, lo del sábado sin cambios: 13:30 SYNAPSE · 14:00 revisión · 14:30 Business · 15:00-17:00 Theomed en vivo · 19:00 Anki |
 | **dom 15** | la TARDE del vie 13 desde las 07:15: Research R1 · 08:00 AURUM · 09:00 MIR · 10:00 mini-sim #5 · 11:00 LIVIANO · 11:45-12:30 cifras. Después, SHIP S1 (flexible). El ENCAPS de 4 h sigue siendo opcional |
 
+**⚡ Mar 10-nov: empiezas a las 11:00** (orden de las 10:00). La ENCAPS mañana 1/22 se hace en orden: hoy de 11:00 a 12:00 y, lo que falte, el sáb 14 de 17:15 a 18:15, el dom 15 de 04:15 a 05:45 (post-test y banqueo) y el dom 15 de 13:00 a 14:15 (corrección y tarjetas). El vibecoding 1/5 va el dom 15 de 14:15 a 15:00. El Anki de hoy son 15′ de ENCAPS::Cifras en el viaje de las 18:45. Desde las 12:00 el día no cambia.
+- [ ] El bloque del sáb 14 de 17:15 a 18:15 pisa la primera hora de tu bloque de YouTube (17:00-19:00). Decide si lo acortas a 18:15-19:00.
+
 **Desde el lun 16-nov todo vuelve a su fecha.** No se quita nada y ninguna fecha cambia: F1, NBME 25 (jue 10-dic), examen Step 1 (lun 6-dic-2027) y ENCAPS (dom 14-mar). Lo que te toca a ti:
 - [ ] Esta semana el sábado empieza a las 04:15 (la mañana del vie 13).
 - [ ] El simulacro con RANKING de Theomed (abre el vie 13 a las 16:00 si se publica; cuenta el primer intento dentro de 89 h, hasta ≈ mar 17 09:00) solo cabe el domingo por la tarde, después de la recuperación, si te sobra energía.
