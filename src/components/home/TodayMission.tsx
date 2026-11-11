@@ -215,7 +215,8 @@ export function encapsLabelDe(iso: string): string | null {
   const s = pc ? (b16 ? sesionEncapsDe(b16.fechaPlan ?? iso) : null) : sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
     const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
-    return pre ? `${pre} + 16:15 ${tarde}` : `ENCAPS ${tarde}`;
+    // v6.07d: la hora real del bloque (los domingos de plan va a las 16:00 o a las 15:00), no «16:15» fijo
+    return pre ? `${pre} + ${b16?.ini ?? '16:15'} ${tarde}` : `ENCAPS ${tarde}`;
   }
   // v6.07a ronda 3: sáb 14 de la corrida = mañana del vie 13 + la clase EN VIVO de Theomed del propio sábado
   const vivPc = pc?.bloques.some((b) => b.id === 'theomed-vivo') ? theomedSabadoDe(iso) : null;
@@ -223,7 +224,8 @@ export function encapsLabelDe(iso: string): string | null {
   if (pre) return pre;
   const viv = theomedSabadoDe(iso);
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
-  if (encapsDomingoDe(iso)) return 'ENCAPS · domingo opcional 4 h (simulacro 100Q)';
+  const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
+  if (domE) return domE.etiqueta;
   // v6.06: carril SÁBADO de la intensiva (09:30, pendiente F1 que no cupo en el carril B lun-jue)
   const sab = encapsSabadoDe(iso);
   if (sab) return `ENCAPS · sáb ${sab.ini} · reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim();
@@ -531,7 +533,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       if (b.id === 'encaps-dom') {
         const dom = encapsDomingoDe(iso);
         const g = guiaEncapsDomingoDe(iso);
-        if (dom && g) return { tema: dom.simulacro, sub: `opcional y flexible · 2 h de simulacro + 2 h de corrección${dom.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`, acciones: /^Theomed/.test(dom.simulacro) ? [campus('Simulacros ↗', ENCAPS_MANANA_META.campus.simulacros, true)] : [], guias: [g] };
+        // v6.07d: tema, sub y botón del campus salen de encapsManana (curso 105 = simulacros · curso 116 = banqueos grabados)
+        if (dom && g) return { tema: dom.tema, sub: dom.sub, acciones: dom.campus === 'simulacros' ? [campus('Simulacros ↗', ENCAPS_MANANA_META.campus.simulacros, true)] : dom.campus === 'adicionales' ? [campus('Banqueos ↗', ENCAPS_MANANA_META.campus.adicionales, true)] : [], guias: [g] };
       }
       // v6.06 (fix): CARRIL SÁBADO de la intensiva (bloque encaps-sab de plantillasV6, sáb 9/16/23/30-ene y 6-feb 09:30) → guía «qué · cuánto ·
       // cómo» de encapsGuia (guiaEncapsSabadoDe: la receta de 60′ de F1 + nota de reposición; movida a la hora real del bloque si Business lo

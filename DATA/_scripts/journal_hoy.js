@@ -34,6 +34,8 @@ if (!/^20\d\d-\d\d-\d\d$/.test(REAL)) throw new Error('--fecha inválida (YYYY-M
 // v6.06e: la guía y el botón 📓 usan la fecha de plan → el fichero, el proyecto y el paso del día salen de ella
 const _V6 = require('./gen_fechas_v6');
 const FECHA = _V6.fechaPlanDe(REAL, _V6.cargarFechasV6(), 'vibecoding');
+// v6.07d: la cabecera del journal dice los días REALES del proyecto y de su SHIP (con la semana corrida no son los de plan)
+const _REAL = (f) => _V6.fechaRealDe(f, _V6.cargarFechasV6(), 'vibecoding');
 
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -77,7 +79,7 @@ if (!fs.existsSync(file)) {
   L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : ''}`);
   L.push('');
   if (proySemana) {
-    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · L-V ${fmt(proySemana.ini)} → ${fmt(proySemana.fin)}${proySemana.tipo ? '' : ` · SHIP dom ${fmt(proySemana.ship)} (PC del domingo, flexible; v6.07) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
+    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · ${_REAL(proySemana.ini) !== proySemana.ini ? 'días' : 'L-V'} ${fmt(_REAL(proySemana.ini))} → ${fmt(_REAL(proySemana.fin))}${proySemana.tipo ? '' : ` · SHIP ${fmt(_REAL(proySemana.ship))} (PC del domingo, flexible) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
     if (proySemana.aceptacion.length) { L.push(''); L.push('Criterios de aceptación (definition of done):'); for (const a of proySemana.aceptacion) L.push(`- [ ] ${a}`); }
   } else {
     L.push('**Proyecto de la semana**: fuera del plan del vibecoding (src/lib/vibecodingPlan.ts) — semana libre o pre-D1.');

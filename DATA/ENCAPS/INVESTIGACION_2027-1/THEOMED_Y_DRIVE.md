@@ -311,3 +311,58 @@ Teoría por área: **INV termina el 30-nov · GES el 18-dic · ET el 12-dic · C
 - **Referencia para ganar:** el 1.er puesto de Theomed sacó 17,2 → 19,4. La meta de > 17,5 en el examen equivale, en estos simulacros, a estar en el top 3.
 - El THEOBANKS y el «simulador de más de 9 000 preguntas» todavía no existen en el campus. Para banquear ahora están el Drive 2026-II (§2.4) y los ENCAPS 2025-I, 2025-II y 2026-I.
 - Al leer metadatos en el campus quedaron marcados como **«vistos»** varios recursos y carpetas (cronogramas, manuales, Theoesenciales, glosarios, rankings, carpetas de NT y la página de información de 2 post-tests y 1 simulacro). No se inició ningún intento.
+
+---
+
+## Actualización · mié 11-nov-2026 (re-scan del campus y del Drive)
+
+> El re-scan se hizo en el Chrome del alumno, leyendo solo títulos y metadatos (estado de los cursos de Moodle y duración de los vídeos en su reproductor). No se descargó nada ni se abrió ningún examen, simulacro o post-test.
+
+**Campus Theomed: qué hay nuevo desde el 8-nov**
+
+| Curso | 8-nov | 11-nov | Qué entró |
+|---|---|---|---|
+| 99 · MEDICINA REGULAR GP2 | 222 módulos | 227 | Grabación de **CI en vivo 1/8** (sáb 7-nov). Grabación de **INV en vivo 1/4** (lun 9-nov) con su **post-test**. |
+| 116 · SESIONES ADICIONALES | 5 | 11 | Revisión normativa **N°2: Prevención y control de las ITS** (vídeo 30:39 + PDF) y **4 banqueos grabados** (abajo). |
+| 42 · KAHOOTS | 60 | 63 | Kahoots diarios del 9-nov (dos) y del 10-nov. |
+| 105 · SIMULACROS | 10 | 10 | Nada nuevo. El cronograma anuncia el simulacro del **vie 13-nov**. |
+
+**Banqueos grabados (SESIONES ADICIONALES › Banqueos generales – viernes)**
+
+| N° en el campus | Fecha | Fichero | Duración |
+|---|---|---|---|
+| N°07 (ya estaba = 1/19) | 23-oct | «23.10.26 BANQUEO SEMANAL 6» | 27:37 |
+| **N°08** | 30/31-oct | «31.10.26 BANQUEO 7» | **53:22** |
+| **N°09** | 31-oct | «31.10.26 BANQUEO ADICIONAL 3» | **41:22** |
+| **N°10** | 6-nov | «06.11.26 BANQUEO GENERAL 8» | **53:17** |
+| **N°11** | 6-nov | «06.11.26 BANQUEO ADICIONAL REG 1» | **42:28** |
+
+**Cronograma de la semana 9-15 nov (portada del campus)**
+
+- **Clases en vivo:**
+  - lun 9, 19:30: Investigación 1/4.
+  - vie 13, 19:00: Banqueo 4/19.
+  - vie 13, 20:00: Gestión en Salud 1/6.
+  - sáb 14, 15:00: Cuidado Integral 2/8.
+- **Simulacro:** «Se abre 13/11».
+- **Kahoot diario:** jueves, lunes, martes y miércoles, de 9:00 a 9:30.
+- **Cuenta regresiva:** 122 días; examen SERUMS 2027 con fecha tentativa 14 o 21-mar.
+
+**Drive u/4 «SERUMS 2026 II»:** sin ficheros nuevos.
+
+- La búsqueda de cambios desde el 7-nov solo devuelve la carpeta raíz, modificada el 9-nov.
+- Sus 5 subcarpetas conservan sus fechas: DR LOPEZ 3-nov · GALENO 4-sep · Qx 22-sep · THEOMED 24-jun · VILLAMEDIC 18-ago.
+- El Drive de la cuenta principal tampoco tiene ficheros nuevos desde el 7-nov.
+
+**Integración en el plan (v6.07d):**
+
+- **Banqueos grabados (≈ 3 h 10):** son atraso nuevo. Siguiendo la regla del plan («los banqueos van activos»), van a los primeros domingos sin plan:
+  - dom 6-dic, 14:45-16:45: N°08 + N°09 (sesión de 2 h). Ese día no cabe simulacro.
+  - dom 13-dic: no van. De 14:45 a 16:45 toca el simulacro con RANKING del vie 11-dic, de un tirón (cuenta hasta el mar 15 a las 09:00).
+  - dom 20-dic: de 12:15 a 14:15, N°10 + N°11; de 14:45 a 16:20, la corrección (80′) y el registro (15′) del simulacro del dom 13.
+  - Los tres domingos tienen además un compromiso fijo de 14:15 a 14:45.
+  - Están en `DATA/ENCAPS/_encaps_manana_v607.json` → `domingos[].modo` (`banqueos` · `simulacro_2h` · `banqueos_correccion`). De ahí `gen_encaps_manana.js` genera la guía, el nombre, la hora y la etiqueta.
+  - Coste: los simulacros antiguos opcionales del 18/09, el 02/10 y el 16/10 se quedan sin domingo (el 22-nov es día de plan; el 6 y el 20-dic los ocupan los banqueos). Quedan para un hueco libre. El del 30/10 sigue el 27-dic.
+- **Revisión normativa N°2 (ITS):** se usa en la mañana de normas de CI del vie 18-dic (TBC, ITS/VIH, ECNT).
+- **CI 1/8 e INV 1/4:** siguen la regla del plan (audio en tiempos muertos; el post-test, al terminar).
+- **Kahoots diarios:** opcionales, en grabación y en tiempos muertos.

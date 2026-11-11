@@ -1,28 +1,46 @@
-# PENDIENTES DE JOSEPH · régimen v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · TODO ARRANCA EL LUN 9-NOV-2026 (v6.07c: D1 real MIÉ 11-NOV, semana corrida hasta el dom 22) · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
+# PENDIENTES DE JOSEPH · régimen v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · TODO ARRANCA EL LUN 9-NOV-2026 (v6.07d: D1 real JUE 12-NOV, semana corrida hasta el dom 29) · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
 
-**⚡ v6.07c (mar 10-nov ≈11:00, VIGENTE · «último cambio») — TODO ARRANCA EL MIÉ 11-NOV: mañana es el D1 completo.** Orden de Joseph: «para ordenarnos mejor, último cambio: que todo inicie el día de mañana … el día de mañana es el primero, para no estar haciendo medio a mitad … amontona todo … si hay necesidad de correr, corremos». Sustituye a la v6.07a/b (mar 10 = plan del lun 9 desde las 11:00 + huecos). Cuenta: 2 días perdidos (lun 9 y mar 10) = ≈ 25 h de bloques; con el gimnasio, el baile y 7 h de sueño un fin de semana deja ≈ 13 h → el plan corre 2 días y los recuperan los **domingos 15 y 22** (+ las mañanas de los sábados 14 y 21, antes del gimnasio). **Desde el lun 23 todo va en su fecha; ninguna fecha final cambia (F1 30-dic, NBME 25 jue 10-dic, examen Step 1 lun 6-dic-2027, ENCAPS dom 14-mar) y nada se quita.** App: `corrida_s1` v6.07c (alias + reparto); Calendar: CAL_V6 §26 ronda 6.
+**⚡ v6.07d (mié 11-nov ≈10:40, VIGENTE) — TODO ARRANCA EL JUE 12-NOV: es el D1 completo.** Orden de Joseph: «hoy no vamos a avanzar … todo inicia a partir del día de mañana, del día 12 … corre de la manera más factible, más accesible, más rápida; si es necesario alargar fechas, alarga … respetando nuestros horarios». Sustituye a la v6.07c, que arrancaba el mié 11.
+
+**La cuenta:**
+- Son 3 días perdidos (lun 9, mar 10 y mié 11), ≈ 37 h de bloques.
+- Un fin de semana con gimnasio, baile y 7 h de sueño deja ≈ 13 h. Por eso el plan corre 3 días y los recuperan los **domingos 15, 22 y 29**, más las mañanas de los sábados 14, 21 y 28, antes del gimnasio.
+- **Desde el lun 30-nov todo va en su fecha.** Ninguna fecha final cambia: F1 30-dic, NBME 25 jue 10-dic, examen Step 1 lun 6-dic-2027 y ENCAPS dom 14-mar. No se quita nada.
+
+App: `corrida_s1` v6.07d (alias + reparto + 202 reemplazos de texto). Calendar: CAL_V6 §26, ronda 7.
 
 | Día real | Qué toca |
 |---|---|
-| mar 10 | LIBRE (lo de esta mañana no cuenta) |
-| **mié 11** | **D1 = plan del lun 9, completo desde las 04:15**: vibecoding 1/5 · Anki (inventario + configuración) · ENCAPS mañana 1/22 07:15-12:00 · SYNAPSE d1 · Business D1 · Research M1 · AURUM D1 · MIR D1 · 16:15 PRE-TEST 1/2 · LIVIANO d1 · 18:00 cifras |
-| jue 12 | plan del mar 10: **UWSA1 08:50-13:00** (almuerzo 13:00) · 16:15 PRE-TEST 2/2 · 18:00 Day-After 1/6 |
-| vie 13 | plan del mié 11: ENCAPS mañana 2/22 |
-| **sáb 14** | (gimnasio 08:30-14:00 · baile 17:00-20:00) 04:15 vibecoding 4/5 · 05:00 SYNAPSE d4 · 07:15 Business D4 · 07:40 LIVIANO d4 (del jue 12) · 14:00 revisión S01 · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki → a dormir a las 22:00 |
-| **dom 15** | **día de plan (el del jue 12), 05:00-17:00**: 05:00 Anki + Day-After 2/6 · 07:15-12:00 Step 1 D2 (Day-After 3/6) · 12:30 Day-After 4/6 · 13:15 Derma · 14:00 AURUM D4 · 15:00 MIR D4 · 16:00 ENCAPS (bloque de las 16:15) · baile 17:00 |
-| lun 16 | plan del vie 13: ENCAPS mañana 3/22 · 16:15 mini-sim #5 · Business OUTPUT S1 1/2 · vibecoding 5/5 |
-| mar 17 → vie 20 | plan del lun 16 → jue 19 (un día corridos: mar 17 = ENCAPS 4/22 · mié 18 = Step D3 · jue 19 = ENCAPS 5/22 · vie 20 = Step D4) |
-| **sáb 21** | 04:15 vibecoding S2 5/5 · 05:00 SYNAPSE · 05:30 cierre del OUTPUT S1 (pendiente del sáb 14) · 07:15 OUTPUT S2 1/2 · 07:40 LIVIANO (del vie 20) · 14:00 revisión S02 · 14:30 cierre del OUTPUT S2 · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE · 21:30 Anki |
-| **dom 22** | **día de plan (el del vie 20), 05:00-17:00**: 05:00 Anki · 07:15-12:00 ENCAPS mañana 6/22 · 12:30 cifras · 13:15 Derma · 14:00 AURUM · 15:00 MIR · 16:00 ENCAPS |
-| lun 23 → | todo en su fecha |
-| dom 29 | SHIP S1 y S2 pendientes + SHIP S3 (flexibles, en orden) · el ENCAPS opcional de 4 h solo si te sobra energía |
+| mié 11 | LIBRE |
+| **jue 12** | **D1 = plan del lun 9, completo desde las 04:15**: vibecoding 1/5 · Anki (solo inventario) · ENCAPS mañana 1/22 07:15-12:00 · SYNAPSE · Business D1 · Research M1 · AURUM D1 · MIR D1 · 16:15 PRE-TEST 1/2 · LIVIANO D1 · 18:00 cifras |
+| vie 13 | plan del mar 10: 05:00 configuración del Anki · **UWSA1 08:50-13:00** (almuerzo 13:00) · 16:15 PRE-TEST 2/2 · 18:00 Day-After 1/6 |
+| **sáb 14** | (gimnasio 08:30-14:00 · baile 17:00-20:00) 04:15 vibecoding 3/5 · 05:00 SYNAPSE · 07:15 Business D3 · 07:40 LIVIANO D3 (los cuatro, del mié 11) · 14:00 revisión S01 · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki → a dormir a las 22:00 |
+| **dom 15** | **día de plan (el del mié 11), 05:00-17:00**: 05:00 Anki · 07:15-12:00 ENCAPS mañana 2/22 · 12:30 cifras y flashcards · 13:15 Research/Derma · 14:00 AURUM D3 · 15:00 MIR · 16:00 ENCAPS (el bloque de las 16:15) · baile 17:00 |
+| lun 16 | plan del jue 12: Step 1 D2 (Day-After 2/6, 3/6 y 4/6) |
+| mar 17 | plan del vie 13: ENCAPS mañana 3/22 · 16:15 mini-sim #5 · Business OUTPUT S1 · vibecoding 5/5 |
+| mié 18 → vie 20 | plan del lun 16 → mié 18 (ENCAPS 4/22 · Step D3 · ENCAPS 5/22) |
+| **sáb 21** | 04:15 vibecoding · 05:00 SYNAPSE · **05:30 cierre del OUTPUT S1** (pendiente del sáb 14) · 07:15 Business · 07:40 LIVIANO (del jue 19) · 14:00 revisión S02 · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE · 21:30 Anki |
+| **dom 22** | **día de plan (el del jue 19), 05:00-17:00**: 05:00 Anki · 07:15-12:00 Step 1 D4 · 12:30 Day-After 6/6 + eval reducida · 13:15 Research (M2) · 14:00 AURUM · 15:00 MIR · 16:00 ENCAPS |
+| lun 23 | plan del vie 20: ENCAPS mañana 6/22 · 16:15 mini-sim #10 · Business OUTPUT S2 |
+| mar 24 → vie 27 | plan del lun 23 → jue 26 (ENCAPS 7/22 · Step D5 · ENCAPS 8/22 · Step D6) |
+| **sáb 28** | 04:15 vibecoding · 05:00 SYNAPSE · **05:30 cierre del OUTPUT S2** · 07:15 Business (escribes el OUTPUT S3) · 07:40 LIVIANO (del vie 27) · 14:00 revisión · 14:30 cierre del OUTPUT S3 · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE · 21:30 Anki |
+| **dom 29** | **día de plan (el del vie 27)**: 05:00 Anki · 07:15-12:00 ENCAPS mañana 9/22 · *12:30-14:00 tu compromiso personal* · 14:15 Research (R9) · 15:00 ENCAPS mini-sim #15 · 16:00-16:45 SP S8 pendiente + flashcards · baile 17:00 |
+| lun 30 → | todo en su fecha |
+| dom 6-dic | 07:15-11:40 SHIP S1 (pendiente) y SHIP S4, con su Feynman · 12:15 **AURUM D15** (cierre de la Fase 1) y 13:15 **MIR D15**, los del vie 27 que no cupieron el dom 29 · *14:15-14:45 compromiso fijo* · 14:45-16:45 **banqueos N°08 y N°09 de Theomed**, en activo (hoy no cabe simulacro) · 16:45 Anki |
+| dom 13-dic | SHIP S2 (pendiente) y SHIP S5 · *12:30-14:00 y 14:15-14:45 compromisos* · 14:45-16:45 **simulacro con RANKING de Theomed** (el del vie 11-dic, de un tirón; cuenta hasta el mar 15 a las 09:00) · 16:45 Anki |
+| dom 20-dic | SHIP S3 (pendiente) y SHIP S6 · 12:15-14:15 **banqueos N°10 y N°11 de Theomed** · *14:15-14:45 compromiso fijo* · 14:45-16:20 **corrección y registro del simulacro del dom 13** · 16:45 Anki |
 
 Lo que te toca a ti:
-- [ ] Los domingos 15 y 22 son días de plan hasta las 17:00, y los sábados 14 y 21 estudias de 21:00 a 22:00 → el domingo arrancas a las 05:00 (7 h de sueño).
-- [ ] Los simulacros con RANKING de Theomed de los vie 13 y 20 no caben (los domingos 15 y 22 son de plan).
-- [ ] El en vivo INV 1/4 (lun 9 a las 19:30) queda en diferido: escúchalo en tiempos muertos.
+- [ ] Los domingos 15, 22 y 29 son días de plan hasta las 17:00. Los sábados 14, 21 y 28 estudias de 21:00 a 22:00, así que el domingo arrancas a las 05:00 (7 h de sueño).
+- [ ] Los simulacros con RANKING de Theomed son quincenales (vie 13-nov, vie 27-nov, vie 11-dic). Los del 13 y el 27 no tienen hueco fijo, porque los domingos 15 y 29 son de plan: si quieres el ranking, el hueco lo decides tú. El del 11-dic va el dom 13-dic.
+- [ ] Los simulacros antiguos opcionales del 18/09, el 02/10 y el 16/10 se quedan sin domingo (el 22-nov es de plan; el 6 y el 20-dic, de banqueos). Quedan para un hueco libre.
+- [ ] Los en vivo de Theomed entre semana (lun 9 INV 1/4, vie 13 Banqueo 4/19 + Gestión 1/6, lun 16 INV 2/4, vie 20, lun 23, vie 27) chocan con el sueño de las 21:00: van en diferido (audio en tiempos muertos). La app lo dice cada día.
+- [ ] AURUM D15 y MIR D15 van el dom 6-dic, después de AURUM D16-D20 y MIR D16-D20. Es una decisión consciente: el dom 29 no tenía sitio (compromiso de 12:30-14:00); Research R9 alimenta al C-3 del 1-dic y los bloques ENCAPS tienen prioridad. Las preguntas D-1/D-3 de EPOC del MIR D16/D18 cuentan como pre-test ciego.
+- [ ] El evento personal del dom 29 (12:30-14:00) dice que esa mañana van los SHIP. Ya no es así: ese domingo es día de plan. El evento no lo toqué; corrígelo tú si quieres.
 - [ ] **Sábados de la intensiva F2 (9-ene → 6-mar) — AÚN SIN AJUSTAR:** 07:45 STEP 1 VIVO 20Q · 09:15 cierre Business · 09:30-10:30 carril sábado ENCAPS · 10:30-11:10 OUTPUT Business caen dentro del gimnasio. Propuesta: STEP 1 VIVO 04:15-05:45 · revisión 07:15 · Business 07:45-08:25 · carril sábado 14:00-15:00 · SYNAPSE 15:00 · OUTPUT 15:30-16:10. Confirma y se mueve (app + Supabase `carril_sabado` + Calendar).
 - [ ] Recordatorios opcionales de Anki del fin de semana en 2027 (sáb 19:00 · dom 17:00, pendiente (m)): el del sábado cae en el baile. Si se quedan, van a sáb 21:30 y dom 16:45.
+
+⏸ v6.07c (mar 10-nov; sin efecto desde la v6.07d): D1 mié 11 (plan del lun 9) · jue 12 = UWSA1 · domingos 15 y 22 de plan · en fecha desde el lun 23 · SHIP S1 y S2 al dom 29.
 
 ⏸ v6.07a/b (lun 9 / mar 10-nov; sin efecto desde la v6.07c): mar 10 = plan del lun 9 (desde las 11:00) … vie 13 = plan del jue 12; el plan del vie 13 repartido entre el sáb 14, el dom 15 y el dom 22. **Sigue vigente de la v6.07b la plantilla del fin de semana** (sáb 21-nov → 2-ene: SYNAPSE del sábado 21:00 · Anki del sábado 21:30 · Anki del domingo 16:45) y el horario real: gimnasio sáb 08:30-14:00 · baile sáb y dom 17:00-20:00.
 

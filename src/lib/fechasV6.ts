@@ -12,7 +12,7 @@
  * v6.06 (sáb 31-oct-2026): corrimiento rígido del D1 lun 26-oct-2026 → lun 2-nov-2026 (perdidos: lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct).
  * v6.07 (dom 8-nov-2026): corrimiento rígido del D1 lun 2-nov-2026 → lun 9-nov-2026 (perdidos: lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov).
  * v6.07 (dom 8-nov-2026): examen Step 1 lun 25-oct-2027 → lun 6-dic-2027 (decisión de Joseph; step1.cambios).
- * v6.07c (lun 9-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov = plan del lun 9-nov · jue 12-nov = plan del mar 10-nov · vie 13-nov = plan del mié 11-nov · lun 16-nov = plan del vie 13-nov · mar 17-nov = plan del lun 16-nov · mié 18-nov = plan del mar 17-nov · jue 19-nov = plan del mié 18-nov · vie 20-nov = plan del jue 19-nov · sáb 14-nov = parte del jue 12-nov · dom 15-nov = parte del jue 12-nov · sáb 21-nov = parte del vie 20-nov · dom 22-nov = parte del vie 20-nov · dom 29-nov = parte del dom 15-nov; ningún plan cambia de fecha.
+ * v6.07d (lun 9-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov = plan del lun 9-nov · vie 13-nov = plan del mar 10-nov · lun 16-nov = plan del jue 12-nov · mar 17-nov = plan del vie 13-nov · mié 18-nov = plan del lun 16-nov · jue 19-nov = plan del mar 17-nov · vie 20-nov = plan del mié 18-nov · lun 23-nov = plan del vie 20-nov · mar 24-nov = plan del lun 23-nov · mié 25-nov = plan del mar 24-nov · jue 26-nov = plan del mié 25-nov · vie 27-nov = plan del jue 26-nov · sáb 14-nov = parte del mié 11-nov · dom 15-nov = parte del mié 11-nov · sáb 21-nov = parte del jue 19-nov · dom 22-nov = parte del jue 19-nov · sáb 28-nov = parte del vie 27-nov · dom 29-nov = parte del vie 27-nov · dom 6-dic = parte del dom 15-nov · dom 13-dic = parte del dom 22-nov · dom 20-dic = parte del dom 29-nov; ningún plan cambia de fecha.
  * Versión vigente del JSON: v6.07.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -283,8 +283,8 @@ export const FECHAS_V6: FechasV6 = {
   ],
   "corrida_s1": {
     "decidido": "2026-11-09",
-    "version": "v6.07c",
-    "motivo": "v6.07c (mar 10-nov-2026, orden de Joseph): «Para ordenarnos mejor, último cambio: que todo inicie el día de mañana … el día de mañana es el primero, para no estar haciendo medio a mitad … amontona todo … si hay necesidad de correr, corremos». Sustituye a la v6.07a/b (lun 9 sin estudio, mar 10 = plan del lun 9 desde las 11:00). Ahora: lun 9 y mar 10 SIN ESTUDIO → D1 = MIÉ 11-NOV (plan del lun 9, completo desde las 04:15) · jue 12 = plan del mar 10 (UWSA1) · vie 13 = plan del mié 11 · el plan del jue 12 se hace el sáb 14 (4 bloques antes del gimnasio) y el dom 15 (día de plan 05:00-17:00) · lun 16 = plan del vie 13 · mar 17 → vie 20 = plan del lun 16 → jue 19 · el plan del vie 20 se hace el sáb 21 (antes del gimnasio) y el dom 22 · desde el LUN 23-nov todo en su fecha. Los SHIP S1 y S2 del vibecoding pasan al dom 29 (en lugar del ENCAPS opcional de ese domingo); el cierre del OUTPUT S1 de Business, al sáb 21 05:30. Horario real respetado: gimnasio sáb 08:30-14:00 · baile sáb y dom 17:00-20:00 · 7 h de sueño (el sábado de 21:00 a 22:00 se estudia → el domingo arranca a las 05:00). Ninguna fecha final cambia (F1 30-dic, NBME, examen) y nada se quita.",
+    "version": "v6.07d",
+    "motivo": "v6.07d (mié 11-nov-2026, orden de Joseph): «Hoy no vamos a avanzar … todo inicia a partir del día de mañana, del día 12 … corre de la manera más factible, más accesible, más rápida; si es necesario alargar fechas, alarga … respetando nuestros horarios». Sustituye a la v6.07c (D1 mié 11). Ahora: lun 9, mar 10 y mié 11 SIN ESTUDIO → D1 = JUE 12-NOV (plan del lun 9, completo desde las 04:15) · vie 13 = plan del mar 10 (UWSA1) · el plan del mié 11 se hace el sáb 14 (4 bloques antes del gimnasio) y el dom 15 (día de plan 05:00-17:00) · lun 16 = plan del jue 12 · mar 17 = plan del vie 13 · mié 18 → vie 20 = plan del lun 16 → mié 18 · el plan del jue 19 va el sáb 21 + dom 22 · lun 23 = plan del vie 20 · mar 24 → vie 27 = plan del lun 23 → jue 26 · el plan del vie 27 va el sáb 28 + dom 29 · desde el LUN 30-nov todo en su fecha. Los SHIP S1, S2 y S3 del vibecoding pasan a los domingos 6, 13 y 20-dic (uno por domingo, junto al de esa semana); el cierre del OUTPUT de Business de cada semana corrida, al sábado siguiente a las 05:30. Horario real respetado: gimnasio sáb 08:30-14:00 · baile sáb y dom 17:00-20:00 · 7 h de sueño (el sábado de 21:00 a 22:00 se estudia → el domingo arranca a las 05:00). Ninguna fecha final cambia (F1 30-dic, NBME 25 jue 10-dic, examen Step 1 lun 6-dic-2027, ENCAPS dom 14-mar) y nada se quita. (Historial: v6.07a lun 9 → v6.07c D1 mié 11 → v6.07d D1 jue 12.)",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -308,24 +308,29 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-07",
       "2026-11-08",
       "2026-11-09",
-      "2026-11-10"
+      "2026-11-10",
+      "2026-11-11"
     ],
     "alias": {
-      "2026-11-11": "2026-11-09",
-      "2026-11-12": "2026-11-10",
-      "2026-11-13": "2026-11-11",
-      "2026-11-16": "2026-11-13",
-      "2026-11-17": "2026-11-16",
-      "2026-11-18": "2026-11-17",
-      "2026-11-19": "2026-11-18",
-      "2026-11-20": "2026-11-19"
+      "2026-11-12": "2026-11-09",
+      "2026-11-13": "2026-11-10",
+      "2026-11-16": "2026-11-12",
+      "2026-11-17": "2026-11-13",
+      "2026-11-18": "2026-11-16",
+      "2026-11-19": "2026-11-17",
+      "2026-11-20": "2026-11-18",
+      "2026-11-23": "2026-11-20",
+      "2026-11-24": "2026-11-23",
+      "2026-11-25": "2026-11-24",
+      "2026-11-26": "2026-11-25",
+      "2026-11-27": "2026-11-26"
     },
     "reparto": {
       "2026-11-14": {
-        "de": "2026-11-12",
+        "de": "2026-11-11",
         "partes": [
           {
-            "de": "2026-11-12",
+            "de": "2026-11-11",
             "bloques": {
               "vibe": 0,
               "syn": -450,
@@ -344,18 +349,18 @@ export const FECHAS_V6: FechasV6 = {
             }
           }
         ],
-        "titulo": "Sábado · 4 bloques del jue 12 antes del gimnasio + Theomed en vivo 15:00 (semana corrida)",
-        "nota": "Hoy (gimnasio 08:30-14:00 · baile 17:00-20:00): 04:15 vibecoding 4/5 · 05:00 SYNAPSE d4 · 07:15 Business D4 · 07:40 LIVIANO d4 (son del plan del jue 12; lo demás de ese día va mañana) · 14:00 revisión semanal (con lo hecho hasta hoy) · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki. El cierre del OUTPUT S1 de Business pasa al sáb 21 05:30 (el OUTPUT se escribe el lun 16). Mañana domingo es día de plan desde las 05:00: a dormir a las 22:00."
+        "titulo": "Sábado · 4 bloques del mié 11 antes del gimnasio + Theomed en vivo 15:00 (semana corrida)",
+        "nota": "Hoy (gimnasio 08:30-14:00 · baile 17:00-20:00): 04:15 vibecoding · 05:00 SYNAPSE · 07:15 Business · 07:40 LIVIANO (son del plan del mié 11; lo demás de ese día va mañana) · 14:00 revisión semanal (con lo hecho hasta hoy) · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki. Mañana domingo es día de plan desde las 05:00: a dormir a las 22:00. El cierre del OUTPUT S1 de Business pasa al sáb 21 a las 05:30 (el OUTPUT se escribe el mar 17)."
       },
       "2026-11-15": {
-        "de": "2026-11-12",
+        "de": "2026-11-11",
         "partes": [
           {
-            "de": "2026-11-12",
+            "de": "2026-11-11",
             "bloques": {
               "anki": 0,
-              "usmle": 0,
-              "eval": -330,
+              "encaps-am": 0,
+              "encaps-pm": -330,
               "rd": -15,
               "aurum": -15,
               "mir": -15,
@@ -363,14 +368,14 @@ export const FECHAS_V6: FechasV6 = {
             }
           }
         ],
-        "titulo": "Domingo · día de plan: el del jue 12 (Step 1 D2 + Day-After 2/6-4/6) (semana corrida)",
-        "nota": "Hoy (baile 17:00-20:00) toca el plan del jue 12: 05:00 Anki con el Day-After 2/6 (triaje) · 07:15-12:00 Step 1 D2 (Day-After 3/6 + pre-test + Pathoma + consolidación) · 12:30 Day-After 4/6 · 13:15 Derma · 14:00 AURUM D4 · 15:00 MIR D4 · 16:00-17:00 ENCAPS (el bloque de las 16:15). El vibecoding 4/5, el SYNAPSE d4, el Business D4 y el LIVIANO d4 ya los hiciste ayer. Sin ENCAPS opcional esta semana; el SHIP S1 pasa al dom 29 (el vibecoding 5/5 es el lun 16)."
+        "titulo": "Domingo · día de plan: el del mié 11 (ENCAPS mañana 2/22) (semana corrida)",
+        "nota": "Hoy (baile 17:00-20:00) toca el plan del mié 11: 05:00 Anki · 07:15-12:00 ENCAPS mañana 2/22 · 12:30 sus cifras, normas y flashcards · 13:15 Research · 14:00 AURUM · 15:00 MIR · 16:00-17:00 ENCAPS (el bloque de las 16:15). El vibecoding, el SYNAPSE, el Business y el LIVIANO del mié 11 ya los hiciste ayer. Sin ENCAPS opcional esta semana; el SHIP S1 pasa al dom 6-dic."
       },
       "2026-11-21": {
-        "de": "2026-11-20",
+        "de": "2026-11-19",
         "partes": [
           {
-            "de": "2026-11-20",
+            "de": "2026-11-19",
             "bloques": {
               "vibe": 0,
               "syn": -450,
@@ -388,6 +393,57 @@ export const FECHAS_V6: FechasV6 = {
             "de": "2026-11-21",
             "bloques": {
               "revision": 0,
+              "theomed-prep": 0,
+              "theomed-vivo": 0,
+              "syn": 0,
+              "anki-sab": 0
+            }
+          }
+        ],
+        "titulo": "Sábado · 4 bloques del jue 19 + cierre del OUTPUT S1 antes del gimnasio + Theomed en vivo 15:00 (semana corrida)",
+        "nota": "Hoy (gimnasio 08:30-14:00 · baile 17:00-20:00): 04:15 vibecoding · 05:00 SYNAPSE · 05:30 cierre del OUTPUT S1 (Business, pendiente del sáb 14) · 07:15 Business · 07:40 LIVIANO (son del plan del jue 19; lo demás de ese día va mañana) · 14:00 revisión semanal (con lo hecho hasta hoy) · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki. Mañana domingo es día de plan desde las 05:00: a dormir a las 22:00. El cierre del OUTPUT S2 pasa al sáb 28 a las 05:30 (el OUTPUT S2 se escribe el lun 23)."
+      },
+      "2026-11-22": {
+        "de": "2026-11-19",
+        "partes": [
+          {
+            "de": "2026-11-19",
+            "bloques": {
+              "anki": 0,
+              "usmle": 0,
+              "eval": -330,
+              "rd": -15,
+              "aurum": -15,
+              "mir": -15,
+              "encaps": -15
+            }
+          }
+        ],
+        "titulo": "Domingo · día de plan: el del jue 19 (Step 1 D4) (semana corrida)",
+        "nota": "Hoy (baile 17:00-20:00) toca el plan del jue 19: 05:00 Anki · 07:15-12:00 Step 1 D4 · 12:30 la franja de las 18:00 (Day-After 6/6 + eval reducida) · 13:15 Research (M2 · Rising Scholars) · 14:00 AURUM · 15:00 MIR · 16:00-17:00 ENCAPS (el bloque de las 16:15). El vibecoding, el SYNAPSE, el Business y el LIVIANO del jue 19 ya los hiciste ayer. Sin ENCAPS opcional esta semana; el SHIP S2 pasa al dom 13-dic."
+      },
+      "2026-11-28": {
+        "de": "2026-11-27",
+        "partes": [
+          {
+            "de": "2026-11-27",
+            "bloques": {
+              "vibe": 0,
+              "syn": -450,
+              "biz": -345,
+              "liv": -575
+            }
+          },
+          {
+            "de": "2026-11-21",
+            "bloques": {
+              "biz": -540
+            }
+          },
+          {
+            "de": "2026-11-28",
+            "bloques": {
+              "revision": 0,
               "biz": 0,
               "theomed-prep": 0,
               "theomed-vivo": 0,
@@ -396,29 +452,27 @@ export const FECHAS_V6: FechasV6 = {
             }
           }
         ],
-        "titulo": "Sábado · 4 bloques del vie 20 + cierre del OUTPUT S1 antes del gimnasio + Theomed en vivo 15:00 (semana corrida)",
-        "nota": "Hoy (gimnasio 08:30-14:00 · baile 17:00-20:00): 04:15 vibecoding S2 5/5 · 05:00 SYNAPSE · 05:30 cierre del OUTPUT S1 (Business, pendiente del sáb 14) · 07:15 Business OUTPUT S2 1/2 · 07:40 LIVIANO (del plan del vie 20) · 14:00 revisión semanal · 14:30 cierre del OUTPUT S2 · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki. Mañana domingo es día de plan desde las 05:00: a dormir a las 22:00."
+        "titulo": "Sábado · 4 bloques del vie 27 + cierre del OUTPUT S2 antes del gimnasio + Theomed en vivo 15:00 (semana corrida)",
+        "nota": "Hoy (gimnasio 08:30-14:00 · baile 17:00-20:00): 04:15 vibecoding · 05:00 SYNAPSE · 05:30 cierre del OUTPUT S2 (Business, pendiente del sáb 21) · 07:15 Business · 07:40 LIVIANO (son del plan del vie 27; lo demás de ese día va mañana) · 14:00 revisión semanal (con lo hecho hasta hoy) · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki. Mañana domingo es día de plan desde las 05:00: a dormir a las 22:00. A las 07:15 escribes el OUTPUT S3 y a las 14:30 lo cierras (hoy mismo)."
       },
-      "2026-11-22": {
-        "de": "2026-11-20",
+      "2026-11-29": {
+        "de": "2026-11-27",
         "partes": [
           {
-            "de": "2026-11-20",
+            "de": "2026-11-27",
             "bloques": {
               "anki": 0,
               "encaps-am": 0,
-              "encaps-pm": -330,
-              "rd": -15,
-              "aurum": -15,
-              "mir": -15,
-              "encaps": -15
+              "rd": 45,
+              "encaps": -75,
+              "encaps-pm": -120
             }
           }
         ],
-        "titulo": "Domingo · día de plan: el del vie 20 (ENCAPS mañana 6/22) (semana corrida)",
-        "nota": "Hoy (baile 17:00-20:00) toca el plan del vie 20: 05:00 Anki · 07:15-12:00 ENCAPS mañana 6/22 · 12:30 sus cifras, normas y flashcards · 13:15 Derma · 14:00 AURUM · 15:00 MIR · 16:00-17:00 ENCAPS (el bloque de las 16:15). El vibecoding, el SYNAPSE, el Business y el LIVIANO del vie 20 ya los hiciste ayer. Sin ENCAPS opcional esta semana; el SHIP S2 pasa al dom 29. Desde mañana, lun 23, todo va en su fecha."
+        "titulo": "Domingo · día de plan: el del vie 27 (ENCAPS mañana 9/22) (semana corrida)",
+        "nota": "Hoy (compromiso personal 12:30-14:00 · baile 17:00-20:00) toca el plan del vie 27: 05:00 Anki · 07:15-12:00 ENCAPS mañana 9/22 · 14:15 Research · 15:00-16:00 ENCAPS (el bloque de las 16:15) · 16:00-16:45 la franja de las 18:00 (SP S8, pendiente de la mañana, + flashcards). AURUM y MIR del vie 27 no caben: pasan al dom 6-dic (12:15 y 13:15). Sin ENCAPS opcional esta semana; el SHIP S3 pasa al dom 20-dic. Desde mañana, lun 30, todo va en su fecha."
       },
-      "2026-11-29": {
+      "2026-12-06": {
         "de": "2026-11-15",
         "partes": [
           {
@@ -429,14 +483,14 @@ export const FECHAS_V6: FechasV6 = {
             }
           },
           {
-            "de": "2026-11-22",
+            "de": "2026-11-27",
             "bloques": {
-              "pc": 0,
-              "feynman": 0
+              "aurum": -120,
+              "mir": -120
             }
           },
           {
-            "de": "2026-11-29",
+            "de": "2026-12-06",
             "bloques": {
               "encaps-dom": 0,
               "pc": 0,
@@ -445,94 +499,123 @@ export const FECHAS_V6: FechasV6 = {
             }
           }
         ],
-        "titulo": "Domingo · SHIP S1 y S2 pendientes + SHIP S3 (flexibles)",
-        "nota": "Hoy se cierran los SHIP del vibecoding que quedaron pendientes por la semana corrida: SHIP S1 y SHIP S2 (2 h cada uno, en orden), y el SHIP S3 de esta semana. Feynman de cada uno, opcional. El ENCAPS opcional de 4 h solo si te sobra energía. Baile 17:00-20:00."
+        "titulo": "Domingo · SHIP S1 pendiente + SHIP S4 · AURUM y MIR del vie 27 · banqueos N°08-N°09",
+        "nota": "Hoy van dos SHIP del vibecoding: el S1, que quedó pendiente por la semana corrida, y el S4 de esta semana (2 h cada uno, en orden; de ejemplo 07:15-11:40, con su Feynman opcional). A las 12:15 AURUM y a las 13:15 MIR: los del viernes 27, que no cupieron el domingo 29. 14:15-14:45 compromiso fijo. 14:45-16:45 ENCAPS: los banqueos grabados N°08 y N°09 de Theomed, en activo (hoy no cabe simulacro). 16:45 Anki · baile 17:00-20:00."
+      },
+      "2026-12-13": {
+        "de": "2026-11-22",
+        "partes": [
+          {
+            "de": "2026-11-22",
+            "bloques": {
+              "pc": 0,
+              "feynman": 0
+            }
+          },
+          {
+            "de": "2026-12-13",
+            "bloques": {
+              "encaps-dom": 0,
+              "pc": 0,
+              "feynman": 0,
+              "anki-dom": 0
+            }
+          }
+        ],
+        "titulo": "Domingo · SHIP S2 pendiente + SHIP S5 · simulacro con RANKING (2 h)",
+        "nota": "Hoy van dos SHIP del vibecoding: el S2, que quedó pendiente por la semana corrida, y el S5 de esta semana (2 h cada uno, en orden; de ejemplo 07:15-11:40, con su Feynman opcional). 12:30-14:00 compromiso personal · 14:15-14:45 compromiso fijo. 14:45-16:45 ENCAPS: el simulacro con RANKING de Theomed del viernes 11, de un tirón (cuenta el primer intento dentro de 89 h, hasta ≈ el martes 15 a las 09:00); la corrección y el registro, el domingo 20 de 14:45 a 16:20. 16:45 Anki · baile 17:00-20:00."
+      },
+      "2026-12-20": {
+        "de": "2026-11-29",
+        "partes": [
+          {
+            "de": "2026-11-29",
+            "bloques": {
+              "pc": 0,
+              "feynman": 0
+            }
+          },
+          {
+            "de": "2026-12-20",
+            "bloques": {
+              "encaps-dom": 0,
+              "pc": 0,
+              "feynman": 0,
+              "anki-dom": 0
+            }
+          }
+        ],
+        "titulo": "Domingo · SHIP S3 pendiente + SHIP S6 · banqueos N°10-N°11 + corrección del simulacro",
+        "nota": "Hoy van dos SHIP del vibecoding: el S3, que quedó pendiente por la semana corrida, y el S6 de esta semana (2 h cada uno, en orden; de ejemplo 07:15-11:40, con su Feynman opcional). ENCAPS: 12:15-14:15 los banqueos grabados N°10 y N°11 de Theomed, en activo · 14:15-14:45 compromiso fijo · 14:45-16:20 la corrección y el registro del simulacro con RANKING del domingo 13. 16:45 Anki · baile 17:00-20:00."
       }
     },
-    "resumen": "SEMANA CORRIDA v6.07c (orden del mar 10: «todo inicia mañana»): lun 9 y mar 10 sin estudio → TODO ARRANCA EL MIÉ 11 (D1 = plan del lun 9, completo) · jue 12 = plan del mar 10 (UWSA1) · vie 13 = plan del mié 11 · el plan del jue 12: sáb 14 (antes del gimnasio) + dom 15 · lun 16 = plan del vie 13 · mar 17 → vie 20 = plan del lun 16 → jue 19 · el plan del vie 20: sáb 21 (antes del gimnasio) + dom 22 · desde el LUN 23-nov todo en su fecha. SHIP S1 y S2 → dom 29. Nada se quita y ninguna fecha final cambia.",
+    "resumen": "SEMANA CORRIDA v6.07d (orden del mié 11: «todo inicia mañana, el 12»): lun 9, mar 10 y mié 11 sin estudio → TODO ARRANCA EL JUE 12 (D1 = plan del lun 9, completo) · vie 13 = plan del mar 10 (UWSA1) · el plan del mié 11: sáb 14 (antes del gimnasio) + dom 15 · lun 16 → vie 20 = plan del jue 12 → mié 18 · el plan del jue 19: sáb 21 + dom 22 · lun 23 → vie 27 = plan del vie 20 → jue 26 · el plan del vie 27: sáb 28 + dom 29 (AURUM y MIR → dom 6-dic, por un compromiso personal el dom 29 12:30-14:00) · desde el LUN 30-nov todo en su fecha. SHIP S1, S2 y S3 → dom 6, 13 y 20-dic. Nada se quita y ninguna fecha final cambia.",
     "reemplazos": {
       "2026-11-09": [
         {
           "frente": "encaps",
           "a": "Hoy 19:30 en vivo INV 1/4 (en diferido: audio en tiempos muertos; el PPT el domingo).",
-          "por": "El en vivo INV 1/4 fue el lunes 9 a las 19:30 (va en diferido: audio en tiempos muertos; el PPT, en un hueco de la semana: este domingo es día de plan)."
+          "por": "El en vivo INV 1/4 fue el lunes 9 a las 19:30 (va en diferido: audio en tiempos muertos; el PPT, en un hueco de la semana: este domingo 15 es día de plan)."
         },
         {
           "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del lunes 16, el mini-sim #5"
+          "a": "override del viernes (no cambia el tema de mañana)",
+          "por": "override del martes 17, tras el mini-sim #5 (no cambia el tema de mañana)"
         },
         {
           "frente": "usmle",
           "a": "y en F1 tiene mañana solo los mar · jue.",
-          "por": "y en F1 tiene mañana los mar · jue (estas dos semanas, corridas: el jueves 12, el domingo 15, el miércoles 18 y el viernes 20)."
-        }
-      ],
-      "2026-11-10": [
-        {
-          "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del lunes 16, el mini-sim #5"
-        },
-        {
-          "frente": "usmle",
-          "a": "Del D1 al D4 la franja de las 18:00 es la revisión del UWSA1",
-          "por": "Del D1 al D4 la franja de las 18:00 (el domingo 15, a las 12:30) es la revisión del UWSA1"
-        },
-        {
-          "frente": "usmle",
-          "a": "4/6 jue 12 18:00",
-          "por": "4/6 jue 12 12:30"
-        },
-        {
-          "frente": "usmle",
-          "a": "Los lun · mié · vie son de ENCAPS: no llevan Day-After.",
-          "por": "Las mañanas ENCAPS no llevan Day-After (estas dos semanas, corridas, el Day-After cae también el domingo 15, el miércoles 18 y el viernes 20)."
-        },
-        {
-          "frente": "usmle",
-          "a": "D1 DEL STEP 1 (v6.07) =",
-          "por": "D1 DEL STEP 1 (v6.07c) ="
-        },
-        {
-          "frente": "usmle",
-          "a": "· D1 mar 10-nov (v6.07)",
-          "por": "· D1 mar 10-nov (v6.07c)"
-        },
-        {
-          "frente": "usmle",
-          "a": "→ v6.07 (8-nov): UWSA1 MAR 10-NOV.",
-          "por": "→ v6.07 (8-nov): UWSA1 MAR 10-NOV → v6.07a (9-nov): miércoles 11 → v6.07c (10-nov): JUE 12-NOV."
-        }
-      ],
-      "2026-11-11": [
-        {
-          "frente": "encaps",
-          "a": "10 tarjetas del lunes",
-          "por": "10 tarjetas del miércoles"
-        },
-        {
-          "frente": "encaps",
-          "a": "errores del lunes",
-          "por": "errores del miércoles"
-        },
-        {
-          "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del lunes 16, el mini-sim #5"
+          "por": "y en F1 tiene mañana los mar · jue (hasta el domingo 29, corridos: el viernes 13, el lunes 16, el jueves 19, el domingo 22, el miércoles 25 y el viernes 27)."
         },
         {
           "frente": "encaps",
           "a": "★ para mañana a las 05:30.",
-          "por": "★ para el lunes 16 a las 05:30 (el sábado no hay repaso ENCAPS y el domingo 15 las 05:00 son del triaje del UWSA1)."
+          "por": "★ para el domingo 15 a las 05:30 (mañana viernes, de 05:00 a 05:45, va la configuración de Anki del UWSA1)."
+        }
+      ],
+      "2026-11-10": [
+        {
+          "frente": "usmle",
+          "a": "· D1 mar 10-nov (v6.07)",
+          "por": "· D1 mar 10-nov (v6.07d)"
         },
         {
           "frente": "usmle",
-          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
-          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el jueves 12 y el domingo 15; la próxima, el miércoles 18 y el viernes 20);"
+          "a": "D1 DEL STEP 1 (v6.07) =",
+          "por": "D1 DEL STEP 1 (v6.07d) ="
+        },
+        {
+          "frente": "usmle",
+          "a": "6/6 + eval reducida jue 19-nov 18:00",
+          "por": "6/6 + eval reducida dom 22-nov a las 12:30 (domingo de plan)"
+        },
+        {
+          "frente": "usmle",
+          "a": "Los lun · mié · vie son de ENCAPS: no llevan Day-After.",
+          "por": "Los días de ENCAPS no llevan Day-After (con la semana corrida, las 6 franjas caen el vie 13, el lun 16, el jue 19 y el dom 22)."
+        },
+        {
+          "frente": "usmle",
+          "a": "→ v6.07 (8-nov): UWSA1 MAR 10-NOV.",
+          "por": "→ v6.07 (8-nov): UWSA1 MAR 10-NOV → v6.07a-c (semanas corridas: UWSA1 mié 11 y jue 12-nov; no se hizo) → v6.07d (11-nov): UWSA1 VIE 13-NOV."
+        },
+        {
+          "frente": "usmle",
+          "a": "mañana a las 05:00 (el mazo sigue vacío)",
+          "por": "el sábado 14 a las 21:30, en el Anki del sábado (el mazo sigue vacío)"
+        },
+        {
+          "frente": "usmle",
+          "a": "Del D1 al D4 la franja de las 18:00 es la revisión del UWSA1 (Day-After ~4 h repartido mar 10 18:00 → jue 19 18:00, con los días sin Step en medio)",
+          "por": "Del D1 al D4 la franja de las 18:00 (la del D4, el domingo 22, va a las 12:30) es la revisión del UWSA1 (Day-After ~4 h repartido del viernes 13 a las 18:00 al domingo 22 a las 12:30, con los días sin Step en medio)"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes (no cambia el tema de mañana)",
+          "por": "override del martes 17, tras el mini-sim #5 (no cambia el tema de mañana)"
         }
       ],
-      "2026-11-12": [
+      "2026-11-11": [
         {
           "frente": "vibecoding",
           "a": "05:00 = Anki sin excepción.",
@@ -565,35 +648,102 @@ export const FECHAS_V6: FechasV6 = {
         },
         {
           "frente": "usmle",
-          "a": "jue 12 18:00 · mar 17 18:00",
-          "por": "domingo 15 12:30 · mar 17 18:00"
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (hasta el domingo 29, corridos: mañana lunes 16, el jueves 19, el domingo 22, el miércoles 25 y el viernes 27); hoy la mañana 07:15-12:00 y las 12:30 son de ENCAPS."
         },
         {
           "frente": "encaps",
-          "a": "5Q del código de AYER V-2",
-          "por": "5Q del código del VIERNES 13, V-2"
+          "a": "y las 18:00 son de ENCAPS",
+          "por": "y las 12:30 son de ENCAPS"
         },
         {
           "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del lunes 16, el mini-sim #5"
+          "a": "10 tarjetas del lunes",
+          "por": "10 tarjetas del jueves 12"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del lunes",
+          "por": "errores del jueves 12"
+        },
+        {
+          "frente": "encaps",
+          "a": "Lo que no veas hoy va a las 18:00.",
+          "por": "Lo que no veas hoy va a las 12:30."
+        },
+        {
+          "frente": "encaps",
+          "a": "5Q del código de AYER I-3",
+          "por": "5Q del código del VIERNES 13, I-3"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes (no cambia el tema de mañana)",
+          "por": "override del martes 17, tras el mini-sim #5 (no cambia el tema de mañana)"
+        },
+        {
+          "frente": "mir",
+          "a": "sin repasos: revisa las tarjetas de ayer.",
+          "por": "sin repasos: revisa las tarjetas del viernes 13 (tu última sesión MIR)."
+        },
+        {
+          "frente": "encaps",
+          "a": "★ para mañana a las 05:30.",
+          "por": "★ para el martes 17 a las 05:30 (mañana lunes, de 05:00 a 05:45, va el triaje del UWSA1)."
+        },
+        {
+          "frente": "encaps",
+          "a": "ENCAPS::Cifras · vencidas",
+          "por": "ENCAPS::Cifras · vencidas (y las ★ del jueves 12)"
+        }
+      ],
+      "2026-11-12": [
+        {
+          "frente": "usmle",
+          "a": "(mar 10 18:00 · jue 12 05:00 · jue 12 07:15 · jue 12 18:00 · mar 17 18:00 · jue 19 18:00 = 253′)",
+          "por": "(el viernes 13 a las 18:00 · hoy a las 05:00, a las 07:15 y a las 18:00 · el jueves 19 a las 18:00 · el domingo 22 a las 12:30 = 253′)"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes (no cambia el tema de mañana)",
+          "por": "override del martes 17, tras el mini-sim #5 (no cambia el tema de mañana)"
         }
       ],
       "2026-11-13": [
         {
+          "frente": "business",
+          "a": "OUTPUT = 40′: 25′ hoy + 15′ en el cierre del sáb 14-nov (tracker + cierre).",
+          "por": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 21 a las 05:30, antes del gimnasio (tracker + cierre)."
+        },
+        {
+          "frente": "business",
+          "a": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 14:30 (tracker + cierre).",
+          "por": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 21 a las 05:30, antes del gimnasio (tracker + cierre)."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "sáb dom 15-nov",
+          "por": "dom 15-nov"
+        },
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (hasta el domingo 29, corridos: el jueves 19, el domingo 22, el miércoles 25 y el viernes 27);"
+        },
+        {
           "frente": "encaps",
           "a": "10 tarjetas del miércoles",
-          "por": "10 tarjetas del viernes 13"
+          "por": "10 tarjetas del domingo 15"
         },
         {
           "frente": "encaps",
           "a": "errores del miércoles",
-          "por": "errores del viernes 13"
+          "por": "errores del domingo 15"
         },
         {
           "frente": "encaps",
           "a": "Hoy 16:00 Theomed abre simulacro (si se publica): se rinde el DOMINGO 15 (cuenta el primer intento dentro de 89 h).",
-          "por": "El viernes 13 a las 16:00 Theomed abrió su simulacro (si se publicó): el primer intento cuenta para el ranking dentro de 89 h, hasta el martes 17 a las 09:00; esta semana no tiene hueco fijo (el domingo 15 fue día de plan)."
+          "por": "El viernes 13 a las 16:00 Theomed abrió su simulacro (si se publicó): para el ranking cuenta el primer intento dentro de 89 h, hasta hoy a las 09:00 (esta semana no hubo hueco fijo: el domingo 15 fue día de plan)."
         },
         {
           "frente": "encaps",
@@ -602,8 +752,8 @@ export const FECHAS_V6: FechasV6 = {
         },
         {
           "frente": "encaps",
-          "a": "★ para el lunes a las 05:30",
-          "por": "★ para mañana a las 05:30"
+          "a": "★ para el lunes a las 05:30.",
+          "por": "★ para mañana a las 05:30."
         },
         {
           "frente": "business",
@@ -611,51 +761,56 @@ export const FECHAS_V6: FechasV6 = {
           "por": "El sábado 21 a las 05:30 (antes del gimnasio): tracker semanal + cierre (15′)."
         },
         {
-          "frente": "usmle",
-          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
-          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 18 y el viernes 20);"
-        },
-        {
           "frente": "encaps",
           "a": "ENCAPS::Cifras · vencidas",
-          "por": "ENCAPS::Cifras · vencidas (y las ★ del viernes 13)"
-        },
-        {
-          "frente": "business",
-          "a": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 14:30 (tracker + cierre).",
-          "por": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 21 a las 05:30 (tracker + cierre, antes del gimnasio)."
-        },
-        {
-          "frente": "vibecoding",
-          "a": "sáb dom 15-nov",
-          "por": "dom 15-nov"
+          "por": "ENCAPS::Cifras · vencidas (y las ★ del domingo 15)"
         }
       ],
       "2026-11-14": [
         {
           "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "simulacro del domingo (esta semana no hubo: el plan arrancó el jueves 12)"
+        },
+        {
+          "frente": "revision",
           "a": "mini-sim /25 del viernes",
-          "por": "mini-sim /25 (esta semana va el lunes 16 a las 16:15: déjalo «pendiente»)"
+          "por": "mini-sim /25 (esta semana va el martes 17 a las 16:15: déjalo «pendiente»)"
+        },
+        {
+          "frente": "revision",
+          "a": "runners ENCAPS del lun 16-nov al jue 19-nov generados (eval + banco; E4)",
+          "por": "runners ENCAPS de los días de plan 16 al 19 de noviembre generados (eval + banco; E4; se usan del miércoles 18 al domingo 22)"
+        },
+        {
+          "frente": "revision",
+          "a": "velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas",
+          "por": "velocidad de vídeo USMLE de la S2 = 1,25× solo si el free recall del D2 recoge ≥ 3 ideas (esta semana el D2 va el lunes 16: decídelo ese día)"
+        },
+        {
+          "frente": "revision",
+          "a": "el journal 2026-W47 lo crea el lunes journal_hoy.js.",
+          "por": "el journal 2026-W47 lo crea journal_hoy.js el miércoles 18 (el lunes 16 y el martes 17 todavía escriben en el 2026-W46: son el vibecoding 4/5 y 5/5 de la S1)."
         },
         {
           "frente": "encaps",
           "a": "(el domingo o al empezar el banqueo del lunes 09:45)",
-          "por": "(al empezar el banqueo del lunes 16 a las 09:45: este domingo es día de plan)"
+          "por": "(al empezar el banqueo de mañana domingo 15 a las 09:45 si ya está publicado; si no, en el del martes 17 a las 09:45: el lunes 16 es día de Step)"
         },
         {
           "frente": "encaps",
           "a": "la grabación en el ENCAPS del domingo (tramos que el PPT no explica, a 1,75-2×) y el resto en audio.",
-          "por": "la grabación en un hueco de la semana, porque este domingo es día de plan y no hay ENCAPS opcional (los tramos que el PPT no explica, a 1,75-2×, y el resto en audio)."
+          "por": "la grabación en un hueco de la semana, porque este domingo 15 es día de plan y no hay ENCAPS opcional (los tramos que el PPT no explica, a 1,75-2×, y el resto en audio)."
         },
         {
           "frente": "synapse",
           "a": "Retoma donde paraste el lunes.",
-          "por": "Retoma donde paraste el miércoles 11 (el d1)."
+          "por": "Retoma donde paraste el jueves 12 (el d1)."
         },
         {
           "frente": "synapse",
           "a": "El SHIP del vibecoding es el domingo.",
-          "por": "El SHIP S1 del vibecoding pasa al domingo 29 (mañana domingo es día de plan)."
+          "por": "El SHIP S1 del vibecoding pasa al domingo 6 de diciembre (mañana domingo es día de plan)."
         },
         {
           "frente": "synapse",
@@ -664,23 +819,23 @@ export const FECHAS_V6: FechasV6 = {
         },
         {
           "frente": "usmle",
+          "a": "(las del viernes esperan al lunes)",
+          "por": "(las del viernes 13 van mañana domingo, en el Anki de las 05:00)"
+        },
+        {
+          "frente": "usmle",
           "a": "y la cola de vídeo: ≈101′ de B&B + 12′ de Palmerton que se ven",
-          "por": "y la cola de vídeo: 12′ de Palmerton (los ≈101′ de B&B se suman mañana domingo, con el D2), que se ven"
+          "por": "y la cola de vídeo: 12′ de Palmerton (los ≈101′ de B&B se suman el lunes 16, con el D2), que se ven"
         },
         {
           "frente": "business",
-          "a": "(mismos datos de la revisión de las 14:00)",
-          "por": "(mismos datos de la revisión del sábado 14)"
+          "a": "Del OUTPUT del vie 13: la fila se llena con la semana cerrada (mismos datos de la revisión de las 14:00).",
+          "por": "Del OUTPUT S1 (lo escribiste el martes 17): la fila se llena con la semana S1 cerrada (mismos datos de la revisión del sábado 14)."
         },
         {
           "frente": "business",
           "a": "25′ el día del OUTPUT + 15′ tras la revisión semanal",
-          "por": "25′ el día del OUTPUT (el de la S1, el lunes 16) + 15′ de cierre, hoy a las 05:30 antes del gimnasio"
-        },
-        {
-          "frente": "revision",
-          "a": "el journal 2026-W47 lo crea el lunes journal_hoy.js.",
-          "por": "el journal 2026-W47 lo crea journal_hoy.js el martes 17 (el lunes 16 todavía escribe en el 2026-W46: es el vibecoding 5/5 de la S1)."
+          "por": "25′ el día del OUTPUT (el de la S1, el martes 17) + 15′ de cierre, hoy a las 05:30 antes del gimnasio"
         }
       ],
       "2026-11-15": [
@@ -692,12 +847,22 @@ export const FECHAS_V6: FechasV6 = {
         {
           "frente": "vibecoding",
           "a": "`node DATA/_scripts/journal_hoy.js --abrir` → cabecera «Criterios de aceptación» (4).",
-          "por": "Abre D:/synapse-journal/journal/2026-W46.md, el journal de la S1 (hoy `journal_hoy.js --abrir` abriría el de la S3) → cabecera «Criterios de aceptación» (4)."
+          "por": "Abre D:/synapse-journal/journal/2026-W46.md, el journal de la S1 (hoy `journal_hoy.js --abrir` abriría el de la S4) → cabecera «Criterios de aceptación» (4)."
         },
         {
           "frente": "vibecoding",
           "a": "(la franja 15:00-17:00 es solo un ejemplo)",
-          "por": "(07:25-09:25 es solo un ejemplo: hoy van tres SHIP y este es el primero)"
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S1, que quedó pendiente por la semana corrida, y va antes del S4)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S1, que quedó pendiente por la semana corrida, y va antes del S4)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "cierra el proyecto de la semana.",
+          "por": "cierra el proyecto de la S1."
         },
         {
           "frente": "vibecoding",
@@ -713,28 +878,38 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-16": [
         {
           "frente": "encaps",
+          "a": "fallé en el mini-sim del viernes (te pego los enunciados)",
+          "por": "fallé en el mini-sim de ayer, martes 17 (te pego los enunciados)"
+        },
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el lunes 16, el jueves 19 y el domingo 22);"
+        },
+        {
+          "frente": "encaps",
           "a": "(y las ★ del viernes)",
           "por": "(y las ★ de ayer)"
         },
         {
           "frente": "encaps",
           "a": "10 tarjetas del viernes",
-          "por": "10 tarjetas de ayer (lunes 16)"
+          "por": "10 tarjetas de ayer (martes 17)"
         },
         {
           "frente": "encaps",
           "a": "errores del viernes",
-          "por": "errores de ayer (lunes 16)"
+          "por": "errores de ayer (martes 17)"
+        },
+        {
+          "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(y las del simulacro de Theomed del viernes 13, si ya lo hiciste)"
         },
         {
           "frente": "encaps",
           "a": "mini-sim del viernes",
-          "por": "mini-sim de ayer (lunes 16)"
-        },
-        {
-          "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del domingo 22 (mini-sim #10)"
+          "por": "mini-sim de ayer (martes 17)"
         },
         {
           "frente": "encaps",
@@ -742,17 +917,27 @@ export const FECHAS_V6: FechasV6 = {
           "por": "Eval de hoy sin runner"
         },
         {
-          "frente": "usmle",
-          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
-          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 18 y el viernes 20);"
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del lunes 23, tras el mini-sim #10"
         },
         {
           "frente": "encaps",
-          "a": "(y las del simulacro del domingo, si lo hiciste)",
-          "por": "(y las del simulacro de Theomed del viernes 13, si ya lo hiciste)"
+          "a": "★ para mañana a las 05:30.",
+          "por": "★ para el viernes 20 a las 05:30 (mañana jueves, de 05:00 a 05:45, va el Step 1)."
+        },
+        {
+          "frente": "encaps",
+          "a": "la eval del lunes (5Q de fallos previos del registro, P2) se genera aparte",
+          "por": "la eval de hoy (5Q de fallos previos del registro, P2) se genera aparte"
         }
       ],
       "2026-11-17": [
+        {
+          "frente": "research-derma",
+          "a": "18-sep → 17-nov-2026",
+          "por": "20-sep → 19-nov-2026 (los 60 días hasta hoy; si el enlace corta el 17-nov, amplía la fecha final a hoy)"
+        },
         {
           "frente": "usmle",
           "a": "a las 120 h",
@@ -761,78 +946,46 @@ export const FECHAS_V6: FechasV6 = {
         {
           "frente": "encaps",
           "a": "override del viernes",
-          "por": "override del domingo 22 (mini-sim #10)"
+          "por": "override del lunes 23, tras el mini-sim #10"
         }
       ],
       "2026-11-18": [
         {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el lunes 16, el jueves 19 y el domingo 22);"
+        },
+        {
           "frente": "encaps",
           "a": "10 tarjetas del lunes",
-          "por": "10 tarjetas del martes 17"
+          "por": "10 tarjetas del miércoles 18"
         },
         {
           "frente": "encaps",
           "a": "errores del lunes",
-          "por": "errores del martes 17"
+          "por": "errores del miércoles 18"
         },
         {
           "frente": "encaps",
           "a": "override del viernes",
-          "por": "override del domingo 22 (mini-sim #10)"
+          "por": "override del lunes 23, tras el mini-sim #10"
         },
         {
-          "frente": "usmle",
-          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
-          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 18 y el viernes 20);"
+          "frente": "encaps",
+          "a": "★ para mañana a las 05:30.",
+          "por": "★ para el lunes 23 a las 05:30 (mañana sábado no hay repaso ENCAPS y el domingo 22, día de Step 1, el Anki llega hasta las 05:45)."
+        },
+        {
+          "frente": "encaps",
+          "a": "ENCAPS::Cifras · vencidas",
+          "por": "ENCAPS::Cifras · vencidas (y las ★ del miércoles 18)"
         }
       ],
       "2026-11-19": [
         {
           "frente": "encaps",
-          "a": "override del viernes",
-          "por": "override del domingo 22 (mini-sim #10)"
-        }
-      ],
-      "2026-11-20": [
-        {
-          "frente": "vibecoding",
-          "a": "Lo que falle va al SHIP del domingo.",
-          "por": "Lo que falle va al SHIP del domingo 29 (este domingo 22 es día de plan)."
-        },
-        {
-          "frente": "encaps",
-          "a": "10 tarjetas del miércoles",
-          "por": "10 tarjetas del jueves 19"
-        },
-        {
-          "frente": "encaps",
-          "a": "errores del miércoles",
-          "por": "errores del jueves 19"
-        },
-        {
-          "frente": "encaps",
-          "a": "y las 18:00 son de ENCAPS",
-          "por": "y las 12:30 son de ENCAPS"
-        },
-        {
-          "frente": "usmle",
-          "a": "y las 18:00 son de ENCAPS",
-          "por": "y las 12:30 son de ENCAPS"
-        },
-        {
-          "frente": "encaps",
-          "a": "Lo que no veas hoy va a las 18:00.",
-          "por": "Lo que no veas hoy va a las 12:30."
-        },
-        {
-          "frente": "encaps",
-          "a": "dos viernes seguidos",
-          "por": "dos mini-sims seguidos"
-        },
-        {
-          "frente": "mir",
-          "a": "sin repasos: revisa las tarjetas de ayer.",
-          "por": "sin repasos: revisa las tarjetas del viernes 20 (tu última sesión MIR)."
+          "a": "la eval (IV-1, código de ayer)",
+          "por": "la eval (IV-1, código del viernes 20)"
         },
         {
           "frente": "vibecoding",
@@ -850,46 +1003,118 @@ export const FECHAS_V6: FechasV6 = {
           "por": "deja A para el lunes 23 (mañana domingo no hay SYNAPSE)."
         },
         {
+          "frente": "business",
+          "a": "Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.",
+          "por": "Hoy sábado Business va de 07:15 a 07:40, antes del gimnasio de las 08:30; en ÁMBAR, solo 07:15-07:30."
+        },
+        {
+          "frente": "business",
+          "a": "el tramo pasa al de mañana",
+          "por": "el tramo pasa al del lunes 23, porque mañana domingo no hay Business"
+        },
+        {
           "frente": "liviano",
           "a": "la lectura pasa a mañana.",
           "por": "la lectura pasa al lunes 23 (mañana domingo no hay LIVIANO)."
         },
         {
+          "frente": "usmle",
+          "a": "a las 48 h",
+          "por": "a las 72 h"
+        },
+        {
+          "frente": "mir",
+          "a": "sin repasos: revisa las tarjetas de ayer.",
+          "por": "sin repasos: revisa las tarjetas del viernes 20 (tu última sesión MIR)."
+        },
+        {
+          "frente": "encaps",
+          "a": "5Q del código de AYER IV-1",
+          "por": "5Q del código del VIERNES 20, IV-1"
+        },
+        {
+          "frente": "encaps",
+          "a": "rehechas desde tus fallos de ayer",
+          "por": "rehechas desde tus fallos del viernes 20"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del lunes 23, tras el mini-sim #10"
+        }
+      ],
+      "2026-11-20": [
+        {
           "frente": "business",
-          "a": "El sábado 14:30 (tras la revisión semanal): tracker semanal + cierre (15′).",
-          "por": "Hoy a las 14:30 (tras la revisión semanal): tracker semanal + cierre (15′)."
+          "a": "OUTPUT = 40′: 25′ hoy + 15′ en el cierre del sáb 21-nov (tracker + cierre).",
+          "por": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 28 a las 05:30, antes del gimnasio (tracker + cierre)."
         },
         {
           "frente": "business",
           "a": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 14:30 (tracker + cierre).",
-          "por": "OUTPUT = 40′: 25′ ahora + 15′ hoy a las 14:30 (tracker + cierre)."
+          "por": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 28 a las 05:30, antes del gimnasio (tracker + cierre)."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "Lo que falle va al SHIP del domingo.",
+          "por": "Lo que falle va al SHIP S2, que pasa al domingo 13 de diciembre."
+        },
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 25 y el viernes 27);"
+        },
+        {
+          "frente": "encaps",
+          "a": "ENCAPS::Cifras · vencidas",
+          "por": "ENCAPS::Cifras · vencidas (y las ★ del viernes 20)"
+        },
+        {
+          "frente": "encaps",
+          "a": "10 tarjetas del miércoles",
+          "por": "10 tarjetas del viernes 20"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del miércoles",
+          "por": "errores del viernes 20"
+        },
+        {
+          "frente": "encaps",
+          "a": "dos viernes seguidos",
+          "por": "dos mini-sims seguidos"
+        },
+        {
+          "frente": "encaps",
+          "a": "★ para el lunes a las 05:30.",
+          "por": "★ para mañana a las 05:30."
+        },
+        {
+          "frente": "business",
+          "a": "El sábado 14:30 (tras la revisión semanal): tracker semanal + cierre (15′).",
+          "por": "El sábado 28 a las 05:30 (antes del gimnasio): tracker semanal + cierre (15′)."
+        },
+        {
+          "frente": "synapse",
+          "a": "— tramo 2 (termínalo)",
+          "por": "— minutos 20:00-30:00 (el tramo de 10:00-20:00 lo oíste el sábado 21)"
         }
       ],
       "2026-11-21": [
         {
           "frente": "revision",
           "a": "mini-sim /25 del viernes",
-          "por": "mini-sim /25 (esta semana, el #5 del lunes 16; el #10 va mañana domingo a las 16:00: déjalo «pendiente»)"
+          "por": "mini-sim /25 (esta semana, el #5 del martes 17; el #10 va el lunes 23)"
         },
         {
-          "frente": "synapse",
-          "a": "Retoma donde paraste el viernes",
-          "por": "Retoma donde paraste hoy a las 05:00"
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "simulacro de Theomed (si lo hiciste: el domingo 15 fue día de plan)"
         },
         {
-          "frente": "synapse",
-          "a": "El SHIP del vibecoding es el domingo.",
-          "por": "El SHIP del vibecoding de esta semana pasa al domingo 29 (con el de la S1)."
-        },
-        {
-          "frente": "usmle",
-          "a": "(las del viernes esperan al lunes)",
-          "por": "(las del viernes 20 van mañana domingo, en el Anki de las 05:00)"
-        },
-        {
-          "frente": "synapse",
-          "a": "deja A para mañana.",
-          "por": "deja A para el lunes 23 (mañana domingo no hay SYNAPSE)."
+          "frente": "encaps",
+          "a": "(el domingo o al empezar el banqueo del lunes 09:45)",
+          "por": "(al empezar el banqueo del lunes 23 a las 09:45: mañana domingo es día de plan)"
         },
         {
           "frente": "encaps",
@@ -897,14 +1122,44 @@ export const FECHAS_V6: FechasV6 = {
           "por": "la grabación en un hueco de la semana, porque este domingo es día de plan y no hay ENCAPS opcional (los tramos que el PPT no explica, a 1,75-2×, y el resto en audio)."
         },
         {
-          "frente": "encaps",
-          "a": "(el domingo o al empezar el banqueo del lunes 09:45)",
-          "por": "(al empezar el banqueo del lunes 23 a las 09:45: este domingo es día de plan)"
+          "frente": "synapse",
+          "a": "→ minutos 20:00-30:00",
+          "por": "→ minutos 10:00-20:00"
+        },
+        {
+          "frente": "synapse",
+          "a": "Retoma donde paraste el viernes (2 tramos de 10′ ya vistos)",
+          "por": "Retoma donde paraste el martes 17 (1 tramo de 10′ ya visto; el siguiente, 20:00-30:00, va el lunes 23)"
+        },
+        {
+          "frente": "synapse",
+          "a": "El SHIP del vibecoding es el domingo.",
+          "por": "El SHIP S2 del vibecoding pasa al domingo 13 de diciembre (mañana domingo es día de plan)."
+        },
+        {
+          "frente": "synapse",
+          "a": "deja A para mañana.",
+          "por": "deja A para el lunes 23 (mañana domingo no hay SYNAPSE)."
+        },
+        {
+          "frente": "usmle",
+          "a": "(las del viernes esperan al lunes)",
+          "por": "(las que queden en la cola van mañana domingo, en el Anki de las 05:00)"
+        },
+        {
+          "frente": "usmle",
+          "a": "→ el lunes, protocolo de backlog",
+          "por": "→ mañana domingo a las 05:00 (día de plan), protocolo de backlog"
         },
         {
           "frente": "business",
-          "a": "Del OUTPUT del vie 20:",
-          "por": "Del OUTPUT de esta mañana (07:15):"
+          "a": "Del OUTPUT del vie 20: la fila se llena con la semana cerrada (mismos datos de la revisión de las 14:00).",
+          "por": "Del OUTPUT S2 (lo escribiste el lunes 23): la fila se llena con la semana S2 cerrada (mismos datos de la revisión del sábado 21)."
+        },
+        {
+          "frente": "business",
+          "a": "25′ el día del OUTPUT + 15′ tras la revisión semanal",
+          "por": "25′ el día del OUTPUT (el de la S2, el lunes 23) + 15′ de cierre, hoy a las 05:30 antes del gimnasio"
         }
       ],
       "2026-11-22": [
@@ -916,17 +1171,27 @@ export const FECHAS_V6: FechasV6 = {
         {
           "frente": "vibecoding",
           "a": "`node DATA/_scripts/journal_hoy.js --abrir` → cabecera «Criterios de aceptación» (4).",
-          "por": "Abre D:/synapse-journal/journal/2026-W47.md, el journal de la S2 (hoy `journal_hoy.js --abrir` abriría el de la S3) → cabecera «Criterios de aceptación» (4)."
+          "por": "Abre D:/synapse-journal/journal/2026-W47.md, el journal de la S2 (hoy `journal_hoy.js --abrir` abriría el de la S5) → cabecera «Criterios de aceptación» (4)."
         },
         {
           "frente": "vibecoding",
           "a": "(la franja 15:00-17:00 es solo un ejemplo)",
-          "por": "(09:40-11:40 es solo un ejemplo: el segundo de los tres SHIP de hoy)"
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S2, que quedó pendiente por la semana corrida, y va antes del S5)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S2, que quedó pendiente por la semana corrida, y va antes del S5)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "cierra el proyecto de la semana.",
+          "por": "cierra el proyecto de la S2."
         },
         {
           "frente": "vibecoding",
           "a": "(14:50-15:00 es solo un ejemplo)",
-          "por": "(09:30-09:40 es solo un ejemplo)"
+          "por": "(07:15-07:25 es solo un ejemplo)"
         },
         {
           "frente": "vibecoding",
@@ -937,71 +1202,504 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-23": [
         {
           "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(y las del simulacro antiguo, si lo hiciste en algún hueco)"
+        },
+        {
+          "frente": "encaps",
+          "a": "fallé en el mini-sim del viernes (te pego los enunciados)",
+          "por": "fallé en el mini-sim de ayer, lunes 23 (te pego los enunciados)"
+        },
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 25 y el viernes 27);"
+        },
+        {
+          "frente": "encaps",
           "a": "(y las ★ del viernes)",
-          "por": "(y las ★ de ayer, domingo 22)"
+          "por": "(y las ★ de ayer)"
         },
         {
           "frente": "encaps",
           "a": "10 tarjetas del viernes",
-          "por": "10 tarjetas del domingo 22"
+          "por": "10 tarjetas de ayer (lunes 23)"
         },
         {
           "frente": "encaps",
           "a": "errores del viernes",
-          "por": "errores del domingo 22"
+          "por": "errores de ayer (lunes 23)"
         },
         {
           "frente": "encaps",
           "a": "mini-sim del viernes",
-          "por": "mini-sim de ayer (domingo 22)"
+          "por": "mini-sim de ayer (lunes 23)"
         },
         {
           "frente": "encaps",
-          "a": "(y las del simulacro del domingo, si lo hiciste)",
-          "por": "(y las del simulacro de Theomed del viernes 20, si ya lo hiciste)"
+          "a": "Eval del lunes sin runner",
+          "por": "Eval de hoy sin runner"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 29, tras el mini-sim #15"
+        },
+        {
+          "frente": "encaps",
+          "a": "★ para mañana a las 05:30.",
+          "por": "★ para el jueves 26 a las 05:30 (mañana miércoles, de 05:00 a 05:45, va el Step 1)."
         }
       ],
       "2026-11-24": [
         {
           "frente": "usmle",
           "a": "a las 120 h",
-          "por": "a las 96 h"
+          "por": "a las 72 h"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 29, tras el mini-sim #15"
+        }
+      ],
+      "2026-11-25": [
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida: el miércoles 25 y el viernes 27);"
+        },
+        {
+          "frente": "encaps",
+          "a": "10 tarjetas del lunes",
+          "por": "10 tarjetas del martes 24"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del lunes",
+          "por": "errores del martes 24"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 29, tras el mini-sim #15"
+        },
+        {
+          "frente": "encaps",
+          "a": "ENCAPS::Cifras · vencidas",
+          "por": "ENCAPS::Cifras · vencidas (y las ★ del martes 24)"
+        }
+      ],
+      "2026-11-26": [
+        {
+          "frente": "usmle",
+          "a": "o mañana a las 05:00",
+          "por": "o mañana sábado en el Anki de las 21:30"
+        },
+        {
+          "frente": "encaps",
+          "a": "override del viernes",
+          "por": "override del domingo 29, tras el mini-sim #15"
         }
       ],
       "2026-11-27": [
         {
           "frente": "encaps",
           "a": "Hoy 16:00 Theomed abre simulacro → domingo 29.",
-          "por": "Hoy 16:00 Theomed abre simulacro → domingo 29, solo si te sobra energía tras los SHIP S1-S3 (el ranking cuenta el primer intento hasta el martes 1 de diciembre a las 09:00)."
+          "por": "El viernes 27 a las 16:00 Theomed abría su simulacro (fecha proyectada por la cadencia quincenal: confírmala en el campus). Hoy domingo es día de plan, así que el hueco lo decides tú (para el ranking cuenta el primer intento hasta el martes 1 de diciembre a las 09:00)."
+        },
+        {
+          "frente": "encaps",
+          "a": "Con esto queda al día el atraso de Theomed.",
+          "por": "Con esto quedan al día las sesiones de Theomed atrasadas (los banqueos grabados N°08 a N°11 van los domingos 6 y 20 de diciembre)."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "05:00 = Anki sin excepción.",
+          "por": "05:00 = SYNAPSE (hoy sábado el Anki es a las 21:30)."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "nunca el Anki de las 05:00.",
+          "por": "nunca el SYNAPSE de las 05:00 ni el Anki de las 21:30."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "Lo que falle va al SHIP del domingo.",
+          "por": "Lo que falle va al SHIP S3, que pasa al domingo 20 de diciembre (mañana domingo es día de plan)."
+        },
+        {
+          "frente": "synapse",
+          "a": "deja A para mañana.",
+          "por": "deja A para el lunes 30 (mañana domingo no hay SYNAPSE)."
+        },
+        {
+          "frente": "business",
+          "a": "El sábado 14:30 (tras la revisión semanal): tracker semanal + cierre (15′).",
+          "por": "Hoy a las 14:30 (tras la revisión semanal): tracker semanal + cierre (15′)."
+        },
+        {
+          "frente": "business",
+          "a": "OUTPUT = 40′: 25′ hoy + 15′ el sábado 14:30 (tracker + cierre).",
+          "por": "OUTPUT = 40′: 25′ ahora + 15′ hoy a las 14:30 (tracker + cierre)."
+        },
+        {
+          "frente": "liviano",
+          "a": "la lectura pasa a mañana.",
+          "por": "la lectura pasa al lunes 30 (mañana domingo no hay LIVIANO)."
+        },
+        {
+          "frente": "usmle",
+          "a": "en F1 el Step 1 tiene mañana solo los mar · jue;",
+          "por": "en F1 el Step 1 tiene mañana los mar · jue (esta semana, corrida, fueron el miércoles 25 y el viernes 27; desde mañana, lunes 30, ya en su fecha);"
+        },
+        {
+          "frente": "usmle",
+          "a": "y las 18:00 son de ENCAPS",
+          "por": "y las 15:00-16:45 son de ENCAPS"
+        },
+        {
+          "frente": "encaps",
+          "a": "y las 18:00 son de ENCAPS",
+          "por": "y las 15:00-16:45 son de ENCAPS"
+        },
+        {
+          "frente": "encaps",
+          "a": "10 tarjetas del miércoles",
+          "por": "10 tarjetas del jueves 26"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del miércoles",
+          "por": "errores del jueves 26"
+        },
+        {
+          "frente": "encaps",
+          "a": "a las 18:00 de hoy",
+          "por": "a las 16:00 de hoy"
+        },
+        {
+          "frente": "encaps",
+          "a": "Lo que no veas hoy va a las 18:00.",
+          "por": "Lo que no veas hoy va a las 16:00."
+        },
+        {
+          "frente": "encaps",
+          "a": "dos viernes seguidos",
+          "por": "dos mini-sims seguidos"
+        },
+        {
+          "frente": "mir",
+          "a": "sin repasos: revisa las tarjetas de ayer.",
+          "por": "sin repasos: revisa las tarjetas del viernes 4 (tu última sesión MIR)."
+        }
+      ],
+      "2026-11-28": [
+        {
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "simulacro antiguo (si lo hiciste: el domingo 22 fue día de plan; esa semana Theomed no abrió simulacro)"
+        },
+        {
+          "frente": "revision",
+          "a": "mini-sim /25 del viernes",
+          "por": "mini-sim /25 (esta semana, el #10 del lunes 23; el #15 va mañana domingo a las 15:00: déjalo «pendiente»)"
+        },
+        {
+          "frente": "business",
+          "a": "Del OUTPUT del vie 27:",
+          "por": "Del OUTPUT de esta mañana (07:15):"
+        },
+        {
+          "frente": "encaps",
+          "a": "la grabación en el ENCAPS del domingo (tramos que el PPT no explica, a 1,75-2×) y el resto en audio.",
+          "por": "la grabación en un hueco de la semana, porque este domingo es día de plan y no hay ENCAPS opcional (los tramos que el PPT no explica, a 1,75-2×, y el resto en audio)."
+        },
+        {
+          "frente": "synapse",
+          "a": "El SHIP del vibecoding es el domingo.",
+          "por": "El SHIP S3 del vibecoding pasa al domingo 20 de diciembre (mañana domingo es día de plan)."
+        },
+        {
+          "frente": "synapse",
+          "a": "deja A para mañana.",
+          "por": "deja A para el lunes 30 (mañana domingo no hay SYNAPSE)."
+        },
+        {
+          "frente": "usmle",
+          "a": "(las del viernes esperan al lunes)",
+          "por": "(las del viernes 27 van mañana domingo, en el Anki de las 05:00)"
+        },
+        {
+          "frente": "usmle",
+          "a": "→ el lunes, protocolo de backlog",
+          "por": "→ mañana domingo a las 05:00 (día de plan), protocolo de backlog"
         }
       ],
       "2026-11-29": [
         {
+          "frente": "vibecoding",
+          "a": "journal de la semana",
+          "por": "journal de la S3 (2026-W48)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "`node DATA/_scripts/journal_hoy.js --abrir` → cabecera «Criterios de aceptación» (4).",
+          "por": "Abre D:/synapse-journal/journal/2026-W48.md, el journal de la S3 (hoy `journal_hoy.js --abrir` abriría el de la S6) → cabecera «Criterios de aceptación» (4)."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(la franja 15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S3, que quedó pendiente por la semana corrida, y va antes del S6)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 07:25-09:25 es solo un ejemplo: es el SHIP S3, que quedó pendiente por la semana corrida, y va antes del S6)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "cierra el proyecto de la semana.",
+          "por": "cierra el proyecto de la S3."
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(14:50-15:00 es solo un ejemplo)",
+          "por": "(07:15-07:25 es solo un ejemplo)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "del journal.",
+          "por": "del journal de la S3 (2026-W48)."
+        }
+      ],
+      "2026-11-30": [
+        {
+          "frente": "mir",
+          "a": "AL TERMINAR Neumología (2.ª pasada de la vuelta)",
+          "por": "AL TERMINAR Neumología (2.ª pasada de la vuelta; falta el D15 EPOC, que va el domingo 6 de diciembre)"
+        },
+        {
           "frente": "encaps",
-          "a": "Opcional y flexible: a la hora que puedas (08:00-12:00 es solo un ejemplo). Si vas atrasado, usa estas horas para lo pendiente de la semana.",
-          "por": "Opcional y SOLO si te sobra energía: hoy van antes los SHIP S1 (07:25-09:25) y S2 (09:40-11:40) pendientes y el SHIP S3; si lo haces, en el hueco que quede antes del baile de las 17:00."
+          "a": "fallé en el mini-sim del viernes (te pego los enunciados)",
+          "por": "fallé en el mini-sim de ayer, domingo 29 (te pego los enunciados)"
+        },
+        {
+          "frente": "encaps",
+          "a": "(y las ★ del viernes)",
+          "por": "(y las ★ de ayer)"
+        },
+        {
+          "frente": "encaps",
+          "a": "10 tarjetas del viernes",
+          "por": "10 tarjetas de ayer (domingo 29)"
+        },
+        {
+          "frente": "encaps",
+          "a": "errores del viernes",
+          "por": "errores de ayer (domingo 29)"
+        },
+        {
+          "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(y las del simulacro de Theomed del viernes 27, si ya lo hiciste)"
+        },
+        {
+          "frente": "encaps",
+          "a": "mini-sim del viernes",
+          "por": "mini-sim de ayer (domingo 29)"
+        },
+        {
+          "frente": "encaps",
+          "a": "INV 3/4 (vie 27, grabación)",
+          "por": "INV 3/4 (vie 27, grabación)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "correr node DATA/_scripts/verify_vibecoding.js 1, 2 y 3 y leer _vibecoding_ship.json.",
+          "por": "correr node DATA/_scripts/verify_vibecoding.js 1, 2 y 3 (los SHIP S1-S3 siguen pendientes hasta los domingos 6, 13 y 20 de diciembre: sus ✗ son esperables) y leer _vibecoding_ship.json."
+        },
+        {
+          "frente": "mir",
+          "a": "2Q D-1 (D15 EPOC)",
+          "por": "2Q D-1 (D15 EPOC: aún no lo leíste —va el domingo 6 de diciembre—, así que hoy cuentan como pre-test ciego)"
+        }
+      ],
+      "2026-12-01": [
+        {
+          "frente": "mir",
+          "a": "(bloque D12-D16 cerrado)",
+          "por": "(bloque D12-D16 salvo el D15 EPOC, que va el domingo 6 de diciembre: no uses ninguna de sus 7 preguntas del pool, son su pre-test y su quiz)"
+        },
+        {
+          "frente": "usmle",
+          "a": "a los 5 días",
+          "por": "a los 4 días"
+        }
+      ],
+      "2026-12-02": [
+        {
+          "frente": "mir",
+          "a": "1Q D-3 (D15 EPOC)",
+          "por": "1Q D-3 (D15 EPOC: va el domingo 6 de diciembre; hoy, como pre-test ciego)"
+        }
+      ],
+      "2026-12-05": [
+        {
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "simulacro de Theomed del viernes 27 (si lo hiciste en algún hueco: el domingo 29 fue día de plan)"
+        }
+      ],
+      "2026-12-06": [
+        {
+          "frente": "vibecoding",
+          "a": "(la franja 15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S1, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S1, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(14:50-15:00 es solo un ejemplo)",
+          "por": "(09:30-09:40 es solo un ejemplo)"
+        }
+      ],
+      "2026-12-07": [
+        {
+          "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(y las de los banqueos N°08 y N°09 del domingo 6, si los hiciste)"
         }
       ],
       "2026-12-11": [
         {
           "frente": "research-derma",
-          "a": "v6.01: jue 19-nov",
-          "por": "v6.01: jue 19-nov"
+          "a": "v6.05: vie 27-nov",
+          "por": "v6.05: vie 27-nov"
+        },
+        {
+          "frente": "research-derma",
+          "a": "v6.02: mié 25-nov / vie 27-nov",
+          "por": "v6.02: mié 25-nov / vie 27-nov"
+        },
+        {
+          "frente": "research-derma",
+          "a": "v6.01: jue 19-nov / lun 23-nov",
+          "por": "v6.01: jue 19-nov / lun 23-nov"
+        }
+      ],
+      "2026-12-12": [
+        {
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "banqueos N°08 y N°09 del domingo 6 (fallos y reglas; ese domingo no hubo simulacro)"
+        }
+      ],
+      "2026-12-13": [
+        {
+          "frente": "vibecoding",
+          "a": "(la franja 15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S2, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S2, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(14:50-15:00 es solo un ejemplo)",
+          "por": "(09:30-09:40 es solo un ejemplo)"
+        }
+      ],
+      "2026-12-14": [
+        {
+          "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(el simulacro del domingo 13 aún no tiene tarjetas: salen de su corrección, el domingo 20)"
+        }
+      ],
+      "2026-12-18": [
+        {
+          "frente": "encaps",
+          "a": "si el simulacro Theomed del 13-dic < 16,5",
+          "por": "si la nota del simulacro Theomed del 13-dic (la anotaste al terminarlo; la corrección completa va el domingo 20) < 16,5"
+        },
+        {
+          "frente": "encaps",
+          "a": "Normas de la semana (CI): TBC, ITS/VIH, ECNT (DM 2024, HTA) · 1 h 45′",
+          "por": "Normas de la semana (CI): TBC, ITS/VIH (con la revisión normativa N°2 de Theomed «Prevención y control de las ITS», 30:39 + PDF: Campus › curso 116), ECNT (DM 2024, HTA) · 1 h 45′"
+        }
+      ],
+      "2026-12-19": [
+        {
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "nota del simulacro con RANKING del domingo 13 (la corrección y el % por área van el domingo 20)"
+        }
+      ],
+      "2026-12-20": [
+        {
+          "frente": "vibecoding",
+          "a": "(la franja 15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S3, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(15:00-17:00 es solo un ejemplo)",
+          "por": "(hoy 09:40-11:40 es solo un ejemplo: después del SHIP S3, pendiente)"
+        },
+        {
+          "frente": "vibecoding",
+          "a": "(14:50-15:00 es solo un ejemplo)",
+          "por": "(09:30-09:40 es solo un ejemplo)"
+        }
+      ],
+      "2026-12-21": [
+        {
+          "frente": "encaps",
+          "a": "(y las del simulacro del domingo, si lo hiciste)",
+          "por": "(y las de los banqueos N°10 y N°11 y de la corrección del simulacro, de ayer)"
+        }
+      ],
+      "2026-12-26": [
+        {
+          "frente": "revision",
+          "a": "simulacro del domingo",
+          "por": "simulacro con RANKING del domingo 13, corregido el domingo 20 (% por área y errores repetidos) + banqueos N°10 y N°11"
         }
       ]
     },
     "notas": {
-      "2026-11-10": [
-        "Hoy LIBRE (orden de hoy, mar 10: «todo inicia mañana»). Lo de esta mañana no cuenta: mañana MIÉ 11 es el D1 COMPLETO (el plan del lun 9) desde las 04:15 — vibecoding S1 1/5 · Anki (solo inventario; la configuración es el jue 12 a las 05:00) · ENCAPS mañana 1/22 entera de 07:15 a 12:00 · SYNAPSE d1 · Business D1 · Research M1 · AURUM D1 · MIR D1 · 16:15 PRE-TEST de arranque 1/2 · LIVIANO d1 · 18:00 cifras."
-      ],
       "2026-11-11": [
-        "Hoy es el D1 de todo (el plan del lun 9, completo). Jue 12 = UWSA1 · vie 13 = ENCAPS mañana 2/22 · el plan del jue 12 va el sáb 14 (antes del gimnasio) y el dom 15."
+        "Hoy LIBRE (orden de hoy, mié 11: «todo inicia mañana, el 12»). Mañana JUE 12 es el D1 COMPLETO (el plan del lun 9) desde las 04:15 — vibecoding S1 1/5 · Anki (solo inventario; la configuración es el vie 13 a las 05:00) · ENCAPS mañana 1/22 entera de 07:15 a 12:00 · SYNAPSE d1 · Business D1 · Research M1 · AURUM D1 · MIR D1 · 16:15 PRE-TEST de arranque 1/2 · LIVIANO d1 · 18:00 cifras."
+      ],
+      "2026-11-12": [
+        "Hoy es el D1 de todo (el plan del lun 9, completo). Vie 13 = UWSA1 · el plan del mié 11 va el sáb 14 (antes del gimnasio) y el dom 15 · desde el lun 30 todo en su fecha."
       ],
       "2026-11-13": [
-        "Hoy a las 16:00 Theomed abre su simulacro (ranking: cuenta el primer intento dentro de 89 h, hasta ≈ el martes 17 a las 09:00). Esta semana no tiene hueco fijo (el domingo 15 es día de plan): si lo quieres para el ranking, el hueco lo decides tú."
+        "Hoy a las 16:00 Theomed abre su simulacro (ranking: cuenta el primer intento dentro de 89 h, hasta ≈ el martes 17 a las 09:00). Esta semana no tiene hueco fijo (el domingo 15 es día de plan): si lo quieres para el ranking, el hueco lo decides tú.",
+        "Theomed en vivo de hoy: 19:00-20:00 Banqueo 4/19 y 20:00-22:30 Gestión en Salud 1/6. Gestión choca con el sueño de las 21:00: va en diferido (audio en tiempos muertos). El Banqueo 4/19, en vivo solo si te sobra energía tras el Day-After de las 18:00; si no, también en diferido."
       ],
       "2026-11-20": [
-        "Hoy a las 16:00 Theomed abre su simulacro (ranking: cuenta el primer intento dentro de 89 h, hasta ≈ el martes 24 a las 09:00). Esta semana no tiene hueco fijo (el domingo 22 es día de plan): si lo quieres para el ranking, el hueco lo decides tú."
+        "Theomed en vivo de hoy: 19:00 Banqueo 5/19 y 20:00 Gestión en Salud 2/6. La de las 20:00 choca con el sueño de las 21:00 y va en diferido (audio en tiempos muertos); el Banqueo de las 19:00, en vivo solo si te sobra energía tras la franja de las 18:00 (si no, también en diferido)."
+      ],
+      "2026-11-27": [
+        "Hoy a las 16:00 Theomed abre su simulacro (fecha proyectada por la cadencia quincenal: confírmala en el campus · ranking: cuenta el primer intento dentro de 89 h, hasta ≈ el martes 1 de diciembre a las 09:00). Esta semana no tiene hueco fijo (el domingo 29 es día de plan): si lo quieres para el ranking, el hueco lo decides tú.",
+        "Theomed en vivo de hoy: 19:00 Banqueo 6/19 y 20:00 Investigación 3/4. La de las 20:00 choca con el sueño de las 21:00 y va en diferido (audio en tiempos muertos); el Banqueo de las 19:00, en vivo solo si te sobra energía tras la franja de las 18:00 (si no, también en diferido)."
+      ],
+      "2026-11-16": [
+        "Theomed en vivo de hoy: 19:30 Investigación 2/4 (2,5 h). Choca con el sueño de las 21:00: va en diferido (audio en tiempos muertos; el post-test, al terminar)."
+      ],
+      "2026-11-23": [
+        "Theomed en vivo de hoy: 19:30 Salud Pública 2/11 (2,5 h). Choca con el sueño de las 21:00: va en diferido (audio en tiempos muertos)."
+      ],
+      "2026-11-30": [
+        "AURUM: hoy empieza la Fase 2 (D16). El D15, cierre de la Fase 1 (manifiesto + PITCH v1 final grabado), va el domingo 6-dic a las 12:15: no cupo el domingo 29."
       ]
     }
   }
@@ -1241,7 +1939,7 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
   };
 }
 
-// ── v6.07c: semana 1 corrida (orden de Joseph del lun 9-nov-2026) ──
+// ── v6.07d: semana 1 corrida (orden de Joseph del lun 9-nov-2026) ──
 /** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
 export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
@@ -1249,7 +1947,7 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov sin sesión · mié 11-nov = plan del lun 9-nov · jue 12-nov = plan del mar 10-nov · vie 13-nov = plan del mié 11-nov · lun 16-nov = plan del vie 13-nov · mar 17-nov = plan del lun 16-nov · mié 18-nov = plan del mar 17-nov · jue 19-nov = plan del mié 18-nov · vie 20-nov = plan del jue 19-nov · sáb 14-nov = vibe+syn+biz+liv del jue 12-nov / revision+theomed-prep+theomed-vivo+syn+anki-sab del sáb 14-nov · dom 15-nov = anki+usmle+eval+rd+aurum+mir+encaps del jue 12-nov · sáb 21-nov = vibe+syn+biz+liv del vie 20-nov / biz del sáb 14-nov / revision+biz+theomed-prep+theomed-vivo+syn+anki-sab del sáb 21-nov · dom 22-nov = anki+encaps-am+encaps-pm+rd+aurum+mir+encaps del vie 20-nov · dom 29-nov = pc+feynman del dom 15-nov / pc+feynman del dom 22-nov / encaps-dom+pc+feynman+anki-dom del dom 29-nov.
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov sin sesión · jue 12-nov = plan del lun 9-nov · vie 13-nov = plan del mar 10-nov · lun 16-nov = plan del jue 12-nov · mar 17-nov = plan del vie 13-nov · mié 18-nov = plan del lun 16-nov · jue 19-nov = plan del mar 17-nov · vie 20-nov = plan del mié 18-nov · lun 23-nov = plan del vie 20-nov · mar 24-nov = plan del lun 23-nov · mié 25-nov = plan del mar 24-nov · jue 26-nov = plan del mié 25-nov · vie 27-nov = plan del jue 26-nov · sáb 14-nov = vibe+syn+biz+liv del mié 11-nov / revision+theomed-prep+theomed-vivo+syn+anki-sab del sáb 14-nov · dom 15-nov = anki+encaps-am+encaps-pm+rd+aurum+mir+encaps del mié 11-nov · sáb 21-nov = vibe+syn+biz+liv del jue 19-nov / biz del sáb 14-nov / revision+theomed-prep+theomed-vivo+syn+anki-sab del sáb 21-nov · dom 22-nov = anki+usmle+eval+rd+aurum+mir+encaps del jue 19-nov · sáb 28-nov = vibe+syn+biz+liv del vie 27-nov / biz del sáb 21-nov / revision+biz+theomed-prep+theomed-vivo+syn+anki-sab del sáb 28-nov · dom 29-nov = anki+encaps-am+rd+encaps+encaps-pm del vie 27-nov · dom 6-dic = pc+feynman del dom 15-nov / aurum+mir del vie 27-nov / encaps-dom+pc+feynman+anki-dom del dom 6-dic · dom 13-dic = pc+feynman del dom 22-nov / encaps-dom+pc+feynman+anki-dom del dom 13-dic · dom 20-dic = pc+feynman del dom 29-nov / encaps-dom+pc+feynman+anki-dom del dom 20-dic.
  * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {

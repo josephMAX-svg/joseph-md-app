@@ -466,7 +466,8 @@ function extrasDomingo(iso: string): BloqueV6[] {
   const bs: BloqueV6[] = [];
   // v6.07: domingo FLEXIBLE (sin hora fija): ENCAPS opcional 4 h (F1 y transición, con el simulacro del día) · SHIP del vibecoding · Feynman
   const dom = encapsDomingoDe(iso);
-  if (dom) bs.push(bloque('encaps-dom', null, null, `ENCAPS · opcional 4 h (flexible): simulacro 100Q + corrección${dom.ranking ? ' · RANKING Theomed' : ''}`, 'encaps', 'encaps', dom.simulacro, 240, 'flexible · 4 h'));
+  // v6.07d: nombre, hora y minutos salen de encapsManana (domingos de 2 h con banqueos o con el simulacro solo; por defecto, 4 h)
+  if (dom) bs.push(bloque('encaps-dom', null, null, dom.nombre, 'encaps', 'encaps', dom.tema, dom.min, dom.hora));
   const pc = bloquePCDomingo(iso); if (pc) bs.push(pc);
   const g = guiaFeynmanDe(iso);
   if (g) bs.push(bloque('feynman', null, null, 'IA · FEYNMAN del proyecto (opcional, 10′)', 'vibecoding', 'vibecoding', undefined, g.totalMin, `flexible · ${fmtH(g.totalMin)}`));
@@ -620,10 +621,10 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     const bsD = extrasDomingo(iso);
     const notasD = ["Anki ≤15' opcional (no se registra)."];
     const shipObligatorio = bsD.some((b) => b.id === 'pc') && vibePCDomingo(iso).some((x) => x.tipo === 'ship' || x.tipo === 'avance');
-    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ' El ENCAPS de 4 h es opcional.' : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
+    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD = bsD.some((b) => b.id === 'encaps-dom') ? 'Domingo · flexible (ENCAPS opcional 4 h + SHIP del vibecoding)' : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD = bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
 
@@ -784,7 +785,10 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     const sig = alias ?? (iso <= FECHAS_V6.f1.inicio ? fechaRealDe(FECHAS_V6.f1.inicio) : undefined); // v6.04: el día real en que arranca el plan (D1 corrido)
     // v6.05: corrida_s1 sin alias ni reparto (solo sin_sesion) → el título nombra el D1 como próximo día de plan, no «tu plan de hoy»;
     //   con alias o reparto (v6.02d / v6.04a) el título sale exactamente como antes
-    const titulo = _C1_ALIAS.length || _C1_REPARTO.length || !sig ? `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}` : `Día corrido · sin sesión · próximo día de plan: ${fCorta(sig)} (todo arranca ese día)`;
+    // v6.07d: sin alias pero repartido (el plan del mié 11 va el sáb 14 y el dom 15) → nombra esos días, no «el próximo día de plan»
+    const rep = sig ? [] : Object.entries(FECHAS_V6.corrida_s1.reparto).filter(([, x]) => x.partes.some((pt) => pt.de === iso)).map(([r]) => r).sort();
+    const titulo = rep.length ? `Día corrido · tu plan de hoy se hace el ${rep.map(fCorta).join(' y el ')}`
+      : _C1_ALIAS.length || _C1_REPARTO.length || !sig ? `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}` : `Día corrido · sin sesión · próximo día de plan: ${fCorta(sig)} (todo arranca ese día)`;
     return {
       ...base, plantilla: 'CORRIDO', titulo,
       usmle: null, bloques: [], corrida: 'sin_sesion', notas: [NOTA_CORRIDA, 'Hoy sin sesión de ningún plan: no hay nada atrasado que recuperar.'],

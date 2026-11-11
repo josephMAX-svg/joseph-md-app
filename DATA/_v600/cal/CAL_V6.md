@@ -2573,3 +2573,65 @@ El título lleva « (plan del <día>)». Casos especiales:
 - Leídos aparte, con búsqueda de texto: Research del 1-dic, overlay CR-1 y NBME 25, correctos.
 
 Respaldos en `r6/bk/`, operaciones en `r6/ops6.json`, volcados previos en `r6/volcados/` y posteriores en `r6/despues/`.
+
+### Ronda 7 · v6.07d · mié 11-nov ≈10:40: «todo inicia a partir del día de mañana, del día 12» (277 `update_event`, ≈13:10 Lima)
+
+Orden de Joseph (mié 11, ≈10:36):
+
+> «Hoy no vamos a avanzar … todo inicia a partir del día de mañana, del día 12 … corre de la manera más factible, más accesible, más rápida; y si es necesario alargar fechas, alarga … respetando nuestros horarios … revisa Google Drive, Theomed y demás plataformas … verifica al final que todo esté correcto».
+
+**Cuenta.** Se pierden 3 días (lun 9, mar 10 y mié 11): 3 × 745′ ≈ 37 h de bloques. Entre semana no hay huecos y un fin de semana deja ≈ 13 h (gimnasio sáb 08:30-14:00, baile sáb/dom 17:00-20:00, 7 h de sueño).
+
+**Solución: el mismo patrón que la v6.07c (alias + reparto), con un domingo de plan más.** `corrida_s1` v6.07d:
+
+| Día real | Plan |
+|---|---|
+| jue 12 | D1, plan del lun 9 |
+| vie 13 | plan del mar 10 (UWSA1) |
+| sáb 14 | vibe, SYNAPSE, Business y LIVIANO del mié 11, antes del gimnasio |
+| dom 15 | resto del plan del mié 11 |
+| lun 16 → vie 20 | plan del jue 12 → mié 18 |
+| sáb 21 + dom 22 | plan del jue 19 (sáb 21 05:30: cierre del OUTPUT S1) |
+| lun 23 → vie 27 | plan del vie 20 → jue 26 |
+| sáb 28 + dom 29 | plan del vie 27 (sáb 28 05:30: cierre del OUTPUT S2) |
+| desde el lun 30-nov | en fecha |
+
+- **dom 29:** ya tenía en el Calendar un compromiso personal de 12:30 a 14:00, que no se toca. Por eso Research va a las 14:15, el ENCAPS de las 16:15 a las 15:00 y la franja de las 18:00 a las 16:00. AURUM D15 (cierre de la Fase 1) y MIR D15 pasan al dom 6-dic, a las 12:15 y 13:15. Es una decisión consciente: Research R9 alimenta al C-3 del 1-dic y los bloques ENCAPS tienen prioridad.
+- **SHIP S1, S2 y S3** → dom 6, 13 y 20-dic (07:25), antes del SHIP de esa semana (09:40).
+- Ninguna fecha final cambia y no se quita nada.
+
+**Theomed y Drive (11-nov).**
+- Hay 4 banqueos grabados nuevos (N°08-N°11, ≈3 h 10) y la revisión normativa N°2 (ITS). Drive no tiene nada nuevo.
+- Domingos con modo propio en `_encaps_manana_v607.json`, que genera `gen_encaps_manana.js`:
+  - dom 6-dic: banqueos N°08 y N°09 (2 h).
+  - dom 13-dic: simulacro con RANKING de 2 h. La nota se anota ese día para el GATE del vie 18.
+  - dom 20-dic: banqueos N°10 y N°11, más la corrección y el registro del simulacro del 13.
+- La revisión N°2 entra en las normas de CI del vie 18-dic.
+- Los simulacros de Theomed son quincenales: 13-nov confirmado; 27-nov y 11-dic, proyectados.
+
+**Arreglos de código.**
+- `corridaTexto.ts`: `planSinMes` recorre todos los meses del rango (con el reparto hasta el 20-dic, noviembre quedaba fuera) y `EXTERNA_DESPUES` acepta «grabación».
+- `gen_encaps_guia.js` + catálogo: el aviso de pool del ENCAPS 16:15 del 11 y el 12-nov era el de los bancos del 18 y el 19. La causa es que `PREVISTO_SEMANA2` seguía con las fechas de la v6.06. Se re-simuló en una copia aislada, se re-fechó al 16-19 y se añadió una guarda.
+- `plantillasV6`: el título del día sin sesión repartido.
+- `TodayMission`:
+  - la hora real del bloque ENCAPS de la tarde en el briefing;
+  - la tarjeta y la etiqueta del domingo salen de los datos.
+- `journal_hoy.js`: días reales en la cabecera.
+
+**Textos de la app.** 210 reemplazos. Salen de un barrido de 2 agentes (`wf_fa9b84d0-d36`) y de dos revisiones adversariales (`wf_db088d2a-51b`, con 19 hallazgos, y `wf_c93bd4a5-0b7`, con 15). Todos se corrigieron salvo dos: los eventos personales que describen el reparto antiguo, que se le preguntan a Joseph, y un solape previo del día del UWSA1.
+
+**Calendar (`build_ops7.js`).** Mismo método que la ronda 6: los textos salen del ORIGINAL v6.07 y pasan por el pipeline de la app. Añadidos:
+- `POST`: textos cortados con «…» justo en una fecha de la semana corrida.
+- Los 3 ENCAPS de diciembre se escriben desde la guía nueva.
+- Overlays: M1, C-2 y T-1 desde el payload (con sus fechas de plan corregidas a mano), y retoques puntuales en CR-1, C-6, NBME 25 y el colchón de F1.
+- ALMUERZO: jue 12 a las 12:00 y vie 13 a las 13:00.
+
+El estado de partida es un volcado fresco del 11-nov al 3-ene (`r7/volcados`, 1.302 eventos): no hubo cambios manuales desde la ronda 6, solo eventos personales nuevos. Simulación con `ver7.js` antes de ejecutar: 3.749 comprobaciones OK y 0 FAIL, incluida la de que no haya estudio encima de un compromiso personal.
+
+**Ejecución:** 277 operaciones con 2 agentes (workflow `wf_47106b0e-773`): 139 + 138 OK, 0 fallos.
+
+**Verificación tras ejecutar** (volcado nuevo del 11-nov al 3-ene en `r7/despues/`): `ver7.js` da 3.749 comprobaciones OK, 0 FAIL, 1.025 eventos no tocados idénticos y 0 nuevos. Del 11-nov al 21-dic, cada bloque de la app tiene su evento a su hora. No queda estudio el mié 11, ni dentro del gimnasio o del baile, ni encima de un compromiso personal. Research: `gen_research_calendar.js --set mentor=… carta-diana=… tesis-etica=…`, y `--check` da 0 por recrear.
+
+**Sin tocar, a propósito:** el evento personal del dom 29 (12:30-14:00) y las instancias del compromiso fijo de las 14:15 del 6, 13 y 20-dic describen todavía el reparto de la v6.07c. Hay que preguntar a Joseph; si lo autoriza, se cambian instancia por instancia, nunca en el master.
+
+Respaldos en `r7/bk/`, operaciones en `r7/ops7.json`, volcados previos en `r7/volcados/` y posteriores en `r7/despues/`.

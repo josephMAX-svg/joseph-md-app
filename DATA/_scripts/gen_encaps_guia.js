@@ -337,10 +337,16 @@ function construirGuia(fila, sab = null) {
       if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: `PRE-TEST ${pm.parte}/${pm.de}`, principal: `${rPre.n}Q ${cods.join(' · ')} (sustituye ${codigo} · ${subEje})`, eval: ePrev || '—', runners: [rEval && rEval.f, rPre.f].filter(Boolean).join(' + '), material: matCods.map((m) => m.t).join(' · '), obs: obsCods.map((o) => o.t).join(' · '), proyecto: '—' });
     } else {
       const rBan = runner(`banco_${fila.fecha}`);
-      const prev2 = PREVISTO(fila.fecha);
       const secCods = sec.map((s) => s.codigo);
+      // v6.07 (fix 11-nov): la composición PREVISTA (CAT.PREVISTO_SEMANA2) solo vale si el día aún no tiene runner (con runner manda su _meta) y
+      //   solo si es la del MISMO banco: tras el re-fechado v6.07 la tabla seguía con las claves de la v6.06 (lun 9 → jue 12-nov) y el aviso de
+      //   pool del IV-1 / II-4 salía en los bancos V-2 / III-5 del 11 y el 12-nov (antes, prev2.nota se añadía aunque existiera el runner).
+      const prev2 = rBan ? null : PREVISTO(fila.fecha);
+      if (prev2 && (prev2.codigo !== codigo || prev2.secundario !== secCods.join(' + '))) {
+        aborta(`${fila.fecha}: CAT.PREVISTO_SEMANA2 es de ${prev2.codigo} + ${prev2.secundario}, pero la fila del día es ${codigo} + ${secCods.join(' + ') || '—'} (¿re-fechado sin re-simular? → copia aislada con --semana <lunes> + --eval <lunes>)`);
+      }
       const nPri = rBan ? (rBan.meta.conteos || {}).principal ?? rBan.porCod[codigo] : (prev2 ? prev2.principal : null);
-      const nSec = rBan ? (rBan.meta.conteos || {}).secundario ?? 0 : (prev2 ? prev2.secundario : null);
+      const nSec = rBan ? (rBan.meta.conteos || {}).secundario ?? 0 : (prev2 ? prev2.secundario_n : null);
       const porSub = rBan ? (rBan.meta.conteos || {}).por_sub_eje || {} : {};
       const mat = materialDe(codigo, subEje);
       const mat1 = mat.items[0];

@@ -412,8 +412,90 @@ for (const s of J.sabados) {
 
 // ── domingo · ENCAPS opcional 4 h (flexible, sin hora fija; la franja 08:00-12:00 es solo un ejemplo) ───────────────
 const DOM = {}, GD = {};
-for (const d of J.domingos) {
-  DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro, ranking: !!d.ranking };
+// v6.07d (11-nov): modos del domingo además del simulacro de 4 h (por defecto). Los domingos 6, 13 y 20-dic llevan por la mañana los SHIP que
+//   la semana corrida dejó pendientes y tienen compromisos fijos por la tarde, así que su ENCAPS queda en 2 h. Por eso:
+//   · «banqueos»: banqueos grabados nuevos de Theomed (curso 116), en activo, sin simulacro.
+//   · «simulacro_2h»: solo el simulacro, de un tirón; la corrección va otro domingo (correccion_en).
+//   · «banqueos_correccion»: banqueos + la corrección y el registro del simulacro de otro domingo (correccion_de), con una pausa en medio.
+//   El generador escribe también lo que pinta la app (nombre, hora, minutos, sub, etiqueta, tema y campus), para que plantillasV6 y
+//   TodayMission no repitan textos fijos («4 h»).
+const mmss = (s) => { const m = /^(\d+):(\d\d)$/.exec(String(s || '')); if (!m) aborta(`duración mm:ss ilegible «${s}»`); return Number(m[1]) + (Number(m[2]) > 0 ? 1 : 0); };
+const fmtMin = (n) => (n % 60 ? (n >= 60 ? `${Math.floor(n / 60)} h ${n % 60}′` : `${n}′`) : `${n / 60} h`);
+const WD_LARGO = (iso) => `${WDL[dow(iso)]} ${Number(iso.slice(8))}`;
+const PASO_BANQUEO = 'Pausa el vídeo en cada pregunta: léela, responde y marca tu confianza (1-3) ANTES de ver la resolución; después, la resolución completa (Palmerton). Banqueo grabado en activo = su duración.';
+for (const d of J.domingos.filter((x) => x.modo && x.modo !== 'simulacro')) {
+  if (!['banqueos', 'simulacro_2h', 'banqueos_correccion'].includes(d.modo)) aborta(`domingo ${d.fecha}: modo desconocido «${d.modo}»`);
+  if (!Array.isArray(d.franja) || d.franja.length !== 2) aborta(`domingo ${d.fecha}: modo ${d.modo} sin franja [ini, fin]`);
+  if (d.modo === 'banqueos_correccion' && (!Array.isArray(d.pausa) || d.pausa.length !== 2 || !d.correccion_de)) aborta(`domingo ${d.fecha}: banqueos_correccion sin pausa [ini, fin] o sin correccion_de`);
+  if (d.modo === 'simulacro_2h' && !d.correccion_en) aborta(`domingo ${d.fecha}: simulacro_2h sin correccion_en`);
+  // los dos domingos se apuntan entre sí: si se mueve uno, el otro diría una fecha falsa
+  if (d.modo === 'simulacro_2h' && !J.domingos.some((x) => x.fecha === d.correccion_en && x.modo === 'banqueos_correccion' && x.correccion_de === d.fecha)) aborta(`domingo ${d.fecha}: su correccion_en (${d.correccion_en}) no es un domingo banqueos_correccion con correccion_de = ${d.fecha}`);
+  if (d.modo === 'banqueos_correccion' && !J.domingos.some((x) => x.fecha === d.correccion_de && x.modo === 'simulacro_2h' && x.correccion_en === d.fecha)) aborta(`domingo ${d.fecha}: su correccion_de (${d.correccion_de}) no es un domingo simulacro_2h con correccion_en = ${d.fecha}`);
+  const [ini, fin] = d.franja;
+  const pasos = [];
+  let titulo, hecho, aviso, planB, nombre, sub, etiqueta, tema, campus, recursos;
+  const nombres = (d.banqueos || []).map((b) => b.n).join(' y ');
+  if (d.modo === 'banqueos' || d.modo === 'banqueos_correccion') {
+    if (!d.banqueos || !d.banqueos.length) aborta(`domingo ${d.fecha}: modo ${d.modo} sin banqueos`);
+    const fin1 = d.modo === 'banqueos' ? fin : d.pausa[0];
+    const durB = d.banqueos.map((b) => mmss(b.dur));
+    const resto = G.minutosFranja(fr(ini, fin1)) - 5 - durB.reduce((a, x) => a + x, 0);
+    if (resto < 10) aborta(`domingo ${d.fecha}: los banqueos (${durB.join(' + ')}′) no caben en ${ini}-${fin1}`);
+    const tarj = Math.min(7, Math.floor(resto / 3));
+    pasos.push(P(5, `Preparar: banqueos grabados ${nombres}`, `Ruta: Campus › curso 116 (SESIONES ADICIONALES GP02) › Banqueos generales – viernes › ${nombres}. Hoja para tu respuesta y tu confianza en cada pregunta; móvil fuera.`, L116));
+    d.banqueos.forEach((b, i) => pasos.push(P(durB[i], `BANQUEO ${b.n} (${b.dur}) en activo`, PASO_BANQUEO)));
+    pasos.push(P(resto - tarj, 'Corrección: cada fallo y cada dudosa', `${cap(TIPOS_ERROR)} + verificación en la norma.`));
+    pasos.push(P(tarj, 'Tarjetas: solo lo discriminativo', 'Fallos «tontos» y detalles discriminativos, en formato pregunta → respuesta breve: cifras y plazos → ENCAPS::Cifras · conceptos → la nota del código.'));
+    if (d.modo === 'banqueos_correccion') {
+      const [p0, p1] = d.pausa;
+      pasos.push(P(G.minutosFranja(fr(p0, p1)), `Pausa (${p0}-${p1})`, 'Fuera de la mesa: no es tiempo de estudio.'));
+      const disp = G.minutosFranja(fr(p1, fin));
+      if (disp !== 95) aborta(`domingo ${d.fecha}: la corrección del simulacro necesita 95′ (80 + 15) y la franja ${p1}-${fin} da ${disp}′`);
+      pasos.push(P(80, `Corrección del simulacro con RANKING del ${WD_LARGO(d.correccion_de)}: cada error y cada dudosa`, `${cap(TIPOS_ERROR)} + verificación en la norma. Primero las «seguras» falladas (falsa certeza).`));
+      pasos.push(P(15, 'Registro del simulacro', `% por área y errores repetidos (la nota ya la anotaste el ${WD_LARGO(d.correccion_de)}, al terminarlo). Va a la revisión del ${revSab(d.fecha)}.`));
+    }
+    titulo = d.modo === 'banqueos' ? `ENCAPS · DOMINGO 2 h · banqueos grabados ${nombres} de Theomed (en activo)`
+      : `ENCAPS · DOMINGO · banqueos grabados ${nombres} + corrección del simulacro del ${WD_LARGO(d.correccion_de)}`;
+    hecho = `banqueos ${nombres} hechos en activo (respuesta y confianza antes de cada resolución), fallos con su regla en el registro${d.modo === 'banqueos_correccion' ? ' · simulacro del ' + WD_LARGO(d.correccion_de) + ' corregido, con su % por área en el registro' : ''}`;
+    aviso = `Banqueos grabados nuevos de Theomed (curso 116, publicados hasta el 11-nov): son atraso nuevo y van en activo, como todos los banqueos del plan. De ejemplo, ${ini}-${fin1}${d.modo === 'banqueos' ? '. Hoy no hay simulacro: los banqueos llenan las 2 h' : `; la corrección del simulacro, ${d.pausa[1]}-${fin}`}.`;
+    planB = 'Si te quedas sin tiempo: termina el banqueo empezado y deja el otro para el siguiente hueco, nunca en pasivo ni a 2×.';
+    nombre = d.modo === 'banqueos' ? `ENCAPS · domingo 2 h (flexible): banqueos grabados ${nombres} de Theomed` : `ENCAPS · domingo (flexible): banqueos ${nombres} + corrección del simulacro del ${WD_LARGO(d.correccion_de)}`;
+    sub = d.modo === 'banqueos' ? 'flexible · en activo: respuesta antes de cada resolución · hoy sin simulacro' : `flexible · banqueos en activo (${ini}-${fin1}) + corrección y registro del simulacro (${d.pausa[1]}-${fin})`;
+    etiqueta = d.modo === 'banqueos' ? `ENCAPS · domingo 2 h (banqueos ${nombres} de Theomed)` : `ENCAPS · domingo: banqueos ${nombres} + corrección del simulacro`;
+    tema = `Theomed · banqueos grabados ${d.banqueos.map((b) => `${b.n} (${b.dur})`).join(' y ')}`;
+    campus = 'adicionales';
+    recursos = [R116];
+  } else {
+    if (!d.ranking || !/^Theomed/.test(d.simulacro || '')) aborta(`domingo ${d.fecha}: simulacro_2h solo para un simulacro de Theomed con ranking`);
+    if (G.minutosFranja(fr(ini, fin)) !== 120) aborta(`domingo ${d.fecha}: simulacro_2h necesita una franja de 120′`);
+    // v6.07d (2.ª revisión): la NOTA se anota hoy, al cerrar el intento (la usa la decisión que diga uso_nota: el GATE del vie 18-dic); la
+    //   corrección y el % por área van el domingo de correccion_en
+    const uso = d.uso_nota ? ` (la usa ${d.uso_nota})` : '';
+    pasos.push(P(120, 'SIMULACRO 100Q · 2 h sin parar, de un tirón', `Localízalo antes (Campus › curso 105 (SIMULACROS MEDICINA 2027) › ${d.simulacro.replace(/^Theomed /, 'el ')}), sin empezarlo. Primero las básicas e intermedias; marca las dudosas y vuelve al final. Ninguna en blanco: no restan. 72 s por pregunta. Al cerrar el intento, anota la nota (aciertos × 0,2) en el registro${uso}, y guarda la hoja de respuestas para la corrección.`, L105));
+    titulo = 'ENCAPS · DOMINGO 2 h · simulacro 100Q con RANKING (la corrección, otro domingo)';
+    hecho = `simulacro hecho de un tirón en 2 h, con la NOTA (aciertos × 0,2) anotada en el registro${uso} y la hoja de respuestas guardada (la corrección, el ${WD_LARGO(d.correccion_en)})`;
+    aviso = `RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.${d.proyectado ? ' La apertura de ese viernes es una fecha PROYECTADA por la cadencia quincenal de Theomed: confírmala en el campus.' : ''} De ejemplo, ${ini}-${fin}. Hoy no cabe la corrección: va el ${WD_LARGO(d.correccion_en)}; la nota, en cambio, se anota hoy.`;
+    planB = 'Si ese simulacro no está: uno antiguo del campus que no hayas hecho.';
+    nombre = 'ENCAPS · opcional 2 h (flexible): simulacro 100Q · RANKING Theomed';
+    sub = `de un tirón · RANKING: primer intento dentro de 89 h desde el viernes 16:00 · la corrección, el ${WD_LARGO(d.correccion_en)}`;
+    etiqueta = 'ENCAPS · domingo 2 h (simulacro 100Q con RANKING)';
+    tema = d.simulacro;
+    campus = 'simulacros';
+    recursos = [R105];
+  }
+  GD[d.fecha] = guia(fr(ini, fin), titulo, pasos, recursos, hecho, { aviso, planB });
+  const min = pasos.filter((p) => !/^Pausa \(/.test(p.que)).reduce((a, p) => a + p.min, 0);
+  const pausa = pasos.filter((p) => /^Pausa \(/.test(p.que)).reduce((a, p) => a + p.min, 0);
+  // la hora del bloque cuadra con el chip de la guía (totalMin, pausa incluida) y dice cuánto es estudio
+  const hora = pausa ? `flexible · ${fmtMin(min + pausa)} con ${pausa}′ de pausa (${fmtMin(min)} de estudio)` : `flexible · ${fmtMin(min)}`;
+  DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro || null, ranking: !!d.ranking, modo: d.modo, nombre, hora, min, sub, etiqueta, tema, campus };
+}
+for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
+  if (!d.simulacro) aborta(`domingo ${d.fecha}: modo simulacro sin «simulacro»`);
+  DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro, ranking: !!d.ranking, modo: 'simulacro',
+    nombre: `ENCAPS · opcional 4 h (flexible): simulacro 100Q + corrección${d.ranking ? ' · RANKING Theomed' : ''}`, hora: 'flexible · 4 h', min: 240,
+    sub: `opcional y flexible · 2 h de simulacro + 2 h de corrección${d.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`,
+    etiqueta: 'ENCAPS · domingo opcional 4 h (simulacro 100Q)', tema: d.simulacro, campus: /^Theomed/.test(d.simulacro) ? 'simulacros' : null };
   const theomed = /^Theomed/.test(d.simulacro);
   const num = (/DR LOPEZ simulacro (\d+)/.exec(d.simulacro) || [])[1];
   const ruta = theomed ? 'Campus › curso 105 (SIMULACROS MEDICINA 2027) › el simulacro indicado' : `${RUTA.drLopezSim} › ${num ? `${num}.° simulacro` : 'simulacro'} (versión SIN claves; la de claves, solo para corregir)`;
@@ -484,7 +566,12 @@ export interface EncapsMananaDia {
   pendiente18: string[];
 }
 export interface TheomedSabado { fecha: string; vivo: string | null; area: string | null }
-export interface EncapsDomingo { fecha: string; simulacro: string; ranking: boolean }
+/** v6.07d: modo del domingo + lo que pinta la app (nombre, hora y minutos del bloque, sub, etiqueta del briefing, tema y botón del campus). */
+export interface EncapsDomingo {
+  fecha: string; simulacro: string | null; ranking: boolean;
+  modo: 'simulacro' | 'banqueos' | 'simulacro_2h' | 'banqueos_correccion';
+  nombre: string; hora: string; min: number; sub: string; etiqueta: string; tema: string; campus: 'simulacros' | 'adicionales' | null;
+}
 
 export const ENCAPS_MANANA_META = ${JSON.stringify(META, null, 2)};
 

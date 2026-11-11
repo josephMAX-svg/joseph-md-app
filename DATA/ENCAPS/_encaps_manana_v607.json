@@ -59,9 +59,9 @@
     {"fecha": "2026-11-15", "simulacro": "Theomed (el del vie 13-nov si se publicó; si no, el antiguo del 18/09)", "ranking": true},
     {"fecha": "2026-11-22", "simulacro": "Theomed antiguo 18/09 (o 02/10 si el 15 ya hiciste el 18/09)", "ranking": false},
     {"fecha": "2026-11-29", "simulacro": "Theomed del vie 27-nov", "ranking": true},
-    {"fecha": "2026-12-06", "simulacro": "Theomed antiguo 02/10 o 16/10", "ranking": false},
-    {"fecha": "2026-12-13", "simulacro": "Theomed del vie 11-dic", "ranking": true},
-    {"fecha": "2026-12-20", "simulacro": "Theomed antiguo 16/10", "ranking": false},
+    {"fecha": "2026-12-06", "simulacro": null, "ranking": false, "modo": "banqueos", "franja": ["14:45", "16:45"], "banqueos": [{"n": "N°08", "dur": "53:22"}, {"n": "N°09", "dur": "41:22"}], "nota_v607d": "v6.07d (11-nov): banqueos grabados nuevos de Theomed (curso 116, publicados hasta el 11-nov); sin simulacro (antes: antiguo 02/10 o 16/10)"},
+    {"fecha": "2026-12-13", "simulacro": "Theomed del vie 11-dic", "ranking": true, "modo": "simulacro_2h", "franja": ["14:45", "16:45"], "correccion_en": "2026-12-20", "proyectado": true, "uso_nota": "el GATE del CHECKPOINT del viernes 18, que decide la revisión del sábado 19", "nota_v607d": "v6.07d (11-nov): solo el simulacro (2 h); la corrección y el registro, el dom 20-dic"},
+    {"fecha": "2026-12-20", "simulacro": null, "ranking": false, "modo": "banqueos_correccion", "franja": ["12:15", "16:20"], "pausa": ["14:15", "14:45"], "banqueos": [{"n": "N°10", "dur": "53:17"}, {"n": "N°11", "dur": "42:28"}], "correccion_de": "2026-12-13", "nota_v607d": "v6.07d (11-nov): banqueos grabados N°10 y N°11 + corrección del simulacro con ranking del dom 13-dic; sin simulacro nuevo (antes: antiguo 16/10)"},
     {"fecha": "2026-12-27", "simulacro": "Theomed antiguo 30/10", "ranking": false},
     {"fecha": "2027-01-03", "simulacro": "DR LOPEZ simulacro 2 (o descanso antes de la intensiva)", "ranking": false}
   ]

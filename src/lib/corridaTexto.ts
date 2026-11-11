@@ -27,14 +27,19 @@ const RX2 = /(^|[^\p{L}\d\-])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})(?![\
 // v6.07a: fechas REALES externas (en vivo de Theomed, apertura y publicación de simulacros, banqueos grabados de Theomed) y la bitácora de
 //   versiones viejas (v5.x) no se traducen: no son fechas de plan. Se mira el texto de antes (60) y el de después (25: «(vie 13, grabado)»)
 const EXTERNA = /theomed|en vivo|se public|banqueo \d+\/\d+|\bv5\.\d+/i;
-const EXTERNA_DESPUES = /^.{0,25}grabad/i;
+const EXTERNA_DESPUES = /^.{0,25}(grabad|grabaci)/i; // v6.07d: también «(vie 27, grabación)»
 const externa = (s: string, i: number, n = 0): boolean => EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40));
+// v6.07d (mié 11-nov): se prueban TODOS los meses de DESDE a HASTA, no solo los dos de los extremos. Con los repartos del 6, 13 y 20-dic el rango
+//   va del 19-oct al 20-dic y noviembre quedaba fuera, así que «mar 10 18:00» ya no se traducía. Si dos meses cuadran (día del mes y día de la
+//   semana), la fecha es ambigua y no se toca.
+const MESES_RANGO: string[] = [];
+for (let y = Number(DESDE.slice(0, 4)), m = Number(DESDE.slice(5, 7)); DESDE && `${y}-${String(m).padStart(2, '0')}` <= HASTA.slice(0, 7); m === 12 ? (y++, m = 1) : m++) {
+  MESES_RANGO.push(`${y}-${String(m).padStart(2, '0')}`);
+}
 const planSinMes = (dd: string, dow: string): string | null => {
-  for (const base of [DESDE, HASTA]) {
-    const p = `${base.slice(0, 7)}-${String(Number(dd)).padStart(2, '0')}`;
-    if (p >= DESDE && p <= HASTA && DOW[dowDe(p)] === dow.toLowerCase()) return p;
-  }
-  return null;
+  const ok = MESES_RANGO.map((ym) => `${ym}-${String(Number(dd)).padStart(2, '0')}`)
+    .filter((p) => p >= DESDE && p <= HASTA && DOW[dowDe(p)] === dow.toLowerCase());
+  return ok.length === 1 ? ok[0] : null;
 };
 const diaReal = (real: string, dow: string): string => {
   const dr = DOW[dowDe(real)] ?? dow;
