@@ -4970,3 +4970,68 @@ El estado de partida es un volcado fresco del 11-nov al 3-ene (`r7/volcados`, 1.
 **Sin tocar, a propósito:** el evento personal del dom 29 (12:30-14:00) y las instancias del compromiso fijo de las 14:15 del 6, 13 y 20-dic describen todavía el reparto de la v6.07c. Hay que preguntar a Joseph; si lo autoriza, se cambian instancia por instancia, nunca en el master.
 
 Respaldos en `r7/bk/`, operaciones en `r7/ops7.json`, volcados previos en `r7/volcados/` y posteriores en `r7/despues/`.
+
+### Ronda 8 · v6.07e · jue 12-nov ≈09:45: «última modificación: todo inicia mañana; corre un día todo» (611 `update_event` + 2 `create_event`)
+
+Orden de Joseph (jue 12, ≈09:42):
+
+> «Última modificación. Todo inicia mañana. Puedes hacer, por ejemplo, la clásica de correr un día todo para que la fecha se alargue un día en todo, para así no tener que meter más eventos entre ellos o concatenar temas o reducir tiempos … verifica Theomed y demás páginas … y haz una verificación final».
+
+**Cuenta.** El plan original de F1 tiene 37 días hábiles (lun 9-nov → mié 30-dic). Desde el vie 13 quedan 33 días hábiles hasta el 30-dic. Con los 3 fines de semana de recuperación de la v6.07d (14-15, 21-22 y 28-29, ya aceptados) son 36 huecos: falta exactamente 1 día. Se resuelve corriendo un día, sin cargar más fines de semana: el último día de F1 pasa al jue 31-dic, que en el plan era día sin sesión (transición). Desde el lun 4-ene, todo en su fecha.
+
+**`corrida_s1` v6.07e** (generada con `patch_json11.js`; los desfases salen de las horas reales de la plantilla base):
+
+| Día real | Plan |
+|---|---|
+| jue 12 | sin sesión |
+| vie 13 | lun 9 (D1) |
+| sáb 14 + dom 15 | mar 10. El sábado, 4 bloques antes del gimnasio y, de 14:00 a 14:45, la preparación larga del UWSA1 (el vídeo «The ONLY Video…» 0:00-26:00 y el peor escenario; evento NUEVO, el único de la ronda). El domingo, el **UWSA1**: 07:15-07:40 preparación (localizar el sim, el final del vídeo de Anki y el Ziploc), 07:40-11:50 los 4 bloques, 11:50 almuerzo, 12:30 Day-After 1/6. Antes de las 07:15 está la rutina del domingo (caminata, ducha y desayuno): por eso la preparación no se adelanta. |
+| lun 16 → vie 20 | mié 11 → mar 17 |
+| sáb 21 + dom 22 | mié 18 |
+| lun 23 → vie 27 | jue 19 → mié 25 |
+| sáb 28 + dom 29 | jue 26. El dom 29 tiene un compromiso personal de 12:30 a 14:00, así que AURUM y MIR van al dom 6-dic |
+| lun 30-nov → jue 31-dic | cada día hábil hace el plan del hábil anterior (el vie 25-dic sigue libre) |
+
+- **NBME 25:** vie 11-dic.
+- **CHECKPOINT y GATE:** lun 21-dic. El GATE se decide ese día, porque la revisión del sáb 19 pasa al sáb 26.
+- **Sábados:** la revisión semanal (14:00) y el cierre del OUTPUT (14:30) de cada sábado van el sábado siguiente, porque el viernes de plan se hace el lunes real. El SYNAPSE del sábado se queda en su día: moverlo invertiría 4 sesiones; quedándose, solo 1.
+- **SHIP:** S1+S2 → dom 6-dic, S3+S4 → dom 13, S5 → dom 20 y S6 → dom 27 (con el AVANCE S7).
+- **Domingos de diciembre:** 6, banqueos N°08-N°09; 13, simulacro con RANKING (la nota ese día, para el GATE del lun 21); 20, banqueos N°10-N°11 + la corrección del 13.
+
+**Theomed y Drive (12-nov).**
+- Campus: sin novedades desde el 11-nov, salvo un Kahoot más en el curso 42 (64).
+- El calendario del campus confirma las clases en vivo hasta enero y los feriados: 8 y 9-dic, 25-dic, «sin clases» el sáb 26-dic, 1-ene y «sin clases» el sáb 2-ene.
+- Los simulacros (curso 105) no salen en el calendario: los del 27-nov y el 11-dic siguen siendo proyectados.
+- Drive u/4: nada desde el 10-nov.
+- chrome-devtools volvió a agotar el tiempo de conexión; se usó Claude in Chrome.
+
+**Textos.** 381 reemplazos en 51 fechas de plan: los 357 del barrido (`wf_64401780-c18`, 4 agentes sobre el texto del plan; cada «a» comprobado contra el texto real) menos 4 que mandan los propios, más 34 propios. Estos cubren el UWSA1 del dom 15, el cierre de la cadena de ★ (dom 22 → mar 24 y mié 25 → vie 27) y «sin clase en vivo» el sáb 26-dic y el sáb 2-ene. El resto sale de dos revisiones adversariales sobre el resultado: `wf_40497229-ddc` (app + Calendar, 18 hallazgos) y `wf_e4c23681-8b7` (cruce app ↔ Calendar día a día + texto completo del 13 al 30-nov, 20 hallazgos; no se aplicó la serie personal DORMIR de los sábados). Las notas por día real van en `corrida_s1.notas`; el «Banqueo de las 19:00» solo sale los días que lo hay.
+
+Dos cambios de código:
+- `corridaTexto.reemplazosCorrida` también reemplaza la **franja** de la guía. El UWSA1 del dom 15 no cuadra con un desfase único: preparación 07:15-07:25 y 07:25-07:40, y UWSA1 07:40-11:50, en vez de 07:55-08:50 y 08:50-13:00.
+- `plantillasV6`: la nota de los días SKIP ya no nombra el 31-dic el año en que la semana corrida lo ocupa («El 31-dic de este año sí es día de estudio»).
+
+**Calendar (`build_ops8.js`).** Mismo método que las rondas 6 y 7: los textos salen del ORIGINAL v6.07 y pasan por el pipeline de la app.
+- Eventos sueltos: NBME 25 (`4hjv…`, en SUELTOS); avisos de día completo (CHECKPOINT → lun 21; «F1 sin colchón» → 30 y 31-dic).
+- Overlays de Research: 5 recreados desde el payload, con sus fechas de plan traducidas fuera del historial ⏸.
+- Tres textos de 2027: EXAMEN ENCAPS, NBME 29 y NBME 26.
+- ALMUERZO: vie 13 a las 12:00, jue 10-dic a las 12:00 y vie 11-dic a las 12:30.
+- `post8.json` (generado con `r8/mk_post8.js`; 19 claves, se aplican después de traducir; «id#t» = título): UWSA1 y su preparación (cronograma, ensayo test-day con cama a las 22:00 y desayuno a las 06:45, «1/6 HOY 12:30», historial), NBME 25 (historial sin traducir y franjas del Day-After), los SHIP con su hora real de ejemplo y su S, 4 textos cortados con «…» justo en una fecha, y 2 overlays de Research con fechas en tramos de historial.
+- Eventos NUEVOS (`crear` en ops8.json; `create_event` con NONE):
+  - sáb 14, 14:00-14:45, «🇺🇸 USMLE · preparación del UWSA1 de mañana» (`18vic8g45k9ij0h5a8ame6ee8g`).
+  - dom 20-dic, 14:45-16:20, «🇵🇪 ENCAPS · corrección y % por área del simulacro con RANKING del domingo 13 (flexible)» (`e0h617ko594sq3818mc936gojo`, FREE). El evento de los banqueos de las 12:15 no se alarga porque pisaría el compromiso fijo de las 14:15.
+
+Estado de partida: volcado fresco del 11-nov al 4-ene (`r8/volcados`, 1.327 eventos). No hubo cambios desde la ronda 7.
+
+**Aplicación y verificación (jue 12-nov, ≈12:00-12:20 Lima).**
+- Aplicación: `wf_ffcdf6eb-db3` (2 agentes, 611/611 `update_event` bien, 0 fallos, NONE) + 2 `create_event`.
+- Re-volcado del 11-nov al 5-ene (`r8/despues`, 10 ficheros): ver8 da 5.624 comprobaciones OK, 0 FAIL, 719 eventos no tocados idénticos, 2 nuevos (los previstos) y 53 días contra la app (cada bloque con hora tiene su evento; nada de estudio el 12-nov, el 25-dic ni el 1-ene; nada dentro del gimnasio, del baile ni de un compromiso personal).
+- Los 3 eventos de 2027, comprobados con `get_event`.
+- Research: `--set` de mentor, carta-diana, tesis-etica, carta-1 y cr-caso; `--check` da 0 por recrear.
+- Antes de aplicar, la simulación (`sim8.js` + `ver8.js`) daba lo mismo.
+
+**No se tocó (es de Joseph):**
+- El evento personal del dom 29 y los del compromiso fijo de las 14:15 de los domingos de diciembre, que describen el reparto antiguo.
+- La serie «😴 DORMIR» de los sábados (21:00-04:00), que choca con el SYNAPSE de las 21:00 y el Anki de las 21:30 (viene de la v6.07b).
+
+Respaldos en `r8/bk/`, operaciones en `r8/ops8.json`, volcados previos en `r8/volcados/` y posteriores en `r8/despues/`.

@@ -79,6 +79,8 @@ export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque 
   const f = (t: string): string => xs.reduce((acc, x) => acc.split(x.a).join(x.por), t);
   return {
     ...g,
+    // v6.07e: también la franja (el UWSA1 del dom 15 va 07:40-11:50, no a la hora del plan del mar 10; un desfase único no la cuadra)
+    franja: f(g.franja),
     titulo: f(g.titulo),
     pasos: g.pasos.map((p) => ({ ...p, que: f(p.que), como: f(p.como) })),
     recursos: g.recursos.map((r) => ({ ...r, t: f(r.t), ...(r.cantidad ? { cantidad: f(r.cantidad) } : {}) })),

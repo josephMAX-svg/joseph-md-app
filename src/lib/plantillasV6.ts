@@ -615,7 +615,12 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     return out('PROTEGIDO', `DÍA PROTEGIDO · ${prot}`, [], { notas: ['Sin sesión de ningún plan (§A3). Descanso.'] });
   }
   // 2) SKIP (sin sesión de ningún plan)
-  if (SKIP_V6.has(iso)) return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: ['Ningún plan tiene sesión hoy (25-dic · 31-dic · 1-ene · Jueves y Viernes Santo).'] });
+  // v6.07e: el 31-dic de 2026 es día de estudio (la semana corrida pone ahí el último día de F1) → la lista no lo nombra ese año
+  if (SKIP_V6.has(iso)) {
+    const d31 = iso.slice(5, 7) === '01' ? `${Number(iso.slice(0, 4)) - 1}-12-31` : `${iso.slice(0, 4)}-12-31`;
+    const con31 = !corridaS1De(d31);
+    return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic${con31 ? ' · 31-dic' : ''} · 1-ene · Jueves y Viernes Santo).${con31 ? '' : ' El 31-dic de este año sí es día de estudio: la semana corrida pone ahí el último día de F1.'}`] });
+  }
   // 3) domingo — v6.07: flexible (sin hora fija): ENCAPS opcional 4 h + SHIP del vibecoding + Feynman + Anki (F1 · transición · F2; F3 solo el PC)
   if (w === 0) {
     const bsD = extrasDomingo(iso);

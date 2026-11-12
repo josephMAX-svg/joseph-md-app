@@ -366,3 +366,19 @@ Teoría por área: **INV termina el 30-nov · GES el 18-dic · ET el 12-dic · C
 - **Revisión normativa N°2 (ITS):** se usa en la mañana de normas de CI del vie 18-dic (TBC, ITS/VIH, ECNT).
 - **CI 1/8 e INV 1/4:** siguen la regla del plan (audio en tiempos muertos; el post-test, al terminar).
 - **Kahoots diarios:** opcionales, en grabación y en tiempos muertos.
+
+## Actualización · jue 12-nov-2026 (re-scan del campus, del calendario del campus y del Drive)
+
+> Solo lectura, en el Chrome del alumno (Claude in Chrome; chrome-devtools no conectó): estado de los cursos y calendario mensual del campus por su API. No se abrió ningún examen, simulacro ni post-test.
+
+- **Cursos:** sin cambios desde el 11-nov. Siguen 99 (227 módulos), 116 (11) y 105 (10). El curso 42 (Kahoots) pasa de 63 a 64.
+- **Calendario del campus (nov-2026 → ene-2027).** Confirma las clases en vivo que ya tenía la app:
+  - Sábados 15:00: CI 2/8 · Ética 2/3 · Gestión 3/6 · Gestión 4/6 · Ética 3/3 · CI 3/8.
+  - Lunes 19:30 y viernes 19:00/20:00: INV 2-4/4 · SP 2-6/11 · Gestión 2/6, 5/6 y 6/6 · CI 4/8 · Banqueos 5-9/19.
+  - Feriados: mar 8-dic (Inmaculada Concepción), mié 9-dic (Batalla de Ayacucho), vie 25-dic, sáb 26-dic «sin clases», vie 1-ene y sáb 2-ene «sin clases».
+  - Los simulacros (curso 105) no salen en el calendario: los del vie 27-nov y vie 11-dic siguen siendo **proyectados** por la cadencia quincenal.
+- **Drive u/4 «SERUMS 2026 II»:** nada modificado desde el 10-nov.
+- **Plan (v6.07e, todo corrido un día):** los domingos de diciembre se quedan como estaban:
+  - dom 6: banqueos N°08-N°09.
+  - dom 13: simulacro con ranking; la nota se anota ese día para el GATE, que ahora es el **lun 21-dic** (el CHECKPOINT del vie 18 de plan se hace ese lunes).
+  - dom 20: banqueos N°10-N°11 + corrección del 13.
