@@ -5035,3 +5035,69 @@ Estado de partida: volcado fresco del 11-nov al 4-ene (`r8/volcados`, 1.327 even
 - La serie «😴 DORMIR» de los sábados (21:00-04:00), que choca con el SYNAPSE de las 21:00 y el Anki de las 21:30 (viene de la v6.07b).
 
 Respaldos en `r8/bk/`, operaciones en `r8/ops8.json`, volcados previos en `r8/volcados/` y posteriores en `r8/despues/`.
+
+## 32 · v6.08 — TODO ARRANCA EL LUN 16-NOV-2026 (sáb 14-nov-2026)
+
+**Octavo ajuste bajo v6: re-fecha real de una semana, con los plazos alargados.**
+
+Orden de Joseph (sáb 14-nov): «todo inicia a partir del día 16 … reestructura todo … si es necesario mover tiempos … tal vez las fechas límites puedes alargarlo … agregas 2 días más o 3 días más o lo que amerite».
+
+La semana del lun 9 al dom 15-nov no se estudió. Las semanas corridas por alias v6.07a-e (§31.8 y rondas 1-8) quedan SIN EFECTO y `corrida_s1` vuelve a ser inerte (días sin sesión del 19-oct al 15-nov, con notas para el 14 y el 15).
+
+Es el patrón v6.05/v6.06/v6.07: F1 anclada a su fin, hitos, lo que no cabe pasa con fecha a la fase siguiente, secundarios +5 hábiles y nada se quita. Los exámenes no cambian: ENCAPS el dom 14-mar (el calendario del campus de Theomed también lo marca) y Step 1 el lun 6-dic-2027.
+
+**Antes de decidir:**
+- Medición con 2 agentes (`wf_9a87ade4-99b`).
+- Revisión de Theomed, Drive y correo: sin cambios de fechas. El detalle está en `INVESTIGACION_2027-1/THEOMED_Y_DRIVE.md`, actualización del sáb 14-nov.
+
+**F1 = lun 16-nov → mié 30-dic (32 hábiles).**
+
+**Step 1 (13 filas mar·jue):**
+- Regla nueva SEMANA_PLAN = `step1.f1_dias_semana.length`, en gen_tramo2 y en la referencia. Las versiones viejas se reproducen con `--semana-plan 5`.
+- UWSA1 D1 el mar 17-nov. NBME 25 D8 el jue 10-dic, la misma fecha que antes, con su Day-After del 15 al 24-dic.
+- 45 filas pasan al tramo 2: NBME 26 mar 6-abr, NBME 27 mar 27-abr y NBME 28 mar 8-jun, este con ventana L-S en F4 (regla nueva: todo hito desplazado a F4 lleva ventana; `--hito-f4-sin-ventana` reproduce la v6.07). Gates el mié 24-mar y el vie 23-abr.
+- Colchón: de 14 a 10 filas (≈ 26 h).
+- `gen_fechas_v6 --calculo` ya pasa las filas reales de F1. Si el ENCAPS se fuera a abril, el Step 1 del 6-dic no cabría: déficit de 8 a 23 u.
+- verificar_v6: 53 controles.
+
+**ENCAPS:**
+- **16:15:** dia 1-32. Pre-test el lun 16 y el mar 17. Mini-sims los vie 20 y 27-nov y 4, 11 y 18-dic; el del 18 es el CHECKPOINT.
+- **Intensiva:** dia 33-82, mismas fechas.
+- **Pendientes F1:** 28. Los 5 nuevos van con fecha a un carril VIERNES 16:15 nuevo (tras el SIM o el pre-test de las 07:15 del núcleo) y al carril SÁBADO, que pasa a las 14:00-15:00, fuera del gimnasio. Re-flujo FIFO por fecha. El sáb 6-mar queda libre.
+- **Mañanas:**
+  - Corren una semana (n1-n18), con el SIMULACRO DE CIERRE anclado el mié 30-dic.
+  - Jue 31-dic: día solo-ENCAPS (banqueo 9/19 + GES 6/6 + CI 4/8; SP 6/11 a las 18:00).
+  - Mar 5-ene: la hoja de reglas + 60Q (`extra.manana_f1` en la fila dia 34).
+- **Cadena de ★ de ENCAPS::Cifras:** salta los días en que la guía USMLE del Anki pasa de las 05:30.
+- **Clases en vivo de Theomed:** los 9 sábados de F2 (9-ene → 6-mar) también las pintan.
+- **Supabase:** 87 · a50afd46… → **82 · 38ccfe24…**, en una sola transacción con guardas. Backups `study_schedule_bk_v608_20261114`, `…_int_20261114` y `study_metrics_bk_v608_20261114`, con RLS. Staging borrado.
+- **Daemon:** --dry-run lun 16 = D1/82, mar 17 = D2/82 y sáb 9-ene = carril sábado 14:00.
+
+**Secundarios +5 hábiles:**
+
+| Plan | Fin v6.08 y cambios |
+|---|---|
+| MIR | lun 8-mar. Mantenimiento mar 9-mar → mar 1-jun y extensión → vie 3-dic: 220 sesiones (antes 225, sin repuestas; decisión de Joseph) |
+| Research | M1 mar 17-nov; pausa desde el jue 21-ene; CR-3 → CR-8 tras la pausa; CR-9 lun 1-mar (+1 día); plan B de inglés el mar 29-dic |
+| Derma | c1 → lun 7-jun; c2 → lun 16-ago |
+| Business | vie 19-mar. Salta los SKIP, los protegidos y el D-2 del ENCAPS (regla nueva en el .py) |
+| LIVIANO | vie 2-abr. Regla nueva: se alarga hasta el viernes del caso 16; el 31-mar y el 1-abr van sin sesión |
+| vibecoding | mar 6-abr. Taper re-fechado; un PC desplazado a un domingo protegido pasa al siguiente: S16 → dom 21-mar |
+| SYNAPSE | jue 1-abr |
+| AURUM | mar 25-may. Regla del día de hito también en F4: D129 a las 14:00 tras el NBME 30 |
+| Revisión semanal | S01 el sáb 21-nov |
+
+**Sábados de F2:** STEP 1 VIVO 04:15-05:45 · revisión 07:15 · Business 07:45 · carril 14:00 · Theomed 15:00 · SYNAPSE 21:00.
+
+**Proceso:**
+- Lote A (USMLE + ENCAPS, `wf_a449680e-935`).
+- Lote B (secundarios, `wf_ab6b539e-609`).
+- Revisión adversarial `wf_7a3e44db-4e6`: 21 hallazgos, corregidos en `wf_62b3601e-1df`. Los dos graves eran las rutas de las revisiones S04/S05 en los SHIP del vibecoding y el daemon, que habría leído el vivo v6.07.
+- Commit `a1a2487` (desplegado; bundle `index-759a22ce…`).
+
+**Calendar:** Calendar §27 de CAL_V6. Cada instancia vuelve a su hueco nativo, con la hora y el texto de la app v6.08.
+- **Construcción:** C1 (9-nov → 3-ene) y C2 (4-ene → 31-dic-2027), sin escritura.
+- **Revisión adversarial y parche:** salen 1.536 ops (1.504 update, 4 delete, 28 create), aplicadas con 0 fallos (`wf_85ebe1c2-cf6`).
+- **Re-volcado:** C1 da 7.686 OK; sus 71 FAIL son los cambios de C2 del 4 al 10-ene y el parche. C2 da 897/897 OK y 0 FAIL.
+- **Research:** `--set` de los 12 overlays; `--check` da 0.
+- **Ajuste de la app tras la verificación:** desde el 6-dic, cuando el SHIP del domingo va por la tarde, el Feynman va en sus 10′ iniciales (14:45-14:55; `rutinaGuia.feynmanAlEmpezarShip`), igual que en el Calendar.

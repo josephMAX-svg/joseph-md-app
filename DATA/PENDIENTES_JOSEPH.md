@@ -1,47 +1,38 @@
-# PENDIENTES DE JOSEPH · régimen v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · TODO ARRANCA EL LUN 9-NOV-2026 (v6.07e: D1 real VIE 13-NOV, todo corrido un día hasta el jue 31-dic) · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
+# PENDIENTES DE JOSEPH · régimen v6.08 (14-nov-2026: TODO ARRANCA EL LUN 16-NOV-2026, re-fecha real: cada plan corre una semana y sus plazos se alargan) sobre la v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
 
-**⚡ v6.07e (jue 12-nov ≈09:45, VIGENTE · «última modificación») — TODO ARRANCA EL VIE 13-NOV: es el D1 completo. Desde ahí, todo se corre un día.** Orden de Joseph: «última modificación, todo inicia mañana … la clásica de correr un día todo para que la fecha se alargue un día en todo, sin meter más eventos entre ellos, concatenar temas ni reducir tiempos». Sustituye a la v6.07d, que arrancaba el jue 12.
+**⚡ v6.08 (sáb 14-nov ≈08:00, VIGENTE) — TODO ARRANCA EL LUN 16-NOV. Re-fecha real: cada plan corre una semana y sus plazos se alargan.** Orden de Joseph: «todo inicia el lunes 16; reestructura todo; si hace falta mueve tiempos; alarga las fechas límite lo que amerite (2-3 días o más) para que no sea fastidioso». La semana del 9 al 15-nov no se estudió; las semanas corridas v6.07a-e (alias) quedan sin efecto. Fechas externas sin cambio: el examen ENCAPS es el dom 14-mar (el campus de Theomed lo marca ese día) y el examen Step 1 el lun 6-dic-2027.
 
-**La cuenta:**
-- F1 tiene 37 días hábiles de plan.
-- Desde el vie 13 quedan 33 hasta el 30-dic, más los 3 fines de semana de recuperación ya aceptados (14-15, 21-22 y 28-29): 36. Falta 1 día.
-- Se corre un día: cada día hábil hace el plan del día hábil anterior y el **último día de F1 (simulacro de cierre de año) pasa del mié 30 al jue 31-dic**.
-- **Desde el lun 4-ene todo va en su fecha.** No cambian: la intensiva ENCAPS, el ENCAPS del dom 14-mar ni el examen Step 1 del lun 6-dic-2027. No se quita nada.
+**F1 = lun 16-nov → mié 30-dic (32 hábiles).** Sigue el mismo esquema: mañanas ENCAPS los lun · mié · vie y Step 1 los mar · jue.
 
-App: `corrida_s1` v6.07e (alias + reparto + reemplazos de texto). Calendar: CAL_V6 §26, ronda 8.
-
-| Día real | Qué toca |
+| Frente | Cómo queda |
 |---|---|
-| jue 12 | LIBRE |
-| **vie 13** | **D1 = plan del lun 9, completo desde las 04:15**: vibecoding S1 1/5 · Anki (solo inventario) · ENCAPS mañana 1/22 07:15-12:00 · SYNAPSE · Business D1 · Research M1 · AURUM D1 · MIR D1 · 16:15 PRE-TEST 1/2 · LIVIANO D1 · 18:00 cifras |
-| **sáb 14** | (gimnasio 08:30-14:00 · baile 17:00-20:00) antes del gimnasio, 4 bloques del mar 10: 04:15 vibecoding 2/5 · 05:00 SYNAPSE · 07:15 Business D2 · 07:40 LIVIANO D2 · **14:00-14:45 preparación del UWSA1** (vídeo «The ONLY Video…» 0:00-26:00 + peor escenario por escrito) · 14:45 preparar la clase · 15:00-17:00 Theomed en vivo · 21:00 SYNAPSE del sábado · 21:30 Anki → a la cama a las 22:00 |
-| **dom 15** | **UWSA1** (el resto del plan del mar 10): 05:00 Anki (configuración del mazo) · 07:15-07:40 preparación (localizar el sim + final del vídeo de Anki + Ziploc) · **07:40-11:50 UWSA1** (4 × 40Q) · 11:50 almuerzo · 12:30 Day-After 1/6 · 13:15 Derma d1 · 14:00 AURUM D2 · 15:00 MIR D2 · 16:00 ENCAPS pre-test 2/2 · baile 17:00 |
-| lun 16 → vie 20 | plan del mié 11 → mar 17: lun 16 = ENCAPS 2/22 · mar 17 = Step D2 · mié 18 = ENCAPS 3/22 + mini-sim #5 · jue 19 = ENCAPS 4/22 · vie 20 = Step D3 |
-| **sáb 21 + dom 22** | plan del mié 18 (ENCAPS mañana 5/22) · sáb 14:00 revisión S01 y 14:30 cierre del OUTPUT S1 |
-| lun 23 → vie 27 | plan del jue 19 → mié 25 (Step D4 el lun 23 · mini-sim #10 el mar 24) |
-| **sáb 28 + dom 29** | plan del jue 26 (Step D6) · sáb 14:00 revisión S02 y cierre del OUTPUT S2 · dom 29: *compromiso personal 12:30-14:00* → 14:15 Derma · 15:00 ENCAPS · 16:00 evaluación; AURUM D14 y MIR del jue 26 → dom 6-dic |
-| lun 30-nov → jue 31-dic | **corrido un día**: cada día hábil hace el plan del hábil anterior (lun 30 = ENCAPS 9/22 + mini-sim #15 · **NBME 25 vie 11-dic** · **CHECKPOINT/GATE del año lun 21-dic** · Step 1 D15 mié 30 · **último día de F1 jue 31-dic**) · el vie 25-dic sigue libre |
-| sábados 5, 12, 19 y 26-dic | 14:00 revisión y 14:30 cierre del OUTPUT **del sábado anterior** (el viernes de plan se hace el lunes) · Theomed en vivo 15:00 · SYNAPSE 21:00 · Anki 21:30 |
-| dom 6-dic | SHIP S1 y S2 (pendientes) · 12:15 AURUM D14 y 13:15 MIR (del jue 26) · *14:15-14:45 compromiso fijo* · 14:45-16:45 **banqueos N°08 y N°09 de Theomed** · 16:45 Anki |
-| dom 13-dic | SHIP S3 y S4 · *12:30-14:00 y 14:15-14:45 compromisos* · 14:45-16:45 **simulacro con RANKING** (anota la nota: la usa el GATE del lun 21) · 16:45 Anki |
-| dom 20-dic | SHIP S5 · 12:15-14:15 **banqueos N°10 y N°11** · *14:15-14:45 compromiso fijo* · 14:45-16:20 corrección del simulacro del 13 · 16:45 Anki |
-| dom 27-dic | SHIP S6 y AVANCE S7 · *12:00-14:45 compromiso personal* · el ENCAPS opcional, solo si te sobra energía |
-| sáb 2-ene | 14:00 revisión del sáb 26 · 15:00 la de esta semana · 21:00 SYNAPSE |
-| lun 4-ene → | todo en su fecha (intensiva ENCAPS) |
+| **Step 1** | 13 mañanas (mar 17-nov → mar 29-dic). **UWSA1 = mar 17-nov 08:50-13:00** (preparación 07:15). **NBME 25 = jue 10-dic** (D8; misma fecha que antes), con su Day-After del mar 15 al jue 24-dic. Lo que no cabe pasa al tramo 2 con fecha: NBME 26 mar 6-abr · NBME 27 mar 27-abr · NBME 28 mar 8-jun · gates mié 24-mar y vie 23-abr. Colchón 14 → **10 filas ≈ 26 h**. Examen lun 6-dic-2027 sin cambio (GO/NO-GO lun 18-oct). |
+| **ENCAPS mañanas** | Corren una semana (lun 16-nov → lun 28-dic). El SIMULACRO DE CIERRE sigue el mié 30-dic. **Jue 31-dic = día solo de ENCAPS**: banqueo 9/19 + GES 6/6 + CI 4/8 por la mañana y SP 6/11 a las 18:00. **Mar 5-ene**: la hoja de reglas del trimestre + 60Q, en lugar del calentamiento I-3. |
+| **ENCAPS 16:15** | dia 1-32: pre-test lun 16 + mar 17; mini-sims los vie 20, 27-nov, 4, 11 y 18-dic; **CHECKPOINT = vie 18-dic**. Intensiva dia 33-82 en sus fechas (lun 4-ene → vie 12-mar; pre-test 2026-II vie 8-ene). Las 5 sesiones que no caben entran con fecha en la intensiva: los viernes del núcleo a las 16:15 tras el SIM, y los sábados. El **carril sábado pasa a 14:00-15:00, fuera del gimnasio**, y el sáb 6-mar queda libre. |
+| **Secundarios** | +5 hábiles, con su contenido intacto: MIR D1 lun 16-nov → D78 lun 8-mar (mantenimiento mar 9-mar → mar 1-jun; extensión → vie 3-dic) · Research M1 mar 17-nov, pausa jue 21-ene → 10-feb, SUBMIT del case report lun 1-mar · Derma c1 → lun 7-jun, c2 → lun 16-ago · Business → vie 19-mar (salta los protegidos del 11 al 15-mar) · LIVIANO → vie 2-abr (caso 16) · vibecoding → mar 6-abr · SYNAPSE → jue 1-abr (el PC de S16, el dom 21-mar) · AURUM → mar 25-may. Los **sábados de F2** ya no caen en el gimnasio: STEP 1 VIVO 04:15-05:45 · revisión 07:15 · Business 07:45 · carril ENCAPS 14:00 · clase en vivo de Theomed 15:00-17:00 · SYNAPSE 21:00. | |
+
+**Theomed, Drive y correo (sáb 14):**
+- **Theomed:** sin material nuevo desde el 12-nov (las clases del 13 y 14 aún no están colgadas). El calendario del campus confirma las clases en vivo hasta el cierre del sáb 13-mar y marca el EXAMEN ENCAPS el dom 14-mar.
+- **Simulacro:** el del vie 13-nov cuenta para el ranking hasta ≈ el mar 17 a las 09:00. Hacerlo es **opcional, y solo mañana domingo**; si no, va el dom 22 sin ranking.
+- **Drive:** nada nuevo.
+- **Correo:** solo avisos de las academias.
 
 Lo que te toca a ti:
-- [ ] El **dom 15 es el UWSA1** (07:40-11:50, después de un sábado con gimnasio y baile). Su preparación larga va el **sáb 14 de 14:00 a 14:45** (el vídeo «The ONLY Video…» y el peor escenario): el domingo, entre la caminata y el desayuno, no cabe. La noche del sábado: cena ligera, baile suave y a la cama a las 22:00.
-- [ ] **El jue 31-dic es día de estudio** (el último de F1, hasta las 18:45): el corrimiento de un día lo ocupa. El vie 1-ene sigue libre.
-- [ ] Los simulacros con RANKING de Theomed son quincenales. El del vie 13-nov está confirmado; los del vie 27-nov y vie 11-dic son proyectados (confírmalos en el campus). Los del 13 y el 27 no tienen hueco fijo; el del 11-dic va el dom 13.
-- [ ] Los en vivo de Theomed entre semana van en diferido; la app lo dice cada día. La excepción es el Banqueo de las 19:00: en vivo, solo si te sobra energía.
-- [ ] AURUM D14 y MIR del jue 26 van el dom 6-dic, después de AURUM D15-D19. Es una decisión consciente: el dom 29 tiene un compromiso de 12:30 a 14:00.
-- [ ] El evento personal del dom 29 (12:30-14:00) y los de las 14:15 de los domingos de diciembre describen el reparto antiguo. No los toqué; corrígelos tú si quieres.
-- [ ] Los simulacros antiguos opcionales del 18/09, el 02/10 y el 16/10 se quedan sin domingo; quedan para un hueco libre.
-- [ ] La serie personal «😴 DORMIR» de los sábados (21:00-04:00) choca con el SYNAPSE de las 21:00 y el Anki de las 21:30, y el domingo empieza a las 05:00 (ya pasaba desde la v6.07b). No la toqué porque es tuya: si quieres, ponla los sábados de 22:00 a 05:00.
-- [ ] Dom 20-dic: la corrección del simulacro del 13 (14:45-16:20) tiene ahora su propio evento (flexible), aparte de los banqueos de las 12:15.
-- [ ] **Sábados de la intensiva F2 (9-ene → 6-mar) — AÚN SIN AJUSTAR:** 07:45 STEP 1 VIVO 20Q · 09:15 cierre Business · 09:30-10:30 carril sábado ENCAPS · 10:30-11:10 OUTPUT Business caen dentro del gimnasio. Propuesta: STEP 1 VIVO 04:15-05:45 · revisión 07:15 · Business 07:45-08:25 · carril sábado 14:00-15:00 · SYNAPSE 15:00 · OUTPUT 15:30-16:10. Confirma y se mueve (app + Supabase `carril_sabado` + Calendar).
-- [ ] Recordatorios opcionales de Anki del fin de semana en 2027 (sáb 19:00 · dom 17:00, pendiente (m)): el del sábado cae en el baile. Si se quedan, van a sáb 21:30 y dom 16:45.
+- [ ] **Lun 16 a las 04:15 empieza todo.** **Mar 17 = UWSA1** (08:50-13:00): la noche del lun 16, cena ligera y a la cama a las 21:00.
+- [ ] **Jue 31-dic**: mañana de ENCAPS (07:15-12:00) y SP 6/11 a las 18:00. Lo demás, libre.
+- [ ] **Si el examen ENCAPS se va a abril** (4-abr o después), el Step 1 del 6-dic deja de caber (déficit de 8 a 23 unidades): habría que extender la elegibilidad o mover el examen. Con el 14 o el 21-mar cabe.
+- [ ] **Colchón del Step 1 = 10 filas ≈ 26 h.** Si quieres más margen, el examen del 13-dic-2027 da 16 filas ≈ 42 h. No lo cambié.
+- [ ] **Day-After del NBME 27** (mar 27-abr): su último trozo (6/6) cae el lun 3-may, primer día del SERUMS, sin franja propia. La guía lo avisa y propone el bloque B de ese día según el turno.
+- [ ] **Clases en vivo que te pierdas:** la CI 2/8 (hoy sáb 14, 15:00) va el mié 25-nov a las 18:00; la CI 3/8 (sáb 19-dic), el mié 23-dic.
+- [ ] **MIR:** el banqueo queda en 220 sesiones (antes 225). Las 5 que salen son repeticiones de la extensión: Neurología, Infecciosas, Endocrino, Hematología y un viernes. Si las quieres, irían como 5 repuestas después del examen.
+- [ ] **Research:** la pausa empieza el jue 21-ene (2 sesiones de 45′ más en la intensiva: lun 18 y mié 20-ene). Las fotos del case report (CR-3) también pasan tras la pausa (11-feb), y el SUBMIT queda el lun 1-mar (+1 día sobre el objetivo).
+- [ ] **Vie 5-mar:** mini-MIR de 40Q el mismo día del SIM 100Q (11:00), la corrección y el carril de las 16:15. No se solapan, pero el día va muy cargado: si prefieres, el mini-MIR se puede mover.
+- [ ] **LIVIANO:** el caso 16 es el vie 2-abr, así que la revisión trimestral II va el mar 30-mar, antes del caso integral. Si la quieres después del caso, hace falta +1 hábil (lun 5-abr).
+- [ ] **Domingos de diciembre:** el 6, el 13 y el 20 conservan sus 2 h de ENCAPS con contenido (banqueos N°08-09, simulacro con ranking y banqueos N°10-11 + corrección). Si prefieres las 4 h opcionales de antes, se puede volver.
+- [ ] **Notas AURUM de Obsidian:** no se regeneraron porque escriben en tu vault. Si llevan fechas, se regeneran con tu OK.
+- [ ] **Sigue abierto de antes:** la serie personal «😴 DORMIR» de los sábados (21:00) choca con el SYNAPSE de las 21:00, ahora también en los sábados de F2. Los eventos personales del dom 29-nov y del compromiso fijo de los domingos (14:15) no se tocaron. Algunas de sus descripciones aún hablan del reparto anterior: cámbialas tú o dime y lo hago. El Feynman opcional de los domingos del 10-ene al 14-feb va a las 14:45-14:55, al empezar el SHIP, para no pisar ese compromiso.
 
+⏸ v6.07e (jue 12-nov; sin efecto desde la v6.08): D1 vie 13 · UWSA1 dom 15 · todo corrido un día hasta el jue 31-dic (alias + reparto) · commit 0600407.
 ⏸ v6.07d (mié 11-nov; sin efecto desde la v6.07e): D1 jue 12 · vie 13 = UWSA1 · fines de semana de plan 14-15, 21-22 y 28-29 · en fecha desde el lun 30 · SHIP S1/S2/S3 a los dom 6/13/20-dic.
 
 ⏸ v6.07c (mar 10-nov; sin efecto desde la v6.07d): D1 mié 11 (plan del lun 9) · jue 12 = UWSA1 · domingos 15 y 22 de plan · en fecha desde el lun 23 · SHIP S1 y S2 al dom 29.

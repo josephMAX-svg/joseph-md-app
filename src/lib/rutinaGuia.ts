@@ -514,6 +514,13 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
  *  ejemplo va por la mañana: Feynman 07:15 y SHIP 07:25 (la revisión proponía Feynman 07:05, pero antes de las 07:15 está la rutina de caminata, ducha y
  *  desayuno). Lo usan guiaShipDe y guiaFeynmanDe. */
 const SHIP_EJ = { tarde: '14:45', manana: '07:25', min: 120, feynmanMin: 10 } as const;
+/** v6.08 (Calendar, rev. wf_2e9b037f-57c · 14-nov-2026): desde el dom 6-dic hay un compromiso fijo los domingos hasta las 14:45 → con el
+ *  ejemplo de TARDE el Feynman ya no va 10′ antes del SHIP (14:35, lo pisaba) sino en sus 10′ iniciales (14:45-14:55, «al empezar el SHIP»).
+ *  El ejemplo de mañana (07:15 Feynman + 07:25 SHIP) no cambia. Lo usan guiaFeynmanDe y check_rutina_guia.js (16). */
+export const FEYNMAN_AL_EMPEZAR_DESDE = '2026-12-06';
+export function feynmanAlEmpezarShip(iso: string): boolean {
+  return iso >= FEYNMAN_AL_EMPEZAR_DESDE && shipEjemploIni(iso) === SHIP_EJ.tarde;
+}
 export function shipEjemploIni(iso: string): string {
   const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(guiaEncapsDomingoDe(iso)?.franja ?? '');
   if (!m) return SHIP_EJ.tarde;
@@ -610,12 +617,14 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
     : 'qué construiste esta semana';
   // v6.07: el domingo es flexible (sin hora fija): la franja es solo un ejemplo, justo antes del SHIP (lo que no sabes explicar = lo que falta)
   // v6.08 (rev. dia7): 10′ antes del ejemplo del SHIP (shipEjemploIni): 14:35 (antes 14:50) o 07:15 los domingos con el ENCAPS de tarde
-  const feyIni = aHHMM(aMin(shipEjemploIni(iso)) - r.min);
+  // v6.08 (Calendar): desde el dom 6-dic, con el ejemplo de tarde, en los 10′ iniciales del SHIP (14:45-14:55) — feynmanAlEmpezarShip
+  const alEmpezar = feynmanAlEmpezarShip(iso);
+  const feyIni = alEmpezar ? shipEjemploIni(iso) : aHHMM(aMin(shipEjemploIni(iso)) - r.min);
   return bloque(franjaDesde(feyIni, r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
     P(Math.ceil(r.min / 2), `Explica en voz alta ${quePy} y CÓMO funciona (sin mirar el código)`, 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
     P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
   ], [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
-    aviso: `Opcional y sin hora fija (${franjaDesde(feyIni, r.min).replace('–', '-')} es solo un ejemplo): mejor justo antes del SHIP del vibecoding, porque lo que no sabes explicar es lo que falta.`,
+    aviso: `Opcional y sin hora fija (${franjaDesde(feyIni, r.min).replace('–', '-')} es solo un ejemplo): ${alEmpezar ? 'mejor al empezar el SHIP' : 'mejor justo antes del SHIP'} del vibecoding, porque lo que no sabes explicar es lo que falta.`,
   });
 }
 

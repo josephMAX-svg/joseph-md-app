@@ -797,7 +797,9 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         const en = EM2.guiaEncapsDomingoDe(iso), fe = RG2.guiaFeynmanDe(iso);
         if (an && cruza(s, [hm(an.ini), hm(an.fin)])) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} pisa el Anki del domingo ${an.ini}-${an.fin}`);
         if (en && cruza(s, frm(en.franja))) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} pisa el ejemplo del ENCAPS del domingo ${en.franja}`);
-        if (fe && (!frm(fe.franja) || frm(fe.franja)[1] !== s[0])) errores.push(`${iso} (16): el Feynman ${fe.franja} no va justo antes del SHIP ${sh.franja}`);
+        // v6.08 (Calendar): desde el dom 6-dic, con el ejemplo de tarde, el Feynman va en los 10′ iniciales del SHIP (RG2.feynmanAlEmpezarShip)
+        const alEmp = RG2.feynmanAlEmpezarShip(iso);
+        if (fe && (!frm(fe.franja) || (alEmp ? frm(fe.franja)[0] !== s[0] || frm(fe.franja)[1] > s[1] : frm(fe.franja)[1] !== s[0]))) errores.push(`${iso} (16): el Feynman ${fe.franja} no va ${alEmp ? 'al empezar' : 'justo antes'} del SHIP ${sh.franja}`);
         if (fe && en && cruza(frm(fe.franja), frm(en.franja))) errores.push(`${iso} (16): el ejemplo del Feynman ${fe.franja} pisa el ejemplo del ENCAPS ${en.franja}`);
         if (s && s[0] < hm('07:15')) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} empieza antes de las 07:15 (caminata, ducha y desayuno)`);
         nDom16++;

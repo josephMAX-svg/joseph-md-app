@@ -2700,3 +2700,65 @@ Estado de partida: volcado fresco del 11-nov al 4-ene (`r8/volcados`, 1.327 even
 - La serie «😴 DORMIR» de los sábados (21:00-04:00), que choca con el SYNAPSE de las 21:00 y el Anki de las 21:30 (viene de la v6.07b).
 
 Respaldos en `r8/bk/`, operaciones en `r8/ops8.json`, volcados previos en `r8/volcados/` y posteriores en `r8/despues/`.
+
+## 27. v6.08 — todo arranca el lun 16-nov-2026 (sáb 14-nov-2026 · re-fecha real · las semanas corridas v6.07a-e quedan sin efecto)
+
+Orden de Joseph (sáb 14-nov): «todo inicia el lunes 16; reestructura todo; alarga las fechas límite lo que amerite». La app v6.08 es el commit `a1a2487`; su resumen está en REESTRUCTURACION §32 y en PENDIENTES.
+
+El Calendar venía de las rondas 1-8 de la §26: ≈ 611 instancias del 13-nov al 4-ene movidas a otros días y textos «(plan del …)».
+
+**Método.** Brief común en `cal_bk/v608/BRIEF_V608.md` (ignorado por git), con un principio: **cada instancia vuelve a su HUECO NATIVO**. Como el corrimiento es de una semana justa y la plantilla depende del día de la semana, la instancia nativa del día R lleva el bloque de su frente del día R de la v6.08, a la hora y con el texto de la app.
+
+**Pasos de la mañana del sábado 14 (≈ 08:10):**
+1. Antes de construir nada, 18 `update_event` dejaron el sáb 14 y el dom 15 en «⏭ … sin sesión (v6.08 …)», FREE y sin recordatorios. La clase en vivo de Theomed y su preparación no se tocaron.
+2. Dos constructores sin escritura (`wf_2c539014-aa1`), cada uno con volcado fresco, export de la app, `build_ops.js`, `sim.js` y `ver.js`:
+   - **C1** (`cal_bk/v608/c1/`), 9-nov → 3-ene: 640 ops en 3 tramos (semana 16-22 · resto · ⏭ de 9-15 nov); `verificacion.txt` 7.782 OK y 0 FAIL.
+   - **C2** (`cal_bk/v608/c2/`), 4-ene → 31-dic-2027: 891 ops; 0 FAIL y 38 WARN, que son ANKI opcionales de fin de semana dentro del baile (decisión (m) de Joseph) y Feynman FREE.
+3. Revisión adversarial `wf_2e9b037f-57c`, sin fallos graves. Se aplicó con `patch_revision.js` → `c1/aplicar.json` y `c2/aplicar.json`:
+   - los eventos de hoy y mañana se escriben primero;
+   - FREE explícito en 3 conversiones de día completo a hora;
+   - Anki opcionales del 2 y 3-ene sin recordatorios;
+   - Feynman de los domingos 10-ene → 14-feb a las 14:45-14:55, porque a las 14:35 pisaba un compromiso personal 14:15-14:45;
+   - 5 ANKI opcionales de abril con su texto;
+   - SYNAPSE del sáb 27-mar sin «el SHIP es el domingo»;
+   - ventana del NBME 28 (grupo B de los opcionales).
+4. **Canario:** la conversión de un evento de día completo a evento con hora (`update_event` con `allDay: false` + `startTime`/`endTime`) funciona en una excepción de serie sin perder el id. Se probó con `5s64…_20261122T220000Z`.
+
+5. **Aplicación** (`wf_85ebe1c2-cf6`, 4 agentes en 2 rangos por lote, ≈ 80 min):
+   - Se aplicaron `c1/aplicar.json` (639 ops: 631 update, 4 delete y 4 create) y `c2/aplicar.json` (897 ops: 873 update y 24 create).
+   - Las ops se aplicaron tal cual, con `notificationLevel: NONE`.
+   - **Resultado: 1.536 ops y 0 fallos.**
+   - Los ids de los 28 eventos nuevos están en `c1/hecho_*.json` y `c2/hecho_*.json`.
+   - En total, en el Calendar: 18 neutralizaciones previas + 1 canario + 1.536 ops.
+6. **Re-volcado y verificación** (`wf_ee06be39-984`, solo lectura; `list_events` del MCP con `startTime`/`endTime` + `timeZone`, sin `timeMin`):
+   - **C1**:
+     - Volcado del 9-nov al 11-ene en 13 ventanas: 1.486 eventos, en `c1/volcados_despues/`.
+     - `node ver.js volcados_despues --despues` → **7.686 OK**, 780 no gobernados idénticos, 416 bloques de la app con su evento.
+     - Los 71 FAIL están explicados y clasificados por script; ninguno es un fallo real:
+       - 68 son eventos del 4 al 10-ene que cambió C2. Caen fuera del rango de C1, pero dentro de su volcado.
+       - 1 línea recoge los 2 creados de C2: el carril del vie 8-ene y Theomed del sáb 9-ene.
+       - 2 son los Anki opcionales del 2-3 ene, que quedaron sin recordatorios por el parche. `objetivo.json` es anterior a `patch_revision.js`.
+     - Hay 26 solapes informativos con rutinas, los mismos de antes.
+   - **C2**:
+     - Volcado del 4-ene al 31-dic-2027 en 73 ventanas: 5.415 eventos. `c2/join_despues.js` los junta en `c2/volcados/despues_all.json`.
+     - `node ver.js volcados/despues_all.json` → **897/897 ops OK**, 4.504 no tocados idénticos, **0 FAIL**.
+     - Quedan 32 WARN: los Anki opcionales del fin de semana dentro del baile (decisión (m)).
+     - En la primera pasada salieron 12 FAIL: el Feynman de los domingos del 10-ene al 14-feb estaba a las 14:45 en el Calendar (parche de la revisión) y a las 14:35 en la app.
+     - **Se corrigió la app, no el Calendar:**
+       - `rutinaGuia.ts › feynmanAlEmpezarShip`: desde el dom 6-dic, si el ejemplo del SHIP es de tarde, el Feynman va en sus 10′ iniciales (14:45-14:55), con el texto «mejor al empezar el SHIP».
+       - `check_rutina_guia.js` (16) acepta esa posición.
+     - `c2/ops.json` n 897 (ventana del NBME 28, de día completo) recibió su campo `dias` para que `ver.js` pudiera comprobarla.
+   - **Research**: los 12 overlays coinciden con `gen_research_calendar.js --print` en título, descripción, hora, color y FREE → `--set` de los 12 → `--check`: 0 por recrear.
+7. **Lecciones:**
+   - **Hueco nativo:** devolver cada instancia a su hueco nativo funciona para una re-fecha de una semana justa. No hace falta traducir textos ni crear eventos.
+   - **objetivo.json:** regenerarlo después de parchear las ops con la revisión; si no, salen FAIL falsos.
+   - **Volcado de C1:** cortarlo donde termina su rango, o comparar contra un «antes» que ya lleve C2.
+   - **Cambios de la revisión:** lo que la revisión cambie solo en el Calendar también tiene que ir a la app; si no, `ver.js` lo marca.
+
+**No se tocó (es de Joseph):**
+- Los compromisos personales: dom 29-nov, el compromiso fijo de los domingos desde el 6-dic y el dom 27-dic. Algunas descripciones siguen hablando del reparto v6.07e.
+- La serie «😴 DORMIR» de los sábados, que choca con el SYNAPSE de las 21:00, también en los sábados de F2.
+- Las rutinas y los eventos de finanzas.
+- La clase en vivo de Theomed del sáb 14 y su preparación.
+
+Respaldos en `c1/bk/` y `c2/bk/`. Volcados previos en `c1/volcados/` y `c2/volcados/p*.json`; posteriores en `c1/volcados_despues/` y `c2/volcados_despues/`. Informes en `c1/verificacion_despues.txt` y `c2/verificacion_despues.txt`. Todo bajo `cal_bk/v608/`, ignorado por git.
