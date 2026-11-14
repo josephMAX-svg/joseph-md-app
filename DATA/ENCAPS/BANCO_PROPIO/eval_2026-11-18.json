@@ -1,8 +1,8 @@
 {
- "id": "EVAL_2026-11-11",
- "titulo": "Eval anclada ENCAPS · Mié 2026-11-11 · I-3",
+ "id": "EVAL_2026-11-18",
+ "titulo": "Eval anclada ENCAPS · Mié 2026-11-18 · I-3",
  "tipoRonda": "eval_anclada",
- "fecha": "2026-11-11",
+ "fecha": "2026-11-18",
  "codigo": "I-3",
  "sub_eje": "tipos_vigilancia",
  "tema": "eval anclada · código de ayer I-3: 3 cifras + 2 viñetas",
@@ -16,7 +16,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
-   "fecha": "2026-11-10",
+   "fecha": "2026-11-17",
    "tipo": "banqueo1h",
    "codigo": "I-3",
    "sub_eje": "tipos_vigilancia"
@@ -80,6 +80,12 @@
     "a": "2026-11-11",
     "el": "2026-11-08",
     "motivo": "corrimiento v6.07 (D1 = 2026-11-09, «empezamos mañana 9»; la semana del lun 2 al vie 6-nov no se estudió y la corrida v6.06a-e queda sin efecto): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-11-04 (D3) al miércoles 2026-11-11 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-11-10, fila dia 2 I-3)"
+   },
+   {
+    "de": "2026-11-11",
+    "a": "2026-11-18",
+    "el": "2026-11-14",
+    "motivo": "corrimiento v6.08 (D1 = 2026-11-16, «todo inicia el lunes 16»; la semana del lun 9 al vie 13-nov no se estudió y las semanas corridas v6.07a-e quedan sin efecto): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-11-11 (D3) al miércoles 2026-11-18 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-11-17, fila dia 2 I-3)"
    }
   ]
  },

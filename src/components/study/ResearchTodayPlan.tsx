@@ -31,6 +31,9 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
  * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
  * v6.02c (18-oct-2026, E4): HOY → «🧭 Guía del bloque» = GuiaBloqueCard con la guía del átomo (researchGuia.guiaResearchDe: paso a paso en
  * R0 · R1 · M1 · C-1 · M2; el resto desde las 5 franjas · F4 30′) y la guía de 30′ en los días-Research de la pausa (GUIA_RESEARCH_MINIMO).
+ * v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov): ciclo 1 mar 17-nov → lun 12-abr · ciclo 2 mié 14-abr → sáb 18-sep-2027 (fechas desde DAILY_META /
+ * DAILY_META_2027, generadas; la pausa empieza el jue 21-ene —antes vie 15-ene— y CR-3 → CR-8 van tras ella, delante del SUBMIT CR-9 lun 1-mar). El paso (3)
+ * de la tarjeta «Research mínimo» sale de GUIA_RESEARCH_MINIMO (antes decía «repaso del paquete congelado», falso desde la v6.06: el paquete va tras la pausa).
  * v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): ciclo 1 lun 9-nov → jue 8-abr · ciclo 2 lun 12-abr → jue 16-sep-2027 (fechas desde DAILY_META /
  * DAILY_META_2027, generadas; nada se recorta: M1 sigue en d1 y CR-4 → CR-8 van tras la pausa, delante del SUBMIT CR-9 jue 25-feb).
  * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): ciclo 1 mar 3-nov → vie 2-abr · ciclo 2 mar 6-abr → sáb 11-sep-2027 (fechas desde DAILY_META /
@@ -45,7 +48,7 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
  * DAILY_META / DAILY_META_2027, generadas; nada se recorta: R2 pasa tras la pausa con los recortables).
  * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): ciclo 1 jue 8-oct → mié 3-mar (igual) · ciclo 2 vie 5-mar → sáb 21-ago-2027 · los días
  * protegidos son los v6 (12/13/14/15-mar ENCAPS · 25/26/27-sep Step 1) + Semana Santa; los v5.20 (22-feb · 9-mar · 10-mar) ya no
- * existen · en un día-Research de la PAUSA de átomos (15-ene → 10-feb, intensiva ENCAPS) → tarjeta «Research mínimo 30' (DJ-4)»
+ * existen · en un día-Research de la PAUSA de átomos (DAILY_META.pausa; v6.08: 21-ene → 10-feb, antes 15-ene → 10-feb; intensiva ENCAPS) → tarjeta «Research mínimo 30' (DJ-4)»
  * (no es fila del plan ni mueve átomos) · en F4 (SERUMS, desde el lun 3-may) el bloque es «30' en tiempo muerto (posta)», sin hora
  * fija: núcleo del átomo (el entregable atómico); lo demás pasa a opcional. Desde el SERUMS el sábado también es día de plan.
  */
@@ -391,7 +394,7 @@ export default function ResearchTodayPlan() {
       {/* v6.00 · DJ-4: los días-Research de la pausa NO son 0 → 30' «Research mínimo» (no es fila del plan ni re-fecha átomos, §E) */}
       {enPausa && tipoHoy === 'research' && !protegidoHoy && (
         <View style={[st.artefactoBar, { borderLeftColor: TEAL }]}>
-          <Text style={[st.artefactoTxt, { color: TEAL }]}>🔬 RESEARCH MÍNIMO 30' (DJ-4) · 13:30-14:00 · sin átomo nuevo: (1) inbox de revisores / editorial · (2) 1 lectura de la cola del ciclo 2 · (3) repaso del paquete congelado del case report (CR-8 → SUBMIT CR-9 tras la pausa).</Text>
+          <Text style={[st.artefactoTxt, { color: TEAL }]}>🔬 RESEARCH MÍNIMO 30' (DJ-4) · 13:30-14:00 · sin átomo nuevo: (1) inbox de revisores / editorial · (2) 1 lectura de la cola del ciclo 2 · (3) {GUIA_RESEARCH_MINIMO.pasos[2]?.que ?? 'case report: lo cerrado antes de la pausa'}.</Text>
         </View>
       )}
       {enPausa && tipoHoy === 'research' && !protegidoHoy && <GuiaBloqueCard g={GUIA_RESEARCH_MINIMO} color={TEAL} />}

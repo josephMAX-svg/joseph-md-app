@@ -56,6 +56,11 @@
  *   carril SÁBADO con 9 guías (las 5 de v6.06 + sáb 13, 20 y 27-feb y sáb 6-mar de los pendientes v6.07; el V-2 #5 del vie 5-mar va en el CARRIL
  *   VIERNES 16:15 de la quincena final, extra.carril_b de esa fila, y la app lo pinta como un banco del carril B). El ejemplo `--banco` del README
  *   de BANCO_PROPIO pasa a 2026-11-16 (el lun 9-nov es pre-test de arranque).
+ * v6.08 (14-nov-2026, «todo inicia el lunes 16»): sin cambio de lógica. F1 dia 1-32 desde el lun 16-nov (runners re-fechados por sesión, +7 días;
+ *   CAT.PREVISTO_SEMANA2 re-simulado para lun 23 → jue 26-nov) · carril SÁBADO con 8 guías a las 14:00-15:00 (la hora del SQL: sáb 9-ene → 27-feb;
+ *   re-flujo por fecha de los pendientes con el nuevo CARRIL VIERNES del núcleo) · la eval sin runner del sábado nombra el banco del CARRIL VIERNES si
+ *   el viernes host lo trae · el índice F2 lleva el carril B de los viernes 8, 15, 22, 29-ene, 5 y 12-feb y la fila del mar 5-ene (mañana 21/21 de F1,
+ *   tipo loop sin EVAL 18:00). Los ejemplos --banco / --eval del README de BANCO_PROPIO pasan a 2026-11-23 / 2026-11-17.
  * v6.07 (fix 8-nov-2026): NUEVO export ENCAPS_F2_FECHAS / encapsF2De(fecha) = ÍNDICE F2 de la intensiva (las 50 filas INTENSIVO del SQL resumidas:
  *   tipo · hora del SIM y sim_n · loop y EVAL 18:00 · cola / quincena · carril B con su pendiente F1 y la cola larga del mini-sim · subtema de los
  *   repaso_final). Lo usa plantillasV6 (síncrona, sin la fila viva) para decidir los bloques ENCAPS de F2: carril B 16:15 solo si la fila lo trae,
@@ -432,7 +437,9 @@ for (const [fecha, s] of Object.entries(SABADOS)) {
   const sab = {
     franja: `${s.ini}–${s.fin}`, simN: s.simN, host: s.host, hostTxt, lunesSem,
     etq: `🔁 REPOSICIÓN F1 · mant. ${s.diaMant} de la ${s.origen}`,
-    evalSin: `5Q de FALLOS PREVIOS del registro (otro enfoque, críticos primero: ayer, ${corta(s.host.fecha)}, fue el ${hostTxt}, sin banco de un código)`,
+    // v6.08: el viernes host puede traer también el CARRIL VIERNES 16:15 (banco de un pendiente F1) tras el SIM / pre-test de las 07:15; la eval del
+    //   sábado sigue siendo la de los fallos del simulacro (la de la app: EVAL ANCLADA (sábado), ver encapsPlan.itemsCarrilSabado)
+    evalSin: (() => { const cbV = (SAB_CTX[fecha].host.extra || {}).carril_b; const pV = cbV && cbV.pendiente_f1; return `5Q de FALLOS PREVIOS del registro (otro enfoque, críticos primero: ayer, ${corta(s.host.fecha)}, fue el ${hostTxt}${pV ? ` y, a las 16:15, el banco ${pV.codigo} del carril VIERNES` : ', sin banco de un código'})`; })(),
     tipoCierre: `«Carril B 16:15» (el sábado ENCAPS → Plan abre la fila del ${corta(s.host.fecha)}, D${s.host.dia}, y el cierre sale con la fecha del sábado)`,
     nota: `REPOSICIÓN F1 (${s.corrimiento}) · CARRIL SÁBADO ${s.ini}-${s.fin}: fila mant. ${s.diaMant} de la ${s.origen} (${corta(s.fechaOriginal)}) que no cupo en la F1 tras el corrimiento ni en los días de reposición lun-jue del carril B; ítems en ENCAPS → Plan, fila del ${corta(s.host.fecha)} (D${s.host.dia}, claves s_*)`,
   };
@@ -542,7 +549,7 @@ export interface EncapsSabadoF2 {
   subtema: string; secundarios: string[]; colaLarga: string[]; simN: number | null; corrimiento: string; diaMant: number; fechaOriginal: string; origen: string;
 }
 const SAB: Record<string, EncapsSabadoF2> = ${JSON.stringify(SABADOS)};
-/** Pendiente F1 del carril SÁBADO (09:30-10:30) de una fecha ISO, o null. */
+/** Pendiente F1 del carril SÁBADO (v6.06-v6.07: 09:30-10:30 · v6.08: 14:00-15:00, la hora del SQL) de una fecha ISO, o null. */
 export function encapsSabadoDe(fecha: string): EncapsSabadoF2 | null { return SAB[fecha.slice(0, 10)] ?? null; }
 export const ENCAPS_SABADO_FECHAS: string[] = Object.keys(SAB);
 // v6.06 (fix): GUÍA «qué · cuánto · cómo» del CARRIL SÁBADO (la receta de 60′ de F1 en la franja del sábado, con nota de reposición y el runner

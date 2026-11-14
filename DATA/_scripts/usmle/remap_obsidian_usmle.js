@@ -22,6 +22,9 @@
 //   (NBME 27, sin nota) · d 36-40 = v5.20 D35-D39 · d 41 = v5.20 D41 · d 42 = v5.20 D55 (NBME 28, sin nota). Las 16 desplazadas (D42-D54,
 //   D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T18, d 103-118).
 // v5.x: matcheaba (system, uw) contra el plan viejo de git HEAD (fallback: 1.er path del sistema).
+// v6.08 (14-nov-2026): sin cambio de lógica. colocarF1(13) con la semana de plan de 2 filas (mar · jue): d 1-7 = v5.20 D1-D7 · d 8 = v5.20 D10
+//   (NBME 25, sin nota) · d 9-10 = v5.20 D8-D9 · d 11-13 = v5.20 D11-D13. Las 45 desplazadas heredan por su dOrig (filas T). Escribe SOLO
+//   src/lib/obsidianMap.ts (dentro del repo; no toca el vault de Obsidian).
 'use strict';
 const fs = require('fs');
 const path = require('path');

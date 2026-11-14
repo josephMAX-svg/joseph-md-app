@@ -82,6 +82,15 @@
 //    vie 27-nov · v2 D35 lun 28-dic (el vie 25-dic es SKIP) · v3 D55 mié 27-ene · v4 D75 mié 24-feb · v5 D95 mar 30-mar (F3) · v6 D115 mar 27-abr ·
 //    v7 D130 mar 18-may (12.º día del SERUMS, tiempo muerto). min30 (30') desde el lun 4-ene-2027 (sin cambio): 93 filas (v6.06: 88). Variantes
 //    LIVIANO fuera de viernes: 15 (mié D40-D85 · mar D95-D115; solo D90 cae en viernes).
+// v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov; la semana del lun 9-nov tampoco se estudió; Joseph: «todo inicia el lunes 16 … alarga las fechas
+//    límite»; secundarios +5 hábiles): 130 hábiles lun 16-nov-2026 → MAR 25-MAY-2027 (+5 hábiles sobre v6.07; mismas 130 lecciones en el mismo orden;
+//    nada se recorta ni comprime). PROTEGIDOS vie 12 y lun 15-mar saltados (D81 jue 11-mar → D82 mar 16-mar) y Semana Santa (jue 25 / vie 26-mar).
+//    ⚠ SERUMS (lun 3-may, supuesto): D114-D130 = lun 3 → mar 25-may (17 días; v6.07: 12) a 30′ en el TIEMPO MUERTO del turno (misma solución).
+//    D129 = lun 24-may = día preferente del NBME 30 (07:00-12:15): la guía (rutinaGuia.guiaAurumDe + hitoUsmleF4De) pone la sesión TRAS el hito ese
+//    mismo día, en el tiempo muerto de la posta después del R↔D (14:00-14:30 con turno T o sin marcar), con el aviso del hito — antes caía a las 07:30,
+//    dentro del hito; se elige el mismo día (y no el siguiente hábil) porque no alarga el plan. PITCH v1 D15 vie 4-dic · v2 D35 mié 6-ene · v3 D55 mié
+//    3-feb · v4 D75 mié 3-mar · v5 D95 mar 6-abr (F3; día del NBME 26: aviso F1/F3, AURUM 14:15 tras el hito) · v6 D115 mar 4-may · v7 D130 mar 25-may.
+//    Variantes LIVIANO fuera de viernes: 15 (mié D40-D80 · mar D90-D115; solo D85, vie 19-mar, cae en viernes).
 // v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (se eliminan los v5.20 22-feb / 9-mar /
 //    10-mar; entran vie 12-mar, lun 15-mar y la Semana Santa jue 25 / vie 26-mar) → 130 hábiles mié 7-oct-2026 → JUE 15-ABR-2027
 //    (D96 lun 22-feb · pitch v5 D95 vie 19-feb = · v6 D115 mar 23-mar · v7 D130 jue 15-abr). DJ-4: desde la F2 (encaps.intensiva_desde =
@@ -108,7 +117,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-11-09'; // default = D1 v6.07 (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const START_ISO = process.argv[2] || '2026-11-16'; // default = D1 v6.08 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 // v6.00 (6-oct-2026): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js aborta si no cuadra con sus derivaciones).
 // SKIP v6 = 25-dic · 31-dic · 1-ene · jue 25 / vie 26-mar-2027 · PROTEGIDOS v6 = vie 12-mar · sáb 13 · dom 14-mar · lun 15-mar · sáb 25-sep ·
@@ -263,7 +272,7 @@ const ts = `/**
  * aurumDailyPlan.ts — Motor día-a-día AURUM v2 (${SEMANAS} semanas · ${TOTAL} días · ${dias[0].fecha} → ${finISO}).
  * AURUM = programa de 6 meses para volverse un closer de ventas de élite.
  * GENERADO por DATA/_scripts/gen_aurum_plan.js desde DATA/AURUM/curricula/_curriculum_v2.json.
- * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
  * v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP / DÍAS PROTEGIDOS de DATA/_scripts/_fechas_v6.json → fin ${finISO}; desde ${MIN30_DESDE} (F2, DJ-4)
  * AURUM = 30' 14:15-14:45 (campo min30 = true: la UI muestra 30' = núcleo; bloques extra opcionales). Mismas 130 lecciones.
  *

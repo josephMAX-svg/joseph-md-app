@@ -110,7 +110,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, M
 const optNum = (v: unknown, max: number): number | undefined => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : clamp(Number(v), 0, max));
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return MIR_DIAS[0]?.fecha || '2026-11-09'; } // v6.07 (8-nov): fallback = D1 MIR lun 9-nov (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07)
+  catch { return MIR_DIAS[0]?.fecha || '2026-11-16'; } // v6.08 (14-nov): fallback = D1 MIR lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07)
 }
 const porTs = (a: MirEvalEntry, b: MirEvalEntry) => (a.ts || '').localeCompare(b.ts || '');
 
@@ -143,7 +143,7 @@ export function mirEvalLogAppend(e: MirEvalInput): { entry: MirEvalEntry; guarda
   try { void mirEvalSyncPush([entry]); } catch { /* espejo opcional */ }
   return { entry, guardado };
 }
-/** Export JSON (para consolidar en TRACKING_ERRORES / DELTA_ESPANA / handoff vie 12-nov-2027 = MIR_MANT_META.fin · v6.07 (v6.06: vie 5-nov · v6.05: vie 29-oct · v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02c: vie 8-oct · v6.00-v6.02: vie 24-sep); v5.20: jue 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
+/** Export JSON (para consolidar en TRACKING_ERRORES / DELTA_ESPANA / handoff vie 3-dic-2027 = MIR_MANT_META.fin · v6.08 = v6.07 (sin repuestas; v6.06: vie 5-nov · v6.05: vie 29-oct · v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02c: vie 8-oct · v6.00-v6.02: vie 24-sep); v5.20: jue 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
 export function mirEvalLogExportJSON(): string {
   return JSON.stringify({ version: MIR_EVAL_LOG_VERSION, plan: 'MIR', exportado: new Date().toISOString(), entradas: leer() }, null, 2);
 }
@@ -221,12 +221,12 @@ export function mirEstadoCierreTxt(estado: MirEstadoCierre, fechaISO?: string): 
     default: return 'sin test de cierre registrado';
   }
 }
-/** Compat: textos de la fase 1 (fecha de referencia = D1 MIR; v6.07: lun 9-nov · v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00: mié 7-oct). */
+/** Compat: textos de la fase 1 (fecha de referencia = D1 MIR; v6.08: lun 16-nov · v6.07: lun 9-nov · v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00: mié 7-oct). */
 export const MIR_ESTADO_CIERRE_TXT: Record<MirEstadoCierre, string> = {
-  consolidada: mirEstadoCierreTxt('consolidada', '2026-11-02'),
-  intermedia: mirEstadoCierreTxt('intermedia', '2026-11-02'),
-  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-11-02'),
-  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-11-02'),
+  consolidada: mirEstadoCierreTxt('consolidada', '2026-11-16'),
+  intermedia: mirEstadoCierreTxt('intermedia', '2026-11-16'),
+  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-11-16'),
+  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-11-16'),
 };
 
 // ── táctica −1/3 (gap 6) ──
@@ -534,7 +534,7 @@ export function mirReadinessDerivado(entries: MirEvalEntry[] = leer()): MirReadi
   }
   return { pct: 0, estado: 'Sin registro · línea base = primer test de cierre (10Q, 77 s/Q)', siguiente: 'Registra la eval anclada de hoy (15:27) y el test de cierre al cambiar de asignatura.', fuente: 'ninguna', n: 0 };
 }
-/** Tabla de neto por asignatura para D78 (v6.07: lun 1-mar · v6.06: lun 22-feb · v6.05: lun 15-feb · v6.03: mié 10-feb · v6.02: lun 8-feb · v6.01: lun 1-feb) / handoff vie 12-nov-2027 (v6.07; v6.06: vie 5-nov · v6.05: vie 29-oct · v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02c: vie 8-oct · v6.00-v6.02: vie 24-sep; v5.20: jue 22-abr · v5.19: 15-abr · v5.18: 14-abr) (cierres + mini-MIR + mantenimiento + extensión). */
+/** Tabla de neto por asignatura para D78 (v6.08: lun 8-mar · v6.07: lun 1-mar · v6.06: lun 22-feb · v6.05: lun 15-feb · v6.03: mié 10-feb · v6.02: lun 8-feb · v6.01: lun 1-feb) / handoff vie 3-dic-2027 (v6.08 = v6.07, sin repuestas; v6.06: vie 5-nov · v6.05: vie 29-oct · v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02c: vie 8-oct · v6.00-v6.02: vie 24-sep; v5.20: jue 22-abr · v5.19: 15-abr · v5.18: 14-abr) (cierres + mini-MIR + mantenimiento + extensión). */
 export function mirBaselineTabla(entries: MirEvalEntry[] = leer()): MirStatAsig[] {
   return mirStatsPorAsignatura(entries, ['cierre', 'miniMIR', 'mantenimiento']);
 }

@@ -6,6 +6,10 @@
  *         node DATA/_scripts/gen_fechas_v6.js --calculo  además comprueba la reserva por la REGLA DE CÁLCULO de §B4.4 (colchón PISO ≥ 0
  *                                                         y déficit 0 del tramo 2, con usmle/ref_v6/gen_tramo2_ref.js); si difiere de la
  *                                                         tabla literal DJ-1 manda la MÁS TARDÍA de las dos (y se avisa a Joseph)
+ *                                                         v6.08 (fix): el tramo 2 de la regla se genera con los slots REALES del Step en
+ *                                                         F1 (--f1-filas = mañanas de step1.f1_dias_semana dentro de f1: v6.08 = 13) y su
+ *                                                         semana de plan (--semana-plan); antes la referencia usaba su --f1-filas por
+ *                                                         defecto y la tabla daba déficits (y «AVISAR A JOSEPH») que no eran los del plan
  *
  *   Como librería (TODOS los generadores node leen las fechas de aquí; nunca constantes locales):
  *         const V6 = require('./gen_fechas_v6');          // desde DATA/_scripts/usmle/: require('../gen_fechas_v6')
@@ -161,6 +165,9 @@ const colchonPiso = (R, E, ctx) => rango(R, add(E, -1)).reduce((c, s) => c + hor
 function deficitTramo2(encaps, E, ctx) {
   const { execFileSync } = require('child_process');
   const args = [REF_TRAMO2, encaps, E, ctx.serumsInicio, '--permitir-deficit'];
+  // v6.08 (fix): los slots reales del Step en F1 y su semana de plan (sin ellos, la referencia usaba sus valores por defecto)
+  if (ctx.f1Filas) args.push('--f1-filas', String(ctx.f1Filas));
+  if (ctx.semanaPlan) args.push('--semana-plan', String(ctx.semanaPlan));
   if (ctx.adjudicacion.length) args.push('--proteg', ctx.adjudicacion.map((p) => p.fecha).join(','));
   const o = execFileSync(process.execPath, args, { cwd: path.dirname(REF_TRAMO2) }).toString();
   const m = o.match(/déficit cola-adelante (\d+) u · déficit cola-atrás (\d+) u/);
@@ -352,10 +359,12 @@ function derivar(F, opts = {}) {
   // reserva por escenario: DJ-1 literal (y, con --calculo, la más tardía de DJ-1 y la regla de cálculo)
   const escenarios = [...new Set([...F.encaps.escenarios, c.encaps])];
   const reserva = {}, calculo = {};
+  // v6.08 (fix del --calculo): slots del Step en F1 (mañanas de step1.f1_dias_semana dentro de f1; tope 58 = temario v5.20 de F1) + semana de plan
+  const ctxCalc = { ...c, f1Filas: Math.min(diasStepF1De(F).length, 58), semanaPlan: F.step1.f1_dias_semana.length };
   for (const e of escenarios) {
     reserva[e] = reservaDJ1(e);
     if (opts.calculo) {
-      calculo[e] = reservaCalculo(e, c);
+      calculo[e] = reservaCalculo(e, ctxCalc);
       if (calculo[e].reserva === null || calculo[e].reserva > reserva[e]) reserva[e] = calculo[e].reserva || DJ1[DJ1.length - 1].examen;
     }
   }

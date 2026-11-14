@@ -26,6 +26,9 @@
  *   Q2 = fuente única con las evals de 5′) + el arranque; minutos sin cambio (Σ 45). «¿Respondió el Dr. Ciro?» sigue en la eval de R1 (ciroPend).
  *   CONTROL (aborta la generación): toda guía paso a paso con átomo previo abre con su eval anclada y cita sus 2Q · ningún átomo con 2Q queda seguido
  *   de una guía genérica antes del SERUMS · alguna guía tras M1 pregunta por la respuesta del Dr. Ciro.
+ * v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov; pausa desde el jue 21-ene): GUIA_RESEARCH_MINIMO calcula el paso 3 con el ÚLTIMO paso del case report
+ *   cerrado antes de la pausa: «relee el borrador v1 (CR-5)» solo si CR-5 va antes de la pausa (desde la v6.07 va tras ella: el texto fijo era falso);
+ *   si no, repasa lo cerrado (v6.08: CR-2, consentimiento) y apunta lo que falta para el primer paso tras la pausa (v6.08: CR-3, fotos).
  */
 'use strict';
 
@@ -192,7 +195,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
         { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · disciplina dermatología / salud pública · nivel early-career · idiomas ES/EN.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
         { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente (' + VERSION + ')', como: `Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
-        { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(addDays(M2.fecha, 28))}» + 1 línea en §2`, como: 'Si a las 4 semanas no hay mentor asignado → plan B (editor profesional, RUTA §3.1).', enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))}» + 1 línea en §2`, como: `Si a las 4 semanas no hay mentor asignado → plan B (editor profesional, RUTA §3.1).${M2.fechaPlanB && M2.fechaPlanB !== addDays(M2.fecha, 28) ? ` (4 semanas tras M2 = ${fmt(addDays(M2.fecha, 28))}, día sin sesión: la decisión va al siguiente día-Research.)` : ''}`, enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'Plan B de inglés listo: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mentor de escritura: qué pedir · cuánto tiempo · con qué fecha».' },
       ],
@@ -238,6 +241,12 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
   if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el Dr\. Ciro/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el Dr. Ciro');
   const crAntes = !PAUSA || fechaDe('CR-8') < PAUSA.desde; // v6.06: el paquete del case report se congela antes de la pausa (v6.05) o tras ella (v6.06, nivel 2)
+  // v6.08: último paso CR antes de la pausa y primero tras ella (el paso 3 deja de suponer que el borrador v1, CR-5, ya existe)
+  const QUE_CR = { 'CR-1': 'caso decidido', 'CR-2': 'consentimiento firmado', 'CR-3': 'fotos y protocolo fotográfico', 'CR-4': 'CARE 13/13 + timeline', 'CR-5': 'borrador v1', 'CR-6': 'revisión del senior + inglés', 'CR-7': 'formateo', 'CR-8': 'paquete' };
+  const CRS = Object.keys(QUE_CR);
+  const crUlt = PAUSA ? CRS.filter((c) => fechaDe(c) < PAUSA.desde).pop() : 'CR-8';
+  const crSig = PAUSA ? (CRS.find((c) => fechaDe(c) >= PAUSA.desde) || 'CR-8') : 'CR-8';
+  const crBorrador = !!PAUSA && fechaDe('CR-5') < PAUSA.desde;
   const minimo = {
     franja: '13:30–14:00', plan: 'research-derma', titulo: "RESEARCH · mínimo 30′ (DJ-4) — pausa de átomos (intensiva ENCAPS)", totalMin: 30,
     pasos: [
@@ -245,10 +254,12 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       { min: 15, que: '1 lectura de la cola del ciclo 2 (el recurso 1 del próximo átomo pendiente)', como: 'Lee con free recall al final; no produces artefacto nuevo.' },
       crAntes
         ? { min: 5, que: 'Repaso del paquete congelado del case report (CR-8)', como: 'Solo comprobar que manuscrito + fotos + consentimiento + CARE + cover siguen completos para CR-9.' }
-        : { min: 5, que: `Case report: relee el borrador v1 (CR-5) y apunta las dudas para la revisión de CR-6 (${f('CR-6')})`, como: `Solo lectura + lista de dudas para el senior author y el mentor de inglés; el paquete (CR-8) se congela tras la pausa (${f('CR-8')}) y el SUBMIT CR-9 va el ${f('CR-9')}.` },
+        : crBorrador
+          ? { min: 5, que: `Case report: relee el borrador v1 (CR-5) y apunta las dudas para la revisión de ${crSig} (${f(crSig)})`, como: `Solo lectura + lista de dudas para el senior author y el mentor de inglés; el paquete (CR-8) se congela tras la pausa (${f('CR-8')}) y el SUBMIT CR-9 va el ${f('CR-9')}.` }
+          : { min: 5, que: `Case report: repasa lo cerrado antes de la pausa (${crUlt ? `${crUlt} · ${QUE_CR[crUlt]}` : 'nada aún'}) y apunta lo que falta para ${crSig} (${QUE_CR[crSig]}, ${f(crSig)})`, como: `Solo lista de pendientes para el senior author (fotos, datos, firmas); ${crSig} → CR-8 van tras la pausa (${f(crSig)} → ${f('CR-8')}) y el SUBMIT CR-9 el ${f('CR-9')}.` },
     ],
     recursos: [{ t: '◆ Obsidian · Dashboard Research', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/00_DASHBOARD_RESEARCH/Dashboard_Research') }],
-    hecho: crAntes ? 'Inbox al día + 1 lectura con free recall + paquete del case report comprobado.' : 'Inbox al día + 1 lectura con free recall + dudas del borrador del case report apuntadas para CR-6.',
+    hecho: crAntes ? 'Inbox al día + 1 lectura con free recall + paquete del case report comprobado.' : crBorrador ? `Inbox al día + 1 lectura con free recall + dudas del borrador del case report apuntadas para ${crSig}.` : `Inbox al día + 1 lectura con free recall + pendientes del case report apuntados para ${crSig}.`,
   };
   return { porD: out, minimo, conDetalle };
 }

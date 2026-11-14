@@ -1,5 +1,5 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.07: MANTENIMIENTO D1-D37 lun 9-nov → mié 30-dic-2026 + INTENSIVA dia 38-87 + carril SÁBADO 09:30 + carril VIERNES 16:15 · v6.06: D1-D42 lun 2-nov + INTENSIVA 43-92 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.08: MANTENIMIENTO D1-D32 lun 16-nov → mié 30-dic-2026 + INTENSIVA dia 33-82 + carril SÁBADO 14:00 + carril VIERNES 16:15 · v6.07: D1-D37 lun 9-nov + INTENSIVA 38-87 · v6.06: D1-D42 lun 2-nov + INTENSIVA 43-92 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
  * INTENSIVA dia 53-102 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v6.01: D1-D57 lun 12-oct →
  * mié 30-dic + INTENSIVA dia 58-107 (mismas fechas) · v6.00: D1-D60 mié 7-oct →
  * mié 30-dic + INTENSIVA dia 61-110 (mismas fechas) · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
@@ -49,6 +49,11 @@
  * código: sim_n = dia de la fila (mini-sims F1 5…30 · pre-test 42 · SIM 100Q 47-82, los de la quincena final lun 1 / mié 3 / vie 5-mar = 78 / 80 / 82 ·
  * dress 86). Pendientes F1: 13 lun-jue con sus fechas (dia 70 … 85; mini-sims sim_n 73 / 79 / 85) + 9 sábados (sim_n 1062 y 1082 para los mini-sims del
  * sáb 6-feb y del sáb 6-mar) + el CARRIL VIERNES del vie 5-mar (V-2 #5, claves D82:b_*, cierre 'carril_b').
+ * v6.08 (14-nov-2026): corrimiento a D1 = lun 16-nov (la semana del 9-nov sin estudio) → F1 D1-D32 + INTENSIVA dia 33-82 (mismas fechas). Sin cambio de
+ * código: sim_n = dia de la fila (mini-sims F1 5…25 · pre-test 37 · SIM 100Q 42-72, los de la quincena final lun 1 / mié 3 / vie 5-mar = 73 / 75 / 77 ·
+ * dress 81). Pendientes F1 = 28: 13 lun-jue con sus fechas (dia 65 … 80; mini-sims sim_n 68 / 74 / 80) + 8 sábados a las 14:00 (sim_n 1047, 1057 y 1072
+ * para los mini-sims de los sáb 23-ene, 6-feb y 27-feb) + 7 viernes del CARRIL VIERNES 16:15 (vie 8, 15, 22, 29-ene, 5, 12-feb y 5-mar; claves D{dia}:b_*,
+ * cierre 'carril_b'). La fila del mar 5-ene (dia 34) es la mañana 21/21 de F1 (loop sin código: cierre del loop como siempre).
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

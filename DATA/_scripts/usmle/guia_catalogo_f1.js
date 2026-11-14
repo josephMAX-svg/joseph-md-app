@@ -13,7 +13,10 @@
  *   · fa  = capítulo › sección de First Aid 2026 (no hay PDF ni enlace en el repo: SOLO nombre de sección, nunca páginas).
  *   · pathoma = capítulo de Pathoma (Fundamentals of Pathology) — solo con cuenta (pathoma.com: Free = 6 vídeos de prueba 1 mes · Pro
  *     desde US$84,95 con libro en papel, sin PDF; verificado 18-oct) → sin cuenta, la lectura de la Library lo cubre.
- *   · nota = AVISO VISIBLE cuando el mapeo etiqueta-del-plan → catálogo NO es exacto (se explica qué se tomó y por qué).
+ *   · nota = AVISO VISIBLE cuando el mapeo etiqueta-del-plan → catálogo NO es exacto (se explica qué se tomó y por qué). Las referencias a otra
+ *     fila del catálogo van como {D<n>} (n = D# v5.20 = clave de MAPA): gen_usmle_guia.js las resuelve a la fila y la fecha VIGENTES (D# de F1 o
+ *     T# del tramo 2) y aborta si alguna no se resuelve. v6.08 (fix revisión 14-nov, dia8): antes iban escritas a mano («(D46)», «del D23»…) y,
+ *     desde la v6.03, el D# v5.20 ya no es el D# del Home (el D46 está en el tramo 2: T41-T44, mié 12 → sáb 15-may-2027).
  * v6.02c (18-oct-2026, E1): nuevo.
  * v6.05 (24-oct-2026): + D52, D53, D54, D56, D57 (Heme/Onco) y D79 (bioestadística): las filas v5.20 desplazadas al tramo 2 que nunca
  *   tuvieron mapeo (la guía del tramo 2 de gen_usmle_guia.js las necesita: las 11 desplazadas D47-D54, D56, D57, D79 llevan guía en su fecha T)
@@ -51,7 +54,7 @@ const MAPA = {
   2: { bb: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], uw: [1110, 1111], mh: [48, 204], lib: [[3, 275], [3, 988], [3, 32], [3, 309]], fa: 'Pathology › Cellular injury', pathoma: [1, 2],
     nota: '«Cell Injury + Inflammation» = Pathology › General Topics 01-10 (es un grupo, no un título). uWorld solo tiene 8Q de este subtema (Cellular pathology 6 + Inflammation and repair 2) → la consolidación va con Mehlman (respaldo).' },
   3: { bb: [90], uw: [1112, 1072], mh: [204, 46, 79], lib: [[3, 32], [3, 936], [3, 1352], [3, 309], [3, 766], [3, 1015], [3, 258], [3, 1350]], fa: 'Pathology › Inflammation + Pathology › Neoplasia', pathoma: [2, 3],
-    nota: '«Neoplasia 01-04» NO existe en B&B Step 1 (Qbankly): solo hay 1 vídeo, Pathology › General Topics › 11 - Neoplasia (24:01). El resto del día lo ocupan los vídeos de inflamación que vienen del D2.' },
+    nota: '«Neoplasia 01-04» NO existe en B&B Step 1 (Qbankly): solo hay 1 vídeo, Pathology › General Topics › 11 - Neoplasia (24:01). El resto del día lo ocupan los vídeos de inflamación que vienen del {D2}.' },
   4: { bb: [269, 270, 271, 272, 273], uw: [1004], mh: [60, 65, 66, 63], lib: [[1, 11], [3, 705], [3, 704], [3, 707], [3, 354], [3, 658]], fa: 'Immunology › Lymphoid structures · Cellular components · Immune responses' },
   5: { bb: [274, 275, 276], uw: [1002, 1001, 1000, 1005], mh: [336, 614, 186, 383], lib: [[1, 9], [3, 1069], [1, 11], [1, 15], [3, 681], [3, 1182], [3, 353]], fa: 'Immunology › Immune responses (hipersensibilidad · inmunodeficiencias · rechazo de trasplante)', pathoma: [2] },
   6: { bb: [12, 13], uw: [1025], mh: [127, 230], lib: [[3, 261], [1, 31], [3, 1240], [3, 375]], fa: 'Cardiovascular › Anatomy + Physiology' },
@@ -62,7 +65,7 @@ const MAPA = {
     nota: '«Arrhythmias 01-02» + la sección EKGs (01 EKG Basics · 02 High Yield EKGs): el subtema pide ECG y esos vídeos no están en otro día de F1.' },
   11: { bb: [31, 32, 33], uw: [1017], mh: [231, 82], lib: [[1, 26], [1, 54], [1, 69], [1, 68]], fa: 'Cardiovascular › Pathology (arritmias)' },
   12: { bb: [34, 35, 36], uw: [1018], uwSub: [118, [1017]], mh: [293], lib: [[3, 115], [3, 83], [3, 428], [3, 57]], fa: 'Cardiovascular › Pharmacology',
-    nota: 'Los «fármacos autonómicos CV» del subtema están en B&B › Neurology › Autonomic Nervous System (D46). uWorld «Cardiovascular drugs» tiene 16Q → se suma Subject Pharmacology ∩ Cardiac arrhythmias (23Q).' },
+    nota: 'Los «fármacos autonómicos CV» del subtema están en B&B › Neurology › Autonomic Nervous System, que se ve en el {D46}. uWorld «Cardiovascular drugs» tiene 16Q → se suma Subject Pharmacology ∩ Cardiac arrhythmias (23Q).' },
   13: { bb: [21, 22, 23], uw: [1020], mh: [235], lib: [[3, 151], [1, 34], [1, 53], [3, 1230]], fa: 'Cardiovascular › Pathology (aterosclerosis, cardiopatía isquémica)', pathoma: [7, 8] },
   14: { bb: [24, 25, 26], uw: [1020], mh: [235], lib: [[1, 19], [1, 47]], fa: 'Cardiovascular › Pathology (SCA, complicaciones del IAM)' },
   15: { bb: [6, 39, 40, 41, 42, 43], uw: [1021], mh: [218], lib: [[1, 38], [3, 617], [3, 308], [3, 1194]], fa: 'Cardiovascular › Pathology + Pharmacology (insuficiencia cardíaca, shock)', pathoma: [8],
@@ -80,7 +83,7 @@ const MAPA = {
     nota: '«DVT/PE + Lung Cancer» + Embryology, Anatomy and Physiology › 08 Pulmonary Hypertension (el subtema pide HTP). uWorld: Pulmonary vascular + Lung cancer + Critical care (SDRA).' },
   23: { bb: [157, 158, 159], uw: [1152], mh: [88], lib: [[3, 1123], [3, 818]], fa: 'Renal › Physiology' },
   24: { bb: [179], uw: [1147], uwSub: [118, [1147]], mh: [122, 105], lib: [[1, 478], [3, 783], [3, 1294], [3, 1058]], fa: 'Renal › Physiology + Pharmacology (diuréticos)',
-    nota: '«Tubular Transport» no existe como vídeo en B&B Step 1 (el transporte tubular está en 05 Nephron Physiology, del D23) → hoy solo Other Renal Topics › 03 Diuretics. uWorld: Subject Pharmacology ∩ Fluid, electrolytes and acid-base = 16Q.' },
+    nota: '«Tubular Transport» no existe como vídeo en B&B Step 1 (el transporte tubular está en 05 Nephron Physiology, del {D23}) → hoy solo Other Renal Topics › 03 Diuretics. uWorld: Subject Pharmacology ∩ Fluid, electrolytes and acid-base = 16Q.' },
   26: { bb: [168, 169, 170], uw: [1147, 1146], mh: [122, 105], lib: [[1, 482], [1, 492], [1, 498], [1, 481], [1, 143]], fa: 'Renal › Physiology + Pathology (electrolitos)' },
   27: { bb: [162, 163, 164, 165, 166, 167], uw: [1147], mh: [122, 144, 502], lib: [[1, 471], [1, 495], [3, 840], [3, 841]], fa: 'Renal › Physiology (ácido-base)' },
   28: { bb: [171, 172, 173, 174], uw: [1148], mh: [209, 64], lib: [[1, 479], [1, 486], [1, 488]], fa: 'Renal › Pathology (glomerulopatías)', pathoma: [12],
@@ -97,7 +100,7 @@ const MAPA = {
   35: { bb: [327, 328, 329], uw: [1055], mh: [92], lib: [[1, 188], [1, 191], [1, 245], [1, 323], [3, 634]], fa: 'Gastrointestinal › Pathology (cirrosis, HCC, hereditarias)', pathoma: [11],
     nota: '«Cirrhosis + Complications» + 04 Liver Tumors y 05 Wilson\'s Disease and Hemochromatosis (el subtema pide HCC + hereditarias).' },
   36: { bb: [330, 331, 334, 335], uw: [1051, 1059], mh: [5, 61], lib: [[1, 202], [1, 230], [1, 228]], fa: 'Gastrointestinal › Pathology (vía biliar, páncreas)',
-    nota: '«Bilirubin» ya se vio el D34 → hoy 06 Gallstones · 07 Biliary Disorders · 10 Acute Pancreatitis · 11 Chronic Pancreatitis & Pancreatic Cancer. uWorld: Biliary + Pancreatic disorders.' },
+    nota: '«Bilirubin» ya se vio el {D34} → hoy 06 Gallstones · 07 Biliary Disorders · 10 Acute Pancreatitis · 11 Chronic Pancreatitis & Pancreatic Cancer. uWorld: Biliary + Pancreatic disorders.' },
   37: { bb: [365, 370], uw: [1038], mh: [226], lib: [[3, 1021], [3, 695], [3, 1073], [3, 594]], fa: 'Endocrine › Physiology (hipotálamo-hipófisis)',
     nota: 'No hay vídeo «Hypothalamus-Pituitary Axes» → Endocrinology › Other Topics › 01 Pituitary Anatomy and Physiology + 06 Signaling Pathways.' },
   38: { bb: [341, 342, 343, 344, 345], uw: [1043], mh: [243], lib: [[1, 172], [1, 152], [1, 153], [1, 173], [1, 170]], fa: 'Endocrine › Physiology + Pathology (tiroides)',
@@ -106,9 +109,9 @@ const MAPA = {
     nota: '«Adrenals 01-04» + 05 Adrenal Tumors y 06 Congenital Adrenal Hyperplasia (el subtema pide CAH + feocromocitoma). uWorld «Adrenal disorders» solo tiene 11Q → respaldo Mehlman.' },
   41: { bb: [354, 355, 356, 357], uw: [1036], mh: [415], lib: [[1, 175], [1, 148], [1, 155], [1, 158]], fa: 'Endocrine › Pathology + Pharmacology (diabetes)' },
   42: { bb: [366, 367, 368, 369], uw: [1037], mh: [87], lib: [[1, 162], [1, 143], [1, 157], [1, 164]], fa: 'Endocrine › Pathology (calcio/PTH, MEN, hipófisis)',
-    nota: '«Other 01-05 Pituitary/PTH/MEN» → 01 Pituitary Anatomy and Physiology ya se vio el D37: hoy 02-05.' },
+    nota: '«Other 01-05 Pituitary/PTH/MEN» → 01 Pituitary Anatomy and Physiology ya se vio el {D37}: hoy 02-05.' },
   43: { bb: [97, 98], uw: [1102], mh: [150], lib: [[1, 540], [3, 1220], [3, 1218]], fa: 'Neurology and Special Senses › Anatomy and Physiology',
-    nota: '«Nervous System Structures 01-05» se solapa con el D44 (03 Spinal Cord Syndromes) y el D45 (04 Brainstem · 05 Rule of 4s) → hoy 01 Cerebral Cortex + 02 Spinal Cord.' },
+    nota: '«Nervous System Structures 01-05» se solapa con el {D44} (03 Spinal Cord Syndromes) y con el {D45} (04 Brainstem · 05 Rule of 4s) → hoy 01 Cerebral Cortex + 02 Spinal Cord.' },
   44: { bb: [99], uw: [1102, 1105], mh: [150, 95], lib: [[1, 541], [3, 1219]], fa: 'Neurology and Special Senses › Anatomy and Physiology (médula)' },
   45: { bb: [100, 101, 102, 103], uw: [1102], mh: [150], lib: [[3, 379], [3, 1114], [3, 515], [3, 1337]], fa: 'Neurology and Special Senses › Anatomy and Physiology (tronco, pares craneales)',
     nota: '«Cranial Nerves I-II + Brainstem» → 04 Brainstem + 05 Rule of 4s (de «01-05») + 06-07 Cranial Nerves I-II.' },

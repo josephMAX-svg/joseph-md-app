@@ -26,7 +26,22 @@
  * lun 4-ene → vie 19-feb). Las fechas que pinta la app salen de SYN_PLAN_META (generado).
  * v6.00 (6-oct-2026): solo textos — las sem 13-19 son el taper «por el ENCAPS» (ya no del Step 1 de febrero) y la F2 de datos arranca
  * después del Step 1 (F5, oct-2027). Las fechas del motor (mié 7-oct → lun 15-feb, 132 días) no cambian.
+ * v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov): lun 16-nov → jue 1-abr-2027 (137 días, mismas 110 A-units; sin SYNAPSE en los PROTEGIDOS
+ * vie 12 → lun 15-mar ni en la Semana Santa jue 25 / vie 26-mar). La cabecera de SYNAPSE_META.nota sale ya de SYN_PLAN_META (inicio, fin,
+ * totalDias, semanas) y de FECHAS_V6.version: antes se escribía a mano y quedaba vieja en cada corrimiento (decía «hasta el mar 23-mar»).
  */
+
+import { SYN_PLAN_META } from './synapseDailyPlan';
+import { FECHAS_V6 } from './fechasV6';
+
+/** v6.08: «jue 1-abr-2027» (o «jue 1-abr» sin año) desde una fecha ISO; la fecha tal cual si no es válida. */
+function synFechaTxt(iso: string, conAnio = true): string {
+  const d = new Date(iso + 'T12:00:00Z');
+  if (Number.isNaN(d.getTime())) return iso;
+  const wd = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][d.getUTCDay()];
+  const mes = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][d.getUTCMonth()];
+  return `${wd} ${d.getUTCDate()}-${mes}${conAnio ? '-' + d.getUTCFullYear() : ''}`;
+}
 
 export type SynapseNivel = 'base' | 'intermedio' | 'avanzado';
 
@@ -263,7 +278,9 @@ export const SYNAPSE_META = {
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
   accent: '#7C83D6', // periwinkle — color canónico de la consola (alineado con SidebarAccents.Synapse)
-  nota: 'Motor ACTIVO (pestaña ⚡ run): 19 semanas día a día hasta el mar 23-mar-2027 (v6.07: lun 9-nov → mar 23-mar, 135 días, mismas 110 A-units; el PC del SHIP pasa al domingo, flexible · v6.06: lun 2-nov → mar 16-mar, 135 días, mismas 110 A-units; vie 12 → lun 15-mar = días PROTEGIDOS del ENCAPS, sin SYNAPSE · v6.05: lun 26-oct → vie 5-mar, 131 días, mismas 110 A-units · v6.03: mié 21-oct → lun 1-mar, 132 días, mismas 110 A-units; el lun 1-mar cuenta como sem 19 · v6.02: lun 19-oct → vie 26-feb, 131 días · v6.01: lun 12-oct → vie 19-feb · v6.00 = v5.20: mié 7-oct → lun 15-feb, 132 días; el lun 15-feb cuenta como sem 19 · v5.19: mar 6-oct → sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) + F2 (sem 13-19, taper por el ENCAPS · v6.00; v5.20: taper del Step 1) = ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (Building with the Claude API · MCP restante + MCP Advanced Topics · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering · repaso por los 5 dominios · simulacro; sem 17-19 deload) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun, 5-sep y 12-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12 + taper S13-S20, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md; shipped = verify_vibecoding.js) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
+  // v6.08: la cabecera (semanas, fin, versión vigente, inicio → fin, días) sale de SYN_PLAN_META / FECHAS_V6.version; en el próximo corrimiento,
+  //   añadir al historial de abajo la entrada «v6.08: lun 16-nov → jue 1-abr, 137 días» (lo vigente ya se pinta solo).
+  nota: `Motor ACTIVO (pestaña ⚡ run): ${SYN_PLAN_META.semanas} semanas día a día hasta el ${synFechaTxt(SYN_PLAN_META.fin)} (${FECHAS_V6.version}: ${synFechaTxt(SYN_PLAN_META.inicio, false)} → ${synFechaTxt(SYN_PLAN_META.fin, false)}, ${SYN_PLAN_META.totalDias} días, mismas 110 A-units; sin SYNAPSE en los días PROTEGIDOS del ENCAPS ni en los SKIP · v6.07: lun 9-nov → mar 23-mar, 135 días, mismas 110 A-units; el PC del SHIP pasa al domingo, flexible · v6.06: lun 2-nov → mar 16-mar, 135 días, mismas 110 A-units; vie 12 → lun 15-mar = días PROTEGIDOS del ENCAPS, sin SYNAPSE · v6.05: lun 26-oct → vie 5-mar, 131 días, mismas 110 A-units · v6.03: mié 21-oct → lun 1-mar, 132 días, mismas 110 A-units; el lun 1-mar cuenta como sem 19 · v6.02: lun 19-oct → vie 26-feb, 131 días · v6.01: lun 12-oct → vie 19-feb · v6.00 = v5.20: mié 7-oct → lun 15-feb, 132 días; el lun 15-feb cuenta como sem 19 · v5.19: mar 6-oct → sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) + F2 (sem 13-19, taper por el ENCAPS · v6.00; v5.20: taper del Step 1) = ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (Building with the Claude API · MCP restante + MCP Advanced Topics · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering · repaso por los 5 dominios · simulacro; sem 17-19 deload) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun, 5-sep y 12-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · DOMINGO PC 2 h, flexible (v6.07; hasta v6.06 el sábado) = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12 + taper S13-S20, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md; shipped = verify_vibecoding.js) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.`,
 } as const;
 
 // ─── Fases ───

@@ -24,6 +24,9 @@
  *    jue 12-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 6-nov · D15 la que dé el plan USMLE v6.06), ya regenerados por sus lotes.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; d1 Derma mar 10-nov): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 mar 10 → vie 20-nov).
  *    La velocidad de vídeo sale de usmleStep1Daily (D5/D15), que regenera el lote USMLE: volver a correr este script (o --check) cuando ese lote cierre.
+ *  · v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov; d1 Derma lun 16-nov): fechas de dermaDailyPlan (d1-d5 lun 16 → jue 26-nov). La F1 del Step 1 tiene ya
+ *    solo 13 filas (D1 mar 17-nov → D13 mar 29-dic): sin D15 en usmleStep1Daily, el fin del tramo 1,25× es el ÚLTIMO día de Step de la F1 (mar 29-dic, la
+ *    misma fecha que el D15 de la v6.07); D5 = mar 1-dic (v6.07: mar 24-nov). Antes abortaba («no encuentro D5/D15»).
  */
 'use strict';
 const fs = require('fs');
@@ -73,7 +76,7 @@ if (UW.size !== 6) aborta(`uWorld: esperaba 6 Systems de Dermatology, hay ${UW.s
 
 // velocidad de vídeo (regla E1 del Step 1): S1 = hasta el D5 · S2-S3 = hasta el D15 · desde el D16
 const fechaD = (d) => (U.DIAS.find((x) => x.d === d) || {}).fecha;
-const VEL = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) };
+const VEL = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DIAS.length < 15 ? U.DIAS[U.DIAS.length - 1].fecha : undefined) }; // v6.08: F1 con < 15 filas → fin de la F1 (mar 29-dic)
 if (!VEL.s1Hasta || !VEL.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
 const vel = (fecha) => (fecha <= VEL.s1Hasta ? { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : fecha <= VEL.s23Hasta ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
 

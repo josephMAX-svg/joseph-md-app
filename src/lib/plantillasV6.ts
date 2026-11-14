@@ -115,7 +115,7 @@ import { DAILY_META as RESEARCH_META } from './researchDailyPlan';
 import { DAILY_META_2027 as RESEARCH_META_2027 } from './researchDailyPlan2027'; // v6.05 (fix): fin del ciclo 2 de Research (R↔D sin ciclo en F4)
 import { DERMA_CICLO2_META } from './dermaCiclo2';                                 // v6.05 (fix): fin del ciclo 2 de Derma
 import { AURUM_PLAN_META, aurumDiaDe } from './aurumDailyPlan';
-import { LIV_META } from './livianoStudyPlan';
+import { LIV_META, livDiaDe } from './livianoStudyPlan';
 import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
@@ -199,7 +199,7 @@ export function esResearchMinimo(iso: string): boolean {
 /** Bloque Research ↔ Derma del día (interdiario; 45' en F1-F3, 30' en la pausa de Research y en F4). */
 function bloqueRD(iso: string, ini: string, minutos: number): BloqueV6 {
   const tipo = diaEstudioTipo(isoADate(iso));
-  if (esResearchMinimo(iso)) return bloque('rd', ini, aHHMM(aMin(ini) + 30), "RESEARCH · mínimo 30' (DJ-4) — pausa de átomos", 'research-derma', 'research-derma', 'inbox de revisores/editorial + 1 lectura de la cola del ciclo 2 + repaso del paquete congelado del case report (sin átomo nuevo)');
+  if (esResearchMinimo(iso)) return bloque('rd', ini, aHHMM(aMin(ini) + 30), "RESEARCH · mínimo 30' (DJ-4) — pausa de átomos", 'research-derma', 'research-derma', 'inbox de revisores/editorial + 1 lectura de la cola del ciclo 2 + pendientes del case report para CR-3 (sin átomo nuevo)');
   const quien = tipo === 'research' ? 'RESEARCH (hoy)' : tipo === 'derma' ? 'DERMA (hoy)' : 'Research ↔ Derma';
   return bloque('rd', ini, aHHMM(aMin(ini) + minutos), `${quien} · interdiario ${minutos}'`, 'research-derma', 'research-derma');
 }
@@ -244,7 +244,8 @@ function bloqueBiz(iso: string): BloqueV6 | null {
   return bloque('biz', f.ini, f.fin, nombre, 'business', 'business');
 }
 /** v6.07: PC del DOMINGO (SHIP del vibecoding · avance · PC del taper) = bloque FLEXIBLE sin hora fija (antes: sábado 15:00 con el SYNAPSE A/B/C,
- *  v6.02c). Los minutos salen de rutinaGuia.guiaShipDe (cuya franja 15:00-… es solo un ejemplo). */
+ *  v6.02c). Los minutos salen de rutinaGuia.guiaShipDe (cuya franja es solo un ejemplo: v6.08 14:45-16:45, o 07:25 si el ENCAPS del domingo
+ *  ocupa la tarde; antes 15:00-17:00, encima del Anki del domingo 16:45-17:00). */
 function bloquePCDomingo(iso: string): BloqueV6 | null {
   const g = guiaShipDe(iso);
   if (!g) return null;
@@ -258,12 +259,16 @@ function bloqueSynSabado(iso: string): BloqueV6[] {
   const m = g ? /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja) : null;
   return g && m ? [bloque('syn', m[1] as string, m[2] as string, "SYNAPSE · 30' del sábado (A pantalla · B audio · C lectura)", 'synapse', 'synapse')] : [];
 }
-/** v6.07: sábado con clase EN VIVO de Theomed: 14:45-15:00 preparar la clase + 15:00-17:00 en vivo (sin clase ese sábado → sin bloques). */
-function bloquesTheomedSabado(iso: string): BloqueV6[] {
+/** v6.07: sábado con clase EN VIVO de Theomed: 14:45-15:00 preparar la clase + 15:00-17:00 en vivo (sin clase ese sábado → sin bloques).
+ *  v6.08 (fix revisión 14-nov, est6): también los sábados de F2 (9-ene → 6-mar; encapsManana.theomedSabadoDe, títulos del calendario del campus).
+ *  `ocupados`: los bloques ya puestos ese sábado — si alguno pisa 14:45-15:00 (en F2, el CARRIL SÁBADO ENCAPS 14:00-15:00), no hay «preparar la
+ *  clase» y la guía de las 15:00 lo cubre al entrar (en v6.08 solo el sáb 6-mar lo lleva). */
+function bloquesTheomedSabado(iso: string, ocupados: BloqueV6[] = []): BloqueV6[] {
   const s = theomedSabadoDe(iso);
   if (!s || !s.vivo) return [];
+  const pisaPrep = ocupados.some((b) => b.ini && b.fin && aMin(b.ini) < aMin('15:00') && aMin('14:45') < aMin(b.fin));
   return [
-    bloque('theomed-prep', '14:45', '15:00', `ENCAPS · preparar la clase (PPT + 3 preguntas) · ${s.vivo}`, 'encaps', 'encaps'),
+    ...(pisaPrep ? [] : [bloque('theomed-prep', '14:45', '15:00', `ENCAPS · preparar la clase (${/banqueo/i.test(s.vivo) ? 'hoja de respuestas' : 'PPT'} + 3 preguntas) · ${s.vivo}`, 'encaps', 'encaps')]),
     bloque('theomed-vivo', '15:00', '17:00', `THEOMED EN VIVO · ${s.vivo} (el tramo 17:00-17:30, en la grabación)`, 'encaps', 'encaps'),
   ];
 }
@@ -286,8 +291,13 @@ function bloqueCarrilBDe(iso: string, f2: EncapsF2Dia | null): BloqueV6 | null {
   if (!cb) return null;
   if (cb.pendiente === 'mini_sim') return bloque('carrilb', '16:15', '17:15', 'ENCAPS · CARRIL B · MINI-SIM 25Q (72 s/Q) + corrección · REPOSICIÓN F1', 'encaps', 'encaps',
     `MINI-SIMULACRO 25Q cronometrado (72 s/Q) 16:15-16:45 + corrección y cierre tipo mini_sim 16:45-17:15 (nota /25 → study_sim_scores sim_n = ${f2.dia}) · cola larga ${cb.colaLarga.join(' + ')} · mini-sim de la F1 que no cupo · ítems D${f2.dia}:b_msim y D${f2.dia}:b_msim_corr en ENCAPS → Plan`);
-  if (w === 5) return bloque('carrilb', '16:15', '17:15', 'ENCAPS · CARRIL VIERNES · REPOSICIÓN F1 (quincena final, tras el SIM)', 'encaps', 'encaps',
-    `banco ${cb.codigo ?? ''} del carril B (eval 5Q + banco 16-20Q + secundario + registro) tras el SIM 100Q de las 11:00 · ítems D${f2.dia}:b_* · cierre APP_CARRIL_B_<fecha>_<código>`);
+  // v6.08 (14-nov-2026): el CARRIL VIERNES ya no es solo de la quincena final: los pendientes F1 que no caben en el carril B lun-jue van también al
+  //   16:15 de los viernes del núcleo con el SIM / PRE-TEST a las 07:15 (vie 8, 15, 22, 29-ene, 5 y 12-feb), tras su corrección de 09:30-12:00
+  if (w === 5) {
+    const pre = f2.tipo === 'pretest', h = f2.simHora ?? '07:15';
+    return bloque('carrilb', '16:15', '17:15', `ENCAPS · CARRIL VIERNES · REPOSICIÓN F1 (${f2.quincena ? 'quincena final, ' : ''}tras el ${pre ? 'PRE-TEST' : 'SIM'} de las ${h})`, 'encaps', 'encaps',
+      `banco ${cb.codigo ?? ''} del carril B (eval 5Q + banco 16-20Q + secundario + registro) tras el ${pre ? 'PRE-TEST 2026-II' : 'SIM 100Q'} de las ${h} y su corrección · ítems D${f2.dia}:b_* · cierre APP_CARRIL_B_<fecha>_<código>`);
+  }
   return bloque('carrilb', '16:15', '17:15', CARRIL_B_TIT, 'encaps', 'encaps', 'claves b_ · cierre APP_CARRIL_B_<fecha>_<código>');
 }
 /** v6.07 (fix H4): CORRECCIÓN + CIERRE del simulacro con hora propia (en la fila es el ítem D{dia}:i_sim_corr de ENCAPS → Plan).
@@ -328,7 +338,7 @@ function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[]; titulo?: str
   const comunes = (): BloqueV6[] => {
     const bs: BloqueV6[] = [];
     if (enRango(iso, VIBE_META.finTaper)) bs.push(bloque('vibe', '04:15', '05:00', 'IA · VIBECODING (taper por el ENCAPS)', 'vibecoding', 'vibecoding'));
-    bs.push(bloque('anki', '05:00', '05:45', "ANKI · ENCAPS::Cifras (15') + USMLE mantenimiento (30', 0 nuevas, FSRS 0,85)", 'usmle', 'usmle-anki', 'Step 1 en PAUSA (§B2): solo Anki · el sábado 07:45 «STEP 1 VIVO» 20Q mezcladas'));
+    bs.push(bloque('anki', '05:00', '05:45', "ANKI · ENCAPS::Cifras (15') + USMLE mantenimiento (30', 0 nuevas, FSRS 0,85)", 'usmle', 'usmle-anki', 'Step 1 en PAUSA (§B2): solo Anki · el sábado 04:15 «STEP 1 VIVO» 20Q mezcladas' /* v6.08: 04:15-05:45, antes del gimnasio (antes 07:45) */));
     // v6.05 (fix 24-oct): la franja del SYNAPSE sale de rutinaGuia.synFranjaDe, como en F1 — los días con el ENCAPS a 11:00-13:00 (SIM 100Q #7/#8:
     //   vie 26-feb y vie 5-mar-2027 · D-2) va a 13:00-13:30; antes quedaba fija a 12:30-13:00, solapada 30′ con el SIM
     if (enRango(iso, SYN_PLAN_META.fin)) { const [si, sf] = synFranjaDe(iso).franja.split('–'); bs.push(bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30'", 'synapse', 'synapse')); }
@@ -376,6 +386,17 @@ function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[]; titulo?: str
     return { id: w === 5 ? 'F2-vie' : 'F2', bs, ...(quincena ? { titulo: 'F2 · QUINCENA FINAL · SIM 100Q a la hora del examen (Step 1 en PAUSA)' } : {}), ...(aviso ? { notas: [aviso] } : {}) };
   }
   const cb = bloqueCarrilBDe(iso, f2);
+  // v6.08 (14-nov-2026): una MAÑANA ENCAPS de F1 que no cupo en F1 (encapsManana, diaExtra: mar 5-ene, la hoja de reglas del trimestre) va en lugar
+  //   del LOOP (la fila de la intensiva trae esa mañana en extra.loop, sin el segmento de las 18:00) y las 18:00 son las suyas («cifras, normas y
+  //   flashcards», como en F1): sin EVAL 18:00. El carril B de la tarde sigue.
+  const amF2 = encapsMananaDe(iso);
+  if (amF2) {
+    const bs = comunes();
+    bs.push(bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA ${amF2.n}/${amF2.de} (${amF2.resumen.split(' · ')[0].replace(/:.*$/, '')} + banqueo ${amF2.banqueo.n}Q) · la que no cupo en diciembre, en lugar del LOOP`, 'encaps', 'encaps', amF2.diaExtra));
+    if (cb) bs.push(cb);
+    bs.push(bloque('encaps-pm', '18:00', '18:45', 'ENCAPS · cifras, normas y flashcards', 'encaps', 'encaps'));
+    return { id: 'F2', bs, titulo: `F2 · mañana ENCAPS ${amF2.n}/${amF2.de} (la que no cupo en diciembre) + carril B (Step 1 en PAUSA)` };
+  }
   // v6.07 (fix H3): todo L-J cuya fila es repaso_final SIN loop (quincena: mar 2 · jue 4-mar · cola D-4 / D-3: mar 9 · mié 10-mar) = REPASO 07:15-12:00
   //   con el texto de la fila y sin EVAL 18:00 (el D-5 lun 8-mar, pasada profunda, trae loop y sigue como LOOP + EVAL). Sin índice: la regla (quincena +
   //   D-4 / D-3 de COLA_F2).
@@ -425,7 +446,12 @@ function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   bs.push(bloque('reentrada', ri ?? '16:15', rf ?? '17:15', 'USMLE · 16:15 REENTRADA (20Q timed del sistema de la rotación)', 'usmle', 'usmle-principal', usmle?.franjaNota));
   // v6.07 (fix): LIVIANO llega a F3 (LIV_META.fin = lun 22-mar-2027: D86-D90 = mar 16 → lun 22-mar) → 17:15-18:00, su franja de F1/F2, entre la
   //   REENTRADA (16:15-17:15) y la evaluación de las 18:00; antes la plantilla F3 no lo pintaba y esas 5 sesiones no salían en el Home
-  if (enRango(iso, LIV_META.fin)) bs.push(bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (cierre del plan, tras el ENCAPS)', 'liviano', 'liviano'));
+  // v6.08 (14-nov-2026, lote B2): solo los días con sesión (livDiaDe): el plan se alarga hasta el viernes del caso 16 (vie 2-abr) y deja 2 hábiles SIN
+  //   LIVIANO en F3 (mié 31-mar y jue 1-abr: ya se dio todo el temario; gen_liviano_plan.js) → sin bloque vacío esos días
+  if (enRango(iso, LIV_META.fin) && livDiaDe(iso)) bs.push(bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (cierre del plan, tras el ENCAPS)', 'liviano', 'liviano'));
+  // v6.08 (14-nov-2026, lote B2): Business llega a F3 (sin los PROTEGIDOS ni el D-2 del ENCAPS acaba el vie 19-mar: COLCHÓN 3 mar 16 · OUTPUT S15 mié 17 ·
+  //   S16 jue 18 · «extra» vie 19-mar) → 13:00-13:25 como en F1/F2 (rutinaGuia.bizFranjaDe); sin fila de Business, sin bloque
+  const bizF3 = bloqueBiz(iso); if (bizF3) bs.push(bizF3);
   bs.push(bloque('eval', '18:00', '18:45', hito ? 'USMLE · registrar el % del hito + corrección' : 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval'));
   return bs;
 }
@@ -438,6 +464,8 @@ const SABADO_REVISION = (iso: string): BloqueV6 => { const ini = revisionIniDe(i
  * (09:30-10:30) y es Business el que se mueve tras el carril si no cabe antes (rutinaGuia.bizCierreDe: el OUTPUT entero de los viernes de SIM 11:00 →
  * sáb 20 · 27-feb · 6-mar 10:30-11:10); antes el carril se corría al terminar Business (09:55-10:55) y el Home no cuadraba con ENCAPS → Plan.
  * Los ítems (claves D{dia del viernes}:s_*) los pinta ENCAPS → Plan desde la fila viva del viernes host.
+ * v6.08 (14-nov-2026): el carril pasa a 14:00-15:00 (gen_encaps_intensivo_2027.js --sabado-hora: 09:30-10:30 caía dentro del gimnasio de 08:30-14:00)
+ * y, con el re-flujo por fecha de los pendientes, ocupa 8 sábados (9-ene → 27-feb; el sáb 6-mar queda libre). La hora sigue saliendo del SQL.
  */
 function bloqueEncapsSabado(iso: string): BloqueV6[] {
   const s = encapsSabadoDe(iso);
@@ -616,10 +644,19 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
   }
   // 2) SKIP (sin sesión de ningún plan)
   // v6.07e: el 31-dic de 2026 es día de estudio (la semana corrida pone ahí el último día de F1) → la lista no lo nombra ese año
+  // v6.08: sin semana corrida; el 31-dic de 2026 es el día extra SOLO ENCAPS (arriba) → la lista tampoco lo nombra
+  // v6.08 (14-nov-2026): el jue 31-dic-2026 es un DÍA EXTRA SOLO ENCAPS (encapsManana, diaExtra: las 2 mañanas de F1 que no cupieron + SP 6/11 a las
+  //   18:00): sigue siendo SKIP para el Step 1 y los planes secundarios, así que solo lleva la mañana ENCAPS 07:15-12:00 y su 18:00
   if (SKIP_V6.has(iso)) {
+    const amX = encapsMananaDe(iso);
+    if (amX) return out('TRANSICION', `Día extra SOLO ENCAPS · mañana ${amX.n}/${amX.de}${amX.pendiente18.length ? ` + ${amX.pendiente18.join(' + ')} a las 18:00` : ''}`, [
+      bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA ${amX.n}/${amX.de} (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', amX.diaExtra),
+      bloque('encaps-pm', '18:00', '18:45', `ENCAPS · cifras, normas y flashcards${amX.pendiente18.length ? ` (+ ${amX.pendiente18.join(' + ')} en diferido)` : ''}`, 'encaps', 'encaps'),
+    ], { notas: ['Día extra SOLO ENCAPS: sin Step 1 ni planes secundarios (sigue siendo SKIP v6 para ellos); solo la mañana ENCAPS y las 18:00.'] });
     const d31 = iso.slice(5, 7) === '01' ? `${Number(iso.slice(0, 4)) - 1}-12-31` : `${iso.slice(0, 4)}-12-31`;
-    const con31 = !corridaS1De(d31);
-    return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic${con31 ? ' · 31-dic' : ''} · 1-ene · Jueves y Viernes Santo).${con31 ? '' : ' El 31-dic de este año sí es día de estudio: la semana corrida pone ahí el último día de F1.'}`] });
+    const extra31 = !!encapsMananaDe(d31);
+    const con31 = !corridaS1De(d31) && !extra31;
+    return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic${con31 ? ' · 31-dic' : ''} · 1-ene · Jueves y Viernes Santo).${con31 ? '' : extra31 ? ' El 31-dic de este año es un día extra SOLO ENCAPS (mañana + 18:00).' : ' El 31-dic de este año sí es día de estudio: la semana corrida pone ahí el último día de F1.'}`] });
   }
   // 3) domingo — v6.07: flexible (sin hora fija): ENCAPS opcional 4 h + SHIP del vibecoding + Feynman + Anki (F1 · transición · F2; F3 solo el PC)
   if (w === 0) {
@@ -636,7 +673,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
   switch (fase) {
     case 'TRANSICION':
       // v6.02c (E5): el sáb 2-ene sí tiene revisión semanal (S11) y PC (SHIP S10; también en v6.03 · v6.05: revisión S10 y SHIP S9) en el Calendar y en los planes → se muestran
-      return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso)] : [], { notas: ['Step 1 en PAUSA desde hoy: 0 tarjetas nuevas; la intensiva ENCAPS arranca el lun 4-ene.'] });
+      return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso)] : [], { notas: [`Step 1 en PAUSA desde ${iso === FECHAS_V6.transicion.desde ? 'hoy' : `el ${fCorta(FECHAS_V6.transicion.desde)}`}: 0 tarjetas nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.08 (rev. dia5): la pausa empieza el jue 31-dic (transicion.desde), no «hoy» (sáb 2-ene)
     case 'LIBRE_POST_ENCAPS':
       return out('PROTEGIDO', 'LIBRE post-ENCAPS', []);
     case 'EXAMEN':
@@ -667,15 +704,27 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       }
       return out('F1', esDiaStepF1(iso) ? 'F1 · mañana Step 1 (mar · jue) + ENCAPS 16:15' : 'F1 · mañana ENCAPS (lun · mié · vie) + ENCAPS 16:15 y 18:00', bloquesF1(iso, usmleExacto));
     case 'F2': {
-      if (w === 6) return out('F2-sáb', 'Sábado · revisión semanal + STEP 1 VIVO', [SABADO_REVISION(iso),
-        bloque('vivo', '07:45', '09:15', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco'),
-        ...extrasSabado(iso, false), ...bloqueEncapsSabado(iso)]); // v6.06: + carril SÁBADO ENCAPS 09:30 (pendientes F1)
+      // v6.08 (14-nov-2026, lote B2): sábado REAL de Joseph — gimnasio 08:30-14:00 · Theomed EN VIVO 15:00-17:00 (repasos de ene-mar) · baile 17:00-20:00;
+      //   estudio solo 04:15-08:25 (caminata, ducha y desayuno 05:45-07:15) · 14:00-17:00 · 21:00-22:00 — → STEP 1 VIVO 04:15-05:45 (antes 07:45-09:15,
+      //   dentro del gimnasio) · REVISIÓN 07:15-07:45 · cierre Business 07:45 (≤ 08:25; antes 09:15: rutinaGuia.bizSabIni) · carril SÁBADO ENCAPS
+      //   14:00-15:00 (hora del SQL) · SYNAPSE A/B/C 21:00-21:30 (antes 15:00, encima de la clase en vivo: rutinaGuia.synFranjaDe). Mismo contenido y minutos.
+      if (w === 6) {
+        const bsS = [
+          bloque('vivo', '04:15', '05:45', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco · v6.08: 04:15-05:45, antes del gimnasio (08:30-14:00)'),
+          SABADO_REVISION(iso),
+          ...extrasSabado(iso, false), ...bloqueEncapsSabado(iso)]; // v6.06: + carril SÁBADO ENCAPS (pendientes F1; v6.08: 14:00-15:00, la hora del SQL)
+        // v6.08 (fix revisión 14-nov, est6): + la clase EN VIVO de Theomed 15:00-17:00 (antes la franja quedaba vacía aunque el plan la daba por hecha)
+        const vivF2 = theomedSabadoDe(iso);
+        return out('F2-sáb', `Sábado · revisión semanal + STEP 1 VIVO${vivF2?.vivo ? ` + THEOMED EN VIVO 15:00 · ${vivF2.vivo}` : ''}`, [...bsS, ...bloquesTheomedSabado(iso, bsS)]);
+      }
       const { id, bs, titulo: titF2, notas: notasF2 } = bloquesF2(iso);
       return out(id, titF2 ?? 'F2 · ENCAPS intensiva (Step 1 en PAUSA)', bs, { usmle: null, ...(notasF2 ? { notas: notasF2 } : {}) });
     }
     case 'F3':
-      if (w === 6) return out('F3-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION(iso), ...bloqueSynSabado(iso)]); // v6.07: + SYNAPSE A/B/C 15:00 (el plan llega al mar 23-mar)
-      return out('F3', 'F3 · Step 1 tiempo completo (7h15)', bloquesF3(iso, usmleExacto));
+      if (w === 6) return out('F3-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION(iso), ...bloqueSynSabado(iso), // v6.07: + SYNAPSE A/B/C 15:00 (el plan llega al mar 23-mar)
+        ...(() => { const b = bloqueBiz(iso); return b ? [b] : []; })()]); // v6.08 (lote B2): + cierre Business de la última semana del plan (sáb 20-mar, tras el gimnasio: 14:00-15:10 desde la rev. est5, con el OUTPUT S15 del NBME 29 entero; SYNAPSE detrás, 15:10)
+      // v6.08 (rev. est5): día de NBME de F3 con OUTPUT de Business (mié 17-mar, NBME 29) → el OUTPUT va ENTERO al cierre del sábado: se avisa aquí
+      { const avisoBiz = bizAvisoOutputEnteroDe(iso); return out('F3', 'F3 · Step 1 tiempo completo (7h15)', bloquesF3(iso, usmleExacto), avisoBiz ? { notas: [avisoBiz] } : {}); }
     case 'F4': {
       const t = turnoEf ?? 'M';
       const forzado = turno != null ? { [iso]: turno } : undefined;   // el turno del selector cuenta para el reorden del hito
@@ -782,7 +831,11 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
   if (!c) return plantillaBase(iso, turno);
   const base = plantillaBase(iso, turno);
   // v6.06e (vie 6-nov): semana de domingo a viernes → los sábados de la corrida son LIBRES: ni plan ni revisión (lo suyo va los domingos)
-  if (c.tipo === 'sin_sesion' && dow(iso) === 6 && iso >= FECHAS_V6.corrida_s1.decidido) {
+  // v6.08 (rev. dia4/est8): solo si el DOMINGO siguiente trae plan de la corrida (alias o reparto): «lo de los sábados va los domingos». Con un
+  //   domingo también sin sesión (v6.08: sáb 14 y dom 15-nov, todo arranca el lun 16) la nota era falsa → cae en la rama genérica de abajo (próximo
+  //   día de plan) y las notas del día salen de corrida_s1.notas.
+  const cDomSig = corridaS1De(addDias(iso, 1));
+  if (c.tipo === 'sin_sesion' && dow(iso) === 6 && iso >= FECHAS_V6.corrida_s1.decidido && !!cDomSig && cDomSig.tipo !== 'sin_sesion') {
     return { ...base, plantilla: 'CORRIDO', titulo: 'Sábado libre · hoy no hay plan', usmle: null, bloques: [], corrida: 'sin_sesion', notas: ['Sábado libre: ni plan ni revisión; lo de los sábados va los domingos.', NOTA_CORRIDA] };
   }
   if (c.tipo === 'sin_sesion') {

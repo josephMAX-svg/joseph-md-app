@@ -363,7 +363,7 @@ Teoría por área: **INV termina el 30-nov · GES el 18-dic · ET el 12-dic · C
   - Los tres domingos tienen además un compromiso fijo de 14:15 a 14:45.
   - Están en `DATA/ENCAPS/_encaps_manana_v607.json` → `domingos[].modo` (`banqueos` · `simulacro_2h` · `banqueos_correccion`). De ahí `gen_encaps_manana.js` genera la guía, el nombre, la hora y la etiqueta.
   - Coste: los simulacros antiguos opcionales del 18/09, el 02/10 y el 16/10 se quedan sin domingo (el 22-nov es día de plan; el 6 y el 20-dic los ocupan los banqueos). Quedan para un hueco libre. El del 30/10 sigue el 27-dic.
-- **Revisión normativa N°2 (ITS):** se usa en la mañana de normas de CI del vie 18-dic (TBC, ITS/VIH, ECNT).
+- **Revisión normativa N°2 (ITS):** se usa en la mañana de normas de CI del vie 18-dic (TBC, ITS/VIH, ECNT). → **v6.08:** esa mañana es ahora el lun 28-dic (mañana 18/21); ver la actualización del sáb 14-nov.
 - **CI 1/8 e INV 1/4:** siguen la regla del plan (audio en tiempos muertos; el post-test, al terminar).
 - **Kahoots diarios:** opcionales, en grabación y en tiempos muertos.
 
@@ -382,3 +382,27 @@ Teoría por área: **INV termina el 30-nov · GES el 18-dic · ET el 12-dic · C
   - dom 6: banqueos N°08-N°09.
   - dom 13: simulacro con ranking; la nota se anota ese día para el GATE, que ahora es el **lun 21-dic** (el CHECKPOINT del vie 18 de plan se hace ese lunes).
   - dom 20: banqueos N°10-N°11 + corrección del 13.
+
+## Actualización · sáb 14-nov-2026 (re-scan antes de la v6.08: todo arranca el lun 16)
+
+> Solo lectura, en el Chrome del alumno (esta vez chrome-devtools sí conectó): cursos por `core_courseformat_get_state`, calendario del campus por `core_calendar_get_calendar_monthly_view` (nov-2026 → mar-2027), Drive u/4 por búsqueda «después del 11-nov» y correo (solo los asuntos de academias). No se abrió ningún examen, simulacro ni post-test.
+
+- **Cursos:**
+  - 99 sigue con 227 módulos. Lo último subido es la sesión N° 01 de INV (09/11) con su post-test; las clases en vivo del 13 y 14-nov aún no están colgadas.
+  - 116 sigue con 11 (banqueos grabados N°07-N°11 y las revisiones normativas N°1-N°2).
+  - 105 (simulacros): 11. Está el «13/11 SIMULACRO MEDICINA»; el último ranking publicado es el del 30/10.
+  - 42 (Kahoots): 67, hasta el 12/11.
+- **Calendario del campus hasta el examen.** Confirma la secuencia de clases en vivo del 16-nov al 13-mar:
+  - Lunes 19:30 y viernes 19:00/20:00 · sábados 15:00.
+  - En enero: SP 7-11 · CI 5-8 · repasos de INV, Ética y CI.
+  - En febrero: repasos de SP, CI y Gestión · sáb 13-feb banqueo general.
+  - Del 1 al 13-mar: repasos finales; vie 12-mar banqueo 19/19; sáb 13-mar «Cierre · Recomendaciones».
+  - Marca **«EXAMEN ENCAPS» el dom 14-mar-2027**: es la fecha que usa la academia, y coincide con `encaps.examen` (sigue PROVISIONAL hasta la convocatoria).
+  - Feriados: 8 y 9-dic, 25-dic, 26-dic sin clases, 1-ene y 2-ene sin clases.
+  - Kahoots: 19:00 (en el calendario) y además a las 09:00 (según los correos).
+- **Simulacros:** el del vie 13-nov abrió a las 16:00 y cuenta para el ranking dentro de ≈ 89 h (hasta ≈ el mar 17 a las 09:00). Los del 27-nov y 11-dic siguen sin salir en el calendario (proyectados, cadencia quincenal).
+- **Drive u/4:** solo cambió la carpeta «SERUMS 2026 II - VILLAMEDIC» (12-nov), pero sus archivos siguen siendo de junio-agosto. No hay material nuevo.
+- **Correo:** nada que cambie fechas. Solo avisos de Theomed (clases en vivo, Kahoots y banqueo semanal) y de PROMIR (listado provisional del MIR 2026-2027, masterclasses), que no tocan el plan.
+- **Plan (v6.08, todo arranca el lun 16-nov):**
+  - **Revisión normativa N°2 (ITS)** (curso 116, vídeo 30:39 + PDF): va en la mañana de normas de CI, que en la v6.08 es el **lun 28-dic** (mañana 18/21). Abre la teoría en texto primero (≈ 10′) y las «normas de la semana» (TBC, ITS/VIH, ECNT) bajan de 1 h 45 a 1 h 35, porque la parte de ITS ya la cubre la revisión. Está en `DATA/ENCAPS/_encaps_manana_v607.json` (mañana 18) y en la guía del Home. Antes no aparecía en ninguna guía.
+  - **Sábados de F2 (9-ene → 6-mar):** el Home pinta la clase EN VIVO de las 15:00-17:00 con el título de §3.3: CI 6/8 · Repaso INV 1/2 · Repaso Ética · Repaso CI 1/4 · Repaso INV 2/2 · Banqueo general (13-feb) · Repaso GES 2/3 · Repaso CI 4/4 · Repaso final CI (banqueo comentado, 6-mar). El «preparar la clase» de las 14:45 solo va el 6-mar, porque los demás sábados el carril SÁBADO ENCAPS ocupa de 14:00 a 15:00. El sáb 13-mar (cierre) es D-1 ENCAPS, protegido. Está en `_encaps_manana_v607.json` → `sabados`.

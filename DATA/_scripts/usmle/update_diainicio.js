@@ -19,6 +19,9 @@
 //   D42 = NBME 28) y 16 desplazadas (v5.20 D42 Endocrino, D43-D50 Neuro, D51-D54, D56, D57 Heme/Onco, D79) → T3-T18: Endocrino empieza en D38
 //   (el NBME 27 ocupa el D35), Neuro en T4 (104), Heme/Onco en T12 (112), Psiquiatría = bioestadística T18 (118), Micro 119 · Repro 126 ·
 //   MSK 131 · Bioq/Pharm 147 (9 cambiados; lo imprime la corrida).
+// v6.08 (14-nov-2026): sin cambio de lógica. F1 = D1-D13 (mar 17-nov → mar 29-dic, solo mar · jue; D8 = NBME 25) y 45 desplazadas al tramo 2
+//   (v5.20 D14-D57 + D79, con NBME 26-28): Cardio empieza en D6, Respiratory en T6 (106), Renal 112, GI 119, Endocrino 126, Neuro 132, Heme/Onco
+//   155, Psiquiatría = bioestadística T70 (170), Micro 172 · Repro 189 · MSK 200 · Bioq/Pharm 213 (lo imprime la corrida).
 'use strict';
 const fs = require('fs');
 const path = require('path');

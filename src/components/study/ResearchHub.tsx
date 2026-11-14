@@ -40,7 +40,7 @@ import AIFirstPanel from './AIFirstPanel';
  * ACADÉMICA (10 cuentas, PlanKey 'research-infra'), KPIs derivados de ambos, fases, journals, maestría transversal.
  * (05-sep-2026) Sustituye a "Timeline 0→primer paper" y "Micro-horario": eran calendarios contradictorios.
  * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): el chip HOY del masthead dice la duración v6 — 45' (F1-F3) · «30' mínimo (DJ-4)» en
- * los días-Research de la pausa de átomos (15-ene → 10-feb) · «30' en tiempo muerto (posta)» en F4 (SERUMS, L-S) · «protegido» en los
+ * los días-Research de la pausa de átomos (DAILY_META.pausa; v6.08: 21-ene → 10-feb, antes 15-ene → 10-feb) · «30' en tiempo muerto (posta)» en F4 (SERUMS, L-S) · «protegido» en los
  * días protegidos v6 (fechasV6). El sábado es día de plan desde el SERUMS (researchData.diaEstudioTipo).
  */
 /** v6.00: nota de duración del bloque Research ↔ Derma de una fecha (para el chip HOY). */

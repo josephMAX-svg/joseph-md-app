@@ -36,7 +36,8 @@
  * de la transición (sabadoTheomed) = 13:30 SYNAPSE A/B/C (guiaSynapseDe, ya no dentro del PC) · 14:00 REVISIÓN SEMANAL (guiaRevisionDe; antes 07:15) ·
  * 14:30 cierre Business (bizFranjaDe; antes 07:45; un OUTPUT entero de 40′ va a las 17:15, tras la clase) · 14:45-15:00 preparar la clase y 15:00-17:00
  * THEOMED EN VIVO (encapsManana) · 19:00 Anki. El PC (SHIP del vibecoding · avance · PC del taper) pasa al DOMINGO, flexible y sin hora fija
- * (guiaShipDe lee vibePCDomingo; su franja 15:00-17:00 es solo un ejemplo), con el Feynman (guiaFeynmanDe, ejemplo 14:50-15:00). En F2 el sábado
+ * (guiaShipDe lee vibePCDomingo; su franja es solo un ejemplo: v6.08 14:45-16:45, o 07:25 si el ENCAPS del domingo ocupa la tarde —shipEjemploIni—;
+ * hasta v6.07 15:00-17:00), con el Feynman (guiaFeynmanDe, ejemplo 10′ antes del SHIP; hasta v6.07 14:50-15:00). En F2 el sábado
  * conserva la revisión 07:15 y el Business 09:15 (decisión abierta de Joseph para los sábados de 2027) y su SYNAPSE A/B/C va a las 15:00 (donde
  * estaba dentro del PC).
  * v6.07 (fix 8-nov-2026 · QUINCENA FINAL del ENCAPS, lun 1 → vie 5-mar-2027): SIM_F2_11 = los 2 últimos SIM del núcleo (nucleo_hasta − 7 · nucleo_hasta)
@@ -68,6 +69,13 @@
  *    L: 2.ª toma del drill. Desde el 4-ene (min30, DJ-4): 30′ = arranque + vídeo (≤8′) + drill (el resto); lo demás es opcional.
  *  · Ritmo «desde cero con el inglés»: lectura en inglés a 100 palabras/min · vídeos a 1,0× con subtítulos en inglés (CC); en AURUM y Business
  *    (que no son inglés-objetivo) se permite la auto-traducción al español si se pierde el hilo.
+ * v6.08 (sáb 14-nov-2026 · D1 = lun 16-nov · lote B2): sin fechas nuevas en el código salvo las reglas de abajo; todo sale de los planes regenerados
+ *  (+5 hábiles: Business → vie 19-mar sin los PROTEGIDOS ni el D-2 · LIVIANO → vie 2-abr, alargado al 16.º viernes · vibecoding → mar 6-abr · SYNAPSE
+ *  → jue 1-abr · AURUM → mar 25-may). (1) SÁBADOS DE F2 con el horario real (gimnasio 08:30-14:00 · Theomed en vivo 15:00-17:00 · baile 17:00-20:00):
+ *  cierre Business 07:45 tras la revisión de las 07:15 (bizSabIni; antes 09:15) y SYNAPSE A/B/C 21:00 (synFranjaDe; antes 15:00); el STEP 1 VIVO pasa a
+ *  04:15-05:45 en plantillasV6. Un cierre de sábado que no termine a las 08:25 va a las 14:00 (bizCierreDe; v6.08: sáb 20-mar, F3). (2) AURUM en un día
+ *  de HITO de F4 (D129 lun 24-may = NBME 30, hitoUsmleF4De): con el bloque sin hora (plantilla H, turno T o sin marcar) la guía va TRAS el hito, en el
+ *  tiempo muerto de la posta después del R↔D (14:00-14:30; antes 07:30, dentro del hito) y lleva el aviso del hito, como en F1/F3; no alarga el plan.
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { minutosFranja } from './guia';
@@ -85,6 +93,7 @@ import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiD
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
+import { theomedSabadoDe, guiaEncapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido } from './fechasV6';
 
@@ -106,8 +115,13 @@ const siguienteDow = (iso: string, wd: number): string => addDias(iso, ((wd - do
 export const sabadoTheomed = (iso: string): boolean => dow(iso) === 6 && iso >= FECHAS_V6.f1.inicio && iso <= FECHAS_V6.transicion.hasta;
 /** v6.07: hora de inicio de la REVISIÓN SEMANAL del sábado `iso` (14:00 con la clase en vivo · 07:15 en el resto). */
 export const revisionIniDe = (iso: string): string => (sabadoTheomed(iso) ? '14:00' : '07:15');
-/** v6.07: inicio del cierre de Business del sábado `sab` (tras la revisión): 14:30 con la clase en vivo · F2 09:15 (tras el STEP 1 VIVO) · resto 07:45. */
-const bizSabIni = (sab: string): string => (sabadoTheomed(sab) ? '14:30' : faseV6(sab) === 'F2' ? '09:15' : '07:45');
+/** v6.07: inicio del cierre de Business del sábado `sab` (tras la revisión): 14:30 con la clase en vivo · resto 07:45 (tras la revisión de las 07:15).
+ *  v6.08 (14-nov-2026): en F2 también 07:45 (antes 09:15, tras el STEP 1 VIVO 07:45-09:15: los dos caían dentro del gimnasio 08:30-14:00; el STEP 1
+ *  VIVO pasa a 04:15-05:45 en plantillasV6). Un cierre que no termine a las 08:25 va a las 14:00, tras el gimnasio (bizCierreDe). */
+const bizSabIni = (sab: string): string => (sabadoTheomed(sab) ? '14:30' : '07:45');
+/** v6.08 (14-nov-2026): fin de la ventana de estudio de la mañana del SÁBADO real de Joseph (gimnasio 08:30-14:00) y vuelta del gimnasio. */
+const SAB_MANANA_FIN = '08:25';
+const SAB_TARDE_INI = '14:00';
 /** v6.06e: cuándo se cierra el OUTPUT: el sábado de plan, o su domingo real si ese sábado se corrió (la fecha de plan la traduce fechasRealesEnTexto).
  *  v6.07: la hora del sábado sale de bizSabIni (14:30 en F1). */
 /*  v6.07 (fix H5): si el sábado es PROTEGIDO o SKIP, el cierre va al día hábil que da bizCierreDe («el mié 10-mar 13:00»); la hora del sábado sale
@@ -140,9 +154,12 @@ function bloque(franja: string, plan: string, titulo: string, pasos: GuiaPaso[],
   }
   return { franja, plan, titulo, totalMin: total, pasos, recursos, hecho, ...(extra.planB ? { planB: extra.planB } : {}), ...(extra.aviso ? { aviso: extra.aviso } : {}) };
 }
-/** Hito del Step 1 de una fecha (F1): UWSA1 o NBME. */
+/** Hito del Step 1 de una fecha (F1): UWSA1 o NBME. v6.08 (rev. est5): también los hitos del tramo 2 en F3 (DIAS_T2; v6.08: NBME 29 mié 17-mar ·
+ *  NBME 26 mar 6-abr · NBME 27 mar 27-abr) con la MISMA regla que F1 — SYNAPSE 13:00 tras el almuerzo de 12:30 y el OUTPUT de Business del día ENTERO al
+ *  sábado (v6.08: OUTPUT S15 del mié 17-mar → sáb 20-mar con el cierre). Antes solo miraba F1 y el 17-mar salía SYNAPSE 12:30 + OUTPUT 13:00, sin
+ *  almuerzo tras 5,5 h de examen. En F4 no: el hito se mueve por turno (hitoUsmleF4De). */
 function hitoDe(iso: string): { nbme: boolean; uwsa: boolean } | null {
-  const h = USMLE_DIAS.find((x) => x.fecha === iso && esHito(x));
+  const h = USMLE_DIAS.find((x) => x.fecha === iso && esHito(x)) ?? (faseV6(iso) === 'F3' ? USMLE_DIAS_T2.find((x) => x.fecha === iso && esHito(x)) : undefined);
   if (!h) return null;
   const uwsa = /Self-Assessment 1|UWSA1/.test(h.uw);
   return { uwsa, nbme: !uwsa && /NBME/.test(h.uw) };
@@ -151,7 +168,17 @@ function hitoDe(iso: string): { nbme: boolean; uwsa: boolean } | null {
  *  («🎯 NBME 27 (07:00-12:30) …» → NBME 27 · 07:00-12:30). En F4 el hito se reordena por turno (serumsTurnos): no se usa ahí. Lo usa guiaAurumDe. */
 export function hitoUsmleDe(iso: string): { nombre: string; franja: string | null } | null {
   if (faseV6(iso) === 'F4') return null;
-  const h = [...USMLE_DIAS, ...USMLE_DIAS_T2].find((x) => x.fecha === iso && esHito(x));
+  return hitoDeFila([...USMLE_DIAS, ...USMLE_DIAS_T2].find((x) => x.fecha === iso && esHito(x)));
+}
+/** v6.08 (14-nov-2026): hito NOMINAL del Step 1 en F4 (fila 🎯 de DIAS_T2 en su fecha de plan; el motor de turnos —serumsTurnos.ordenSemanaDe— puede
+ *  moverlo a otro día T/L de su ventana si el turno marcado no lo deja). Con el D1 en el lun 16-nov AURUM llega al mar 25-may-2027 y su D129 cae el
+ *  lun 24-may, día preferente del NBME 30 (07:00-12:15): lo usa guiaAurumDe para poner la sesión TRAS el hito ese mismo día. */
+export function hitoUsmleF4De(iso: string): { nombre: string; franja: string | null; fin: string | null } | null {
+  if (faseV6(iso) !== 'F4') return null;
+  const h = hitoDeFila(USMLE_DIAS_T2.find((x) => x.fecha === iso && esHito(x)));
+  return h ? { ...h, fin: h.franja ? (h.franja.split('-')[1] ?? null) : null } : null;
+}
+function hitoDeFila(h: { uw: string; sub: string } | undefined): { nombre: string; franja: string | null } | null {
   if (!h) return null;
   const m = /🎯\s*([^(—+]+?)\s*(?:—[^(]*)?\((?:[^)]*?)(\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(h.sub);
   // El `sub` del UWSA1 conserva el «09:00-13:00» de v5.20, pero la guía lo empieza a las 08:50 (4 × 40Q × 90 s + pausa no caben antes de las 13:00;
@@ -432,15 +459,32 @@ export const BIZ_ENCAPS_11 = { ini: '14:45', fin: '15:10' } as const;
 /** v6.07 (fix): ¿el OUTPUT de Business de `f` va ENTERO al sábado? → día de NBME de F1 o VIERNES con el ENCAPS 11:00-13:00 (SIM #6/#7/#10);
  *  un OUTPUT de lunes-jueves con el SIM 11:00 va a 14:45 (BIZ_ENCAPS_11) y se cierra el sábado como cualquier otro (25′ + 15′). */
 const outputEnteroAlSabado = (f: string): boolean => !!hitoDe(f)?.nbme || (encapsOnceATrece(f) && dow(f) === 5);
+/** v6.08 (rev. est5): SYNAPSE A/B/C del sábado fuera de F1/transición/F2 (F3: sáb 20 y 27-mar) = 15:00, o al TERMINAR el cierre de Business de ese
+ *  sábado si se le cruza (v6.08: sáb 20-mar 14:00-15:10, con el OUTPUT S15 del NBME 29 entero → SYNAPSE 15:10-15:40, dentro de 14:00-17:00). */
+function synSabadoResto(iso: string, min: number): { franja: string; aviso: string } {
+  const c = bizCierreDe(iso);
+  const tras = !!c && c.fecha === iso && aMin(c.ini) < aMin('15:00') + min && aMin(c.fin) > aMin('15:00');
+  const ini = tras && c ? c.fin : '15:00';
+  return { franja: franjaDesde(ini, min), aviso: tras && c ? `Sábado: A/B/C a las ${ini}, al terminar el cierre de Business (${c.ini}-${c.fin}), o en cualquier tiempo muerto. El SHIP del vibecoding es el domingo.` : 'Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto). El SHIP del vibecoding es el domingo.' };
+}
 /** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30) ·
  *  v6.05 (fix): ENCAPS 11:00-13:00 de F2 (SIM #7/#8 · D-2) → 13:00 (antes 12:30, solapado 30′ con el SIM). */
 export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: string } {
   // v6.07: el SÁBADO el SYNAPSE A/B/C ya no va dentro del PC (el PC pasó al domingo): 13:30-14:00 los sábados con la clase en vivo (antes de la
   //   revisión de las 14:00) · 15:00 en el resto (F2/F3: donde estaba dentro del PC)
+  // v6.08 (rev. dia5): el aviso nombra «15:00-17:00 Theomed en vivo» solo si ese sábado HAY clase (theomedSabadoDe.vivo = el bloque theomed-vivo de
+  //   plantillasV6; sáb 26-dic y 2-ene: sin clase) y «el Anki de las 21:30» solo si existe el bloque anki-sab (sábados de F1: plantillasV6 › extrasSabado(iso,
+  //   true); el sáb 2-ene es TRANSICIÓN, sin Anki). En F2, mientras encapsManana no tenga datos de ese sábado (null), vale el calendario del campus: clase en
+  //   vivo hasta el sáb 13-mar.
+  const sabTh = dow(iso) === 6 ? theomedSabadoDe(iso) : null;
+  const vivoTxt = (sabTh ? !!sabTh.vivo : faseV6(iso) === 'F2') ? ' · 15:00-17:00 Theomed en vivo' : '';
   if (dow(iso) === 6) return sabadoTheomed(iso)
     // v6.07b (mar 10-nov): sábado real de Joseph = gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 en vivo · baile 17:00-20:00 → A/B/C a las 21:00, al volver
-    ? { franja: franjaDesde('21:00', min), aviso: 'Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 Theomed en vivo · baile 17:00-20:00); después, el Anki de las 21:30. El SHIP del vibecoding es el domingo.' }
-    : { franja: franjaDesde('15:00', min), aviso: 'Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto). El SHIP del vibecoding es el domingo.' };
+    ? { franja: franjaDesde('21:00', min), aviso: `Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00)${faseV6(iso) === 'F1' ? '; después, el Anki de las 21:30' : ''}. El SHIP del vibecoding es el domingo.` }
+    // v6.08 (14-nov-2026): F2 (ene-mar) — 15:00-17:00 es la clase EN VIVO de Theomed (repasos) y 14:00-15:00 el carril SÁBADO ENCAPS → A/B/C a las 21:00
+    : faseV6(iso) === 'F2'
+      ? { franja: franjaDesde('21:00', min), aviso: `Sábado de la intensiva: A/B/C a las 21:00, al volver del baile (04:15 STEP 1 VIVO · 07:15 revisión · gimnasio 08:30-14:00 · 14:00 carril SÁBADO ENCAPS${vivoTxt} · baile 17:00-20:00). El SHIP del vibecoding es el domingo.` }
+      : synSabadoResto(iso, min);
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
   if (h?.nbme) return { franja: franjaDesde('13:00', min), aviso: 'Día de NBME (07:00-12:30): almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (guía USMLE del hito).' };
@@ -464,8 +508,20 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
 }
 
 // ═══════════════════════ domingo (flexible) · SHIP del vibecoding (PC) + FEYNMAN — v6.07; hasta v6.06, sábado 15:00 ═══════════════════════
-/** v6.07: PC del DOMINGO (SHIP · avance · PC opcional del taper; vibePCDomingo), flexible y sin hora fija: la franja 15:00-17:00 de la guía es
- *  solo un ejemplo (el bloque de plantillasV6 no tiene hora). Si ese día el SYNAPSE trajera A/B/C, van detrás (hoy el domingo solo trae R + PC). */
+/** v6.08 (rev. dia7): inicio de la franja de EJEMPLO del SHIP del domingo (el bloque es flexible, sin hora). 14:45 → el SHIP de 2 h termina a las
+ *  16:45, antes del Anki del domingo (16:45-17:00, F1; el ejemplo 15:00-17:00 de la v6.07 lo pisaba), con el Feynman 10′ antes (14:35). Si el ENCAPS
+ *  opcional de ese domingo trae una franja de ejemplo que se cruza con 14:35-16:45 (v6.08: dom 6 y 13-dic, 14:45-16:45 · dom 20-dic, 12:15-16:20), el
+ *  ejemplo va por la mañana: Feynman 07:15 y SHIP 07:25 (la revisión proponía Feynman 07:05, pero antes de las 07:15 está la rutina de caminata, ducha y
+ *  desayuno). Lo usan guiaShipDe y guiaFeynmanDe. */
+const SHIP_EJ = { tarde: '14:45', manana: '07:25', min: 120, feynmanMin: 10 } as const;
+export function shipEjemploIni(iso: string): string {
+  const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(guiaEncapsDomingoDe(iso)?.franja ?? '');
+  if (!m) return SHIP_EJ.tarde;
+  const a = aMin(SHIP_EJ.tarde) - SHIP_EJ.feynmanMin, b = aMin(SHIP_EJ.tarde) + SHIP_EJ.min;
+  return aMin(m[1] as string) < b && aMin(m[2] as string) > a ? SHIP_EJ.manana : SHIP_EJ.tarde;
+}
+/** v6.07: PC del DOMINGO (SHIP · avance · PC opcional del taper; vibePCDomingo), flexible y sin hora fija: la franja de la guía es solo un ejemplo
+ *  (shipEjemploIni; el bloque de plantillasV6 no tiene hora). Si ese día el SYNAPSE trajera A/B/C, van detrás (hoy el domingo solo trae R + PC). */
 export function guiaShipDe(iso: string): GuiaBloque | null {
   if (dow(iso) !== 0) return null;
   const pcs = vibePCDomingo(iso);
@@ -533,8 +589,9 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
   abc.filter((b) => b.url).forEach((b) => recursos.push(R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })));
   const total = sumMin(pasos);
   if (!total) return null;
-  const flexTxt = `Domingo flexible: sin hora fija, a la hora que puedas (la franja ${franjaDesde('15:00', total).replace('–', '-')} es solo un ejemplo).`;
-  return bloque(franjaDesde('15:00', total), 'vibecoding', titulo, pasos, recursos, hecho, { aviso: [flexTxt, aviso].filter(Boolean).join(' '), flex: 2,
+  const ej = shipEjemploIni(iso); // v6.08 (rev. dia7): 14:45 (antes 15:00, encima del Anki del domingo 16:45-17:00) o 07:25 si el ENCAPS ocupa la tarde
+  const flexTxt = `Domingo flexible: sin hora fija, a la hora que puedas (la franja ${franjaDesde(ej, total).replace('–', '-')} es solo un ejemplo).`;
+  return bloque(franjaDesde(ej, total), 'vibecoding', titulo, pasos, recursos, hecho, { aviso: [flexTxt, aviso].filter(Boolean).join(' '), flex: 2,
     planB: 'Sin PC el domingo: el lunes 04:15 empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.' });
 }
 export function guiaFeynmanDe(iso: string): GuiaBloque | null {
@@ -551,12 +608,14 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   const quePy = main?.proyecto && main.s === sFey
     ? (main.tipo === 'ship' ? `qué construiste en S${sFey} (el proyecto que hace SHIP hoy)` : `lo que llevas construido de S${sFey} (su SHIP es el ${fCorta(main.proyecto.ship)})`)
     : 'qué construiste esta semana';
-  // v6.07: el domingo es flexible (sin hora fija): la franja 14:50-15:00 es solo un ejemplo, justo antes del SHIP (lo que no sabes explicar = lo que falta)
-  return bloque(franjaDesde('14:50', r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
+  // v6.07: el domingo es flexible (sin hora fija): la franja es solo un ejemplo, justo antes del SHIP (lo que no sabes explicar = lo que falta)
+  // v6.08 (rev. dia7): 10′ antes del ejemplo del SHIP (shipEjemploIni): 14:35 (antes 14:50) o 07:15 los domingos con el ENCAPS de tarde
+  const feyIni = aHHMM(aMin(shipEjemploIni(iso)) - r.min);
+  return bloque(franjaDesde(feyIni, r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
     P(Math.ceil(r.min / 2), `Explica en voz alta ${quePy} y CÓMO funciona (sin mirar el código)`, 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
     P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
   ], [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
-    aviso: `Opcional y sin hora fija (${franjaDesde('14:50', r.min).replace('–', '-')} es solo un ejemplo): mejor justo antes del SHIP del vibecoding, porque lo que no sabes explicar es lo que falta.`,
+    aviso: `Opcional y sin hora fija (${franjaDesde(feyIni, r.min).replace('–', '-')} es solo un ejemplo): mejor justo antes del SHIP del vibecoding, porque lo que no sabes explicar es lo que falta.`,
   });
 }
 
@@ -602,6 +661,9 @@ const AURUM_F4_INI = (() => {
   const m = rd ? /(\d{2}:\d{2})\s*[–-]\s*(\d{2}:\d{2})/.exec(rd.hora) : null;
   return ventanaAurumF4(m ? { ini: m[1] as string, fin: m[2] as string, hora: rd!.hora } : null)?.ini ?? '07:30';
 })();
+/** v6.08 (14-nov-2026): inicio de la guía de AURUM en un día de HITO de F4 con el bloque sin hora (plantilla H, turno T o sin marcar): tras la guía
+ *  nominal del R↔D de F4 (13:30–14:00, researchGuia / dermaGuia), en el tiempo muerto de la posta 13:00-19:00 → 14:00. */
+const AURUM_F4_HITO_INI = '14:00';
 function kwDe(leccion: string): string {
   return leccion.replace(/^.*?canal oficial:\s*/i, '').replace(/^(ver\s+)?(1\s+)?clip (corto\s+)?(sobre|de)\s+/i, '').replace(/\(.*?\)/g, '').trim().slice(0, 70);
 }
@@ -644,6 +706,7 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
   if (L && lUrl) recursos.push(R(`L · ${L.material}`, lUrl, { min: L.min }));
   const pasos: GuiaPaso[] = [];
   let franja: string;
+  let hitoF4: ReturnType<typeof hitoUsmleF4De> = null; // v6.08: hito nominal de F4 con el bloque de AURUM sin hora (ver abajo)
   if (!a.min30) {
     const W = 60;
     let fijo = aMinPlan + (PR ? PR.min : 0) + (pasoLV ? pasoLV.min : 0);
@@ -688,20 +751,31 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     // v6.05 (fix): en F4 la franja ya NO es la nominal 14:15–14:45 (chocaba con el almuerzo y el bloque B del turno M): sigue al bloque de tiempo
     //   muerto del turno, tras los 30′ de R↔D (ventanaAurumF4; `ini` lo pasa el Home con el bloque del día), como la guía de Research en F4.
     if (faseV6(iso) === 'F4') {
-      const i0 = ini ?? AURUM_F4_INI;
+      // v6.08 (14-nov-2026): día de HITO del Step 1 en F4 (D129 lun 24-may = NBME 30, 07:00-12:15) con el bloque sin hora (plantilla H con turno T o
+      //   sin marcar: el R↔D va en el tiempo muerto de la posta 13:00-19:00, guía nominal 13:30-14:00) → la sesión va TRAS el hito ese mismo día, en
+      //   el tiempo muerto de la posta justo después del R↔D (AURUM_F4_HITO_INI); antes caía a las 07:30 (la del turno M), dentro del hito. Se elige
+      //   esto y no el siguiente día hábil porque no alarga el plan (AURUM sigue cerrando el mar 25-may con el PITCH v7).
+      hitoF4 = ini ? null : hitoUsmleF4De(iso);
+      const i0 = ini ?? (hitoF4 ? AURUM_F4_HITO_INI : AURUM_F4_INI);
       franja = franjaDesde(i0, W);
-      avisos.push(`SERUMS (F4): 30′ en TIEMPO MUERTO de la posta, justo después de los 30′ de R↔D — hoy ${franja}${ini ? '' : ' (turno M sin marcar = PISO; con otro turno la franja sigue a su bloque de tiempo muerto: T 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L 16:50 tras el R↔D · guardia sin hora)'}. Si la posta no deja hueco, al volver (antes de la cena); el drill nunca se salta.`);
+      avisos.push(`SERUMS (F4): 30′ en TIEMPO MUERTO de la posta, justo después de los 30′ de R↔D — hoy ${franja}${ini || hitoF4 ? '' : ' (turno M sin marcar = PISO; con otro turno la franja sigue a su bloque de tiempo muerto: T 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L 16:50 tras el R↔D · guardia sin hora)'}. Si la posta no deja hueco, al volver (antes de la cena); el drill nunca se salta.`);
     } else franja = '14:15–14:45';
   }
   // v6.06 (fix 31-oct-2026): AURUM en un día de HITO USMLE (F1/F3) — v6.06: D35 = PITCH v2 el vie 18-dic, día del NBME 27 (07:00-12:30) y del
   //   CHECKPOINT DEL AÑO de ENCAPS (16:15) — la guía lo avisa (primer aviso): el hito es por la mañana y AURUM va a su hora, tras el hito; la fecha no se
   //   mueve (nada se corre). Control: check_rutina_guia.js (todo día de AURUM con hito USMLE lleva este aviso; con PITCH y CHECKPOINT, nombrados).
-  const hu = hitoUsmleDe(iso);
+  // v6.08 (14-nov-2026): la misma regla en F4 con el hito NOMINAL del día (hitoUsmleF4De) cuando la sesión va tras el hito: bloque sin hora
+  //   (plantilla H, turno T o sin marcar → AURUM_F4_HITO_INI) o ventana del turno ya posterior al fin del hito (L: R↔D tras el hito). Con el turno
+  //   M o la guardia el motor de turnos mueve el hito a otro día T/L de su ventana: ahí no se avisa. Control: check_rutina_guia.js (F1/F3/F4).
+  const hF4 = faseV6(iso) === 'F4' ? hitoUsmleF4De(iso) : null;
+  const hu = hitoUsmleDe(iso) ?? (hF4 && (hitoF4 || (ini && hF4.fin && aMin(ini) >= aMin(hF4.fin))) ? hF4 : null);
   if (hu) {
     const enc = guiaEncapsDe(iso);
     const chk = enc && /CHECKPOINT/.test(enc.titulo) ? enc : null;
     avisos.unshift([
-      `Hoy ${hu.nombre}${hu.franja ? ` (${hu.franja})` : ''} por la mañana: AURUM no se mueve, va a su hora (${franja}), tras el hito y el almuerzo.`,
+      hF4 && hu === hF4
+        ? `Hoy ${hu.nombre}${hu.franja ? ` (${hu.franja})` : ''} por la mañana (día preferente del hito en el SERUMS): AURUM va tras el hito, en el tiempo muerto de la posta justo después del R↔D (${franja}); la fecha no se corre y el plan no se alarga.`
+        : `Hoy ${hu.nombre}${hu.franja ? ` (${hu.franja})` : ''} por la mañana: AURUM no se mueve, va a su hora (${franja}), tras el hito y el almuerzo.`,
       a.pitch ? `Es el cierre de fase: PITCH v${a.pitch} HOY, con el hito ya terminado (la fecha no se corre; si llegas cansado, graba igual: vale el score de la rúbrica).` : '',
       chk ? `A las ${chk.franja.split('–')[0]} sigue el CHECKPOINT DEL AÑO de ENCAPS (${chk.franja}): día de 3 evaluaciones (${hu.nombre} · ${a.pitch ? `PITCH v${a.pitch}` : 'AURUM'} · checkpoint); ninguna se mueve ni se recorta.` : '',
     ].filter(Boolean).join(' '));
@@ -851,7 +925,8 @@ function bizOutputsDeSemana(sabado: string): Array<{ r: DiaBiz; entero: boolean 
   return out;
 }
 /** v6.07 (fix H5/H6): CIERRE de los OUTPUT de la semana que acaba el sábado `sab` (tracker + cierre: 15′ por OUTPUT; 40′ si va entero).
- *  · Sábado de plan → ese sábado, tras la revisión (bizSabIni: 14:30 F1 · 09:15 F2 · 07:45 resto; con la clase en vivo y > 15′ → 17:15). En F2, si el
+ *  · Sábado de plan → ese sábado, tras la revisión (bizSabIni: 14:30 F1 · 07:45 resto —v6.08: también F2, antes 09:15—; con la clase en vivo y > 15′ →
+ *    17:15; sin ella, si no termina a las 08:25 —gimnasio 08:30-14:00— → 14:00). En F2, si el
  *    CARRIL SÁBADO ENCAPS (encapsGuia.encapsSabadoDe = extra.carril_sabado del SQL, 09:30-10:30) no le deja sitio antes, va al TERMINAR el carril: manda
  *    el SQL y el carril no se mueve (v6.07: el OUTPUT entero de los viernes de SIM 11:00 → sáb 20 · 27-feb · 6-mar 10:30-11:10).
  *  · Sábado PROTEGIDO o SKIP (v6.07: sáb 13-mar = D-1 ENCAPS, con los OUTPUT D120 lun 8 y D121 mar 9-mar) → el PRIMER día hábil tras el último OUTPUT
@@ -868,6 +943,10 @@ export function bizCierreDe(sab: string): { fecha: string; ini: string; fin: str
     // v6.07: con la clase en vivo (F1 y transición) el cierre va a las 14:30, tras la revisión de las 14:00 y antes de preparar la clase (14:45);
     //   si no cabe en esos 15′ (OUTPUT entero de 40′), va a las 17:15, después de la clase
     let ini = sabadoTheomed(sab) && total > 15 ? '17:15' : bizSabIni(sab);
+    // v6.08 (14-nov-2026): sin la clase en vivo, el cierre va a las 07:45 si termina antes del gimnasio (08:25); si no (v6.08: sáb 20-mar, F3, con los
+    //   3 OUTPUT del final del plan = 70′ —el S15 del NBME 29 entero (40′) + 15′ + 15′; rev. est5—), a las 14:00, al volver del gimnasio (SYNAPSE detrás:
+    //   synSabadoResto)
+    if (!sabadoTheomed(sab) && aMin(ini) + total > aMin(SAB_MANANA_FIN)) ini = SAB_TARDE_INI;
     const cs = faseV6(sab) === 'F2' ? encapsSabadoDe(sab) : null;
     if (cs && aMin(ini) < aMin(cs.fin) && aMin(ini) + total > aMin(cs.ini)) ini = cs.fin;
     return { fecha: sab, ini, fin: aHHMM(aMin(ini) + total), outs, motivo: null };

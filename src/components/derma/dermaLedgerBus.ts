@@ -32,7 +32,7 @@ export function dermaHoyISO(): string {
   try {
     const d = new Date(); const z = (n: number) => String(n).padStart(2, '0');
     return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
-  } catch { return '2026-11-10'; } // fallback = d1 Derma v6.07 (mar 10-nov-2026: el lun 9-nov es día-Research por paridad; del 19-oct al 8-nov sin estudio) · v6.06: 2026-11-02 (lun 2-nov: día-Derma por paridad) · v6.05: 2026-10-27 (mar 27-oct: el lun 26-oct es día-Research por paridad) · v6.03: 2026-10-21 (mié 21-oct: día-Derma por paridad) · v6.02: 2026-10-19 (lun 19-oct: día-Derma por paridad) · v6.01: 2026-10-13 (mar 13-oct: el lun 12-oct era día-Research) · v6.00 = v5.20 = v5.19: 2026-10-07 (mié 7-oct: el mar 6 es día-Research por paridad; en v5.20 el d1 Derma no se movió · v5.18: 2026-10-05 · v5.17: 2026-10-01 · v5.16: 2026-09-29)
+  } catch { return '2026-11-16'; } // fallback = d1 Derma v6.08 (lun 16-nov-2026: el lun 16-nov es día-Derma por paridad; del 19-oct al 15-nov sin estudio) · v6.07: 2026-11-10 (mar 10-nov: el lun 9-nov es día-Research por paridad) · v6.06: 2026-11-02 (lun 2-nov: día-Derma por paridad) · v6.05: 2026-10-27 (mar 27-oct: el lun 26-oct es día-Research por paridad) · v6.03: 2026-10-21 (mié 21-oct: día-Derma por paridad) · v6.02: 2026-10-19 (lun 19-oct: día-Derma por paridad) · v6.01: 2026-10-13 (mar 13-oct: el lun 12-oct era día-Research) · v6.00 = v5.20 = v5.19: 2026-10-07 (mié 7-oct: el mar 6 es día-Research por paridad; en v5.20 el d1 Derma no se movió · v5.18: 2026-10-05 · v5.17: 2026-10-01 · v5.16: 2026-09-29)
 }
 
 /** Copia texto al portapapeles (web). Devuelve false si no hay clipboard. */

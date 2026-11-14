@@ -59,6 +59,19 @@
 // v6.07 (fix 3, 8-nov-2026 · 2.ª revisión): ENCAPS → Plan › Horario (EncapsPlanView.bloquesIntensivo, cargado con un export solo en memoria) = Home
 //   en la corrección del simulacro de las 11:00, el carril B y la serie 07:15 de señales / repaso · corrección también en el D-2 · EVAL 18:00 ⇔
 //   segmento 18:00 del loop en todo L-J de F2 (y señales = RE-SCAN) · «mini-sim absorbido» ⇔ extra.minisim_absorbido · cierre semanal en toda semana F2.
+// v6.08 (14-nov-2026, D1 = lun 16-nov): (13) las mañanas ENCAPS fuera de F1 (encapsManana.diaExtra: jue 31-dic, día extra SOLO ENCAPS, y mar 5-ene, en
+//   la intensiva) tienen encaps-am 07:15-12:00 + encaps-pm 18:00-18:45 sin USMLE, LOOP ni EVAL; el 31-dic (SKIP) ningún otro bloque; la fila del 5-ene
+//   trae extra.manana_f1 y su loop = las franjas de la guía. El resto de controles ENCAPS cubren ya el CARRIL VIERNES del núcleo (vie 8 → 12-feb) y el
+//   carril SÁBADO a las 14:00 (la hora del SQL).
+// v6.08 (14-nov-2026 · lote B2: Business · LIVIANO · vibecoding · SYNAPSE · AURUM): (14) SÁBADOS reales hasta el SERUMS (gimnasio 08:30-14:00 · baile
+//   17:00-20:00 · en F2, Theomed en vivo 15:00-17:00): ventanas 04:15-08:25 · 14:00-17:00 · 21:00-22:00; F2 = STEP 1 VIVO 04:15 · revisión 07:15 · Business
+//   07:45 · SYNAPSE 21:00 · (15) todo día con Business tiene su bloque (el plan llega a F3) · AURUM en día de hito también en F4 (hito nominal; guía tras
+//   el hito, D129 lun 24-may = NBME 30) · las esperas de Business del sábado F2 pasan de 09:15 a 07:45 y las del SYNAPSE A/B/C de F2 de 15:00 a 21:00.
+// v6.08 (rev. 14-nov · lote secundarios): (16) el ejemplo del SHIP del domingo no pisa el Anki del domingo (16:45-17:00) ni la franja de ejemplo del
+//   ENCAPS opcional de ese domingo, y el Feynman va justo antes · (17) día de NBME de F3 dentro de SYNAPSE / Business (NBME 29, mié 17-mar): SYNAPSE
+//   13:00-13:30 y el OUTPUT del día ENTERO en el cierre del sábado (avisado en las notas), como en F1 · (18) el aviso del SYNAPSE del sábado nombra la
+//   clase en vivo solo si ese sábado la hay y «el Anki de las 21:30» solo con bloque anki-sab · (19) la nota «Sábado libre … lo de los sábados va los
+//   domingos» solo si el domingo siguiente trae plan de la corrida (v6.08: sáb 14 y dom 15-nov, los dos sin sesión).
 // Sin dependencias nuevas (typescript del repo vía usmle/cargar_ts.js). Solo lectura: no escribe nada.
 'use strict';
 const path = require('path');
@@ -149,13 +162,14 @@ for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) if (!RG.guiaRev
 
 // ── franjas de las decisiones de carga (semana 1 + hitos) ──
 // v6.07: sábado de F1 y transición (RG.sabadoTheomed) = revisión 14:00 · Business 14:30 (OUTPUT entero → 17:15) · SYNAPSE 13:30; F2/F3 = 07:15 · 09:15 · 15:00
-const bizSab = (sab, entero) => (RG.sabadoTheomed(sab) ? (entero ? '17:15–17:55' : '14:30–14:45') : FV.faseV6(sab) === 'F2' ? (entero ? '09:15–09:55' : '09:15–09:30') : (entero ? '07:45–08:25' : '07:45–08:00'));
+// v6.08 (14-nov-2026, decisión 7): F2 también 07:45 tras la revisión de las 07:15 (antes 09:15, dentro del gimnasio 08:30-14:00) y SYNAPSE A/B/C 21:00
+const bizSab = (sab, entero) => (RG.sabadoTheomed(sab) ? (entero ? '17:15–17:55' : '14:30–14:45') : (entero ? '07:45–08:25' : '07:45–08:00'));
 const SAB_F2_ABC = (S.SYN_DIAS.find((d) => dow(d.fecha) === 6 && FV.faseV6(d.fecha) === 'F2' && d.bloques.some((b) => /^[ABC]$/.test(b.tag))) || {}).fecha;
 const esperado = [
   [UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00'], ...NBMES.map((n) => [n, RG.guiaSynapseDe, '13:00–13:30']),
   [D1, RG.guiaBusinessDe, '13:00–13:25'], [OUT1, RG.guiaBusinessDe, '13:00–13:25'], [addDias(OUT1, 1), RG.guiaBusinessDe, bizSab(addDias(OUT1, 1), false)],
-  [addDias(SAB1, 1), RG.guiaShipDe, '15:00–17:00'], [addDias(SAB1, 1), RG.guiaFeynmanDe, '14:50–15:00'], [SAB1, RG.guiaSynapseDe, '21:00–21:30'] /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 → 21:00 */,
-  ...(SAB_F2_ABC ? [[SAB_F2_ABC, RG.guiaSynapseDe, '15:00–15:30'], [SAB_F2_ABC, RG.guiaRevisionDe, '07:15–07:45']] : []),
+  [addDias(SAB1, 1), RG.guiaShipDe, '14:45–16:45'], [addDias(SAB1, 1), RG.guiaFeynmanDe, '14:35–14:45'] /* v6.08 (rev. dia7): el ejemplo 15:00-17:00 pisaba el Anki del domingo 16:45-17:00 */, [SAB1, RG.guiaSynapseDe, '21:00–21:30'] /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 → 21:00 */,
+  ...(SAB_F2_ABC ? [[SAB_F2_ABC, RG.guiaSynapseDe, '21:00–21:30'] /* v6.08: 15:00-17:00 = Theomed en vivo (ene-mar) */, [SAB_F2_ABC, RG.guiaRevisionDe, '07:15–07:45']] : []),
   [SAB1, RG.guiaRevisionDe, '14:00–14:30'], [D1, RG.guiaAurumDe, '14:15–15:15'], [D1, RG.guiaLivianoDe, '17:15–18:00'],
   [D1, RG.guiaVibeDe, '04:15–05:00'],
 ];
@@ -177,7 +191,7 @@ const hh1 = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 
 for (const x of B.BIZ_DIAS.filter((r) => B.bizModo(r) !== 'DESCANSO' && RG.encapsOnceATrece(r.fecha))) {
   if (B.bizModo(x) === 'OUTPUT' && dow(x.fecha) === 5) {
     const sabX = addDias(x.fecha, 6 - dow(x.fecha)), cs = EGc.encapsSabadoDe(sabX);
-    esperado.push([sabX, RG.guiaBusinessDe, cs && hm1(cs.ini) < hm1('09:15') + 40 ? `${cs.fin}–${hh1(hm1(cs.fin) + 40)}` : '09:15–09:55']);
+    esperado.push([sabX, RG.guiaBusinessDe, cs && hm1(cs.ini) < hm1('07:45') + 40 && hm1('07:45') < hm1(cs.fin) ? `${cs.fin}–${hh1(hm1(cs.fin) + 40)}` : '07:45–08:25']); // v6.08: 07:45 (antes 09:15)
     if (RG.guiaBusinessDe(x.fecha)) errores.push(`${x.fecha} guiaBusinessDe: OUTPUT en viernes de SIM 100Q 11:00 → debe ir entero al sábado (hoy sin guía)`);
   } else esperado.push([x.fecha, RG.guiaBusinessDe, BIZ11]);
 }
@@ -229,17 +243,22 @@ for (const [iso, f, fr] of esperado) { const g = f(iso); if (!g || g.franja !== 
 {
   const EG = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'), cache);
   let nHitoAurum = 0;
-  for (const h of [...U.DIAS, ...U.DIAS_T2].filter((x) => U.esHito(x) && FV.faseV6(x.fecha) !== 'F4')) {
+  // v6.08 (14-nov-2026, decisión 5): también F4 — el hito NOMINAL del día (RG.hitoUsmleF4De; v6.08: D129 lun 24-may = NBME 30): con el bloque sin hora
+  //   (plantilla H, turno T / sin marcar) la guía va TRAS el hito en el tiempo muerto de la posta (no a las 07:30 del turno M) y lo avisa
+  let nHitoF4 = 0;
+  for (const h of [...U.DIAS, ...U.DIAS_T2].filter((x) => U.esHito(x))) {
     const a = A.aurumDiaDe(h.fecha); if (!a) continue;
     nHitoAurum++;
+    const f4 = FV.faseV6(h.fecha) === 'F4'; if (f4) nHitoF4++;
     const g = RG.guiaAurumDe(h.fecha); const av = (g && g.aviso) || '';
-    const hu = RG.hitoUsmleDe(h.fecha);
+    const hu = f4 ? RG.hitoUsmleF4De(h.fecha) : RG.hitoUsmleDe(h.fecha);
+    if (f4 && hu && hu.fin && g && hm1(g.franja.split('–')[0]) < hm1(hu.fin)) errores.push(`${h.fecha} guiaAurumDe D${a.d}: día de hito de F4 (${hu.nombre} ${hu.franja}) con la guía ${g.franja} antes de terminar el hito`);
     if (!hu || !av.startsWith(`Hoy ${hu.nombre}`) || !/tras el hito/.test(av) || (hu.franja && !av.includes(hu.franja)) || (g && !av.includes(g.franja))) errores.push(`${h.fecha} guiaAurumDe D${a.d}: día de hito USMLE (${hu ? hu.nombre : h.sub.slice(0, 30)}) sin el aviso «hito por la mañana · AURUM ${g ? g.franja : ''} tras el hito»`);
     if (a.pitch && !new RegExp(`PITCH v${a.pitch} HOY`).test(av)) errores.push(`${h.fecha} guiaAurumDe D${a.d}: PITCH v${a.pitch} en día de hito sin avisarlo`);
     const enc = EG.guiaEncapsDe(h.fecha);
     if (enc && /CHECKPOINT/.test(enc.titulo) && !/CHECKPOINT DEL AÑO de ENCAPS/.test(av)) errores.push(`${h.fecha} guiaAurumDe D${a.d}: CHECKPOINT ENCAPS ${enc.franja} el mismo día del hito sin avisarlo`);
   }
-  console.log(`AURUM en día de hito USMLE (F1/F3): ${nHitoAurum} día(s) con el aviso comprobado`);
+  console.log(`AURUM en día de hito USMLE (F1/F3/F4): ${nHitoAurum} día(s) con el aviso comprobado (F4: ${nHitoF4}, la guía tras el hito)`);
 }
 if (RG.revisionFicheroDe(SAB1) !== `S01_${SAB1}.md`) errores.push(`revisionFicheroDe(${SAB1}) = ${RG.revisionFicheroDe(SAB1)} ≠ S01_${SAB1}.md`);
 if (!/^Primera revisión/.test((RG.guiaRevisionDe(SAB1) || {}).aviso || '')) errores.push(`${SAB1} guiaRevisionDe: no la marca como la PRIMERA revisión`);
@@ -360,7 +379,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   const SIM_FIN = [addDias(examen, 5), MIR_FIN].sort().pop();
   const SIM_INI = '2026-10-24';
   const FASE_N = (f) => (/^F[1-5]$/.test(f) ? f : null);
-  let nSim = 0;
+  let nSim = 0, nSab14 = 0, nSabF2Vivo = 0;
   for (let iso = SIM_INI; iso <= SIM_FIN; iso = addDias(iso, 1)) {
     const f4 = F62.faseV6(iso) === 'F4';
     for (const turno of f4 ? [undefined, 'T', 'L', 'G'] : [undefined]) {
@@ -444,6 +463,35 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       // v6.06a: un día corrido (sin_sesion) no trae bloques; en un día de alias la sesión MIR es la de la fecha de plan
       if (p.corrida !== 'sin_sesion' && p.corrida !== 'reparto' && MD2.mirSesionDe(fP) && !bs.some((b) => b.plan === 'mir')) errores.push(`${tag}: hay sesión MIR (mirSesionDe) y la plantilla no trae bloque MIR`);
       if (p.notas.some((n) => /banqueo MIR.*ya cerró/.test(n)) && MM2.MIR_MANT_DIAS.some((x) => x.fecha > iso)) errores.push(`${tag}: nota «el banqueo MIR … ya cerró» con filas MIR posteriores (hasta ${MIR_FIN})`);
+      // v6.08 (14-nov-2026, decisiones 1 y 7) · (14) SÁBADO REAL de Joseph hasta el SERUMS (F1 · transición · F2 · F3): todo bloque con hora dentro de
+      //   04:15-08:25 · 14:00-17:00 · 21:00-22:00 (gimnasio 08:30-14:00 · baile 17:00-20:00) y, en F2 (ene-mar), nada en 15:00-17:00 salvo el bloque de
+      //   la propia clase EN VIVO de Theomed (theomed-vivo; fix est6: antes ni se pintaba) — antes el STEP 1 VIVO 07:45-09:15 y el cierre Business 09:15 caían en el gimnasio y el SYNAPSE 15:00 en la clase ·
+      //   (15) todo día con Business (bizFranjaDe: fila de lectura / OUTPUT o cierre de la semana) tiene su bloque en la plantilla (v6.08: el plan llega
+      //   a F3, mar 16 → sáb 20-mar)
+      if (!turno && !p.corrida && dow(iso) === 6 && ['F1', 'TRANSICION', 'F2', 'F3'].includes(F62.faseV6(iso))) {
+        const VENT = [['04:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']];
+        for (const b of bs) {
+          if (!b.ini || !b.fin || b.ini === b.fin || tmB(b)) continue;
+          if (!VENT.some(([a, c]) => hm(a) <= hm(b.ini) && hm(b.fin) <= hm(c))) errores.push(`${tag}: ${b.hora} ${b.nombre.slice(0, 40)} fuera de las ventanas de estudio del sábado (04:15-08:25 · 14:00-17:00 · 21:00-22:00)`);
+          else if (F62.faseV6(iso) === 'F2' && b.id !== 'theomed-vivo' && hm(b.ini) < hm('17:00') && hm('15:00') < hm(b.fin)) errores.push(`${tag}: ${b.hora} ${b.nombre.slice(0, 40)} encima de la clase EN VIVO de Theomed (15:00-17:00, sábados de ene-mar)`);
+        }
+        // v6.08 (fix revisión 14-nov, est6): el sábado de F2 con clase (encapsManana.theomedSabadoDe) PINTA la clase: theomed-vivo 15:00-17:00 y, si
+        //   la franja 14:45-15:00 está libre (sin carril SÁBADO), theomed-prep 14:45-15:00 · sin clase, ninguno de los dos
+        if (F62.faseV6(iso) === 'F2') {
+          const B_ = (id) => bs.find((b) => b.id === id);
+          const hora = (id) => { const b = B_(id); return b ? `${b.ini}–${b.fin}` : null; };
+          const vivF2 = EM2.theomedSabadoDe(iso);
+          const pisa1445 = bs.some((b) => b.id !== 'theomed-prep' && b.ini && b.fin && hm(b.ini) < hm('15:00') && hm('14:45') < hm(b.fin));
+          if (vivF2 && vivF2.vivo) {
+            if (hora('theomed-vivo') !== '15:00–17:00' || !EM2.guiaTheomedVivoDe(iso)) errores.push(`${tag}: clase EN VIVO de F2 «${vivF2.vivo}» sin bloque theomed-vivo 15:00-17:00 (o sin guía)`);
+            if (!pisa1445 && hora('theomed-prep') !== '14:45–15:00') errores.push(`${tag}: 14:45-15:00 libre y sin «preparar la clase» (theomed-prep) de «${vivF2.vivo}»`);
+            if (pisa1445 && B_('theomed-prep')) errores.push(`${tag}: theomed-prep 14:45 encima de otro bloque (carril SÁBADO)`);
+            nSabF2Vivo++;
+          } else if (B_('theomed-prep') || B_('theomed-vivo')) errores.push(`${tag}: bloque de clase en vivo un sábado de F2 sin clase`);
+        }
+        nSab14++;
+      }
+      if (!turno && !p.corrida && RG2.bizFranjaDe(iso) && !bs.some((b) => b.plan === 'business')) errores.push(`${tag}: hay Business hoy (${RG2.bizFranjaDe(iso).ini}) y la plantilla no trae su bloque`);
       // v6.06 (fix) · ningún bloque nombra una FASE del régimen distinta de la del día (F3: «SYNAPSE · 30' (cierre F2)»); se permite «REPOSICIÓN F1»
       //   (lo de la F1 que se repone en el carril sábado de F2)
       for (const b of bs) {
@@ -453,6 +501,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     }
   }
   global.localStorage.removeItem(ST2.TURNOS_KEY);
+  console.log(`v6.08 · sábados hasta el SERUMS dentro de las ventanas reales (04:15-08:25 · 14:00-17:00 · 21:00-22:00; F2: en 15:00-17:00 solo la clase en vivo): ${nSab14} · sábados de F2 con la clase EN VIVO de Theomed pintada: ${nSabF2Vivo} · todo día con Business con su bloque`);
   // (d) ENCAPS antes del D1: el Home no tiene sesión (CORRIDO o sin bloque 16:15) y la vista no marca «HOY» (antesDelD1 = D1) · desde el D1, null
   for (let iso = addDias(D1, -2); iso <= D1; iso = addDias(iso, 1)) {
     const a = EP2.antesDelD1('ENCAPS', D1, iso);
@@ -708,7 +757,81 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       nBS2++;
       if (hm(b.ini) < hm(s.fin) && hm(s.ini) < hm(b.fin)) errores.push(`${iso} plantilla: Business ${b.hora} ⟂ SYNAPSE ${s.hora}`);
     }
+    // (13) v6.08 (14-nov-2026): MAÑANAS ENCAPS fuera de F1 (encapsManana, diaExtra: jue 31-dic, día extra SOLO ENCAPS · mar 5-ene, en la intensiva en
+    //   lugar del calentamiento I-3): la plantilla del día pinta encaps-am 07:15-12:00 + encaps-pm 18:00-18:45 (con su guía: lo cubre la simulación),
+    //   sin USMLE, LOOP ni EVAL 18:00; un día SKIP (31-dic) no lleva ningún otro bloque; en la intensiva, la fila del día trae extra.manana_f1 y su
+    //   extra.loop = el Anki de las 05:00 + las franjas de la guía (hora y minutos), sin segmento de las 18:00
+    let nExtra = 0;
+    for (const f of EM2.ENCAPS_MANANA_FECHAS) {
+      const am = EM2.encapsMananaDe(f);
+      if (!am || !am.diaExtra) continue;
+      nExtra++;
+      const bs = PL.plantillaDelDia(f).bloques, tag = `${f} mañana ENCAPS ${am.n}/${am.de} (día extra)`;
+      const hx = (id) => { const b = bs.find((x) => x.id === id); return b ? `${b.ini}–${b.fin}` : '—'; };
+      if (hx('encaps-am') !== '07:15–12:00' || hx('encaps-pm') !== '18:00–18:45') errores.push(`${tag}: falta encaps-am 07:15-12:00 o encaps-pm 18:00-18:45 (hay ${hx('encaps-am')} / ${hx('encaps-pm')})`);
+      if (bs.some((b) => b.id === 'usmle' || b.id === 'eval' || (b.id === 'encaps' && /LOOP/.test(b.nombre)))) errores.push(`${tag}: con bloque USMLE, EVAL 18:00 o LOOP`);
+      if (F62.FECHAS_V6.skip.includes(f) && bs.some((b) => !['encaps-am', 'encaps-pm'].includes(b.id))) errores.push(`${tag}: día SKIP con bloques de otros planes (${bs.filter((b) => !['encaps-am', 'encaps-pm'].includes(b.id)).map((b) => b.id).join(', ')})`);
+      const r = ROWS.find((x) => x.fecha === f);
+      if (r) {
+        const esp = JSON.stringify(EM2.guiaEncapsMananaDe(f).map((g) => { const q = G2.partesFranja(g.franja); return [q && q.ini, g.totalMin]; }));
+        const lp = Array.isArray(r.extra.loop) ? r.extra.loop : [];
+        if (!r.extra.manana_f1 || r.extra.manana_f1.n !== am.n || JSON.stringify(lp.filter((sg) => sg.h !== '05:00').map((sg) => [sg.h, sg.min])) !== esp || lp.some((sg) => sg.h === '18:00')) errores.push(`${tag}: la fila D${r.dia} de la intensiva no trae extra.manana_f1 ni extra.loop = las franjas de su guía (sin el segmento de las 18:00)`);
+      }
+    }
+    if (EM2.ENCAPS_MANANA_META.extra && EM2.ENCAPS_MANANA_META.extra.length !== nExtra) errores.push(`encapsManana: ${EM2.ENCAPS_MANANA_META.extra.length} días extra en el META y ${nExtra} mañanas con diaExtra`);
+    console.log(`v6.08 · mañanas ENCAPS fuera de F1: ${nExtra} (bloques encaps-am + encaps-pm sin USMLE ni LOOP; fila de la intensiva = su guía)`);
     console.log(`intensiva ENCAPS ↔ plantilla F2 (SQL ${ROWS.length} filas = índice F2): ${nF2} día(s) F2 · SIM 11:00 ${lista(sim11)} · quincena SIM ${lista(qSim)} · repaso ${lista(qRep)} · cola ${COLA.join(' ')} · REPASO sin loop ${nRep} · corrección de simulacro (Home = Horario = ítem, hora y duración) ${nCorr} · cierre semanal con bloque + ítem ${nSemB} · D-1 en serie ${nMd} · carril B ${nCB} día(s) (viernes: ${lista(cbVie) || '—'} · mini-sim ${nMs}) · EVAL ANCLADA tras SIM ${nEv7} · «mini-sim absorbido» comprobado en ${nAbs} · Horario = Home en ${nHor} día(s) · señales ${nSen} · cierre semanal en ${nSem} semana(s) · carril SÁBADO ${nSab} a la hora del SQL · LIVIANO en F3 ${nLiv} sesión(es) · Business+SYNAPSE ${nBS2} día(s) sin solape`);
+  }
+  // v6.08 (rev. 14-nov · lote secundarios): controles (16)-(19) — ver la cabecera
+  {
+    const frm = (s) => { const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(s || ''); return m ? [hm(m[1]), hm(m[2])] : null; };
+    const cruza = (a, b) => !!a && !!b && a[0] < b[1] && b[0] < a[1];
+    const US2 = LIB('usmleStep1Daily'), BZ2 = LIB('businessStudyPlan');
+    const ini16 = addDias(F62.FECHAS_V6.f1.inicio, -7), fin16 = '2027-04-30';
+    let nDom16 = 0, nNb17 = 0, nSab18 = 0, nNota19 = 0;
+    for (let iso = ini16; iso <= fin16; iso = addDias(iso, 1)) {
+      const w = dow(iso);
+      if (w === 0) {
+        const sh = RG2.guiaShipDe(iso); if (!sh) continue;
+        const s = frm(sh.franja), p = PL.plantillaDelDia(iso), an = p.bloques.find((b) => b.id === 'anki-dom');
+        const en = EM2.guiaEncapsDomingoDe(iso), fe = RG2.guiaFeynmanDe(iso);
+        if (an && cruza(s, [hm(an.ini), hm(an.fin)])) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} pisa el Anki del domingo ${an.ini}-${an.fin}`);
+        if (en && cruza(s, frm(en.franja))) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} pisa el ejemplo del ENCAPS del domingo ${en.franja}`);
+        if (fe && (!frm(fe.franja) || frm(fe.franja)[1] !== s[0])) errores.push(`${iso} (16): el Feynman ${fe.franja} no va justo antes del SHIP ${sh.franja}`);
+        if (fe && en && cruza(frm(fe.franja), frm(en.franja))) errores.push(`${iso} (16): el ejemplo del Feynman ${fe.franja} pisa el ejemplo del ENCAPS ${en.franja}`);
+        if (s && s[0] < hm('07:15')) errores.push(`${iso} (16): el ejemplo del SHIP ${sh.franja} empieza antes de las 07:15 (caminata, ducha y desayuno)`);
+        nDom16++;
+      }
+      if (w === 6 && SY2.synDiaDe(iso) && SY2.synDiaDe(iso).bloques.some((b) => /^[ABC]$/.test(b.tag))) {
+        const p = PL.plantillaDelDia(iso); if (p.corrida) continue;
+        const av = RG2.synFranjaDe(iso).aviso || '', viv = EM2.theomedSabadoDe(iso);
+        const espViv = viv ? !!viv.vivo : F62.faseV6(iso) === 'F2';
+        if (/Theomed en vivo/.test(av) !== espViv) errores.push(`${iso} (18): el aviso del SYNAPSE ${espViv ? 'no nombra' : 'nombra'} la clase en vivo (${viv ? `theomedSabadoDe: ${viv.vivo || 'sin clase'}` : 'sin datos'})`);
+        if (viv && /Theomed en vivo/.test(av) !== p.bloques.some((b) => b.id === 'theomed-vivo')) errores.push(`${iso} (18): el aviso del SYNAPSE y el bloque theomed-vivo no cuadran`);
+        if (/Anki de las 21:30/.test(av) !== p.bloques.some((b) => b.id === 'anki-sab')) errores.push(`${iso} (18): el aviso del SYNAPSE ${/Anki de las 21:30/.test(av) ? 'nombra' : 'no nombra'} «el Anki de las 21:30» y la plantilla ${p.bloques.some((b) => b.id === 'anki-sab') ? 'lo trae' : 'no lo trae'}`);
+        nSab18++;
+      }
+      const pN = PL.plantillaDelDia(iso);
+      if (pN.notas.some((n) => /lo de los sábados va los domingos/.test(n))) {
+        const cD = F62.corridaS1De(addDias(iso, 1));
+        if (!cD || cD.tipo === 'sin_sesion') errores.push(`${iso} (19): nota «Sábado libre … lo de los sábados va los domingos» y el domingo ${addDias(iso, 1)} no trae plan de la corrida`);
+        nNota19++;
+      }
+    }
+    for (const h of US2.DIAS_T2.filter((x) => US2.esHito(x) && F62.faseV6(x.fecha) === 'F3' && /NBME/.test(x.uw) && !/Self-Assessment|UWSA/.test(x.uw))) {
+      const f = h.fecha, synAbc = SY2.synDiaDe(f) && SY2.synDiaDe(f).bloques.some((b) => /^[ABC]$/.test(b.tag));
+      if (synAbc && RG2.synFranjaDe(f).franja !== '13:00–13:30') errores.push(`${f} (17): NBME de F3 con SYNAPSE ${RG2.synFranjaDe(f).franja} ≠ 13:00–13:30 (almuerzo 12:30)`);
+      const r = BZ2.bizDiaDe(f);
+      if (r && BZ2.bizModo(r) === 'OUTPUT') {
+        const sab = addDias(f, 6 - dow(f)), c = RG2.bizCierreDe(sab), g = c ? RG2.guiaBusinessDe(c.fecha) : null;
+        if (RG2.bizFranjaDe(f)) errores.push(`${f} (17): NBME de F3 con el OUTPUT D${r.d} el mismo día (debe ir entero al cierre del sábado)`);
+        if (!c || !c.outs.some((o) => o.r.d === r.d && o.entero)) errores.push(`${f} (17): el OUTPUT D${r.d} del NBME no va ENTERO en el cierre de la semana`);
+        else if (!g || g.franja !== `${c.ini}–${c.fin}`) errores.push(`${c.fecha} (17): cierre ${c.ini}–${c.fin} sin guía de Business (${g ? g.franja : '—'})`);
+        if (!PL.plantillaDelDia(f).notas.some((n) => /va ENTERO/.test(n))) errores.push(`${f} (17): las notas del día no avisan de que el OUTPUT D${r.d} va entero al sábado`);
+      } else if (r && BZ2.bizModo(r) !== 'DESCANSO' && (!RG2.bizFranjaDe(f) || `${RG2.bizFranjaDe(f).ini}–${RG2.bizFranjaDe(f).fin}` !== '12:30–12:55')) errores.push(`${f} (17): NBME de F3 con Business de lectura fuera del almuerzo 12:30-12:55`);
+      if (synAbc || r) nNb17++;
+    }
+    console.log(`v6.08 · (16) domingos con SHIP de ejemplo sin pisar el Anki 16:45 ni el ENCAPS: ${nDom16} · (17) NBME de F3 con SYNAPSE / Business: ${nNb17} · (18) avisos del SYNAPSE del sábado: ${nSab18} · (19) notas «sábado libre»: ${nNota19}`);
   }
   console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));

@@ -2,7 +2,7 @@
 # gen_business_plan.py — genera src/lib/businessStudyPlan.ts (plan "Estudio Pulso").
 #
 #   v3 L (5-sep-2026, Palmerton cero puntos ciegos · vacío 6):
-#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-11-09 = D1 v6.07 —v6.06: 2026-11-02 · v6.05: 2026-10-26 · hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
+#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-11-16 = D1 v6.08 —v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
 #                                                                    v5.20 = v6.00 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027 ·
 #                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
@@ -31,7 +31,12 @@
 #                                                                    v6.06, nada se recorta: OUTPUT S1 vie 13-nov … 15 OUTPUT en viernes (vie 13-nov … vie
 #                                                                    5-mar) + S16 lun 8-mar y «extra» mar 9-mar (antes del D-2 del ENCAPS). Desde la v6.07 el
 #                                                                    CIERRE semanal (tracker + OUTPUT) va el SÁBADO 14:30 (rutinaGuia.bizFranjaDe, lote de
-#                                                                    la rutina): este generador solo fecha las filas; la hora no vive aquí.
+#                                                                    la rutina): este generador solo fecha las filas; la hora no vive aquí ·
+#                                                                    v6.08 (14-nov-2026, corrimiento; la semana del 9-nov tampoco se estudió; Joseph: «todo
+#                                                                    inicia el lunes 16 … alarga las fechas límite») = 2026-11-16 → con +5 hábiles el plan
+#                                                                    acababa el mar 16-mar y ponía lectura / OUTPUT en el jue 11 (D-2 del ENCAPS), el vie 12 y
+#                                                                    el lun 15-mar (PROTEGIDOS) → REGLA NUEVA: esos días (y los SKIP v6) son DESCANSO con su
+#                                                                    motivo, como en LIVIANO; el fin se AMPLÍA, nada se recorta (ver el informe del generador).
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
@@ -63,6 +68,30 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'src' / 'lib' / 'businessStudyPlan.ts'
 WD = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']  # weekday(): 0 = lunes
 SKIP_FIJOS = {'2026-12-25', '2026-12-31', '2027-01-01'}  # v5.4+: feriados libres en todos los planes
+
+# v6.08 (14-nov-2026): el plan ya cruza la semana del ENCAPS (con START = lun 16-nov acababa el mar 16-mar y ponía lecturas / el OUTPUT el jue 11,
+#   vie 12 y lun 15-mar) → igual que LIVIANO (gen_liviano_plan.js, v6.07) NO son días de plan los SKIP v6 (feriados + Semana Santa), los PROTEGIDOS
+#   de _fechas_v6.json (vie 12 → lun 15-mar: D-1 hábil, D-1, examen y lunes libre) ni el D-2 del ENCAPS (jue 11-mar, dress rehearsal): salen como
+#   filas DESCANSO con su motivo y la lectura / el OUTPUT corren al siguiente día hábil (nada se recorta). Con START ≤ 9-nov el plan terminaba antes
+#   del jue 11-mar: las fechas de v6.00-v6.07 se reproducen igual. Fuente única de las fechas: _fechas_v6.json vía gen_fechas_v6.js (node); si node
+#   no está, se derivan aquí con la misma regla (D-1 hábil = último L-V no SKIP antes del examen; D-2 = el anterior).
+def _fechas_v6_extra():
+    import subprocess
+    js = ("const V6=require('./gen_fechas_v6');const F=V6.cargarFechasV6();const D1=V6.derivar(F).d1HabilEncaps;"
+          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip)}))")
+    try:
+        r = subprocess.run(['node', '-e', js], cwd=str(Path(__file__).resolve().parent), capture_output=True, text=True, encoding='utf-8', check=True)
+        j = json.loads(r.stdout)
+        return set(j['skip']), {p['fecha']: p['motivo'] for p in j['prot']}, j['d2']
+    except Exception:
+        F = json.loads((Path(__file__).resolve().parent / '_fechas_v6.json').read_text(encoding='utf-8'))
+        skip = set(F['skip'])
+        def habil_antes(s):
+            x = dt.date.fromisoformat(s) - dt.timedelta(days=1)
+            while x.weekday() >= 5 or x.isoformat() in skip: x -= dt.timedelta(days=1)
+            return x.isoformat()
+        return skip, {p['fecha']: p['motivo'] for p in F['protegidos']}, habil_antes(habil_antes(F['encaps']['examen']))
+SKIP_V6, PROTEGIDOS_V6, D2_ENCAPS = _fechas_v6_extra()
 
 def ts_str(s): return json.dumps(s, ensure_ascii=False)
 
@@ -127,8 +156,11 @@ def gen_v3(start_iso):
         iso = cur.isoformat(); wd = WD[cur.weekday()]
         if cur.weekday() >= 5:
             rows.append(fila(d, iso, wd, 'DESCANSO', DESC_FINDE, '', 0, None, None, 'DESCANSO'))
-        elif iso in SKIP_FIJOS:
+        elif iso in SKIP_FIJOS or iso in SKIP_V6:
             rows.append(fila(d, iso, wd, 'DESCANSO', 'FERIADO (%s): día libre. Sin lectura ni output.' % iso, '', 0, None, None, 'DESCANSO'))
+        elif iso in PROTEGIDOS_V6 or iso == D2_ENCAPS:  # v6.08: PROTEGIDOS y D-2 del ENCAPS (ver arriba)
+            motivo = PROTEGIDOS_V6.get(iso) or 'D-2 del ENCAPS (dress rehearsal)'
+            rows.append(fila(d, iso, wd, 'DESCANSO', 'DÍA PROTEGIDO (%s · %s): sin Business. Sin lectura ni output; el plan sigue el siguiente día hábil.' % (iso, motivo), '', 0, None, None, 'DESCANSO'))
         else:
             # viernes → OUTPUT (si quedan); L-J → lectura (si quedan); si una cola se agota, sigue la otra
             if cur.weekday() == 4 and outs: r = outs.pop(0)
@@ -143,7 +175,7 @@ def gen_v3(start_iso):
     total = len(rows); fin = rows[-1].split('fecha:"')[1].split('"')[0]
     n_work = sum(1 for x in rows if 'materia:"DESCANSO"' not in x)
     assert n_work == 84
-    meta_comment = 'generado START=%s · SÁB y DOM LIBRES + feriados fijos fuera · 84 trabajo + %d descansos' % (start_iso, total - 84)
+    meta_comment = 'generado START=%s · SÁB y DOM LIBRES + feriados, protegidos y D-2 del ENCAPS fuera · 84 trabajo + %d descansos' % (start_iso, total - 84)
     ts = '''/**
  * businessStudyPlan.ts — Plan "Estudio Pulso" v3 L (%d filas = 84 de trabajo + %d DESCANSO sáb/dom/feriados).
  * GENERADO por DATA/_scripts/gen_business_plan.py desde DATA/BUSINESS/plan_pulso_v3_L.json — NO editar a mano.
@@ -212,6 +244,8 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
     print('OK v3 L → %s' % OUT.relative_to(ROOT))
     print('  inicio %s · fin %s · total %d filas · 84 trabajo · %d descansos (finde + feriados)' % (start_iso, fin, total, total - 84))
     print('  outputs en viernes: %d/%d · materias: %s' % (vie_out, len(outs) + vie_out, mats))
+    prot = [x.split('fecha:"')[1].split('"')[0] for x in rows if 'DÍA PROTEGIDO (' in x]
+    if prot: print('  v6.08 · días protegidos / D-2 del ENCAPS dentro del plan (DESCANSO): %s' % ', '.join(prot))
 
 # ═══════════════════════════════ v2 legado (xlsx) ═══════════════════════════════
 def gen_v2():
@@ -311,4 +345,4 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()
-    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-09'))  # v6.07: default = D1 lun 9-nov (v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)
+    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-16'))  # v6.08: default = D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)

@@ -31,6 +31,10 @@
  *   FRANJAS y la 18:00 dicen los días del Step en F1; las líneas de F1 listan los HITOS que salen al tramo 2 por la regla nueva (gen_tramo2,
  *   v6.07: no caben con su Day-After completo → fila 'hito' + fila 'day_after' en su orden) y el doc de `uid` sus unidades H<D>/DA<D>; el
  *   nivel 3 no inventa viernes de F1 cuando F1 no tiene viernes.
+ * v6.08 (14-nov-2026): re-fecha real, D1 lun 16-nov (F1 del Step = D1-D13, mar 17-nov → mar 29-dic). Sin cambio de lógica en las filas; texto:
+ *   el último hito que queda en F1 (NBME 25, D8 jue 10-dic) adelantado por la semana de plan (2 filas con mar · jue) se describe como «Day-After
+ *   dentro de F1» (antes decía «antes del hito siguiente», que ya no está en F1), y los hitos que salen al tramo 2 dicen dónde va su Day-After
+ *   (F3: en las franjas de las 4 filas siguientes; F4: fila propia).
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -55,6 +59,7 @@ if (J.version !== FV6.version) aborta(`usmle_dias_v6.json es ${J.version} y _fec
 if (ESC.encaps !== FV6.encaps.examen || ESC.examen !== FV6.step1.examen || ESC.serums !== FV6.serums.inicio) aborta('el escenario de usmle_dias_v6.json no es el de _fechas_v6.json (¿se corrió gen_usmle_v5.js con --seco?)');
 // v6.07: el tramo 1 del Step = las mañanas de step1.f1_dias_semana de F1 (DERIVADOS diasStepF1; con L-V = f1.dias)
 const DIAS_STEP_F1 = V6.derivar(FV6).diasStepF1, DSEM = V6.diasSemanaTxt(FV6.step1.f1_dias_semana);
+const SEM_PLAN = require('./gen_tramo2').semanaPlanDe(FV6); // v6.08: filas de una semana de plan de F1 (mañanas de Step por semana)
 if (DIAS.length !== DIAS_STEP_F1 || !T2.length) aborta(`filas inesperadas: DIAS ${DIAS.length} (esperadas ${DIAS_STEP_F1}: ${DSEM} de F1) · DIAS_T2 ${T2.length}`);
 
 // ── datos derivados (todo de las filas y del JSON) ──
@@ -127,7 +132,9 @@ const filasNoId = DIAS.filter((x, i) => typeof ORIGEN_F1[i] === 'number' && ORIG
 const descNoId = (x) => { const o = ORIGEN_F1[x.d - 1];
   // v6.06: un hito que NO es el último y quedó antes de su D# = adelantado por la regla del Day-After completo (gen_tramo2.slotsHitosF1)
   if (esHito(x) && x.d < o && x.d < DIAS.length) { const sig = DIAS.find((y) => y.d > x.d && esHito(y));
-    return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; adelantado semanas de plan enteras para que su Day-After de 6 franjas termine antes del ${sig ? nombreHito(sig) + ' (D' + sig.d + ')' : 'hito siguiente'}: un hito de F1 no sale de F1 ni pisa el Day-After de otro)`; }
+    // v6.08: si es el ÚLTIMO hito que queda en F1 (los siguientes salieron al tramo 2), se adelanta para que su Day-After termine DENTRO de F1
+    if (!sig) return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; adelantado semanas de plan enteras —${SEM_PLAN} mañanas de Step (${DSEM}) por semana— para que su Day-After de 6 franjas (D${x.d + 1}-D${x.d + 4}, ${f(DIAS[x.d].fecha)} → ${f(DIAS[x.d + 3].fecha)}) termine dentro de F1: el último hito que queda en F1 lleva su Day-After entero antes de la pausa)`;
+    return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; adelantado semanas de plan enteras para que su Day-After de 6 franjas termine antes del ${nombreHito(sig) + ' (D' + sig.d + ')'}: un hito de F1 no sale de F1 ni pisa el Day-After de otro)`; }
   if (esHito(x)) return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; un hito de F1 no sale de F1: no cabe por su D# → último slot de F1${/NBME 28/.test(x.sub) ? ', sigue siendo el checkpoint de fecha' : ''})`;
   if (x === BIOEST_F1) return `D${x.d} ${f(x.fecha)} = bioestadística + epidemiología + ética (ex-D79 v5.20)`;
   return `D${x.d} ${f(x.fecha)} = ${corto(x.system)} (v5.20 D${o})`; };
@@ -137,8 +144,8 @@ const lineasF1 = [
   COLCHON_F1.length ? `${rangoD(COLCHON_F1)} = ${COLCHON_F1.map((x) => x.sub.split(' ')[0]).join('/')} COLCHÓN F1 (absorben los primeros días perdidos)` : `sin colchón F1 (${(ESC.colchonF1Consumido || []).join('/') || 'C1/C2'} consumidos por el corrimiento): un día perdido de F1 pasa al tramo 2 el ${f(PAUSA.desde)} (disparador (f), --pendientes-f1)`,
   ...(DESPL_T2.length ? [`DESPLAZADA${DESPL_T2.length > 1 ? 'S' : ''} al tramo 2 (las últimas filas de temario no-hito, en orden v5.20, a la cabeza de la cola): `
     + DESPL_T2.map((x) => `v5.20 D${x.dOrig} ${x.system === 'Psychiatry & Behavioral' && /Bioestad/.test(x.subV520 || '') ? 'bioestadística' : corto(x.system)} → T${x.t} ${f(x.fecha)} (d ${x.d})`).join(' · ')] : []),
-  ...(HITOS_FUERA_T2.length ? [`HITOS de F1 que no caben con su Day-After completo (regla v6.07) → tramo 2, en su orden v5.20 y con su Day-After en la fila siguiente: `
-    + HITOS_FUERA_T2.map((x) => { const da = daDe(x); return `${x.nombre} (v5.20 D${x.dOrig}) → T${x.t} ${f(x.fecha)}${da ? ` + Day-After T${da.t} ${f(da.fecha)}` : ''}`; }).join(' · ')] : []),
+  ...(HITOS_FUERA_T2.length ? [`HITOS de F1 que no caben con su Day-After completo (regla v6.07) → tramo 2, en su orden v5.20 y con su Day-After detrás (F3: repartido en las franjas de las 4 filas siguientes · F4: fila propia, la siguiente): `
+    + HITOS_FUERA_T2.map((x) => { const da = daDe(x); return `${x.nombre} (v5.20 D${x.dOrig}) → T${x.t} ${f(x.fecha)}${da ? ` + Day-After T${da.t} ${f(da.fecha)}` : x.fase === 'F3' ? ` (Day-After en franjas T${x.t}-T${x.t + 4})` : ''}`; }).join(' · ')] : []),
 ];
 const trocear = (txt, pre1, pre) => { // líneas de comentario de ≤ ~130 caracteres
   const out = []; let cur = '';

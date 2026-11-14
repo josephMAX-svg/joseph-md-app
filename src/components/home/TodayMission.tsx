@@ -223,12 +223,15 @@ export function encapsLabelDe(iso: string): string | null {
   if (pre && vivPc?.vivo) return `${pre} + 15:00 Theomed EN VIVO · ${vivPc.vivo}`;
   if (pre) return pre;
   const viv = theomedSabadoDe(iso);
+  // v6.06: carril SÁBADO de la intensiva (v6.08: 14:00-15:00, pendiente F1 que no cupo en el carril B lun-jue); v6.08: si además hay
+  // clase en vivo de Theomed (sábados de F2), la etiqueta nombra las dos cosas
+  const sab = encapsSabadoDe(iso);
+  const repo = sab ? `reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim() : null;
+  if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
   if (domE) return domE.etiqueta;
-  // v6.06: carril SÁBADO de la intensiva (09:30, pendiente F1 que no cupo en el carril B lun-jue)
-  const sab = encapsSabadoDe(iso);
-  if (sab) return `ENCAPS · sáb ${sab.ini} · reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim();
+  if (repo) return `ENCAPS · sáb ${sab!.ini} · ${repo}`;
   return plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps') ? 'ENCAPS · intensiva (ver plan)' : null;
 }
 /** Etiqueta corta USMLE del día (para el briefing/status bar). null si no hay fila hoy · v6.00: «PAUSA» entre el 31-dic y el reinicio. */
@@ -514,7 +517,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         const am = encapsMananaDe(iso);
         const gs = guiaEncapsMananaDe(iso);
         if (am && gs.length) return {
-          tema: `Mañana ${am.n}/${am.de} · ${am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
+          // v6.08: jue 31-dic (día extra SOLO ENCAPS) y mar 5-ene (en la intensiva) = mañanas de F1 que no cupieron en F1 (am.diaExtra)
+          tema: `Mañana ${am.n}/${am.de} · ${am.diaExtra ? 'mañana de F1 fuera de F1 (no cupo)' : am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
           sub: am.fase === 'cierre' ? 'simulacro 100Q en 2 h → corrección → reglas → tarjetas' : 'teoría (texto primero o vídeo 1,75×) → post-test ciego → banqueo 72 s/Q → corrección + norma → tarjetas',
           acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true),
             ...(am.teoria.some((t) => /^Banqueo|^Revisión normativa/.test(t.item)) ? [campus('Adicionales ↗', ENCAPS_MANANA_META.campus.adicionales)] : [])],
@@ -767,7 +771,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
       {fase === 'F2' && (
         <View style={[st.banner, { borderColor: GREEN + '66', backgroundColor: GREEN + '10' }]}>
           <Text style={[st.bannerTxt, { color: GREEN }]}>🇺🇸 Step 1 en PAUSA — Anki 30' + sábado 20Q mezcladas</Text>
-          <Text style={st.modoInfo}>Anki USMLE 05:15-05:45 L-V (0 nuevas, FSRS 0,85) · sáb 07:45-09:15 STEP 1 VIVO (10 incorrectas UWorld + 10 AMBOSS) · reinicio mar {FECHAS_V6.step1.reinicio.slice(8)}-mar (NBME 29 al día siguiente).</Text>
+          <Text style={st.modoInfo}>Anki USMLE 05:15-05:45 L-V (0 nuevas, FSRS 0,85) · sáb 04:15-05:45 STEP 1 VIVO (10 incorrectas UWorld + 10 AMBOSS) · reinicio mar {FECHAS_V6.step1.reinicio.slice(8)}-mar (NBME 29 al día siguiente).</Text>
         </View>
       )}
       {/* v6.00 · F4: turno del día + rol semanal */}

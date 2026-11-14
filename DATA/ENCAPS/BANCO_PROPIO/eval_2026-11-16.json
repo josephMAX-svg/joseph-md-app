@@ -1,8 +1,8 @@
 {
- "id": "EVAL_2026-11-09",
- "titulo": "Eval anclada ENCAPS · Lun 2026-11-09 · fallos previos",
+ "id": "EVAL_2026-11-16",
+ "titulo": "Eval anclada ENCAPS · Lun 2026-11-16 · fallos previos",
  "tipoRonda": "eval_anclada",
- "fecha": "2026-11-09",
+ "fecha": "2026-11-16",
  "codigo": "MIX",
  "sub_eje": null,
  "tema": "eval anclada · D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero",
@@ -80,6 +80,12 @@
     "a": "2026-11-09",
     "el": "2026-11-08",
     "motivo": "corrimiento v6.07 (D1 = 2026-11-09, «empezamos mañana 9»; la semana del lun 2 al vie 6-nov no se estudió y la corrida v6.06a-e queda sin efecto): la sesión «banqueo 1» (lun-jue nº 1 de la F1) pasa del lunes 2026-11-02 (D1) al lunes 2026-11-09 (D1); ítems intactos, sin regenerar. Sigue siendo la eval del D1 (sin sesión anterior → 5Q de fallos previos)"
+   },
+   {
+    "de": "2026-11-09",
+    "a": "2026-11-16",
+    "el": "2026-11-14",
+    "motivo": "corrimiento v6.08 (D1 = 2026-11-16, «todo inicia el lunes 16»; la semana del lun 9 al vie 13-nov no se estudió y las semanas corridas v6.07a-e quedan sin efecto): la sesión «banqueo 1» (lun-jue nº 1 de la F1) pasa del lunes 2026-11-09 (D1) al lunes 2026-11-16 (D1); ítems intactos, sin regenerar. Sigue siendo la eval del D1 (sin sesión anterior → 5Q de fallos previos)"
    }
   ]
  },

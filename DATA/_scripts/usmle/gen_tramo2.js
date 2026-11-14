@@ -27,15 +27,31 @@
  *                                    ese caso pasa de las 07:15 a las 13:30 (después del examen). Solo documentación: ninguna fila cambia
  *                                    (ni de F1 ni del tramo 2).
  *        [--f1-filas N]              v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (por defecto min(f1.dias, 58) del JSON;
- *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52 · v6.03 = 50 · v6.05 = 47 · v6.06 = 42 · v6.07 = 15, solo mar · jue). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
+ *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52 · v6.03 = 50 · v6.05 = 47 · v6.06 = 42 · v6.07 = 15, solo mar · jue · v6.08 = 13). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
  *                                    filas de temario NO-hito del orden D1-D57 · D79 son DESPLAZADAS: van SIEMPRE a la cabeza de la
  *                                    cola-adelante como contenido con su dOrig, en orden v5.20 (entran en V1)
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
  *        [--rotacion-9]              v6.06 (fix): 16:15 REENTRADA con la rotación FIJA de los 9 sistemas (la de v6.00-v6.05). Solo para
  *                                    reproducir byte a byte las referencias v6.03 / v6.04 / v6.05 (las v6.00-v6.02 salen iguales sin él:
  *                                    su F1 tenía los 9 sistemas). gen_usmle_v5.js lo rechaza fuera de --seco.
+ *        [--semana-plan N]           v6.08: filas de una SEMANA DE PLAN de F1 (los adelantos de un hito por el Day-After completo, abajo). Por
+ *                                    defecto = mañanas de Step por semana (_fechas_v6.json step1.f1_dias_semana.length: 2 con mar · jue · 5 con
+ *                                    L-V). Solo para reproducir referencias: la v6.06 (L-V) y la v6.07 (mar · jue, generada con 5 fijo) llevan
+ *                                    `--semana-plan 5`. gen_usmle_v5.js lo rechaza si no coincide con el JSON.
+ *        [--hito-f4-sin-ventana]     v6.08 (fix revisión 14-nov, est2): un hito DESPLAZADO de F1 que cae en F4 lleva por defecto la ventana L-S
+ *                                    de su semana (lunes → sábado), como los NBME 30-33: antes ventana null y serumsTurnos.ordenSemana lo
+ *                                    saltaba (ni plantilla H ni día T/L: el NBME 28 del mar 8-jun salía a 07:00-12:15 dentro de un turno M).
+ *                                    Este flag lo deja sin ventana: solo para reproducir la v6.07 (NBME 28 jue 3-jun en F4); v6.00-v6.06 no
+ *                                    tienen hitos desplazados en F4. gen_usmle_v5.js lo rechaza fuera de --seco.
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.08 (14-nov-2026): re-fecha real D1 de todo = LUN 16-NOV (_fechas_v6.json f1 lun 16-nov → mié 30-dic, 32 hábiles; Step 1 mar · jue = 13
+ *   slots, mar 17-nov → mar 29-dic). SEMANA_PLAN deja de ser 5 fijo: una semana de plan = las mañanas de Step de una semana
+ *   (step1.f1_dias_semana.length), porque adelantar un hito «una semana» con mar · jue son 2 filas, no 5 (con 5 el NBME 25 caía del D10 al
+ *   D5, encima del Day-After del UWSA1, y salía de F1). Con 13 slots y semana de 2: UWSA1 D1 mar 17-nov · NBME 25 v5.20 D10 → D8 jue 10-dic
+ *   (adelantado 1 semana de plan para que su Day-After D9-D12 termine dentro de F1) · D9-D10 = v5.20 D8-D9 · D11-D13 = v5.20 D11-D13 ·
+ *   DESPLAZADAS 45 (D14-D24, NBME 26, D26-D39, NBME 27, D41-D54, NBME 28, D56, D57, D79). Las referencias v6.00-v6.05 (N ≥ 45) no cambian con
+ *   el valor; la v6.06 y la v6.07 se reproducen con --semana-plan 5. Referencia: ref_v6/tramo2_14mar_2027-12-06_v608.json.
  * v6.07 (8-nov-2026): REGLA NUEVA DE LA COLOCACIÓN — «un hito de F1 que no cabe con su Day-After completo pasa al tramo 2» (sustituye a la
  *   de la v6.02, «un hito de F1 nunca sale de F1»). Orden de Joseph (dom 8-nov): la mañana de F1 es ENCAPS lun · mié · vie y Step 1 mar · jue
  *   (_fechas_v6.json step1.f1_dias_semana = [2, 4]) → F1 del Step = 15 slots (mar 10-nov → mar 29-dic). slotsHitosF1(n, hitos) busca el
@@ -204,8 +220,14 @@ const ORIGEN_F1 = [...ORIGEN_F1_TEMARIO, 'C1', 'C2'];
 /** v6.06 · filas de plan tras un hito NBME que ocupa su DAY-AFTER (Palmerton §9.2, 6 franjas: 1/6 las 18:00 del hito · 2/6 07:15 y 3/6
  *  18:00 de la fila siguiente · 4/6-6/6 las 18:00 de las 3 siguientes = gen_usmle_guia.js trasHito, n ≤ 4). */
 const DAY_AFTER_FILAS = 4;
-/** v6.06 · filas de una semana de plan L-V: los hitos v5.20 de F1 (D10, D25, D40, D55) cierran una semana de plan (D# múltiplo de 5). */
-const SEMANA_PLAN = 5;
+/** v6.06 · filas de una semana de plan L-V: los hitos v5.20 de F1 (D10, D25, D40, D55) cierran una semana de plan (D# múltiplo de 5).
+ *  v6.08 · = mañanas de Step por semana en F1 (_fechas_v6.json step1.f1_dias_semana.length): 5 con L-V (v6.00-v6.06) · 2 con mar · jue
+ *  (v6.08). Adelantar un hito una semana de plan conserva su día de la semana. La v6.07 (mar · jue) se generó con 5 fijo → su referencia se
+ *  reproduce con --semana-plan 5 (opción semanaPlan de generarTramo2 / colocarF1). */
+const semanaPlanDe = (F) => F.step1.f1_dias_semana.length;
+const SEMANA_PLAN = semanaPlanDe(JSON.parse(fs.readFileSync(V6.JSON_FILE, 'utf8').replace(/^\uFEFF/, '')));
+const validarSemanaPlan = (s) => { if (!(Number.isInteger(s) && s >= 1 && s <= 5)) throw new Error('semana de plan inválida (1-5 filas): ' + s); return s; };
+validarSemanaPlan(SEMANA_PLAN);
 /**
  * v6.06 · SLOT de cada hito de F1 (regla de Joseph: un hito de F1 nunca sale de F1) en n slots — función ÚNICA (colocarF1 · gen_usmle_v5
  * la comprueba · la referencia ref_v6/gen_tramo2_ref.js la reimplementa con código propio):
@@ -218,12 +240,14 @@ const SEMANA_PLAN = 5;
  *   Con n ≥ 45 (v6.00-v6.05) (2) no mueve nada · n = 42 (v6.06): base 1 · 10 · 25 · 40 · 42 → el NBME 27 (slot 40 = lun 28-dic) tendría su
  *   Day-After en 41-44 y el NBME 28 está en el 42 → se adelanta al slot 35 (vie 18-dic; Day-After lun 21 → jue 24-dic, antes del NBME 28).
  * @param {number} n slots de F1 · @param {number[]} hitos D# v5.20 de los hitos de F1, en orden (D1, D10, D25, D40, D55)
+ * @param {number} [semana] v6.08: filas de una semana de plan (por defecto SEMANA_PLAN = step1.f1_dias_semana.length; v6.06/v6.07 = 5)
  * @returns {number[]} slot (1-n) de cada hito, en el mismo orden
  */
-function slotsHitosF1(n, hitos) {
+function slotsHitosF1(n, hitos, semana = SEMANA_PLAN) {
+  validarSemanaPlan(semana); // v6.08: filas de una semana de plan (mañanas de Step por semana)
   // v6.07: si los H hitos no caben (la regla v6.06 lanzaba), F1 se queda con el PREFIJO más largo de hitos que cabe y el resto sale al tramo 2
   for (let m = hitos.length; m >= 0; m--) {
-    const s = intentarSlotsF1(n, hitos.slice(0, m), m === hitos.length);
+    const s = intentarSlotsF1(n, hitos.slice(0, m), m === hitos.length, semana);
     if (s) return s;
   }
   return [];
@@ -236,14 +260,14 @@ function slotsHitosF1(n, hitos) {
  *     tramo 2, y la revisión del mismo día + la revisión semanal solo sustituyen el Day-After del NBME 28).
  * @returns {number[]|null} slots (1-n) de los m hitos, o null si no caben
  */
-function intentarSlotsF1(n, hs, ultimoSinDA) {
+function intentarSlotsF1(n, hs, ultimoSinDA, semana = SEMANA_PLAN) {
   const m = hs.length;
   if (!m) return [];
   const s = hs.map((d, k) => Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, n - (m - 1 - k)));
   if (s[0] < 1) return null;
   const sig = (k) => (k + 1 < m ? s[k + 1] : n + 1);
   for (let k = ultimoSinDA ? m - 2 : m - 1; k >= 0; k--) {
-    while (s[k] + DAY_AFTER_FILAS >= sig(k)) s[k] -= SEMANA_PLAN;
+    while (s[k] + DAY_AFTER_FILAS >= sig(k)) s[k] -= semana;
     if (s[k] < 1 || (k > 0 && s[k] <= s[k - 1])) return null;
   }
   return s;
@@ -262,15 +286,16 @@ function intentarSlotsF1(n, hs, ultimoSinDA) {
  * D57, D79 (16). Con n ≥ 45 la regla nueva no mueve nada (v6.00-v6.05 salen idénticas).
  * @param {number} n slots de F1 (gen_usmle_v5: f1.dias · generarTramo2: f1Filas ≤ 58)
  * @param {object} [byD] filas v5.20 por D (por defecto el dias_v520.json congelado) — decide qué es hito (sub «🎯…»)
+ * @param {number} [semana] v6.08: filas de una semana de plan (por defecto SEMANA_PLAN; --semana-plan 5 reproduce la v6.06 y la v6.07)
  * @returns {{ enF1: (number|string)[], desplazadas: number[], consumido: string[], f1Filas: number, hitos: number[] }}
  */
-function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x]))) {
+function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x])), semana = SEMANA_PLAN) {
   const esHito = (o) => typeof o === 'number' && /^🎯/.test(byD[o].sub);
   const hitos = ORIGEN_F1_TEMARIO.filter(esHito);
   // v6.07: con menos slots que hitos ya no lanza (los hitos que no caben con su Day-After completo van al tramo 2)
   if (!(Number.isInteger(n) && n >= 1 && n <= ORIGEN_F1.length)) throw new Error(`colocarF1: ${n} slots (válido 1-${ORIGEN_F1.length})`);
   const enF1 = new Array(n).fill(null);
-  const slots = slotsHitosF1(n, hitos);
+  const slots = slotsHitosF1(n, hitos, semana);
   slots.forEach((s, k) => { enF1[s - 1] = hitos[k]; });
   const hitosFuera = hitos.slice(slots.length);
   const resto = ORIGEN_F1.filter((o) => !esHito(o));
@@ -280,7 +305,7 @@ function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x])
   const desplNoHito = sobran.filter((o) => typeof o === 'number');
   // v6.07: las desplazadas van en orden v5.20 y, si F1 no tiene sitio para un hito con su Day-After, el hito va entre ellas (tipo 'hito' en el tramo 2)
   const desplazadas = ORIGEN_F1_TEMARIO.filter((d) => desplNoHito.includes(d) || hitosFuera.includes(d));
-  return { enF1, desplazadas, consumido: sobran.filter((o) => typeof o === 'string'), f1Filas: enF1.filter((o) => typeof o === 'number').length, hitos, hitosEnF1: hitos.slice(0, slots.length), hitosFuera };
+  return { enF1, desplazadas, consumido: sobran.filter((o) => typeof o === 'string'), f1Filas: enF1.filter((o) => typeof o === 'number').length, hitos, hitosEnF1: hitos.slice(0, slots.length), hitosFuera, semanaPlan: semana };
 }
 /** v6.07 · nombre corto de un hito v5.20 a partir de su sub («🎯 NBME 26 (…)» → «NBME 26»). */
 const nombreHitoV520 = (sub) => (/UWSA\d|NBME \d+|FREE 120/i.exec(sub) || ['hito'])[0];
@@ -326,7 +351,8 @@ function sistemasRotacionF1(enF1, byD, pendF1 = []) {
  *   · protegExtra: [fecha] (--proteg) · examenPrevio · congelarHasta · previo: filas (DIAS_T2 vigente) · pendientes: [uid] · pendientesF1: [d]
  *   · f1Filas: filas de temario que caben en F1 (v6.01; por defecto 58 = v6.00) · byD: filas v5.20 por D (por defecto el dias_v520.json congelado)
  *   · rotacion9: v6.06 (fix) — true = rotación 16:15 fija de los 9 sistemas (solo para reproducir las referencias v6.03-v6.05)
- * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], origenF1: (number|string)[], esperados: number[], sistemasRot16F1: string[], rotacion9: boolean }}
+ *   · semanaPlan: v6.08 — filas de una semana de plan de F1 (por defecto SEMANA_PLAN = step1.f1_dias_semana.length; 5 reproduce v6.06/v6.07)
+ * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], origenF1: (number|string)[], esperados: number[], sistemasRot16F1: string[], rotacion9: boolean, semanaPlan: number }}
  */
 function generarTramo2(o) {
   const ENCAPS = o.encaps, E = o.examen, S = o.serums;
@@ -340,7 +366,8 @@ function generarTramo2(o) {
   // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.06 [42-54, 56, 57, 79] · v6.05 [47-54, 56, 57, 79] · v6.03 [50-54, 56, 57, 79] · v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
   const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
   if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
-  const COL = colocarF1(F1FILAS, byD);
+  const SEM = validarSemanaPlan(o.semanaPlan == null ? SEMANA_PLAN : Number(o.semanaPlan)); // v6.08: semana de plan de F1 (mar · jue = 2 · L-V = 5)
+  const COL = colocarF1(F1FILAS, byD, SEM);
   const DESPL = COL.desplazadas;
   // v6.07: un hito de F1 solo sale de F1 si no cabe con su Day-After completo (colocarF1.hitosFuera); cualquier otro hito desplazado = error
   for (const dv of DESPL) if (/^🎯/.test(byD[dv].sub) && !COL.hitosFuera.includes(dv)) throw new Error(`fila desplazada de F1 que es un hito (D${dv} v5.20) y sí cabía en F1 con su Day-After`);
@@ -526,14 +553,18 @@ function generarTramo2(o) {
         const hora = !F4row ? '07:00-12:30' : q >= 280 ? '07:00-16:30' : q === 200 ? '07:00-12:15' : q === 160 ? '07:00-11:15' : '07:00-10:15';
         // v6.07: un hito desplazado de F1 no tiene ventana (va en su orden en la cola) y dice de dónde viene; la línea base del NBME 29 se compara
         //   con el último NBME que queda en F1 (v6.00-v6.06: NBME 28 · v6.07: NBME 25)
+        // v6.08 (fix revisión 14-nov, est2): … salvo que caiga en F4: entonces la ventana L-S de SU semana (lunes → sábado), como los NBME 30-33,
+        //   para que serumsTurnos.ordenSemana le aplique la plantilla H o lo mueva al primer día T/L (antes: hito a 07:00-12:15 dentro de un turno
+        //   M, sin aviso). o.hitoF4SinVentana (--hito-f4-sin-ventana) = la regla v6.07, para reproducir su referencia.
+        const ventana = a.ventana || (F4row && !o.hitoF4SinVentana ? [lunesDe(s), add(lunesDe(s), 5)] : null);
         const extra = (/\+ 3 bloques/.test(a.nombre) ? ' · + 3 bloques random = ENSAYO 7 bloques' : /\+ 4 bloques/.test(a.nombre) ? ' · + 4 bloques random = ENSAYO 7 bloques' : '')
-          + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (a.ventana ? ` · ventana ${f(a.ventana[0])}→${f(a.ventana[1])}` : '') : '')
+          + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (ventana ? ` · ventana ${f(ventana[0])}→${f(ventana[1])}` : '') : '')
           + (a.dOrig === 65 ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME_F1} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
           + (NOTA_V6[a.dOrig] ? ' · ' + NOTA_V6[a.dOrig] : '')
           + (a.desdeF1 ? ` · DE F1 → TRAMO 2 (no cupo en F1 con su Day-After antes de la pausa ENCAPS; ${origenDespl(a)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '');
         if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = v.sub.replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
         else Object.assign(fila, DEF.hitoUWSA3, { sub: `🎯 ${a.nombre} (${hora})` + extra });
-        Object.assign(fila, { forma: a.forma, nombre: a.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana: a.ventana });
+        Object.assign(fila, { forma: a.forma, nombre: a.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana });
         break;
       }
       case 'day_after': Object.assign(fila, DEF.day_after, { sub: `DAY-AFTER del ${a.de} (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B` + (a.desdeF1 ? ` · DE F1 → TRAMO 2 (va con su hito; era v5.20 D${a.dHito})` : ''), qDia: 0, nivelUW: 5, h: F4row ? 2.625 : 5.5 }); break;
@@ -604,7 +635,7 @@ function generarTramo2(o) {
     ROT9 ? '16:15 REENTRADA: rotación fija de los 9 sistemas (--rotacion-9, referencias v6.03-v6.05)'
       : `16:15 REENTRADA: rotación de los ${nSisF1} sistemas de F1 (${SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)).join(' · ')})${SISTEMAS_ROT_16.filter((x) => !SIS_F1.has(x)).map((x) => { const p = out.find((y) => y.fase === 'F3' && (y.franjaNota || '').includes(`timed de ${x} +`)); return ` · ${x} entra tras su última fila T (${ultF1[x] ? f(ultF1[x]) : 'sin filas'}) → ${p ? `T${p.t} ${f(p.fecha)}` : 'no entra en F3'}`; }).join('')}`,
   ];
-  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados, sistemasRot16F1: SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)), rotacion9: ROT9 };
+  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados, sistemasRot16F1: SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)), rotacion9: ROT9, semanaPlan: SEM };
 }
 
 /** Tabla markdown del tramo 2 (mismo formato que la referencia: Anexo A de la espec). */
@@ -644,11 +675,14 @@ function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
     f1Filas: opt('--f1-filas') != null ? Number(opt('--f1-filas')) : Math.min(V6.derivar(F).diasStepF1, F1_FILAS_V600),
     permitirDeficit: argv.includes('--permitir-deficit'),
     rotacion9: argv.includes('--rotacion-9'), // v6.06 (fix): rotación 16:15 fija de antes (referencias v6.03-v6.05)
+    // v6.08: filas de una semana de plan de F1 (por defecto, mañanas de Step por semana del JSON; --semana-plan 5 = v6.06 L-V y v6.07)
+    semanaPlan: opt('--semana-plan') != null ? Number(opt('--semana-plan')) : semanaPlanDe(F),
+    hitoF4SinVentana: argv.includes('--hito-f4-sin-ventana'), // v6.08 (fix est2): regla v6.07 (hito desplazado en F4 sin ventana), solo referencias
     json: opt('--json'), md: opt('--md'),
   };
 }
 
-module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, slotsHitosF1, nombreHitoV520,DAY_AFTER_FILAS, SEMANA_PLAN, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE, SISTEMAS_ROT_16, RX_ROT_16, sistemasRotacionF1 };
+module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, slotsHitosF1, nombreHitoV520,DAY_AFTER_FILAS, SEMANA_PLAN, semanaPlanDe, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE, SISTEMAS_ROT_16, RX_ROT_16, sistemasRotacionF1 };
 
 if (require.main === module) {
   const o = opcionesTramo2(process.argv.slice(2));

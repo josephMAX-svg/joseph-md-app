@@ -1,5 +1,14 @@
-// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.07: D1-D15 = mar 10-nov → mar 29-dic-2026
-//   (solo martes y jueves) + tramo 2 desde el mar 16-mar-2027 · examen lun 25-oct-2027 (DJ-1 v6.04; PROVISIONAL).
+// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.08: D1-D13 = mar 17-nov → mar 29-dic-2026
+//   (solo martes y jueves) + tramo 2 desde el mar 16-mar-2027 · examen lun 6-dic-2027 (DJ-1 v6.07; PROVISIONAL).
+// v6.08 (sáb 14-nov-2026): RE-FECHA REAL — Joseph: «todo inicia el lunes 16; reestructura todo; si hace falta mueve tiempos; alarga las fechas
+//   límite lo que amerite». D1 de todo = lun 16-nov (_fechas_v6.json f1 lun 16-nov → mié 30-dic, 32 hábiles; corrida_s1 inerte). Step 1 mar · jue
+//   = 13 slots (mar 17, jue 19, mar 24, jue 26-nov · mar 1, jue 3, mar 8, jue 10, mar 15, jue 17, mar 22, jue 24, mar 29-dic). gen_tramo2.SEMANA_PLAN
+//   = mañanas de Step por semana (2; antes 5 fijo): UWSA1 D1 mar 17-nov · NBME 25 (v5.20 D10) → D8 jue 10-dic, adelantado una semana de plan para
+//   que su Day-After D9-D12 (mar 15 → jue 24-dic) termine dentro de F1 · D9-D10 = v5.20 D8-D9 · D11-D13 = v5.20 D11-D13. DESPLAZADAS 45 (D14-D24,
+//   NBME 26, D26-D39, NBME 27, D41-D54, NBME 28, D56, D57, D79): NBME 26 T14 mar 6-abr · 27 T29 mar 27-abr (F3, Day-After en franjas) · NBME 28
+//   T64 mar 8-jun + Day-After T65 (F4); gates de núcleo T7 mié 24-mar y T27 vie 23-abr. Examen lun 6-dic-2027 sin cambio (GO/NO-GO lun 18-oct);
+//   el COLCHÓN baja de 14 a 10 filas (≈ 37 → 26 h). Referencia: ref_v6/tramo2_14mar_2027-12-06_v608.json (= gen_tramo2_ref.js 2027-03-14
+//   2027-12-06 --f1-filas 13 --semana-plan 2).
 // v6.07 (dom 8-nov-2026): F1 DEL STEP = SOLO LAS MAÑANAS DE MARTES Y JUEVES. Joseph (dom 8-nov): «la mitad (o más) del tiempo del Step 1 hasta
 //   fin de año pasa al ENCAPS … empezamos mañana 9 … el Step 1 puede correrse, pero no más allá de 2027». La semana del lun 2-nov no se
 //   estudió: D1 de todo = lun 9-nov (_fechas_v6.json f1.inicio · f1.dias 37 = hábiles L-V de la fase F1, que comparten todos los planes). La
@@ -501,6 +510,9 @@ OPT2.pendientesF1 = [...new Set(OPT2.pendientesF1)].sort((a, b) => a - b);
 if (!OPT2.escenarioJSON && !SECO) aborta(`ENCAPS/EXAMEN/SERUMS (${OPT2.encaps} · ${OPT2.examen} · ${OPT2.serums}) ≠ _fechas_v6.json: en producción mandan las fechas del JSON (edítalo con su disparador de §I y corre gen_fechas_v6.js); para explorar, --seco`);
 if (OPT2.permitirDeficit && !SECO) aborta('--permitir-deficit solo existe para explorar (--seco): un déficit nunca se publica (R1)');
 if (OPT2.rotacion9 && !SECO) aborta('--rotacion-9 solo reproduce las referencias v6.03-v6.05 (--seco): en producción la 16:15 rota por los sistemas que F1 estudia de verdad (v6.06 fix)');
+if (OPT2.hitoF4SinVentana && !SECO) aborta('--hito-f4-sin-ventana solo reproduce la referencia v6.07 (--seco): en producción un hito desplazado que cae en F4 lleva la ventana L-S de su semana (v6.08 fix est2: serumsTurnos.ordenSemana)');
+// v6.08: la semana de plan de F1 la decide _fechas_v6.json (step1.f1_dias_semana.length); --semana-plan solo reproduce referencias (gen_tramo2.js / gen_tramo2_ref.js)
+if (OPT2.semanaPlan !== SEMANA_PLAN) aborta(`--semana-plan ${OPT2.semanaPlan} ≠ mañanas de Step por semana de _fechas_v6.json (${SEMANA_PLAN}): la colocación de F1 de este generador usa la del JSON`);
 try { T2 = generarTramo2(OPT2); } catch (e) { aborta('tramo 2: ' + e.message); }
 T2.log.forEach((l) => console.log('// ' + l));
 if (OPT2.json) fs.writeFileSync(OPT2.json, JSON.stringify(T2.out, null, 1));

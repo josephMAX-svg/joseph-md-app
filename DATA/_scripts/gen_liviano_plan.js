@@ -79,7 +79,19 @@
 //    (Acceso en Perú) = D38-D41 + D43 (lun 4 → lun 11-ene). Revisión trimestral I = D44 mar 12-ene. Drills D36 · D56 · D75 · D87 = mar 29-dic ·
 //    jue 28-ene · mié 24-feb · mié 17-mar. Síntesis M1 D19 · M2 D37 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 · capstone D88 →
 //    src/lib/empresaData.ts re-sincronizado a mano. CSV Anki: importar el D16 lun 30-nov-2026 (10 tarjetas de MECANISMO del módulo 1).
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-09   (v6.07; v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov; la semana del lun 9-nov tampoco se estudió; Joseph: «todo inicia el lunes 16 … alarga las fechas
+//    límite»): 90 hábiles desde el lun 16-nov acaban el mié 31-mar y solo traen 15 viernes (5 hasta el vie 18-dic + 10 desde el vie 8-ene; el vie
+//    12-mar es PROTEGIDO y el vie 26-mar Viernes Santo) → REGLA NUEVA: el calendario se ALARGA hasta el viernes del último caso (el 16.º viernes
+//    disponible: vie 2-abr, +2 hábiles); contenido y casos intactos, mismas 90 filas D1-D90; los 2 hábiles no-viernes que sobran tras el último tema
+//    (mié 31-mar y jue 1-abr) quedan SIN LIVIANO (huecos, sin fila; plantillasV6 no pinta el bloque esos días). Resultado: lun 16-nov → VIE 2-ABR-2027:
+//    caso 1 = D5 vie 20-nov … caso 5 D25 vie 18-dic · caso 6 D37 vie 8-ene · caso 7 D42 vie 15-ene (en medio del módulo 7) · caso 8 D47 vie 22-ene ·
+//    caso 9 (acceso) D52 vie 29-ene … caso 14 D77 vie 5-mar · caso 15 D84 vie 19-mar (F3) · caso 16 (integral) D90 vie 2-abr, DESPUÉS del repaso
+//    integral I (D87 mié 24-mar), del capstone (D88 lun 29-mar) y de la revisión trimestral II + cierre (D89 mar 30-mar). Módulo 7 = D38-D41 + D43
+//    (lun 11 → lun 18-ene); revisión trimestral I = D44 mar 19-ene. Drills D35 · D56 · D75 · D87 = mié 6-ene · jue 4-feb · mié 3-mar · mié 24-mar.
+//    Síntesis M1 D19 · M2 D36 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 · capstone D88 → src/lib/empresaData.ts re-sincronizado a mano
+//    (revisión trimestral II = D89). CSV Anki: importar el D16 lun 7-dic-2026 (10 tarjetas de MECANISMO del módulo 1). Con 16 viernes o más (v6.00-
+//    v6.07) la regla no entra: las fechas de antes se reproducen igual.
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-16   (v6.08; v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
@@ -109,6 +121,21 @@ const isWeekend = (s) => { const w = dow(s); return w === 0 || w === 6; };
 function calNoWeekend(start, n) { const o = []; let c = start; while (o.length < n) { if (!isWeekend(c) && !SKIP.has(c)) o.push(c); c = addDays(c, 1); } return o; }
 
 const fechas = calNoWeekend(START, TOTAL);
+// v6.08 (14-nov-2026): si los TOTAL hábiles no traen un viernes por caso (con START = lun 16-nov acaban el mié 31-mar y solo hay 15 viernes:
+//   el vie 12-mar es PROTEGIDO y el vie 26-mar Viernes Santo), el calendario se ALARGA hasta el viernes del último caso (el 16.º viernes
+//   disponible: vie 2-abr, +2 hábiles). El contenido y los casos no se tocan: los hábiles no-viernes que sobran tras el último tema (aquí mié 31-mar
+//   y jue 1-abr) quedan SIN LIVIANO (HUECOS, sin fila) y las filas siguen siendo TOTAL, numeradas D1-D90 sin saltos. Con 16 viernes o más
+//   (v6.00-v6.07) no entra: las fechas de antes se reproducen igual.
+const nCasosCur = (CUR.casos || []).length;
+const HUECOS = [];
+if (fechas.filter((f) => dow(f) === 5).length < nCasosCur) {
+  let c = addDays(fechas[fechas.length - 1], 1);
+  while (fechas.filter((f) => dow(f) === 5).length < nCasosCur) {
+    if (!isWeekend(c) && !SKIP.has(c)) fechas.push(c);
+    c = addDays(c, 1);
+    if (c > addDays(START, 400)) throw new Error('LIVIANO: no encuentro ' + nCasosCur + ' viernes');
+  }
+}
 
 // ─── aplanar contenido (no-viernes) en el orden del JSON ───
 const contenido = [];
@@ -128,6 +155,7 @@ const viernesConCaso = new Set(viernesUsables.slice(0, casos.length));
 const viernesSinCaso = viernes.filter((f) => !viernesConCaso.has(f));
 const skipFirst = viernesSinCaso.length;
 const esperadoContenido = TOTAL - casos.length;
+const nHuecos = fechas.length - TOTAL; // v6.08: hábiles no-viernes sin contenido (0 salvo con el calendario alargado)
 if (contenido.length !== esperadoContenido) throw new Error(`contenido ${contenido.length} ≠ ${esperadoContenido} (= ${TOTAL} − ${casos.length} casos)`);
 
 // ─── construir las filas ───
@@ -138,7 +166,9 @@ const casosPorD = {};       // casoId → {d, fecha}
 for (let idx = 0; idx < fechas.length; idx++) {
   const fecha = fechas[idx];
   const wd = wdOf(fecha);
-  const d = idx + 1;
+  const d = rows.length + 1; // v6.08: = idx + 1 salvo tras un HUECO (calendario alargado)
+  // v6.08: hábil no-viernes sin contenido (ya se dio todo el temario) antes del viernes del último caso → HUECO, sin fila
+  if (!viernesConCaso.has(fecha) && ci >= contenido.length && ki < casos.length) { HUECOS.push(fecha); continue; }
   if (viernesConCaso.has(fecha)) {
     const c = casos[ki++];
     casosPorD[c.id] = { d, fecha };
@@ -164,6 +194,8 @@ for (let idx = 0; idx < fechas.length; idx++) {
 }
 if (ci !== contenido.length || ki !== casos.length) throw new Error(`sobran filas: contenido ${contenido.length - ci}, casos ${casos.length - ki}`);
 if (rows.length !== TOTAL) throw new Error('rows ' + rows.length);
+if (HUECOS.length !== nHuecos) throw new Error(`huecos ${HUECOS.length} ≠ ${nHuecos} (hábiles de más del calendario alargado)`);
+if (rows[rows.length - 1].fecha !== fechas[fechas.length - 1]) throw new Error('el plan no acaba en el último hábil del calendario');
 
 // ─── verificaciones duras ───
 for (const r of rows) {
@@ -204,7 +236,8 @@ const planTS = `/**
  * ruido de comida, ladrillo, GPS). Cada VIERNES real: 1 caso del banco LIV_CASOS (casoId) con
  * rúbrica 0-2 × 4. Cada LUNES (desde la semana 2): pre-test ciego 5Q sobre D-7 (pretest:true).
  * Drill de cifras ancla ciego cada ~20 días (drill:true). Módulos (días de contenido):
- * ${modulosResumen}. Sin sesión: fines de semana + ${[...SKIP].filter((x) => x >= rows[0].fecha && x <= finISO).sort().join(' / ')} (feriados, días protegidos y D-2 del ENCAPS dentro del plan).
+ * ${modulosResumen}. Sin sesión: fines de semana + ${[...SKIP].filter((x) => x >= rows[0].fecha && x <= finISO).sort().join(' / ')} (feriados, días protegidos y D-2 del ENCAPS dentro del plan).${HUECOS.length ? `
+ * v6.08: calendario ALARGADO hasta el viernes del caso ${casos.length} (${finISO}): ${HUECOS.join(' / ')} quedan sin LIVIANO (hueco: ya se dio todo el temario; sin fila).` : ''}
  * Inicio ${rows[0].fecha} → fin ${finISO}. Casos en viernes: ${casos.length}/${casos.length}.
  */
 export interface DiaLiviano {
@@ -335,6 +368,7 @@ const porModulo = {};
 for (const r of rows) porModulo[r.modulo] = (porModulo[r.modulo] || 0) + 1;
 console.log(`LIVIANO gen ✓ ${rows.length} filas · ${rows[0].fecha} (${rows[0].wd}) → ${finISO} (${rows[rows.length - 1].wd})`);
 console.log(`  casos en viernes: ${rows.filter((r) => r.casoId && r.wd === 'Vie').length}/${casos.length} · viernes sin caso: ${skipFirst} (${viernesSinCaso.join(', ') || '—'})`);
+if (HUECOS.length) console.log(`  v6.08 · calendario alargado hasta el viernes del caso ${casos.length} (${finISO}, ${fechas.length} hábiles): huecos sin LIVIANO ${HUECOS.join(', ')}`);
 console.log(`  pre-tests (lunes): ${rows.filter((r) => r.pretest).length} · drills: ${drillsPorD.map((x) => 'D' + x.d).join(', ')} · revisión trimestral: ${rows.filter((r) => /REVISIÓN TRIMESTRAL/.test(r.tema)).map((r) => 'D' + r.d + ' ' + r.fecha).join(', ')}`);
 console.log(`  filas por módulo (incl. casos): ${Object.entries(porModulo).map(([k, v]) => k + ' ' + v).join(' · ')}`);
 console.log(`  síntesis→protocolo: ${rows.filter((r) => /Síntesis módulo|Capstone/.test(r.tema)).map((r) => 'D' + r.d).join(', ')}`);

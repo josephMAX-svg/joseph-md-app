@@ -2,7 +2,7 @@
   "version": "v1 · 2026-09-05 (Palmerton v3 · vacíos 1-5 y 9)",
   "fuenteDoc": "DATA/BUSINESS/LIVIANO_ACADEMIA.md",
   "generador": "DATA/_scripts/gen_liviano_plan.js <fechaInicio>  →  src/lib/livianoStudyPlan.ts + src/lib/livianoCasos.ts + DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv",
-  "inicioDefault": "2026-11-09",
+  "inicioDefault": "2026-11-16",
   "totalDias": 90,
   "skipFijos": ["2026-12-25", "2026-12-31", "2027-01-01"],
   "franja": "17:15–18:00 L-V · 45 min (25 estudio + 20 aplicación)",
@@ -923,7 +923,7 @@
         },
         {
           "tema": "Capstone: ensamblaje de LIVIANO_PROTOCOLO_CLINICO_v1 + ruta de credencial",
-          "estudio": "Unir las 6 secciones producidas en las Síntesis (M1-2 elegibilidad+titulación · M3-4 proteína/fuerza+qué medir · M5 5As/automonitoreo/check-in · M6 derivación y límites · anexo Acceso) con lo aprendido en el caso integral; marcar cada dosis sin ficha técnica como 'A VERIFICAR'; anotar la ruta OMA Fundamentals (~9.75 CME) → ABOM",
+          "estudio": "Unir las 6 secciones producidas en las Síntesis (M1-2 elegibilidad+titulación · M3-4 proteína/fuerza+qué medir · M5 5As/automonitoreo/check-in · M6 derivación y límites · anexo Acceso) con los casos 1-15; marcar cada dosis sin ficha técnica como 'A VERIFICAR'; anotar la ruta OMA Fundamentals (~9.75 CME) → ABOM",
           "aplicacion": "Explica a un colega en 3 min el protocolo completo y por qué LIVIANO tendrá una certificación internacional real detrás",
           "sintesis": true,
           "anki": [
@@ -934,7 +934,7 @@
           ]
         },
         {
-          "tema": "REVISIÓN TRIMESTRAL II + cierre de la Academia (fila fija D90)",
+          "tema": "REVISIÓN TRIMESTRAL II (el cierre de la Academia es el caso integral del vie 2-abr)",
           "estudio": "Checklist LIVIANO_REVISION_TRIMESTRAL (segunda pasada: aprobaciones, seguridad, recotización, genéricos, tabla de acceso, value stack, Anki) + regla anti-alucinación: todo dato publicado se verifica contra fuente primaria",
           "aplicacion": "Grábate la charla completa LIVIANO de 10 min: \"por qué tu peso no es tu culpa y qué vamos a hacer al respecto\"",
           "revision": true,

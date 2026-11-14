@@ -57,7 +57,7 @@ export function limaHHMM(): string {
 }
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return '2026-11-09'; } // v6.07: D1 lun 9-nov (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00: 2026-10-07)
+  catch { return '2026-11-16'; } // v6.08: D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00: 2026-10-07)
 }
 
 interface Item {

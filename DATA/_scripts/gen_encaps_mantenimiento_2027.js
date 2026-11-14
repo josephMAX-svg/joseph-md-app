@@ -161,6 +161,19 @@
  *   Siembra v6.07: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v607_mant_20261108
  *     --pendientes-de git:regimen-v6.06e:DATA/_scripts/_encaps_mantenimiento_2027.sql
  *   (aplicada el 8-nov en UNA transacción con guardas DELETE ENCAPS + 37 + 50; backup completo previo study_schedule_bk_v607_20261108).
+ *
+ * v6.08 (14-nov-2026, orden de Joseph «todo inicia el lunes 16; reestructura todo; alarga las fechas límite lo que amerite»; la semana del lun 9-nov no se
+ *   estudió y las semanas corridas v6.07a-e quedan sin efecto): D1 = LUN 16-NOV-2026 (= _fechas_v6.json f1.inicio, `corrimientos[6]`). F1 anclada → dia
+ *   1-32 (lun 16-nov → mié 30-dic) = 27 banqueo1h + 5 mini_sim (vie 20-nov = D5 … vie 18-dic = dia 25 = CHECKPOINT DEL AÑO; el vie 25-dic es SKIP). Rígido
+ *   por slots, sin cambio de lógica: --de-hasta DERIVADO (slot lun-jue nº 75 desde el lun 16-nov) → extra.de idéntico. Pre-test de arranque = lun 16 (parte 1,
+ *   fila dia 1 II-3) + mar 17 (parte 2, fila dia 2 I-3); mié 18 / jue 19 = bancos V-2 / III-5. La hora sigue siendo las 16:15.
+ *   · PENDIENTES F1 v6.08 (--pendientes-de git:regimen-v6.07e:…_encaps_mantenimiento_2027.sql, F1 v6.07 de 37 filas) = 4 banqueo1h (fila mant. 34 III-8
+ *     historia_clinica #2 · 35 II-11 sifilis_sindromico #2 · 36 IV-6 etica_publicacion #2 · 37 V-7 esenciales_sismed #2) + 1 mini-sim (fila mant. 30, vie
+ *     18-dic de la v6.07 = su CHECKPOINT DEL AÑO, cola larga V-1 + V-3; la copia pierde solo ese rótulo) → se AÑADEN a los 23 de v6.01-v6.07 (conservados):
+ *     _pendientes_f1.json = 28 filas (22 banqueo1h + 6 mini-sims). gen_encaps_intensivo_2027.js los repone con fecha (re-flujo por fecha del desborde:
+ *     sábados 14:00-15:00 + viernes 16:15 del núcleo tras el SIM / pre-test de las 07:15 + viernes de la quincena).
+ *   Siembra v6.08: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v608_mant_20261114
+ *     --pendientes-de git:regimen-v6.07e:DATA/_scripts/_encaps_mantenimiento_2027.sql
  */
 const fs = require('fs');
 const path = require('path');

@@ -98,6 +98,11 @@
 // PC del SYNAPSE de ese domingo (vibePCSabado queda como alias deprecado, mismo resultado) · un PC no cae en un día protegido (dom 14-mar = ENCAPS).
 // Fechas: ver la cabecera del .ts generado y DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md (calculadas; no se escriben aquí a mano).
 // Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-11-09   (v6.07)
+// v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov; la semana del lun 9-nov no se estudió; Joseph: «todo inicia el lunes 16 … alarga las fechas
+// límite»): START = 2026-11-16 (+5 hábiles sobre v6.07, una semana exacta; nada se recorta). S1-S12 lun 16-nov → mié 10-feb (la semana del 25-dic
+// sigue el patrón de transición de la v6.07: S6 cruza el SKIP y su SHIP es el dom 3-ene; el dom 27-dic es AVANCE) · taper S13-S20 jue 11-feb → mar
+// 6-abr (rangos en vibecoding_proyectos.json). REGLA NUEVA (desplazamiento del PC del taper): si el domingo +7 es PROTEGIDO se busca el primer
+// domingo no protegido (S16 → dom 21-mar; ver taperSemanas). Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-11-16   (v6.08)
 // (v6.06) Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-11-02   (v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
@@ -105,7 +110,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-11-09'; // v6.07 (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-11-16'; // v6.08 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -225,7 +230,12 @@ semanas.forEach((w) => { if (PROTEGIDOS.has(w.ship)) throw new Error(`S${w.s}: s
 taperSemanas.forEach((w, i) => {
   const prev = i ? taperSemanas[i - 1] : semanas[semanas.length - 1];
   const nominal = prev && prev.shipNominal ? prev.shipNominal : prev && prev.ship;
-  const sig = addDays(w.ship, 7);
+  // v6.08 (14-nov-2026): si el domingo siguiente es PROTEGIDO, el PC desplazado va al PRIMER domingo no protegido (S15 jue 25-feb → mar 2-mar y S16
+  //   mié 3 → vie 5-mar cierran el dom 7-mar; el dom 14-mar es el ENCAPS → el PC / SHIP de S16 va el dom 21-mar, junto al de S17, que cierra ese
+  //   domingo). Hasta la v6.07 el desplazamiento se anulaba (`!PROTEGIDOS.has(sig)`) y las dos entradas compartían el domingo, pero el SYNAPSE (que
+  //   desplaza siempre +7) ponía el PC en el día protegido y lo perdía. Sin un +7 protegido el resultado es idéntico al de antes.
+  let sig = addDays(w.ship, 7);
+  for (let i = 0; i < 4 && PROTEGIDOS.has(sig); i++) sig = addDays(sig, 7);
   const desplaza = !!prev && nominal === w.ship && !PROTEGIDOS.has(sig);
   w.shipNominal = w.ship;                                  // sábado tras su último hábil (el md lo cita: «cierra la misma semana que S15»)
   w.pcSab = desplaza ? sig : w.ship;
@@ -314,8 +324,9 @@ const ts = `/**
  * Ciclo diario: 5' objetivo → 35' construir → 5' commit + journal (D:/synapse-journal, node DATA/_scripts/journal_hoy.js).
  * FRENO 04:55: commit-or-stash obligatorio; 05:00 Anki sin excepción; si el día se recorta pierde el proyecto, nunca el Anki.
  * Semana DELOAD del vibecoding: flag \`deload\` en ${P.filter((p) => p.deload).map((p) => { const w = semanas.find((x) => x.s === p.s); return `S${p.s} (${rangoTxt(w.ini, w.fin)})`; }).join(' · ') || '—'}, carga 50% (2 días de 45' + 3 de 15'),
- * fechas intactas. El flag sigue en S7 por el orden v5.10-b, sin mover contenido ni minutos (precedente v6.01; en v6.06 —como en v6.05— la semana post-NBME 26 es
- * S6 EXACTA y S7 no la toca —v6.03: S7 solapaba 3 de sus 5 días—). Las semanas deload del Step 1 las fija homeBriefing.DELOAD_SEMANAS (v6.06: lun 7-dic y lun 28-dic · v6.05 = v6.03: lun 30-nov y lun 28-dic).
+ * fechas intactas. El flag sigue en S7 por el orden v5.10-b, sin mover contenido ni minutos (precedente v6.01; en v6.08 la semana post-NBME 25 —lun 14-dic— es S5 EXACTA
+ * y S7 toca 2 de sus 5 días en la del lun 28-dic · en v6.06 —como en v6.05— la semana post-NBME 26 era S6 EXACTA y S7 no la tocaba —v6.03: S7 solapaba 3 de sus 5 días—).
+ * Las semanas deload del Step 1 las fija homeBriefing.DELOAD_SEMANAS (v6.08 = v6.07: lun 14-dic y lun 28-dic · v6.06: lun 7-dic y lun 28-dic · v6.05 = v6.03: lun 30-nov y lun 28-dic).
  */
 export type VibeRotacion = 'yocpmd' | 'preguntas' | 'bots' | 'contenido';
 export type VibeTipo = 'definir' | 'construir' | 'verificar' | 'ship-prep' | 'sensores' | 'mejora' | 'lectura' | 'retro' | 'journal';
@@ -507,7 +518,7 @@ md.push('');
 md.push('| S | Proyecto | Rotación | L-V | SHIP (dom PC) | Deload |');
 md.push('|---|---|---|---|---|---|');
 for (const p of P) { const w = semanas.find((x) => x.s === p.s); md.push(`| S${p.s} | ${p.nombre} | ${p.rotacion} | ${fmt(w.ini)} → ${fmt(w.fin)} | ${fmt(w.ship)} | ${p.deload ? '**sí (50%)**' : '—'} |`); }
-for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' ? fmt(w.pcSab) + ' (opcional 30\')' + (w.pcCon ? ` — cierra la misma semana que S${w.pcCon} (SHIP ${fmt(w.shipNominal)}): su PC propio va el domingo siguiente` : '') : 'opcional / no'} | **sí (${t.tipo})** |`); }
+for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' ? fmt(w.pcSab) + ' (opcional 30\')' + (w.pcCon ? ` — cierra la misma semana que S${w.pcCon} (SHIP ${fmt(w.shipNominal)}): su PC propio va ${w.pcSab === addDays(w.shipNominal, 7) ? 'el domingo siguiente' : 'el ' + fmt(w.pcSab) + ', el primer domingo no protegido (v6.08)'}` : '') : 'opcional / no'} | **sí (${t.tipo})** |`); }
 md.push('');
 for (const p of P) {
   const w = semanas.find((x) => x.s === p.s);

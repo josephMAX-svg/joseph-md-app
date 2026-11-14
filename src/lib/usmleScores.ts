@@ -40,6 +40,8 @@
  *    caben en F1 con su Day-After completo). La línea base ANTES DE LA PAUSA ya no es siempre el NBME 28: NBME_PAUSA = el último NBME que
  *    queda en F1 (v6.00-v6.06: NBME 28 · v6.07: NBME 25) → NBME 29 ≥ NBME_PAUSA − 5 (+ alerta de caída > 8) y NBME 30 ≥ NBME_PAUSA. El NBME 28
  *    se sigue leyendo por tramos (checkpoint de fecha) en su fila real (F1 «D42 mié 30-dic» o tramo 2 «T<n> <fecha>»).
+ *  · v6.08 (14-nov-2026): re-fecha real, D1 de todo = lun 16-nov: UWSA1 D1 mar 17-nov · NBME 25 = D8 jue 10-dic (la semana de plan de la regla
+ *    del Day-After completo pasa a 2 filas con mar · jue) · protocolo Jay D1-D7. El D del NBME 25 sale de su fila (antes «D10» fijo).
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
@@ -315,10 +317,14 @@ const fCorta = (iso: string): string => `${_DIA_CORTO[new Date(iso + 'T12:00:00Z
 const EXAMEN_V6 = fCorta(FECHAS_V6.step1.examen);   // lun 25-oct (v6.03: lun 27-sep)
 const GONOGO_V6 = fCorta(FECHAS_V6.step1.gonogo);   // lun 6-sep (E-49; v6.03: lun 9-ago)
 // v6.05 (24-oct-2026): fechas de F1 DERIVADAS de las filas (antes se reescribían a mano en cada corrimiento): D1 = UWSA1, D9 = fin del
-//   protocolo Jay, D10 = NBME 25 y el NBME 28 en el último slot de F1 (hitos anclados).
+//   protocolo Jay, D10 = NBME 25 y el NBME 28 en el último slot de F1 (hitos anclados). v6.08: el D del NBME 25 también sale de su fila (D8).
 const F1_FILAS = DIAS_TODOS.filter((x) => !esFilaT2(x));
 const fF1 = (d: number): string => { const x = F1_FILAS.find((y) => y.d === d); return x ? fCorta(fechaRealDe(x.fecha, 'usmle')) : 'D' + d; }; // v6.06e: fecha real
 const NBME28_F1 = F1_FILAS.find((x) => /NBME 28/.test(x.sub));
+// v6.08: el NBME 25 ya no es siempre el D10 (v6.08: D8 jue 10-dic, adelantado una semana de plan de 2 filas para que su Day-After quepa en F1)
+//   → su fila real; el protocolo Jay va del D1 al día de Step anterior al NBME 25
+const NBME25_F1 = F1_FILAS.find((x) => /NBME 25/.test(x.sub));
+const D_NBME25 = NBME25_F1 ? NBME25_F1.d : 10;
 // v6.07: el NBME 28 puede ir en el tramo 2 (no cabe en F1 con su Day-After) → su fila real «T<n> <fecha>»
 const NBME28_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /NBME 28/.test(x.sub));
 /** v6.07: último NBME que queda en F1 = línea base antes de la pausa (v6.00-v6.06: NBME 28 · v6.07: NBME 25). */
@@ -326,8 +332,8 @@ const NBME_PAUSA = [...F1_FILAS].reverse().map((x) => (/NBME \d+/.exec(x.sub) ||
 const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : NBME28_T2 && esFilaT2(NBME28_T2) ? `T${NBME28_T2.t} ${fCorta(NBME28_T2.fecha)}, tramo 2` : 'último slot de F1';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `baseline (D1, ${fF1(1)}): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)`, tramos: [
-    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: `D1-D9 (${fF1(1)} → ${fF1(9)}, hasta el NBME 25 = D10 ${fF1(10)}) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo ${fF1(1)} con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.` },
-    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: `Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, ${fF1(10)}) decide si se aplica Jay.` },
+    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: `D1-D${D_NBME25 - 1} (${fF1(1)} → ${fF1(D_NBME25 - 1)}, hasta el NBME 25 = D${D_NBME25} ${fF1(D_NBME25)}) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo ${fF1(1)} con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.` },
+    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: `Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D${D_NBME25}, ${fF1(D_NBME25)}) decide si se aplica Jay.` },
     { desde: 48, label: '≥48 % · ON-TRACK', accion: 'Trayectoria de GO (Parte V: ~48 % ya es trayectoria de GO); seguir el plan tal cual y no leer el UWSA como predicción (sobreestima 10-15 puntos).' },
   ] },
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },

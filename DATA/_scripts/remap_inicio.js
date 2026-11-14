@@ -81,6 +81,14 @@
  * mié 11-ago. MIR D78 lun 1-mar → mantenimiento 60 filas → extensión → 14 repuestas hasta el vie 12-nov-2027 (203). Business → mar 9-mar · LIVIANO → lun
  * 22-mar (gen_liviano_plan.js, que ahora salta también los PROTEGIDOS y el D-2 del ENCAPS; el bloque 7 de este script solo deja un borrador que el
  * generador reescribe). Solo comentario: la lógica de este script no cambia.
+ *
+ * v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov, orden de Joseph del sáb 14-nov: «todo inicia el lunes 16 … alarga las fechas límite lo que amerite»;
+ * la semana lun 9 → vie 13-nov no se estudió → secundarios +5 hábiles): mismo pipeline con START = 2026-11-16 (`--bloques research,derma --usmle-aparte`;
+ * business/liviano y el USMLE, otros lotes); MIR con sus generadores (gen_mir_daily.js, default 2026-11-16, + gen_mir_mantenimiento.js, defaults
+ * 2027-03-09 2027-06-01). El lun 16-nov es día-DERMA (d1 Derma) y el mar 17-nov día-RESEARCH (M1): Research pierde 3 ranuras (lun 9, mié 11, vie 13-nov)
+ * y Derma 2 (mar 10, jue 12-nov). Research: con la pausa en el vie 15-ene abortaba (22 átomos del núcleo en 20 días) → la pausa empieza el JUE 21-ENE
+ * y el objetivo RUTA del case report pasa a ≤ lun 1-mar (gen_research_plan.js): ciclo 1 mar 17-nov → lun 12-abr, ciclo 2 mié 14-abr → sáb 18-sep.
+ * Derma c1 lun 16-nov → lun 7-jun, c2 mié 9-jun → lun 16-ago. Solo comentario: la lógica de este script no cambia.
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).

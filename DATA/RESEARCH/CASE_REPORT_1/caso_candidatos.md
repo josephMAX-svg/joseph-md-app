@@ -7,7 +7,16 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ v6.06 (sáb 31-oct-2026 · D1 del régimen lun 2-nov; Research ciclo 1 mar 3-nov → vie 2-abr): ⏸ el plazo interno del 31-oct (caso + consentimiento + senior
+> **✅ v6.08 (sáb 14-nov-2026 · D1 del régimen lun 16-nov; Research ciclo 1 mar 17-nov → lun 12-abr): el plazo interno del 31-oct sigue ⏸ VENCIDO** → **M1
+> (petición al Dr. Ciro) = mar 17-nov, la 1.ª sesión Research** (pedir el caso en el propio M1) · seguimiento = lun 7-dic (d8, día de R9) · plazo de 3 semanas
+> desde M1 = **mié 9-dic** (= C-3, d9: disparador de la fuente B, §2) · **CR-1 (caso elegido) = lun 21-dic — 🔴 51 días DESPUÉS del 31-oct** · **CR-2
+> (consentimiento firmado) = mié 23-dic — 🔴 53 días DESPUÉS del 31-oct** · pausa de átomos jue 21-ene → mié 10-feb (v6.08: empieza el jue 21-ene, antes vie
+> 15-ene) · **CR-3 fotos jue 11-feb · CR-4 CARE lun 15-feb · CR-5 borrador mié 17-feb · CR-6 revisión vie 19-feb · CR-7 formateo mar 23-feb · CR-8 paquete jue
+> 25-feb · CR-9 SUBMIT LUN 1-MAR-2027** (regla de desplazamiento, niveles 1 y 2; objetivo RUTA del case report corrido a ≤ 1-mar —antes ≤ 28-feb— por la
+> orden de Joseph «alarga las fechas límite lo que amerite»). Como CR-3 → CR-8 van tras la pausa, el caso y el consentimiento (y, si se puede, las fotos) se
+> cierran FUERA del átomo y cuanto antes: es lo único que no se puede recuperar en febrero. *(v6.07, dom 8-nov: M1 lun 9-nov · CR-1 vie 11-dic · CR-2 mar
+> 15-dic · CR-3 mié 6-ene · CR-4 → CR-8 jue 11 → mar 23-feb · CR-9 jue 25-feb.)*
+> **⏸ v6.06 (historial; sáb 31-oct-2026 · D1 del régimen lun 2-nov; Research ciclo 1 mar 3-nov → vie 2-abr): ⏸ el plazo interno del 31-oct (caso + consentimiento + senior
 > author) VENCIÓ sin día-Research** (la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct) → no se inventa otro: **M1 (petición al Dr. Ciro) = mar
 > 3-nov, la 1.ª sesión Research** (pedir el caso en el propio M1) · seguimiento = lun 23-nov (d8, día de R9) · plazo de 3 semanas desde M1 = **mié 25-nov** (= C-3,
 > d9: disparador de la fuente B, §2) · **CR-1 (caso elegido) = lun 7-dic — 🔴 37 días DESPUÉS del 31-oct** · **CR-2 (consentimiento firmado) = mié 9-dic — 🔴 39

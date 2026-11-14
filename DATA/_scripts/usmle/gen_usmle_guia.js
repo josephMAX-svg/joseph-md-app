@@ -73,6 +73,12 @@
  *   ENCAPS van detrás, en su plan) y la revisión semanal del sábado pasa a las 14:00. Tramo 2: la guía por franja cubre las desplazadas que caen
  *   en F3 (plantilla F3) y los hitos de F1 desplazados con su Day-After repartido (NBME 26/27, como el NBME 29); las desplazadas que caen en
  *   F4 (partidas, plantilla por turno M/T/L/G) no llevan guía por franja: van en META.desplazadasF4SinGuia.
+ * v6.08 (14-nov-2026): re-fecha real, D1 de todo = lun 16-nov: D1 = UWSA1 mar 17-nov (mismo guion: 07:15 localizar · 07:25 SYNAPSE · 07:55 vídeo
+ *   de método + peor escenario · 08:50-13:00 · almuerzo 13:00) · D2 jue 19 · D3 mar 24 · D4 jue 26-nov · D5 mar 1-dic · NBME 25 = D8 jue 10-dic
+ *   (adelantado una semana de plan de 2 filas) con su Day-After en D9-D12 (mar 15 → jue 24-dic) · D13 mar 29-dic. Desplazadas con guía en F3 =
+ *   T3-T32 (v5.20 D14-D43 + NBME 26 T14 / NBME 27 T29 con su Day-After en franjas). NUEVO: el NBME 27 cae en T29 (mar 27-abr) y la 4.ª fila
+ *   tras él (T33, lun 3-may) ya es F4 (SERUMS, plantilla por turno, sin 18:00) → el 6/6 de su Day-After no tiene franja: el hito y el 5/6 lo
+ *   avisan (⚠ DECISIÓN DE JOSEPH) y META.dayAfterSinFranja lo lista (verificar_v6.js lo comprueba: nada desaparece sin aviso).
  * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
  *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
  *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
@@ -197,6 +203,15 @@ const esCont = (r) => !!MF1[r.d];
 function contAtras(r, k) { let c = 0; for (let i = IDX.get(r.d) - 1; i >= 0; i--) { if (esCont(SEQ[i])) { c++; if (c === k) return SEQ[i]; } } return null; }
 /** ¿r es el n-ésimo día de plan tras un hito NBME (de F1 o, v6.05, el NBME 29 antes de las desplazadas) (n = 1..4)? */
 function trasHito(r) { for (let n = 1, i = IDX.get(r.d) - 1; i >= 0 && n <= 4; i--, n++) if (esHito(SEQ[i])) return SEQ[i].d === 1 ? null : { hito: SEQ[i], n }; return null; }
+/** v6.08 · trozos del Day-After de un hito del tramo 2 en F3 que caen en filas de F4 (SERUMS: plantilla por turno, sin franja de 18:00) —
+ *  n-ésima fila tras el hito: n = 1 → 2/6 (07:15) y 3/6 (18:00) · n = 2-3 → 4/6-5/6 (drill) · n = 4 → 6/6 (drill + eval 10Q). Sin franja en la guía:
+ *  el hito y el último trozo con franja lo avisan (DECISIÓN DE JOSEPH) y META.dayAfterSinFranja lo lista. */
+function daEnF4(h) {
+  if (!h || !h.t || h.fase !== 'F3') return [];
+  return U.DIAS_T2.filter((x) => x.t > h.t).slice(0, 4).map((x, i) => ({ n: i + 1, x })).filter((o) => o.x.fase === 'F4')
+    .map((o) => ({ ...o, partes: o.n === 1 ? '2/6 (triaje + gráficos, 60′) y 3/6 (drill de cronología, 45′)' : o.n === 4 ? '6/6 (drill de la 10.ª incorrecta + eval 10Q, 45′)' : `${o.n + 2}/6 (drill de cronología, 45′)` }));
+}
+const daEnF4Txt = (h) => { const xs = daEnF4(h); return xs.length ? `⚠ ${xs.map((o) => `El ${o.partes} del Day-After del ${nomHito(h)} cae el ${fd(o.x.fecha)} (T${o.x.t}), que ya es F4 (SERUMS: plantilla por turno, sin franja de 18:00)`).join(' · ')}: no tiene franja en esta guía → DECISIÓN DE JOSEPH (propuesta: el BLOQUE B de ese día, el de carga baja —incorrectas—, según el turno; nada se quita).` : ''; };
 /** v6.05: etiqueta de una fila en los textos (F1 «D7» · tramo 2 «T4», d = 100 + t) */
 const etqD = (d) => (d > 100 ? `T${d - 100}` : `D${d}`);
 const etq = (r) => etqD(r.d);
@@ -234,6 +249,23 @@ for (const r of T2_DESPL) {
   if (r.fase !== 'F3' || r.parte) aborta(`T${r.t} (${r.fecha}): fila desplazada en ${r.fase}${r.parte ? ' parte ' + r.parte : ''} — la guía del tramo 2 solo tiene la plantilla de F3`);
   MF1[r.d] = MAPA[r.dOrig];
 }
+/** v6.08 (fix revisión 14-nov, dia8): {D<n>} de las notas del catálogo (n = D# v5.20) → la fila y la fecha VIGENTES: «D2 · jue 19-nov-2026» si
+ *  está en F1 · «T12 del tramo 2 · vie 2-abr-2027» o «T41-T44 del tramo 2 · mié 12-may → sáb 15-may-2027» (partida en F4). Antes el catálogo
+ *  decía «(D46)» a mano y el Home no tiene D46 (F1 = D1-D13; el tramo 2 = T1-T218). Sin resolver → aborta. */
+const fdA = (iso) => `${fd(iso)}-${iso.slice(0, 4)}`;
+function filaV520Txt(n) {
+  const r = F1.find((x) => ORIGEN_F1[x.d - 1] === n);
+  if (r) return `D${r.d} · ${fdA(r.fecha)}`;
+  const ts = U.DIAS_TODOS.filter((x) => x.t && x.dOrig === n).sort((a, b) => a.t - b.t);
+  if (!ts.length) aborta(`nota del catálogo: {D${n}} no está ni en F1 ni en el tramo 2`);
+  const a = ts[0], z = ts[ts.length - 1];
+  return ts.length === 1 ? `T${a.t} del tramo 2 · ${fdA(a.fecha)}` : `T${a.t}-T${z.t} del tramo 2 · ${fd(a.fecha)} → ${fdA(z.fecha)}`;
+}
+const notaTxt = (nota) => {
+  const t = nota.replace(/\{D(\d+)\}/g, (_, n) => filaV520Txt(Number(n)));
+  if (/\{[^}]*\}/.test(t)) aborta(`nota del catálogo con un marcador sin resolver: ${t}`);
+  return t;
+};
 /** v6.05: filas del tramo 2 con guía = las desplazadas + el hito cuyo Day-After (Palmerton §9.2) cae en ellas (NBME 29, T2) */
 const TG = [...new Set([...T2_DESPL.map((r) => trasHito(r)).filter(Boolean).map((th) => th.hito), ...T2_DESPL])].sort((a, b) => a.t - b.t);
 for (const r of TG) if (esHito(r) && (r.fase !== 'F3' || !/\(07:00-12:30\)/.test(r.sub) || !/Form \d+/.test(r.uw))) aborta(`T${r.t} (${r.fecha}): hito con Day-After en las desplazadas fuera del formato NBME de F3 (07:00-12:30)`);
@@ -571,7 +603,7 @@ function deepPrime(r) {
     P(5, 'Free recall final (sin mirar)', 'Dibuja la cadena causal del día en 1 hoja; compárala con tus notas y corrige en rojo.'),
   ];
   const avisos = [];
-  if (m.nota) avisos.push(m.nota);
+  if (m.nota) avisos.push(notaTxt(m.nota));
   if (rep.desborde.length) avisos.push(`A ${vel(d).txt.split(' (')[0]} no cabe todo en 70′ de vídeo: ${rep.desborde.map((it) => `${it.tipo === 'bb' ? BB.get(it.id).nombre : PALM[it.id].t}${it.ini ? ` (desde ${mmss(it.ini)})` : ''} → ${destinoDe(it)}`).join(' · ')}. No se recorta: se ve en esas franjas.`);
   if (r.palm && d > 3) { const it = { tipo: 'palm', id: r.palm.id, ini: 0, fin: PALM[r.palm.id].s, dOrig: d }; avisos.push(`Palmerton «${PALM[r.palm.id].t}» (${hms(PALM[r.palm.id].s)}, visión del sistema) entra a la cola detrás de los B&B → ${destinoDe(it)}.`); }
   if (r.t) avisos.unshift(`Fila DESPLAZADA de F1 (era v5.20 D${r.dOrig}): la misma guía que tenía en F1, con las franjas de F3 (07:15-12:00 · 16:15 REENTRADA · 18:00).`); // v6.05
@@ -653,7 +685,9 @@ function dayAfter18(r, th) {
   const nom = nomHito(th.hito); const dr = DRILL[th.n];
   const pasos = [P(dr.length * 15, `Drill de cronología del ${nom}: pregunta${dr.length > 1 ? 's' : ''} ${dr.join(', ')} de 10 (las falladas más largas y con más labs)`, `15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente ${pcCardTxt(th.hito)}`)];
   if (th.n === 4) pasos.push(...pasosEval(r, true));
-  return B(r.fecha, '18:00–18:45', `DAY-AFTER ${nom} · ${th.n + 2}/6 — drill de cronología${th.n === 4 ? ' + eval 10Q' : ''}`, pasos, [R_UW], th.n === 4 ? '10/10 PC cards del drill y la eval de 10Q registrada' : `${dr.length} PC cards más`, { aviso: th.n === 1 ? `Day-After del ${nom} (Palmerton §9.2, ~4 h) repartido: 18:00 del hito (registro + trayectoria + auditoría) · 07:15 de hoy (triaje + gráficos) · 18:00 de hoy y de los 3 días ${DSEM === 'L-V' || r.t ? 'siguientes' : 'de Step siguientes'} (10 drills). La eval de 10Q vuelve el 4.º día${DSEM === 'L-V' || r.t ? '' : ' de Step'}; el subtema de cada día NO cambia.` : undefined });
+  return B(r.fecha, '18:00–18:45', `DAY-AFTER ${nom} · ${th.n + 2}/6 — drill de cronología${th.n === 4 ? ' + eval 10Q' : ''}`, pasos, [R_UW], th.n === 4 ? '10/10 PC cards del drill y la eval de 10Q registrada' : `${dr.length} PC cards más`, { aviso: [th.n === 1 ? `Day-After del ${nom} (Palmerton §9.2, ~4 h) repartido: 18:00 del hito (registro + trayectoria + auditoría) · 07:15 de hoy (triaje + gráficos) · 18:00 de hoy y de los 3 días ${DSEM === 'L-V' || r.t ? 'siguientes' : 'de Step siguientes'} (10 drills). La eval de 10Q vuelve el 4.º día${DSEM === 'L-V' || r.t ? '' : ' de Step'}; el subtema de cada día NO cambia.` : '',
+    // v6.08: si el trozo siguiente del Day-After cae en F4 (sin franja de 18:00), el último trozo con franja lo avisa
+    daEnF4(th.hito).some((o) => o.n === th.n + 1) ? daEnF4Txt(th.hito) : ''].filter(Boolean).join(' ') || undefined });
 }
 function dayAfter0715(r, th) {
   const nom = nomHito(th.hito);
@@ -678,7 +712,7 @@ function hitoNBME(r) {
       P(75, `Bloque 3 · ${bloques[2]}Q · 75′`, 'New Test «Block 3».'),
       P(15, 'Pausa fuera de la silla', 'Ziploc BREAK 2.'),
       P(75, `Bloque 4 · ${bloques[3]}Q · 75′`, 'New Test «Block 4». Al terminar: % total y por bloque.'),
-    ], [{ t: `Qbankly › QBanks › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (plan ${VER}: 07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: ${r.fase === 'F3' ? 'almuerzo 12:30-13:00 (F3: no hay SYNAPSE; R↔D 13:30 sin cambio). Su Day-After (~4 h) se reparte como en F1: 18:00 de hoy (1/6) + las 4 filas siguientes (07:15 de la fila siguiente y 18:00).' : 'almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).'}${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
+    ], [{ t: `Qbankly › QBanks › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (plan ${VER}: 07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: ${r.fase === 'F3' ? `almuerzo 12:30-13:00 (F3: no hay SYNAPSE; R↔D 13:30 sin cambio). Su Day-After (~4 h) se reparte como en F1: 18:00 de hoy (1/6) + las 4 filas siguientes (07:15 de la fila siguiente y 18:00).${daEnF4(r).length ? ' ' + daEnF4Txt(r) : ''}` : 'almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).'}${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
     B(f, '18:00–18:45', `DAY-AFTER NBME ${form} · 1/6 — registro + trayectoria + auditoría`, [
       P(5, 'Registrar en 📏 Medición: % total, % de los 4 bloques, horas netas', 'Step 1 → 📋 HOY → 📏 Medición.'),
       P(15, 'Trayectoria: curva del % frente a los hitos previos y al mínimo on-track', '¿Subieron los sistemas estudiados en las últimas 2 semanas?'),
@@ -872,6 +906,19 @@ function findes() {
       ], [R_ANKI], `APEX::USMLE vacío confirmado y la lista de lo que falta para la configuración del D1 anotada`, { aviso: `${VER}: ${iso === FV6.f1.inicio ? 'F1 empieza hoy con la mañana de ENCAPS' : 'hoy la mañana es de ENCAPS'}; el Step 1 arranca ${cuando === 'mañana' ? 'mañana' : 'el ' + fd(DD(1))} (D1 ${fd(DD(1))}, UWSA1) y en F1 tiene mañana solo los ${DSEM}. El D1 a las 05:00, la CONFIGURACIÓN de Anki (mazos + preset «APEX USMLE» con FSRS).` })];
       continue;
     }
+    // v6.08 (fix revisión 14-nov, dia3): entre el D1 y el D2 (mié 18-nov, día de ENCAPS) el mazo ya está CONFIGURADO pero sigue VACÍO: el D1 es
+    //   configuración + UWSA1 + Day-After 1/6, sin APEX, y la primera tarjeta nace el D2 (jue 19-nov). Antes este día caía en la rama general de
+    //   «día de ENCAPS» (27′ de vencidas y nuevas «del mar 17-nov» que no existen) → guía mínima como la de antes del D1: sync 0/0, comprobar el
+    //   preset del D1 (solo mirar) y el resto a las vencidas de ENCAPS
+    if (w >= 1 && w <= 5 && iso > DD(1) && iso < DD(2) && !FV6.skip.includes(iso)) {
+      const cuando2 = despuesTxt(iso, DD(2)); // «mañana» (mié 18-nov → jue 19-nov) o «el jue 19-nov»
+      out[iso] = [B(iso, '05:00–05:30', `ANKI AM USMLE · mazo configurado y aún vacío → la primera tarjeta nace ${cuando2} (D2)`, [
+        P(2, 'Sync + APEX::USMLE: 0 vencidas y 0 nuevas', `Anki escritorio · el mazo USMLE se configuró el D1 (${fd(DD(1))}: mazos + preset) y sigue vacío: el D1 fue configuración + UWSA1 + Day-After 1/6, sin APEX. La primera tarjeta nace por APEX el D2, ${fd(DD(2))}.`),
+        P(8, `Comprobar la configuración del ${fd(DD(1))} (solo mirar)`, `APEX::USMLE (padre) y los ${F1_DECKS.length} submazos del F1 (${F1_DECKS.map((t) => `::${t}`).join(' · ')}) existen y Deck Options del padre muestra el preset «APEX USMLE» con FSRS. Si falta algo, anótalo: se completa ${cuando2} a las 05:00, antes de la primera tarjeta.`),
+        P(20, 'Vencidas de ENCAPS::Cifras (y de ENCAPS::Flashcards si existe)', 'El mazo con historial es el de ENCAPS: responde en voz alta antes de girar · Good / Again, nunca Hard ni Easy. Si llegas a 0, sync y cierra (el resto es libre). A las 05:30 siguen los 15′ de repasos ENCAPS de su guía.'),
+      ], [R_ANKI], 'APEX::USMLE configurado y vacío confirmado (lo que falte, anotado)', { aviso: `${VER}: hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El mazo USMLE está vacío hasta ${cuando2 === 'mañana' ? 'mañana' : 'el ' + fd(DD(2))} (D2 ${fd(DD(2))}): la primera tarjeta nace por APEX ese día.` })];
+      continue;
+    }
     if (w >= 1 && w <= 5 && !F1.some((r) => r.fecha === iso) && !FV6.skip.includes(iso)) {
       const prevStep = [...F1].reverse().find((r) => r.fecha < iso);
       const finF1 = iso === ULT_F1 && iso > ultStep; // v6.07 (fix): último día de F1, sin Step (mié 30-dic, tras el D15 del mar 29-dic)
@@ -958,7 +1005,8 @@ const META = {
   /** v6.05: filas del tramo 2 con guía (desplazadas de F1 + el hito cuyo Day-After cae en ellas), plantilla F3 */
   guiaTramo2: TG.map((r) => `${etq(r)} ${fd(r.fecha)}: ${esHito(r) ? `${nomHito(r)} + Day-After 1/6 (18:00)` : `v5.20 D${r.dOrig} · ${corto(txtSub(r), 60)}`} · ${GUIA[r.fecha].length} franjas`),
   /** v6.05: días de cola tras la última desplazada (vídeo pendiente 07:15-07:45) */
-  colaTramo2: COLA_DIAS.map((r) => `${etq(r)} ${fd(r.fecha)} 07:15–07:45: ${REP[r.d].s0715.map(fmtIt).join(' + ')}`),
+  // v6.08: la franja real del día de cola (F3: 07:15-07:45 · F4: inicio del bloque A 04:05-04:35; antes decía siempre 07:15-07:45)
+  colaTramo2: COLA_DIAS.map((r) => `${etq(r)} ${fd(r.fecha)} ${r.fase === 'F4' ? '04:05–04:35' : '07:15–07:45'}: ${REP[r.d].s0715.map(fmtIt).join(' + ')}`),
   /** v6.05: lo que queda en la cola al cierre de la guía — SIEMPRE vacío (el generador aborta si no) */
   colaAlCierreTramo2: [...COLA_FINAL.bb, ...COLA_FINAL.palm].map(fmtIt),
   escenario125: `Si la velocidad se queda en 1,25× desde el D16: al cierre de F1 quedarían ≈${ESC125.bbMin}′ de B&B + ${ESC125.palmMin}′ de Palmerton en la cola (con 1,5×: ${COLA_F1.bb.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′ + ${COLA_F1.palm.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′), que se ven en el tramo 2: 07:15 y deep prime de las filas desplazadas y, si sobra, el «vídeo pendiente» 07:15-07:45 de las filas siguientes.`,
@@ -966,6 +1014,9 @@ const META = {
   diasConAvisoTramo2: TG.filter((r) => MF1[r.d] && MF1[r.d].nota).map(etq),
   bbSinDiaF1: SIN_DIA,
   bbDesplazadasTramo2: DESPL_BB,
+  /** v6.08: trozos del Day-After de un hito de F3 que caen en una fila de F4 (sin franja de 18:00): sin guía → DECISIÓN DE JOSEPH (avisado en el
+   *  hito y en el último trozo con franja). verificar_v6.js comprueba que cada trozo tiene franja o está aquí. */
+  dayAfterSinFranja: TG.filter(esHito).flatMap((h) => daEnF4(h).map((o) => `${nomHito(h)} ${o.partes.split(' (')[0]} → ${etq(o.x)} ${fd(o.x.fecha)} (F4)`)),
 };
 if (ERR.length) aborta('destinos de vídeo que no cuadran:\n  ' + ERR.join('\n  ')); // v6.05: destinoDe() de colaAlCierreF1Destino
 if (META.colaAlCierreTramo2.length) aborta('la cola de vídeo no queda vacía: ' + META.colaAlCierreTramo2.join(' · '));
@@ -981,7 +1032,7 @@ const tupla = (g) => [si(g.franja), si(g.titulo), g.totalMin,
 const DATOS = FECHAS.map((f) => [f, GUIA[f].map(tupla)]);
 const cab = `/**
  * usmleGuia.ts — GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (${fd(DD(1))} → ${fd(F1[F1.length - 1].fecha)}-${F1[F1.length - 1].fecha.slice(0, 4)} + los fines de semana) y de las
- * filas de F1 desplazadas al tramo 2 (${TG.length ? `${etq(TG[0])} ${fd(TG[0].fecha)} → ${etq(TG[TG.length - 1])} ${fd(TG[TG.length - 1].fecha)}` : '—'}${COLA_DIAS.length ? ` + cola de vídeo ${etq(COLA_DIAS[0])}-${etq(COLA_DIAS[COLA_DIAS.length - 1])}` : ''}, plantilla F3), en el
+ * filas de F1 desplazadas al tramo 2 (${TG.length ? `${etq(TG[0])} ${fd(TG[0].fecha)} → ${etq(TG[TG.length - 1])} ${fd(TG[TG.length - 1].fecha)}` : '—'}${COLA_DIAS.length ? ` + cola de vídeo ${etq(COLA_DIAS[0])}-${etq(COLA_DIAS[COLA_DIAS.length - 1])}${COLA_DIAS.some((r) => r.fase === 'F4') ? ' en el bloque A de F4' : ''}` : ''}, plantilla F3), en el
  * formato común \`GuiaBloque\` (src/lib/guia.ts). Lo pintan UsmleTodayPlan (📋 HOY → 🧭 Guía del día) y la tarjeta USMLE del Home.
  * GENERADO por DATA/_scripts/usmle/gen_usmle_guia.js (mapeo: guia_catalogo_f1.js) — NO editar a mano:
  *   node DATA/_scripts/usmle/gen_usmle_guia.js            (escribe) · --check (compara) · --informe <ruta.md>
@@ -1012,6 +1063,10 @@ const cab = `/**
  * v6.06 (31-oct-2026): D1 = lun 2-nov (la semana del 26-oct sin estudio) · F1 = 42 filas · mismo guion por D# (D1 UWSA1 lun 2 · D2 mar 3 ·
  *   D3 mié 4 · D4 jue 5 · D5 vie 6-nov · sáb 7 / dom 8-nov solo Anki) · NBME 27 = D35 vie 18-dic (Day-After D36-D39, antes del NBME 28) ·
  *   16 desplazadas con guía en T3-T18 · cola de vídeo del cierre de F1 → T4-T5 · días de cola T19-T23 · nada se recorta.
+ * v6.07 (8-nov-2026): F1 del Step = solo las mañanas de mar · jue (D1-D15, UWSA1 mar 10-nov · NBME 25 D10 jue 10-dic) · días de F1 sin Step =
+ *   ANKI AM 05:00-05:30 · desplazadas de F3 con guía por franja; las de F4, sin guía (plantilla por turno).
+ * v6.08 (14-nov-2026): D1 de todo = lun 16-nov · F1 del Step = ${F1.length} filas (${fd(F1[0].fecha)} → ${fd(F1[F1.length - 1].fecha)}) · mismo guion por D# · Day-After de un hito
+ *   de F3 que llega a F4 (sin franja de 18:00): avisado como DECISIÓN DE JOSEPH (META.dayAfterSinFranja: ${META.dayAfterSinFranja.join(' · ') || '—'}).
  */
 import type { GuiaBloque } from './guia';
 import { franjaDentro } from './guia';
