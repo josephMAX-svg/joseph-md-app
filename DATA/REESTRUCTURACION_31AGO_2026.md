@@ -5101,3 +5101,18 @@ Es el patrón v6.05/v6.06/v6.07: F1 anclada a su fin, hitos, lo que no cabe pasa
 - **Re-volcado:** C1 da 7.686 OK; sus 71 FAIL son los cambios de C2 del 4 al 10-ene y el parche. C2 da 897/897 OK y 0 FAIL.
 - **Research:** `--set` de los 12 overlays; `--check` da 0.
 - **Ajuste de la app tras la verificación:** desde el 6-dic, cuando el SHIP del domingo va por la tarde, el Feynman va en sus 10′ iniciales (14:45-14:55; `rutinaGuia.feynmanAlEmpezarShip`), igual que en el Calendar.
+
+## 33 · v6.09 — TODO ARRANCA EL MAR 17-NOV-2026; SÁB 21 Y DOM 22 LIBRES (lun 16-nov-2026)
+
+Orden de Joseph (lun 16-nov, ≈15:50): «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple y más cómoda, tal vez alargando días».
+
+**Diseño (el día perdido se recupera dentro de F1; 2027 no se toca):**
+- `_fechas_v6.json` v6.09: F1 mar 17-nov → mié 30-dic (31 hábiles). El **jue 31-dic deja de ser SKIP**: día de plan sin Step 1 (en pausa) que recupera el lun 16. `corrida_s1.sin_sesion` += 16, 21 y 22-nov, con notas.
+- **Step 1 sin cambios** (el lunes no era día de Step).
+- **ENCAPS:** 16:15 dia 1-32 del mar 17 al jue 31 (mini-sims los mismos viernes, CHECKPOINT vie 18-dic = dia 24). Mañanas corridas una ranura (n1 mié 18 … n16 mié 23-dic; **n17 dom 27-dic 06:00-10:45 + cifras 10:45-11:30**; n18 lun 28; n19-n21 sin cambio). Notas de clase en vivo atadas a su fecha con destinos nuevos. Dom 29-nov: bloque fijo de recuperación del viaje 06:30-08:00 (ET 2/3 + PPT en diferido). Primer día sin repasos (Anki 05:00/05:30 del mar 17 y mié 18). Runners re-fechados por sesión.
+- **Secundarios:** MIR, Derma, AURUM, LIVIANO y vibecoding corren un hábil y el 31-dic absorbe; Research sin cambio (el lun 16 era de Derma); Business y SYNAPSE con START lun 16 como día sin sesión (D y d de 2027 iguales). En F1 el OUTPUT de Business y los casos de LIVIANO van tras su última lectura (lunes). SHIP S1-S5 → dom 29-nov … 27-dic; revisión S01+S02 el sáb 28; Business del sáb 28 a las 07:45.
+- **Desde el lun 4-ene todo igual que la v6.08** (comprobado por 3 agentes: 9.349 salidas de la app y los datos de cada plan; única excepción interna S7.ini del vibecoding, sin texto visible).
+
+**Proceso:** implementación `wf_31e40fe3-6db` → revisión adversarial `wf_1d66db7f-d41` (día a día + datos/código: 22 hallazgos) → arreglos `wf_cc990011-451` → batería completa en verde → commit `3d92092` (desplegado).
+
+**Supabase:** 82 · 38ccfe24… → **82 · c803e1f6c65934e77c6f25f096f0b469** en una transacción con guardas (`_tx_v609_encaps.sql`); backups `study_schedule_bk_v609_20261116`, `…_int_20261116`, `study_metrics_bk_v609_20261116` (RLS ON); textos de metrics verificados por md5; staging borrado. Daemon `--dry-run`: mar 17 = D1/82, sáb 21 sin sesión, lun 23 = D5.

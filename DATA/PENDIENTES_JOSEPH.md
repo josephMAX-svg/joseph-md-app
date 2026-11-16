@@ -1,6 +1,23 @@
-# PENDIENTES DE JOSEPH · régimen v6.08 (14-nov-2026: TODO ARRANCA EL LUN 16-NOV-2026, re-fecha real: cada plan corre una semana y sus plazos se alargan) sobre la v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
+# PENDIENTES DE JOSEPH · régimen v6.09 (16-nov-2026: TODO ARRANCA EL MAR 17-NOV-2026; sáb 21 y dom 22 libres; el jue 31-dic recupera el lun 16) sobre la v6.08 (14-nov-2026: re-fecha real, cada plan corre una semana y sus plazos se alargan) sobre la v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
 
-**⚡ v6.08 (sáb 14-nov ≈08:00, VIGENTE) — TODO ARRANCA EL LUN 16-NOV. Re-fecha real: cada plan corre una semana y sus plazos se alargan.** Orden de Joseph: «todo inicia el lunes 16; reestructura todo; si hace falta mueve tiempos; alarga las fechas límite lo que amerite (2-3 días o más) para que no sea fastidioso». La semana del 9 al 15-nov no se estudió; las semanas corridas v6.07a-e (alias) quedan sin efecto. Fechas externas sin cambio: el examen ENCAPS es el dom 14-mar (el campus de Theomed lo marca ese día) y el examen Step 1 el lun 6-dic-2027.
+**⚡ v6.09 (lun 16-nov ≈16:00, VIGENTE, encima de la v6.08) — TODO ARRANCA EL MAR 17-NOV; SÁB 21 Y DOM 22 LIBRES (viaje).** Orden de Joseph: «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple, tal vez alargando días».
+
+| Frente | Cómo queda |
+|---|---|
+| **Step 1** | **Sin cambios** (el lunes no era día de Step): UWSA1 mar 17-nov 08:50-13:00, 13 mañanas mar · jue, NBME 25 jue 10-dic, examen lun 6-dic-2027. |
+| **ENCAPS 16:15** | dia 1-32 del **mar 17 al jue 31-dic** (pre-test 1/2 mar 17 tras el UWSA1, 2/2 mié 18; mini-sims los mismos viernes; CHECKPOINT vie 18-dic). Intensiva sin cambios. |
+| **ENCAPS mañanas** | Corren una ranura: 1.ª mañana **mié 18** (orientación en el campus, sin repasos). La 17/21 va el **dom 27-dic 06:00-10:45** (+ cifras 10:45-11:30; tu compromiso es a las 12:00). Simulacro de cierre mié 30, doble del jue 31 y hoja de reglas del mar 5-ene, igual. |
+| **Secundarios** | Corren un día hábil dentro de F1 y el **jue 31-dic** (antes libre por la tarde) recupera el lun 16: ese día es completo. **Desde el lun 4-ene todo cae igual que en la v6.08.** Research no cambia (el lun 16 era de Derma). Business y SYNAPSE salen como «D2 / día 2» el mar 17: el D1 era el lun 16 (sin sesión) y así la numeración de 2027 no cambia. |
+| **Fines de semana** | Sáb 21 y dom 22 libres. **Dom 29-nov:** bloque fijo 06:30-08:00 de recuperación del viaje (grabación de la ET 2/3 a 2× + los PPT en diferido de INV 1/4, INV 2/4, GES 1/6, GES 2/6, SP 2/11 y ET 2/3), simulacro opcional con ranking 08:15-12:15, SHIP S1 y un SYNAPSE de recuperación por la tarde. **Sáb 28:** Business 07:45-08:10 (antes del gimnasio) y revisión S01 + S02 a las 14:00. SHIP S2-S5 → dom 6, 13, 20 y 27-dic. |
+
+Lo que te toca a ti (v6.09):
+- [ ] **Mar 17 a las 04:15 empieza todo.** Hoy lunes: cena ligera y a la cama a las 21:00 (mañana UWSA1 08:50).
+- [ ] **Runners ENCAPS del mar 24 al jue 26-nov:** se generan tras el mini-sim del vie 20 (dependen de tus fallos) y antes del mar 24. Como el finde viajas, pídemelo el lunes 23 o el mismo vie 20 por la noche.
+- [ ] **Lun 23 a las 16:15:** la eval anclada es la de V-2 (del jue 19), no la de los fallos del mini-sim: excepción por el viaje.
+- [ ] **Dom 27-dic** es domingo de plan (06:00-11:30), y el **jue 31-dic**, día completo.
+- [ ] El simulacro de Theomed del vie 13-nov ya no da ranking: queda opcional para el dom 3-ene (o el antiguo 30/10, o DR LOPEZ 2, o descanso).
+
+**⚡ v6.08 (sáb 14-nov ≈08:00, base de la v6.09; desde el 4-ene vale tal cual) — TODO ARRANCA EL LUN 16-NOV. Re-fecha real: cada plan corre una semana y sus plazos se alargan.** Orden de Joseph: «todo inicia el lunes 16; reestructura todo; si hace falta mueve tiempos; alarga las fechas límite lo que amerite (2-3 días o más) para que no sea fastidioso». La semana del 9 al 15-nov no se estudió; las semanas corridas v6.07a-e (alias) quedan sin efecto. Fechas externas sin cambio: el examen ENCAPS es el dom 14-mar (el campus de Theomed lo marca ese día) y el examen Step 1 el lun 6-dic-2027.
 
 **F1 = lun 16-nov → mié 30-dic (32 hábiles).** Sigue el mismo esquema: mañanas ENCAPS los lun · mié · vie y Step 1 los mar · jue.
 
@@ -18,8 +35,8 @@
 - **Correo:** solo avisos de las academias.
 
 Lo que te toca a ti:
-- [ ] **Lun 16 a las 04:15 empieza todo.** **Mar 17 = UWSA1** (08:50-13:00): la noche del lun 16, cena ligera y a la cama a las 21:00.
-- [ ] **Jue 31-dic**: mañana de ENCAPS (07:15-12:00) y SP 6/11 a las 18:00. Lo demás, libre.
+- [x] ⏸ (v6.09: empieza el mar 17) **Lun 16 a las 04:15 empieza todo.** **Mar 17 = UWSA1** (08:50-13:00): la noche del lun 16, cena ligera y a la cama a las 21:00.
+- [x] ⏸ (v6.09: el jue 31-dic es día completo) **Jue 31-dic**: mañana de ENCAPS (07:15-12:00) y SP 6/11 a las 18:00. Lo demás, libre.
 - [ ] **Si el examen ENCAPS se va a abril** (4-abr o después), el Step 1 del 6-dic deja de caber (déficit de 8 a 23 unidades): habría que extender la elegibilidad o mover el examen. Con el 14 o el 21-mar cabe.
 - [ ] **Colchón del Step 1 = 10 filas ≈ 26 h.** Si quieres más margen, el examen del 13-dic-2027 da 16 filas ≈ 42 h. No lo cambié.
 - [ ] **Day-After del NBME 27** (mar 27-abr): su último trozo (6/6) cae el lun 3-may, primer día del SERUMS, sin franja propia. La guía lo avisa y propone el bloque B de ese día según el turno.

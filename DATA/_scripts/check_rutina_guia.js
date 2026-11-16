@@ -561,7 +561,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
             if (t !== '12:00') errores.push(`${tag}: la mañana ENCAPS no cubre 07:15-12:00 (termina ${t})`);
           }
           if (!B_('encaps') || hora('encaps') !== '16:15–17:15') errores.push(`${tag}: falta el ENCAPS 16:15 de la rotación F1`);
-          const an = B_('anki'); if (!an || !/ENCAPS 15′/.test(an.nombre)) errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
+          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/mazos aún vacíos/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
         }
         if (w === 6 && RG2.sabadoTheomed(iso) && bs.length) {
           const viv = EM2.theomedSabadoDe(iso);

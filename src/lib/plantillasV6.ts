@@ -223,7 +223,7 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
   const am = encapsMananaDe(iso);
   const bs: BloqueV6[] = [
     bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
-    bloque('anki', '05:00', '05:45', 'ANKI · USMLE 30′ + repasos ENCAPS 15′', 'usmle', 'usmle-anki'),
+    bloque('anki', '05:00', '05:45', ankiNombreF1(iso), 'usmle', 'usmle-anki'),
     step
       ? (() => { // v6.07: NBME de F1 (jue 10-dic) = su franja 07:00-12:30, como en F3 (sustituye al bloque de la mañana)
         const r = usmle && esHito(usmle) && /NBME/.test(usmle.sub ?? '') ? /\((\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(usmle.sub ?? '') : null;
@@ -246,6 +246,8 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
   if (biz) bs.push(biz);
   return bs;
 }
+/** v6.09 (16-nov-2026): la 1.ª mañana ENCAPS (mié 18-nov) cae antes del D2 del Step 1: aún no hay tarjetas USMLE (nacen el jue 19) ni ENCAPS (nacen hoy a las 11:40) → el bloque no promete repasos (la guía ya dice «libre»). */
+function ankiNombreF1(iso: string): string { return iso === '2026-11-18' ? 'ANKI · mazos aún vacíos (USMLE nace el jue 19 · ENCAPS hoy 11:40): comprobar + libre' : 'ANKI · USMLE 30′ + repasos ENCAPS 15′'; }
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
 function mirNombreF1(iso: string): string { return mirSesionDe(iso)?.dia.d === 1 ? 'MIR · Arranque (D1) + Deep Work (1 h)' : 'MIR · Eval D-1 + Deep Work (1 h)'; }
 /** v6.09 (16-nov-2026): DÍA HÁBIL DE LA TRANSICIÓN con mañana ENCAPS (encapsManana.diaExtra; v6.09: jue 31-dic, que deja de ser SKIP y recupera el
