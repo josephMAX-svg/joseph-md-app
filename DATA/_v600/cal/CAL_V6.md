@@ -2762,3 +2762,9 @@ El Calendar venía de las rondas 1-8 de la §26: ≈ 611 instancias del 13-nov a
 - La clase en vivo de Theomed del sáb 14 y su preparación.
 
 Respaldos en `c1/bk/` y `c2/bk/`. Volcados previos en `c1/volcados/` y `c2/volcados/p*.json`; posteriores en `c1/volcados_despues/` y `c2/volcados_despues/`. Informes en `c1/verificacion_despues.txt` y `c2/verificacion_despues.txt`. Todo bajo `cal_bk/v608/`, ignorado por git.
+
+**Lun 16-nov (≈ 09:40), después del arranque:**
+- Las 11 mañanas ENCAPS de F1 con clase en vivo entre semana esa noche (vie 20, lun 23, vie 27, lun 30-nov, vie 4, lun 7, vie 11, lun 14, vie 18, lun 21 y lun 28-dic) llevan ahora la nota de qué clase es y qué mañana la recoge en diferido. App: commit `4b93e5c`.
+- En el Calendar se actualizó solo la descripción de esas 11 instancias del evento «arranque + TEORÍA» de las 07:15 (serie `76dnlc30…`), con el mismo constructor de textos (`c1/mkdesc_extra.js`). Antes se comprobó que el constructor reproducía al carácter la descripción vigente.
+- Comprobación: 11/11 idénticas con `get_event`. Copia previa en `c1/bk_notas_vivo.json`.
+- Los eventos de hoy, que Joseph reordenó a mano, no se tocaron.
