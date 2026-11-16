@@ -7,6 +7,9 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
+> **✅ v6.09 (lun 16-nov-2026 · D1 del régimen mar 17-nov; sáb 21 y dom 22-nov libres por viaje): Research NO cambia** — el lun 16 era día-Derma, así que
+> todas las fechas de abajo (M1 mar 17-nov · R9 lun 7-dic · C-3 mié 9-dic · CR-1 lun 21-dic · CR-2 mié 23-dic · CR-9 lun 1-mar) siguen vigentes.
+>
 > **✅ v6.08 (sáb 14-nov-2026 · D1 del régimen lun 16-nov; Research ciclo 1 mar 17-nov → lun 12-abr): el plazo interno del 31-oct sigue ⏸ VENCIDO** → **M1
 > (petición al Dr. Ciro) = mar 17-nov, la 1.ª sesión Research** (pedir el caso en el propio M1) · seguimiento = lun 7-dic (d8, día de R9) · plazo de 3 semanas
 > desde M1 = **mié 9-dic** (= C-3, d9: disparador de la fuente B, §2) · **CR-1 (caso elegido) = lun 21-dic — 🔴 51 días DESPUÉS del 31-oct** · **CR-2

@@ -35,8 +35,8 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
 import { guiaEncapsDe, sesionEncapsDe, encapsSabadoDe, guiaEncapsSabadoDe, sesionEncapsSabadoDe } from '../../lib/encapsGuia'; // v6.06: + carril SÁBADO de la intensiva · v6.06 (fix): + su guía y sus runners
 import {
   encapsMananaDe, guiaEncapsMananaDe, guiaEncapsTardeDe, guiaEncapsAnkiDe, theomedSabadoDe, guiaTheomedPrepDe, guiaTheomedVivoDe, encapsDomingoDe,
-  guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO,
-} from '../../lib/encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + 18:00 + Anki 05:30 + clase EN VIVO del sábado + ENCAPS opcional del domingo
+  guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO, encapsRecuperaDe, guiaEncapsRecuperaDe,
+} from '../../lib/encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + 18:00 + Anki 05:30 + clase EN VIVO del sábado + ENCAPS opcional del domingo · v6.09 (fix): + recuperación fija del domingo
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
@@ -230,6 +230,9 @@ export function encapsLabelDe(iso: string): string | null {
   if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
+  // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (dom 29-nov 06:30): va primero en la etiqueta
+  const recE = encapsRecuperaDe(iso);
+  if (recE) return `ENCAPS ${recE.ini} recuperación del viaje (fija)${domE ? ` + ${domE.etiqueta.replace(/^ENCAPS · /, '')}` : ''}`;
   if (domE) return domE.etiqueta;
   if (repo) return `ENCAPS · sáb ${sab!.ini} · ${repo}`;
   return plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps') ? 'ENCAPS · intensiva (ver plan)' : null;
@@ -533,6 +536,12 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         const viv = theomedSabadoDe(iso);
         const g = b.id === 'theomed-prep' ? guiaTheomedPrepDe(iso) : guiaTheomedVivoDe(iso);
         if (viv?.vivo && g) return { tema: `${viv.vivo} · ${viv.area ?? ''}`.replace(/ · $/, ''), sub: b.id === 'theomed-prep' ? 'PPT de la clase + 3 preguntas' : 'en vivo, participando · notas en forma de pregunta · el tramo 17:00-17:30 en la grabación', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
+      }
+      // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (dom 29-nov 06:30-08:00: grabación de la ET 2/3 + PPT en diferido)
+      if (b.id === 'encaps-rec') {
+        const rec = encapsRecuperaDe(iso);
+        const g = guiaEncapsRecuperaDe(iso);
+        if (rec && g) return { tema: rec.tema, sub: 'fijo, no opcional · primero el PPT; la grabación a 2× solo en los tramos que el PPT no explica · notas en forma de pregunta', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
       if (b.id === 'encaps-dom') {
         const dom = encapsDomingoDe(iso);

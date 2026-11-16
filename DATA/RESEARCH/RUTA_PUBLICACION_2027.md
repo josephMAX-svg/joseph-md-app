@@ -6,7 +6,12 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **✅ v6.08 VIGENTE (sáb 14-nov-2026) — D1 del régimen = LUN 16-NOV-2026 (la semana lun 9 → vie 13-nov no se estudió; Joseph: «todo inicia el lunes 16;
+> **✅ v6.09 (lun 16-nov-2026) — D1 del régimen = MAR 17-NOV-2026 (Joseph: «hoy no avancé, todo empieza a partir de mañana; el sábado y el domingo viajo»).
+> Research NO cambia: el lun 16 era día-DERMA (M1 sigue el mar 17-nov y todos los átomos, la pausa 21-ene → 10-feb, CR-9 lun 1-mar y el ciclo 2 caen igual).
+> Derma corre una ranura dentro de F1 y el jue 31-dic —ya no es SKIP; por paridad sería día-Research— pasa a día-Derma (researchData.TIPO_RD_FORZADO).
+> El bloque v6.08 de abajo sigue valiendo para Research.**
+>
+> **✅ v6.08 (sáb 14-nov-2026) — D1 del régimen = LUN 16-NOV-2026 (la semana lun 9 → vie 13-nov no se estudió; Joseph: «todo inicia el lunes 16;
 > reestructura todo; si hace falta mueve tiempos; alarga las fechas límite lo que amerite»): ciclo 1 = 42 átomos mar 17-nov-2026 → lun 12-abr-2027 · ciclo 2 =
 > 67 átomos mié 14-abr → sáb 18-sep-2027** (mismos átomos; `node DATA/_scripts/gen_research_plan.js 2026-11-16`, vía `remap_inicio.js 2026-11-16 --bloques
 > research,derma --usmle-aparte`). El lun 16-nov es día-DERMA por paridad → Research arranca el **mar 17-nov (M1, d1)** y pierde 3 ranuras frente a la v6.07

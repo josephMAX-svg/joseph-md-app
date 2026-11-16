@@ -1,5 +1,5 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.08: MANTENIMIENTO D1-D32 lun 16-nov → mié 30-dic-2026 + INTENSIVA dia 33-82 + carril SÁBADO 14:00 + carril VIERNES 16:15 · v6.07: D1-D37 lun 9-nov + INTENSIVA 38-87 · v6.06: D1-D42 lun 2-nov + INTENSIVA 43-92 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.09: MANTENIMIENTO D1-D32 mar 17-nov → jue 31-dic-2026 + INTENSIVA dia 33-82 + carril SÁBADO 14:00 + carril VIERNES 16:15 · v6.08: D1-D32 lun 16-nov → mié 30-dic · v6.07: D1-D37 lun 9-nov + INTENSIVA 38-87 · v6.06: D1-D42 lun 2-nov + INTENSIVA 43-92 · v6.05: D1-D47 lun 26-oct + INTENSIVA dia 48-97 · v6.03: D1-D50 mié 21-oct + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
  * INTENSIVA dia 53-102 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v6.01: D1-D57 lun 12-oct →
  * mié 30-dic + INTENSIVA dia 58-107 (mismas fechas) · v6.00: D1-D60 mié 7-oct →
  * mié 30-dic + INTENSIVA dia 61-110 (mismas fechas) · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
@@ -54,6 +54,9 @@
  * dress 81). Pendientes F1 = 28: 13 lun-jue con sus fechas (dia 65 … 80; mini-sims sim_n 68 / 74 / 80) + 8 sábados a las 14:00 (sim_n 1047, 1057 y 1072
  * para los mini-sims de los sáb 23-ene, 6-feb y 27-feb) + 7 viernes del CARRIL VIERNES 16:15 (vie 8, 15, 22, 29-ene, 5, 12-feb y 5-mar; claves D{dia}:b_*,
  * cierre 'carril_b'). La fila del mar 5-ene (dia 34) es la mañana 21/21 de F1 (loop sin código: cierre del loop como siempre).
+ * v6.09 (16-nov-2026): corrimiento a D1 = mar 17-nov (el lun 16 sin estudio) y el jue 31-dic deja de ser SKIP (dia 32) → F1 D1-D32 + INTENSIVA dia 33-82
+ * IDÉNTICA a la v6.08. Sin cambio de código: los mini-sims F1 son los mismos viernes con sim_n 4 · 9 · 14 · 19 · 24 (= dia de la fila; v6.08: 5 … 25);
+ * desde el dia 33 todo igual que en la v6.08.
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

@@ -110,7 +110,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, M
 const optNum = (v: unknown, max: number): number | undefined => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : clamp(Number(v), 0, max));
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return MIR_DIAS[0]?.fecha || '2026-11-16'; } // v6.08 (14-nov): fallback = D1 MIR lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07)
+  catch { return MIR_DIAS[0]?.fecha || '2026-11-17'; } // v6.09 (16-nov): fallback = D1 MIR mar 17-nov (v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07)
 }
 const porTs = (a: MirEvalEntry, b: MirEvalEntry) => (a.ts || '').localeCompare(b.ts || '');
 
@@ -221,12 +221,12 @@ export function mirEstadoCierreTxt(estado: MirEstadoCierre, fechaISO?: string): 
     default: return 'sin test de cierre registrado';
   }
 }
-/** Compat: textos de la fase 1 (fecha de referencia = D1 MIR; v6.08: lun 16-nov · v6.07: lun 9-nov · v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00: mié 7-oct). */
+/** Compat: textos de la fase 1 (fecha de referencia = D1 MIR; v6.09: mar 17-nov · v6.08: lun 16-nov · v6.07: lun 9-nov · v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00: mié 7-oct). */
 export const MIR_ESTADO_CIERRE_TXT: Record<MirEstadoCierre, string> = {
-  consolidada: mirEstadoCierreTxt('consolidada', '2026-11-16'),
-  intermedia: mirEstadoCierreTxt('intermedia', '2026-11-16'),
-  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-11-16'),
-  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-11-16'),
+  consolidada: mirEstadoCierreTxt('consolidada', '2026-11-17'),
+  intermedia: mirEstadoCierreTxt('intermedia', '2026-11-17'),
+  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-11-17'),
+  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-11-17'),
 };
 
 // ── táctica −1/3 (gap 6) ──

@@ -1,27 +1,27 @@
 {
  "id": "EVAL_2026-11-18",
- "titulo": "Eval anclada ENCAPS · Mié 2026-11-18 · I-3",
+ "titulo": "Eval anclada ENCAPS · Mié 2026-11-18 · II-3",
  "tipoRonda": "eval_anclada",
  "fecha": "2026-11-18",
- "codigo": "I-3",
- "sub_eje": "tipos_vigilancia",
- "tema": "eval anclada · código de ayer I-3: 3 cifras + 2 viñetas",
- "fuente_preguntas": "BANCO_PROPIO (set_I-3_1.json)",
+ "codigo": "II-3",
+ "sub_eje": "esquema_intervalos",
+ "tema": "eval anclada · código de ayer II-3: 3 cifras + 2 viñetas",
+ "fuente_preguntas": "BANCO_PROPIO (set_II-3_1.json)",
  "n": 5,
  "seg_por_q": 72,
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas del tema de AYER (código de ayer I-3: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas del tema de AYER (código de ayer II-3: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
    "fecha": "2026-11-17",
    "tipo": "banqueo1h",
-   "codigo": "I-3",
-   "sub_eje": "tipos_vigilancia"
+   "codigo": "II-3",
+   "sub_eje": "esquema_intervalos"
   },
-  "modo": "código de ayer I-3: 3 cifras + 2 viñetas",
+  "modo": "código de ayer II-3: 3 cifras + 2 viñetas",
   "lista_negra_pretest": "VIGENTE",
   "refrescado": [
    {
@@ -34,196 +34,202 @@
   ],
   "realineado": [
    {
+    "de": "2026-10-06",
+    "a": "2026-10-07",
+    "el": "2026-10-05",
+    "motivo": "corrimiento v5.19 (D1 = 2026-10-06): la sesión pasa del mar 2026-10-06 al mié 2026-10-07; ítems intactos, sin regenerar"
+   },
+   {
     "de": "2026-10-07",
     "a": "2026-10-08",
-    "el": "2026-10-05",
-    "motivo": "corrimiento v5.19 (D1 = 2026-10-06): la sesión pasa del mié 2026-10-07 al jue 2026-10-08; ítems intactos, sin regenerar"
+    "el": "2026-10-06",
+    "motivo": "corrimiento v5.20 (D1 = 2026-10-07, régimen DEFINITIVO): la sesión pasa del mié 2026-10-07 al jue 2026-10-08; ítems intactos, sin regenerar"
    },
    {
     "de": "2026-10-08",
-    "a": "2026-10-12",
-    "el": "2026-10-06",
-    "motivo": "corrimiento v5.20 (D1 = 2026-10-07, régimen DEFINITIVO): la sesión pasa del jue 2026-10-08 al lun 2026-10-12; ítems intactos, sin regenerar. En v5.20 el I-3 es el jue 8-oct (D2) y el vie 9 es mini-sim (sin eval): esta eval de I-3 queda para el lun 12-oct. Regla de lunes: si ya registraste los fallos del mini-sim del vie 9, rehaz esos primero; esta eval sirve de recall de I-3 (no se pierde)"
-   },
-   {
-    "de": "2026-10-12",
-    "a": "2026-10-14",
+    "a": "2026-10-13",
     "el": "2026-10-10",
-    "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 3 (D3)» pasa del lunes 2026-10-12 al miércoles 2026-10-14; ítems intactos, sin regenerar. En v6.01 el I-3 es el mar 13-oct (D2) y esta eval es la sesión SIGUIENTE (mié 14-oct, D3): ya no hay mini-sim en medio (la nota de v5.20 sobre el vie 9 queda solo como historial)"
+    "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 2 (D2)» pasa del jueves 2026-10-08 al martes 2026-10-13; ítems intactos, sin regenerar"
    },
    {
-    "de": "2026-10-14",
-    "a": "2026-10-21",
+    "de": "2026-10-13",
+    "a": "2026-10-20",
     "el": "2026-10-17",
-    "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 3 (D3)» pasa del miércoles 2026-10-14 al miércoles 2026-10-21 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar"
+    "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 2 (D2)» pasa del martes 2026-10-13 al martes 2026-10-20 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar"
    },
    {
-    "de": "2026-10-21",
-    "a": "2026-10-26",
+    "de": "2026-10-20",
+    "a": "2026-10-22",
     "el": "2026-10-20",
-    "motivo": "corrimiento v6.03 (D1 = 2026-10-21, «todo comienza mañana miércoles 21, corre dos días»; no se estudió lun 19 ni mar 20-oct): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-10-21 (D3) al lunes 2026-10-26 (D4; +2 hábiles lun-jue, los viernes de mini-sim no se mueven); ítems intactos, sin regenerar. En v6.03 el I-3 (fila dia 2) es el jue 22-oct (D2, parte 2 del pre-test de arranque) y el vie 23-oct (D3) es mini-sim (sin eval): esta eval de I-3 queda para el lun 26-oct (D4), la sesión lun-jue siguiente. Regla de lunes: si ya registraste los fallos del mini-sim del vie 23 (--registrar --append), rehaz esos primero; esta eval sirve de recall de I-3 (no se pierde)"
+    "motivo": "corrimiento v6.03 (D1 = 2026-10-21, «todo comienza mañana miércoles 21, corre dos días»; no se estudió lun 19 ni mar 20-oct): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del martes 2026-10-20 (D2) al jueves 2026-10-22 (D2; +2 hábiles lun-jue, los viernes de mini-sim no se mueven); ítems intactos, sin regenerar (sesión anterior = 2026-10-21, fila dia 1 II-3)"
    },
    {
-    "de": "2026-10-26",
-    "a": "2026-10-28",
+    "de": "2026-10-22",
+    "a": "2026-10-27",
     "el": "2026-10-24",
-    "motivo": "corrimiento v6.05 (D1 = 2026-10-26, «todo inicia el lunes 26»; la semana del 19 no se estudió —ni el D1 del mié 21 ni su alias del jue 22, v6.04a sin efecto—): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del lunes 2026-10-26 (D4) al miércoles 2026-10-28 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-10-27, fila dia 2 I-3). En v6.05 el I-3 (fila dia 2) es el mar 2026-10-27 y esta eval es la sesión SIGUIENTE (mié 2026-10-28, D3): ya no hay mini-sim en medio (la nota «regla de lunes» de v6.03 queda solo como historial)"
+    "motivo": "corrimiento v6.05 (D1 = 2026-10-26, «todo inicia el lunes 26»; la semana del 19 no se estudió —ni el D1 del mié 21 ni su alias del jue 22, v6.04a sin efecto—): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del jueves 2026-10-22 (D2) al martes 2026-10-27 (D2); ítems intactos, sin regenerar (sesión anterior = 2026-10-26, fila dia 1 II-3)"
    },
    {
-    "de": "2026-10-28",
-    "a": "2026-11-04",
+    "de": "2026-10-27",
+    "a": "2026-11-03",
     "el": "2026-10-31",
-    "motivo": "corrimiento v6.06 (D1 = 2026-11-02, «reestructura todo a partir del 2 de noviembre … corre nada más, corre con una semana»; la semana del lun 26 al vie 30-oct no se estudió): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-10-28 (D3) al miércoles 2026-11-04 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-11-03, fila dia 2 I-3)"
+    "motivo": "corrimiento v6.06 (D1 = 2026-11-02, «reestructura todo a partir del 2 de noviembre … corre nada más, corre con una semana»; la semana del lun 26 al vie 30-oct no se estudió): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del martes 2026-10-27 (D2) al martes 2026-11-03 (D2); ítems intactos, sin regenerar (sesión anterior = 2026-11-02, fila dia 1 II-3)"
    },
    {
-    "de": "2026-11-04",
-    "a": "2026-11-11",
+    "de": "2026-11-03",
+    "a": "2026-11-10",
     "el": "2026-11-08",
-    "motivo": "corrimiento v6.07 (D1 = 2026-11-09, «empezamos mañana 9»; la semana del lun 2 al vie 6-nov no se estudió y la corrida v6.06a-e queda sin efecto): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-11-04 (D3) al miércoles 2026-11-11 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-11-10, fila dia 2 I-3)"
+    "motivo": "corrimiento v6.07 (D1 = 2026-11-09, «empezamos mañana 9»; la semana del lun 2 al vie 6-nov no se estudió y la corrida v6.06a-e queda sin efecto): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del martes 2026-11-03 (D2) al martes 2026-11-10 (D2); ítems intactos, sin regenerar (sesión anterior = 2026-11-09, fila dia 1 II-3)"
    },
    {
-    "de": "2026-11-11",
-    "a": "2026-11-18",
+    "de": "2026-11-10",
+    "a": "2026-11-17",
     "el": "2026-11-14",
-    "motivo": "corrimiento v6.08 (D1 = 2026-11-16, «todo inicia el lunes 16»; la semana del lun 9 al vie 13-nov no se estudió y las semanas corridas v6.07a-e quedan sin efecto): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-11-11 (D3) al miércoles 2026-11-18 (D3); ítems intactos, sin regenerar (sesión anterior = 2026-11-17, fila dia 2 I-3)"
+    "motivo": "corrimiento v6.08 (D1 = 2026-11-16, «todo inicia el lunes 16»; la semana del lun 9 al vie 13-nov no se estudió y las semanas corridas v6.07a-e quedan sin efecto): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del martes 2026-11-10 (D2) al martes 2026-11-17 (D2); ítems intactos, sin regenerar (sesión anterior = 2026-11-16, fila dia 1 II-3)"
+   },
+   {
+    "de": "2026-11-17",
+    "a": "2026-11-18",
+    "el": "2026-11-16",
+    "motivo": "corrimiento v6.09 (D1 = 2026-11-17, «hoy no avancé, todo empieza mañana»; el lun 16-nov no se estudió, el jue 31-dic recupera ese día y el sáb 21 y el dom 22-nov son libres por viaje): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del martes 2026-11-17 (D2) al miércoles 2026-11-18 (D2; −1 slot lun-jue: el lun 16 ya no es de plan; los viernes de mini-sim no se mueven); ítems intactos, sin regenerar (sesión anterior = 2026-11-17, fila dia 1 II-3)"
    }
   ]
  },
  "items": [
   {
    "n": 1,
-   "id": "R-2025-1A-Q22",
-   "codigo": "I-3",
-   "area": "I",
-   "formato": "directa",
+   "id": "N-II3-006",
+   "codigo": "II-3",
+   "area": "II",
+   "formato": "cifra",
    "critico": true,
-   "sub_eje": "tipos_vigilancia",
-   "subangulo": "Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria) y definiciones de caso",
-   "fallo_previo": "tipo_pasiva",
+   "sub_eje": "esquema_intervalos",
+   "subangulo": "Esquema nacional: vacunas por edad, dosis, vías e intervalos mínimos",
+   "fallo_previo": null,
    "reservado_para": null,
-   "dif": "real",
-   "origen": "examen_real",
-   "enunciado": "Los sistemas de vigilancia en salud (SVES) son la guía para la acción que el personal de salud utiliza para tomar decisiones prácticas frente a los problemas de salud. El tipo tradicional se caracteriza por que se...",
+   "dif": "alta",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Según el esquema vigente, la vacuna contra el virus del papiloma humano (VPH) se aplica a mujeres y hombres de 9 a 18 años en un esquema de:",
    "opciones": {
-    "A": "usan datos específicos de información adicional.",
-    "B": "usa mediciones sistemáticas.",
-    "C": "incluye los procedimientos del proceso de la práctica «centinela».",
-    "D": "basan en los sistemas de declaración de enfermedades transmisibles y morbilidad."
+    "A": "1 dosis",
+    "B": "2 dosis (0 y 6 meses)",
+    "C": "3 dosis (0, 2 y 6 meses)",
+    "D": "2 dosis solo en mujeres"
    },
-   "clave": "D",
-   "respuesta": "basan en los sistemas de declaración de enfermedades transmisibles y morbilidad.",
-   "explicacion": null,
-   "fuente": "Examen real ENCAPS/SERUMS 2025-1A · pregunta 22 (texto íntegro; opciones normalizadas A/B/C/D)",
-   "verificado_contra": "CLAVE OFICIAL 2025-1A Q22 = D (basan en los sistemas de declaración de enfermedades transmisibles y m) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-1A.pdf', extracción programática 05-sep-2026",
-   "molde": "2025-1A Q22 (ítem real, no espejo)"
+   "clave": "A",
+   "respuesta": "1 dosis",
+   "explicacion": "Dosis ÚNICA de VPH a mujeres y hombres entre 9 y 18 años. Ya no es esquema de 2 dosis ni solo para niñas.",
+   "fuente": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) p.20 y p.24: \"Una sola dosis de la vacuna contra el VPH a mujeres y hombres entre 9 y 18 años de edad\" · \"9 a 18 años: VPH (1 dosis en varones y mujeres)\"",
+   "verificado_contra": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) · tabla adolescente/adulto (texto extraído)",
+   "molde": "sin molde (redacción propia, estilo directa/viñeta corta ENCAPS)"
   },
   {
    "n": 2,
-   "id": "R-2025-2-Q21",
-   "codigo": "I-3",
-   "area": "I",
-   "formato": "directa",
+   "id": "N-II3-016",
+   "codigo": "II-3",
+   "area": "II",
+   "formato": "cifra",
    "critico": true,
-   "sub_eje": "sala_situacional_asis",
-   "subangulo": "Sala situacional, ASIS y evaluación de indicadores en SP",
-   "fallo_previo": "corredor_sala_situacional",
+   "sub_eje": "cadena_frio",
+   "subangulo": "Cadena de frío: rangos 2-8 °C, termos/data-loggers, ruptura de cadena y conducta",
+   "fallo_previo": null,
    "reservado_para": null,
-   "dif": "real",
-   "origen": "examen_real",
-   "enunciado": "¿Cuál es el ámbito donde se desarrollan procesos de integración de la información de vigilancia de las situaciones de salud en periodos normales y de emergencia para la toma decisiones en salud pública?",
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Rango de temperatura de conservación de las vacunas en la cadena de frío y temperatura media IDEAL, respectivamente:",
    "opciones": {
-    "A": "Sala de situación de salud",
-    "B": "Comité de inteligencia sanitaria",
-    "C": "Análisis de situación de salud",
-    "D": "Vigilancia epidemiológica"
+    "A": "+2 a +8 °C · +4 a +6 °C",
+    "B": "0 a +8 °C · +2 a +4 °C",
+    "C": "+2 a +10 °C · +5 a +7 °C",
+    "D": "−2 a +8 °C · +3 a +5 °C"
    },
    "clave": "A",
-   "respuesta": "Sala de situación de salud",
-   "explicacion": null,
-   "fuente": "Examen real ENCAPS/SERUMS 2025-2 · pregunta 21 (texto íntegro; opciones normalizadas A/B/C/D)",
-   "verificado_contra": "CLAVE OFICIAL 2025-2 Q21 = A (Sala de situación de salud) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-2.pdf', extracción programática 05-sep-2026",
-   "molde": "2025-2 Q21 (ítem real, no espejo)"
+   "respuesta": "+2 a +8 °C · +4 a +6 °C",
+   "explicacion": "Conservación +2 a +8 °C; media ideal +4 a +6 °C; oscilación aceptable +3 a +7 °C; zona de alerta +2 a <+3 y +7 a +8 °C.",
+   "fuente": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) p.26: \"T° de conservación: +2 °C a +8 °C · T° media ideal: entre +4 °C a +6 °C · T° de oscilación: entre +3 °C y +7 °C\"",
+   "verificado_contra": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) · cadena de frío (texto extraído)",
+   "molde": "sin molde (redacción propia, estilo directa/viñeta corta ENCAPS)"
   },
   {
    "n": 3,
-   "id": "R-2025-1A-Q74",
-   "codigo": "I-3",
-   "area": "I",
-   "formato": "directa",
+   "id": "N-II3-013",
+   "codigo": "II-3",
+   "area": "II",
+   "formato": "viñeta+cifra",
    "critico": true,
-   "sub_eje": "sala_situacional_asis",
-   "subangulo": "Sala situacional, ASIS y evaluación de indicadores en SP",
-   "fallo_previo": "corredor_sala_situacional",
+   "sub_eje": "esavi_kit",
+   "subangulo": "ESAVI: clasificación, notificación y kit de emergencia (epinefrina 0.01 mg/kg IM)",
+   "fallo_previo": null,
    "reservado_para": null,
-   "dif": "real",
-   "origen": "examen_real",
-   "enunciado": "La sala situacional de salud es una herramienta que ofrece evidencia sobre la eficacia de las intervenciones en salud y sobre la capacidad de los sistemas de salud para responder a las necesidades de salud de la población. ¿Quiénes la deben conocer y analizar prioritariamente?",
+   "dif": "alta",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Lactante hospitalizado por convulsiones 8 horas después de recibir sus vacunas de los 4 meses en el C.S. de Chota. ¿En qué plazo debe notificarse el caso al nivel inmediato superior?",
    "opciones": {
-    "A": "Promotores de salud y responsable de promoción de la salud",
-    "B": "Todo el personal de salud y autoridades locales",
-    "C": "Coordinadores de red y responsable de epidemiología",
-    "D": "El responsable de epidemiologia y jefe de establecimiento"
+    "A": "Dentro de las primeras 24 horas de conocido",
+    "B": "Dentro de las 48 horas",
+    "C": "Dentro de los 7 días (consolidado semanal)",
+    "D": "Al concluir la investigación"
    },
-   "clave": "B",
-   "respuesta": "Todo el personal de salud y autoridades locales",
-   "explicacion": null,
-   "fuente": "Examen real ENCAPS/SERUMS 2025-1A · pregunta 74 (texto íntegro; opciones normalizadas A/B/C/D)",
-   "verificado_contra": "CLAVE OFICIAL 2025-1A Q74 = B (Todo el personal de salud y autoridades locales) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-1A.pdf', extracción programática 05-sep-2026",
-   "molde": "2025-1A Q74 (ítem real, no espejo)"
+   "clave": "A",
+   "respuesta": "Dentro de las primeras 24 horas de conocido",
+   "explicacion": "ESAVI severo (hospitalización): notificación dentro de las primeras 24 horas; la investigación se inicia dentro de las 48 horas de notificado.",
+   "fuente": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) p.26: \"Los ESAVI severos se notifican dentro de las primeras 24 horas de conocido el caso\" · Theomed CI 2.10: \"Investigación del caso ESAVI severo: dentro de las 48 horas de notificado\"",
+   "verificado_contra": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) + Manual Theomed CUIDADO INTEGRAL 2026 (pdftotext 05-sep-2026) (Dir. 054-MINSA/DGE-V.01)",
+   "molde": "sin molde (redacción propia, estilo directa/viñeta corta ENCAPS)"
   },
   {
    "n": 4,
-   "id": "R-2024-2A-Q95",
-   "codigo": "I-3",
-   "area": "I",
+   "id": "N-II3-005",
+   "codigo": "II-3",
+   "area": "II",
    "formato": "viñeta",
    "critico": true,
-   "sub_eje": "tipos_vigilancia",
-   "subangulo": "Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria) y definiciones de caso",
-   "fallo_previo": "definicion_caso",
+   "sub_eje": "esquema_intervalos",
+   "subangulo": "Esquema nacional: vacunas por edad, dosis, vías e intervalos mínimos",
+   "fallo_previo": null,
    "reservado_para": null,
-   "dif": "real",
-   "origen": "examen_real",
-   "enunciado": "Nos reportan casos de tos ferina en una comunidad de la selva hace 3 días, es el primer caso que es captado por el servicio de salud. ¿A qué tipo de caso corresponde?",
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Niño de 18 meses con esquema al día. ¿Qué le corresponde en esta visita?",
    "opciones": {
-    "A": "Sospechoso",
-    "B": "Índice",
-    "C": "Primario",
-    "D": "Secundario"
+    "A": "DPT 1.er refuerzo, APO 1.er refuerzo y SPR 2.ª dosis",
+    "B": "DPT 2.º refuerzo y APO 2.º refuerzo",
+    "C": "Antiamarílica y hepatitis A",
+    "D": "Pentavalente 3.ª dosis e influenza 2.ª dosis"
    },
-   "clave": "B",
-   "respuesta": "Índice",
-   "explicacion": null,
-   "fuente": "Examen real ENCAPS/SERUMS 2024-2A · pregunta 95 (texto íntegro; opciones normalizadas A/B/C/D)",
-   "verificado_contra": "CLAVE OFICIAL 2024-2A Q95 = B (Índice) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2024-2A.pdf', extracción programática 05-sep-2026",
-   "molde": "2024-2A Q95 (ítem real, no espejo)"
+   "clave": "A",
+   "respuesta": "DPT 1.er refuerzo, APO 1.er refuerzo y SPR 2.ª dosis",
+   "explicacion": "18 meses = 1.er refuerzo de DPT y de APO + 2.ª dosis de SPR. El 2.º refuerzo DPT/APO es a los 4 años.",
+   "fuente": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) p.25: \"18 meses: DPT (1er refuerzo), Polio oral (APO) (1er refuerzo), SPR (2da dosis)\"",
+   "verificado_contra": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) · esquema por edad (texto extraído)",
+   "molde": "sin molde (redacción propia, estilo directa/viñeta corta ENCAPS)"
   },
   {
    "n": 5,
-   "id": "R-2025-1A-Q52",
-   "codigo": "I-3",
-   "area": "I",
+   "id": "N-II3-002",
+   "codigo": "II-3",
+   "area": "II",
    "formato": "viñeta",
    "critico": true,
-   "sub_eje": "tipos_vigilancia",
-   "subangulo": "Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria) y definiciones de caso",
-   "fallo_previo": "definicion_caso",
+   "sub_eje": "esquema_intervalos",
+   "subangulo": "Esquema nacional: vacunas por edad, dosis, vías e intervalos mínimos",
+   "fallo_previo": null,
    "reservado_para": null,
-   "dif": "real",
-   "origen": "examen_real",
-   "enunciado": "Varón de 20 años HSH, que acude a la consulta por presentar erupciones genitales y orales, además dolor ano-rectal y sangrado leve. Ha tenido dolor de cabeza, fiebre, mialgias y adenopatías cervicales hace 2 días. ¿Cuál es el tipo de diagnóstico de viruela del mono?",
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Lactante de 2 meses acude por primera vez al vacunatorio del P.S. I-2 de Sicuani con esquema neonatal completo. ¿Qué vacunas le corresponden en esta visita?",
    "opciones": {
-    "A": "Confirmado",
-    "B": "Caso secundario",
-    "C": "Sospechoso",
-    "D": "Contacto directo"
+    "A": "Pentavalente, polio oral (APO), rotavirus y neumococo",
+    "B": "Pentavalente, polio inactivada (IPV), rotavirus y neumococo",
+    "C": "Pentavalente, IPV e influenza pediátrica",
+    "D": "SPR, varicela y neumococo"
    },
-   "clave": "C",
-   "respuesta": "Sospechoso",
-   "explicacion": null,
-   "fuente": "Examen real ENCAPS/SERUMS 2025-1A · pregunta 52 (texto íntegro; opciones normalizadas A/B/C/D)",
-   "verificado_contra": "CLAVE OFICIAL 2025-1A Q52 = C (Sospechoso) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-1A.pdf', extracción programática 05-sep-2026",
-   "molde": "2025-1A Q52 (ítem real, no espejo)"
+   "clave": "B",
+   "respuesta": "Pentavalente, polio inactivada (IPV), rotavirus y neumococo",
+   "explicacion": "A los 2 y 4 meses: pentavalente (DPT-HvB-Hib) + IPV + rotavirus + neumococo. La polio ORAL (APO) entra recién a los 6 meses (3.ª dosis) y en los refuerzos.",
+   "fuente": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) p.25: \"2 meses: Pentavalente (DPT - HvB - Hib), Polio inactivada (IPV), Rotavirus, Neumococo\"",
+   "verificado_contra": "Compendio López CUIDADO INTEGRAL 2026-I (pdftotext 05-sep-2026) · esquema por edad (texto extraído)",
+   "molde": "sin molde (redacción propia, estilo directa/viñeta corta ENCAPS)"
   }
  ]
 }

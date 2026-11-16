@@ -91,7 +91,16 @@
 //    Síntesis M1 D19 · M2 D36 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 · capstone D88 → src/lib/empresaData.ts re-sincronizado a mano
 //    (revisión trimestral II = D89). CSV Anki: importar el D16 lun 7-dic-2026 (10 tarjetas de MECANISMO del módulo 1). Con 16 viernes o más (v6.00-
 //    v6.07) la regla no entra: las fechas de antes se reproducen igual.
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-16   (v6.08; v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.09 (16-nov-2026 · D1 = mar 17-nov; el lun 16 no se estudió y el jue 31-dic deja de ser SKIP —también en DATA/BUSINESS/liviano_curriculum.json
+//   skipFijos e inicioDefault—): las 90 filas corren UN hábil dentro de F1 y el jue 31-dic recupera el día → desde el lun 4-ene todo cae igual que en la
+//   v6.08 (misma D, mismos casos, fin vie 2-abr con los huecos mié 31-mar y jue 1-abr).
+//   v6.09 (rev. joseph 10): en F1 ningún CASO antes de la lección que lo prepara. Con el D1 en martes, cada viernes de F1 llegaba con 3 de sus 4 lecciones
+//   (la 4.ª corría al lunes: CASO 4 «El escéptico» antes de «Síntesis módulo 1»; CASO 5 antes de SELECT). REGLA (= Business, gen_business_plan.py): hasta
+//   transicion.hasta, el caso k exige LECC_POR_CASO·k = 4·k lecciones dadas (las de un D1 en lunes); si su viernes llega corto, el viernes lleva la lección
+//   que falta y el caso va el LUNES siguiente («LUNES CASO k/16», con el pre-test del lunes): vie 20 Resistencia leptínica · lun 23 CASO 1 … vie 18-dic
+//   SELECT · lun 21-dic CASO 5 → los casos de F1 vuelven a D5, D10, D15, D20, D25 (= v6.08). Desde el 4-ene la regla no entra (2027 idéntico). Con un D1
+//   en lunes, nada cambia.
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-17   (v6.09; v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
@@ -109,6 +118,9 @@ const TOTAL = CUR.totalDias || 90;
 const V6 = require('./gen_fechas_v6'); const F6 = V6.cargarFechasV6();
 const D2_ENCAPS = V6.ultimoHabilAntes(V6.derivar(F6).d1HabilEncaps, F6.skip);
 const SKIP = new Set([...(CUR.skipFijos || []), ...F6.skip, ...F6.protegidos.map((x) => x.fecha), D2_ENCAPS]);
+// v6.09 (rev. joseph 10): hasta aquí rige «el caso nunca antes de su lección» (ver cabecera); LECC_POR_CASO = lecciones por caso con un D1 en lunes
+const TRANS_HASTA = F6.transicion.hasta;
+const LECC_POR_CASO = 4;
 
 // ─── calendario (UTC, sin DST) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -161,6 +173,8 @@ if (contenido.length !== esperadoContenido) throw new Error(`contenido ${conteni
 // ─── construir las filas ───
 const rows = [];
 let ci = 0, ki = 0;
+let casoDiferido = null; // v6.09: viernes de F1 cuyo caso va al lunes siguiente (le faltaba su lección)
+const casosDiferidos = new Map(); // v6.09: d → viernes original
 const drillsPorD = [];      // [{d, modulo, titulo, qs}]
 const casosPorD = {};       // casoId → {d, fecha}
 for (let idx = 0; idx < fechas.length; idx++) {
@@ -169,16 +183,24 @@ for (let idx = 0; idx < fechas.length; idx++) {
   const d = rows.length + 1; // v6.08: = idx + 1 salvo tras un HUECO (calendario alargado)
   // v6.08: hábil no-viernes sin contenido (ya se dio todo el temario) antes del viernes del último caso → HUECO, sin fila
   if (!viernesConCaso.has(fecha) && ci >= contenido.length && ki < casos.length) { HUECOS.push(fecha); continue; }
-  if (viernesConCaso.has(fecha)) {
+  // v6.09: en F1 / transición, el caso k solo si ya se dieron sus LECC_POR_CASO·k lecciones; si no, su viernes lleva la lección y el caso va al lunes
+  const listoCaso = ki < casos.length && ci >= LECC_POR_CASO * (ki + 1);
+  if (viernesConCaso.has(fecha) && !listoCaso && fecha <= TRANS_HASTA && ci < contenido.length) casoDiferido = fecha;
+  const tocaCaso = (viernesConCaso.has(fecha) && casoDiferido !== fecha) || (!!casoDiferido && casoDiferido !== fecha && listoCaso && fecha <= TRANS_HASTA);
+  if (tocaCaso) {
     const c = casos[ki++];
+    const dif = casoDiferido && casoDiferido !== fecha ? casoDiferido : null;
+    if (dif) { casosDiferidos.set(d, dif); casoDiferido = null; }
     casosPorD[c.id] = { d, fecha };
-    rows.push({
+    const row = {
       d, fecha, wd, modulo: c.modulo,
-      tema: `VIERNES CASO ${c.id}/${casos.length} · ${c.titulo}`,
+      tema: `${dif ? `${({ Lun: 'LUNES', Mar: 'MARTES', 'Mié': 'MIÉRCOLES', Jue: 'JUEVES' })[wd] || wd.toUpperCase()} CASO` : 'VIERNES CASO'} ${c.id}/${casos.length} · ${c.titulo}`,
       estudio: `Repaso Anki de la semana + montar el caso: ${c.paciente}`,
       aplicacion: `Role-play 20 min: ${c.consigna} → puntúa la rúbrica 0-2 × 4 (mecanismo · metáfora · people-first · plan)`,
       fuente: c.fuente, min: 45, casoId: c.id,
-    });
+    };
+    if (dif && wd === 'Lun' && idx > 0) row.pretest = true; // v6.09: el lunes conserva su pre-test ciego 5Q
+    rows.push(row);
   } else {
     const t = contenido[ci++];
     if (!t) throw new Error('sin contenido para ' + fecha);
@@ -193,6 +215,9 @@ for (let idx = 0; idx < fechas.length; idx++) {
   }
 }
 if (ci !== contenido.length || ki !== casos.length) throw new Error(`sobran filas: contenido ${contenido.length - ci}, casos ${casos.length - ki}`);
+if (casoDiferido) throw new Error('v6.09: el caso del ' + casoDiferido + ' quedó sin colocar');
+// v6.09: ningún caso de F1 / transición antes de sus LECC_POR_CASO·k lecciones
+for (const r of rows) if (r.casoId && r.fecha <= TRANS_HASTA && rows.filter((x) => !x.casoId && x.d < r.d).length < LECC_POR_CASO * r.casoId) throw new Error(`v6.09: CASO ${r.casoId} (D${r.d} ${r.fecha}) antes de su lección`);
 if (rows.length !== TOTAL) throw new Error('rows ' + rows.length);
 if (HUECOS.length !== nHuecos) throw new Error(`huecos ${HUECOS.length} ≠ ${nHuecos} (hábiles de más del calendario alargado)`);
 if (rows[rows.length - 1].fecha !== fechas[fechas.length - 1]) throw new Error('el plan no acaba en el último hábil del calendario');
@@ -201,7 +226,7 @@ if (rows[rows.length - 1].fecha !== fechas[fechas.length - 1]) throw new Error('
 for (const r of rows) {
   if (isWeekend(r.fecha)) throw new Error('fin de semana: ' + r.fecha);
   if (SKIP.has(r.fecha)) throw new Error('feriado: ' + r.fecha);
-  if (r.casoId && r.wd !== 'Vie') throw new Error('caso fuera de viernes: D' + r.d);
+  if (r.casoId && r.wd !== 'Vie' && !(casosDiferidos.has(r.d) && r.fecha <= TRANS_HASTA)) throw new Error('caso fuera de viernes: D' + r.d); // v6.09: salvo el diferido de F1 (lunes)
   if (r.pretest && r.wd !== 'Lun') throw new Error('pretest fuera de lunes: D' + r.d);
 }
 const finISO = rows[rows.length - 1].fecha;
@@ -368,6 +393,7 @@ const porModulo = {};
 for (const r of rows) porModulo[r.modulo] = (porModulo[r.modulo] || 0) + 1;
 console.log(`LIVIANO gen ✓ ${rows.length} filas · ${rows[0].fecha} (${rows[0].wd}) → ${finISO} (${rows[rows.length - 1].wd})`);
 console.log(`  casos en viernes: ${rows.filter((r) => r.casoId && r.wd === 'Vie').length}/${casos.length} · viernes sin caso: ${skipFirst} (${viernesSinCaso.join(', ') || '—'})`);
+if (casosDiferidos.size) console.log(`  v6.09 · casos de F1 al lunes, tras su lección: ${[...casosDiferidos].map(([d, v]) => `D${d} ${rows.find((r) => r.d === d).fecha} (vie ${v})`).join(' · ')}`);
 if (HUECOS.length) console.log(`  v6.08 · calendario alargado hasta el viernes del caso ${casos.length} (${finISO}, ${fechas.length} hábiles): huecos sin LIVIANO ${HUECOS.join(', ')}`);
 console.log(`  pre-tests (lunes): ${rows.filter((r) => r.pretest).length} · drills: ${drillsPorD.map((x) => 'D' + x.d).join(', ')} · revisión trimestral: ${rows.filter((r) => /REVISIÓN TRIMESTRAL/.test(r.tema)).map((r) => 'D' + r.d + ' ' + r.fecha).join(', ')}`);
 console.log(`  filas por módulo (incl. casos): ${Object.entries(porModulo).map(([k, v]) => k + ' ' + v).join(' · ')}`);

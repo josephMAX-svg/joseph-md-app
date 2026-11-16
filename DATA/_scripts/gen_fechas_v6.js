@@ -287,7 +287,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
 }
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). Mismo literal que el .ts. */
@@ -430,8 +430,9 @@ function fasesV6(F = fechasPorDefecto(), d = derivar(F)) {
       : `Step 1 tramo 1 los ${diasSemanaTxt(F.step1.f1_dias_semana)} (07:15-12:00 + 18:00; Anki 05:00 todos los días) + ENCAPS las demás mañanas y la 16:15`,
     etiqueta: F.step1.f1_dias_semana.length === 5 ? `F1 · STEP 1 TRAMO 1 (D1-D${d.diasF1})` : `F1 · STEP 1 TRAMO 1 (D1-D${d.diasStepF1}, ${diasSemanaTxt(F.step1.f1_dias_semana)})`,
       desde: F.f1.inicio, hasta: F.f1.fin, ultimoDiaPlan: d.ultimoDiaF1, diasPlan: d.diasF1, diasSemana: 'L-V', provisional: false },
-    { id: 'TRANSICION', nombre: 'Transición sin sesión (Anki opcional)', etiqueta: 'TRANSICIÓN',
-      desde: add(F.f1.fin, 1), hasta: add(F.encaps.intensiva_desde, -1), ultimoDiaPlan: null, diasPlan: 0, diasSemana: null, provisional: false },
+    // v6.09 (16-nov-2026): un L-V de la transición que NO es SKIP (jue 31-dic-2026) es día de plan sin Step 1 (recupera el lun 16-nov) → nombre y diasPlan lo cuentan
+    { id: 'TRANSICION', nombre: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).length ? `Transición: ${habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).map((s) => f(s)).join(' · ')} día de plan sin Step 1; el resto sin sesión (Anki opcional)` : 'Transición sin sesión (Anki opcional)', etiqueta: 'TRANSICIÓN',
+      desde: add(F.f1.fin, 1), hasta: add(F.encaps.intensiva_desde, -1), ultimoDiaPlan: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).slice(-1)[0] ?? null, diasPlan: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).length, diasSemana: null, provisional: false },
     { id: 'F2', nombre: "ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki 30' L-V + sáb 07:45 20Q)", etiqueta: `F2 · ENCAPS INTENSIVA (examen ${f(enc)}${provEnc ? ' PROVISIONAL' : ''})`,
       desde: F.encaps.intensiva_desde, hasta: enc, ultimoDiaPlan: d.d1HabilEncaps, diasPlan: d.diasF2, diasSemana: 'L-V', provisional: provEnc },
     { id: 'LIBRE_POST_ENCAPS', nombre: 'Lunes libre post-ENCAPS (protegido, DJ-2)', etiqueta: 'LIBRE post-ENCAPS',
@@ -832,7 +833,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */

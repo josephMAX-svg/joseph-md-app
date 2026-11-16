@@ -174,6 +174,17 @@
  *     sábados 14:00-15:00 + viernes 16:15 del núcleo tras el SIM / pre-test de las 07:15 + viernes de la quincena).
  *   Siembra v6.08: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v608_mant_20261114
  *     --pendientes-de git:regimen-v6.07e:DATA/_scripts/_encaps_mantenimiento_2027.sql
+ *
+ * v6.09 (16-nov-2026, orden de Joseph «hoy no avancé, todo empieza mañana; el sábado 21 y el domingo 22 viajo»): el lun 16 no se estudió → D1 = MAR
+ *   17-NOV-2026 (= _fechas_v6.json f1.inicio, `corrimientos[7]`; F1 = 31 hábiles → mié 30-dic) y el JUE 31-DIC deja de ser SKIP (día de plan de la
+ *   transición que recupera el lun 16). HASTA por defecto = el último L-V hábil de la transición (HASTA_DEF: jue 31-dic) → dia 1-32 (mar 17-nov → jue
+ *   31-dic) = 27 banqueo1h + 5 mini_sim en los MISMOS viernes (vie 20 = dia 4 … vie 18-dic = dia 24 = CHECKPOINT DEL AÑO: VIERNES_CHECKPOINT ya no exige
+ *   HASTA === f1.fin) → la intensiva sigue en el dia 33 (lun 4-ene) sin cambios. Rígido por slots: cada banqueo1h corre UN slot lun-jue (el slot 1 era
+ *   el lun 16 y el último cae el jue 31-dic) y los mini-sims no se mueven; 0 pendientes nuevos (--pendientes-de git:regimen-v6.08:… lo comprueba: misma
+ *   multiset y mismo contenido). _encaps_ciclo_v3.js: SKIP = _fechas_v6.json skip (antes fijo con el 31-dic, que lo saltaba igual).
+ *   Pre-test de arranque = mar 17 (parte 1, fila dia 1 II-3, tras el UWSA1) + mié 18 (parte 2, fila dia 2 I-3); jue 19 = banco V-2; lun 23 = III-5.
+ *   Siembra v6.09: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v609_mant_20261116
+ *     --pendientes-de git:regimen-v6.08:DATA/_scripts/_encaps_mantenimiento_2027.sql --no-persistir   (_pendientes_f1.json sin cambio: 0 pendientes)
  */
 const fs = require('fs');
 const path = require('path');
@@ -191,7 +202,11 @@ const fechasArg = argv.filter((a, i) => /^20\d\d-\d\d-\d\d$/.test(a) && !OPCIONE
 const D1 = fechasArg[0] || F6.f1.inicio; // v6.01: lun 12-oct (= _fechas_v6.json f1.inicio) · v6.00/v5.20: mié 7-oct (v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct)
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const HASTA = opt('--hasta', F6.f1.fin); // v6.00 (6-oct): f1.fin = mié 30-dic-2026 (dia 60; las filas 61-92 de v5.20 viven en el carril B de la intensiva) · v5.20 (6-oct, DEFINITIVA): mar 16-feb (+1 hábil; 92 días intactos; = D92 del Step 1) · v5.19 (5-oct): lun 15-feb (+1 hábil; 92 días intactos) · v5.18 (3-oct): vie 12-feb (+2 hábiles; 92 días intactos) · v5.17 (30-sep): mié 10-feb · el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (v5.20: lun 22-feb-2027; v5.19: vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb; v5.16: jue 11-feb)
+// v6.09 (16-nov-2026): por defecto = el último L-V HÁBIL de la transición (no SKIP) si lo hay, si no f1.fin. El jue 31-dic-2026 deja de ser SKIP y
+//   recupera el lun 16-nov → la F1 del mantenimiento va del mar 17-nov al jue 31-dic = dia 1-32 (31 hábiles de F1 + el 31-dic); la intensiva sigue en
+//   el dia 33 (lun 4-ene), como en la v6.08. Hasta la v6.08 el defecto era f1.fin.
+const HASTA_DEF = (() => { let h = F6.f1.fin; for (const { fecha } of fechas(F6.transicion.desde, F6.transicion.hasta)) if (!SKIP_V6.has(fecha)) h = fecha; return h; })();
+const HASTA = opt('--hasta', HASTA_DEF); // v6.00 (6-oct): f1.fin = mié 30-dic-2026 (dia 60; las filas 61-92 de v5.20 viven en el carril B de la intensiva) · v5.20 (6-oct, DEFINITIVA): mar 16-feb (+1 hábil; 92 días intactos; = D92 del Step 1) · v5.19 (5-oct): lun 15-feb (+1 hábil; 92 días intactos) · v5.18 (3-oct): vie 12-feb (+2 hábiles; 92 días intactos) · v5.17 (30-sep): mié 10-feb · el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (v5.20: lun 22-feb-2027; v5.19: vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb; v5.16: jue 11-feb)
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const BK = opt('--bk', `study_schedule_bk_${hoyLima().replace(/-/g, '')}`);
 const BK_REEMPLAZAR = has('--bk-reemplazar');
@@ -276,7 +291,8 @@ let dia = 0, slot = 0, sec = 0, secVie = 0, f0 = '', f1 = '', overridesAplicados
 const semanasConOverride = new Set();
 const plan = [...fechas(D1, HASTA)].filter((p) => !SKIP_V6.has(p.fecha)); // v6.00: + SKIP_V6
 // v6.01: el ÚLTIMO mini-sim de la F1 (vie 18-dic) es el CHECKPOINT DEL AÑO (V6_ESPEC §I: el de fin de enero se adelanta a él)
-const VIERNES_CHECKPOINT = HASTA === F6.f1.fin ? (plan.filter((p) => p.dow === 5).at(-1) || {}).fecha : null;
+// v6.09: con el HASTA por defecto (que ya no es f1.fin: llega al jue 31-dic) el checkpoint sigue siendo el último viernes de F1 (vie 18-dic; el 25 es SKIP)
+const VIERNES_CHECKPOINT = HASTA === HASTA_DEF || HASTA === F6.f1.fin ? (plan.filter((p) => p.dow === 5 && p.fecha <= F6.f1.fin).at(-1) || {}).fecha : null;
 const filasObj = []; // v6.01: copia estructurada de cada fila (para el multiset de pendientes F1)
 // pasada previa: cuántas veces cae cada código (con overrides)
 // v6.00: cubre D1 → max(HASTA, --de-hasta) (rango v5.20) y solo aplica overrides de semanas que empiezan ≤ HASTA
@@ -447,7 +463,7 @@ const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimi
 -- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas con sub-ejes + cola larga · vie = mini-sim 25Q (receta fija) · backup ${BK}
 -- seguridad: (1) aborta si el backup ya existe${BK_REEMPLAZAR ? ' [DESACTIVADA con --bk-reemplazar]' : ''} · (2) DELETE filtrado por modo = 'MANTENIMIENTO' (no toca filas INTENSIVO) · (3) v6.00: aborta si hay filas INTENSIVO con dia ≤ ${dia}
 -- v6.00: extra.de contado sobre ${D1} → ${HASTA > DE_HASTA ? HASTA : DE_HASTA} (--de-hasta, rango v5.20 = ${slotsDe} slots lun-jue; overrides solo de semanas ≤ ${HASTA})${CORR && CORR.d1 === D1 ? `
--- ${CORR.version} (${CORR.fecha}): corrimiento RÍGIDO D1 ${CORR.d1_previo} → ${CORR.d1} (perdidos ${CORR.perdidos.join(', ')}) · la F1 no se alarga (fin ${HASTA}) · rotación por slots intacta${VIERNES_CHECKPOINT ? ` · CHECKPOINT DEL AÑO = mini-sim del ${VIERNES_CHECKPOINT}` : ''}` : ''}${pendientes ? `
+-- ${CORR.version} (${CORR.fecha}): corrimiento RÍGIDO D1 ${CORR.d1_previo} → ${CORR.d1} (perdidos ${CORR.perdidos.join(', ')}) · la F1 no se alarga (fin ${HASTA}${HASTA !== F6.f1.fin ? ` = f1.fin ${F6.f1.fin} + los hábiles de la transición` : ''}) · rotación por slots intacta${VIERNES_CHECKPOINT ? ` · CHECKPOINT DEL AÑO = mini-sim del ${VIERNES_CHECKPOINT}` : ''}` : ''}${pendientes ? `
 -- pendientes F1 (${pendientes.corr}, --pendientes-de): F1 ${pendientes.versionPrev} ${pendientes.vB} banqueo1h + ${pendientes.vS} mini_sim → nueva ${filasObj.filter((r) => r.tipo === 'banqueo1h').length} + ${filasObj.filter((r) => r.tipo === 'mini_sim').length} · ${pendientes.filas.length + pendientes.sims.length} pendiente(s) F1 al carril B (reposición explícita; nada se descarta): ${pendientes.filas.map((r) => `dia ${r.dia_mant} ${claveInst(r)}`).join(' · ') || 'ninguna banqueo1h'} · ${pendientes.sims.map((r) => `mini-sim dia ${r.dia_mant} ${claveSim(r)}`).join(' · ') || 'ningún mini-sim'} (DATA/ENCAPS/_pendientes_f1.json)` : ''}
 -- overrides: acumulado ${acumuladoLeido} semana(s) leídas de SEMANAS/overrides_acumulado.json${ovNuevo ? ` + --override ${Object.keys(ovNuevo).join(', ')}` : ''}${overridesAplicados.length ? ` · filas cambiadas: ${overridesAplicados.join(' · ')}` : ' · sin filas cambiadas respecto a la rotación base'}
 BEGIN;

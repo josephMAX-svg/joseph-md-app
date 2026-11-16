@@ -80,10 +80,14 @@ const F6 = V6.cargarFechasV6();
 const SKIP_FIJOS = new Set(F6.skip);
 const PROTEGIDOS = new Set(F6.protegidos.map((p) => p.fecha));
 const SERUMS_INICIO = F6.serums.inicio;
+// v6.09 (16-nov-2026): excepciones de paridad R↔D (jue 31-dic = día-DERMA: recupera la sesión Derma del lun 16-nov, que no se estudió).
+// FUENTE ÚNICA: src/lib/researchData.ts#TIPO_RD_FORZADO (misma lectura en gen_research_plan · gen_derma_ciclo2 · remap_inicio).
+const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/lib/researchData.ts'), 'utf8'); const m = t.match(/export const TIPO_RD_FORZADO[^=]*=\s*\{([^}]*)\}/); if (!m) throw new Error('researchData.ts: no encuentro TIPO_RD_FORZADO (v6.09)'); return Object.fromEntries([...m[1].matchAll(/'(20\d\d-\d\d-\d\d)':\s*'(research|derma)'/g)].map((x) => [x[1], x[2]])); })();
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
   if (dow === 0 || (dow === 6 && s < SERUMS_INICIO)) return 'descanso';
+  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma
   let cnt = 0; const cur = fromISO('2026-06-10');
   while (cur < d) { const wd = cur.getUTCDay(); if ((wd >= 1 && wd <= 5) || (wd === 6 && iso(cur) >= SERUMS_INICIO)) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
   return cnt % 2 === 0 ? 'research' : 'derma';

@@ -89,6 +89,17 @@
  * y Derma 2 (mar 10, jue 12-nov). Research: con la pausa en el vie 15-ene abortaba (22 átomos del núcleo en 20 días) → la pausa empieza el JUE 21-ENE
  * y el objetivo RUTA del case report pasa a ≤ lun 1-mar (gen_research_plan.js): ciclo 1 mar 17-nov → lun 12-abr, ciclo 2 mié 14-abr → sáb 18-sep.
  * Derma c1 lun 16-nov → lun 7-jun, c2 mié 9-jun → lun 16-ago. Solo comentario: la lógica de este script no cambia.
+ * v6.09 (16-nov-2026 · D1 = mar 17-nov, orden de Joseph del lun 16-nov: «hoy no avancé, todo empieza a partir de mañana; el sábado 21 y el domingo 22
+ * viajo, déjalos libres»; el jue 31-dic deja de ser SKIP en _fechas_v6.json y recupera el día): `--bloques research,derma --usmle-aparte` y `--bloques
+ * liviano --usmle-aparte` con START = 2026-11-17 (Business con su generador y START = 2026-11-16 SIN SESIÓN, ver gen_business_plan.py; MIR con
+ * gen_mir_daily.js, default 2026-11-17). REGLA NUEVA de paridad (researchData.ts#TIPO_RD_FORZADO, leída aquí por tipoDia): el jue 31-dic es día-DERMA
+ * aunque por paridad sería Research → Research NO cambia (el lun 16 era día-Derma; M1 sigue el mar 17-nov) y Derma corre una ranura en F1: d1 mié
+ * 18-nov … d17 jue 31-dic; desde el lun 4-ene ambos ciclos y el ciclo 2 de Derma caen igual que en la v6.08 (Derma c1 → lun 7-jun · c2 mié 9-jun → lun
+ * 16-ago; Research c1 → lun 12-abr · c2 → sáb 18-sep). LIVIANO: 90 filas mar 17-nov → vie 2-abr (desde el 4-ene, idéntico).
+ * v6.09 (rev. adversarial, 16-nov): SYNAPSE con START = 2026-11-16 (lun 16 SIN SESIÓN: el campo d de 2027 = v6.08; gen_synapse_plan.js 2026-11-16, tras
+ * gen_vibecoding_plan.js 2026-11-17) y Business con START = 2026-11-16 (fila DESCANSO) — no pasar 2026-11-17 a ninguno de los dos o la numeración de 2027
+ * corre. En F1, el OUTPUT de Business y el CASO de LIVIANO nunca van antes de su última lectura / lección: si el viernes llega corto, va el lunes
+ * (gen_business_plan.py y gen_liviano_plan.js; el bloque 7b de aquí delega en gen_liviano_plan.js, así que la regla se conserva).
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).
@@ -129,7 +140,10 @@ const SERUMS_INICIO=F6.serums.inicio; // v6.00: paridad L-S desde aquí (Derma l
 function calNoSun(start,n){const o=[];let c=start;while(o.length<n){if(!isSun(c))o.push(c);c=addDays(c,1);}return o;} // legado (pre-v5)
 function calNoWeekend(start,n){const o=[];let c=start;while(o.length<n){if(!isWeekend(c)&&!SKIP_FIJOS.has(c))o.push(c);c=addDays(c,1);}return o;}
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
-function tipoDia(s){const d=fromISO(s),dow=d.getUTCDay();if(dow===0||(dow===6&&s<SERUMS_INICIO))return'descanso';let cnt=0,cur=fromISO('2026-06-10');while(cur<d){const wd=cur.getUTCDay();if((wd>=1&&wd<=5)||(wd===6&&iso(cur)>=SERUMS_INICIO))cnt++;cur.setUTCDate(cur.getUTCDate()+1);}return cnt%2===0?'research':'derma';}
+// v6.09 (16-nov-2026): excepciones de paridad R↔D (jue 31-dic = día-DERMA: recupera la sesión Derma del lun 16-nov, que no se estudió).
+// FUENTE ÚNICA: src/lib/researchData.ts#TIPO_RD_FORZADO (misma lectura en gen_research_plan · gen_derma_ciclo2 · remap_inicio).
+const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/lib/researchData.ts'), 'utf8'); const m = t.match(/export const TIPO_RD_FORZADO[^=]*=\s*\{([^}]*)\}/); if (!m) throw new Error('researchData.ts: no encuentro TIPO_RD_FORZADO (v6.09)'); return Object.fromEntries([...m[1].matchAll(/'(20\d\d-\d\d-\d\d)':\s*'(research|derma)'/g)].map((x) => [x[1], x[2]])); })();
+function tipoDia(s){const d=fromISO(s),dow=d.getUTCDay();if(dow===0||(dow===6&&s<SERUMS_INICIO))return'descanso';if(TIPO_RD_FORZADO[s])return TIPO_RD_FORZADO[s];/* v6.09: jue 31-dic = Derma */let cnt=0,cur=fromISO('2026-06-10');while(cur<d){const wd=cur.getUTCDay();if((wd>=1&&wd<=5)||(wd===6&&iso(cur)>=SERUMS_INICIO))cnt++;cur.setUTCDate(cur.getUTCDate()+1);}return cnt%2===0?'research':'derma';}
 function slots(t,start,n){const o=[];let c=start;while(o.length<n){if(tipoDia(c)===t&&!SKIP_FIJOS.has(c)&&!PROTEGIDOS.has(c))o.push(c);c=addDays(c,1);}return o;} // v5.4: los interdiarios también saltan SKIP_FIJOS
 function replaceFechas(file,marker,nd){const p=path.join(ROOT,file);let s=fs.readFileSync(p,'utf8');const i=s.indexOf(marker);if(i<0)throw new Error(file+': '+marker);const j=s.indexOf('];',i);let k=0;const seg=s.slice(i,j).replace(/(fecha:\s*["'])(20\d\d-\d\d-\d\d)(["'])/g,(_,a,_o,c)=>{if(k>=nd.length)throw new Error(file+': sobran');return a+nd[k++]+c;});if(k!==nd.length)throw new Error(file+`: esperaba ${nd.length} reemplazó ${k}`);fs.writeFileSync(p,s.slice(0,i)+seg+s.slice(j),'utf8');}
 function countFechas(file,marker){const s=fs.readFileSync(path.join(ROOT,file),'utf8');const i=s.indexOf(marker);const j=s.indexOf('];',i);return[...s.slice(i,j).matchAll(/fecha:\s*["'](20\d\d-\d\d-\d\d)["']/g)].map(m=>m[1]);}

@@ -1,10 +1,10 @@
 /**
  * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.7 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
- * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-14) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
+ * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-16) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  *
  * 42 átomos · D1 = Mar 2026-11-17 → D42 = Lun 2027-04-12 · 1 átomo por DÍA-RESEARCH
  * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres (v6.00: desde el SERUMS 2027-05-03 el sábado es día de plan) · salta los SKIP
- * (2026-12-25 · 2026-12-31 · 2027-01-01 · 2027-03-25 · 2027-03-26) y los DÍAS PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-12-04 · 2027-12-05 · 2027-12-06) de DATA/_scripts/_fechas_v6.json ·
+ * (2026-12-25 · 2027-01-01 · 2027-03-25 · 2027-03-26) y los DÍAS PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-12-04 · 2027-12-05 · 2027-12-06) de DATA/_scripts/_fechas_v6.json ·
  * PAUSA 2027-01-21 → 2027-02-10 = 0 átomos; v6.00: núcleo de la intensiva ENCAPS, días-Research = 30' «Research mínimo (DJ-4)»). d1-d22 caben antes de la pausa (último: 2027-01-20);
  * d23-d42 van tras la pausa (CR-9 SUBMIT del case report · X-8 re-arranque · CR-5 / CR-6 / CR-7 / CR-8 / CR-9 / X-8 / M3 / R6 / R7 / X-1 / X-2 / R3 / R8 / R2 / X-3 / X-4 / X-5 / X-6 desplazados por no caber antes) — el total 42 es
  * el invariante que remap_inicio.js comprueba. El bloque del Calendar 13:30–14:15 NO se toca.

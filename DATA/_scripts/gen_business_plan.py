@@ -36,7 +36,18 @@
 #                                                                    inicia el lunes 16 … alarga las fechas límite») = 2026-11-16 → con +5 hábiles el plan
 #                                                                    acababa el mar 16-mar y ponía lectura / OUTPUT en el jue 11 (D-2 del ENCAPS), el vie 12 y
 #                                                                    el lun 15-mar (PROTEGIDOS) → REGLA NUEVA: esos días (y los SKIP v6) son DESCANSO con su
-#                                                                    motivo, como en LIVIANO; el fin se AMPLÍA, nada se recorta (ver el informe del generador).
+#                                                                    motivo, como en LIVIANO; el fin se AMPLÍA, nada se recorta (ver el informe del generador) ·
+#                                                                    v6.09 (16-nov-2026; Joseph: «hoy no avancé, todo empieza a partir de mañana; el sábado 21 y el
+#                                                                    domingo 22 viajo») = 2026-11-16 IGUAL que la v6.08, pero el lun 16 es SIN SESIÓN (corrida_s1 de
+#                                                                    _fechas_v6.json) → fila DESCANSO (D1) y el jue 31-dic ya no es SKIP → fila de trabajo. Así la
+#                                                                    1.ª lectura va el mar 17 (D2), cada lectura de F1 corre un hábil y
+#                                                                    desde el lun 4-ene TODO es idéntico a la v6.08: mismas fechas, mismo contenido y la MISMA
+#                                                                    numeración D (los títulos «BUSINESS D<n>» del Calendar de 2027 no cambian). Con START = 17 la
+#                                                                    D de 2027 sería una menos: por eso el START sigue siendo el lun 16 (sin sesión).
+#                                                                    v6.09 (rev. joseph 5): en F1 el OUTPUT ya no va ANTES de la última lectura de su módulo: el
+#                                                                    viernes lleva esa lectura y el OUTPUT va el lunes siguiente (vie 20 IDoF p3 · lun 23 OUTPUT
+#                                                                    S1 … vie 18-dic HEAM 9-13 · lun 21-dic OUTPUT S5); el cierre del tracker, el sábado de esa
+#                                                                    semana (rutinaGuia.bizCierreDe). Desde el 4-ene la regla no entra (fechas y D = v6.08).
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
@@ -67,7 +78,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'src' / 'lib' / 'businessStudyPlan.ts'
 WD = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']  # weekday(): 0 = lunes
-SKIP_FIJOS = {'2026-12-25', '2026-12-31', '2027-01-01'}  # v5.4+: feriados libres en todos los planes
+SKIP_FIJOS = set()  # v6.09 (16-nov-2026): antes {25-dic, 31-dic, 1-ene} a mano; el SKIP sale ya de _fechas_v6.json (SKIP_V6), donde el jue 31-dic dejó de ser SKIP
 
 # v6.08 (14-nov-2026): el plan ya cruza la semana del ENCAPS (con START = lun 16-nov acababa el mar 16-mar y ponía lecturas / el OUTPUT el jue 11,
 #   vie 12 y lun 15-mar) → igual que LIVIANO (gen_liviano_plan.js, v6.07) NO son días de plan los SKIP v6 (feriados + Semana Santa), los PROTEGIDOS
@@ -78,11 +89,11 @@ SKIP_FIJOS = {'2026-12-25', '2026-12-31', '2027-01-01'}  # v5.4+: feriados libre
 def _fechas_v6_extra():
     import subprocess
     js = ("const V6=require('./gen_fechas_v6');const F=V6.cargarFechasV6();const D1=V6.derivar(F).d1HabilEncaps;"
-          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip)}))")
+          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip),sin:F.corrida_s1.sin_sesion,th:F.transicion.hasta}))")
     try:
         r = subprocess.run(['node', '-e', js], cwd=str(Path(__file__).resolve().parent), capture_output=True, text=True, encoding='utf-8', check=True)
         j = json.loads(r.stdout)
-        return set(j['skip']), {p['fecha']: p['motivo'] for p in j['prot']}, j['d2']
+        return set(j['skip']), {p['fecha']: p['motivo'] for p in j['prot']}, j['d2'], set(j['sin']), j['th']
     except Exception:
         F = json.loads((Path(__file__).resolve().parent / '_fechas_v6.json').read_text(encoding='utf-8'))
         skip = set(F['skip'])
@@ -90,8 +101,10 @@ def _fechas_v6_extra():
             x = dt.date.fromisoformat(s) - dt.timedelta(days=1)
             while x.weekday() >= 5 or x.isoformat() in skip: x -= dt.timedelta(days=1)
             return x.isoformat()
-        return skip, {p['fecha']: p['motivo'] for p in F['protegidos']}, habil_antes(habil_antes(F['encaps']['examen']))
-SKIP_V6, PROTEGIDOS_V6, D2_ENCAPS = _fechas_v6_extra()
+        return skip, {p['fecha']: p['motivo'] for p in F['protegidos']}, habil_antes(habil_antes(F['encaps']['examen'])), set(F['corrida_s1']['sin_sesion']), F['transicion']['hasta']
+# v6.09 (16-nov-2026): SIN_SESION_V6 = días sin sesión de corrida_s1 (lun 16-nov; sáb 21 y dom 22, viaje) → filas DESCANSO con su motivo ·
+#   TRANS_HASTA = último día de la transición (dom 3-ene-2027): hasta ahí rige la regla «el OUTPUT nunca antes de su última lectura» (ver gen_v3)
+SKIP_V6, PROTEGIDOS_V6, D2_ENCAPS, SIN_SESION_V6, TRANS_HASTA = _fechas_v6_extra()
 
 def ts_str(s): return json.dumps(s, ensure_ascii=False)
 
@@ -147,6 +160,16 @@ def gen_v3(start_iso):
     audio = audio_por_n()
     lect = [r for r in work if r['modo'] != 'OUTPUT']
     outs = [r for r in work if r['modo'] == 'OUTPUT']
+    # v6.09 (16-nov-2026 · hallazgo joseph 5 de la revisión): cada OUTPUT exige las lecturas que lo preceden en el JSON (su módulo). Con el D1 en martes
+    #   (lun 16 sin sesión) la 4.ª lectura de cada semana de F1 corría al lunes y el OUTPUT del viernes iba ANTES de ella (lectura → síntesis roto). REGLA:
+    #   hasta TRANS_HASTA (F1 + transición), un viernes cuyo OUTPUT aún no tiene todas sus lecturas lleva la lectura que falta y el OUTPUT va el siguiente
+    #   día hábil (lunes), en cuanto se cumple; desde el lun 4-ene la regla no entra (las fechas y la D de 2027 son las de la v6.08). Con un D1 en lunes
+    #   (v6.00-v6.08) ningún viernes queda corto: se reproduce igual.
+    req, nl = {}, 0
+    for r in work:
+        if r['modo'] == 'OUTPUT': req[id(r)] = nl
+        else: nl += 1
+    leidas, diferido = 0, False
     MIN = {'L': 25, 'CRITICA': 25, 'OUTPUT': 40}
 
     rows, d = [], 1
@@ -156,6 +179,8 @@ def gen_v3(start_iso):
         iso = cur.isoformat(); wd = WD[cur.weekday()]
         if cur.weekday() >= 5:
             rows.append(fila(d, iso, wd, 'DESCANSO', DESC_FINDE, '', 0, None, None, 'DESCANSO'))
+        elif iso in SIN_SESION_V6:  # v6.09: día hábil SIN SESIÓN (lun 16-nov): DESCANSO; la lectura de ese día va al siguiente hábil
+            rows.append(fila(d, iso, wd, 'DESCANSO', 'SIN SESIÓN (%s): hoy no hay Business (el plan arranca el siguiente día hábil). Sin lectura ni output.' % iso, '', 0, None, None, 'DESCANSO'))
         elif iso in SKIP_FIJOS or iso in SKIP_V6:
             rows.append(fila(d, iso, wd, 'DESCANSO', 'FERIADO (%s): día libre. Sin lectura ni output.' % iso, '', 0, None, None, 'DESCANSO'))
         elif iso in PROTEGIDOS_V6 or iso == D2_ENCAPS:  # v6.08: PROTEGIDOS y D-2 del ENCAPS (ver arriba)
@@ -163,8 +188,13 @@ def gen_v3(start_iso):
             rows.append(fila(d, iso, wd, 'DESCANSO', 'DÍA PROTEGIDO (%s · %s): sin Business. Sin lectura ni output; el plan sigue el siguiente día hábil.' % (iso, motivo), '', 0, None, None, 'DESCANSO'))
         else:
             # viernes → OUTPUT (si quedan); L-J → lectura (si quedan); si una cola se agota, sigue la otra
-            if cur.weekday() == 4 and outs: r = outs.pop(0)
-            elif lect: r = lect.pop(0)
+            # v6.09: en F1 / transición el OUTPUT nunca antes de su última lectura (req): viernes corto → lectura y el OUTPUT al siguiente hábil
+            listo = bool(outs) and leidas >= req[id(outs[0])]
+            if cur.weekday() == 4 and outs and (listo or iso > TRANS_HASTA or not lect): r = outs.pop(0); diferido = False
+            elif cur.weekday() != 4 and diferido and listo and iso <= TRANS_HASTA: r = outs.pop(0); diferido = False
+            elif lect:
+                if cur.weekday() == 4 and outs: diferido = True
+                r = lect.pop(0); leidas += 1
             else: r = outs.pop(0)
             n = r.get('libroN')
             yt = None
@@ -241,9 +271,11 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
     mats = {}
     for r in work: mats[r['materia']] = mats.get(r['materia'], 0) + 1
     vie_out = sum(1 for x in rows if 'wd:"Vie"' in x and 'materia:"OUTPUT"' in x)
+    no_vie = [x.split('fecha:"')[1].split('"')[0] for x in rows if 'materia:"OUTPUT"' in x and 'wd:"Vie"' not in x and x.split('fecha:"')[1].split('"')[0] <= TRANS_HASTA]
     print('OK v3 L → %s' % OUT.relative_to(ROOT))
     print('  inicio %s · fin %s · total %d filas · 84 trabajo · %d descansos (finde + feriados)' % (start_iso, fin, total, total - 84))
-    print('  outputs en viernes: %d/%d · materias: %s' % (vie_out, len(outs) + vie_out, mats))
+    print('  outputs en viernes: %d/%d · materias: %s' % (vie_out, sum(1 for x in rows if 'materia:"OUTPUT"' in x), mats))
+    if no_vie: print('  v6.09 · OUTPUT de F1 tras su última lectura (no en viernes): %s' % ', '.join(no_vie))
     prot = [x.split('fecha:"')[1].split('"')[0] for x in rows if 'DÍA PROTEGIDO (' in x]
     if prot: print('  v6.08 · días protegidos / D-2 del ENCAPS dentro del plan (DESCANSO): %s' % ', '.join(prot))
 
@@ -345,4 +377,4 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()
-    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-16'))  # v6.08: default = D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)
+    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-16'))  # v6.09: default = lun 16-nov, SIN SESIÓN (fila DESCANSO: la numeración D y 2027 siguen iguales a la v6.08; 1.ª lectura mar 17) · v6.08: D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)

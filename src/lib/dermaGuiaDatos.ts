@@ -74,7 +74,7 @@ export const DERMNET_DERMOSCOPY = "https://dermnetnz.org/topics/dermoscopy";
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  "1": {
   "d": 1,
-  "fecha": "2026-11-16",
+  "fecha": "2026-11-18",
   "casoIds": [
    192,
    43
@@ -248,7 +248,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "2": {
   "d": 2,
-  "fecha": "2026-11-18",
+  "fecha": "2026-11-20",
   "casoIds": [
    112,
    166
@@ -457,7 +457,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "3": {
   "d": 3,
-  "fecha": "2026-11-20",
+  "fecha": "2026-11-24",
   "casoIds": [
    25,
    165
@@ -635,7 +635,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "4": {
   "d": 4,
-  "fecha": "2026-11-24",
+  "fecha": "2026-11-26",
   "casoIds": [
    21,
    194
@@ -829,7 +829,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "5": {
   "d": 5,
-  "fecha": "2026-11-26",
+  "fecha": "2026-11-30",
   "casoIds": [
    36,
    84

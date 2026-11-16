@@ -122,7 +122,13 @@ const U = cargarUsmleDaily();
 const F1 = U.DIAS; // v6.03: 50 filas (mié 21-oct → mié 30-dic) · v6.02: 52 (lun 19-oct → mié 30-dic)
 // v6.03: la F1 esperada sale de _fechas_v6.json (antes: 52 filas y '2026-10-19' fijos)
 const FV6 = require('../gen_fechas_v6').cargarFechasV6();
-const VER = FV6.version;
+// v6.09 (16-nov-2026): la etiqueta de versión de los textos es la del PLAN del Step 1 que describe la guía (DAILY_META.version de usmleStep1Daily.ts):
+//   la v6.09 no cambia el Step 1 (el lun 16 no era día de Step), así que sigue diciendo «v6.08» y la guía de 2027 queda idéntica. Lo único que cambia
+//   al regenerar con el _fechas_v6.json v6.09 es que el lun 16-nov ya no está en F1 (f1.inicio = mar 17) y pierde su Anki AM («F1 empieza hoy…»).
+const VER = (U.DAILY_META && U.DAILY_META.version) || FV6.version;
+// v6.09 (fix revisión 16-nov, joseph 1): la 1.ª mañana ENCAPS (1.ª fila de DATA/ENCAPS/_encaps_manana_v607.json; v6.09: mié 18-nov): hasta ese día
+//   incluido no hay tarjetas ENCAPS (las primeras nacen a las 11:40 de esa mañana) → el Anki AM de ese día no pide repasos de ENCAPS
+const PRIMERA_ENCAPS = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps_manana_v607.json'), 'utf8')).mananas[0] || null; } catch (e) { return null; } })();
 // v6.07: el tramo 1 del Step = las mañanas de step1.f1_dias_semana dentro de F1 (V6.diasStepF1De; con L-V = los f1.dias hábiles)
 const V6 = require('../gen_fechas_v6');
 const STEP_F1 = V6.diasStepF1De(FV6), DSEM = V6.diasSemanaTxt(FV6.step1.f1_dias_semana);
@@ -910,12 +916,18 @@ function findes() {
     //   configuración + UWSA1 + Day-After 1/6, sin APEX, y la primera tarjeta nace el D2 (jue 19-nov). Antes este día caía en la rama general de
     //   «día de ENCAPS» (27′ de vencidas y nuevas «del mar 17-nov» que no existen) → guía mínima como la de antes del D1: sync 0/0, comprobar el
     //   preset del D1 (solo mirar) y el resto a las vencidas de ENCAPS
+    // v6.09 (fix revisión 16-nov, joseph 1): hasta la 1.ª mañana ENCAPS incluida (mié 18-nov) TAMPOCO hay tarjetas ENCAPS (nacen ese día a las 11:40):
+    //   los 20′ que iban a «vencidas de ENCAPS» son libres (o localizar en el campus la sesión de las 07:30); antes pedían repasos que no existen
     if (w >= 1 && w <= 5 && iso > DD(1) && iso < DD(2) && !FV6.skip.includes(iso)) {
       const cuando2 = despuesTxt(iso, DD(2)); // «mañana» (mié 18-nov → jue 19-nov) o «el jue 19-nov»
+      const sinEncaps = !!PRIMERA_ENCAPS && iso <= PRIMERA_ENCAPS.fecha;
+      const ses1 = sinEncaps && iso === PRIMERA_ENCAPS.fecha ? /^(SP|CI|GES|INV|ET) S(\d+)/.exec((PRIMERA_ENCAPS.teoria[0] || {}).item || '') : null;
       out[iso] = [B(iso, '05:00–05:30', `ANKI AM USMLE · mazo configurado y aún vacío → la primera tarjeta nace ${cuando2} (D2)`, [
         P(2, 'Sync + APEX::USMLE: 0 vencidas y 0 nuevas', `Anki escritorio · el mazo USMLE se configuró el D1 (${fd(DD(1))}: mazos + preset) y sigue vacío: el D1 fue configuración + UWSA1 + Day-After 1/6, sin APEX. La primera tarjeta nace por APEX el D2, ${fd(DD(2))}.`),
         P(8, `Comprobar la configuración del ${fd(DD(1))} (solo mirar)`, `APEX::USMLE (padre) y los ${F1_DECKS.length} submazos del F1 (${F1_DECKS.map((t) => `::${t}`).join(' · ')}) existen y Deck Options del padre muestra el preset «APEX USMLE» con FSRS. Si falta algo, anótalo: se completa ${cuando2} a las 05:00, antes de la primera tarjeta.`),
-        P(20, 'Vencidas de ENCAPS::Cifras (y de ENCAPS::Flashcards si existe)', 'El mazo con historial es el de ENCAPS: responde en voz alta antes de girar · Good / Again, nunca Hard ni Easy. Si llegas a 0, sync y cierra (el resto es libre). A las 05:30 siguen los 15′ de repasos ENCAPS de su guía.'),
+        sinEncaps
+          ? P(20, ses1 ? `Libre (o abrir el curso 99 del campus y localizar ${ses1[1]} S${ses1[2]} para las 07:30)` : 'Libre', `Aún no hay tarjetas USMLE (nacen el ${fd(DD(2))}) ni ENCAPS (nacen ${iso === PRIMERA_ENCAPS.fecha ? 'hoy' : 'el ' + fd(PRIMERA_ENCAPS.fecha)} a las 11:40): no hay nada que repasar.`)
+          : P(20, 'Vencidas de ENCAPS::Cifras (y de ENCAPS::Flashcards si existe)', 'El mazo con historial es el de ENCAPS: responde en voz alta antes de girar · Good / Again, nunca Hard ni Easy. Si llegas a 0, sync y cierra (el resto es libre). A las 05:30 siguen los 15′ de repasos ENCAPS de su guía.'),
       ], [R_ANKI], 'APEX::USMLE configurado y vacío confirmado (lo que falte, anotado)', { aviso: `${VER}: hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El mazo USMLE está vacío hasta ${cuando2 === 'mañana' ? 'mañana' : 'el ' + fd(DD(2))} (D2 ${fd(DD(2))}): la primera tarjeta nace por APEX ese día.` })];
       continue;
     }

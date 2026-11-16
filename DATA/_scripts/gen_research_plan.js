@@ -104,6 +104,11 @@
  * 25-feb → SUBMIT CR-9 LUN 1-MAR (≤ 1-mar) · X-8 mié 3-mar. R9 (CRÍTICO) sigue antes de la pausa (lun 7-dic); T-8 también (lun 18-ene; T-5 cae el
  * vie 8-ene, día del PRE-TEST 2026-II). Ciclo 1 mar 17-nov → lun 12-abr · ciclo 2 mié 14-abr → sáb 18-sep-2027 (X-9 mar 20-abr · R10 PROSPERO lun
  * 26-abr · R43 SUBMIT SR-1 sáb 14-ago). Nada se recorta: 42 + 67. Nuevo marcador {{PAUSA}} (fechas de la pausa, de PAUSA) en el texto de X-7.
+ * v6.09 (16-nov-2026 · D1 = MAR 17-NOV; el lun 16 no se estudió y el jue 31-dic deja de ser SKIP): `node DATA/_scripts/gen_research_plan.js 2026-11-17`
+ * (vía `remap_inicio.js 2026-11-17 --bloques research,derma --usmle-aparte`). El lun 16 era día-Derma → Research NO cambia: mismas 42 + 67 fechas, mismos
+ * hitos y overlays (M1 mar 17-nov … CR-9 lun 1-mar · R43 sáb 14-ago). El jue 31-dic (Research por paridad) es día-DERMA por TIPO_RD_FORZADO
+ * (researchData.ts): recupera la sesión Derma del lun 16 y no le da a Research una ranura de más (que movería todo 2027). Los textos con versión
+ * siguen diciendo «v6.08» (VER_TXT), la versión que fijó estas fechas: así los 12 overlays 🔬 del Calendar no se recrean (--check = 0).
  * Si el D1 se corre y el ciclo 1 no cabe antes de la pausa, los átomos `recortable` (prep de SR-1 que reaparece en el ciclo 2 y,
  * desde v6.01, R2; desde v6.02, R6, R7 y X-1; desde v6.03, X-2; desde v6.05, R9) se DESPLAZAN tras la pausa —a la cola, detrás de CR-9 y X-8— y se avisa por consola: NUNCA se recortan (el ciclo 1
  * conserva sus 42 átomos; «recortable» = desplazable, nombre histórico). Si ni así caben, el script aborta en vez de perder uno.
@@ -154,14 +159,22 @@ const V6 = require('./gen_fechas_v6');
 const F6 = V6.cargarFechasV6();
 const SKIP_FIJOS = new Set(F6.skip);
 const PROTEGIDOS = new Set(F6.protegidos.map((p) => p.fecha));
+// v6.09 (16-nov-2026): la v6.09 NO mueve ninguna fecha de Research (el lun 16-nov era día-Derma; M1 sigue el mar 17-nov) → los textos con versión
+// siguen nombrando la v6.08, la que fijó estas fechas (así los overlays 🔬 del Calendar no se recrean solo por la etiqueta). Misma regla en
+// research_guia.js y gen_research_calendar.js. Con otra versión vuelve a ser F6.version.
+const VER_TXT = F6.version === 'v6.09' ? 'v6.08' : F6.version;
 /** v6.00 (DJ-3): desde el inicio del SERUMS el SÁBADO es día de plan y cuenta en la paridad (Research mar · jue · sáb; Derma lun · mié · vie). */
 const SERUMS_INICIO = F6.serums.inicio;
 const PAUSA = { desde: '2027-01-21', hasta: '2027-02-10' }; // v6.08 (14-nov-2026): la pausa EMPIEZA el jue 21-ene (antes vie 15-ene; el fin, mié 10-feb, sin cambio) — re-fecha D1 = lun 16-nov: el ciclo corre 3 ranuras (lun 9, mié 11 y vie 13-nov perdidos; el lun 16-nov es día-Derma → d1 = mar 17-nov) y antes del 15-ene solo quedaban 20 días-Research para 22 átomos del núcleo, todos críticos o preparando un envío con fecha → la regla abortaba («22 átomos no caben en 20»); Joseph: «alarga las fechas límite lo que amerite» → +2 sesiones de 45′ dentro de la intensiva ENCAPS (lun 18-ene, T-8 SUBMIT de la tesis, y mié 20-ene, X-7) y el objetivo RUTA del case report pasa al lun 1-mar (DEADLINE_INTERNO) · v6.07: sin cambio (el ciclo corre 2 ranuras —mar 3 y jue 5-nov perdidos— → d1 = lun 9-nov; con 23 días-Research antes de la pausa CR-4 → CR-8 van tras ella, delante del SUBMIT CR-9) · v6.06: sin cambio (núcleo de la intensiva ENCAPS, fechas fijas; el ciclo corre 3 ranuras —lun 26, mié 28 y vie 30-oct perdidos— → d1 = mar 3-nov; con 25 días-Research antes de la pausa M3 sigue tras ella y la regla (nivel 2) lleva CR-6 → CR-8 tras ella, delante del SUBMIT CR-9) · v6.05: sin cambio (el ciclo corre 1 ranura —jue 22-oct perdido— → d1 = lun 26-oct; con 28 días-Research antes de la pausa R9 también se desplaza tras ella, delante de R6) · v6.03: sin cambio (el ciclo corre 1 ranura —mar 20-oct perdido— → d1 = jue 22-oct; con 29 días-Research antes de la pausa X-2 también se desplaza tras ella) · v6.02: sin cambio (el ciclo corre 3 ranuras —lun 12, mié 14 y vie 16-oct perdidos— → d1 = mar 20-oct; con 30 días-Research antes de la pausa R6, R7 y X-1 también se desplazan tras ella) · v6.01: sin cambio (núcleo de la intensiva ENCAPS, fechas fijas; el ciclo corre 1 ranura —el jue 8-oct perdido— → d1 = lun 12-oct; con 33 días-Research antes de la pausa R2 también se desplaza tras ella) · v6.00: sin cambio · v5.20: sin cambio (el ciclo 1 corre una ranura: el mar 6-oct perdido era día-Research → d1 = jue 8-oct; R3 ya no cabe antes de la pausa y se desplaza tras ella) · v5.19: sin cambio (Research no corre: el lun 5-oct perdido era día de Derma) · v5.18: +2 hábiles (v5.17: 13-ene → 8-feb) // Step 1 · 0 átomos · v5.17: la pausa corre con el plan (v5.16: 7-ene→3-feb · v5.15: 4→29-ene); el inicio va +4 hábiles (13-ene, no 12) porque con D1 en jueves la paridad Research↔Derma se invierte y con 12-ene cabían 34 átomos antes de la pausa en vez de los 35 de v5.16 (R3 se derramaba): con 13-ene el orden de los 42 átomos es IDÉNTICO al de v5.16; si no, los 34 átomos del núcleo no caben antes de ella
 const enPausa = (s) => s >= PAUSA.desde && s <= PAUSA.hasta;
+// v6.09 (16-nov-2026): excepciones de paridad R↔D (jue 31-dic = día-DERMA: recupera la sesión Derma del lun 16-nov, que no se estudió).
+// FUENTE ÚNICA: src/lib/researchData.ts#TIPO_RD_FORZADO (misma lectura en gen_research_plan · gen_derma_ciclo2 · remap_inicio).
+const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/lib/researchData.ts'), 'utf8'); const m = t.match(/export const TIPO_RD_FORZADO[^=]*=\s*\{([^}]*)\}/); if (!m) throw new Error('researchData.ts: no encuentro TIPO_RD_FORZADO (v6.09)'); return Object.fromEntries([...m[1].matchAll(/'(20\d\d-\d\d-\d\d)':\s*'(research|derma)'/g)].map((x) => [x[1], x[2]])); })();
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
   if (dow === 0 || (dow === 6 && s < SERUMS_INICIO)) return 'descanso';
+  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma
   let cnt = 0; const cur = fromISO('2026-06-10');
   while (cur < d) { const wd = cur.getUTCDay(); if ((wd >= 1 && wd <= 5) || (wd === 6 && iso(cur) >= SERUMS_INICIO)) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
   return cnt % 2 === 0 ? 'research' : 'derma';
@@ -844,12 +857,12 @@ for (const x of TODOS) if (x.chipsDyn) { x.chips = [...(x.chips || []), ...x.chi
 if (fechaDe('M3') > fechaDe('C-3')) {
   const host = D1.filter((x) => x.code !== 'M3' && x.fecha > fechaDe('M1') && x.fecha < fechaDe('C-3')).pop();
   if (!host) throw new Error('chip de seguimiento del caso: no hay átomo entre M1 y C-3 que lo lleve');
-  host.chips = [...(host.chips || []), `${chipSeguimiento({ f: fechaDe, fmt: fmtCorto })} (${F6.version}: lo llevaba M3, que va tras la pausa el ${fmtCorto(fechaDe('M3'))})`];
+  host.chips = [...(host.chips || []), `${chipSeguimiento({ f: fechaDe, fmt: fmtCorto })} (${VER_TXT}: lo llevaba M3, que va tras la pausa el ${fmtCorto(fechaDe('M3'))})`];
 }
 // v6.05 (fix): texto de X-7 con los desplazados por la regla de prioridad (calculado, no escrito a mano)
 {
   const reg = D1.filter((x) => x.desplazadoPorRegla);
-  const txt = reg.length ? `${F6.version}: también ${reg.map((x) => `${x.code} —${x.obj.split(':')[0].replace(/\s*\([^)]*\)\s*$/, '').slice(0, 60)}— va tras ella, ${fmtCorto(x.fecha).replace(/-\d{4}$/, '')}`).join(' · ')}` : `${F6.version}: ningún átomo más tras la pausa`;
+  const txt = reg.length ? `${VER_TXT}: también ${reg.map((x) => `${x.code} —${x.obj.split(':')[0].replace(/\s*\([^)]*\)\s*$/, '').slice(0, 60)}— va tras ella, ${fmtCorto(x.fecha).replace(/-\d{4}$/, '')}`).join(' · ')}` : `${VER_TXT}: ningún átomo más tras la pausa`;
   for (const x of TODOS) if (x.obj.includes('{{DESPLAZADOS_REGLA}}')) x.obj = x.obj.replace('{{DESPLAZADOS_REGLA}}', txt);
 }
 // v6.06: marcadores {{F:code}} / {{D:code}} / {{CR_PAUSA}} / {{COLA}} (ver chipSeguimiento) → texto con las fechas REALES del plan
@@ -864,7 +877,7 @@ if (fechaDe('M3') > fechaDe('C-3')) {
   const crUlt = Object.keys(QUE_CR).filter((c) => fechaDe(c) < PAUSA.desde).pop();
   const CR_TRAS = crTras.length ? `${crTras[0]} → ${crTras[crTras.length - 1]}` : 'ningún paso';
   const CR_PAUSA = crAntes ? 'paquete del case report congelado'
-    : `case report con ${crUlt ? `${QUE_CR[crUlt]} (${crUlt})` : 'ningún paso'} cerrado y ${CR_TRAS} (${crTras.map((c) => QUE_CR[c]).join(' · ')}) tras la pausa, ${fmtCorto(fechaDe(crTras[0]))} → ${fmtCorto(fechaDe(crTras[crTras.length - 1]))} (${F6.version}: regla de desplazamiento, niveles 1 y 2)`;
+    : `case report con ${crUlt ? `${QUE_CR[crUlt]} (${crUlt})` : 'ningún paso'} cerrado y ${CR_TRAS} (${crTras.map((c) => QUE_CR[c]).join(' · ')}) tras la pausa, ${fmtCorto(fechaDe(crTras[0]))} → ${fmtCorto(fechaDe(crTras[crTras.length - 1]))} (${VER_TXT}: regla de desplazamiento, niveles 1 y 2)`;
   const COLA = `${fmtCorto(cola.fecha)} con ${cola.code}${cola.code === 'CR-9' ? ' (SUBMIT del case report)' : ` (el SUBMIT del case report, CR-9, va el ${fmtCorto(fechaDe('CR-9'))})`}`;
   // v6.07: {{CTX:code}} = qué pasa ese día en el régimen (solo _fechas_v6.json: pre-test, D-2 DRESS, intensiva ENCAPS, tramo 2 del Step 1).
   const V6D = V6.derivar(F6);
@@ -878,7 +891,7 @@ if (fechaDe('M3') > fechaDe('C-3')) {
     return '';
   };
   const res = (t) => String(t).replace(/\{\{F:([\w-]+)\}\}/g, (_, c) => fmtCorto(fechaDe(c))).replace(/\{\{D:([\w-]+)\}\}/g, (_, c) => String(byCode[c] ? byCode[c].d : (() => { throw new Error('marcador D: ' + c); })()))
-    .replace(/\{\{CTX:([\w-]+)\}\}/g, (_, c) => ctxDia(fechaDe(c))).replace(/\{\{VER\}\}/g, F6.version).replace(/\{\{CR_TRAS\}\}/g, CR_TRAS)
+    .replace(/\{\{CTX:([\w-]+)\}\}/g, (_, c) => ctxDia(fechaDe(c))).replace(/\{\{VER\}\}/g, VER_TXT).replace(/\{\{CR_TRAS\}\}/g, CR_TRAS)
     .replace(/\{\{CR_PAUSA\}\}/g, CR_PAUSA).replace(/\{\{COLA\}\}/g, COLA)
     .replace(/\{\{PAUSA\}\}/g, `${fmtCorto(PAUSA.desde).slice(4, -5)}→${fmtCorto(PAUSA.hasta).slice(4, -5)}`); // v6.08: fechas de la pausa (antes «15-ene→10-feb» escrito)
   for (const x of TODOS) { x.obj = res(x.obj); x.ent = res(x.ent); x.art = res(x.art); if (x.chips) x.chips = x.chips.map(res); }
@@ -954,7 +967,7 @@ const TS1 = `/**
  * PAUSA ${PAUSA.desde} → ${PAUSA.hasta} = 0 átomos; v6.00: núcleo de la intensiva ENCAPS, días-Research = 30' «Research mínimo (DJ-4)»). d1-d${N_CORE} caben antes de la pausa (último: ${D1[N_CORE - 1].fecha});
  * d${N_CORE + 1}-d${D1.length} van tras la pausa (CR-9 SUBMIT del case report · X-8 re-arranque${D1.length - N_CORE > TAIL1.length ? ' · ' + D1.slice(N_CORE + TAIL1.length).map((x) => x.code).join(' / ') + ' desplazados por no caber antes' : ''}) — el total 42 es
  * el invariante que remap_inicio.js comprueba. El bloque del Calendar 13:30–14:15 NO se toca.
- * v5.10b (12-sep-2026): gates — T-1 solicitud CEI presentada el día del átomo (d${dDe('T-1')}; ${F6.version}: ${fmtCorto(fechaDe('T-1'))} · v6.05: mié 11-nov · v6.03: lun 9-nov · v6.02: jue 5-nov · v6.01: mié 28-oct · v6.00 = v5.20: lun 26-oct · v5.18-v5.19: jue 22-oct; el gap pedía ≤30-sep) · R9 antes de R6 (${F6.version}: R9 ${fechaDe('R9')} · R6 ${fechaDe('R6')}; el primer borrador v6.05 desplazaba R9, CRÍTICO, tras la pausa —regla corregida—) · CR-1/CR-2 (d15/d16 —d${dDe('CR-1')}/d${dDe('CR-2')} en ${F6.version}: ${fmtCorto(fechaDe('CR-1'))} y ${fmtCorto(fechaDe('CR-2'))} · d13/d14 en v6.05: vie 27-nov y mar 1-dic, las mismas fechas que d14/d15 en v6.03 · v6.02: mié 25 y vie 27-nov, al desplazarse R6—; v6.01: jue 19-nov y lun 23-nov · v6.00 = v5.20: mar 17-nov y jue 19-nov · v5.18-v5.19: vie 13-nov y mar 17-nov; ya tras el 31-oct — ver chip) · T-7/T-8 no se envían
+ * v5.10b (12-sep-2026): gates — T-1 solicitud CEI presentada el día del átomo (d${dDe('T-1')}; ${VER_TXT}: ${fmtCorto(fechaDe('T-1'))} · v6.05: mié 11-nov · v6.03: lun 9-nov · v6.02: jue 5-nov · v6.01: mié 28-oct · v6.00 = v5.20: lun 26-oct · v5.18-v5.19: jue 22-oct; el gap pedía ≤30-sep) · R9 antes de R6 (${VER_TXT}: R9 ${fechaDe('R9')} · R6 ${fechaDe('R6')}; el primer borrador v6.05 desplazaba R9, CRÍTICO, tras la pausa —regla corregida—) · CR-1/CR-2 (d15/d16 —d${dDe('CR-1')}/d${dDe('CR-2')} en ${VER_TXT}: ${fmtCorto(fechaDe('CR-1'))} y ${fmtCorto(fechaDe('CR-2'))} · d13/d14 en v6.05: vie 27-nov y mar 1-dic, las mismas fechas que d14/d15 en v6.03 · v6.02: mié 25 y vie 27-nov, al desplazarse R6—; v6.01: jue 19-nov y lun 23-nov · v6.00 = v5.20: mar 17-nov y jue 19-nov · v5.18-v5.19: vie 13-nov y mar 17-nov; ya tras el 31-oct — ver chip) · T-7/T-8 no se envían
  * sin nº de CEI ni inglés revisado · chips con fechas se recalculan en cada corrimiento (chipsDyn del generador).
  *
  * Pistas del ciclo 1: R0 infra + cimientos (PICO · diseños · PICO de SR-1) · M1-M3 mentores (Ciro · Rising Scholars ·
@@ -1028,7 +1041,7 @@ const TS2 = `/**
  *
  * ${D2.length} átomos · d${D2[0].d}-d${D2[D2.length - 1].d} (numeración continúa la del ciclo 1 → una sola clave de progreso 'research') ·
  * D1 = ${wdOf(D2[0].fecha)} ${D2[0].fecha} → fin ${wdOf(D2[D2.length - 1].fecha)} ${D2[D2.length - 1].fecha} · interdiario con Derma · sáb+dom libres ·
- * ${F6.version} (31-oct-2026, D1 = lun 2-nov; Research d1 mar 3-nov): el ciclo 2 corre 3 ranuras (X-6 ocupa el ${fmtCorto(fechaDe('X-6'))}) → R6b ${fmtCorto(fechaDe('R6b'))} · R8b ${fmtCorto(fechaDe('R8b'))} ·
+ * ${VER_TXT} (31-oct-2026, D1 = lun 2-nov; Research d1 mar 3-nov): el ciclo 2 corre 3 ranuras (X-6 ocupa el ${fmtCorto(fechaDe('X-6'))}) → R6b ${fmtCorto(fechaDe('R6b'))} · R8b ${fmtCorto(fechaDe('R8b'))} ·
  * X-9 ${fmtCorto(fechaDe('X-9'))} · R10 ${fmtCorto(fechaDe('R10'))} · R17 ${fmtCorto(fechaDe('R17'))} · R43 (SUBMIT SR-1) ${fmtCorto(fechaDe('R43'))} · fin ${fmtCorto(D2[D2.length - 1].fecha)}.
  * v6.05 (24-oct-2026, D1 = lun 26-oct; Research d1 lun 26-oct): el ciclo 2 corre 1 ranura (X-6 ocupa el mar 23-mar y el jue 25-mar es Semana Santa, SKIP)
  * → R6b lun 29-mar · R8b mié 31-mar · X-9 vie 2-abr · R10 jue 8-abr · R17 mar 4-may · R43 (SUBMIT SR-1) sáb 31-jul · fin sáb 4-sep-2027.
@@ -1043,7 +1056,7 @@ const TS2 = `/**
  * muerto de la posta) → R43 (SUBMIT SR-1) sáb 17-jul · fin sáb 21-ago (v5.20: los protegidos mar 9 / mié 10-mar daban R8b jue 11-mar y fin jue 9-sep).
  * Arranca el ${wdOf(D2[0].fecha)} ${D2[0].fecha} (v6.00: vie 5-mar-2027, en la intensiva ENCAPS; desde la v6.02 ya tras el ENCAPS y el reinicio del Step 1) (RUTA §6: M6-7 protocolo + PROSPERO · M8-10 ejecutar SR · M11-12 someter + balance).
  * R18 (cribado), R20 (κ) y R24 (extracción) EXIGEN revisor humano #2 con cuenta Rayyan y κ real; el equipo de
- * revisión (L4 §9) se copia a PROSPERO en R10. (CR-9 = submit del case report #1 y X-8 son d${dDe('CR-9')}-d${dDe('X-8')} del CICLO 1 en ${F6.version} —${fmtCorto(fechaDe('CR-9'))} y ${fmtCorto(fechaDe('X-8'))}, tras CR-6 → CR-8—; d29-d30 en v6.05, d30-d31 en v6.03, d31-d32 en v6.02, d34-d35 en v6.01 y d35-d36 en v5.20 = v6.00 —jue 11-feb y lun 15-feb-2027; d36-d37 en v5.18-v5.19—, los dos
+ * revisión (L4 §9) se copia a PROSPERO en R10. (CR-9 = submit del case report #1 y X-8 son d${dDe('CR-9')}-d${dDe('X-8')} del CICLO 1 en ${VER_TXT} —${fmtCorto(fechaDe('CR-9'))} y ${fmtCorto(fechaDe('X-8'))}, tras CR-6 → CR-8—; d29-d30 en v6.05, d30-d31 en v6.03, d31-d32 en v6.02, d34-d35 en v6.01 y d35-d36 en v5.20 = v6.00 —jue 11-feb y lun 15-feb-2027; d36-d37 en v5.18-v5.19—, los dos
  * primeros días-Research tras la pausa.) Incluye campaña K1-K2, case report #2,
  * bibliométrico B1-B5 y apertura de SR-2 (L5). Fuente única: DATA/_scripts/gen_research_plan.js.
  */
@@ -1217,7 +1230,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > 2-oct y SUBMIT el 29-dic) contradecía [\`RUTA_PUBLICACION_2027.md\`](RUTA_PUBLICACION_2027.md) (carta oct-nov · case report
 > feb-mar · PROSPERO mar-abr · SR sometida jul-sep) y no contenía ni un átomo de los dos primeros entregables ni de la tesis.
 > Ahora: **ciclo 1 (oct-2026 → los días-Research de feb-2027 tras la pausa; 42 átomos)** = infra académica + cimientos + mentores +
-> carta al editor + tesis L0 (research letter) + case report #1 (paquete congelado el ${fmtCorto(fechaDe('CR-8'))} en ${F6.version} —CR-8 = d${dDe('CR-8')}${fechaDe('CR-8') > PAUSA.hasta ? ', ya tras la pausa (nivel 2 de la regla)' : ''}; mar 23-feb-2027 en v6.07 —d28, niveles 1 y 2—; mié 17-feb-2027 en v6.06 —d28, nivel 2—; mar 12-ene en v6.05 = v6.03 = v6.02 = v6.01 —d27 en v6.05, d28 en v6.03, d29 en v6.02, d32 en v6.01; vie 8-ene en v6.00 = v5.20; v5.19: mié 6-ene—; SUBMIT = d${dDe('CR-9')} en ${F6.version} = ${fmtCorto(fechaDe('CR-9'))} · d29 en v6.07 = jue 25-feb-2027 · d29 en v6.06 = vie 19-feb-2027 · d29 en v6.05 —d30 en v6.03, d31 en v6.02, d34 en v6.01, d35 en v6.00 = v5.20, d36 en v5.18-v5.19— = jue 11-feb-2027, primer día tras la pausa) +
+> carta al editor + tesis L0 (research letter) + case report #1 (paquete congelado el ${fmtCorto(fechaDe('CR-8'))} en ${VER_TXT} —CR-8 = d${dDe('CR-8')}${fechaDe('CR-8') > PAUSA.hasta ? ', ya tras la pausa (nivel 2 de la regla)' : ''}; mar 23-feb-2027 en v6.07 —d28, niveles 1 y 2—; mié 17-feb-2027 en v6.06 —d28, nivel 2—; mar 12-ene en v6.05 = v6.03 = v6.02 = v6.01 —d27 en v6.05, d28 en v6.03, d29 en v6.02, d32 en v6.01; vie 8-ene en v6.00 = v5.20; v5.19: mié 6-ene—; SUBMIT = d${dDe('CR-9')} en ${VER_TXT} = ${fmtCorto(fechaDe('CR-9'))} · d29 en v6.07 = jue 25-feb-2027 · d29 en v6.06 = vie 19-feb-2027 · d29 en v6.05 —d30 en v6.03, d31 en v6.02, d34 en v6.01, d35 en v6.00 = v5.20, d36 en v5.18-v5.19— = jue 11-feb-2027, primer día tras la pausa) +
 > preparación de SR-1 con **revisor humano #2** nombrado antes de PROSPERO;
 > **ciclo 2 (feb→ago 2027)** = SR-1 completa (PROSPERO → submit) con cribado y extracción DUALES, campaña de colaboradores,
 > case report #2, bibliométrico y apertura de SR-2. **Pausa ${fmtCorto(PAUSA.desde)} → ${fmtCorto(PAUSA.hasta)} = 0 átomos (v6.08: empieza el jue 21-ene; hasta la v6.07 y desde la v5.18: vie 15-ene → mié 10-feb · v6.00: intensiva ENCAPS + 30′ «Research mínimo»; hasta v5.20: Step 1 · v5.18 = v5.19 = v5.20 · v5.17: mié 13-ene → lun 8-feb).**
@@ -1227,7 +1240,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > necesita la versión del CADI que sale de los mismos documentos → **M3** a d8); los consentimientos ya constan (censo con
 > consentimiento parental + asentimiento: 291 excluidas, portada de \`datos_tesis_acne.xlsx\`). **R9** (¿ya existe la SR? AMSTAR-2
 > rápido de las 5 SR/MA que solapan + decisión escrita a/b/c en L4 §6) pasa de d35 a **d9, ANTES de R6** (PICO, d9 → d14); **R2**
-> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (⚠ ${F6.version}: caen el ${fmtCorto(fechaDe('CR-1'))} y el ${fmtCorto(fechaDe('CR-2'))}, como d${dDe('CR-1')}/d${dDe('CR-2')} y con el plazo del 31-oct VENCIDO —v6.07: vie 11 y mar 15-dic, d13/d14 · v6.06: lun 7 y mié 9-dic, d13/d14 · v6.05: vie 27-nov y mar 1-dic, d13/d14 · v6.03: mismas fechas, d14/d15 · v6.02: mié 25-nov y vie 27-nov · v6.01: jue 19-nov y lun 23-nov · v6.00 = v5.20: mar 17-nov y jue 19-nov · v5.18-v5.19: vie 13-nov y mar 17-nov—, es decir YA DESPUÉS del 31-oct — ver el chip de CR-1;
+> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (⚠ ${VER_TXT}: caen el ${fmtCorto(fechaDe('CR-1'))} y el ${fmtCorto(fechaDe('CR-2'))}, como d${dDe('CR-1')}/d${dDe('CR-2')} y con el plazo del 31-oct VENCIDO —v6.07: vie 11 y mar 15-dic, d13/d14 · v6.06: lun 7 y mié 9-dic, d13/d14 · v6.05: vie 27-nov y mar 1-dic, d13/d14 · v6.03: mismas fechas, d14/d15 · v6.02: mié 25-nov y vie 27-nov · v6.01: jue 19-nov y lun 23-nov · v6.00 = v5.20: mar 17-nov y jue 19-nov · v5.18-v5.19: vie 13-nov y mar 17-nov—, es decir YA DESPUÉS del 31-oct — ver el chip de CR-1;
 > T-2 → d19 y R7 → d21, sin deadline externo). Gates: T-7/T-8 no se envían sin nº de CEI o exención (T-8 pasaría a feb-2027) ni sin
 > inglés revisado (mentor de Rising Scholars o editor); d8/d10 hacen seguimiento del caso con el Dr. Ciro (sin caso a las 3 semanas
 > de M1 → fuente B); M2 fija la fecha de decisión del plan B (4 semanas); X-2 comprueba que el mentor revisa también el case report.
@@ -1360,7 +1373,7 @@ if (SOLO_CICLO === 0) {
   const GUIA_TS = `/**
  * researchGuia.ts — GUÍA «qué · cuánto · cómo» de CADA átomo de Research (ciclo 1 + ciclo 2, d 1-${TODOS.length}) en el formato común
  * \`GuiaBloque\` (src/lib/guia.ts): 45′ en 13:30–14:15 (Σ pasos = 45) · en F4 (desde el SERUMS ${SERUMS_INICIO}) 30′ con franja NOMINAL (sin hora fija).
- * Paso a paso (semanas 1-2 del régimen; ${F6.version}: ${fmtCorto(fechaDe(GR.conDetalle[0]))} → ${fmtCorto(fechaDe(GR.conDetalle[GR.conDetalle.length - 1]))} · v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov): ${GR.conDetalle.join(' · ')}; el resto, desde las 5 franjas del bloque con el objetivo, el entregable, el
+ * Paso a paso (semanas 1-2 del régimen; ${VER_TXT}: ${fmtCorto(fechaDe(GR.conDetalle[0]))} → ${fmtCorto(fechaDe(GR.conDetalle[GR.conDetalle.length - 1]))} · v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov): ${GR.conDetalle.join(' · ')}; el resto, desde las 5 franjas del bloque con el objetivo, el entregable, el
  * artefacto, los recursos verificados (REC) y los chips de cada átomo. + GUIA_RESEARCH_MINIMO (pausa de átomos ${PAUSA.desde} → ${PAUSA.hasta}, DJ-4).
  * ${genLine}
  * Lo pintan ResearchTodayPlan (HOY → 🧭 Guía del bloque) y la tarjeta R↔D del Home.

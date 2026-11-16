@@ -29,6 +29,8 @@
  *    regenerado; banqueo = 203 sesiones (59 mant. con los sáb 8 y 15-may + 135 ext. + 9 repuestas mar 26-oct → vie 5-nov-2027).
  *  · v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 16-nov → D78 lun 8-mar) y del JSON
  *    regenerado; banqueo = 220 sesiones (61 mant. con los sáb 8, 15, 22 y 29-may + 159 ext. hasta el vie 3-dic-2027; sin repuestas).
+ *  · v6.09 (16-nov-2026 · D1 = mar 17-nov; el jue 31-dic pasa a hábil): sin cambios de lógica; fechas de F1 de mirDailyPlan (D1 mar 17-nov → D32 jue
+ *    31-dic; desde D33 lun 4-ene igual que la v6.08, D78 lun 8-mar) y del JSON regenerado; banqueo sin cambio (220 sesiones).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */

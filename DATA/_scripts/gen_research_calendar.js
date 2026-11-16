@@ -96,7 +96,7 @@ const COLOR_ID = '6';              // naranja (mismo que los overlays NBME)
 // v6.00: inicio del SERUMS (F4) desde la fuente única de fechas → overlays de todo el día desde esa fecha
 const SERUMS_INICIO = require('./gen_fechas_v6').cargarFechasV6().serums.inicio;
 /** v6.06: versión del régimen vigente (para rotular «vX» lo vigente en los textos de DEADLINE) — fuente única: _fechas_v6.json */
-const VERSION = require('./gen_fechas_v6').cargarFechasV6().version;
+const VERSION = ((v) => (v === 'v6.09' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
 /** v6.06a: día REAL en que se hace un átomo con fecha de plan `f` (alias de la semana corrida; fuera de ella = f) — gemelo node de fechasV6.fechaRealDe */
 const { fechaRealDe } = require('./gen_fechas_v6');
 const fechaReal = (f) => fechaRealDe(f, undefined, 'research-derma');

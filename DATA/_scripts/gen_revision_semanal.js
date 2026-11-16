@@ -92,7 +92,7 @@ const usmleTs = readTs('usmleStep1Daily.ts');
 // fijo (v5.20: S20 = 15-19 feb, examen lun 22-feb), que en v6 etiquetaba como 'examen' todo lo posterior a la sem 20 (pausa ENCAPS y tramo 2).
 const V6 = require('./gen_fechas_v6');
 const F6 = V6.cargarFechasV6();
-const D1 = F6.f1.inicio; // v6.08: lun 16-nov-2026 → S1 = lun 16 → vie 20-nov, 1.ª revisión con plan = S01_2026-11-21 (sáb 21-nov); el sáb 14-nov está en corrida_s1.sin_sesion · v6.07: lun 9-nov · v6.06: lun 2-nov-2026 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
+const D1 = F6.f1.inicio; // v6.09: mar 17-nov-2026 → la semana del D1 sigue siendo la del lun 16-nov: S1 = lun 16 → vie 20-nov y su fichero S01_2026-11-21 (los NOMBRES no cambian), pero el sáb 21-nov es SIN SESIÓN (viaje, corrida_s1) → la S01 se hace JUNTO con la S02 el sáb 28-nov (`… 2026-11-21 --forzar` + `… 2026-11-28`; la S02 lo avisa en su cabecera) · v6.08: lun 16-nov-2026 → S1 = lun 16 → vie 20-nov, 1.ª revisión con plan = S01_2026-11-21 (sáb 21-nov); el sáb 14-nov está en corrida_s1.sin_sesion · v6.07: lun 9-nov · v6.06: lun 2-nov-2026 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
 const D1ts = (usmleTs.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1];
 // v6.08: el Step de F1 va solo los días step1.f1_dias_semana (v6.07+: mar · jue) → su inicio = 1.er día ≥ f1.inicio con día de Step (v6.08: mar 17-nov;
 //   antes se comparaba con f1.inicio y avisaba «regenerar el plan USMLE» en falso desde la v6.07). Misma regla que la aserción de remap_inicio.js.
@@ -137,6 +137,15 @@ const NN = String(Math.max(0, N)).padStart(2, '0');
 const SIN_SESION = new Set((F6.corrida_s1 && F6.corrida_s1.sin_sesion) || []);
 // v6.06e: los sábados libres cuya revisión se corrió a un domingo SÍ la tienen
 const REV_CORRIDA = Object.values(_C1.reparto).some((x) => x.partes.some((p) => p.de === SABADO && 'revision' in p.bloques));
+// v6.09 (16-nov-2026): un sábado SIN SESIÓN ya DENTRO del plan (sáb 21-nov, viaje; la S01) no tiene revisión ese día: va JUNTO con la del sábado
+//   siguiente (S02 del sáb 28-nov). Se genera con --forzar ese sábado siguiente; la S02 lo avisa en su cabecera (JUNTO_PREV, abajo).
+const SAB_PRIMERO = addDays(LUNES_D1, 5);
+const _sigConRev = (s) => { let x = addDays(s, 7); for (let i = 0; i < 8 && SIN_SESION.has(x); i++) x = addDays(x, 7); return x; };
+if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar') && SABADO >= SAB_PRIMERO && SABADO > D1) {
+  const sig = _sigConRev(SABADO);
+  console.log(`${fmt(SABADO)}: sin revisión semanal ese día — día sin sesión ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion). La S${NN} (S${NN}_${SABADO}.md, semana ${fmt(LUNES)} → ${fmt(VIERNES)}) va JUNTO con la del ${fmt(sig)}: ese día, \`node DATA/_scripts/gen_revision_semanal.js ${SABADO} --forzar\` y \`node DATA/_scripts/gen_revision_semanal.js ${sig}\`. Nada escrito.`);
+  process.exit(0);
+}
 if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar')) {
   const sab1 = addDays(LUNES_D1, 5);
   console.log(`${fmt(SABADO)}: sin revisión semanal — semana corrida ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion): el plan arranca el ${fmt(D1)} y la 1.ª revisión con plan es S01_${sab1}.md (${fmt(sab1)}). Nada escrito (--forzar para generarla igual).`);
@@ -527,9 +536,15 @@ function usmleScores() {
   // ─── MD ───
   const L = [];
   L.push(`# Revisión semanal ${LABEL} · ${fmt(SABADO)} · semana ${fmtY(LUNES)} → ${fmtY(VIERNES)} · hito: ${m2.hitoSemana || '—'} · DELOAD: ${DELOAD ? 'SÍ (secundarios 50%)' : 'no'}`);
+  // v6.09: la revisión del sábado ANTERIOR no se hizo (día sin sesión: sáb 21-nov, viaje) → va junto con esta (mismo bloque de 30′)
+  const SAB_PREV = addDays(SABADO, -7);
+  if (SIN_SESION.has(SAB_PREV) && SAB_PREV >= SAB_PRIMERO && SAB_PREV > D1) {
+    const nnPrev = String(Math.max(0, N - 1)).padStart(2, '0');
+    L.push(`⚠ Va JUNTO con la S${nnPrev} (S${nnPrev}_${SAB_PREV}.md, semana ${fmtY(addDays(LUNES, -7))} → ${fmtY(addDays(VIERNES, -7))}): el ${fmt(SAB_PREV)} fue día sin sesión (corrida_s1). Genérala con \`node DATA/_scripts/gen_revision_semanal.js ${SAB_PREV} --forzar\`, rellena primero sus métricas y escribe las 4 decisiones solo aquí (para la semana que entra).`);
+  }
   L.push(`Generado: ${generado} · fuentes: supabase=${fuentes.supabase} · plan_checks=${fuentes.planChecks} · localStorage=${fuentes.localStorage} · diario=${fuentes.diario} · ship=${fuentes.ship} · anki=${fuentes.anki} · registro=${fuentes.registro} · vitals=${fuentes.vitals}`);
   L.push('');
-  L.push(`## 1 USMLE medias         ${m1 ? `pre-test ${sd(m1.pretest, '/10')} · 30Q ${pct(m1.q30)} · eval ${pct(m1.eval)} (días con dato: ${m1.dias}/${usmleSemana.length}, fuente ${m1.fuente}) · error dominante: ${m1.errores.join(', ') || '—'}` : `sin dato (jmd-usmle-scores llega con el proyecto S3 del vibecoding, ${VIBE_S3 || 'lun 16-nov → vie 20-nov-2026'} (v6.06, derivado de vibecodingPlan.ts; v6.05: lun 9 → vie 13-nov · v6.03: mié 4 → mar 10-nov · v6.02: lun 2 → vie 6-nov · v6.01: lun 26 → vie 30-oct · v6.00 = v5.20: mié 21 → mar 27-oct · v5.19: mar 20 → lun 26-oct · v5.18: lun 19 → vie 23-oct); hasta entonces el diario Obsidian 05_DIARY con pretest10/q30_pct/eval_pct rellena esta línea) · rellenar a mano: pre-test __/10 · 30Q __% · eval __%`}   → on-track (eval ≥ 60%): ${m1 && m1.eval != null ? on(m1.eval >= 60) : '__'}`);
+  L.push(`## 1 USMLE medias         ${m1 ? `pre-test ${sd(m1.pretest, '/10')} · 30Q ${pct(m1.q30)} · eval ${pct(m1.eval)} (días con dato: ${m1.dias}/${usmleSemana.length}, fuente ${m1.fuente}) · error dominante: ${m1.errores.join(', ') || '—'}` : `sin dato (jmd-usmle-scores llega con el proyecto S3 del vibecoding, ${VIBE_S3 || 'mar 1-dic → lun 7-dic-2026'} (v6.06, derivado de vibecodingPlan.ts; v6.05: lun 9 → vie 13-nov · v6.03: mié 4 → mar 10-nov · v6.02: lun 2 → vie 6-nov · v6.01: lun 26 → vie 30-oct · v6.00 = v5.20: mié 21 → mar 27-oct · v5.19: mar 20 → lun 26-oct · v5.18: lun 19 → vie 23-oct); hasta entonces el diario Obsidian 05_DIARY con pretest10/q30_pct/eval_pct rellena esta línea) · rellenar a mano: pre-test __/10 · 30Q __% · eval __%`}   → on-track (eval ≥ 60%): ${m1 && m1.eval != null ? on(m1.eval >= 60) : '__'}`);
   L.push(`## 2 uWorld acumulado     __% (n = ____) [manual: dashboard uWorld] · próximo hito: ${m2.proximo || '—'} · distancia: __ pts`);
   L.push(`## 3 Anki                 ${m3.estado === 'cerrado' && !m3.diasTelemetria ? 'Anki cerrado y sin telemetría en la semana → correr node DATA/_scripts/anki_telemetria.js con Anki abierto' : `due ${sd(m3.due)} (medio ${sd(m3.dueMedio)}) · backlog ${sd(m3.backlog)} · retención 30d ${m3.retencion30 == null ? 'sin dato' : Math.round(m3.retencion30 * 100) + '%'} · again ${pct(m3.againPct)} · minFinde ${sd(m3.minFinde, "'")} · telemetría ${m3.diasTelemetria} días${m3.estado === 'live' ? ' (+ live)' : ''}`} · alarma G: ${m3.alarmaG ? 'SÍ → cero nuevas hasta backlog < 20' : 'no'} · 1ª review (05:00): ${m3.primeraReview.sinDato ? 'sin dato (telemetría v2 no corrida esta semana)' : `${m3.primeraReview.verde} verde · ${m3.primeraReview.ambar} ámbar · ${m3.primeraReview.rojo} rojo [${m3.primeraReview.dias.join(' · ')}]`}${m3.alarmaPrimeraReview ? ' · ⚠ ALARMA: ≥ 2 días hábiles con la 1ª review tarde o ausente → revisar la hora de dormir (DOCTRINA §6)' : ''}`);
   L.push(`## 4 ENCAPS viernes       mini-sim ${m4.miniSim || 'sin dato (registrar la ronda mini_sim en _registro_resoluciones.json)'} · rondas de la semana: ${m4.rondas}${m4.pctMedio != null ? ` (media ${pct(m4.pctMedio)} ciego)` : ''} · checks app: ${sd(m4.checks)} · QX acumulado: ${pct(m4.qxPct)} · temas: ${m4.temas.join(' · ') || 'sin filas en study_schedule'}`);

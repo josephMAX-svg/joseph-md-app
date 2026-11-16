@@ -1,274 +1,289 @@
 {
-  "version": "v6.08",
-  "decidido": "2026-10-06",
-  "f1": {
-    "inicio": "2026-11-16",
-    "fin": "2026-12-30",
-    "dias": 32
+ "version": "v6.09",
+ "decidido": "2026-10-06",
+ "f1": {
+  "inicio": "2026-11-17",
+  "fin": "2026-12-30",
+  "dias": 31
+ },
+ "transicion": {
+  "desde": "2026-12-31",
+  "hasta": "2027-01-03"
+ },
+ "encaps": {
+  "examen": "2027-03-14",
+  "provisional": true,
+  "intensiva_desde": "2027-01-04",
+  "pretest": "2027-01-08",
+  "nucleo_hasta": "2027-02-26",
+  "convocatoria_tope": "2027-02-17",
+  "escenarios": [
+   "2027-03-14",
+   "2027-03-21",
+   "2027-04-04",
+   "2027-04-11",
+   "2027-04-18",
+   "2027-04-25"
+  ]
+ },
+ "step1": {
+  "reinicio": "2027-03-16",
+  "examen": "2027-12-06",
+  "adelanto": "2027-12-06",
+  "planB": "2027-12-06",
+  "gonogo": "2027-10-18",
+  "eligibility": "2027-10..2027-12",
+  "viaje_d1": "2027-12-05",
+  "ritual": "2027-12-04",
+  "provisional": true,
+  "reserva_por_encaps": {
+   "2027-03-14": "2027-12-06",
+   "2027-03-21": "2027-12-06",
+   "2027-04-04": "2027-12-06",
+   "2027-04-11": "2027-12-06",
+   "2027-04-18": "2027-12-06",
+   "2027-04-25": "2027-12-06"
   },
-  "transicion": {
-    "desde": "2026-12-31",
-    "hasta": "2027-01-03"
-  },
-  "encaps": {
-    "examen": "2027-03-14",
-    "provisional": true,
-    "intensiva_desde": "2027-01-04",
-    "pretest": "2027-01-08",
-    "nucleo_hasta": "2027-02-26",
-    "convocatoria_tope": "2027-02-17",
-    "escenarios": [
-      "2027-03-14",
-      "2027-03-21",
-      "2027-04-04",
-      "2027-04-11",
-      "2027-04-18",
-      "2027-04-25"
-    ]
-  },
-  "step1": {
-    "reinicio": "2027-03-16",
+  "cambios": [
+   {
+    "fecha": "2026-10-21",
+    "version": "v6.04",
+    "examen_previo": "2027-09-27",
+    "examen": "2027-10-25",
+    "motivo": "Orden de Joseph (mié 21-oct-2026): «con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas». Examen lun 27-sep → LUN 25-OCT-2027 (dentro de la elegibilidad ago-sep-oct). Nada antes del reinicio (mar 16-mar-2027) cambia; el tramo 2 se regenera con E = 25-oct y las semanas extra van al COLCHÓN (no se comprime nada). DJ-1 v6.04: 25-oct en todos los escenarios ENCAPS (sin adelanto; el plan B coincide con la base: un NO-GO del lun 6-sep ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5)."
+   },
+   {
+    "fecha": "2026-11-08",
+    "version": "v6.07",
+    "examen_previo": "2027-10-25",
     "examen": "2027-12-06",
-    "adelanto": "2027-12-06",
-    "planB": "2027-12-06",
-    "gonogo": "2027-10-18",
-    "eligibility": "2027-10..2027-12",
-    "viaje_d1": "2027-12-05",
-    "ritual": "2027-12-04",
-    "provisional": true,
-    "reserva_por_encaps": {
-      "2027-03-14": "2027-12-06",
-      "2027-03-21": "2027-12-06",
-      "2027-04-04": "2027-12-06",
-      "2027-04-11": "2027-12-06",
-      "2027-04-18": "2027-12-06",
-      "2027-04-25": "2027-12-06"
-    },
-    "cambios": [
-      {
-        "fecha": "2026-10-21",
-        "version": "v6.04",
-        "examen_previo": "2027-09-27",
-        "examen": "2027-10-25",
-        "motivo": "Orden de Joseph (mié 21-oct-2026): «con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas». Examen lun 27-sep → LUN 25-OCT-2027 (dentro de la elegibilidad ago-sep-oct). Nada antes del reinicio (mar 16-mar-2027) cambia; el tramo 2 se regenera con E = 25-oct y las semanas extra van al COLCHÓN (no se comprime nada). DJ-1 v6.04: 25-oct en todos los escenarios ENCAPS (sin adelanto; el plan B coincide con la base: un NO-GO del lun 6-sep ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5)."
-      },
-      {
-        "fecha": "2026-11-08",
-        "version": "v6.07",
-        "examen_previo": "2027-10-25",
-        "examen": "2027-12-06",
-        "motivo": "Orden de Joseph (dom 8-nov-2026): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS … el Step 1 puede correrse, pero no más allá de 2027» (meta ENCAPS: primer puesto). Con el Step solo los martes y jueves de F1 (15 mañanas) el tramo 2 con el 25-oct deja un DÉFICIT de 11 unidades (R1: nada se recorta) → primera fecha sin déficit lun 22-nov (colchón 2 filas ≈ 5 h). Elegido LUN 6-DIC-2027: colchón 14 filas ≈ 37 h + 3 lunes (13, 20 y 27-dic) de margen dentro de 2027. Hitos 2027: NBME 30 (24-may) y UWSA3 (29-jun) fijos; NBME 31 (4-oct), NBME 32 (11-oct) y UWSA2 (19-oct) + 6 semanas; NBME 33 + 3 bloques (ensayo de 7 bloques) en el feriado lun 1-nov (sin turno) y Free 120 lun 22-nov (E-14), como en la tabla del 27-sep. GO/NO-GO lun 18-oct (E-49, ≥ 294 h). La elegibilidad (aún sin inscribir) pasa a oct-nov-dic 2027."
-      }
-    ],
-    "f1_dias_semana": [
-      2,
-      4
-    ]
+    "motivo": "Orden de Joseph (dom 8-nov-2026): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS … el Step 1 puede correrse, pero no más allá de 2027» (meta ENCAPS: primer puesto). Con el Step solo los martes y jueves de F1 (15 mañanas) el tramo 2 con el 25-oct deja un DÉFICIT de 11 unidades (R1: nada se recorta) → primera fecha sin déficit lun 22-nov (colchón 2 filas ≈ 5 h). Elegido LUN 6-DIC-2027: colchón 14 filas ≈ 37 h + 3 lunes (13, 20 y 27-dic) de margen dentro de 2027. Hitos 2027: NBME 30 (24-may) y UWSA3 (29-jun) fijos; NBME 31 (4-oct), NBME 32 (11-oct) y UWSA2 (19-oct) + 6 semanas; NBME 33 + 3 bloques (ensayo de 7 bloques) en el feriado lun 1-nov (sin turno) y Free 120 lun 22-nov (E-14), como en la tabla del 27-sep. GO/NO-GO lun 18-oct (E-49, ≥ 294 h). La elegibilidad (aún sin inscribir) pasa a oct-nov-dic 2027."
+   }
+  ],
+  "f1_dias_semana": [
+   2,
+   4
+  ]
+ },
+ "serums": {
+  "inicio": "2027-05-03",
+  "supuesto": true,
+  "dias_plan": "L-S",
+  "domingo": "libre",
+  "adaptacion_hasta": "2027-05-16"
+ },
+ "skip": [
+  "2026-12-25",
+  "2027-01-01",
+  "2027-03-25",
+  "2027-03-26"
+ ],
+ "protegidos": [
+  {
+   "fecha": "2027-03-12",
+   "motivo": "D-1 hábil ENCAPS"
   },
-  "serums": {
-    "inicio": "2027-05-03",
-    "supuesto": true,
-    "dias_plan": "L-S",
-    "domingo": "libre",
-    "adaptacion_hasta": "2027-05-16"
+  {
+   "fecha": "2027-03-13",
+   "motivo": "D-1 ENCAPS"
   },
-  "skip": [
-    "2026-12-25",
-    "2026-12-31",
-    "2027-01-01",
-    "2027-03-25",
-    "2027-03-26"
-  ],
-  "protegidos": [
-    {
-      "fecha": "2027-03-12",
-      "motivo": "D-1 hábil ENCAPS"
-    },
-    {
-      "fecha": "2027-03-13",
-      "motivo": "D-1 ENCAPS"
-    },
-    {
-      "fecha": "2027-03-14",
-      "motivo": "ENCAPS (provisional)"
-    },
-    {
-      "fecha": "2027-03-15",
-      "motivo": "lunes libre post-ENCAPS"
-    },
-    {
-      "fecha": "2027-12-04",
-      "motivo": "ritual test-day"
-    },
-    {
-      "fecha": "2027-12-05",
-      "motivo": "viaje D-1"
-    },
-    {
-      "fecha": "2027-12-06",
-      "motivo": "EXAMEN Step 1"
-    }
-  ],
-  "feriados": [
-    "2026-10-08",
-    "2026-11-01",
-    "2026-12-08",
-    "2026-12-09",
-    "2026-12-25",
-    "2027-01-01",
-    "2027-03-25",
-    "2027-03-26",
-    "2027-05-01",
-    "2027-06-07",
-    "2027-06-29",
-    "2027-07-23",
-    "2027-07-28",
-    "2027-07-29",
-    "2027-08-06",
-    "2027-08-30",
-    "2027-10-08",
-    "2027-11-01",
-    "2027-12-08",
-    "2027-12-09",
-    "2027-12-25"
-  ],
-  "corrimientos": [
-    {
-      "fecha": "2026-10-10",
-      "version": "v6.01",
-      "d1_previo": "2026-10-07",
-      "d1": "2026-10-12",
-      "perdidos": [
-        "2026-10-07",
-        "2026-10-08",
-        "2026-10-09"
-      ],
-      "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística, ex-D79) pasa al tramo 2 como fila desplazada (uid C79, dOrig 79, T3 jue 18-mar) vía --f1-filas 57 (no como recuperación --pendientes-f1); examen Step 1 sin cambio"
-    },
-    {
-      "fecha": "2026-10-17",
-      "version": "v6.02",
-      "d1_previo": "2026-10-12",
-      "d1": "2026-10-19",
-      "perdidos": [
-        "2026-10-12",
-        "2026-10-13",
-        "2026-10-14",
-        "2026-10-15",
-        "2026-10-16"
-      ],
-      "regla": "F1 anclada (la intensiva ENCAPS empieza el 4-ene): 52 hábiles; los hitos F1 NO se desplazan (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40 · NBME 28 = última sesión de F1, mié 30-dic); las 6 filas de temario que no caben (v5.20 D52-D54, D56, D57 Heme/Onco + D79 bioestadística) pasan al tramo 2 como filas desplazadas con su dOrig; examen Step 1 sin cambio"
-    },
-    {
-      "fecha": "2026-10-20",
-      "version": "v6.03",
-      "d1_previo": "2026-10-19",
-      "d1": "2026-10-21",
-      "perdidos": [
-        "2026-10-19",
-        "2026-10-20"
-      ],
-      "regla": "Orden de Joseph (mar 20-oct): «todo comienza mañana miércoles 21, corre dos días; deja libres sáb 24 y dom 25; simplemente corre, no modifiques ni comprimas temas ni exámenes, alarga las fechas límite (también ENCAPS) en todos los segmentos». Patrón v6.02: F1 anclada (50 hábiles mié 21-oct → mié 30-dic) con los HITOS F1 anclados (UWSA1 D1 mié 21-oct · NBME 25/26/27 en su D# · NBME 28 = último slot); las 2 filas de temario no-hito que ya no caben pasan al tramo 2 con su dOrig (alargan el Step 1, examen sin cambio); ENCAPS: las 2 filas F1 que no caben se reponen explícitas en el carril B; secundarios +2 hábiles con el contenido intacto (alargan su fin). Sustituye a v6.02d (semana 1 corrida por alias, mar 20 = plan del lun 19)."
-    },
-    {
-      "fecha": "2026-10-24",
-      "version": "v6.05",
-      "d1_previo": "2026-10-21",
-      "d1": "2026-10-26",
-      "perdidos": [
-        "2026-10-21",
-        "2026-10-22",
-        "2026-10-23"
-      ],
-      "regla": "Orden de Joseph (sáb 24-oct): «todo inicia el lunes 26; puedes correr los horarios y alargar los plazos, pero no quites temas especiales, solo corre lo que está faltando». La semana del 19 no se estudió (la corrida por alias v6.04a queda sin efecto). Patrón v6.02/v6.03: F1 anclada (47 hábiles lun 26-oct → mié 30-dic) con HITOS F1 anclados (UWSA1 D1 lun 26 · NBME 25/26/27 en su D# · NBME 28 = último slot); las filas de temario no-hito que ya no caben pasan al tramo 2 con su dOrig (nada se quita); ENCAPS: las filas F1 que no caben se reponen en el carril B; secundarios +3 hábiles con el contenido intacto. Examen Step 1 lun 25-oct-2027 sin cambio (v6.04b)."
-    },
-    {
-      "fecha": "2026-10-31",
-      "version": "v6.06",
-      "d1_previo": "2026-10-26",
-      "d1": "2026-11-02",
-      "perdidos": [
-        "2026-10-26",
-        "2026-10-27",
-        "2026-10-28",
-        "2026-10-29",
-        "2026-10-30"
-      ],
-      "regla": "Orden de Joseph (sáb 31-oct): «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada más: lo que era la semana anterior, esta semana; para no perder materias, tan solamente corre». La semana del 26-oct no se estudió. Mismo patrón que v6.05: F1 anclada (42 hábiles lun 2-nov → mié 30-dic) con hitos F1 (UWSA1 D1 lun 2-nov · NBME 28 = último slot; NBME 25-27 en su D# salvo que el Day-After no quepa antes del siguiente hito); las filas de temario que no caben pasan al tramo 2 con fecha (nada se quita); ENCAPS: las filas F1 que no caben se reponen con fecha; secundarios +5 hábiles con el contenido intacto y sus fechas límite corridas. Examen Step 1 lun 25-oct-2027 y ENCAPS dom 14-mar-2027 sin cambio (fechas externas)."
-    },
-    {
-      "fecha": "2026-11-08",
-      "version": "v6.07",
-      "d1_previo": "2026-11-02",
-      "d1": "2026-11-09",
-      "perdidos": [
-        "2026-11-02",
-        "2026-11-03",
-        "2026-11-04",
-        "2026-11-05",
-        "2026-11-06"
-      ],
-      "regla": "Orden de Joseph (dom 8-nov): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer puesto (> 17,5, ideal 19); empezamos mañana 9; sábados 14-17 libres para el en vivo de Theomed; domingos 4 h opcionales; el Step 1 puede correrse, pero no más allá de 2027». La semana del lun 2-nov no se estudió (la corrida v6.06a-e queda sin efecto). D1 de todo = lun 9-nov (F1 37 hábiles → mié 30-dic). Mañana 07:15-12:00: ENCAPS lun · mié · vie y Step 1 mar · jue (≈ 2/3 ENCAPS); el tramo 1 del Step se reduce a las mañanas de martes y jueves y lo que no cabe (hitos incluidos) pasa al tramo 2 con fecha; ENCAPS: la rotación F1 de las 16:15 corre +5 hábiles y lo que no cabe pasa a la intensiva con fecha; secundarios +5 hábiles. Plan: DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md."
-    },
-    {
-      "fecha": "2026-11-14",
-      "version": "v6.08",
-      "d1_previo": "2026-11-09",
-      "d1": "2026-11-16",
-      "perdidos": [
-        "2026-11-09",
-        "2026-11-10",
-        "2026-11-11",
-        "2026-11-12",
-        "2026-11-13"
-      ],
-      "regla": "Orden de Joseph (sáb 14-nov): «todo inicia a partir del lunes 16; reestructura todo; si hace falta mueve tiempos; quizá basta con alargar las fechas límite 2-3 días o lo que amerite, para que no sea tan fastidioso». La semana del lun 9-nov no se estudió (las semanas corridas v6.07a-e quedan sin efecto). Patrón v6.05/v6.06/v6.07: F1 anclada (32 hábiles lun 16-nov → mié 30-dic; la intensiva ENCAPS sigue el lun 4-ene y el examen ENCAPS el dom 14-mar, que el campus de Theomed también marca); Step 1 los mar · jue (13 filas: UWSA1 D1 mar 17-nov · NBME 25 D8 jue 10-dic, la misma fecha; SEMANA_PLAN = nº de días de Step de la semana), lo que no cabe pasa al tramo 2 con fecha (colchón 14 → 10 filas; examen lun 6-dic-2027 sin cambio); ENCAPS: las mañanas corren una semana con el SIMULACRO DE CIERRE anclado al mié 30-dic, 2 mañanas en un día solo-ENCAPS el jue 31-dic, la hoja de reglas el mar 5-ene, y las 16:15 que no caben, con fecha en la intensiva (viernes del núcleo tras el SIM; el carril sábado pasa a 14:00-15:00, fuera del gimnasio); secundarios +5 hábiles con su contenido intacto y sus fechas límite corridas (nada se quita)."
-    }
-  ],
-  "corrida_s1": {
-    "decidido": "2026-11-14",
-    "version": "v6.08",
-    "motivo": "v6.08 (sáb 14-nov-2026): re-fecha real con D1 = lun 16-nov (la semana del 9 no se estudió); las semanas corridas por alias v6.07a-e quedan sin efecto. Esta capa solo marca los días sin sesión hasta el dom 15-nov.",
-    "sin_sesion": [
-      "2026-10-19",
-      "2026-10-20",
-      "2026-10-21",
-      "2026-10-22",
-      "2026-10-23",
-      "2026-10-24",
-      "2026-10-25",
-      "2026-10-26",
-      "2026-10-27",
-      "2026-10-28",
-      "2026-10-29",
-      "2026-10-30",
-      "2026-10-31",
-      "2026-11-01",
-      "2026-11-02",
-      "2026-11-03",
-      "2026-11-04",
-      "2026-11-05",
-      "2026-11-06",
-      "2026-11-07",
-      "2026-11-08",
-      "2026-11-09",
-      "2026-11-10",
-      "2026-11-11",
-      "2026-11-12",
-      "2026-11-13",
-      "2026-11-14",
-      "2026-11-15"
-    ],
-    "alias": {},
-    "reparto": {},
-    "resumen": "v6.08 (orden del sáb 14-nov: «todo inicia el lunes 16; alarga las fechas límite lo que amerite»): del lun 9 al dom 15-nov no se estudió → TODO ARRANCA EL LUN 16-NOV (D1 de todo; re-fecha real: cada plan corre una semana y sus plazos se alargan; el examen ENCAPS sigue el dom 14-mar y el Step 1 el lun 6-dic-2027).",
-    "notas": {
-      "2026-11-14": [
-        "Hoy sábado y mañana domingo, libres: TODO ARRANCA EL LUN 16-NOV a las 04:15 (v6.08: cada plan corre una semana y sus plazos se alargan; el examen ENCAPS sigue el dom 14-mar y el Step 1 el lun 6-dic-2027). La clase en vivo de Theomed de hoy (15:00, Cuidado Integral 2/8) es opcional: si no la ves, su grabación va el mié 25-nov a las 18:00. La primera revisión semanal (S01) es el sáb 21-nov a las 14:00."
-      ],
-      "2026-11-15": [
-        "Hoy domingo, libre: TODO ARRANCA MAÑANA, LUN 16-NOV, a las 04:15 (D1). El mar 17 es el UWSA1 (08:50-13:00): mañana por la noche, cena ligera y a la cama a las 21:00. Opcional, solo hoy: el simulacro de Theomed del vie 13-nov con RANKING (2 h; cuenta hasta ≈ el mar 17 a las 09:00); si no, se hace el dom 22 sin ranking."
-      ]
-    }
+  {
+   "fecha": "2027-03-14",
+   "motivo": "ENCAPS (provisional)"
+  },
+  {
+   "fecha": "2027-03-15",
+   "motivo": "lunes libre post-ENCAPS"
+  },
+  {
+   "fecha": "2027-12-04",
+   "motivo": "ritual test-day"
+  },
+  {
+   "fecha": "2027-12-05",
+   "motivo": "viaje D-1"
+  },
+  {
+   "fecha": "2027-12-06",
+   "motivo": "EXAMEN Step 1"
   }
+ ],
+ "feriados": [
+  "2026-10-08",
+  "2026-11-01",
+  "2026-12-08",
+  "2026-12-09",
+  "2026-12-25",
+  "2027-01-01",
+  "2027-03-25",
+  "2027-03-26",
+  "2027-05-01",
+  "2027-06-07",
+  "2027-06-29",
+  "2027-07-23",
+  "2027-07-28",
+  "2027-07-29",
+  "2027-08-06",
+  "2027-08-30",
+  "2027-10-08",
+  "2027-11-01",
+  "2027-12-08",
+  "2027-12-09",
+  "2027-12-25"
+ ],
+ "corrimientos": [
+  {
+   "fecha": "2026-10-10",
+   "version": "v6.01",
+   "d1_previo": "2026-10-07",
+   "d1": "2026-10-12",
+   "perdidos": [
+    "2026-10-07",
+    "2026-10-08",
+    "2026-10-09"
+   ],
+   "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística, ex-D79) pasa al tramo 2 como fila desplazada (uid C79, dOrig 79, T3 jue 18-mar) vía --f1-filas 57 (no como recuperación --pendientes-f1); examen Step 1 sin cambio"
+  },
+  {
+   "fecha": "2026-10-17",
+   "version": "v6.02",
+   "d1_previo": "2026-10-12",
+   "d1": "2026-10-19",
+   "perdidos": [
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16"
+   ],
+   "regla": "F1 anclada (la intensiva ENCAPS empieza el 4-ene): 52 hábiles; los hitos F1 NO se desplazan (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40 · NBME 28 = última sesión de F1, mié 30-dic); las 6 filas de temario que no caben (v5.20 D52-D54, D56, D57 Heme/Onco + D79 bioestadística) pasan al tramo 2 como filas desplazadas con su dOrig; examen Step 1 sin cambio"
+  },
+  {
+   "fecha": "2026-10-20",
+   "version": "v6.03",
+   "d1_previo": "2026-10-19",
+   "d1": "2026-10-21",
+   "perdidos": [
+    "2026-10-19",
+    "2026-10-20"
+   ],
+   "regla": "Orden de Joseph (mar 20-oct): «todo comienza mañana miércoles 21, corre dos días; deja libres sáb 24 y dom 25; simplemente corre, no modifiques ni comprimas temas ni exámenes, alarga las fechas límite (también ENCAPS) en todos los segmentos». Patrón v6.02: F1 anclada (50 hábiles mié 21-oct → mié 30-dic) con los HITOS F1 anclados (UWSA1 D1 mié 21-oct · NBME 25/26/27 en su D# · NBME 28 = último slot); las 2 filas de temario no-hito que ya no caben pasan al tramo 2 con su dOrig (alargan el Step 1, examen sin cambio); ENCAPS: las 2 filas F1 que no caben se reponen explícitas en el carril B; secundarios +2 hábiles con el contenido intacto (alargan su fin). Sustituye a v6.02d (semana 1 corrida por alias, mar 20 = plan del lun 19)."
+  },
+  {
+   "fecha": "2026-10-24",
+   "version": "v6.05",
+   "d1_previo": "2026-10-21",
+   "d1": "2026-10-26",
+   "perdidos": [
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-23"
+   ],
+   "regla": "Orden de Joseph (sáb 24-oct): «todo inicia el lunes 26; puedes correr los horarios y alargar los plazos, pero no quites temas especiales, solo corre lo que está faltando». La semana del 19 no se estudió (la corrida por alias v6.04a queda sin efecto). Patrón v6.02/v6.03: F1 anclada (47 hábiles lun 26-oct → mié 30-dic) con HITOS F1 anclados (UWSA1 D1 lun 26 · NBME 25/26/27 en su D# · NBME 28 = último slot); las filas de temario no-hito que ya no caben pasan al tramo 2 con su dOrig (nada se quita); ENCAPS: las filas F1 que no caben se reponen en el carril B; secundarios +3 hábiles con el contenido intacto. Examen Step 1 lun 25-oct-2027 sin cambio (v6.04b)."
+  },
+  {
+   "fecha": "2026-10-31",
+   "version": "v6.06",
+   "d1_previo": "2026-10-26",
+   "d1": "2026-11-02",
+   "perdidos": [
+    "2026-10-26",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30"
+   ],
+   "regla": "Orden de Joseph (sáb 31-oct): «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada más: lo que era la semana anterior, esta semana; para no perder materias, tan solamente corre». La semana del 26-oct no se estudió. Mismo patrón que v6.05: F1 anclada (42 hábiles lun 2-nov → mié 30-dic) con hitos F1 (UWSA1 D1 lun 2-nov · NBME 28 = último slot; NBME 25-27 en su D# salvo que el Day-After no quepa antes del siguiente hito); las filas de temario que no caben pasan al tramo 2 con fecha (nada se quita); ENCAPS: las filas F1 que no caben se reponen con fecha; secundarios +5 hábiles con el contenido intacto y sus fechas límite corridas. Examen Step 1 lun 25-oct-2027 y ENCAPS dom 14-mar-2027 sin cambio (fechas externas)."
+  },
+  {
+   "fecha": "2026-11-08",
+   "version": "v6.07",
+   "d1_previo": "2026-11-02",
+   "d1": "2026-11-09",
+   "perdidos": [
+    "2026-11-02",
+    "2026-11-03",
+    "2026-11-04",
+    "2026-11-05",
+    "2026-11-06"
+   ],
+   "regla": "Orden de Joseph (dom 8-nov): «la mitad (o más) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer puesto (> 17,5, ideal 19); empezamos mañana 9; sábados 14-17 libres para el en vivo de Theomed; domingos 4 h opcionales; el Step 1 puede correrse, pero no más allá de 2027». La semana del lun 2-nov no se estudió (la corrida v6.06a-e queda sin efecto). D1 de todo = lun 9-nov (F1 37 hábiles → mié 30-dic). Mañana 07:15-12:00: ENCAPS lun · mié · vie y Step 1 mar · jue (≈ 2/3 ENCAPS); el tramo 1 del Step se reduce a las mañanas de martes y jueves y lo que no cabe (hitos incluidos) pasa al tramo 2 con fecha; ENCAPS: la rotación F1 de las 16:15 corre +5 hábiles y lo que no cabe pasa a la intensiva con fecha; secundarios +5 hábiles. Plan: DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md."
+  },
+  {
+   "fecha": "2026-11-14",
+   "version": "v6.08",
+   "d1_previo": "2026-11-09",
+   "d1": "2026-11-16",
+   "perdidos": [
+    "2026-11-09",
+    "2026-11-10",
+    "2026-11-11",
+    "2026-11-12",
+    "2026-11-13"
+   ],
+   "regla": "Orden de Joseph (sáb 14-nov): «todo inicia a partir del lunes 16; reestructura todo; si hace falta mueve tiempos; quizá basta con alargar las fechas límite 2-3 días o lo que amerite, para que no sea tan fastidioso». La semana del lun 9-nov no se estudió (las semanas corridas v6.07a-e quedan sin efecto). Patrón v6.05/v6.06/v6.07: F1 anclada (32 hábiles lun 16-nov → mié 30-dic; la intensiva ENCAPS sigue el lun 4-ene y el examen ENCAPS el dom 14-mar, que el campus de Theomed también marca); Step 1 los mar · jue (13 filas: UWSA1 D1 mar 17-nov · NBME 25 D8 jue 10-dic, la misma fecha; SEMANA_PLAN = nº de días de Step de la semana), lo que no cabe pasa al tramo 2 con fecha (colchón 14 → 10 filas; examen lun 6-dic-2027 sin cambio); ENCAPS: las mañanas corren una semana con el SIMULACRO DE CIERRE anclado al mié 30-dic, 2 mañanas en un día solo-ENCAPS el jue 31-dic, la hoja de reglas el mar 5-ene, y las 16:15 que no caben, con fecha en la intensiva (viernes del núcleo tras el SIM; el carril sábado pasa a 14:00-15:00, fuera del gimnasio); secundarios +5 hábiles con su contenido intacto y sus fechas límite corridas (nada se quita)."
+  },
+  {
+   "fecha": "2026-11-16",
+   "version": "v6.09",
+   "d1_previo": "2026-11-16",
+   "d1": "2026-11-17",
+   "perdidos": [
+    "2026-11-16"
+   ],
+   "regla": "Orden de Joseph (lun 16-nov): «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple, tal vez alargando días». D1 = mar 17-nov. El Step 1 NO cambia (el lunes no era día de Step: UWSA1 mar 17-nov, NBME 25 jue 10-dic, 13 filas mar · jue). ENCAPS y planes secundarios corren UN día hábil dentro de F1 y el jue 31-dic deja de ser SKIP: recupera el día perdido (mañana ENCAPS doble + 16:15 + secundarios + 18:00) → desde el lun 4-ene todo cae en la misma fecha que en la v6.08. Sáb 21 y dom 22-nov libres (viaje): lo de ese fin de semana va al siguiente o se recupera en los fines de semana de Navidad; la mañana ENCAPS que ya no cabe entre semana va el dom 27-dic. Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio."
+  }
+ ],
+ "corrida_s1": {
+  "decidido": "2026-11-16",
+  "version": "v6.09",
+  "motivo": "v6.09 (lun 16-nov-2026): el lun 16 no se estudió y el sáb 21 y el dom 22-nov son libres (viaje). Esta capa solo marca los días sin sesión; los planes ya están re-fechados (D1 mar 17-nov; el jue 31-dic recupera el día perdido).",
+  "sin_sesion": [
+   "2026-10-19",
+   "2026-10-20",
+   "2026-10-21",
+   "2026-10-22",
+   "2026-10-23",
+   "2026-10-24",
+   "2026-10-25",
+   "2026-10-26",
+   "2026-10-27",
+   "2026-10-28",
+   "2026-10-29",
+   "2026-10-30",
+   "2026-10-31",
+   "2026-11-01",
+   "2026-11-02",
+   "2026-11-03",
+   "2026-11-04",
+   "2026-11-05",
+   "2026-11-06",
+   "2026-11-07",
+   "2026-11-08",
+   "2026-11-09",
+   "2026-11-10",
+   "2026-11-11",
+   "2026-11-12",
+   "2026-11-13",
+   "2026-11-14",
+   "2026-11-15",
+   "2026-11-16",
+   "2026-11-21",
+   "2026-11-22"
+  ],
+  "alias": {},
+  "reparto": {},
+  "resumen": "v6.09 (orden del lun 16-nov: «hoy no avancé, todo empieza mañana; sábado y domingo viajo, déjalos libres»): TODO ARRANCA EL MAR 17-NOV. El Step 1 no cambia (UWSA1 mar 17); ENCAPS y los planes secundarios corren un día hábil y el jue 31-dic recupera el día perdido, así que desde el lun 4-ene todo sigue igual. Sáb 21 y dom 22 libres (viaje). Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
+  "notas": {
+   "2026-11-16": [
+    "Hoy lunes, sin sesión: TODO ARRANCA MAÑANA, MAR 17-NOV, a las 04:15 (v6.09). Mañana es el UWSA1 (08:50-13:00): esta noche, cena ligera y a la cama a las 21:00. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: audio en tiempos muertos y el PPT el domingo 29 a las 06:30."
+   ],
+   "2026-11-21": [
+    "Hoy sábado, libre (viaje): ni plan ni revisión. La clase en vivo de Theomed de hoy (15:00, Ética e Interculturalidad 2/3) va en diferido: audio en tiempos muertos de la semana; su grabación (tramos útiles a 2×) y el PPT, el domingo 29 a las 06:30 (bloque fijo de recuperación). La revisión S01 va junto con la S02 el sáb 28 a las 14:00, y el cierre del OUTPUT de Business, el sáb 28 a las 07:45. El Anki se acumula al lunes: esa mañana, primero los repasos vencidos."
+   ],
+   "2026-11-22": [
+    "Hoy domingo, libre (viaje). El SHIP S1 del vibecoding va el dom 29 (cada SHIP corre un domingo hasta el dom 27-dic). El simulacro opcional de Theomed del vie 13-nov (sin ranking) queda para el dom 3-ene, si te apetece. Mañana lunes 23 a las 04:15 sigue el plan."
+   ]
+  }
+ }
 }

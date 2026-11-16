@@ -5,6 +5,11 @@
 //   node DATA/_scripts/sim_plantilla_dia.js --rango 2026-11-09 2026-12-30                 # todos los días del rango (resumen + errores)
 //   node DATA/_scripts/sim_plantilla_dia.js --compacto 2026-11-09 2026-11-14               # una línea por bloque
 // Solo lectura: no escribe nada. Sale con código 1 si alguna guía cae fuera de su bloque o un bloque de plan queda sin contenido.
+// v6.09 (fix revisión 16-nov): + bloque encaps-rec (recuperación FIJA del domingo: encapsManana.guiaEncapsRecuperaDe) y dos aserciones nuevas:
+//   (a) joseph 4 · todo «PPT … el dom X» (o «el domingo X») de las notas y guías de los días simulados tiene, en la guía de ESE domingo, un paso con el PPT
+//       de cada clase citada en la frase (y, si la frase dice «a las HH:MM», esa guía empieza a esa hora);
+//   (b) joseph 7 · la nota de un día SKIP dice que el 31-dic «es / fue día de plan» solo si ese 31-dic lo es de verdad (plantilla con mañana ENCAPS):
+//       25-dic-2026 «sí es día de plan» · 1-ene-2027 «fue día de plan» · Jueves y Viernes Santo de 2027, el texto de la v6.08 (sin la frase).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
@@ -49,8 +54,10 @@ function guiasDe(b, p, iso) {
       if (b.id === 'theomed-prep') { const g = EM.guiaTheomedPrepDe(iso); return g ? [g] : null; }
       if (b.id === 'theomed-vivo') { const g = EM.guiaTheomedVivoDe(iso); return g ? [g] : null; }
       if (b.id === 'encaps-dom') { const g = EM.guiaEncapsDomingoDe(iso); return g ? [g] : null; }
+      if (b.id === 'encaps-rec') { const g = EM.guiaEncapsRecuperaDe(iso); return g ? [g] : null; } // v6.09 (fix): recuperación fija del domingo
       if (b.id === 'encaps-sab') { const g = EG.guiaEncapsSabadoDe(iso), sab = EG.encapsSabadoDe(iso); return g && sab ? [G.moverGuia(g, b.ini ? hm(b.ini) - hm(sab.ini) : 0)] : null; } // como TodayMission (desplazada si Business la empuja)
-      if (b.ini === '16:15' && F6.faseV6(iso) === 'F1') { const g = EG.sesionEncapsDe(iso) ? EG.guiaEncapsDe(iso) : null; return g ? [g] : null; }
+      // v6.09: + el día de plan de la transición (jue 31-dic, dia 32 del mantenimiento): su 16:15 es una sesión de encapsGuia, como en F1
+      if (b.ini === '16:15' && (F6.faseV6(iso) === 'F1' || (F6.faseV6(iso) === 'TRANSICION' && b.id === 'encaps'))) { const g = EG.sesionEncapsDe(iso) ? EG.guiaEncapsDe(iso) : null; return g ? [g] : null; }
       return []; // F2: loop / carril B / eval → su contenido está en ENCAPS → Plan (Supabase)
     }
     case 'usmle': {
@@ -81,19 +88,66 @@ function guiasDe(b, p, iso) {
     default: return [];
   }
 }
+/** Guías de un bloque del día a la hora REAL (semana corrida: fecha y hora de plan → moverGuia), como TodayMission.contenidoBloque. */
+function guiasReales(b, p, iso) {
+  // v6.07a (lun 9-nov): semana corrida → como TodayMission.contenidoBloque: el contenido se consulta con la FECHA DE PLAN del bloque
+  // (b.fechaPlan) y a la HORA DE PLAN (hora real − b.desfaseMin); después las guías se mueven a la hora real (moverGuia)
+  const fP = b.fechaPlan || iso, dP = b.desfaseMin || 0;
+  const aHM = (h) => (h && dP ? `${String(Math.floor((hm(h) - dP) / 60)).padStart(2, '0')}:${String((hm(h) - dP) % 60).padStart(2, '0')}` : h);
+  const bPlan = dP ? { ...b, ini: aHM(b.ini), fin: aHM(b.fin) } : b;
+  let gs = guiasDe(bPlan, p, fP); if (gs && dP) gs = gs.map((g) => G.moverGuia(g, dP));
+  return gs;
+}
+// v6.09 (fix revisión 16-nov, joseph 4): «PPT … el dom X» → paso con el PPT de cada clase citada en la guía de ese domingo
+const AREA_COD = { 'Salud Pública': 'SP', 'Cuidado Integral': 'CI', 'Gestión': 'GES', 'Investigación': 'INV', 'Ética e Interculturalidad': 'ET' };
+const normClase = (t) => Object.entries(AREA_COD).reduce((a, [n, c]) => a.split(`${n} `).join(`${c} `), t);
+const cacheDom = new Map();
+function pasosDelDia(iso) {
+  if (cacheDom.has(iso)) return cacheDom.get(iso);
+  const p = P.plantillaDelDia(iso); const out = [];
+  for (const b of p.bloques) { let gs = null; try { gs = guiasReales(b, p, iso); } catch (e) { gs = null; } for (const g of gs || []) out.push(g); }
+  cacheDom.set(iso, out); return out;
+}
+const textosDe = (p, gsDia) => [...p.notas, ...p.bloques.flatMap((b) => [b.nombre, b.detalle || '']), ...gsDia.flatMap((g) => [g.titulo, g.aviso || '', g.planB || '', ...g.pasos.flatMap((x) => [x.que, x.como])])];
+function controlPPT(iso, textos) {
+  const errs = [];
+  for (const t of textos) for (const seg of String(t).split(/(?<=\.)\s+|\s+·\s+/)) {
+    const m = /\bPPT\b.*?\bel dom(?:ingo)? (\d{1,2})\b/.exec(seg);
+    if (!m) continue;
+    const clases = [...new Set((normClase(seg).match(/\b(?:SP|CI|GES|INV|ET) \d+\/\d+/g) || []))];
+    const hora = (/\bel dom(?:ingo)? \d{1,2}(?:-[a-z]+)? a las (\d\d:\d\d)/.exec(seg) || [])[1] || null;
+    let dom = null; for (let k = 0; k <= 60 && !dom; k++) { const d = addDias(iso, k); if (new Date(d + 'T12:00:00Z').getUTCDay() === 0 && Number(d.slice(8)) === Number(m[1])) dom = d; }
+    if (!dom) { errs.push(`«${seg.slice(0, 90)}»: no hay un domingo ${m[1]} en los 60 días siguientes`); continue; }
+    if (!clases.length) { errs.push(`«${seg.slice(0, 90)}»: remite un PPT al ${dom} sin nombrar la clase`); continue; }
+    const gsDom = pasosDelDia(dom);
+    for (const c of clases) {
+      const g = gsDom.find((x) => x.pasos.some((y) => /\bPPT\b/.test(y.que) && normClase(y.que).includes(c)));
+      if (!g) errs.push(`«${seg.slice(0, 90)}»: el ${dom} no tiene ningún paso con el PPT de ${c}`);
+      else if (hora && (G.partesFranja(g.franja) || {}).ini !== hora) errs.push(`«${seg.slice(0, 90)}»: dice «a las ${hora}» y el PPT de ${c} del ${dom} va en ${g.franja}`);
+    }
+  }
+  return errs;
+}
+// v6.09 (fix revisión 16-nov, joseph 7): la nota de un día SKIP solo dice que el 31-dic «es / fue día de plan» si lo es de verdad
+function controlSkip31(iso, p) {
+  if (p.plantilla !== 'SKIP') return [];
+  const d31 = iso.slice(5, 7) === '01' ? `${Number(iso.slice(0, 4)) - 1}-12-31` : `${iso.slice(0, 4)}-12-31`;
+  const plan31 = P.plantillaDelDia(d31).bloques.some((b) => b.id === 'encaps-am');
+  const dice = p.notas.some((n) => /31-dic[^.]*d[ií]a de plan/.test(n));
+  if (dice !== plan31) return [`nota SKIP: ${dice ? 'dice' : 'no dice'} que el 31-dic (${d31}) es día de plan y ${plan31 ? 'sí' : 'no'} lo es`];
+  if (plan31 && !p.notas.some((n) => (iso < d31 ? /sí es día de plan/ : /fue día de plan/).test(n))) return [`nota SKIP: el 31-dic (${d31}) ${iso < d31 ? 'debe decir «sí es día de plan»' : 'debe decir «fue día de plan»'}`];
+  return [];
+}
 let errores = 0;
 const resumen = [];
 for (const iso of dias) {
   const p = P.plantillaDelDia(iso);
   if (!rango) console.log(`\n══ ${WD[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${iso} · ${p.plantilla} · ${p.titulo}${p.usmle ? ` · Step D${p.usmle.d}` : ''}`);
   if (!rango) for (const n of p.notas) console.log(`   • ${n}`);
+  const gsDia = [];
   for (const b of p.bloques) {
-    // v6.07a (lun 9-nov): semana corrida → como TodayMission.contenidoBloque: el contenido se consulta con la FECHA DE PLAN del bloque
-    // (b.fechaPlan) y a la HORA DE PLAN (hora real − b.desfaseMin); después las guías se mueven a la hora real (moverGuia)
-    const fP = b.fechaPlan || iso, dP = b.desfaseMin || 0;
-    const aHM = (h) => (h && dP ? `${String(Math.floor((hm(h) - dP) / 60)).padStart(2, '0')}:${String((hm(h) - dP) % 60).padStart(2, '0')}` : h);
-    const bPlan = dP ? { ...b, ini: aHM(b.ini), fin: aHM(b.fin) } : b;
-    let gs; try { gs = guiasDe(bPlan, p, fP); if (gs && dP) gs = gs.map((g) => G.moverGuia(g, dP)); } catch (e) { gs = null; console.log(`   ✗ ${b.id}: ${e.message}`); }
+    let gs; try { gs = guiasReales(b, p, iso); } catch (e) { gs = null; console.log(`   ✗ ${b.id}: ${e.message}`); }
+    for (const g of gs || []) gsDia.push(g);
     const flexible = !b.ini;
     const fuera = (gs || []).filter((g) => { const q = G.partesFranja(g.franja); return !flexible && (!q || hm(q.ini) < hm(b.ini) || hm(q.fin) > hm(b.fin) + (b.frente === 'usmle-principal' ? 60 : 0)); });
     const sinContenido = gs === null;
@@ -103,6 +157,8 @@ for (const iso of dias) {
     console.log(`   ${b.hora.padEnd(16)} ${b.id.padEnd(13)} ${b.nombre.slice(0, 92)}`);
     for (const g of gs || []) console.log(`   ${''.padEnd(16)} ${''.padEnd(13)}   ↳ ${flexible ? `(ejemplo ${g.franja})` : g.franja} ${g.titulo.slice(0, 96)}${fuera.includes(g) ? '  ⚠ FUERA DEL BLOQUE' : ''}`);
   }
+  // v6.09 (fix revisión 16-nov): aserciones del día (PPT remitidos a un domingo · nota SKIP del 31-dic), tras recorrer sus bloques
+  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
 }
 if (resumen.length) console.log(`\n✗ ${errores} problema(s):\n  ` + resumen.join('\n  '));
 console.log(`\n${errores ? '✗' : '✓'} ${dias.length} día(s) simulados · guías fuera de su bloque o bloques sin contenido: ${errores}`);

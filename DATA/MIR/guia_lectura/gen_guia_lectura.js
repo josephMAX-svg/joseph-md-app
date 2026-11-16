@@ -33,6 +33,9 @@
  *    D76 jue 18-feb · dermaDailyPlan d1-d5 lun 2 → jue 12-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  *  · v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov; la semana del lun 9-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 16-nov →
  *    D76 jue 4-mar · dermaDailyPlan d1-d5 lun 16 → jue 26-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
+ *  · v6.09 (16-nov-2026 · D1 = mar 17-nov; el lun 16 no se estudió y el jue 31-dic pasa a hábil): solo cambian las FECHAS de F1 (mirDailyPlan D1 mar
+ *    17-nov → D32 jue 31-dic, desde D33 lun 4-ene igual que la v6.08: D76 jue 4-mar · dermaDailyPlan d1-d5 mié 18-nov → lun 30-nov); medición, reparto de
+ *    preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -368,7 +371,7 @@ const derma = DERMA_DIAS.map((x) => {
 
 const json = {
   _meta: {
-    version: 'v6.08', generado: '2026-11-14', generador: 'DATA/MIR/guia_lectura/gen_guia_lectura.js',
+    version: 'v6.09', generado: '2026-11-16', generador: 'DATA/MIR/guia_lectura/gen_guia_lectura.js',
     medicion: 'DATA/MIR/guia_lectura/medicion_promir_2026-10-18/<capId>.json (analiza_cap.js con la sesión ProMIR de Joseph · solo lectura: no se inició ni creó ningún test · dom 18-oct-2026: los 10 capítulos de D1-D10 v6.02 + Dermatología cap. 1 · mar 20-oct-2026: los 66 restantes del plan; carpeta con el nombre histórico del 18-oct · el texto del recuadro «Orientación MIR» no se versiona)',
     metodo: {
       palabras: 'Texto propio de cada sección (bloques p · li · div.ul-item · figcaption), sin guiones blandos (U+00AD) y DEDUPLICADO: la maquetación en columnas de ProMIR repite el párrafo entero cuando cruza de columna (medido en el cap. 6 Epidemiología: 10.134 palabras con duplicados y texto de las figuras SVG → 7.411 reales + 343 en tablas). Por eso las cifras son menores que un conteo bruto del innerText (≈9.950).',

@@ -56,6 +56,9 @@
  *   carril SÁBADO con 9 guías (las 5 de v6.06 + sáb 13, 20 y 27-feb y sáb 6-mar de los pendientes v6.07; el V-2 #5 del vie 5-mar va en el CARRIL
  *   VIERNES 16:15 de la quincena final, extra.carril_b de esa fila, y la app lo pinta como un banco del carril B). El ejemplo `--banco` del README
  *   de BANCO_PROPIO pasa a 2026-11-16 (el lun 9-nov es pre-test de arranque).
+ * v6.09 (16-nov-2026, «hoy no avancé, todo empieza mañana»): F1 dia 1-32 del mar 17-nov al jue 31-dic (el 31-dic deja de ser SKIP) → nº de filas =
+ *   f1.dias + los L-V hábiles de la transición (31 + 1); runners re-fechados POR SESIÓN (−1 slot lun-jue; los mini-sims no se mueven) y
+ *   CAT.PREVISTO_SEMANA2 re-simulado para mar 24, mié 25, jue 26 y lun 30-nov.
  * v6.08 (14-nov-2026, «todo inicia el lunes 16»): sin cambio de lógica. F1 dia 1-32 desde el lun 16-nov (runners re-fechados por sesión, +7 días;
  *   CAT.PREVISTO_SEMANA2 re-simulado para lun 23 → jue 26-nov) · carril SÁBADO con 8 guías a las 14:00-15:00 (la hora del SQL: sáb 9-ene → 27-feb;
  *   re-flujo por fecha de los pendientes con el nuevo CARRIL VIERNES del núcleo) · la eval sin runner del sábado nombra el banco del CARRIL VIERNES si
@@ -110,9 +113,11 @@ const FILAS = fs.readFileSync(SQL, 'utf8').split(/\r?\n/).filter((l) => l.starts
   const t = tupla(l); const o = {}; COLS.forEach((c, k) => { o[c] = t[k]; }); return o;
 });
 const F6 = require('./gen_fechas_v6').cargarFechasV6();
-const F1_DIAS = F6.f1.dias; // v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
+// v6.09 (16-nov-2026): + los L-V HÁBILES de la transición (no SKIP; v6.09: jue 31-dic, que recupera el lun 16-nov) = filas del mantenimiento (dia 32)
+const HAB_TRANS = []; for (let d = F6.transicion.desde; d <= F6.transicion.hasta; ) { const w = new Date(d + 'T12:00:00Z').getUTCDay(); if (w >= 1 && w <= 5 && !(F6.skip || []).includes(d)) HAB_TRANS.push(d); const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); d = x.toISOString().slice(0, 10); }
+const F1_DIAS = F6.f1.dias + HAB_TRANS.length; // v6.09: 31 + 1 = 32 · v6.08: 32 · v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
 const CORR = (F6.corrimientos || []).at(-1) || null; // v6.05: versión y fecha del régimen vigente (META, cabecera del .ts)
-if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias = ${F1_DIAS})`);
+if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias ${F6.f1.dias} + ${HAB_TRANS.length} hábil(es) de la transición = ${F1_DIAS})`);
 const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^--\s*/, '');
 // v6.06: CARRIL SÁBADO de la intensiva (extra.carril_sabado de la fila del viernes host) → ENCAPS_SABADO_F2 (clave = el sábado)
 const SQL_INT = path.join(ROOT, 'DATA', '_scripts', '_encaps_intensivo_2027.sql');
@@ -212,6 +217,28 @@ function runner(f) {
   return { f, url: publicado ? WEB + f + '.html' : null, local: LOCAL + f + '.html', n: (j.items || []).length, seg: j.seg_por_q || null, umbral: j.umbral ?? null, porCod, meta: j._meta || {}, j };
 }
 const enlaceRunner = (r, t) => (r ? { t, url: r.url || r.local } : undefined);
+// v6.09 (fix revisión 16-nov, joseph 6): fin de semana SIN SESIÓN (corrida_s1.sin_sesion; v6.09: sáb 21 y dom 22-nov, viaje) → no hay revisión del sábado que
+//   «prepare la semana siguiente»: los runners que falten se generan el viernes tras el mini-sim (o el lunes) y la guía lo dice dónde Joseph lo ve:
+//   en el paso de registro del mini-sim del viernes y como aviso del lunes (si ese lunes ya tiene runners). Antes la orden solo salía en la guía del mar 24.
+const SIN_SESION_S1 = new Set((F6.corrida_s1 && F6.corrida_s1.sin_sesion) || []);
+const addD = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+/** Bancos de F1 (lun-jue) en [desde, hasta] sin su eval o sin su banco generados (los mini-sims, aparte). */
+const bancosSinRunner = (desde, hasta) => FILAS.filter((r) => r.fecha >= desde && r.fecha <= hasta && r.tipo === 'banqueo1h' && !PRETEST_FECHAS.has(r.fecha)
+  && (!fs.existsSync(path.join(BP, `eval_${r.fecha}.json`)) || !fs.existsSync(path.join(BP, `banco_${r.fecha}.json`)))).map((r) => r.fecha);
+/** «node … --eval 2026-11-24 → --banco 2026-11-24 (y lo mismo el 25 y el 26) → sync → guía → deploy (o pídeselo a Claude)» */
+const cmdRunnersDias = (fechas) => {
+  const [f0, ...resto] = fechas;
+  const pasos = [!fs.existsSync(path.join(BP, `eval_${f0}.json`)) ? `--eval ${f0}` : null, !fs.existsSync(path.join(BP, `banco_${f0}.json`)) ? `--banco ${f0}` : null].filter(Boolean);
+  return `node DATA/_scripts/gen_encaps_minisim.js ${pasos.join(' → ')}${resto.length ? ` (y lo mismo el ${resto.map((f) => Number(f.slice(8))).join(' y el ')})` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (o pídeselo a Claude)`;
+};
+/** v6.09 (fix revisión 16-nov, datos 6): lunes cuya eval es la del código de la sesión de banco anterior y no la «regla de los lunes» (5Q rehechas del mini-sim
+ *  del viernes) porque el fin de semana siguiente al mini-sim fue SIN SESIÓN (viaje: no había hueco para generarlas) → { ms, sa } · null si no aplica. */
+const excepcionLunes = (fila, rEval) => {
+  if (!rEval || new Date(fila.fecha + 'T12:00:00Z').getUTCDay() !== 1) return null;
+  const sa = rEval.meta.sesion_anterior || {};
+  const ms = sa.fecha ? FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha) : null;
+  return ms && sa.tipo === 'banqueo1h' && SIN_SESION_S1.has(addD(ms.fecha, 1)) ? { ms, sa } : null;
+};
 const recursoRunner = (r, t) => (r ? [{ t, url: r.url || r.local, cantidad: `${r.n}Q` }] : []);
 const proyectoDe = (codigo) => CAT.PROYECTO[romano(codigo)] || CAT.PROYECTO.LOPEZ;
 
@@ -239,6 +266,7 @@ const evalDesc = (r, fila, prev) => {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
+    if (excepcionLunes(fila, r)) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas) · EXCEPCIÓN de este lunes (ver el aviso)`; // v6.09 (fix revisión, datos 6)
     return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, rehaz esos primero` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
   }
   return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
@@ -295,7 +323,11 @@ function construirGuia(fila, sab = null) {
           ...(r ? { enlace: enlaceRunner(r, 'Mini-sim') } : {}) },
         { min: 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: CAT.TECNICA_SIM.CORRECCION },
         sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN})`, como: `Nota /25 en ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
-          : { min: 5, que: `Registro: nota /25 + cierre semanal`, como: `Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}. ${CAT.TECNICA_SIM.COMPARA}` },
+          : { min: 5, que: `Registro: nota /25 + cierre semanal`, como: `Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}. ${CAT.TECNICA_SIM.COMPARA}${(() => {
+            // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
+            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 7)) : [];
+            return pend.length ? ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}, ${cmdRunnersDias(pend)}.` : '';
+          })()}` },
         { min: 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
       ],
       recursos: [...recursoRunner(r, `Runner ${r ? r.f : ''}`), ...matCola, ...obsCola, CAT.PROYECTO.LOPEZ],
@@ -393,11 +425,20 @@ function construirGuia(fila, sab = null) {
             .some((f) => f !== fila.fecha && (fs.existsSync(path.join(BP, `banco_${f}.json`)) || fs.existsSync(path.join(BP, `eval_${f}.json`))));
           const cmdDia = [!rEval && !lunes ? `--eval ${fila.fecha}` : null, `--banco ${fila.fecha}`, !rEval && lunes ? `--eval ${fila.fecha}` : null].filter(Boolean).map((x) => `node DATA/_scripts/gen_encaps_minisim.js ${x}`).join(' → ');
           if (sab) av.push(sab.nota); // v6.06 (fix): nota de reposición del carril SÁBADO
+          // v6.09 (fix revisión 16-nov, datos 6): la excepción de la eval de este lunes, explícita
+          const exc = !sab && excepcionLunes(fila, rEval);
+          if (exc) av.push(`EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco; su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
+          // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
+          if (!pendiente && !sab) {
+            const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 4));
+            if (pendSem.length) av.push(`Antes del ${corta(pendSem[0])}: ${cmdRunnersDias(pendSem)}.`);
+          }
+          const primeraPend = bancosSinRunner(cmdSemana, addD(cmdSemana, 4))[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
           if (pendiente && sab) av.push(semanaArmada // v6.06 (fix): el sábado se arma con su semana del carril B (--semana) o solo (--eval / --banco del sábado)
             ? `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha} → node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía).`
             : `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} (con el carril B lun-jue arma también el sábado: eval_ + banco_${fila.fecha}) → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           else if (pendiente) av.push(semanaArmada
-            ? `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
+            ? `Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
             : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           if (prev2 && prev2.nota) av.push(prev2.nota);
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map(String));

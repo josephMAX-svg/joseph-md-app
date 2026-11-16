@@ -3,7 +3,7 @@
  * `GuiaBloque` (src/lib/guia.ts): 45′ en 13:30–14:15 (Σ pasos = 45) · en F4 (desde el SERUMS 2027-05-03) 30′ con franja NOMINAL (sin hora fija).
  * Paso a paso (semanas 1-2 del régimen; v6.08: mar 17-nov-2026 → vie 27-nov-2026 · v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov): M1 · R0 · R1 · C-1 · M2; el resto, desde las 5 franjas del bloque con el objetivo, el entregable, el
  * artefacto, los recursos verificados (REC) y los chips de cada átomo. + GUIA_RESEARCH_MINIMO (pausa de átomos 2027-01-21 → 2027-02-10, DJ-4).
- * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-14) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
+ * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-16) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  * Lo pintan ResearchTodayPlan (HOY → 🧭 Guía del bloque) y la tarjeta R↔D del Home.
  * v6.02c (18-oct-2026, E4): nuevo.
  */

@@ -28,6 +28,8 @@
  *    solo 13 filas (D1 mar 17-nov → D13 mar 29-dic): sin D15 en usmleStep1Daily, el fin del tramo 1,25× es el ÚLTIMO día de Step de la F1 (mar 29-dic, la
  *    misma fecha que el D15 de la v6.07); D5 = mar 1-dic (v6.07: mar 24-nov). Antes abortaba («no encuentro D5/D15»).
  */
+// v6.09 (16-nov-2026 · D1 = mar 17-nov): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 mié 18 · vie 20 · mar 24 · jue 26 · lun 30-nov: Derma
+//   corre una ranura y el jue 31-dic es su día de recuperación) · velocidad de vídeo sin cambio (el Step 1 no cambia).
 'use strict';
 const fs = require('fs');
 const path = require('path');

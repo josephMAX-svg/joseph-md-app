@@ -103,6 +103,17 @@
  *  PRE-TEST del vie 8-ene (antes sin bloque) · 11:00 → 16:15-17:15 o 18:00-18:45 (ítem 45′); (5) CIERRE SEMANAL con bloque propio 'encaps-semana' e
  *  ítem D{dia}:i_semana en el día de SIM que cierra la semana: 18:00-18:45, o 18:45-19:00 tras la corrección de las 18:00 (vie 5-mar); antes «EVAL
  *  20Q (10 + 10) · cierre semanal» solo en el Home; (7) día de señales sin fila en el índice → la regla (encaps.intensiva_desde), sin LOOP ni EVAL.
+ * v6.09 (lun 16-nov-2026 · orden de Joseph: «hoy no avancé, todo empieza mañana; el sábado 21 y el domingo 22 viajo, déjalos libres»): D1 = MAR 17-NOV
+ *  (F1 31 hábiles → mié 30-dic). El Step 1 no cambia (mar · jue). ENCAPS y los secundarios corren un día hábil y el JUE 31-DIC deja de ser SKIP: es un
+ *  día de plan de la transición sin Step 1 (case 'TRANSICION' → bloquesHabilTransicion: la plantilla de un día ENCAPS de F1, con la mañana 20/21 y
+ *  SP 6/11 a las 18:00) → desde el lun 4-ene todo cae como en la v6.08. DOMINGO DE PLAN (encapsManana.domingoPlan; dom 27-dic): la mañana ENCAPS 17/21,
+ *  que ya no cabía entre semana, 07:15-12:00 + sus cifras, normas y flashcards flexibles (a las 17:00 está el baile) + SHIP, Feynman y Anki. Sáb 21 y
+ *  dom 22-nov = días sin sesión (corrida_s1.sin_sesion: viaje). La nota del 25-dic / 1-ene ya no nombra el 31-dic como sin sesión ni «solo ENCAPS».
+ * v6.09 (fix revisión adversarial 16-nov): (joseph 3) el domingo de plan va a HORA FIJA (encapsManana.domingoPlanHoras): dom 27-dic mañana 06:00-10:45 +
+ *  cifras, normas y flashcards 10:45-11:30 (30′ antes del compromiso personal de las 12:00; nada después del baile) · (joseph 4) dom 29-nov: bloque FIJO
+ *  encaps-rec 06:30-08:00 (encapsManana.encapsRecuperaDe: grabación de la ET 2/3 + los PPT en diferido de la semana del viaje); el ENCAPS opcional, de
+ *  ejemplo 08:15-12:15 · (joseph 7) la frase del 31-dic «día de plan» en la nota SKIP solo cuando ese 31-dic lo es (25-dic-2026 y 1-ene-2027); en 2027,
+ *  el texto de la v6.08.
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
@@ -120,7 +131,7 @@ import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
 import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
-import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
+import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
 import { encapsSabadoDe, encapsF2De } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue) · v6.07 (fix): índice F2 (fila sembrada del día)
@@ -224,12 +235,36 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
     (() => { const [si, sf] = synFranjaDe(iso).franja.split('–'); return bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30' (A pantalla · B audio · C lectura)", 'synapse', 'synapse'); })(),
     bloqueRD(iso, '13:30', 45),
     bloque('aurum', '14:15', '15:15', "AURUM · closer de ventas (60')", 'aurum', 'aurum'),
-    bloque('mir', '15:15', '16:15', 'MIR · Eval D-1 + Deep Work (1 h)', 'mir', 'mir'),
+    bloque('mir', '15:15', '16:15', mirNombreF1(iso), 'mir', 'mir'),
     bloque('encaps', '16:15', '17:15', 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', 'encaps', 'encaps'),
     bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', 'liviano', 'liviano'),
     step
       ? bloque('eval', '18:00', '18:45', 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval')
       : bloque('encaps-pm', '18:00', '18:45', 'ENCAPS · cifras, normas y flashcards', 'encaps', 'encaps'),
+  ];
+  const biz = bloqueBiz(iso);
+  if (biz) bs.push(biz);
+  return bs;
+}
+/** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
+function mirNombreF1(iso: string): string { return mirSesionDe(iso)?.dia.d === 1 ? 'MIR · Arranque (D1) + Deep Work (1 h)' : 'MIR · Eval D-1 + Deep Work (1 h)'; }
+/** v6.09 (16-nov-2026): DÍA HÁBIL DE LA TRANSICIÓN con mañana ENCAPS (encapsManana.diaExtra; v6.09: jue 31-dic, que deja de ser SKIP y recupera el
+ *  lun 16-nov) = la plantilla de un día ENCAPS de F1 SIN Step 1 (ya en pausa desde hoy): 04:15 vibecoding · 05:00 Anki (USMLE en pausa: solo vencidas,
+ *  opcional; + los 15′ de repasos ENCAPS) · 07:15-12:00 MAÑANA ENCAPS (la del día extra) · SYNAPSE · Business · R↔D · AURUM · MIR · 16:15 ENCAPS (la
+ *  fila del mantenimiento de ese día) · LIVIANO · 18:00 ENCAPS cifras, normas y flashcards (+ la clase en diferido del día). Antes (v6.08) el 31-dic era
+ *  un día extra SOLO ENCAPS dentro de la rama SKIP (mañana + 18:00). */
+function bloquesHabilTransicion(iso: string, am: NonNullable<ReturnType<typeof encapsMananaDe>>): BloqueV6[] {
+  const bs: BloqueV6[] = [
+    bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
+    bloque('anki', '05:00', '05:45', 'ANKI · USMLE en PAUSA (solo vencidas, opcional) + repasos ENCAPS 15′', 'usmle', 'usmle-anki', 'Step 1 en PAUSA desde hoy (transición): 0 tarjetas nuevas; los 15′ de ENCAPS::Cifras, sí'),
+    bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA ${am.n}/${am.de} (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', am.diaExtra),
+    (() => { const [si, sf] = synFranjaDe(iso).franja.split('–'); return bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30' (A pantalla · B audio · C lectura)", 'synapse', 'synapse'); })(),
+    bloqueRD(iso, '13:30', 45),
+    bloque('aurum', '14:15', '15:15', "AURUM · closer de ventas (60')", 'aurum', 'aurum'),
+    bloque('mir', '15:15', '16:15', mirNombreF1(iso), 'mir', 'mir'),
+    bloque('encaps', '16:15', '17:15', 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', 'encaps', 'encaps'),
+    bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', 'liviano', 'liviano'),
+    bloque('encaps-pm', '18:00', '18:45', `ENCAPS · cifras, normas y flashcards${am.pendiente18.length ? ` (+ ${am.pendiente18.join(' + ')} en diferido)` : ''}`, 'encaps', 'encaps'),
   ];
   const biz = bloqueBiz(iso);
   if (biz) bs.push(biz);
@@ -647,6 +682,9 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
   // v6.08: sin semana corrida; el 31-dic de 2026 es el día extra SOLO ENCAPS (arriba) → la lista tampoco lo nombra
   // v6.08 (14-nov-2026): el jue 31-dic-2026 es un DÍA EXTRA SOLO ENCAPS (encapsManana, diaExtra: las 2 mañanas de F1 que no cupieron + SP 6/11 a las
   //   18:00): sigue siendo SKIP para el Step 1 y los planes secundarios, así que solo lleva la mañana ENCAPS 07:15-12:00 y su 18:00
+  // v6.09 (16-nov-2026): el jue 31-dic-2026 deja de ser SKIP (recupera el lun 16-nov, que no se estudió) → es un DÍA DE PLAN completo de la transición
+  //   (más abajo, case 'TRANSICION': bloquesHabilTransicion). Esta rama (SKIP con mañana ENCAPS) queda para un SKIP futuro con día extra solo-ENCAPS;
+  //   la nota del 25-dic / 1-ene ya no nombra el 31-dic como sin sesión ni como «solo ENCAPS»
   if (SKIP_V6.has(iso)) {
     const amX = encapsMananaDe(iso);
     if (amX) return out('TRANSICION', `Día extra SOLO ENCAPS · mañana ${amX.n}/${amX.de}${amX.pendiente18.length ? ` + ${amX.pendiente18.join(' + ')} a las 18:00` : ''}`, [
@@ -654,26 +692,61 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       bloque('encaps-pm', '18:00', '18:45', `ENCAPS · cifras, normas y flashcards${amX.pendiente18.length ? ` (+ ${amX.pendiente18.join(' + ')} en diferido)` : ''}`, 'encaps', 'encaps'),
     ], { notas: ['Día extra SOLO ENCAPS: sin Step 1 ni planes secundarios (sigue siendo SKIP v6 para ellos); solo la mañana ENCAPS y las 18:00.'] });
     const d31 = iso.slice(5, 7) === '01' ? `${Number(iso.slice(0, 4)) - 1}-12-31` : `${iso.slice(0, 4)}-12-31`;
-    const extra31 = !!encapsMananaDe(d31);
-    const con31 = !corridaS1De(d31) && !extra31;
+    // v6.09 (fix revisión 16-nov, joseph 7 / datos 1): la frase del 31-dic «día de plan» SOLO si ese 31-dic es de verdad un día hábil de plan de la
+    //   transición (no SKIP y con su mañana ENCAPS: jue 31-dic-2026) → solo el 25-dic-2026 («el jue 31-dic sí es día de plan») y el 1-ene-2027 («ayer, jue
+    //   31-dic, fue día de plan»). En cualquier otro año (Jueves y Viernes Santo de 2027…) el texto de la v6.08 sin esa frase: antes decía que el
+    //   31-dic-2027 «sí es día de plan», que es falso (nunca estuvo en SKIP ni tiene plan)
+    const am31 = encapsMananaDe(d31);
+    const plan31 = !SKIP_V6.has(d31) && !!am31 && faseV6(d31) === 'TRANSICION';
+    if (plan31) {
+      const que31 = 'recupera un día perdido: mañana ENCAPS, 16:15 y planes secundarios; el Step 1, en pausa';
+      return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic · 1-ene · Jueves y Viernes Santo).${iso < d31 ? ` El ${fCorta(d31)} sí es día de plan (${que31}).` : ` Ayer, ${fCorta(d31)}, fue día de plan (${que31.replace(/^recupera/, 'recuperó')}).`}`] });
+    }
+    const extra31 = !!am31;
+    const con31 = !corridaS1De(d31) && !extra31; // = la v6.08
     return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic${con31 ? ' · 31-dic' : ''} · 1-ene · Jueves y Viernes Santo).${con31 ? '' : extra31 ? ' El 31-dic de este año es un día extra SOLO ENCAPS (mañana + 18:00).' : ' El 31-dic de este año sí es día de estudio: la semana corrida pone ahí el último día de F1.'}`] });
   }
   // 3) domingo — v6.07: flexible (sin hora fija): ENCAPS opcional 4 h + SHIP del vibecoding + Feynman + Anki (F1 · transición · F2; F3 solo el PC)
+  // v6.09 (16-nov-2026): DOMINGO DE PLAN (encapsManana.domingoPlan; v6.09: dom 27-dic) = la mañana ENCAPS que ya no cabía entre semana, OBLIGATORIA,
+  //   07:15-12:00 (encaps-am, sus 7 franjas) + sus cifras, normas y flashcards FLEXIBLES (encaps-pm sin hora: a las 17:00 está el baile) + lo de siempre
+  //   (SHIP del vibecoding, Feynman y Anki del domingo); ese domingo no lleva el ENCAPS opcional (encapsDomingoDe = null)
+  // v6.09 (fix revisión 16-nov, joseph 3): el domingo de plan va a HORA FIJA (encapsManana.domingoPlanHoras; dom 27-dic: mañana 06:00-10:45 + cifras, normas y
+  //   flashcards 10:45-11:30 → 30′ de margen antes del compromiso personal de las 12:00 y nada después de las 17:00, baile). Antes 07:15-12:00 + cifras flexibles
+  //   (solo cabían después del baile). (joseph 4) DOMINGO CON RECUPERACIÓN FIJA (encapsManana.encapsRecuperaDe; dom 29-nov 06:30-08:00: grabación de la ET 2/3
+  //   del sáb 21 + los PPT en diferido de la semana del viaje) = bloque encaps-rec con hora; el resto del domingo sigue flexible
   if (w === 0) {
-    const bsD = extrasDomingo(iso);
+    const amD = encapsMananaDe(iso);
+    const hD = amD?.domingoPlanHoras ?? null;
+    const recD = encapsRecuperaDe(iso);
+    const bsD = [...(amD ? [
+      bloque('encaps-am', hD ? hD.manana[0] : '07:15', hD ? hD.manana[1] : '12:00', `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', amD.domingoPlan),
+      hD ? bloque('encaps-pm', hD.tarde[0], hD.tarde[1], 'ENCAPS · cifras, normas y flashcards (hora fija: al terminar la mañana)', 'encaps', 'encaps')
+        : bloque('encaps-pm', null, null, 'ENCAPS · cifras, normas y flashcards (flexible: a las 17:00 está el baile)', 'encaps', 'encaps', undefined, 45, 'flexible · 45′'),
+    ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...extrasDomingo(iso)];
     const notasD = ["Anki ≤15' opcional (no se registra)."];
+    if (amD) notasD.unshift(hD
+      ? `Domingo de plan, a hora fija: la mañana ENCAPS ${amD.n}/${amD.de} (${hD.manana[0]}-${hD.manana[1]}) y sus cifras, normas y flashcards (${hD.tarde[0]}-${hD.tarde[1]}) son obligatorias; entre semana ya no cabían.${hD.compromiso ? ` Quedan ${aMin(hD.compromiso) - aMin(hD.tarde[1])}′ de margen antes del compromiso personal de las ${hD.compromiso};` : ''} nada de estudio después de las 17:00 (baile).`
+      : `Domingo de plan: la mañana ENCAPS ${amD.n}/${amD.de} (07:15-12:00) es obligatoria; entre semana ya no cabía. Sus cifras, normas y flashcards (45′), cuando puedas: al volver del baile o en un hueco antes de las 17:00.`);
+    if (recD) notasD.unshift(`Hoy ${recD.ini}-${recD.fin}, FIJO: ENCAPS de recuperación del viaje (${recD.tema.charAt(0).toLowerCase()}${recD.tema.slice(1)}). El resto del domingo es flexible.`);
     const shipObligatorio = bsD.some((b) => b.id === 'pc') && vibePCDomingo(iso).some((x) => x.tipo === 'ship' || x.tipo === 'avance');
     if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD = bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${hD ? `${hD.manana[0]}-${hD.manana[1]}` : '07:15-12:00'})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
 
   switch (fase) {
-    case 'TRANSICION':
+    case 'TRANSICION': {
+      // v6.09 (16-nov-2026): L-V HÁBIL de la transición (no SKIP; v6.09: jue 31-dic, recupera el lun 16-nov) con su mañana ENCAPS (encapsManana.diaExtra)
+      //   = día de plan completo SIN Step 1 (ya en pausa): bloquesHabilTransicion
+      const amT = w >= 1 && w <= 5 ? encapsMananaDe(iso) : null;
+      if (amT) return out('TRANSICION', `Día de plan (transición, sin Step 1) · mañana ENCAPS ${amT.n}/${amT.de}${amT.pendiente18.length ? ` + ${amT.pendiente18.join(' + ')} a las 18:00` : ''} + 16:15 + planes secundarios`, bloquesHabilTransicion(iso, amT), {
+        notas: [`Día de plan que recupera un día perdido de F1: mañana ENCAPS ${amT.n}/${amT.de}, ENCAPS 16:15, planes secundarios y las 18:00 de ENCAPS${amT.pendiente18.length ? ` (+ ${amT.pendiente18.join(' + ')} en diferido)` : ''}. Step 1 en PAUSA desde hoy: en el Anki, solo vencidas (opcional), 0 nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] });
       // v6.02c (E5): el sáb 2-ene sí tiene revisión semanal (S11) y PC (SHIP S10; también en v6.03 · v6.05: revisión S10 y SHIP S9) en el Calendar y en los planes → se muestran
       return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso)] : [], { notas: [`Step 1 en PAUSA desde ${iso === FECHAS_V6.transicion.desde ? 'hoy' : `el ${fCorta(FECHAS_V6.transicion.desde)}`}: 0 tarjetas nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.08 (rev. dia5): la pausa empieza el jue 31-dic (transicion.desde), no «hoy» (sáb 2-ene)
+    }
     case 'LIBRE_POST_ENCAPS':
       return out('PROTEGIDO', 'LIBRE post-ENCAPS', []);
     case 'EXAMEN':
@@ -845,7 +918,11 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     //   con alias o reparto (v6.02d / v6.04a) el título sale exactamente como antes
     // v6.07d: sin alias pero repartido (el plan del mié 11 va el sáb 14 y el dom 15) → nombra esos días, no «el próximo día de plan»
     const rep = sig ? [] : Object.entries(FECHAS_V6.corrida_s1.reparto).filter(([, x]) => x.partes.some((pt) => pt.de === iso)).map(([r]) => r).sort();
+    // v6.09 (16-nov-2026): un día SIN SESIÓN después del D1 sin alias ni reparto (sáb 21 y dom 22-nov, viaje) no tiene «plan de hoy» que se haga otro
+    //   día: lo suyo ya está re-fechado en los planes → «<día> libre · hoy no hay plan» (antes: «Día corrido · tu plan de hoy se hace el próximo día de plan»)
+    const libre = !sig && !rep.length && !_C1_ALIAS.length && !_C1_REPARTO.length;
     const titulo = rep.length ? `Día corrido · tu plan de hoy se hace el ${rep.map(fCorta).join(' y el ')}`
+      : libre ? `${['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][dow(iso)]} libre · hoy no hay plan`
       : _C1_ALIAS.length || _C1_REPARTO.length || !sig ? `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}` : `Día corrido · sin sesión · próximo día de plan: ${fCorta(sig)} (todo arranca ese día)`;
     return {
       ...base, plantilla: 'CORRIDO', titulo,

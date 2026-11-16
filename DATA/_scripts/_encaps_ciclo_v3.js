@@ -152,7 +152,10 @@ const RECETA_MINISIM = {
 };
 
 // ── Calendario L-V con feriados fijos (régimen v5.6: sábado y domingo LIBRES) ──
-const SKIP = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
+// v6.09 (16-nov-2026): SKIP = la lista `skip` de _fechas_v6.json (fuente única de fechas). Hasta la v6.08 era fija (25-dic · 31-dic · 1-ene) y no
+//   seguía al JSON: con el jue 31-dic-2026 fuera de SKIP (recupera el lun 16-nov, día de plan) la F1 del mantenimiento lo saltaba igual (dia 32).
+//   El JSON trae además Jueves y Viernes Santo 2027 (25 y 26-mar), que no caen en ningún rango de fechas() del mantenimiento ni del cierre semanal.
+const SKIP = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '_fechas_v6.json'), 'utf8')).skip);
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 function* fechas(desde, hasta) {
   const d = new Date(desde + 'T12:00:00Z'), end = new Date(hasta + 'T12:00:00Z');

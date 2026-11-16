@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "version": "v6.08",
-  "generado": "2026-11-14",
+  "version": "v6.09",
+  "generado": "2026-11-16",
   "generador": "DATA/MIR/guia_lectura/gen_guia_lectura.js",
   "medicion": "DATA/MIR/guia_lectura/medicion_promir_2026-10-18/<capId>.json (analiza_cap.js con la sesión ProMIR de Joseph · solo lectura: no se inició ni creó ningún test · dom 18-oct-2026: los 10 capítulos de D1-D10 v6.02 + Dermatología cap. 1 · mar 20-oct-2026: los 66 restantes del plan; carpeta con el nombre histórico del 18-oct · el texto del recuadro «Orientación MIR» no se versiona)",
   "metodo": {
@@ -32,8 +32,8 @@
  "mir": [
   {
    "d": 1,
-   "fecha": "2026-11-16",
-   "dia": "lun 16-nov",
+   "fecha": "2026-11-17",
+   "dia": "mar 17-nov",
    "asignatura": "Epidemiología",
    "tema": "Estudios experimentales: Ensayo clínico",
    "capId": "570779c9f4d68bf008dbc7b1",
@@ -919,8 +919,8 @@
   },
   {
    "d": 2,
-   "fecha": "2026-11-17",
-   "dia": "mar 17-nov",
+   "fecha": "2026-11-18",
+   "dia": "mié 18-nov",
    "asignatura": "Epidemiología",
    "tema": "Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)",
    "capId": "570779c9f4d68bf008dbc80d",
@@ -1419,8 +1419,8 @@
   },
   {
    "d": 3,
-   "fecha": "2026-11-18",
-   "dia": "mié 18-nov",
+   "fecha": "2026-11-19",
+   "dia": "jue 19-nov",
    "asignatura": "Epidemiología",
    "tema": "Evaluación de pruebas diagnósticas",
    "capId": "570779c9f4d68bf008dbc80f",
@@ -1895,8 +1895,8 @@
   },
   {
    "d": 4,
-   "fecha": "2026-11-19",
-   "dia": "jue 19-nov",
+   "fecha": "2026-11-20",
+   "dia": "vie 20-nov",
    "asignatura": "Medicina Legal y Bioética",
    "tema": "Principios de bioética y relación médico-paciente",
    "capId": "64a3be863f62ec1dbb3e665b",
@@ -2379,8 +2379,8 @@
   },
   {
    "d": 5,
-   "fecha": "2026-11-20",
-   "dia": "vie 20-nov",
+   "fecha": "2026-11-23",
+   "dia": "lun 23-nov",
    "asignatura": "Cardiología",
    "tema": "Cardiología básica",
    "capId": "570779c9f4d68bf008dbc7e9",
@@ -3066,8 +3066,8 @@
   },
   {
    "d": 6,
-   "fecha": "2026-11-23",
-   "dia": "lun 23-nov",
+   "fecha": "2026-11-24",
+   "dia": "mar 24-nov",
    "asignatura": "Cardiología",
    "tema": "Trastornos del ritmo",
    "capId": "570779c9f4d68bf008dbc78d",
@@ -3795,8 +3795,8 @@
   },
   {
    "d": 7,
-   "fecha": "2026-11-24",
-   "dia": "mar 24-nov",
+   "fecha": "2026-11-25",
+   "dia": "mié 25-nov",
    "asignatura": "Cardiología",
    "tema": "Cardiopatía isquémica",
    "capId": "570779c9f4d68bf008dbc731",
@@ -4312,8 +4312,8 @@
   },
   {
    "d": 8,
-   "fecha": "2026-11-25",
-   "dia": "mié 25-nov",
+   "fecha": "2026-11-26",
+   "dia": "jue 26-nov",
    "asignatura": "Cardiología",
    "tema": "Insuficiencia cardíaca",
    "capId": "64588d5ef704295c924d9289",
@@ -5030,8 +5030,8 @@
   },
   {
    "d": 9,
-   "fecha": "2026-11-26",
-   "dia": "jue 26-nov",
+   "fecha": "2026-11-27",
+   "dia": "vie 27-nov",
    "asignatura": "Cardiología",
    "tema": "Valvulopatías",
    "capId": "570779c8f4d68bf008dbc65a",
@@ -6141,8 +6141,8 @@
   },
   {
    "d": 10,
-   "fecha": "2026-11-27",
-   "dia": "vie 27-nov",
+   "fecha": "2026-11-30",
+   "dia": "lun 30-nov",
    "asignatura": "Cardiología",
    "tema": "Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV",
    "capId": "570779c8f4d68bf008dbc658",
@@ -6836,8 +6836,8 @@
   },
   {
    "d": 11,
-   "fecha": "2026-11-30",
-   "dia": "lun 30-nov",
+   "fecha": "2026-12-01",
+   "dia": "mar 1-dic",
    "asignatura": "Cardiología",
    "tema": "Enfermedades del miocardio",
    "capId": "570779c8f4d68bf008dbc6b6",
@@ -7788,8 +7788,8 @@
   },
   {
    "d": 12,
-   "fecha": "2026-12-01",
-   "dia": "mar 1-dic",
+   "fecha": "2026-12-02",
+   "dia": "mié 2-dic",
    "asignatura": "Neumología",
    "tema": "Fisiología y fisiopatología del aparato respiratorio",
    "capId": "570779c9f4d68bf008dbc825",
@@ -8230,8 +8230,8 @@
   },
   {
    "d": 13,
-   "fecha": "2026-12-02",
-   "dia": "mié 2-dic",
+   "fecha": "2026-12-03",
+   "dia": "jue 3-dic",
    "asignatura": "Neumología",
    "tema": "Cáncer de pulmón",
    "capId": "570779c9f4d68bf008dbc861",
@@ -8869,8 +8869,8 @@
   },
   {
    "d": 14,
-   "fecha": "2026-12-03",
-   "dia": "jue 3-dic",
+   "fecha": "2026-12-04",
+   "dia": "vie 4-dic",
    "asignatura": "Neumología",
    "tema": "Enfermedades de la pleura, mediastino y diafragma",
    "capId": "570779c9f4d68bf008dbc773",
@@ -9343,8 +9343,8 @@
   },
   {
    "d": 15,
-   "fecha": "2026-12-04",
-   "dia": "vie 4-dic",
+   "fecha": "2026-12-07",
+   "dia": "lun 7-dic",
    "asignatura": "Neumología",
    "tema": "EPOC",
    "capId": "570779c9f4d68bf008dbc883",
@@ -10121,8 +10121,8 @@
   },
   {
    "d": 16,
-   "fecha": "2026-12-07",
-   "dia": "lun 7-dic",
+   "fecha": "2026-12-08",
+   "dia": "mar 8-dic",
    "asignatura": "Neumología",
    "tema": "Enfermedades intersticiales",
    "capId": "570779c9f4d68bf008dbc7cd",
@@ -10681,8 +10681,8 @@
   },
   {
    "d": 17,
-   "fecha": "2026-12-08",
-   "dia": "mar 8-dic",
+   "fecha": "2026-12-09",
+   "dia": "mié 9-dic",
    "asignatura": "Nefrología",
    "tema": "Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base",
    "capId": "570779c8f4d68bf008dbc608",
@@ -11393,8 +11393,8 @@
   },
   {
    "d": 18,
-   "fecha": "2026-12-09",
-   "dia": "mié 9-dic",
+   "fecha": "2026-12-10",
+   "dia": "jue 10-dic",
    "asignatura": "Nefrología",
    "tema": "Fracaso renal agudo",
    "capId": "570779c8f4d68bf008dbc6b0",
@@ -12055,8 +12055,8 @@
   },
   {
    "d": 19,
-   "fecha": "2026-12-10",
-   "dia": "jue 10-dic",
+   "fecha": "2026-12-11",
+   "dia": "vie 11-dic",
    "asignatura": "Nefrología",
    "tema": "Glomerulonefritis primarias",
    "capId": "570779c9f4d68bf008dbc789",
@@ -12571,8 +12571,8 @@
   },
   {
    "d": 20,
-   "fecha": "2026-12-11",
-   "dia": "vie 11-dic",
+   "fecha": "2026-12-14",
+   "dia": "lun 14-dic",
    "asignatura": "Nefrología",
    "tema": "Riñón y enfermedades sistémicas",
    "capId": "570779c8f4d68bf008dbc60a",
@@ -13204,8 +13204,8 @@
   },
   {
    "d": 21,
-   "fecha": "2026-12-14",
-   "dia": "lun 14-dic",
+   "fecha": "2026-12-15",
+   "dia": "mar 15-dic",
    "asignatura": "Nefrología",
    "tema": "Insuficiencia renal crónica",
    "capId": "570779c9f4d68bf008dbc72d",
@@ -13675,8 +13675,8 @@
   },
   {
    "d": 22,
-   "fecha": "2026-12-15",
-   "dia": "mar 15-dic",
+   "fecha": "2026-12-16",
+   "dia": "mié 16-dic",
    "asignatura": "Nefrología",
    "tema": "Síndromes clínicos en nefrología",
    "capId": "570779c8f4d68bf008dbc654",
@@ -14352,8 +14352,8 @@
   },
   {
    "d": 23,
-   "fecha": "2026-12-16",
-   "dia": "mié 16-dic",
+   "fecha": "2026-12-17",
+   "dia": "jue 17-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del hígado",
    "capId": "570779c9f4d68bf008dbc723",
@@ -15380,8 +15380,8 @@
   },
   {
    "d": 24,
-   "fecha": "2026-12-17",
-   "dia": "jue 17-dic",
+   "fecha": "2026-12-18",
+   "dia": "vie 18-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del colon",
    "capId": "570779c8f4d68bf008dbc64c",
@@ -16070,8 +16070,8 @@
   },
   {
    "d": 25,
-   "fecha": "2026-12-18",
-   "dia": "vie 18-dic",
+   "fecha": "2026-12-21",
+   "dia": "lun 21-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del intestino delgado",
    "capId": "570779c8f4d68bf008dbc6a6",
@@ -16799,8 +16799,8 @@
   },
   {
    "d": 26,
-   "fecha": "2026-12-21",
-   "dia": "lun 21-dic",
+   "fecha": "2026-12-22",
+   "dia": "mar 22-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del estómago",
    "capId": "570779c8f4d68bf008dbc64a",
@@ -17611,8 +17611,8 @@
   },
   {
    "d": 27,
-   "fecha": "2026-12-22",
-   "dia": "mar 22-dic",
+   "fecha": "2026-12-23",
+   "dia": "mié 23-dic",
    "asignatura": "Gastroenterología",
    "tema": "Miscelánea de temas quirúrgicos",
    "capId": "570779c8f4d68bf008dbc6a8",
@@ -18168,8 +18168,8 @@
   },
   {
    "d": 28,
-   "fecha": "2026-12-23",
-   "dia": "mié 23-dic",
+   "fecha": "2026-12-24",
+   "dia": "jue 24-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del páncreas",
    "capId": "570779c8f4d68bf008dbc600",
@@ -18752,8 +18752,8 @@
   },
   {
    "d": 29,
-   "fecha": "2026-12-24",
-   "dia": "jue 24-dic",
+   "fecha": "2026-12-28",
+   "dia": "lun 28-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades del esófago",
    "capId": "570779c8f4d68bf008dbc5fe",
@@ -19269,8 +19269,8 @@
   },
   {
    "d": 30,
-   "fecha": "2026-12-28",
-   "dia": "lun 28-dic",
+   "fecha": "2026-12-29",
+   "dia": "mar 29-dic",
    "asignatura": "Gastroenterología",
    "tema": "Enfermedades de la vía biliar",
    "capId": "570779c9f4d68bf008dbc77f",
@@ -19791,8 +19791,8 @@
   },
   {
    "d": 31,
-   "fecha": "2026-12-29",
-   "dia": "mar 29-dic",
+   "fecha": "2026-12-30",
+   "dia": "mié 30-dic",
    "asignatura": "Endocrinología y Nutrición",
    "tema": "Diabetes mellitus",
    "capId": "570779c9f4d68bf008dbc737",
@@ -20611,8 +20611,8 @@
   },
   {
    "d": 32,
-   "fecha": "2026-12-30",
-   "dia": "mié 30-dic",
+   "fecha": "2026-12-31",
+   "dia": "jue 31-dic",
    "asignatura": "Endocrinología y Nutrición",
    "tema": "Glándula tiroides",
    "capId": "570779c8f4d68bf008dbc65e",
@@ -50894,8 +50894,8 @@
  "derma": [
   {
    "d": 1,
-   "fecha": "2026-11-16",
-   "dia": "lun 16-nov",
+   "fecha": "2026-11-18",
+   "dia": "mié 18-nov",
    "sub": "Lesiones elementales 1ª/2ª: el vocabulario del paso ① (describir ANTES de diagnosticar)",
    "franja": "13:30–14:15",
    "lectura10": {
@@ -50917,8 +50917,8 @@
   },
   {
    "d": 2,
-   "fecha": "2026-11-18",
-   "dia": "mié 18-nov",
+   "fecha": "2026-11-20",
+   "dia": "vie 20-nov",
    "sub": "Color, distribución y configuración (anular, herpetiforme, lineal/Blaschko) — completa la descripción estándar",
    "franja": "13:30–14:15",
    "lectura10": {
@@ -50940,8 +50940,8 @@
   },
   {
    "d": 3,
-   "fecha": "2026-11-20",
-   "dia": "vie 20-nov",
+   "fecha": "2026-11-24",
+   "dia": "mar 24-nov",
    "sub": "Estructura de la piel: epidermis → BMZ → dermis → anejos (la base de toda tarjeta de MECANISMO)",
    "franja": "13:30–14:15",
    "lectura10": {
@@ -51035,8 +51035,8 @@
   },
   {
    "d": 4,
-   "fecha": "2026-11-24",
-   "dia": "mar 24-nov",
+   "fecha": "2026-11-26",
+   "dia": "jue 26-nov",
    "sub": "Fototipos I–VI + piel de color: cómo cambian los signos (eje Perú · conecta con L4/L5 de research)",
    "franja": "13:30–14:15",
    "lectura10": {
@@ -51051,8 +51051,8 @@
   },
   {
    "d": 5,
-   "fecha": "2026-11-26",
-   "dia": "jue 26-nov",
+   "fecha": "2026-11-30",
+   "dia": "lun 30-nov",
    "sub": "Anatomía facial + DANGER ZONES: a. facial/angular/supratroclear · glabela y nariz = máximo riesgo de oclusión (sin esto nada de estética es seguro)",
    "franja": "13:30–14:15",
    "lectura10": {

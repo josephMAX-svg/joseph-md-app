@@ -34,7 +34,7 @@
  * v6.00 (6-oct-2026 · V6_ESPEC §D · DJ-4: MIR 1 h/día en TODAS las fases): 220 días =
  *  · MANTENIMIENTO 61 (d1-d61 · 2027-03-09 → 2027-06-01 · L-V: 47 lun-jue · 10 viernes · 4 sábados (ya en el SERUMS; v6.05: 1 · v6.06: 2))
  *  · EXTENSIÓN 159 (d62-d220 · 2027-06-02 → 2027-12-03 · L-V hasta el SERUMS y L-S desde el 2027-05-03: 106 lun-jue · 27 viernes · 26 sábados; domingo libre).
- * Salta SKIP (2026-12-25 · 2026-12-31 · 2027-01-01 · 2027-03-25 · 2027-03-26) y los DÍAS PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-12-04 · 2027-12-05 · 2027-12-06) — fuente única:
+ * Salta SKIP (2026-12-25 · 2027-01-01 · 2027-03-25 · 2027-03-26) y los DÍAS PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-12-04 · 2027-12-05 · 2027-12-06) — fuente única:
  * DATA/_scripts/_fechas_v6.json (los protegidos v5.20 22-feb / 9-mar / 10-mar ya no existen). Sin modo reducido (eliminado en v6.00).
  * Franja: 15:15-16:15 hasta el SERUMS; en F4 según el turno del día (mirFranjaPorTurno): M 16:00-17:00 · T 10:35-11:35 ·
  * L 15:15-16:15 · día de hito 04:05-05:05 (plantilla H) · G = 1 h en tiempo muerto de la guardia (lo que no se termine se suma al día de plan siguiente).

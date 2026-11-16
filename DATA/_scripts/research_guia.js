@@ -40,7 +40,7 @@ const CROSSREF = (q, desde, hasta) => 'https://api.crossref.org/works?filter=iss
 const MES_LARGO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtDM = (iso) => `${Number(iso.slice(8, 10))}-${MES_LARGO[Number(iso.slice(5, 7)) - 1]}`;
 /** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
-const VERSION = require('./gen_fechas_v6').cargarFechasV6().version;
+const VERSION = ((v) => (v === 'v6.09' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
 
 /**
  * Código TS que se emite en src/lib/researchGuia.ts: guía GENÉRICA (5 franjas del bloque) y F4 (30′, franja nominal), construida en tiempo de

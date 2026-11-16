@@ -136,10 +136,13 @@ export function componerBriefing(inp: BriefingInput): string {
 //   D13 mar 29-dic. NBME 26, 27 y 28 en el tramo 2 (mar 6-abr · mar 27-abr · mar 8-jun-2027; hitosStep1() los lee del plan). STEP1_SEMANAS =
 //   7 (F1: S1 lun 16-nov → S7 lun 28-dic) + semanas(lun 15-mar → lun 6-dic-2027) = 45, derivado en fechasV6. DELOAD_SEMANAS sin cambio de fecha
 //   (lun 14-dic tras el NBME 25 del jue 10-dic · lun 28-dic). Gates del núcleo (v5.20 D18 / D38) en el tramo 2: T7 mié 24-mar · T27 vie 23-abr.
+// v6.09 (16-nov-2026): D1 de la fase = mar 17-nov (Joseph: «hoy no avancé, todo empieza a partir de mañana»; sáb 21 y dom 22 libres por viaje).
+//   El Step 1 NO cambia (el lunes no era día de Step): UWSA1 = D1 mar 17-nov, NBME 25 = D8 jue 10-dic, D13 mar 29-dic; STEP1_SEMANAS = 45 (S1 sigue
+//   siendo la semana del lun 16-nov) y DELOAD_SEMANAS igual. El jue 31-dic deja de ser SKIP (recupera el día perdido de ENCAPS y secundarios).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 de la fase F1 (v6.08: lun 16-nov-2026; el primer día de Step es el mar 17-nov, UWSA1 · v6.07: lun 9-nov-2026, UWSA1 mar 10-nov · v6.06: lun 2-nov-2026; v6.05: lun 26-oct; v6.03: mié 21-oct; v6.02: lun 19-oct; v6.01: lun 12-oct; v6.00 = v5.20: mié 7-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
+/** D1 de la fase F1 (v6.09: mar 17-nov-2026 = el primer día de Step, UWSA1 · v6.08: lun 16-nov-2026; el primer día de Step era el mar 17-nov, UWSA1 · v6.07: lun 9-nov-2026, UWSA1 mar 10-nov · v6.06: lun 2-nov-2026; v6.05: lun 26-oct; v6.03: mié 21-oct; v6.02: lun 19-oct; v6.01: lun 12-oct; v6.00 = v5.20: mié 7-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
 export const STEP1_INICIO = FECHAS_V6.f1.inicio;
 export { STEP1_SEMANAS };
 export type { SemanaStep1 };

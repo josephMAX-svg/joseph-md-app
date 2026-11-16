@@ -106,11 +106,16 @@
 // (v6.06) Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-11-02   (v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
+// v6.09 (16-nov-2026 · D1 = mar 17-nov; el lun 16 no se estudió, el sáb 21 y el dom 22 son libres por viaje y el jue 31-dic deja de ser SKIP):
+//   node DATA/_scripts/gen_vibecoding_plan.js 2026-11-17 → los 95 pasos corren UN hábil dentro de F1 (S1 mar 17 → lun 23-nov … S6 mar 22 → mar 29-dic ·
+//   S7 mié 30-dic → mié 6-ene) y desde el lun 4-ene caen igual que en la v6.08. SHIP los domingos 29-nov · 6, 13, 20 y 27-dic · 3-ene (S1-S6; nada el dom
+//   22) y desde S7 (dom 10-ene) los mismos de la v6.08. VIBE_SIN_SESION (corrida_s1): sin PC «avance» el dom 22. Revisiones de la víspera del SHIP en el
+//   catálogo: S4 → S05_2026-12-19 · S5 → S06_2026-12-26 (verificación de verify_vibecoding.js).
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-11-16'; // v6.08 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-11-17'; // v6.09 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -149,6 +154,9 @@ const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); //
 //   95.º hábil caía antes del vie 12-mar con cualquier START ≤ 26-oct, así que las fechas de v6.00-v6.05 se reproducen igual).
 const PROT_HAB = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
 const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s) && !PROT_HAB.has(s);
+// v6.09 (16-nov-2026): días SIN SESIÓN de corrida_s1 desde el START (sáb 21 y dom 22-nov, viaje) → sin PC del domingo (VIBE_SIN_SESION en el .ts);
+//   ningún SHIP puede caer en uno (se comprueba abajo). Los L-V sin sesión anteriores al START no cuentan.
+const SIN_SESION_VIBE = require('./gen_fechas_v6').cargarFechasV6().corrida_s1.sin_sesion.filter((f) => f >= START).sort();
 // 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
@@ -227,6 +235,7 @@ semanas.forEach((w, i) => {
 // afecta a S20, que (como S19) cae después del SYNAPSE y no tiene PC («PC = no»): gen_synapse_plan.js no desplaza los SHIP > FIN_PLAN.
 const PROTEGIDOS = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
 semanas.forEach((w) => { if (PROTEGIDOS.has(w.ship)) throw new Error(`S${w.s}: su SHIP (${w.ship}) cae en un día PROTEGIDO de _fechas_v6.json — resolverlo en el catálogo`); });
+semanas.forEach((w) => { if (SIN_SESION_VIBE.includes(w.ship)) throw new Error(`S${w.s}: su SHIP (${w.ship}) cae en un día SIN SESIÓN de corrida_s1 (v6.09)`); });
 taperSemanas.forEach((w, i) => {
   const prev = i ? taperSemanas[i - 1] : semanas[semanas.length - 1];
   const nominal = prev && prev.shipNominal ? prev.shipNominal : prev && prev.ship;
@@ -404,10 +413,13 @@ export function vibeTaperDe(s: number): VibeTaper | undefined { return VIBE_TAPE
  *  tampoco cuenta como «en curso». */
 /** v6.06 (31-oct-2026): días PROTEGIDOS de _fechas_v6.json — sin PC (vibePCDomingo) aunque haya una entrada en curso. */
 const VIBE_PROTEGIDOS = new Set<string>(${JSON.stringify([...PROTEGIDOS].sort())});
+/** v6.09 (16-nov-2026): días SIN SESIÓN de _fechas_v6.json › corrida_s1 dentro del plan (dom 22-nov, viaje) — sin PC aunque haya una entrada en curso
+ *  (el SHIP S1 es el dom 29-nov). */
+const VIBE_SIN_SESION = new Set<string>(${JSON.stringify(SIN_SESION_VIBE)});
 /** v6.07 (8-nov-2026): el PC del SYNAPSE (SHIP · avance · taper) es el DOMINGO (flexible, 2 h); [] en cualquier otro día. Misma regla que antes en sábado. */
 export function vibePCDomingo(fechaISO: string): VibePCSabado[] {
   // v6.06 (31-oct-2026): un día PROTEGIDO no tiene PC (ni la entrada «en curso»; v6.07: el dom 14-mar = ENCAPS)
-  if (diaSemanaISO(fechaISO) !== VIBE_META.diaShip || VIBE_PROTEGIDOS.has(fechaISO)) return [];
+  if (diaSemanaISO(fechaISO) !== VIBE_META.diaShip || VIBE_PROTEGIDOS.has(fechaISO) || VIBE_SIN_SESION.has(fechaISO)) return []; // v6.09: + sin sesión (dom 22-nov)
   const todos: Array<VibeProyecto | VibeTaper> = [...VIBE_PROYECTOS, ...VIBE_TAPER];
   const delSab = todos.filter((x) => x.pcSab === fechaISO);
   const enCurso = delSab.length ? undefined : todos.find((x) => x.pcSab !== '' && x.ini <= fechaISO && fechaISO <= x.ship);

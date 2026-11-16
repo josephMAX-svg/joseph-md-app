@@ -5,6 +5,9 @@
  * Alternancia Research↔Derma — ANCLA de paridad: 2026-06-10 (no mover: define qué día
  * hábil es Research [par] y cuál Derma [impar]). El estudio REAL arranca el 11-jun-2026:
  * Derma D1 = jue 11-jun, Research D1 = vie 12-jun (el 10-jun no se estudió).
+ * v6.09 (16-nov-2026 · D1 = mar 17-nov; el lun 16 no se estudió y el jue 31-dic deja de ser SKIP): el lun 16 era día-DERMA → Research NO cambia
+ *   (M1 sigue el mar 17-nov y todos sus átomos, overlays y la pausa caen igual que en la v6.08). Derma corre UNA ranura dentro de F1 y el jue 31-dic
+ *   —día-Research por paridad— pasa a día-DERMA (TIPO_RD_FORZADO): recupera la sesión perdida y desde el lun 4-ene la paridad y las fechas son las de la v6.08.
  * v6.08 (14-nov-2026 · D1 = lun 16-nov; Research d1 = M1 mar 17-nov —el lun 16 es día-Derma—; pausa de átomos desde el jue 21-ene —antes vie 15-ene— y
  *   objetivo RUTA del case report ≤ lun 1-mar-2027 —antes ≤ 28-feb—, por la orden «alarga las fechas límite lo que amerite»): CR-1 lun 21-dic · CR-2 mié
  *   23-dic · CR-3 → CR-8 tras la pausa (jue 11 → jue 25-feb-2027, regla de desplazamiento niveles 1 y 2) · SUBMIT CR-9 lun 1-mar (≤ 1-mar) → fechaObjetivo
@@ -48,12 +51,18 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
 // también es día de plan y CUENTA en la paridad (L-S); el domingo sigue siendo descanso. Con 6 días/semana la paridad queda fija:
 // Derma lun · mié · vie y Research mar · jue · sáb (30' en tiempo muerto de la posta). Antes del SERUMS, igual que siempre (L-V).
 // Misma regla en gen_research_plan.js · gen_derma_ciclo2.js · remap_inicio.js (bloque Derma). SKIP/protegidos los saltan los generadores.
+/** v6.09 (16-nov-2026): excepciones de paridad R↔D (fecha → tipo). El lun 16-nov (día-Derma) no se estudió y el jue 31-dic deja de ser SKIP: ese
+ *  día recupera la sesión Derma perdida (por paridad sería día-Research). No mueve la paridad de ningún otro día. FUENTE ÚNICA: la leen por regex
+ *  gen_research_plan.js · gen_derma_ciclo2.js · remap_inicio.js (bloque Derma) — no cambies el formato de la línea. */
+export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-31': 'derma' };
 const _isoLocal = (x: Date): string => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb
   const serums = FECHAS_V6.serums.inicio;
   if (dow === 0) return 'descanso';
   if (dow === 6 && _isoLocal(date) < serums) return 'descanso'; // sábado libre antes del SERUMS
+  const forzado = TIPO_RD_FORZADO[_isoLocal(date)]; // v6.09: jue 31-dic = Derma
+  if (forzado) return forzado;
   const start = new Date(2026, 5, 10); // 10 jun 2026 (mes 0-index)
   start.setHours(0, 0, 0, 0);
   const d = new Date(date); d.setHours(0, 0, 0, 0);
