@@ -400,6 +400,9 @@ function MaterialView() {
 // ─── HOY ───
 function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { today, dia, total, metrics, todayItems, doneToday, totalToday, doneSab, totalSab, checks, toggleCheck, repasos } = plan;
+  // v6.09 (17-nov-2026, a pedido de Joseph: «si es 1 hora no puede tener material de un día entero»): en MANTENIMIENTO (1 h a las 16:15) la
+  //   cobertura completa del tema y su NTS son REFERENCIA, no tarea de hoy → sección plegada (antes iban sueltas tras la guía de la hora)
+  const [refOpen, setRefOpen] = useState(false);
   if (!today) {
     return <Text style={styles.empty}>Sin datos del cronograma para hoy. Corré el sync (encaps_supabase_sync.py).</Text>;
   }
@@ -423,6 +426,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // v6.02c: sesión de la guía (solo si la fila viva cuadra con encapsGuia.ts: mismo dia y código) → guía de la hora + nota Obsidian del código
   const ses = sesionGuiaDe(today);
   const guia = ses ? guiaEncapsDe(String(today.fecha)) : null;
+  // v6.09: día de PRE-TEST DE ARRANQUE → el título dice el pre-test (los 4 críticos), no el código de la fila (que el pre-test sustituye)
+  const prePlan = ses?.tipo === 'pretest' && ses.pretest ? ses.pretest : null;
   const obsHref = ses?.obsidian || encapsObsByTitle(today.subtema || tema, today.codigo || undefined);
   const ahoraMin = (() => { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } })();
   // v6.02d: semana 1 corrida → fila de la fecha de plan
@@ -434,7 +439,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
     <View>
       <View style={styles.hoyHeader}>
         <Text style={styles.hoyDay}>D{dia}/{total} · {wdVisible(fRealHoy, fPlanHoy, today.weekday)} {fRealHoy.slice(5)}</Text>
-        <Text style={styles.hoyTema}>{tema}</Text>
+        <Text style={styles.hoyTema}>{prePlan ? `🧪 PRE-TEST DE ARRANQUE ${prePlan.parte}/${prePlan.de} · ${prePlan.codigos.join(' · ')} (sustituye al banco de ${today.codigo || 'hoy'})` : tema}</Text>
         <View style={styles.hoyMetaRow}>
           {/* v6.05 (fix): antes del D1 esta es la PRIMERA sesión, no la de hoy */}
           {!!plan.antesD1 && <Pill text={`aún sin sesión · empieza el ${fechaCorta(fechaRealDe(plan.antesD1, 'encaps')).replace(/-\d{4}$/, '')}`} color={Colors.gold} />}
@@ -456,8 +461,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             <Text style={{ fontSize: 11, fontWeight: '800', color: Colors.teal }}>◈ {(() => { const m = encapsMatch(today.subtema || tema, today.codigo || undefined); return m ? `Anki · ${m.id.slice(0, 2)}` : 'Anki'; })()}</Text>
           </TouchableOpacity>
         </View>
-        {!!today.nts && <Text style={styles.ntsLine}>▪ NTS Tier-1: {today.nts}</Text>}
-        {!!today.temas_secundarios?.length && !receta && (
+        {!!today.nts && !esMant && <Text style={styles.ntsLine}>▪ NTS Tier-1: {today.nts}</Text>}
+        {!!today.temas_secundarios?.length && !receta && !prePlan && (
           <Text style={styles.secLine}>
             {esMant ? '▶ Secundario de cola larga (4-5Q dentro de la hora): ' : '+ Tema liviano extra: '}
             {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}${(s as { q?: string }).q && (s as { q?: string }).q !== 'incluido' ? ` (${(s as { q?: string }).q})` : ''}`).join(' · ')}
@@ -542,9 +547,37 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         </View>
       )}
 
-      {/* Cobertura del tema: cuántos videos mirar + vueltas + gaps (barrido de compendios) */}
-      {!!today.codigo && <CoberturaCard codigo={today.codigo} />}
-      {today.temas_secundarios?.map((s) => (s.codigo ? <CoberturaCard key={`cob-${s.codigo}`} codigo={s.codigo} /> : null))}
+      {/* Cobertura del tema: cuántos videos mirar + vueltas + gaps (barrido de compendios)
+          v6.09: en MANTENIMIENTO (1 h) es el mapa COMPLETO del tema a lo largo del plan, no la tarea de hoy → plegado bajo «REFERENCIA DEL TEMA» */}
+      {esMant ? (
+        <View style={{ marginBottom: Spacing.section }}>
+          <TouchableOpacity onPress={() => setRefOpen(!refOpen)} activeOpacity={0.7}>
+            <Text style={styles.groupHdr}>{refOpen ? '▾' : '▸'} 📚 REFERENCIA DEL TEMA · {[today.codigo, ...(today.temas_secundarios || []).map((s) => s.codigo)].filter(Boolean).join(' · ')} · no es tarea de hoy</Text>
+          </TouchableOpacity>
+          <Text style={styles.groupHint}>
+            Hoy el ENCAPS de esta pantalla es SOLO la guía de la hora de arriba ({guia?.franja || '16:15–17:15'}, 60′). Lo de aquí es el mapa completo del tema
+            (todos sus vídeos, normas y vueltas a lo largo del plan): la teoría va en las MAÑANAS ENCAPS (lun · mié · vie, en el Home) y en la intensiva de enero.
+          </Text>
+          {refOpen && (
+            <>
+              {!!today.codigo && <CoberturaCard codigo={today.codigo} />}
+              {today.temas_secundarios?.map((s) => (s.codigo ? <CoberturaCard key={`cob-${s.codigo}`} codigo={s.codigo} /> : null))}
+              {!!today.nts && (
+                <View style={styles.refBox}>
+                  <Text style={styles.refTitle}>▪ NTS Tier-1 del tema (referencia)</Text>
+                  <Text style={styles.refBody}>{today.nts}</Text>
+                  <Text style={styles.refWhere}>Dónde: Theomed → carpeta “NORMAS TÉCNICAS” + Material Drive</Text>
+                </View>
+              )}
+            </>
+          )}
+        </View>
+      ) : (
+        <>
+          {!!today.codigo && <CoberturaCard codigo={today.codigo} />}
+          {today.temas_secundarios?.map((s) => (s.codigo ? <CoberturaCard key={`cob-${s.codigo}`} codigo={s.codigo} /> : null))}
+        </>
+      )}
 
       {/* Progreso de hoy — checklist de misión */}
       <View style={styles.progressCard}>
@@ -632,8 +665,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {/* v6.00: también en INTENSIVO (cierre del loop / SIM y, con el chip «Carril B 16:15», el del carril B → APP_CARRIL_B_…) */}
       {(esMant || today.modo === 'INTENSIVO') && <CierreSesionCard plan={plan} />}
 
-      {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
-      {!!today.nts && (
+      {/* NTS Tier-1 — qué normas y dónde estudiarlas (v6.09: en MANTENIMIENTO va dentro de «REFERENCIA DEL TEMA», plegada) */}
+      {!!today.nts && !esMant && (
         <View style={styles.refBox}>
           <Text style={styles.refTitle}>▪ NTS Tier-1 (normas técnicas)</Text>
           <Text style={styles.refBody}>{today.nts}</Text>
