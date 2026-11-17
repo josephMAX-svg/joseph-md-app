@@ -12,6 +12,8 @@
 //       25-dic-2026 «sí es día de plan» · 1-ene-2027 «fue día de plan» · Jueves y Viernes Santo de 2027, el texto de la v6.08 (sin la frase).
 // v6.09 (fix 2, 16-nov noche): + bloque encaps-am2 (2.º tramo de un domingo de plan en tramos; dom 27-dic) y las franjas de la mañana ENCAPS por bloque
 //   (encapsManana.guiaEncapsMananaEnRango) · (c) RUTINA DE LA MAÑANA: ningún bloque con hora pisa 05:45-07:15 (caminata, ducha y desayuno; todos los días).
+// v6.09 (mar 17-nov): (d) DOMINGO DE LLEGADA (encapsManana.encapsRecuperaDe(iso).llegada; dom 22-nov, sigue sin sesión en corrida_s1): solo la recuperación
+//   fija (encaps-rec) y el Anki opcional (anki-dom), con hora, entre la llegada y las 17:00 (ningún plan secundario ese día; nada desde las 17:00).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
@@ -139,6 +141,18 @@ function controlRutina(iso, p) {
   return p.bloques.filter((b) => b.ini && b.fin && b.ini !== b.fin && hm(b.ini) < hm(RUTINA_AM[1]) && hm(RUTINA_AM[0]) < hm(b.fin) && !(b.plan === 'usmle' && /HITO/.test(b.nombre) && b.ini === '07:00'))
     .map((b) => `${b.hora} ${b.id} pisa la rutina de la mañana (${RUTINA_AM.join('-')}: caminata, ducha y desayuno; no se toca)`);
 }
+// v6.09 (17-nov): DOMINGO DE LLEGADA → solo encaps-rec + anki-dom, con hora, entre la llegada y las 17:00
+function controlLlegada(iso, p) {
+  const rec = EM.encapsRecuperaDe(iso);
+  if (!rec || !rec.llegada) return [];
+  const e = [];
+  if (!p.bloques.some((b) => b.id === 'encaps-rec')) e.push(`domingo de llegada sin la recuperación fija (encaps-rec ${rec.ini}-${rec.fin})`);
+  for (const b of p.bloques) {
+    if (!['encaps-rec', 'anki-dom'].includes(b.id)) e.push(`domingo de llegada con el bloque ${b.id} (${b.hora}): solo la recuperación fija y el Anki opcional`);
+    else if (!b.ini || !b.fin || hm(b.ini) < hm(rec.llegada) || hm(b.fin) > hm('17:00')) e.push(`domingo de llegada: ${b.id} ${b.hora} fuera de ${rec.llegada}-17:00`);
+  }
+  return e;
+}
 // v6.09 (fix revisión 16-nov, joseph 7): la nota de un día SKIP solo dice que el 31-dic «es / fue día de plan» si lo es de verdad
 function controlSkip31(iso, p) {
   if (p.plantilla !== 'SKIP') return [];
@@ -169,7 +183,7 @@ for (const iso of dias) {
     for (const g of gs || []) console.log(`   ${''.padEnd(16)} ${''.padEnd(13)}   ↳ ${flexible ? `(ejemplo ${g.franja})` : g.franja} ${g.titulo.slice(0, 96)}${fuera.includes(g) ? '  ⚠ FUERA DEL BLOQUE' : ''}`);
   }
   // v6.09 (fix revisión 16-nov): aserciones del día (PPT remitidos a un domingo · nota SKIP del 31-dic), tras recorrer sus bloques
-  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p), ...controlRutina(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
+  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p), ...controlRutina(iso, p), ...controlLlegada(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
 }
 if (resumen.length) console.log(`\n✗ ${errores} problema(s):\n  ` + resumen.join('\n  '));
 console.log(`\n${errores ? '✗' : '✓'} ${dias.length} día(s) simulados · guías fuera de su bloque o bloques sin contenido: ${errores}`);

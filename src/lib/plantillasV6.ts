@@ -118,10 +118,15 @@
  *  DOS TRAMOS, un bloque por tramo: encaps-am 04:15-05:45 (arranque + teoría, 1.ª parte) + encaps-am2 07:15-10:30 (teoría, 2.ª parte → post-test →
  *  banqueo → corrección → tarjetas) + cifras, normas y flashcards 10:30-11:15 (45′ antes del compromiso de las 12:00); empieza a las 04:15 como entre
  *  semana · dom 29-nov: encaps-rec 07:15-08:45 (antes 06:30-08:00) y el ENCAPS opcional (simulacro con RANKING), de ejemplo 08:45-12:15 (3 h 30).
+ * v6.09 (mar 17-nov · Joseph: «el 22 a partir de las 2 de la tarde se puede hacer»): dom 22-nov = DOMINGO DE LLEGADA. Sigue SIN SESIÓN en corrida_s1 (SYNAPSE,
+ *  vibe, Business… no tienen nada ese día), pero plantillaDelDia pinta «mañana libre (viaje); desde las 14:00, de vuelta» con la RECUPERACIÓN FIJA del viaje
+ *  (encaps-rec 15:00-16:30; encapsManana.encapsRecuperaDe(iso).llegada) y el Anki del domingo opcional (anki-dom 16:45-17:00: la cola USMLE ya tiene
+ *  vencidas desde el día siguiente al D2 del Step 1). El dom 29-nov ya no lleva el bloque fijo: su ENCAPS opcional (simulacro con RANKING), de ejemplo
+ *  07:15-11:15, empieza por el PPT de SP 2/11 (clase del lun 23, posterior al dom 22), que NO es opcional (EncapsDomingo.pptAviso en la nota del día).
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
-import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2 } from './usmleStep1Daily';
+import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2, diaPorD } from './usmleStep1Daily'; // v6.09 (17-nov): diaPorD → «vencidas desde» del Anki del domingo de llegada
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
 import { infoTurno, ordenSemanaDe, filaT2DelDia, filasEmpujadas, dowCorto } from './serumsTurnos';
 import type { HitoAsignado } from './serumsTurnos';
@@ -743,7 +748,9 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       : `Domingo de plan: la mañana ENCAPS ${amD.n}/${amD.de} (07:15-12:00) es obligatoria; entre semana ya no cabía. Sus cifras, normas y flashcards (45′), cuando puedas: al volver del baile o en un hueco antes de las 17:00.`);
     if (recD) notasD.unshift(`Hoy ${recD.ini}-${recD.fin}, FIJO: ENCAPS de recuperación del viaje (${recD.tema.charAt(0).toLowerCase()}${recD.tema.slice(1)}). El resto del domingo es flexible.`);
     const shipObligatorio = bsD.some((b) => b.id === 'pc') && vibePCDomingo(iso).some((x) => x.tipo === 'ship' || x.tipo === 'avance');
-    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
+    // v6.09 (17-nov): el ENCAPS opcional que empieza por un PPT en diferido (dom 29-nov: SP 2/11) lo dice: ese primer paso NO es opcional
+    const pptD = encapsDomingoDe(iso)?.pptAviso;
+    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional${pptD ? `, ${pptD}` : ''}.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
     if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
@@ -925,6 +932,23 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
   const cDomSig = corridaS1De(addDias(iso, 1));
   if (c.tipo === 'sin_sesion' && dow(iso) === 6 && iso >= FECHAS_V6.corrida_s1.decidido && !!cDomSig && cDomSig.tipo !== 'sin_sesion') {
     return { ...base, plantilla: 'CORRIDO', titulo: 'Sábado libre · hoy no hay plan', usmle: null, bloques: [], corrida: 'sin_sesion', notas: ['Sábado libre: ni plan ni revisión; lo de los sábados va los domingos.', NOTA_CORRIDA] };
+  }
+  // v6.09 (mar 17-nov · Joseph: «el 22 a partir de las 2 de la tarde se puede hacer»): DOMINGO DE LLEGADA (encapsManana.encapsRecuperaDe(iso).llegada;
+  //   dom 22-nov). Sigue SIN SESIÓN en corrida_s1 —SYNAPSE, vibe, Business… no tienen nada ese día—, pero la mañana es libre (viaje) y desde la llegada
+  //   (14:00) hay dos bloques, los de plantillaBase de ese domingo: la RECUPERACIÓN FIJA del viaje (encaps-rec 15:00-16:30; hasta ahora dom 29 07:15-08:45)
+  //   y el Anki del domingo opcional (anki-dom 16:45-17:00: la cola USMLE ya tiene vencidas desde el día siguiente al D2 del Step 1). Nada desde las 17:00.
+  const recL = c.tipo === 'sin_sesion' && dow(iso) === 0 ? encapsRecuperaDe(iso) : null;
+  if (recL?.llegada) {
+    const bsL = base.bloques.filter((b) => b.id === 'encaps-rec' || b.id === 'anki-dom');
+    const d2 = diaPorD(2)?.fecha;
+    const venc = d2 && d2 < iso ? `la cola USMLE ya tiene vencidas desde el ${fCorta(addDias(d2, 1))}` : 'si hay vencidas';
+    const anki = bsL.find((b) => b.id === 'anki-dom');
+    const notaL = `Domingo de llegada: la mañana es libre (viaje). Desde las ${recL.llegada}, de vuelta: ${recL.ini}-${recL.fin}, FIJO, la recuperación del viaje (${recL.tema.charAt(0).toLowerCase()}${recL.tema.slice(1)})${anki ? ` y ${anki.ini}-${anki.fin} el Anki del domingo, ≤15′ y opcional (${venc}; no se registra)` : ''}. Nada de estudio desde las 17:00. Lo demás (SYNAPSE, vibecoding, Business…) no tiene sesión hoy.`;
+    return {
+      ...base, plantilla: 'DOMINGO', corrida: 'sin_sesion', usmle: null, bloques: bsL,
+      titulo: `Domingo de llegada · mañana libre (viaje) · desde las ${recL.llegada}: ENCAPS ${recL.ini} recuperación del viaje (fija)${anki ? ` + Anki ${anki.ini} (opcional)` : ''}`,
+      notas: [notaL, NOTA_CORRIDA],
+    };
   }
   if (c.tipo === 'sin_sesion') {
     const alias = Object.entries(FECHAS_V6.corrida_s1.alias).find(([, de]) => de === iso)?.[0];

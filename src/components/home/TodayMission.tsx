@@ -204,7 +204,8 @@ export function mirLabelDe(iso: string): string | null {
  * v6.05: antes el briefing ponía el texto fijo «ENCAPS · tema del cronograma» también los días sin sesión (sáb 24 / dom 25).
  */
 export function encapsLabelDe(iso: string): string | null {
-  if (corridaS1De(iso)?.tipo === 'sin_sesion') return null;
+  // v6.09 (17-nov): un domingo de llegada (dom 22-nov) sigue sin sesión en corrida_s1 pero lleva la recuperación fija del viaje → su etiqueta (más abajo)
+  if (corridaS1De(iso)?.tipo === 'sin_sesion' && !encapsRecuperaDe(iso)?.llegada) return null;
   // v6.07: lun · mié · vie de F1 = MAÑANA ENCAPS (07:15-12:00) además de la sesión de las 16:15 · sábado = clase EN VIVO · domingo = opcional
   // v6.07a (lun 9-nov, revisión): en la semana corrida la mañana y la sesión de las 16:15 salen de los BLOQUES del día (su fecha de plan): antes la
   //   mañana iba con la fecha real (el mié 11 del UWSA1 decía «mañana 2/22») y el reparto tomaba la parte del propio fin de semana
@@ -230,7 +231,7 @@ export function encapsLabelDe(iso: string): string | null {
   if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
-  // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (dom 29-nov 07:15; fix 2, antes 06:30): va primero en la etiqueta
+  // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (v6.09, 17-nov: dom 22-nov 15:00, domingo de llegada; antes dom 29-nov 07:15): va primero en la etiqueta
   const recE = encapsRecuperaDe(iso);
   if (recE) return `ENCAPS ${recE.ini} recuperación del viaje (fija)${domE ? ` + ${domE.etiqueta.replace(/^ENCAPS · /, '')}` : ''}`;
   if (domE) return domE.etiqueta;
@@ -539,7 +540,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         const g = b.id === 'theomed-prep' ? guiaTheomedPrepDe(iso) : guiaTheomedVivoDe(iso);
         if (viv?.vivo && g) return { tema: `${viv.vivo} · ${viv.area ?? ''}`.replace(/ · $/, ''), sub: b.id === 'theomed-prep' ? 'PPT de la clase + 3 preguntas' : 'en vivo, participando · notas en forma de pregunta · el tramo 17:00-17:30 en la grabación', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
-      // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (dom 29-nov 07:15-08:45 —fix 2; antes 06:30-08:00—: grabación de la ET 2/3 + PPT en diferido)
+      // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (v6.09, 17-nov: dom 22-nov 15:00-16:30, domingo de llegada —antes dom 29-nov 07:15-08:45—: grabación de la ET 2/3 + PPT en diferido)
       if (b.id === 'encaps-rec') {
         const rec = encapsRecuperaDe(iso);
         const g = guiaEncapsRecuperaDe(iso);
