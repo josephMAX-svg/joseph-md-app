@@ -140,7 +140,7 @@ import { DERMA_CICLO2_META } from './dermaCiclo2';                              
 import { AURUM_PLAN_META, aurumDiaDe } from './aurumDailyPlan';
 import { LIV_META, livDiaDe } from './livianoStudyPlan';
 import { SYN_PLAN_META, synColaDe, SYN_COLA_POST_STEP1 } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real
-import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
+import { VIBE_META, vibePCDomingo, vibeDiaDe } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
 import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
@@ -274,8 +274,12 @@ function mirNombreF1(iso: string): string { return mirSesionDe(iso)?.dia.d === 1
  *  fila del mantenimiento de ese día) · LIVIANO · 18:00 ENCAPS cifras, normas y flashcards (+ la clase en diferido del día). Antes (v6.08) el 31-dic era
  *  un día extra SOLO ENCAPS dentro de la rama SKIP (mañana + 18:00). */
 function bloquesHabilTransicion(iso: string, am: NonNullable<ReturnType<typeof encapsMananaDe>>): BloqueV6[] {
+  // v6.09b lote 1-quater FX1 (revisión V3): un día de DELOAD del vibecoding de 15′ (jue 31-dic) lleva un bloque de 15′ (04:15-04:30), no 45′ con 30′ vacíos
+  const vMin = vibeDiaDe(iso)?.min ?? 45;
   const bs: BloqueV6[] = [
-    bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
+    vMin < 45
+      ? bloque('vibe', '04:15', `04:${String(15 + vMin).padStart(2, '0')}`, `IA · VIBECODING con Claude Code (deload, ${vMin}′)`, 'vibecoding', 'vibecoding')
+      : bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
     // v6.09b (a1-11): como un lun · mié · vie de F1: USMLE 05:00-05:20 (en pausa: solo vencidas, opcional) + ENCAPS 05:20-05:45 (25′)
     bloque('anki', '05:00', '05:45', 'ANKI · USMLE en PAUSA (solo vencidas, opcional, 20′) + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)', 'usmle', 'usmle-anki', 'Step 1 en PAUSA desde hoy (transición): 0 tarjetas nuevas; los 25′ de ENCAPS (05:20-05:45), sí'),
     bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA ${am.n}/${am.de} (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', am.diaExtra),
@@ -316,7 +320,7 @@ function bloqueSynSabado(iso: string): BloqueV6[] {
   return g && m ? [bloque('syn', m[1] as string, m[2] as string, "SYNAPSE · 30' del sábado (A pantalla · B audio · C lectura)", 'synapse', 'synapse')] : [];
 }
 /** v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R): COLA del SYNAPSE de F1 con FRANJA REAL (synapseDailyPlan.synColaDe; guía: rutinaGuia.guiaSynapseColaDe)
- *  — sáb 26-dic 07:15-07:42 (el final del deep dive, que no cabe en los comodines de las 21:00) y 04:15-04:45 L-V de F5 (lun 13-dic-2027 → mar 1-feb-2028:
+ *  — sáb 26-dic 07:15-07:42 (el final del deep dive, que no cabe en los comodines de las 21:00) y 04:15-04:45 L-V de F5 (lun 13-dic-2027 → mié 2-feb-2028 desde el lote 1-quater:
  *  lo que no cupo en F1; antes solo vivía en los textos, sin bloque). */
 function bloqueSynCola(iso: string): BloqueV6[] {
   const c = synColaDe(iso);
@@ -806,7 +810,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       const sigMir = ses ? null : (MIR_MANT_DIAS.map((x) => x.fecha).filter((f) => f > iso).sort()[0] ?? null);
       const finMir = MIR_MANT_DIAS.map((x) => x.fecha).sort().pop() ?? iso;
       const nomMir = ses?.tipo === 'mantenimiento' ? `MIR · banqueo 1 h (${ses.dia.repuesta ? 'sesión repuesta tras el Step 1' : 'mantenimiento'})` : 'MIR · fase principal (oct-2027)';
-      // v6.09b lote 1-ter (S3 · hallazgo 1 de R): + SYNAPSE 04:15-04:45 L-V del lun 13-dic-2027 al mar 1-feb-2028 = la cola de F1 (bloqueSynCola)
+      // v6.09b lote 1-ter (S3 · hallazgo 1 de R): + SYNAPSE 04:15-04:45 L-V del lun 13-dic-2027 al mié 2-feb-2028 (lote 1-quater) = la cola de F1 (bloqueSynCola)
       const synC = bloqueSynCola(iso);
       return out('F5', `F5 · post-Step 1 (esbozo)${synC.length ? ` + SYNAPSE ${synC[0]!.hora} (cola)` : ''}`, [...(ses ? [bloque('mir', '15:15', '16:15', nomMir, 'mir', 'mir')] : []), ...synC],
         { notas: [iso === addDias(FECHAS_V6.step1.examen, 1) ? 'Regreso a la posta (permiso 1 día; 2 si hoy tienes turno M).' : 'F5 es un esbozo: MIR principal hasta el fin del SERUMS; CURVA/DENSA y Derma c2+ se planifican después del Step 1.',

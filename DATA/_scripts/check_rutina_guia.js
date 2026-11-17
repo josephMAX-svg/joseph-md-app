@@ -1003,7 +1003,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         if (g.franja !== `${c.ini}–${c.fin}`) errores.push(`${tag}: guía ${g.franja} fuera de su bloque ${b.hora}`);
         const tot = g.pasos.reduce((x, y) => x + y.min, 0);
         if (tot !== g.totalMin || tot !== c.min) errores.push(`${tag}: Σ pasos ${tot}′ ≠ franja ${g.totalMin}′ / ${c.min}′`);
-        if (c.post && c.min !== 30 && c !== ultimo) errores.push(`${tag}: la cola es de 30′/día y este día lleva ${c.min}′`);
+        if (c.post && c.min !== 30 && c.fecha !== ultimo.fecha) errores.push(`${tag}: la cola es de 30′/día y este día lleva ${c.min}′`); // v6.09b lote 1-quater: por fecha (c es una copia: `c !== ultimo` era siempre cierto)
         if (c.pasos.length !== g.pasos.length) errores.push(`${tag}: ${g.pasos.length} pasos en la guía y ${c.pasos.length} en la cola`);
         c.pasos.forEach((x, i) => { nPasosCola++; const r = x.med / x.min, gm = (g.pasos[i] || {}).min; if (r < 0.85 || r > 1.15 || gm !== x.min) errores.push(`${tag}: paso ${i + 1} con ${x.med}′ de material en ${x.min}′ (ratio ${r.toFixed(2)}; guía ${gm}′)`); });
       }
@@ -1026,17 +1026,87 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     const FR = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
     const URLX = /(https?|file|obsidian|vscode):\/\/[^\s)»\]]+/g;
     const fut = (txt, f, corte) => { const o = []; for (const m of String(txt).replace(URLX, '').matchAll(FR)) { const mes = MESc.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027; const iso = `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}`; if (iso > f && m.index + m[0].length > corte) o.push(`«${m[0]}» en ${m.index + m[0].length}`); } return o; };
-    let nDest = 0;
+    let nDest = 0, nSinF = 0;
+    // v6.09b lote 1-quater (QS · hallazgo e de R2): (26e) cubre también VIBECODING 04:15, el SHIP y el FEYNMAN del domingo (antes solo SYNAPSE · Business ·
+    //   AURUM · LIVIANO: el «Lo que no cierre hoy va al SHIP del dom 29-nov» del lun 23-nov estaba en el carácter 148 y nadie lo veía) · (26f) en esos mismos
+    //   frentes, ninguna frase de DESTINO SIN FECHA en los pasos de F1 (las que la regla no admite: «va al SHIP del domingo», «sigue en la cola de lectura»,
+    //   «lo fecha el plan…», «primeras de la cola», «en un tiempo muerto», «no hoy», «después del min … no es tarea»).
+    const SIN_F = /(va al SHIP del domingo|sigue en la cola de lectura|lo fecha el plan|primeras de la cola|en un tiempo muerto|\bno hoy\b|después del min [\d:]+ no es tarea|no es tarea del plan)/i;
     for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
-      const gs = [['SYNAPSE', RG2.guiaSynapseDe(iso)], ['SYNAPSE cola', RG2.guiaSynapseColaDe(iso)], ['Business', RG2.guiaBusinessDe(iso)], ['AURUM', AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso) : null], ['AURUM sáb', RG2.guiaAurumSabadoDe(iso)], ['LIVIANO', LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null]];
+      const gs = [['SYNAPSE', RG2.guiaSynapseDe(iso)], ['SYNAPSE cola', RG2.guiaSynapseColaDe(iso)], ['Business', RG2.guiaBusinessDe(iso)], ['AURUM', AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso) : null], ['AURUM sáb', RG2.guiaAurumSabadoDe(iso)], ['LIVIANO', LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null],
+        ['VIBECODING', RG2.guiaVibeDe(iso)], ['SHIP', RG2.guiaShipDe(iso)], ['Feynman', RG2.guiaFeynmanDe(iso)]];
       for (const [n, g] of gs) for (const p of (g && g.pasos) || []) {
         nDest++;
         for (const e of fut(p.que, iso, 140)) errores.push(`(26e) ${iso} ${n}: fecha de destino ${e} del «qué» (> 140: el Calendar la corta) · «${p.que.slice(0, 60)}…»`);
         for (const e of fut(p.como, iso, 100)) errores.push(`(26e) ${iso} ${n}: fecha de destino ${e} del «cómo» (> 100: el Calendar la corta) · «${p.como.slice(0, 60)}…»`);
+        if (['SYNAPSE', 'SYNAPSE cola', 'Business', 'VIBECODING', 'SHIP', 'Feynman'].includes(n)) { nSinF++; const m = SIN_F.exec(`${p.que} ${p.como}`); if (m) errores.push(`(26f) ${iso} ${n}: destino sin fecha «${m[0]}» · «${p.que.slice(0, 60)}…»`); }
       }
     }
+    // (26g) v6.09b lote 1-quater (QS · hallazgo a de R2): todo resto de F1 que el SYNAPSE manda a un día de 2027 con su tramo («Resto → vie 8-ene (15:00-18:19 a
+    //   1,5×)») aparece TAL CUAL en el paso de ese día (minutos y velocidad): antes el vie 8-ene decía «1,0× · exactamente 10′» y recibía 14:19 a 1,5×.
+    let n26g = 0;
+    for (const d of SY2.SYN_DIAS) {
+      if (d.fecha < '2026-11-18' || d.fecha > FV.FECHAS_V6.transicion.hasta) continue;
+      for (const x of d.bloques) for (const m of ((x.guia && x.guia.como) || '').matchAll(/→ (?:(?:lun|mar|mié|jue|vie|sáb|dom) )?(\d{1,2})-(ene|feb|mar|abr|may|jun) \((\d+:\d\d(?::\d\d)?)-(\d+:\d\d(?::\d\d)?) a ([\d,]+)×\)/g)) {
+        n26g++;
+        const iso = `2027-${String(MESc.indexOf(m[2]) + 1).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}`;
+        const dd = SY2.synDiaDe(iso), bx = dd && dd.bloques.find((y) => y.tag === x.tag);
+        const txt = bx && bx.guia ? `${bx.guia.que} ${bx.guia.como}` : '';
+        if (!txt.includes(`min ${m[3]}-${m[4]}`) || !txt.includes(`${m[5]}×`)) errores.push(`(26g) ${d.fecha} ${x.tag}: manda «${m[3]}-${m[4]} a ${m[5]}×» al ${iso} y su paso ${x.tag} no lo dice («${(bx && bx.guia ? bx.guia.que : bx ? bx.leccion : '—').slice(0, 90)}…»)`);
+      }
+    }
+    if (!n26g) errores.push('(26g) ningún resto de F1 del SYNAPSE con tramo a un día de 2027 (¿cambió el formato «Resto → vie 8-ene (a-b a v×)»?)');
+    // (26i) v6.09b lote 1-quater (QS · hallazgo d de R2): ningún A medido del SYNAPSE de F1 pide más minutos (redondeados) de los que tiene su paso y el día
+    //   sigue sumando 30′ (A + B + C): si el A pide 16-17′, el C baja lo mismo (antes 14, 17 y 31-dic: A de 16-16,7′ en 15′ y la franja real en 31-32′).
+    let n26i = 0;
+    for (const d of SY2.SYN_DIAS) {
+      if (d.fecha < '2026-11-18' || d.fecha > FV.FECHAS_V6.transicion.hasta) continue;
+      const abc = d.bloques.filter((x) => ['A', 'B', 'C'].includes(x.tag)), a = abc.find((x) => x.tag === 'A');
+      if (!a || a.med == null) continue;
+      n26i++;
+      if (Math.round(a.med) > a.min) errores.push(`(26i) ${d.fecha}: el A medido pide ${a.med}′ y su paso tiene ${a.min}′ (el C debe bajar lo mismo)`);
+      const tot = abc.reduce((x, y) => x + y.min, 0);
+      if (tot !== 30) errores.push(`(26i) ${d.fecha}: A + B + C = ${tot}′ (≠ 30′)`);
+    }
+    // (26h) v6.09b lote 1-quater (QE · hallazgo N5 de R2): el (26e) también en los pasos ENCAPS de F1 (18-nov → 3-ene) — mañanas, 18:00, Anki ENCAPS, sábado
+    //   (preparar + en vivo), ENCAPS del domingo y recuperación fija: ninguna fecha FUTURA después del corte del Calendar (140 del «qué» · 100 del «cómo»). Solo
+    //   quedan fuera las REFERENCIAS que no son un destino: la reserva del 2026-II («(pre-test ciego del vie 8-ene)», «(ensayo general del jue 11-mar)», «de
+    //   ninguna carrera antes del vie 8-ene») y el uso de la nota del simulacro («la usa el GATE del CHECKPOINT del vie 18-dic»). + ninguna frase de destino sin
+    //   fecha («lo fecha el plan…», «primeras de la cola», «en un tiempo muerto», «no hoy», «va a la otra clase o a la norma del tema», el post-test del sábado
+    //   «el domingo o al empezar el banqueo del lunes», sin minutos).
+    const REF_ENC =/\((?:pre-test ciego|ensayo general) del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}\)|de ninguna carrera antes del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}|la usa el GATE del CHECKPOINT del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}/gu;
+    const SIN_F_ENC = /(lo fecha el plan|primeras de la cola|en un tiempo muerto|\bno hoy\b|va a la otra clase o a la norma|el domingo o al empezar el banqueo)/i;
+    const sinRef = (t) => String(t || '').replace(REF_ENC, (m) => '·'.repeat(m.length));
+    let nEnc = 0;
+    for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
+      const gs = [...EM2.guiaEncapsMananaDe(iso).map((g) => [`ENCAPS mañana ${g.franja}`, g]), ['ENCAPS 18:00', EM2.guiaEncapsTardeDe(iso)], ['ENCAPS Anki', EM2.guiaEncapsAnkiDe(iso)],
+        ['ENCAPS sáb (preparar)', EM2.guiaTheomedPrepDe(iso)], ['ENCAPS sáb (en vivo)', EM2.guiaTheomedVivoDe(iso)], ['ENCAPS domingo', EM2.guiaEncapsDomingoDe(iso)], ['ENCAPS recuperación', EM2.guiaEncapsRecuperaDe(iso)]];
+      for (const [n, g] of gs) for (const p of (g && g.pasos) || []) {
+        nEnc++;
+        for (const e of fut(sinRef(p.que), iso, 140)) errores.push(`(26h) ${iso} ${n}: fecha de destino ${e} del «qué» (> 140: el Calendar la corta) · «${p.que.slice(0, 60)}…»`);
+        for (const e of fut(sinRef(p.como), iso, 100)) errores.push(`(26h) ${iso} ${n}: fecha de destino ${e} del «cómo» (> 100: el Calendar la corta) · «${p.como.slice(0, 60)}…»`);
+        const m = SIN_F_ENC.exec(`${p.que} ${p.como}`); if (m) errores.push(`(26h) ${iso} ${n}: destino sin fecha «${m[0]}» · «${p.que.slice(0, 60)}…»`);
+      }
+    }
+    console.log(`v6.09b lote 1-quater · (26h) ENCAPS de F1: ${nEnc} pasos (mañanas, 18:00, Anki, sábados, domingos y recuperación) sin fecha de destino tras el corte del Calendar ni destinos sin fecha`);
+    // (26j) v6.09b lote 1-quater FX1 (revisión V2 · avisos): el Calendar corta el AVISO de cada guía a 240 caracteres (lib_txt.cortar) → ninguna fecha FUTURA de
+    //   F1 (18-nov → 3-ene) más allá del carácter 230 del aviso (margen del corte por palabras), en ENCAPS, USMLE (sus 4 franjas) y los planes de rutinaGuia (antes,
+    //   35 fechas de destino solo en el aviso, en las posiciones 254-636). + (26h) toda condición «si … hiciste la CI 2/8» nombra también la rama del plan B.
+    const UG2 = LIB('usmleGuia');
+    let nAv = 0;
+    for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
+      const gs = [...EM2.guiaEncapsMananaDe(iso), EM2.guiaEncapsTardeDe(iso), EM2.guiaEncapsAnkiDe(iso), EM2.guiaTheomedPrepDe(iso), EM2.guiaTheomedVivoDe(iso), EM2.guiaEncapsDomingoDe(iso), EM2.guiaEncapsRecuperaDe(iso),
+        ...UG2.guiaUsmleDe(iso), RG2.guiaVibeDe(iso), RG2.guiaSynapseDe(iso), RG2.guiaSynapseColaDe(iso), RG2.guiaBusinessDe(iso), AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso) : null, RG2.guiaAurumSabadoDe(iso),
+        LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null, RG2.guiaRevisionDe(iso), RG2.guiaShipDe(iso), RG2.guiaFeynmanDe(iso)].filter(Boolean);
+      for (const g of gs) {
+        // una fecha que ya está dentro de los 230 primeros caracteres (el resumen del principio) es visible aunque se repita en el detalle de detrás
+        if (g.aviso) { nAv++; const av = sinRef(g.aviso), ini230 = av.slice(0, 230); for (const e of fut(av, iso, 230).filter((x) => !ini230.includes(/«(.*)»/.exec(x)[1]))) errores.push(`(26j) ${iso} ${g.franja} «${g.titulo.slice(0, 40)}…»: fecha de destino ${e} del AVISO (> 230: el Calendar lo corta a 240)`); }
+        for (const p of g.pasos || []) if (/hiciste la CI 2\/8/.test(`${p.que} ${p.como}`) && !/ET 2\/3/.test(`${p.que} ${p.como}`)) errores.push(`(26h) ${iso} ${g.franja}: condición «hiciste la CI 2/8» sin la rama del plan B (ET 2/3) · «${p.que.slice(0, 60)}…»`);
+      }
+    }
+    console.log(`v6.09b lote 1-quater FX1 · (26j) ${nAv} avisos de F1 (ENCAPS · USMLE · rutinaGuia) sin fecha de destino tras el carácter 230`);
     ST2 && global.localStorage.removeItem(ST2.TURNOS_KEY);
-    console.log(`v6.09b lote 1-ter · (26) cola del SYNAPSE de F1 con franja real: ${nCola} días (${SY2.SYN_COLA_F1.map((d) => `${d.fecha} ${d.ini}`).join(' · ')} + post-Step 1 ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].fecha : '—'} → ${ultimo ? ultimo.fecha : '—'} ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].ini : ''}) · ${nPasosCola} pasos en [0,85; 1,15] · ${nCit} citas de la cola en F1 · ${nDest} pasos de F1 sin fecha de destino tras el corte del Calendar`);
+    console.log(`v6.09b lote 1-ter · (26) cola del SYNAPSE de F1 con franja real: ${nCola} días (${SY2.SYN_COLA_F1.map((d) => `${d.fecha} ${d.ini}`).join(' · ')} + post-Step 1 ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].fecha : '—'} → ${ultimo ? ultimo.fecha : '—'} ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].ini : ''}) · ${nPasosCola} pasos en [0,85; 1,15] · ${nCit} citas de la cola en F1 · ${nDest} pasos de F1 sin fecha de destino tras el corte del Calendar (+ vibecoding/SHIP/Feynman) · (26f) ${nSinF} pasos sin destino sin fecha · (26g) ${n26g} restos de F1 → 2027 con su tramo en el paso de destino · (26i) ${n26i} días con el A medido dentro de su paso y A + B + C = 30′`);
   }
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));
 }

@@ -36,6 +36,9 @@
  *  (palabras/100 + 0,25′/imagen; antes /120) con el alcance de antes del 1-bis (todas las imágenes + clínica + diferencial o su sustituto): `pasoDermnetMedido`.
  *  El proyecto Claude es la variable de ajuste: 0′ (sin paso) o k = round(min/5) viñetas con sus minutos reales por viñeta. Lo que no es del alcance «no forma
  *  parte del átomo» (ya no «no hoy»); lo del átomo que no cabe (vie 4-dic: 2 secciones de psoriasis) pasa al jue 10-dic con su fecha al principio del «cómo».
+ * v6.09b · lote 1-quater (17-nov-2026, revisión R2 · pendiente de U2; SOLO F1, ≤ LOTE1_HASTA): regla FIJA del modo Tutor de uWorld = 90 s + 0,85′ = 2,35′/Q
+ *  (antes ~3′/Q: 4Q en 12′ = 0,78). `UW_TUTOR_F1` reparte las Unused de F1 para que cada paso cuadre (5Q en 12′ · 3Q en 7′, lo que suelta va al proyecto
+ *  Claude con k = round(min/5)) con el MISMO total por System que antes (2027 recibe el mismo stock: no cambia).
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -102,6 +105,18 @@ const bbMinReserva = (id: number, fecha: string): number => {
   const v = BB_DERM[id]; const k = vel(fecha);
   return v && fecha <= LOTE1_HASTA && k.v === 1.5 ? Math.round((v.s / 60 / 1.25) * k.f) : bbMin(id, fecha);
 };
+/** v6.09b · lote 1-quater (revisión R2 · pendiente de U2): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q (la guía
+ *  daba ~3′/Q: 4Q en 12′ = 0,78). Solo F1 (≤ LOTE1_HASTA); 2027 sigue con 4Q en 12′ (otro lote). */
+const TUTOR_MIN_Q = 1.5 + 0.85;
+const tutorMin = (n: number): number => Math.round(n * TUTOR_MIN_Q);
+const tutorTxt = (n: number): string => `Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (${n}Q ≈ ${String(Math.round(n * TUTOR_MIN_Q * 10) / 10).replace('.', ',')}′)`;
+/** Unused de uWorld por sesión de F1 (plan B por regla) con la regla del Tutor: los minutos de cada sesión cuadran (5Q en 12′ = 0,98 · 3Q en 7′ = 1,01, y lo
+ *  que suelta el paso de 12′ va al proyecto Claude con k = round(min/5) viñetas en 0,85-1,15) y el TOTAL de F1 por System es el mismo que con 4Q por sesión
+ *  (Inflammatory 24 = 5 + 5 + 5 + 3 + 3 + 3 con el d1 curado · Skin and soft tissue infections 15 = 4 + 5 + 3 + 3 con el d2 curado), así que 2027 recibe el
+ *  mismo stock y no cambia. El 4 y el 8-dic no tienen proyecto Claude (el atlas DermNet medido llena la franja): 5Q en los 12′. */
+const UW_TUTOR_F1: Record<string, number> = { '2026-12-04': 5, '2026-12-08': 5, '2026-12-14': 3, '2026-12-16': 3, '2026-12-22': 3, '2026-12-24': 5, '2026-12-30': 3, '2026-12-31': 3 };
+/** Nº de Unused que pide la regla en una sesión de 45′ (4 fuera de F1). */
+const uwPideRegla = (fecha: string): number => (fecha <= LOTE1_HASTA ? UW_TUTOR_F1[fecha] ?? 4 : 4);
 /** a2-8: 2.ª pasada de un B&B ya visto en una sesión anterior = 2× sin pausas + recall de 60 s. */
 const bb2aMin = (id: number): number => { const v = BB_DERM[id]; return v ? Math.round(v.s / 60 / 2) + 1 : 0; };
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -273,7 +288,7 @@ function uwPedidoRegla(dia: DiaDerma): [number, number] | null {
   if (esPMD(dia) || dermaTaperEfectivo(dia)) return null;
   const a = afinDe(dia);
   if (!a.uw || !UW_DERM[a.uw]) return null;
-  return [a.uw, faseV6(dia.fecha) === 'F4' ? 3 : 4];
+  return [a.uw, faseV6(dia.fecha) === 'F4' ? 3 : uwPideRegla(dia.fecha)];
 }
 /** Reparto en orden de fecha (peor caso: TODAS las sesiones por plan B; el plan A no toca uWorld): curadas d1-d5 (lo que piden sus pasos) +
  *  regla (4Q; 3Q en el SERUMS, 30′). `toma` < `pide` = el System se agotó → el paso pasa a ProMIR. */
@@ -356,14 +371,16 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
       pasos.push({ min: m, que: `ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · TEST ${q}Q (ciego, primero)`, como: `77 s/Q · ${t ? `el mismo test de ${q}Q que el plan A` : 'el plan A de hoy (30′ con casos) no tiene hueco para el test'} · lista «Pool oficial» de la app o test del capítulo ProMIR · registra el neto (kind derma10Q) · no depende de AccessDerma.`, enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
     }
   } else if (a.uw && UW_DERM[a.uw]) {
-    const s = UW_DERM[a.uw]!; const pide = corto ? 3 : 4; const minUW = corto ? 9 : 12;
+    // v6.09b · lote 1-quater: en F1 la regla del Tutor (2,35′/Q) y el reparto UW_TUTOR_F1; 2027 (y el SERUMS, 30′) sin cambio
+    const f1T = !corto && dia.fecha <= LOTE1_HASTA;
+    const s = UW_DERM[a.uw]!; const pide = corto ? 3 : uwPideRegla(dia.fecha); const minUW = corto ? 9 : f1T ? tutorMin(pide) : 12;
     if (taper) pasos.push({ min: minUW, que: `TAPER · uWorld Step 1 · System «${s.nombre}» · Status Incorrect · hasta ${pide}Q (0 nuevas)`, como: 'Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Status Incorrect → Tutor · re-test de tus fallos; si no tienes incorrectas en ese System, repasa los fallos del ledger · la semana de examen no se abren preguntas nuevas.', enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
     else {
       // v6.02c F2 (E6): reparto de las Unused en orden de fecha; si el System se agota → relleno CONCRETO en ProMIR (capítulo afín)
       const asig = dermaUwAsignacion().get(dia.fecha);
       const toma = Math.min(pide, asig ? asig.toma : pide);
-      const minQ = toma === pide ? minUW : toma * 3;
-      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → ${toma} → Tutor · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si el composer muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+      const minQ = toma === pide ? minUW : f1T ? tutorMin(toma) : toma * 3;
+      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → ${toma} → Tutor${f1T ? ` · ${tutorTxt(toma)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si el composer muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
       if (toma < pide) {
         const c = PROMIR_DERMA_CAPS[(a.pmd ?? UW_A_PMD[a.uw] ?? 1) - 1]!;
         const mR = minUW - (toma > 0 ? minQ : 0); const nR = Math.max(2, Math.floor((mR * 60) / SEG_Q));
@@ -378,8 +395,10 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     const v = BB_DERM[a.bb]!; const m2 = bb2aMin(a.bb); const libre = bbMinReserva(a.bb, dia.fecha) - m2;
     pasos.push({ min: m2, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — 2.ª PASADA a 2× (${ap.n}.ª vez en el plan; la 1.ª, el ${fdc(ap.primera)})`, como: `Qbankly › Video Library › B&B Step 1 · 2× sin pausas (ya lo viste: solo lo que conecta con «${dia.sub.split(/[:(—·]/)[0]!.trim()}») · ${Math.round(v.s / 60 / 2)}′ + recall de 60 s: sin mirar, 3 ideas del vídeo aplicadas al átomo de hoy.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
     const s = a.uw ? UW_DERM[a.uw] : undefined;
-    const kUW = s && a.uw ? Math.min(2, Math.floor(libre / 3), uwSobranteDelPlan(a.uw)) : 0;
-    if (kUW >= 1 && s) pasos.push({ min: kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: 'Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → Tutor · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.', enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+    // v6.09b · lote 1-quater: en F1 con la regla del Tutor (2,35′/Q); en F1 no ocurre (Inflammatory y Skin and soft tissue infections van repartidos enteros)
+    const f1T = dia.fecha <= LOTE1_HASTA;
+    const kUW = s && a.uw ? Math.min(2, Math.floor(libre / (f1T ? TUTOR_MIN_Q : 3)), uwSobranteDelPlan(a.uw)) : 0;
+    if (kUW >= 1 && s) pasos.push({ min: f1T ? tutorMin(kUW) : kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → Tutor${f1T ? ` · ${tutorTxt(kUW)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.`, enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
     else {
       const c = PROMIR_DERMA_CAPS[(a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined) ?? 1) - 1]!;
       const k = Math.min(2, Math.floor((libre * 60) / SEG_Q));

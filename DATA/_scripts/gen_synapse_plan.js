@@ -152,6 +152,11 @@ const SIN_SESION_SYN = new Set(require('./gen_fechas_v6').cargarFechasV6().corri
 //   con los 26:42 finales del deep dive (antes, a 2027-2028); el vie 8-ene «termina los tramos pendientes» toma lo siguiente del canal a la velocidad de su
 //   serie; (9) el sábado, A medido con sus minutos y el C del comodín compensa (A + B + C = 30′, el bloque termina a las 21:30, antes del Anki); (5) toda fecha
 //   de destino va al principio del «cómo» (≤ 100 caracteres) y el generador aborta si alguna queda después del corte del Calendar.
+// v6.09b · lote 1-quater QS (mar 17-nov · revisión R2 del lote 1-ter, hallazgos a / d / e): (a) el B del vie 8-ene-2027 dice las 2 piezas que recibe de F1
+//   («Tips…» 15:00-18:19 + «Building…» 30:00-41:00 a 1,5× = 9,5′), de dónde retoma cada una y adónde va lo que queda — único bloque de 2027 que reescribe el
+//   troceado (synapse_f1_tramos.EXTRA_2027; aborta con cualquier otra fecha) · (d) entre semana, el A medido de 16-17′ (14, 17 y 31-dic) lleva sus minutos y
+//   el C baja lo mismo (A + B + C = 30′) → la cola post-Step 1 recibe ≈400 palabras más: 38 días (lun 13-dic-2027 → mié 2-feb-2028, el último de 21′) ·
+//   (e) el C del sábado con menos minutos remite a las fechas de «Lo que queda» (antes «sigue en la cola de lectura», sin fecha).
 const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16', '2026-11-21'], wd: 'Lun', semana: 1, motivo: 'lun 16-nov (no se estudió) + sáb 21-nov (viaje)' };
 let DOM_RECUPERA = new Map(); // se fija tras leer el START (abajo)
 // v5.20: último SÁBADO del plan (≤ FIN_PLAN). Si la sem 1 no tiene martes (START en miércoles o después), la pieza del carril del
@@ -770,6 +775,17 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
       if (!o || !['A', 'B', 'C'].includes(b.tag)) continue;
       if (x.fecha > require('./synapse_f1_tramos').HASTA || x.fecha < require('./synapse_f1_tramos').DESDE) throw new Error('v6.09b: tramo F1 fuera de F1 en ' + x.fecha);
       b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; if (o.min) b.min = o.min; n++; // v6.09b lote 1-ter: el sábado A/C con sus minutos reales (A + B + C = 30)
+      if (o.guia && o.guia.url) assertUrl(o.guia.url);
+    }
+    // v6.09b lote 1-quater (QS · hallazgo a de R2): el ÚNICO bloque de 2027 que reescribe el troceado de F1 = el B del vie 8-ene («termina los tramos
+    //   pendientes»: recibe 2 restos de F1 y su paso dice cuáles, a qué minutos y a qué velocidad). Cualquier otra fecha fuera de F1 aborta.
+    const TR = require('./synapse_f1_tramos');
+    for (const [k, o] of T.extra2027 || []) {
+      const [f, tag] = k.split('|');
+      if (!TR.EXTRA_2027.includes(f)) throw new Error('v6.09b lote 1-quater: bloque de 2027 no autorizado ' + k);
+      const b = (dias.find((x) => x.fecha === f) || { bloques: [] }).bloques.find((y) => y.tag === tag);
+      if (!b || !/termina los tramos pendientes/.test(b.leccion)) throw new Error('v6.09b lote 1-quater: ' + k + ' ya no es el B «termina los tramos pendientes»');
+      b.leccion = o.leccion; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; n++;
       if (o.guia && o.guia.url) assertUrl(o.guia.url);
     }
     COLA_POST = T.cola;

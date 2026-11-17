@@ -45,6 +45,12 @@
  *    8′ → 7′ (6,4′ → 0,92) con el minuto a la LECTURA DIRIGIDA (15′ → 16′, las mismas secciones): a 150 palabras/min —la regla fija de lectura en español—
  *    suman 15,5-18,1′ con el recuadro (a 15′, 5 días quedaban por encima de 1,15; a 16′, todos en 0,97-1,13) y el paso lo declara «(N′ medidos a 150
  *    palabras/min; M′ a 180)». --check valida esas razones en F1 y que fuera de F1 no cambia nada. Preguntas, secciones y reparto: idénticos.
+ *  · v6.09b · lote 1-quater (17-nov-2026 · revisión R2 del lote 1-ter): las evals de 2-3Q de F1 (D2 mié 18 · D3 jue 19 · D6 mar 24 · D7 mié 25-nov) dejaban
+ *    «los N′ que sobran, adelanta el Anki» (la eval sola a 0,37-0,55): sus 7′ son ahora 4Q COMENTADAS (77 s + 30 s = 107 s/Q → 7,1′ → 1,02) = las ancladas
+ *    + (4 − nQ) de la cola del quiz del D-1 (la 7.ª-10.ª de su lista, ya en el plan; en preguntas.eval como slot «cola D-1»); el quiz que cede (D2, D5, D6;
+ *    el D1 —en curso— no se toca) lo anuncia al principio de su «cómo» con la fecha. Anki 5′ y log 3′ (aciertos/4) sin cambio. Derma: el plan B de lectura
+ *    d1-d3 lleva además `min150` (los mismos apartados a 150 palabras/min, la regla fija en español). --check exige la cola en toda eval de < 4Q de F1 y
+ *    que ningún paso de F1 deje minutos «que sobran». 2027 idéntico (no tiene evals de < 4Q).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -88,11 +94,23 @@ const QUIZ_HACER = 6, QUIZ_HACER_MAX = 8, SEG_COMENTARIO = 30;
 // v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis: 53 pasos MIR de F1 fuera de 0,85-1,15 —pre-test 5Q en 8′ = 0,80 y eval anclada 4Q en 7′ = 0,73—):
 //   SOLO F1 desde el D2 (mié 18-nov → jue 31-dic; el D1 —mar 17-nov, en curso— y 2027 no cambian), dentro de las mismas franjas y sin material nuevo:
 //   · 15:15-15:30: la eval anclada de 4Q dura su cronómetro (6′; 4 × 77 s = 5,1′) y el minuto pasa al Anki (6′; deuda a cero + mazo de Ravi, paso elástico);
-//     las evals de 2-3Q (D2, D3, D6, D7) siguen con 7′ y «los N′ que sobran, adelanta el Anki».
+//     las evals de 2-3Q (D2, D3, D6, D7) siguen con 7′ (lote 1-quater: 4Q comentadas con la cola del quiz del D-1, ver colaEvalDe).
 //   · 15:30-16:15: el pre-test 5Q pasa a 7′ (5 × 77 s = 6,4′) y el minuto pasa a la LECTURA DIRIGIDA (16′) con las MISMAS secciones: a 150 palabras/min
 //     —la regla fija de lectura en español— suman 15,5-18,1′ con el recuadro (a 180, 13,5-15′): a 15′ había 5 días por encima de 1,15; a 16′, todos en 0,97-1,13.
 const LOTE1T_DESDE = '2026-11-18', LOTE1T_HASTA = '2027-01-03', PPM_REGLA = 150;
 const enLote1t = (iso) => iso >= LOTE1T_DESDE && iso <= LOTE1T_HASTA;
+// v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter, hallazgo de las evals de 2-3Q): en F1 (D2, D3, D6, D7 = mié 18 · jue 19 · mar 24 ·
+//   mié 25-nov) la eval de 2-3Q ya no deja «los N′ que sobran, adelanta el Anki»: los 7′ son 4Q COMENTADAS (77 s + 30 s = 107 s/Q → 4 × 107 s = 7,1′) =
+//   las nQ ancladas + (4 − nQ) de la COLA del quiz del D-1 (la 7.ª-10.ª de su lista: material del plan que ya existe, sin tocar ningún otro día). El Anki
+//   (5′) y el log (3′, aciertos/4) no cambian; 2027 no tiene evals de < 4Q.
+const SEG_EVAL_COMENTADA = SEG_POR_Q + SEG_COMENTARIO, EVAL_Q_F1 = 4;
+/** Cola del quiz del D-1 que entra en la eval del día d (solo F1 con < 4Q ancladas): { dC = día cuyo quiz cede, n = cuántas, fecha del día d } o null. */
+function colaEvalDe(d) {
+  const x = MD.mirDiaN(d); if (!x || !enLote1t(x.fecha) || MD.mirCierreDe(d)) return null;
+  const a = MD.mirAnclas(d); if (!a.d1) return null;
+  const nQ = (a.d1 ? 2 : 0) + (a.d3 ? 1 : 0) + (a.d7 ? 1 : 0);
+  return nQ < EVAL_Q_F1 ? { dC: a.d1.d, n: EVAL_Q_F1 - nQ, nQ, fecha: x.fecha } : null;
+}
 const dec1 = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
 /** Minutos de la lectura elegida (recuadro + secciones) a 150 palabras/min en la prosa (tablas a 90, figuras 0,5′ y clips, como el generador); una sección
  *  PARCIAL cuenta la misma fracción que a 180. */
@@ -305,7 +323,23 @@ function pasosDia(d) {
     const minQ = Math.ceil((nQ * SEG_POR_Q) / 60);
     // v6.09b · lote 1-ter: en F1 (D2-D32) la eval de 4Q dura su cronómetro (6′) y el minuto pasa al Anki
     const evalMin = L1 && nQ === 4 ? minQ : 7; const hEval = `15:${15 + evalMin}`;
-    pasos.push({ min: evalMin, hora: `15:15–${hEval}`, que: `EVAL ANCLADA ${nQ}Q · ${slots.map((y) => `${y.n}Q ${y.k} (D${y.d} ${CAP[y.d].x.tema.split(' (')[0]})`).join(' + ')}`, como: `Cronómetro ${minQ}′ (77 s/Q${evalMin !== 7 ? `: ${nQ} × 77 s = ${dec1((nQ * SEG_POR_Q) / 60)}′` : ''}), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas)${nQ < 4 ? ` · hoy solo hay ${nQ}Q (no existen D-3/D-7 todavía): los ${7 - minQ}′ que sobran, adelanta el Anki` : ''}${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app.` });
+    const cola = colaEvalDe(d); // v6.09b · lote 1-quater: F1 con 2-3Q ancladas → 4Q comentadas con la cola del quiz del D-1
+    const nomD = (dd) => `D${dd} ${CAP[dd].x.tema.split(' (')[0]}`;
+    if (cola) {
+      const qc = CAP[cola.dC].quiz.slice(QUIZ_HACER); // la 7.ª-10.ª de la lista del quiz del D-1 (las que su paso no pide: 6Q, máx. 8)
+      // aunque ayer llegara a la 8.ª (máx.), quedan ≥ n en la cola
+      if (qc.length - (QUIZ_HACER_MAX - QUIZ_HACER) < cola.n) throw new Error(`D${d}: la cola del quiz del D${cola.dC} no llega a ${cola.n}Q aunque ayer pararas en la ${QUIZ_HACER_MAX}.ª`);
+      const pos = `la ${QUIZ_HACER + 1}.ª-${QUIZ_HACER + qc.length}.ª de su lista`;
+      preguntas.eval.push({ slot: 'cola D-1', dia: cola.dC, tema: CAP[cola.dC].x.tema, posiciones: pos, n: cola.n, preguntas: qc.map((q) => ({ promir: q.promir, url: q.url, seccion: q.seccion })) });
+      const tot = nQ + cola.n;
+      const lasN = `${cola.n === 1 ? 'la primera' : `las ${cola.n} primeras`} de su lista que no hiciste ayer (${cola.n} × ${SEG_EVAL_COMENTADA} s ≈ ${dec1((cola.n * SEG_EVAL_COMENTADA) / 60)}′; ${cola.n === 1 ? `la ${QUIZ_HACER + 1}.ª` : `la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER + 2}.ª`} si paraste en la ${QUIZ_HACER}.ª)`;
+      const faltan = !anc.d3 ? 'no existen D-3/D-7 todavía' : 'no existe D-7 todavía';
+      pasos.push({
+        min: evalMin, hora: `15:15–${hEval}`,
+        que: `EVAL ANCLADA ${nQ}Q + ${cola.n}Q de la cola del quiz del D${cola.dC} · ${tot}Q comentadas (${tot} × ${SEG_EVAL_COMENTADA} s = ${dec1((tot * SEG_EVAL_COMENTADA) / 60)}′) · ${slots.map((y) => `${y.n}Q ${y.k} (${nomD(y.d)})`).join(' + ')} · cola del quiz del D${cola.dC}: ${pos} (${qc.map((q) => q.promir).join(' · ')})`,
+        como: `Cronómetro ${evalMin}′: ${tot}Q a ${SEG_POR_Q} s + ${SEG_COMENTARIO} s de comentario (${SEG_EVAL_COMENTADA} s/Q), en blanco si no descartas 2 · primero las ${nQ} ancladas (${nQ} × ${SEG_EVAL_COMENTADA} s ≈ ${dec1((nQ * SEG_EVAL_COMENTADA) / 60)}′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después ${lasN}: hoy solo hay ${nQ}Q ancladas (${faltan}) y el hueco lo llena material del plan, no el Anki · registra las ${tot} juntas en el log de las 15:27 (aciertos/${tot})${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app.`,
+      });
+    } else pasos.push({ min: evalMin, hora: `15:15–${hEval}`, que: `EVAL ANCLADA ${nQ}Q · ${slots.map((y) => `${y.n}Q ${y.k} (D${y.d} ${CAP[y.d].x.tema.split(' (')[0]})`).join(' + ')}`, como: `Cronómetro ${minQ}′ (77 s/Q${evalMin !== 7 ? `: ${nQ} × 77 s = ${dec1((nQ * SEG_POR_Q) / 60)}′` : ''}), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas)${nQ < 4 ? ` · hoy solo hay ${nQ}Q (no existen D-3/D-7 todavía): los ${7 - minQ}′ que sobran, adelanta el Anki` : ''}${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app.` });
     pasos.push({ min: 12 - evalMin, hora: `${hEval}–15:27`, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer.' });
     pasos.push({ min: 3, hora: '15:27–15:30', que: 'Log de la eval en la app', como: 'aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana.' });
   }
@@ -321,7 +355,10 @@ function pasosDia(d) {
   // quiz
   preguntas.quiz = quiz;
   const nRepaso = quiz.filter((q) => q.deDia).length; // v6.03: complemento con capítulos ya leídos
-  pasos.push({ min: 12, hora: '15:53–16:05', que: `${QUIZ_HACER}Q comentadas (máx. ${QUIZ_HACER_MAX}) de la lista de ${quiz.length} · ${pool.length > 5 ? `${Math.min(pool.length - 5, QUIZ_MAX)} del pool oficial que no entraron en el pre-test + ` : ''}preguntas MIR citadas en las secciones que acabas de leer${nRepaso ? ` + ${nRepaso} de repaso de capítulos ya leídos (${[...new Set(quiz.filter((q) => q.deDia).map((q) => 'D' + q.deDia))].join(' · ')})` : ''}`, como: `Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario (≈${SEG_POR_Q + SEG_COMENTARIO} s/Q: ${QUIZ_HACER}Q ≈ ${String(Math.round((QUIZ_HACER * (SEG_POR_Q + SEG_COMENTARIO)) / 6) / 10).replace(".", ",")}′; la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${pool.length > 5 ? `Pool oficial de la app para este capítulo: ${pool.length}Q → 5 en el pre-test y ${Math.min(pool.length - 5, QUIZ_MAX)} abren el quiz (en la app)${quiz.length > pool.length - 5 ? `; el resto, preguntas MIR citadas en el capítulo (${med.totCitas})` : ''}.` : `Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo.`}` });
+  // v6.09b · lote 1-quater: si la eval de mañana (F1, < 4Q ancladas) toma la cola de este quiz, el paso lo dice al principio del «cómo» (con su fecha)
+  const colaMan = colaEvalDe(d + 1); const aMan = L1 && colaMan && colaMan.dC === d // el D1 (17-nov, en curso) no se toca
+    ? `${colaMan.n === 1 ? 'La primera que no entre abre' : `Las ${colaMan.n} primeras que no entren abren`} la eval de mañana (${fmtF(colaMan.fecha)} 15:15) · ` : '';
+  pasos.push({ min: 12, hora: '15:53–16:05', que: `${QUIZ_HACER}Q comentadas (máx. ${QUIZ_HACER_MAX}) de la lista de ${quiz.length} · ${pool.length > 5 ? `${Math.min(pool.length - 5, QUIZ_MAX)} del pool oficial que no entraron en el pre-test + ` : ''}preguntas MIR citadas en las secciones que acabas de leer${nRepaso ? ` + ${nRepaso} de repaso de capítulos ya leídos (${[...new Set(quiz.filter((q) => q.deDia).map((q) => 'D' + q.deDia))].join(' · ')})` : ''}`, como: `${aMan}Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario (≈${SEG_POR_Q + SEG_COMENTARIO} s/Q: ${QUIZ_HACER}Q ≈ ${String(Math.round((QUIZ_HACER * (SEG_POR_Q + SEG_COMENTARIO)) / 6) / 10).replace(".", ",")}′; la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${pool.length > 5 ? `Pool oficial de la app para este capítulo: ${pool.length}Q → 5 en el pre-test y ${Math.min(pool.length - 5, QUIZ_MAX)} abren el quiz (en la app)${quiz.length > pool.length - 5 ? `; el resto, preguntas MIR citadas en el capítulo (${med.totCitas})` : ''}.` : `Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo.`}` });
   pasos.push({ min: 10, hora: '16:05–16:15', que: `≤4 APEX en ${deck}`, como: 'Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · 1 de cada 4 con imagen · creados directamente en Anki.' });
   const totalMin = pasos.reduce((s, p) => s + p.min, 0);
   const vidLargos = us.flatMap((u) => u.largos.map((v) => `${v.leyenda ? v.leyenda.replace(/^(Vídeo [\d-]+)/, '$1 · ') : 'vídeo'} (${v.dur})`));
@@ -388,7 +425,8 @@ const derma = DERMA_DIAS.map((x) => {
     d: x.d, fecha: x.fecha, dia: fmtF(x.fecha), sub: x.sub, franja: '13:30–14:15',
     lectura10: {
       hora: '14:03–14:13', planA: x.extra ? { t: x.extra.t, url: x.extra.url, nota: 'AccessDermatology: «remote access expired» → 403 hasta que Joseph renueve el acceso desde la red institucional' } : null,
-      planB: pbSecs.length ? { t: `ProMIR Dermatología · cap. 1 «${medD.titulo.replace(/^\d+\.-\s*/, '')}» → ${pbSecs.map((u) => u.titulo).join(' + ')}`, url: capUrl(D1CAP.capId), min: sumMin(pbSecs), palabras: pbSecs.reduce((s, u) => s + u.palabras + u.palabrasTabla, 0), figs: pbSecs.reduce((s, u) => s + u.figs, 0), por: pb.por } : null,
+      // v6.09b · lote 1-quater: `min150` = los mismos apartados a la regla fija de lectura en español (prosa a 150 palabras/min; tablas a 90, 0,5′ por figura)
+      planB: pbSecs.length ? { t: `ProMIR Dermatología · cap. 1 «${medD.titulo.replace(/^\d+\.-\s*/, '')}» → ${pbSecs.map((u) => u.titulo).join(' + ')}`, url: capUrl(D1CAP.capId), min: sumMin(pbSecs), min150: Math.round((min150(pbSecs.map((u) => ({ ...u, parcial: false }))) - ORIENT_MIN) * 10) / 10, palabras: pbSecs.reduce((s, u) => s + u.palabras + u.palabrasTabla, 0), figs: pbSecs.reduce((s, u) => s + u.figs, 0), por: pb.por } : null,
     },
   };
   if (cap) {
@@ -438,7 +476,20 @@ for (const x of salida) {
     const P = (re) => x.bloque.pasos.find((p) => re.test(p.que));
     const ok = (n, m) => m > 0 && n / m >= 0.85 && n / m <= 1.15;
     const ev = P(/^EVAL ANCLADA (\d+)Q/); const pr = P(/^PRE-TEST 5Q/); const le = P(/^LECTURA DIRIGIDA/);
-    if (ev) { const n = +/^EVAL ANCLADA (\d+)Q/.exec(ev.que)[1]; if (n === 4 && !ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
+    if (ev) {
+      const n = +/^EVAL ANCLADA (\d+)Q/.exec(ev.que)[1];
+      // v6.09b · lote 1-quater: eval de 2-3Q ancladas + la cola del quiz del D-1 = 4Q comentadas (107 s/Q) en sus 7′; nada de «adelanta el Anki»
+      const c = /^EVAL ANCLADA \d+Q \+ (\d+)Q de la cola del quiz del D(\d+) · (\d+)Q comentadas/.exec(ev.que);
+      if (c) {
+        const tot = n + +c[1]; const slot = (x.preguntas.eval || []).find((s) => s.slot === 'cola D-1'); const qD = salida.find((y) => y.d === +c[2]);
+        if (tot !== +c[3] || tot !== EVAL_Q_F1 || !ok((tot * SEG_EVAL_COMENTADA) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q + ${c[1]}Q de cola = ${c[3]}Q comentadas en ${ev.min}′ (fuera de 0,85-1,15 o ≠ ${EVAL_Q_F1}Q)`);
+        if (!slot || slot.dia !== +c[2] || slot.preguntas.length - (QUIZ_HACER_MAX - QUIZ_HACER) < +c[1]) errs.push(`D${x.d}: la cola del quiz del D${c[2]} no está en preguntas.eval o no llega a ${c[1]}Q aunque ayer pararas en la ${QUIZ_HACER_MAX}.ª`);
+        else if (!qD || JSON.stringify(qD.preguntas.quiz.slice(QUIZ_HACER).map((q) => q.promir)) !== JSON.stringify(slot.preguntas.map((q) => q.promir))) errs.push(`D${x.d}: la cola no es la ${QUIZ_HACER + 1}.ª-10.ª del quiz del D${c[2]}`);
+        if (qD && enLote1t(qD.fecha)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; if (i < 0 || i > 100) errs.push(`D${c[2]}: su quiz no anuncia en los primeros 100 caracteres que la cola abre la eval del ${x.dia}`); }
+      } else if (n === 4) { if (!ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
+      else errs.push(`D${x.d}: eval de ${n}Q en F1 sin la cola del quiz del D-1 (los minutos que sobran quedarían sin material)`);
+    }
+    if (x.bloque.pasos.some((p) => /adelanta el Anki|que sobran/.test(`${p.que} ${p.como}`))) errs.push(`D${x.d}: en F1 un paso deja minutos «que sobran» sin material`);
     if (!pr || !ok((5 * SEG_POR_Q) / 60, pr.min)) errs.push(`D${x.d}: pre-test 5Q en ${pr ? pr.min : '—'}′`);
     if (!le || !ok(x.lectura.min150, le.min) || !le.que.includes(`(${dec1(x.lectura.min150)}′ medidos`)) errs.push(`D${x.d}: lectura ${x.lectura.min150}′ (a 150) en ${le ? le.min : '—'}′`);
   } else if (x.lectura.min150 != null) errs.push(`D${x.d}: fuera de F1 con la lectura del lote 1-ter`);

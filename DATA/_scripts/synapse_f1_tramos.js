@@ -26,6 +26,13 @@
 //    antes del Anki (sáb 12, 19 y 26-dic: A 17′ · C 3′; lo que el C no lee sigue en la cola de lectura, con fecha).
 //  · (5) toda FECHA DE DESTINO va al principio del «cómo» (≤ 100 caracteres: el volcado del Calendar corta el «cómo» en 110): «Resto → …», «Sigue → …»,
 //    «Lo que queda → …». Ninguna fecha futura después del carácter 100 del «cómo» ni del 140 del «qué» (el generador ABORTA si la hay).
+// v6.09b lote 1-quater QS (mar 17-nov-2026 · revisión R2 del lote 1-ter, hallazgos a / d / e):
+//  · (a) el vie 8-ene-2027 (B «termina los tramos pendientes») recibe dos restos de F1 a 1,5× («Tips…» 15:00-18:19 del vie 4-dic + «Building…»
+//    30:00-41:00 del vie 18-dic = 14:19 de audio ≈ 9,5′) y su texto decía «1,0× · exactamente 10′»: ahora su paso B dice esas piezas, minutos, velocidad,
+//    de dónde retoma cada una y adónde va lo que queda (EXTRA_2027: la única fecha de 2027 que este módulo escribe; declarada en cambios_2027).
+//  · (d) ENTRE SEMANA, el A medido que pide más que su franja (14, 17 y 31-dic: 16-16,7′ en 15′) lleva sus minutos reales y el C baja lo mismo, como el
+//    sábado: A + B + C = 30′ y no retrasa el Business de las 13:00; lo que el C no lee sigue con su fecha (F1 o cola post-Step 1).
+//  · (e) el C del sábado con menos minutos ya no dice «lo que no leas sigue en la cola de lectura» (sin fecha): remite a las fechas de «Lo que queda».
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -35,6 +42,9 @@ const DESDE = '2026-11-18', HASTA = '2027-01-03', COLA_DESDE = '2027-12-13', COL
 const COLA_INI = '04:15';
 /** v6.09b lote 1-ter: huecos REALES de F1 (con hora) para lo que no cabe en los comodines del sábado (hallazgo 1 de R: el final del deep dive). */
 const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:15', id: 'deepDivePE' }];
+/** v6.09b lote 1-quater (QS · hallazgo a de R2): fechas de 2027 cuyo bloque este módulo SÍ reescribe (y solo esas): el vie 8-ene «termina los tramos
+ *  pendientes» recibe dos restos de F1 y su paso B dice cuáles. gen_synapse_plan.js aborta si llega cualquier otra fecha fuera de F1. */
+const EXTRA_2027 = ['2027-01-08'];
 const VEL = 1.5, PPM = 100, OBJ = 500, MIN_W = 425, MAX_W = 575;
 const RAT = [0.85, 1.15];
 /** corte del volcado del Calendar (lib_txt.js: «qué» 150 · «cómo» 110) con margen: una fecha de destino nunca después de estos caracteres */
@@ -149,6 +159,7 @@ function crear(MED, ctx) {
   const posA = {}, posL = {};
   const keyRes = (id) => `${id}#resto`;
   const res = { sesiones: new Map() }; // fecha|tag → {leccion, guia, med, min?}
+  const extra2027 = new Map(); // v6.09b lote 1-quater: fecha|tag de EXTRA_2027 → {leccion, guia, med}
   const out = (fecha, tag, o) => res.sesiones.set(`${fecha}|${tag}`, o);
   const audioIdDeCanal = (lec) => /AI prompt engineering: A deep dive/.test(lec) ? 'deepDivePE' : /Tips for building AI agents/.test(lec) ? 'tips' : /Building Anthropic/.test(lec) ? 'building' : /How difficult is AI alignment/.test(lec) ? 'alignment' : /Interpretability/.test(lec) ? 'interp' : null;
   const prevSes = {}; // id → fecha de la última sesión (para «retoma donde paraste el …»)
@@ -182,10 +193,17 @@ function crear(MED, ctx) {
     if (seg == null) return b.min;
     const v = velDe(seg);
     const minTxt = Math.round(v.min);
-    const asig = sab ? Math.round(v.min) : b.min;
+    // v6.09b lote 1-quater (QS · hallazgo d de R2): ENTRE SEMANA, si el A medido pide MÁS que su franja (lun 14-dic 16,0′ · jue 17-dic 16,7′ · jue 31-dic
+    //   16,4′ en 15′), el A lleva sus minutos reales (16-17′) y el C baja lo mismo (4-3′), como el sábado: A + B + C = 30′ y el bloque no retrasa el de
+    //   después (Business 13:00); lo que el C no lee sigue con su fecha («Sigue → …» / «Resto → …», al principio del «cómo»). Si pide menos, sin cambio.
+    const comp = !sab && Math.round(v.min) > b.min;
+    const asig = sab || comp ? Math.round(v.min) : b.min;
     const auditTxt = b.audit ? ' F0 = auditoría: si ya lo viste, márcalo ✓ y adelanta la siguiente pendiente.' : '';
+    const compTxt = comp ? ` Hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′: el bloque sigue sumando 30′ y no retrasa el bloque siguiente.` : '';
     const como = v.pausa
-      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′, cabe entero en los ${asig}′.${auditTxt}`
+      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′, cabe entero en los ${asig}′.${compTxt}${auditTxt}`
+      : comp
+        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}).${compTxt} Anota 1 idea en el journal.${auditTxt}`
       : sab && asig !== b.min
         ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 21:30 (antes del Anki; nada después de las 22:00). Anota 1 idea en el journal.${auditTxt}`
         : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${v.min > asig + 0.5 ? `, ${fmt1(v.min - asig)}′ más que la franja: dentro del margen del plan (±15 %), termínalo` : `, caben en los ${asig}′`}. Anota 1 idea en el journal.${auditTxt}`;
@@ -347,7 +365,9 @@ function crear(MED, ctx) {
       const t = tomarC(minC * PPM, f);
       if (!t.piezas.length) return;
       const que = 'Comodín de lectura · ' + t.piezas.map((p) => `${tituloDe(p.it.L, p.a)} → ${loc(p.it.L, p.a, p.b)} (≈${r10(p.w)} palabras)`).join(' + ');
-      const sabTxt = minC !== b.min ? ` Sábado: hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′); lo que no leas sigue en la cola de lectura.` : '';
+      // v6.09b lote 1-quater (QS · e): «lo que no leas sigue en la cola de lectura» no decía cuándo → remite a las fechas de «Lo que queda» (§QUEDA§ se
+      //   resuelve al final, cuando ya se conocen los destinos; si no queda nada, la frase se va)
+      const sabTxt = minC !== b.min ? ` Sábado: hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′)§QUEDA§.` : '';
       const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = fC(prevSes[p.it.id] || p.it.origen); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste el ${pv}).` : `Retoma donde quedaste el ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
       pendTxt.push({ fecha: f, tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM, ...minO } });
       return;
@@ -370,7 +390,9 @@ function crear(MED, ctx) {
       pre2027 = `Sigue → ${fC(sig.dia.fecha)} (≈${r10(v2.w)} palabras). `;
       post2027 = ` Ese día: ${loc(L, v2.a, v2.b)}.`;
     }
-    const t = lecturaTxt(id, v, '', prev, minC);
+    // v6.09b lote 1-quater (QS · hallazgo d): entre semana con el A medido de 16-17′, el C baja lo mismo (lo que no lee sigue con su fecha, arriba)
+    const compC = minC !== b.min ? ` Hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′): el bloque sigue sumando 30′; lo que no lees hoy va con la fecha de arriba.` : '';
+    const t = lecturaTxt(id, v, compC, prev, minC);
     const head = (/^Sección \d+: "[^"]+"/.exec(b.leccion) || [])[0] || ((/cap\. \d+: "[^"]+"/.exec(b.leccion) || [])[0]) || b.leccion.split(' — ')[0];
     const base = { leccion: `${head} → ${loc(L, v.a, v.b)} (≈${r10(v.w)} palabras de ${L.total})${recC(b)}`, guia: { ...t, t: 'C ↗' }, med: v.w / PPM, ...minO };
     if (sigMismo && enF1(sig.dia.fecha)) { base.guia.como = `Sigue → ${fC(sig.dia.fecha)}. ${base.guia.como}`; out(f, 'C', base); return; }
@@ -388,9 +410,10 @@ function crear(MED, ctx) {
     const sab = dowOf(dia.fecha) === 6;
     let minC = 5;
     for (const b of dia.bloques) {
-      if (b.tag === 'A') { const aMin = bloqueA(dia, b, sab); if (sab) minC = 30 - 10 - aMin; }
+      // v6.09b lote 1-quater (QS · d): el C compensa lo que el A medido se aparta de sus 15′ (sábado siempre; entre semana, solo si pide más: A 16-17′ → C 4-3′)
+      if (b.tag === 'A') { const aMin = bloqueA(dia, b, sab); if (aMin !== b.min) minC = 5 - (aMin - b.min); }
       else if (b.tag === 'B') bloqueB(idx, dia, b);
-      else if (b.tag === 'C') bloqueC(idx, dia, b, sab ? minC : b.min);
+      else if (b.tag === 'C') bloqueC(idx, dia, b, minC);
     }
   });
 
@@ -436,15 +459,31 @@ function crear(MED, ctx) {
     if (d8) {
       const delCanal = colaB.filter((x) => x.carril === 'vie');
       let resto = 600;
+      const tomadas = []; // v6.09b lote 1-quater (QS · a): lo que recibe el vie 8-ene, para escribir su paso B con piezas, minutos y velocidad
       for (const it of delCanal) {
         if (resto <= 30) break;
         const cabe = Math.floor((resto * it.vel) / 60) * 60, fin = Math.min(it.b, it.a + cabe);
         if (fin <= it.a) break;
+        tomadas.push({ it, a: it.a, b: fin, prev: retomaDe[it.id] || prevSes[it.id] || it.origen });
         addDest(it.k, d8.fecha, `${ts(it.a)}-${ts(fin)} a ${velTxt(it.vel)}×`);
         retomaDe[it.id] = d8.fecha; // la cola post-Step 1 retoma donde quedó el vie 8-ene
         resto -= (fin - it.a) / it.vel; it.a = fin;
       }
       for (let i = colaB.length - 1; i >= 0; i--) if (colaB[i].a >= colaB[i].b - 1) colaB.splice(i, 1);
+      // v6.09b lote 1-quater (QS · hallazgo a de R2): el paso B del vie 8-ene decía «1,0× · exactamente 10′ desde donde quedaste» (genérico) y F1 le manda
+      //   2 restos a 1,5× (vie 4-dic «Tips…» min 15:00-18:19 + vie 18-dic «Building…» min 30:00-41:00 = 14:19 de audio ≈ 9,5′): ahora dice exactamente esas
+      //   piezas, minutos y velocidad, de dónde retoma cada una y adónde va lo que queda (cola post-Step 1). Es el ÚNICO bloque de 2027 que escribe este
+      //   módulo (EXTRA_2027; declarado en cambios_2027: «hueco que recibe dos restos de F1»).
+      if (tomadas.length) {
+        const nom = (it) => `«${it.titulo.replace(/^.*· «|»$/g, '')}»`;
+        const seg = tomadas.reduce((s, p) => s + (p.b - p.a), 0), reloj = tomadas.reduce((s, p) => s + (p.b - p.a) / p.it.vel, 0) / 60;
+        const vels = [...new Set(tomadas.map((p) => p.it.vel))];
+        const velT = vels.length === 1 ? `a ${velTxt(vels[0])}×` : '';
+        const que = `Canal Anthropic · ${tomadas.map((p) => `${nom(p.it)} → min ${ts(p.a)}-${ts(p.b)}${p.b >= AUD[p.it.id].seg - 1 ? ' (final)' : ''}${vels.length > 1 ? ` a ${velTxt(p.it.vel)}×` : ''}`).join(' + ')}${velT ? `, ${velT}` : ''} (${tomadas.map((p) => ts(p.b - p.a)).join(' + ')} de audio = ${fmt1(reloj)}′)`;
+        const como = `Auriculares, ${vels.map((v) => `${velTxt(v)}×`).join(' / ')}: ${ts(seg)} de audio = ${fmt1(reloj)}′ de reloj, dentro de los 10′ del B. Retoma donde paraste ${tomadas.map((p) => `el ${fC(p.prev)} (${nom(p.it)})`).join(' y ')}. Nada nuevo: son los tramos pendientes del canal que no cupieron en su día de F1.`;
+        pendTxt.push({ fecha: d8.fecha, tag: 'B', extra: true, piezas: tomadas.map((p) => ({ k: p.it.k, fin: p.b })),
+          base: { leccion: `termina los tramos pendientes de las semanas previas: ${tomadas.map((p) => `${nom(p.it)} min ${ts(p.a)}-${ts(p.b)}`).join(' + ')}${velT ? ` ${velT}` : ''} (${fmt1(reloj)}′)`, guia: { que, como, url: tomadas[0].it.url + (/youtube/.test(tomadas[0].it.url) && tomadas[0].a ? `&t=${tomadas[0].a}s` : ''), t: 'B ↗' }, med: reloj } });
+      }
     }
   }
   // ── COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027, 04:15-04:45 (v6.09b lote 1-ter: con franja y pasos) ──
@@ -529,24 +568,30 @@ function crear(MED, ctx) {
       const pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10)}. `;
       o.guia.como = pre0 + pre + `${o.guia.como} Lo que queda: ${p.restoTxt}.`;
     } else if (pre0) o.guia.como = pre0 + o.guia.como;
+    let fins = [];
     if (p.piezas) {
-      const fins = p.piezas.map((x) => { const ds = (destinos.get(x.k) || []).filter((d) => d.fecha > p.fecha && d.det !== 'x'); return ds.length ? { k: x.k } : null; }).filter(Boolean);
+      fins = p.piezas.map((x) => { const ds = (destinos.get(x.k) || []).filter((d) => d.fecha > p.fecha && d.det !== 'x'); return ds.length ? { k: x.k } : null; }).filter(Boolean);
       if (fins.length) {
         const arma = (max) => `Lo que queda → ${fins.map((x) => `${p.piezas.length > 1 ? `${cortoDe(x.k)}: ` : ''}${destTxt(x.k, p.fecha, max)}`).join(' · ')}. `;
         let pre = arma(84); if (pre.length > CORTE_COMO) pre = arma(40); if (pre.length > CORTE_COMO) pre = arma(24);
         o.guia.como = pre + o.guia.como;
       }
     }
-    res.sesiones.set(`${p.fecha}|${p.tag}`, o);
+    // v6.09b lote 1-quater (QS · e): el C del sábado con menos minutos remite a las fechas de «Lo que queda» (antes: «sigue en la cola de lectura», sin fecha)
+    o.guia.como = o.guia.como.replace('§QUEDA§', fins.length ? ': lo que no lees hoy va con las fechas de «Lo que queda»' : '');
+    if (p.extra) extra2027.set(`${p.fecha}|${p.tag}`, o); // v6.09b lote 1-quater (QS · a): vie 8-ene-2027 (EXTRA_2027)
+    else res.sesiones.set(`${p.fecha}|${p.tag}`, o);
   }
-  // control (hallazgo 5): ninguna fecha FUTURA después del corte del Calendar en los pasos de F1
-  for (const [k, o] of res.sesiones) {
+  // control (hallazgo 5): ninguna fecha FUTURA después del corte del Calendar en los pasos de F1 (y del vie 8-ene, EXTRA_2027)
+  for (const k of extra2027.keys()) if (!EXTRA_2027.includes(k.split('|')[0])) throw new Error(`v6.09b lote 1-quater: ${k}: bloque de 2027 fuera de EXTRA_2027`);
+  for (const [k, o] of [...res.sesiones, ...extra2027]) {
+    if (o.guia && /§QUEDA§/.test(o.guia.como)) throw new Error(`v6.09b lote 1-quater: ${k}: §QUEDA§ sin resolver`);
     const f = k.split('|')[0];
     if (!o.guia) continue;
     for (const x of fechasEn(o.guia.que)) if (x.iso > f && x.fin > CORTE_QUE) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «qué» (> ${CORTE_QUE})`);
     for (const x of fechasEn(o.guia.como)) if (x.iso > f && x.fin > CORTE_COMO) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «cómo» (> ${CORTE_COMO}): ${o.guia.como.slice(0, 160)}`);
   }
-  return { sesiones: res.sesiones, cola: colaOut, colaF1 };
+  return { sesiones: res.sesiones, cola: colaOut, colaF1, extra2027 };
 }
 
-module.exports = { crear, DESDE, HASTA, COLA_DESDE, COLA_MIN, COLA_INI, F1_EXTRA, fechasEn };
+module.exports = { crear, DESDE, HASTA, COLA_DESDE, COLA_MIN, COLA_INI, F1_EXTRA, EXTRA_2027, fechasEn };

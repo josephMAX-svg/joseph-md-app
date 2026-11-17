@@ -789,13 +789,21 @@ if (!argv.includes('--sin-matriz')) {
             if (rat < 0.85 || rat > 1.15) malT.push(`${r.fecha} 18:00: corrección de ${n}Q en ${p.min}′ (${rat.toFixed(2)})`);
           }
           const c = /^(\d+)Q ciegas/.exec(p.que);
-          if (g.franja === '08:15–09:00' && c) { nP++; const rat = (Number(c[1]) * 3) / p.min; if (rat < 0.85 || rat > 1.15) malT.push(`${r.fecha} 08:15: ${c[1]}Q ciegas en ${p.min}′ (${rat.toFixed(2)})`); }
+          // v6.09b lote 1-quater FX1 (revisión V1): el Tutor = 90 s + 0,85′ = 2,35′/Q (la regla fija; antes ×3) en TODO paso «NQ … Tutor» / «NQ ciegas» de F1, sin «~3′»
+          const tq = (q, cm) => { if (/TIMED|Timed/.test(q) || !/tutor|ciegas/i.test(`${q} ${cm}`)) return null; let m = /bloques de \d+Q[^(]*\((\d+)Q\)/.exec(q); if (m) return Number(m[1]); m = /^(?:Bloque \d: |Bloque extra de )?(\d+)Q\b/.exec(q); return m ? Number(m[1]) : null; };
+          const nT = tq(p.que, p.como);
+          if (nT) {
+            nP++; const arm = /^Armar/.test(p.que) ? 3 : 0, rat = (nT * 2.35 + arm) / p.min;
+            if (rat < 0.85 || rat > 1.15) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: ${nT}Q Tutor en ${p.min}′ (${rat.toFixed(2)} a 2,35′/Q)`);
+          }
+          if (/[~≈]3′ por pregunta|3′\/Q/.test(`${p.que} ${p.como}`)) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: «~3′ por pregunta» (el Tutor es 2,35′/Q) · «${p.que.slice(0, 50)}»`);
+          if (/Lectura activa/.test(p.que) && !/acotado a \d+′/.test(p.que)) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: Lectura activa sin acotar («acotado a N′»: PassMedicine/Library piden sesión)`);
           if (g.franja === '07:15–08:15' && /^5Q TIMED del subtema/.test(p.que)) { nV++; if (p.min !== 11 || !/revisión/.test(p.como)) malT.push(`${r.fecha} 07:15: validación de 5Q TIMED en ${p.min}′${/revisión/.test(p.como) ? '' : ' sin revisión'} (esperado 11′ con revisión)`); }
         });
       }
     }
-    ok(malT.length === 0, 'guía USMLE (v6.09b · lote 1-bis) · F1: correcciones de las 18:00 a 0,85′/Q (± 15 %), pre-tests a ~3′ por pregunta ciega y validación de 5Q TIMED con su revisión (11′)',
-      malT.slice(0, 8).join(' · ') || `${nE} correcciones · ${nP} pasos de pre-test · ${nV} validaciones`);
+    ok(malT.length === 0, 'guía USMLE (v6.09b · lote 1-quater FX1) · F1: correcciones de las 18:00 a 0,85′/Q (± 15 %), todo paso en Tutor a 2,35′/Q (90 s + 0,85′; sin «~3′»), Lectura activa acotada y validación de 5Q TIMED con su revisión (11′)',
+      malT.slice(0, 8).join(' · ') || `${nE} correcciones · ${nP} pasos en Tutor · ${nV} validaciones`);
   }
   // v6.08 · DAY-AFTER de los hitos del tramo 2 en F3 (NBME 29 y los hitos de F1 desplazados): cada trozo 2/6-6/6 tiene su franja en la guía en
   //   la fila que le toca (n = 1: 07:15 2/6 + 18:00 3/6 · n = 2-4: 18:00 (n + 2)/6) o, si esa fila ya es F4 (plantilla por turno, sin 18:00),

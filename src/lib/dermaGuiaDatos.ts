@@ -619,8 +619,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 12,
-     "que": "uWorld Step 1 · System «Dermatology (Inflammatory dermatoses and bullous diseases)» · Unused · 4Q · Tutor (28 preguntas en el System)",
-     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 4 preguntas → Tutor → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ~3′/Q en inglés, sin prisa · cuentan doble para el Step 1 (no se repiten después).",
+     "que": "uWorld Step 1 · System «Dermatology (Inflammatory dermatoses and bullous diseases)» · Unused · 5Q · Tutor (28 preguntas en el System)",
+     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 5 preguntas → Tutor → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (5Q ≈ 11,8′), en inglés · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
       "t": "Qbankly › QBanks (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
@@ -628,7 +628,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 9,
-     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › 2.1. Lesiones primarias + 2.2. Lesiones secundarias (8.5′ medidos · 586 palabras · 11 figuras)",
+     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › 2.1. Lesiones primarias + 2.2. Lesiones secundarias (9,4′ medidos a 150 palabras/min · 586 palabras · 11 figuras)",
      "como": "Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
@@ -663,12 +663,12 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "Qbankly › QBanks (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
-     "cantidad": "4Q"
+     "cantidad": "5Q"
     },
     {
      "t": "ProMIR · Dermatología cap. 1",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
-     "min": 8.5
+     "min": 9.4
     },
     {
      "t": "DermNet · Terminology",
@@ -679,7 +679,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
     }
    ],
-   "hecho": "4Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.",
+   "hecho": "5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.",
    "planB": "Casos #192 (Surgical Dermatology. Case 22) y #43 (Medical Dermatology. Case 013), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
   }
@@ -801,8 +801,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 9,
-     "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 3Q · Tutor (18 preguntas en el System)",
-     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 3 preguntas → Tutor → BEGIN TEST · antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color · cuentan doble para el Step 1 (no se repiten después).",
+     "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 4Q · Tutor (18 preguntas en el System)",
+     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 4 preguntas → Tutor → BEGIN TEST · antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
       "t": "Qbankly › QBanks (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
@@ -810,7 +810,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 6,
-     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 › 2.3. Exploración dermatológica (6′ medidos · 359 palabras · 5 figuras · tabla 1-1 de signos)",
+     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 › 2.3. Exploración dermatológica (6,1′ medidos a 150 palabras/min · 359 palabras · 5 figuras · tabla 1-1 de signos)",
      "como": "Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
@@ -837,7 +837,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 3,
-     "que": "DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» (94 palabras + 2 figuras = 1,44′ medidos) + dibujo del patrón (≈1,5′)",
+     "que": "DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» + dibujo del patrón (2,94′ medidos: 94 palabras + 2 figuras = 1,44′ + dibujo ≈1,5′)",
      "como": "Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.",
      "enlace": {
       "t": "DermNet · Blaschko lines",
@@ -863,12 +863,12 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "Qbankly › QBanks (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
-     "cantidad": "3Q"
+     "cantidad": "4Q"
     },
     {
      "t": "ProMIR · Dermatología cap. 1",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
-     "min": 6
+     "min": 6.1
     },
     {
      "t": "B&B · 06 - Vascular Lesions",
@@ -888,7 +888,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "url": "https://dermnetnz.org/topics/dermoscopy"
     }
    ],
-   "hecho": "3Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.",
+   "hecho": "4Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.",
    "planB": "Casos #112 (Medical Dermatology. Case 082) y #166 (Pediatric Dermatology. Case 26), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
   }
@@ -1015,7 +1015,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 8,
-     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 › 1.1. Epidermis + 1.2. Dermis + 1.3. Hipodermis + 3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas (7.5′ medidos · 881 palabras · 2 figuras)",
+     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 › 1.1. Epidermis + 1.2. Dermis + 1.3. Hipodermis + 3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas (7,5′ medidos a 150 palabras/min · 881 palabras · 2 figuras)",
      "como": "Primero el apartado de cada pregunta que fallaste (2020-004 → §3 · 2011-225 → §1.2) · Whole Page Rule.",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
@@ -1033,8 +1033,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 3,
-     "que": "PassMedicine (Library de Qbankly) › «Epidermis» — artículo corto (sin medir)",
-     "como": "Léelo y escribe de memoria las 5 capas de la epidermis con 1 dato de cada una.",
+     "que": "PassMedicine (Library de Qbankly) › «Epidermis» — no medible sin iniciar sesión: acotado a 3′ (2′ de lectura + 1′ de recuerdo)",
+     "como": "Lee 2′: las capas de la epidermis en orden (basal → espinosa → granulosa → lúcida → córnea) y qué define a cada una; marca dónde paras · 1′: escribe de memoria las 5 capas con 1 dato de cada una. Lo que quede después de tu marca es ampliación: el átomo (las capas) ya lo cubren ProMIR §1.1 y el B&B «01 - Skin».",
      "enlace": {
       "t": "PassMedicine · Epidermis",
       "url": "https://qbankly.app/library?e=3&doc=493"
@@ -1198,8 +1198,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 5,
-     "que": "Diferencial de hipopigmentación · DermNet «Pityriasis alba» (clinical features, 155 palabras + 4 figuras) + PassMedicine «Vitiligo» (Library de Qbankly, sin medir)",
-     "como": "Tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).",
+     "que": "Diferencial de hipopigmentación (4,55′ medidos y acotados: DermNet «Pityriasis alba» › clinical features, 155 palabras + 4 figuras = 2,55′ medidos + PassMedicine «Vitiligo» (Library de Qbankly) acotado a 2′, no medible sin iniciar sesión)",
+     "como": "Primero DermNet (las 4 figuras + clinical features) · después lee 2′ de PassMedicine «Vitiligo»: definición → clínica → diagnóstico (lámpara de Wood); marca dónde paras · mientras lees, tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).",
      "enlace": {
       "t": "DermNet · Pityriasis alba",
       "url": "https://dermnetnz.org/topics/pityriasis-alba"
@@ -1374,27 +1374,27 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 5,
-     "que": "PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen",
-     "como": "Lee el resumen y apunta qué zonas llama «seguras» y en qué plano.",
+     "min": 2,
+     "que": "PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen (177 palabras = 1,77′ medidos)",
+     "como": "Lee el resumen y apunta qué zonas llama «seguras» y en qué plano (resumen medido el 17-nov-2026 a 100 palabras/min).",
      "enlace": {
       "t": "PubMed 36469395",
       "url": "https://pubmed.ncbi.nlm.nih.gov/36469395/"
      }
     },
     {
-     "min": 11,
-     "que": "PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2 (343 palabras) = 12,07′ medidos a 100 palabras/min",
-     "como": "Solo la Pregunta 3 y las figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica) · es la lectura del d20, aquí solo la anatomía.",
+     "min": 13,
+     "que": "PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (655 palabras) + su Tabla 2 «Regions of the Face and Their Relative Risk of Blindness» (72) + «Key Points» del inicio (61) + pies de las Figuras 1-3 (335) = 1.123 palabras + 3 figuras (11,98′ medidos a 100 palabras/min)",
+     "como": "La Pregunta 3 con su Tabla 2 y las 3 figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica, Figura 3); los «Key Points», el mecanismo en 4 líneas · es la lectura del d20, aquí solo la anatomía y el riesgo por región.",
      "enlace": {
       "t": "PMC7427155",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/"
      }
     },
     {
-     "min": 4,
+     "min": 5,
      "que": "MAPA DE MEMORIA",
-     "como": "Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto y corrige en rojo."
+     "como": "Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto, con la Figura 3 y con la Tabla 2 del consenso, y corrige en rojo."
     },
     {
      "min": 2,

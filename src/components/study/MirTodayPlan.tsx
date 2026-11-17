@@ -605,7 +605,10 @@ function MirGuiaPreguntasView({ d }: { d: number }) {
   return (
     <View style={{ marginBottom: Spacing.sm }}>
       {p.extra ? fila('15:23 · 5Q ciegas extra (D1: no hay anclas)', p.extra, BLUE) : null}
-      {p.eval ? p.eval.map((s) => <React.Fragment key={s.slot}>{fila(`15:15 · eval anclada ${s.slot} (D${s.d} ${s.tema})`, s.qs, BLUE)}</React.Fragment>) : null}
+      {/* v6.09b · lote 1-quater: en F1, la eval de 2-3Q se completa a 4Q comentadas con la cola del quiz del D-1 (slot «cola D-1»: su 7.ª-10.ª) */}
+      {p.eval ? p.eval.map((s) => <React.Fragment key={s.slot}>{fila(s.slot.startsWith('cola')
+        ? `15:15 · tras las ancladas: ${Math.max(0, 4 - p.eval!.filter((x) => !x.slot.startsWith('cola')).reduce((a, x) => a + x.qs.length, 0))}Q de la cola del quiz del D${s.d} (${s.tema}) — las primeras de esta lista (7.ª-10.ª) que no hiciste ayer`
+        : `15:15 · eval anclada ${s.slot} (D${s.d} ${s.tema})`, s.qs, BLUE)}</React.Fragment>) : null}
       {p.cierre ? fila('15:15 · test de cierre 10Q (pool de la app: manda su lista si difiere)', p.cierre, CORAL) : null}
       {fila('15:30 · pre-test 5Q (ciego · «pool» = pool oficial de la app)', p.pretest, GREEN)}
       {fila('15:53 · quiz: 6Q (máx. 8) de esta lista, en este orden; a las 16:05 paras y las que no entren siguen en la cola del capítulo', p.quiz, AMBER)}

@@ -44,6 +44,12 @@
 //   Claude (0′ el 4 y el 8-dic). El resto de cada página «no forma parte del átomo» (sin «no hoy»); lo del átomo que no cabe el 4-dic (2 secciones de
 //   psoriasis) va al jue 10-dic con sus minutos. El --check valida además las viñetas del proyecto Claude (k = round(min/5), k × 5 / min en 0,85-1,15),
 //   el «(N′ medidos» del paso, la fecha de destino dentro del corte del Calendar y que nada diga «no hoy». 2027 no cambia.
+// v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter · pendientes de U2): (1) modo Tutor de uWorld a la regla fija 90 s + 0,85′ = 2,35′/Q en
+//   F1 (curadas d1 5Q en 12′ y d2 4Q en 9′; por regla UW_TUTOR_F1 de dermaGuia.ts: 5Q en 12′ o 3Q en 7′ con lo que suelta al proyecto Claude) con el MISMO
+//   total de Unused por System en F1 → 2027 igual; (2) PassMedicine «Epidermis» (24-nov) y «Vitiligo» (26-nov), que piden sesión, van ACOTADOS al tiempo;
+//   (3) d5 (30-nov): el resumen de PubMed medido (177 palabras → 2′, antes 5′ = 0,35) y el consenso PMC re-medido (Pregunta 3 + Tabla 2 + Key Points +
+//   Figuras 1-3 = 11,98′ en 13′); (4) la lectura ProMIR de d1-d3 declara sus minutos a 150 palabras/min (min150 de E2). El --check exige en TODA sesión de F1
+//   la regla del Tutor y que ningún paso sin medida quede sin acotar, y que el consumo de uWorld de F1 por System no cambie (UW_F1_TOTAL).
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -145,6 +151,42 @@ for (const [fecha, s] of Object.entries(DN.sesiones)) {
 }
 for (const [fecha, m] of Object.entries(DERMNET_MEDIDO)) if (m.aOtroDia && !(DERMNET_MEDIDO[m.aOtroDia.fecha] && DERMNET_MEDIDO[m.aOtroDia.fecha].lecturas.some((l) => l.de === fecha))) aborta(`DermNet ${fecha}: su aOtroDia (${m.aOtroDia.fecha}) no lo recibe`);
 
+// v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter · pendientes de U2): reglas fijas que el --check exige en F1 (curadas y por regla)
+/** Modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q: cada paso «· nQ · Tutor» cuadra en 0,85-1,15 y su texto dice «2,35′/Q». */
+const TUTOR_MIN_Q = 2.35;
+function pasosTutorMal(pasos) {
+  const e = [];
+  for (const p of pasos) {
+    if (/~3′\/Q/.test(`${p.que} ${p.como}`)) e.push(`«${p.que.slice(0, 50)}…» sigue a ~3′/Q (la regla del Tutor es 2,35′/Q)`);
+    const m = /· (\d+)Q · Tutor/.exec(p.que); if (!m || /Status Incorrect/.test(p.que)) continue;
+    const r = (+m[1] * TUTOR_MIN_Q) / p.min;
+    if (!(r >= 0.85 && r <= 1.15)) e.push(`uWorld ${m[1]}Q Tutor en ${p.min}′ (${m[1]} × 2,35′ / ${p.min} = ${r.toFixed(2)}, fuera de 0,85-1,15)`);
+    if (!/2,35′\/Q/.test(p.como)) e.push(`uWorld ${m[1]}Q Tutor: el «cómo» no dice la regla (2,35′/Q)`);
+  }
+  return e;
+}
+/** Paso sin medida (pide sesión / «sin medir» / «no medible»): su alcance va ACOTADO al tiempo del paso («acotado a N′», N ≤ min) y dice dónde parar; si mezcla
+ *  una parte medida y una acotada («(T′ medidos y acotados: … = M′ … acotado a A′»), T = M + A y T/min en 0,85-1,15. */
+function pasosSinMedidaMal(pasos) {
+  const e = [];
+  for (const p of pasos) {
+    const t = `${p.que} ${p.como}`;
+    if (!/sin medir|no medible/.test(t)) continue;
+    const a = /acotad[oa] a (\d+)′/.exec(t);
+    if (!a || +a[1] > p.min) { e.push(`«${p.que.slice(0, 60)}…» sin medida y sin «acotado a N′» (N ≤ ${p.min}′)`); continue; }
+    if (!/marca dónde paras/.test(p.como)) e.push(`«${p.que.slice(0, 60)}…» acotado sin decir dónde parar («marca dónde paras»)`);
+    const mx = /\((\d+(?:,\d+)?)′ medidos y acotados: .*?= (\d+(?:,\d+)?)′ medidos .*?acotado a (\d+)′/.exec(p.que);
+    if (mx) {
+      const T = +mx[1].replace(',', '.'), M = +mx[2].replace(',', '.'), A = +mx[3];
+      if (Math.abs(T - M - A) > 0.011 || !(T / p.min >= 0.85 && T / p.min <= 1.15)) e.push(`«${p.que.slice(0, 60)}…» ${T}′ (= ${M} + ${A}) en ${p.min}′ (fuera de 0,85-1,15 o suma mal)`);
+    } else if (+a[1] !== p.min && !/\(\d+′ de lectura \+ \d+′ de recuerdo\)/.test(p.que)) e.push(`«${p.que.slice(0, 60)}…» acotado a ${a[1]}′ en un paso de ${p.min}′ sin decir qué hace con el resto`);
+  }
+  return e;
+}
+/** Total de Unused que F1 (≤ 3-ene-2027) consume por System con el reparto anterior (4Q por sesión de regla + d1 4Q + d2 3Q): el de ahora debe ser el mismo
+ *  para que 2027 reciba el mismo stock (Inflammatory 28 − 24 = 4 · Skin and soft tissue infections 18 − 15 = 3). */
+const UW_F1_TOTAL = { 1028: 24, 1031: 15 };
+
 const E2 = rd('DATA/MIR/guia_lectura_semana1-2.json');
 const E2D = (d) => E2.derma.find((x) => x.d === d) || aborta(`E2 sin derma d${d}`);
 
@@ -170,7 +212,7 @@ const C = {
   uw: (id) => UW.get(id) || aborta(`uWorld ${id}`),
   temaN: (t) => temaN.get(t),
   pictorialDe: (d) => CAT.PICTORIAL_ASIGNACION[d] || aborta(`d${d} sin tema Pictorial`),
-  pmd1Lectura: (d) => { const p = E2D(d).lectura10.planB; if (!p) aborta(`E2 d${d} sin plan B`); return { secciones: p.t.split('→ ')[1] || p.t, min: p.min, palabras: p.palabras, figs: p.figs }; },
+  pmd1Lectura: (d) => { const p = E2D(d).lectura10.planB; if (!p) aborta(`E2 d${d} sin plan B`); if (!(p.min150 > 0)) aborta(`E2 d${d}: el plan B no trae min150 (regenera gen_guia_lectura.js)`); return { secciones: p.t.split('→ ')[1] || p.t, min: p.min, min150: p.min150, palabras: p.palabras, figs: p.figs }; },
   pmd1Test: (d) => { const t = E2D(d).testProMIR; if (!t) aborta(`E2 d${d} sin test ProMIR`); return { nQ: t.nQ, ids: t.preguntas.map((x) => x.promir), citadas: t.citadasProMIR, como: t.como.replace(/ · registro en la app.*$/, '') }; },
   url: { pictorial: DD.qa(3626), casos: DD.cases(1546), pmd1: DD.pm(DD.PM_CAP.c1) },
 };
@@ -209,6 +251,9 @@ for (const [d, par] of Object.entries(CUR)) {
       if (!(nec / p.min >= 0.85 && nec / p.min <= 1.15)) aborta(`d${d} ${k}: «${p.que.slice(0, 60)}…» ${p.min}′ para ${nec.toFixed(2)}′ (fuera de 0,85-1,15)`);
     }
     if (g.pasos.some((p) => /120 palabras\/min/.test(`${p.que} ${p.como}`))) aborta(`d${d} ${k}: un paso sigue a ~120 palabras/min (la regla de inglés es 100)`);
+    // v6.09b · lote 1-quater (revisión R2): modo Tutor a la regla fija (2,35′/Q) y todo paso sin medida ACOTADO al tiempo (y dicho)
+    const e2 = [...pasosTutorMal(g.pasos), ...pasosSinMedidaMal(g.pasos)];
+    if (e2.length) aborta(`d${d} ${k}: ${e2.join(' · ')}`);
   }
   curada[d] = { d: Number(d), fecha: fila.fecha, casoIds: fila.casoIds, planA: par.planA, planB: par.planB };
 }
@@ -351,7 +396,18 @@ function validarTodo(tsDatos) {
     dnF1++;
   }
   for (const f of Object.keys(DERMNET_MEDIDO)) if (!usadasDN.has(f)) errores.push(`DermNet ${f}: medida sin sesión Derma de F1 con ese atlas (fecha o atlas desplazados)`);
-  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1 };
+  // v6.09b · lote 1-quater: en TODA sesión Derma de F1 (curadas y por regla, plan B de 45′) el Tutor va a 2,35′/Q, ningún paso sin medida queda sin acotar,
+  //   y el reparto de uWorld de F1 consume por System lo mismo que antes (2027 recibe el mismo stock)
+  let nTutorF1 = 0;
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03')) {
+    const g = DG.dermaGuiaPar(dia).planB; const tag = `d${dia.d} ${dia.fecha}`;
+    for (const e of [...pasosTutorMal(g.pasos), ...pasosSinMedidaMal(g.pasos)]) errores.push(`${tag}: ${e}`);
+    nTutorF1 += g.pasos.filter((p) => /· \d+Q · Tutor/.test(p.que)).length;
+  }
+  const f1Uw = {}; for (const [f, a] of DG.dermaUwAsignacion()) if (f <= '2027-01-03') f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
+  for (const [uw, n] of Object.entries(UW_F1_TOTAL)) if (f1Uw[uw] !== n) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 consume ${f1Uw[uw] || 0}Q y debe consumir ${n} (si no, cambia el stock de 2027)`);
+  for (const uw of Object.keys(f1Uw)) if (!(uw in UW_F1_TOTAL)) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 lo usa y no está en UW_F1_TOTAL`);
+  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1 };
   return { errores, n, resumen };
 }
 const v = validarTodo(out);
@@ -359,7 +415,7 @@ if (v.errores.length) { console.error(v.errores.slice(0, 40).join('\n')); aborta
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/dermaGuiaDatos.ts NO está al día → node DATA/DERMATOLOGIA/guia/gen_derma_guia.js'); process.exit(1); }
-  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos`);
+  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes)`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/dermaGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total}`);

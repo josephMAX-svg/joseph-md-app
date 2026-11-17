@@ -1388,6 +1388,8 @@ import { FECHAS_V6 } from './fechasV6';
 /** Guías PASO A PASO (clave = d). */
 const G: Record<number, GuiaBloque> = ${JSON.stringify(GR.porD)};
 ${TS_BUILDER}
+/** v6.09b lote 1-quater FX1 (revisión V2): día de la decisión del plan B de inglés de M2 (M2 + 4 semanas → siguiente día-Research): su eval anclada la lleva. */
+const PLANB_INGLES = '${byCode.M2.fechaPlanB}';
 const TODOS: DiaResearch[] = [...DIAS, ...DIAS_2027];
 /** Guía del átomo (paso a paso si existe; si no, la genérica de las 5 franjas · F4 = 30′ nominal). */
 export function guiaResearchDe(x: DiaResearch): GuiaBloque {

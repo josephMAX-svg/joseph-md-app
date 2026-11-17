@@ -1097,8 +1097,8 @@
      {
       "min": 7,
       "hora": "15:15–15:22",
-      "que": "EVAL ANCLADA 2Q · 2Q D-1 (D1 Estudios experimentales: Ensayo clínico)",
-      "como": "Cronómetro 3′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · hoy solo hay 2Q (no existen D-3/D-7 todavía): los 4′ que sobran, adelanta el Anki · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "que": "EVAL ANCLADA 2Q + 2Q de la cola del quiz del D1 · 4Q comentadas (4 × 107 s = 7,1′) · 2Q D-1 (D1 Estudios experimentales: Ensayo clínico) · cola del quiz del D1: la 7.ª-10.ª de su lista (2015-038 · 2015-029 · 2014-208 · 2014-196)",
+      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 2 ancladas (2 × 107 s ≈ 3,6′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después las 2 primeras de su lista que no hiciste ayer (2 × 107 s ≈ 3,6′; la 7.ª y la 8.ª si paraste en la 6.ª): hoy solo hay 2Q ancladas (no existen D-3/D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
       "min": 5,
@@ -1132,7 +1132,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
+      "como": "Las 2 primeras que no entren abren la eval de mañana (jue 19-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -1182,6 +1182,35 @@
         "promir": "2013-203",
         "url": "https://promir.medicapanamericana.com/pregunta/MIR/2013-203",
         "seccion": "3.2. Fase II"
+       }
+      ]
+     },
+     {
+      "slot": "cola D-1",
+      "dia": 1,
+      "tema": "Estudios experimentales: Ensayo clínico",
+      "posiciones": "la 7.ª-10.ª de su lista",
+      "n": 2,
+      "preguntas": [
+       {
+        "promir": "2015-038",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2015-038",
+        "seccion": "4. Tipos de ensayos clínicos"
+       },
+       {
+        "promir": "2015-029",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2015-029",
+        "seccion": "8.4. Ensayo de no inferioridad"
+       },
+       {
+        "promir": "2014-208",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2014-208",
+        "seccion": "4. Tipos de ensayos clínicos"
+       },
+       {
+        "promir": "2014-196",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2014-196",
+        "seccion": "6.1. Aleatorización"
        }
       ]
      }
@@ -1621,8 +1650,8 @@
      {
       "min": 7,
       "hora": "15:15–15:22",
-      "que": "EVAL ANCLADA 2Q · 2Q D-1 (D2 Clasificación de los estudios de investigación)",
-      "como": "Cronómetro 3′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · hoy solo hay 2Q (no existen D-3/D-7 todavía): los 4′ que sobran, adelanta el Anki · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "que": "EVAL ANCLADA 2Q + 2Q de la cola del quiz del D2 · 4Q comentadas (4 × 107 s = 7,1′) · 2Q D-1 (D2 Clasificación de los estudios de investigación) · cola del quiz del D2: la 7.ª-10.ª de su lista (2017-212 · 2017-211 · 2016-133 · 2016-132)",
+      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 2 ancladas (2 × 107 s ≈ 3,6′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después las 2 primeras de su lista que no hiciste ayer (2 × 107 s ≈ 3,6′; la 7.ª y la 8.ª si paraste en la 6.ª): hoy solo hay 2Q ancladas (no existen D-3/D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
       "min": 5,
@@ -1702,6 +1731,35 @@
         "promir": "2016-120",
         "url": "https://promir.medicapanamericana.com/pregunta/MIR/2016-120",
         "seccion": "2.2. Estudios de casos y controles"
+       }
+      ]
+     },
+     {
+      "slot": "cola D-1",
+      "dia": 2,
+      "tema": "Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)",
+      "posiciones": "la 7.ª-10.ª de su lista",
+      "n": 2,
+      "preguntas": [
+       {
+        "promir": "2017-212",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-212",
+        "seccion": "2.3. Estudios de cohortes"
+       },
+       {
+        "promir": "2017-211",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-211",
+        "seccion": "2.3. Estudios de cohortes"
+       },
+       {
+        "promir": "2016-133",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2016-133",
+        "seccion": "2.2. Estudios de casos y controles"
+       },
+       {
+        "promir": "2016-132",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2016-132",
+        "seccion": "2.4. Estudios de casos y controles anidados en una cohorte"
        }
       ]
      }
@@ -2768,7 +2826,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
+      "como": "La primera que no entre abre la eval de mañana (mar 24-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -3484,8 +3542,8 @@
      {
       "min": 7,
       "hora": "15:15–15:22",
-      "que": "EVAL ANCLADA 3Q · 2Q D-1 (D5 Cardiología básica) + 1Q D-3 (D3 Evaluación de pruebas diagnósticas)",
-      "como": "Cronómetro 4′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · hoy solo hay 3Q (no existen D-3/D-7 todavía): los 3′ que sobran, adelanta el Anki · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "que": "EVAL ANCLADA 3Q + 1Q de la cola del quiz del D5 · 4Q comentadas (4 × 107 s = 7,1′) · 2Q D-1 (D5 Cardiología básica) + 1Q D-3 (D3 Evaluación de pruebas diagnósticas) · cola del quiz del D5: la 7.ª-10.ª de su lista (2008-224 · 2006-140 · 2006-023 · 2005-248)",
+      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 3 ancladas (3 × 107 s ≈ 5,4′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después la primera de su lista que no hiciste ayer (1 × 107 s ≈ 1,8′; la 7.ª si paraste en la 6.ª): hoy solo hay 3Q ancladas (no existe D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
       "min": 5,
@@ -3519,7 +3577,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
+      "como": "La primera que no entre abre la eval de mañana (mié 25-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
      },
      {
       "min": 10,
@@ -3601,6 +3659,35 @@
         "promir": "2012-196",
         "url": "https://promir.medicapanamericana.com/pregunta/MIR/2012-196",
         "seccion": "3.2. Índices de validez diagnóstica"
+       }
+      ]
+     },
+     {
+      "slot": "cola D-1",
+      "dia": 5,
+      "tema": "Cardiología básica",
+      "posiciones": "la 7.ª-10.ª de su lista",
+      "n": 1,
+      "preguntas": [
+       {
+        "promir": "2008-224",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2008-224",
+        "seccion": "2.3. Shock"
+       },
+       {
+        "promir": "2006-140",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2006-140",
+        "seccion": "3.3. Auscultación cardíaca"
+       },
+       {
+        "promir": "2006-023",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2006-023",
+        "seccion": "3.3. Auscultación cardíaca"
+       },
+       {
+        "promir": "2005-248",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2005-248",
+        "seccion": "3.3. Auscultación cardíaca"
        }
       ]
      }
@@ -4039,8 +4126,8 @@
      {
       "min": 7,
       "hora": "15:15–15:22",
-      "que": "EVAL ANCLADA 3Q · 2Q D-1 (D6 Trastornos del ritmo) + 1Q D-3 (D4 Principios de bioética y relación médico-paciente)",
-      "como": "Cronómetro 4′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · hoy solo hay 3Q (no existen D-3/D-7 todavía): los 3′ que sobran, adelanta el Anki · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "que": "EVAL ANCLADA 3Q + 1Q de la cola del quiz del D6 · 4Q comentadas (4 × 107 s = 7,1′) · 2Q D-1 (D6 Trastornos del ritmo) + 1Q D-3 (D4 Principios de bioética y relación médico-paciente) · cola del quiz del D6: la 7.ª-10.ª de su lista (2025-117 · 2020-057 · 2020-022 · 2017-066)",
+      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 3 ancladas (3 × 107 s ≈ 5,4′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después la primera de su lista que no hiciste ayer (1 × 107 s ≈ 1,8′; la 7.ª si paraste en la 6.ª): hoy solo hay 3Q ancladas (no existe D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
       "min": 5,
@@ -4136,6 +4223,35 @@
         "promir": "2014-133",
         "url": "https://promir.medicapanamericana.com/pregunta/MIR/2014-133",
         "seccion": "2. Relación médico-paciente. Atención al paciente en situaciones especiales"
+       }
+      ]
+     },
+     {
+      "slot": "cola D-1",
+      "dia": 6,
+      "tema": "Trastornos del ritmo",
+      "posiciones": "la 7.ª-10.ª de su lista",
+      "n": 1,
+      "preguntas": [
+       {
+        "promir": "2025-117",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2025-117",
+        "seccion": "3.2. Taquicardias de complejo QRS estrecho"
+       },
+       {
+        "promir": "2020-057",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2020-057",
+        "seccion": "3.2. Taquicardias de complejo QRS estrecho"
+       },
+       {
+        "promir": "2020-022",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2020-022",
+        "seccion": "3.2. Taquicardias de complejo QRS estrecho"
+       },
+       {
+        "promir": "2017-066",
+        "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-066",
+        "seccion": "3.2. Taquicardias de complejo QRS estrecho"
        }
       ]
      }
@@ -50971,6 +51087,7 @@
      "t": "ProMIR Dermatología · cap. 1 «Introducción. Conceptos generales» → 2.1. Lesiones primarias + 2.2. Lesiones secundarias",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
      "min": 8.5,
+     "min150": 9.4,
      "palabras": 586,
      "figs": 11,
      "por": "lesiones primarias y secundarias = el tema del d1"
@@ -50994,6 +51111,7 @@
      "t": "ProMIR Dermatología · cap. 1 «Introducción. Conceptos generales» → 2.3. Exploración dermatológica",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
      "min": 6,
+     "min150": 6.1,
      "palabras": 359,
      "figs": 5,
      "por": "exploración dermatológica (descripción, color, distribución) = el tema del d2"
@@ -51017,6 +51135,7 @@
      "t": "ProMIR Dermatología · cap. 1 «Introducción. Conceptos generales» → 1.1. Epidermis + 1.2. Dermis + 1.3. Hipodermis + 3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
      "min": 7.5,
+     "min150": 7.5,
      "palabras": 881,
      "figs": 2,
      "por": "epidermis → dermis → hipodermis + nociones de anatomía patológica = el tema del d3"

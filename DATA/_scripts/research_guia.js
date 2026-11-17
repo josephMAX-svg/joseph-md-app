@@ -70,7 +70,7 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   return {
     franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${corto(x.objetivo, 110)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: 2Q de auto-test del método + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: prev ? 'De memoria; si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.' },
+      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: 2Q de auto-test del método + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'De memoria; si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
       { min: 5, que: 'Pre-test / free recall 60 s: ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
@@ -141,7 +141,8 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       ],
       hecho: 'Checklist «Infra académica» 7/10 (ORCID · Scholar · CTI Vitae · PROSPERO · Rayyan · Zotero · keys NCBI + OpenAlex) + ORCID iD y CTI Vitae copiados en MENTORES.md «## Identificadores»; las keys solo en el gestor.',
       planB: 'Si una validación no llega hoy (correo de CTI Vitae u ORCID): márcala «en trámite» y sigue con la siguiente; se cierra en los 5′ de la eval anclada de R1 (' + f('R1') + ').',
-      aviso: 'La checklist estima 10-15′ por cuenta: las 10 no caben en 45′. Hoy van 7; las 3 cuentas de portal son POR REVISTA y su URL está «A VERIFICAR»: Editorial Manager / ScholarOne se abren en C-5 (' + f('C-5') + ', formateo + cuenta activa en el portal del journal elegido) y eScholarship (Dermatology Online Journal) en CR-9 (' + f('CR-9') + ').',
+      // v6.09b lote 1-quater FX1 (revisión V2): las fechas de destino al principio del aviso (el Calendar lo corta a 240; CR-9 iba en la pos. 335)
+      aviso: 'Hoy 7 de las 10 cuentas (10-15′ c/u: las 10 no caben en 45′); las 3 de portal → Editorial Manager / ScholarOne en C-5 (' + f('C-5') + ') y eScholarship (Dermatology Online Journal) en CR-9 (' + f('CR-9') + '). Son POR REVISTA y su URL está «A VERIFICAR»: C-5 = formateo + cuenta activa en el portal del journal elegido.',
       // v6.06 (fix): con M1 justo antes, + ICMJE y CRediT para contrastar las 2Q de la eval express (los mismos recursos de M1)
       recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX'), ...(prev && prev.code === 'M1' ? [R('ICMJE'), R('CREDIT')] : [])],
     }),

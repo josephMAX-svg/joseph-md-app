@@ -20,6 +20,11 @@
  *   antes 120) y cada paso declara «(N′ medidos»: d1 (mié 18-nov) «Terminology» 6′ → 8′ (7,62′; el dictado inverso 13′ → 11′) · d2 (vie 20-nov)
  *   «Terminology» 6′ → 7′ (6,71′), Blaschko con su alcance medido (2 apartados + 2 figuras = 1,44′ + dibujo 1,5′; el resto «no forma parte del átomo») y
  *   cierre 3′ → 2′ · d4 (jue 26-nov) 9′ → 10′ (10,15′; viñetas 16′ → 15′ = 3 de ≈5′, antes «5») · d5 (lun 30-nov) PMC 9′ → 11′ (12,07′; mapa 6′ → 4′).
+ * v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter): uWorld del plan B a la regla fija del modo Tutor (90 s + 0,85′ = 2,35′/Q): d1 4Q → 5Q en
+ *   12′ · d2 3Q → 4Q en 9′ (el total de F1 por System no cambia: lo compensan las sesiones por regla, UW_TUTOR_F1 de dermaGuia.ts) · PassMedicine «Epidermis»
+ *   (d3) y «Vitiligo» (d4) ACOTADOS al tiempo (piden sesión: no se pueden medir) · d5: resumen de PubMed 177 palabras → 5′ = 0,35 → 2′; el consenso PMC
+ *   re-medido (la Pregunta 3 son 655 palabras: las «789» contaban dentro el pie de la Figura 3) + su Tabla 2 + «Key Points» + Figuras 1-3 = 11,98′ en 13′;
+ *   mapa de memoria 4′ → 5′ (compara también con la Figura 3 y la Tabla 2) · ProMIR de d1-d3 a 150 palabras/min (min150 de E2) · Blaschko con el total primero.
  */
 'use strict';
 
@@ -100,6 +105,10 @@ const PASSMED = (doc) => `https://qbankly.app/library?e=3&doc=${doc}`;
 const DN_NEC = (palabras, figuras = 0) => palabras / 100 + figuras * 0.25;
 const DN_MIN = (palabras, figuras = 0) => Math.max(1, Math.round(DN_NEC(palabras, figuras)));
 const DN_TXT = (x) => `${String(Math.round(x * 100) / 100).replace('.', ',')}′ medidos`;
+/** v6.09b · lote 1-quater (17-nov-2026): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (antes «~3′/Q»). */
+const TUTOR = (n) => `modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (${n}Q ≈ ${String(Math.round(n * 2.35 * 10) / 10).replace('.', ',')}′)`;
+/** Lectura de ProMIR a la regla fija en español (prosa a 150 palabras/min; tablas a 90 y 0,5′ por figura, como la medición E2). */
+const PMD_TXT = (p) => `${String(p.min150).replace('.', ',')}′ medidos a 150 palabras/min · ${p.palabras} palabras · ${p.figs} figuras`;
 
 /** Pasos comunes. */
 const anki = (C, d) => (d === 1
@@ -173,17 +182,18 @@ function curadas(C) {
       'Sin acceso a AccessDerma → PLAN B de esta sesión (toca «AccessDerma caducado»).'),
       planB: B(1, `DERMA d1 · ${x.sub.split(':')[0]} — PLAN B (AccessDerma caducado)`, [
         anki(C, 1),
-        uworld(C, 1028, 4, 12, 'en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ~3′/Q en inglés, sin prisa'),
-        { min: 9, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${pmd.min}′ medidos · ${pmd.palabras} palabras · ${pmd.figs} figuras)`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
+        // v6.09b · lote 1-quater: 4Q → 5Q en los mismos 12′ (regla del Tutor: 5 × 2,35′ = 11,75′); el total de F1 de este System no cambia (UW_TUTOR_F1)
+        uworld(C, 1028, 5, 12, `en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ${TUTOR(5)}, en inglés`),
+        { min: 9, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
         { min: DN_MIN(119 + 419 + 224), que: `DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = ${DN_TXT(DN_NEC(762))})`, como: 'Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
         proyecto(0, 'DICTADO INVERSO de morfología', 'Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ (las 6 en 11′) · cada fallo → tarjeta.'),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
-        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '4Q' },
-        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min },
+        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '5Q' },
+        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` },
         { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
-      ], '4Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.',
+      ], '5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.',
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -210,19 +220,21 @@ function curadas(C) {
       'Sin acceso a AccessDerma → PLAN B de esta sesión.'),
       planB: B(2, `DERMA d2 · Color, distribución y configuración — PLAN B (AccessDerma caducado)`, [
         anki(C, 2),
-        uworld(C, 1031, 3, 9, 'antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color'),
-        { min: 6, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${pmd.min}′ medidos · ${pmd.palabras} palabras · ${pmd.figs} figuras · tabla 1-1 de signos)`, como: 'Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
+        // v6.09b · lote 1-quater: 3Q → 4Q en los mismos 9′ (regla del Tutor: 4 × 2,35′ = 9,4′); el total de F1 de este System no cambia (UW_TUTOR_F1)
+        uworld(C, 1031, 4, 9, `antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color · ${TUTOR(4)}`),
+        { min: 6, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${PMD_TXT(pmd)} · tabla 1-1 de signos)`, como: 'Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
         { min: DN_MIN(381 + 97 + 193), que: `DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = ${DN_TXT(DN_NEC(671))})`, como: '~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés.', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
         bbVideo(C, 74, x.fecha, 'color y distribución de las lesiones vasculares (por título; contenido no verificado)'),
-        { min: 0, que: `DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» (94 palabras + 2 figuras = ${DN_TXT(DN_NEC(94, 2))}) + dibujo del patrón (≈1,5′)`, como: 'Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.', enlace: { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` } },
+        // v6.09b · lote 1-quater: el total (lectura + figuras + dibujo) va primero en el paréntesis «(N′ medidos: …)» para que cualquier medidor lo lea entero
+        { min: 0, que: `DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» + dibujo del patrón (${DN_TXT(DN_NEC(94, 2) + 1.5)}: 94 palabras + 2 figuras = ${String(DN_NEC(94, 2)).replace('.', ',')}′ + dibujo ≈1,5′)`, como: 'Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.', enlace: { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` } },
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa el título y los pies: describe la red antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
         cierre(2, `≤3 tarjetas en ${C.deck('A')}.`), // v6.09b · lote 1-ter: 3′ → 2′ (como todas las sesiones): el minuto lo pide el «Terminology» a 100 palabras/min
       ], [
-        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '3Q' },
-        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min },
+        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '4Q' },
+        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: `B&B · ${C.bb(74).nombre}`, url: VIDEOS, min: C.bbMin(74, x.fecha).min },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` }, { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` }, R_DSC,
-      ], '3Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.',
+      ], '4Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.',
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -256,12 +268,13 @@ function curadas(C) {
       planB: B(3, `DERMA d3 · Estructura de la piel + TEST ProMIR cap. 1 — PLAN B (AccessDerma caducado)`, [
         anki(C, 3),
         { ...test, que: `PRIMERO, ciego · ${test.que}` },
-        { min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${pmd.min}′ medidos · ${pmd.palabras} palabras · ${pmd.figs} figuras)`, como: 'Primero el apartado de cada pregunta que fallaste (2020-004 → §3 · 2011-225 → §1.2) · Whole Page Rule.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
+        { min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'Primero el apartado de cada pregunta que fallaste (2020-004 → §3 · 2011-225 → §1.2) · Whole Page Rule.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
         bbVideo(C, 69, x.fecha, 'capas de la piel (por título)'),
-        { min: 0, que: 'PassMedicine (Library de Qbankly) › «Epidermis» — artículo corto (sin medir)', como: 'Léelo y escribe de memoria las 5 capas de la epidermis con 1 dato de cada una.', enlace: { t: 'PassMedicine · Epidermis', url: PASSMED(493) } },
+        // v6.09b · lote 1-quater (revisión R2): PassMedicine pide iniciar sesión → no se puede medir: alcance ACOTADO al tiempo del paso (y el texto lo dice)
+        { min: 3, que: 'PassMedicine (Library de Qbankly) › «Epidermis» — no medible sin iniciar sesión: acotado a 3′ (2′ de lectura + 1′ de recuerdo)', como: 'Lee 2′: las capas de la epidermis en orden (basal → espinosa → granulosa → lúcida → córnea) y qué define a cada una; marca dónde paras · 1′: escribe de memoria las 5 capas con 1 dato de cada una. Lo que quede después de tu marca es ampliación: el átomo (las capas) ya lo cubren ProMIR §1.1 y el B&B «01 - Skin».', enlace: { t: 'PassMedicine · Epidermis', url: PASSMED(493) } },
         cierre(2, 'Dibuja la piel en capas (epidermis → UDE → dermis → hipodermis) de memoria.'),
       ], [
-        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min },
+        { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: `B&B · ${C.bb(69).nombre}`, url: VIDEOS, min: C.bbMin(69, x.fecha).min },
         { t: 'PassMedicine · Epidermis', url: PASSMED(493) },
         { t: 'DermNet · The structure of normal skin (consulta)', url: `${DERMNET}/topics/the-structure-of-normal-skin` },
@@ -293,7 +306,8 @@ function curadas(C) {
         anki(C, 4),
         bbVideo(C, 73, x.fecha),
         { min: DN_MIN(227, 6) + DN_MIN(438, 8), que: `DermNet (${DN_TXT(DN_NEC(227, 6) + DN_NEC(438, 8))} a 100 palabras/min + 0,25′ por figura) › «Skin phototype» (clasificación de Fitzpatrick, ≈230 palabras + 6 figuras) + «Postinflammatory hyperpigmentation» (≈440 palabras + 8 figuras)`, como: 'Tabla fototipo I-VI → quema/broncea → cómo se ve el eritema y la PIH en cada uno.', enlace: { t: 'DermNet · Skin phototype', url: `${DERMNET}/topics/skin-phototype` } },
-        { min: 5, que: 'Diferencial de hipopigmentación · DermNet «Pityriasis alba» (clinical features, 155 palabras + 4 figuras) + PassMedicine «Vitiligo» (Library de Qbankly, sin medir)', como: 'Tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).', enlace: { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` } },
+        // v6.09b · lote 1-quater (revisión R2): PassMedicine «Vitiligo» pide iniciar sesión → acotado a 2′ (el texto lo dice); DermNet medido
+        { min: 5, que: `Diferencial de hipopigmentación (${String(Math.round((DN_NEC(155, 4) + 2) * 100) / 100).replace('.', ',')}′ medidos y acotados: DermNet «Pityriasis alba» › clinical features, 155 palabras + 4 figuras = ${DN_TXT(DN_NEC(155, 4))} + PassMedicine «Vitiligo» (Library de Qbankly) acotado a 2′, no medible sin iniciar sesión)`, como: 'Primero DermNet (las 4 figuras + clinical features) · después lee 2′ de PassMedicine «Vitiligo»: definición → clínica → diagnóstico (lámpara de Wood); marca dónde paras · mientras lees, tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).', enlace: { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` } },
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Globules» (pública)', como: 'Describe antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Globules', url: `${DSC}/Globules` } },
         proyecto(0, 'viñetas en fototipo IV-VI', 'Pídele 3 viñetas (≈5′ cada una: los 15′ del paso; v6.09b · lote 1-ter, antes 5 en 16′) de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).'),
         cierre(2),
@@ -330,9 +344,13 @@ function curadas(C) {
       planB: B(5, `DERMA d5 · Anatomía facial + DANGER ZONES — PLAN B (AccessDerma caducado)`, [
         anki(C, 5),
         proyecto(20, 'tabla de arterias de riesgo', 'Pídele la tabla de arterias de riesgo (facial, angular, supratroclear, supraorbitaria, dorsal nasal, rama frontal de la temporal superficial): trayecto, plano/profundidad y qué produce su oclusión, con libro y página; después 8 preguntas de verificación que respondes sin mirar.'),
-        { min: 5, que: 'PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen', como: 'Lee el resumen y apunta qué zonas llama «seguras» y en qué plano.', enlace: { t: 'PubMed 36469395', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' } },
-        { min: DN_MIN(789, 1) + DN_MIN(343, 2) - 1, que: `PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2 (343 palabras) = ${DN_TXT(DN_NEC(789, 1) + DN_NEC(343, 2))} a 100 palabras/min`, como: 'Solo la Pregunta 3 y las figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica) · es la lectura del d20, aquí solo la anatomía.', enlace: { t: 'PMC7427155', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
-        { min: 0, que: 'MAPA DE MEMORIA', como: 'Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto y corrige en rojo.' },
+        // v6.09b · lote 1-quater (revisión de F1): el resumen de PubMed tiene 177 palabras (1,77′; medido el 17-nov-2026) → 5′ = 0,35 → 2′. El consenso, re-medido
+        //   (PMC HTML + Europe PMC XML, 17-nov-2026): el texto de la Pregunta 3 son 655 palabras (las «789» contaban dentro el pie de la Figura 3) y los pies de
+        //   las Figuras 1-3 suman 335; la Pregunta 3 remite a su Tabla 2 (riesgo por región, 72 palabras) → con los «Key Points» del inicio (61) = 1.123 palabras
+        //   + 3 figuras = 11,98′ en 13′ (0,92). El mapa de memoria (relleno) se compara además con la Figura 3 y la Tabla 2.
+        { min: 2, que: `PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen (177 palabras = ${DN_TXT(DN_NEC(177))})`, como: 'Lee el resumen y apunta qué zonas llama «seguras» y en qué plano (resumen medido el 17-nov-2026 a 100 palabras/min).', enlace: { t: 'PubMed 36469395', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' } },
+        { min: 13, que: `PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (655 palabras) + su Tabla 2 «Regions of the Face and Their Relative Risk of Blindness» (72) + «Key Points» del inicio (61) + pies de las Figuras 1-3 (335) = 1.123 palabras + 3 figuras (${DN_TXT(DN_NEC(1123, 3))} a 100 palabras/min)`, como: 'La Pregunta 3 con su Tabla 2 y las 3 figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica, Figura 3); los «Key Points», el mecanismo en 4 líneas · es la lectura del d20, aquí solo la anatomía y el riesgo por región.', enlace: { t: 'PMC7427155', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
+        { min: 0, que: 'MAPA DE MEMORIA', como: 'Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto, con la Figura 3 y con la Tabla 2 del consenso, y corrige en rojo.' },
         cierre(2),
       ], [
         { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
