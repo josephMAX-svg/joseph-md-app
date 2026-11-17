@@ -123,10 +123,13 @@
  *  (encaps-rec 15:00-16:30; encapsManana.encapsRecuperaDe(iso).llegada) y el Anki del domingo opcional (anki-dom 16:45-17:00: la cola USMLE ya tiene
  *  vencidas desde el día siguiente al D2 del Step 1). El dom 29-nov ya no lleva el bloque fijo: su ENCAPS opcional (simulacro con RANKING), de ejemplo
  *  07:15-11:15, empieza por el PPT de SP 2/11 (clase del lun 23, posterior al dom 22), que NO es opcional (EncapsDomingo.pptAviso en la nota del día).
+ * v6.09b (mar 17-nov · auditoría tiempo ↔ material): (1) dom 22 de llegada = revisión S01 14:30 + recuperación ENCAPS 15:00-16:30 + SYNAPSE de recuperación
+ *  16:30-17:00, sin Anki (plantillaDelDiaCorrida); (2) el Anki 05:00 de F1 reparte por tamaño de mazo: lun · mié · vie USMLE 20′ + ENCAPS 25′, mar · jue
+ *  USMLE 30′ + ENCAPS 15′ (ankiNombreF1; jue 31-dic como lun · mié · vie).
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
-import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2, diaPorD } from './usmleStep1Daily'; // v6.09 (17-nov): diaPorD → «vencidas desde» del Anki del domingo de llegada
+import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2 } from './usmleStep1Daily'; // v6.09b: sin diaPorD (el domingo de llegada ya no lleva Anki)
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
 import { infoTurno, ordenSemanaDe, filaT2DelDia, filasEmpujadas, dowCorto } from './serumsTurnos';
 import type { HitoAsignado } from './serumsTurnos';
@@ -139,7 +142,7 @@ import { LIV_META, livDiaDe } from './livianoStudyPlan';
 import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
-import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
+import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
@@ -255,8 +258,14 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
   if (biz) bs.push(biz);
   return bs;
 }
-/** v6.09 (16-nov-2026): la 1.ª mañana ENCAPS (mié 18-nov) cae antes del D2 del Step 1: aún no hay tarjetas USMLE (nacen el jue 19) ni ENCAPS (nacen hoy a las 11:40) → el bloque no promete repasos (la guía ya dice «libre»). */
-function ankiNombreF1(iso: string): string { return iso === '2026-11-18' ? 'ANKI · mazos aún vacíos (USMLE nace el jue 19 · ENCAPS hoy 11:40): comprobar + libre' : 'ANKI · USMLE 30′ + repasos ENCAPS 15′'; }
+/** v6.09 (16-nov-2026): la 1.ª mañana ENCAPS (mié 18-nov) cae antes del D2 del Step 1: aún no hay tarjetas USMLE (nacen el jue 19) ni ENCAPS (nacen hoy a las 11:40) → el bloque no promete repasos (la guía ya dice «libre»).
+ *  v6.09b (17-nov · auditoría a1-11, contrato con el lote USMLE): el reparto sigue el tamaño de los mazos → lun · mié · vie (mañana ENCAPS): USMLE 05:00-05:20 +
+ *  ENCAPS 05:20-05:45 (Cifras 10′ + Flashcards 10′ + APEX::ENCAPS 5′) · mar · jue (Step): USMLE 05:00-05:30 + ENCAPS 05:30-05:45 (encapsManana.guiaEncapsAnkiDe). */
+function ankiNombreF1(iso: string): string {
+  if (iso === '2026-11-17') return 'ANKI · CONFIGURACIÓN (mazos + preset FSRS) 45′'; // v6.09b: el D1 su guía es la configuración de 45′
+  if (iso === '2026-11-18') return 'ANKI · mazos aún vacíos: comprobar + triaje UWSA1 15′ (USMLE nace el jue 19 · ENCAPS hoy 11:40)';
+  return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
+}
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
 function mirNombreF1(iso: string): string { return mirSesionDe(iso)?.dia.d === 1 ? 'MIR · Arranque (D1) + Deep Work (1 h)' : 'MIR · Eval D-1 + Deep Work (1 h)'; }
 /** v6.09 (16-nov-2026): DÍA HÁBIL DE LA TRANSICIÓN con mañana ENCAPS (encapsManana.diaExtra; v6.09: jue 31-dic, que deja de ser SKIP y recupera el
@@ -267,7 +276,8 @@ function mirNombreF1(iso: string): string { return mirSesionDe(iso)?.dia.d === 1
 function bloquesHabilTransicion(iso: string, am: NonNullable<ReturnType<typeof encapsMananaDe>>): BloqueV6[] {
   const bs: BloqueV6[] = [
     bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
-    bloque('anki', '05:00', '05:45', 'ANKI · USMLE en PAUSA (solo vencidas, opcional) + repasos ENCAPS 15′', 'usmle', 'usmle-anki', 'Step 1 en PAUSA desde hoy (transición): 0 tarjetas nuevas; los 15′ de ENCAPS::Cifras, sí'),
+    // v6.09b (a1-11): como un lun · mié · vie de F1: USMLE 05:00-05:20 (en pausa: solo vencidas, opcional) + ENCAPS 05:20-05:45 (25′)
+    bloque('anki', '05:00', '05:45', 'ANKI · USMLE en PAUSA (solo vencidas, opcional, 20′) + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)', 'usmle', 'usmle-anki', 'Step 1 en PAUSA desde hoy (transición): 0 tarjetas nuevas; los 25′ de ENCAPS (05:20-05:45), sí'),
     bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA ${am.n}/${am.de} (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', am.diaExtra),
     (() => { const [si, sf] = synFranjaDe(iso).franja.split('–'); return bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30' (A pantalla · B audio · C lectura)", 'synapse', 'synapse'); })(),
     bloqueRD(iso, '13:30', 45),
@@ -754,7 +764,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')}${pptD ? ', su primer paso NO opcional' : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
     const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
@@ -934,19 +944,28 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     return { ...base, plantilla: 'CORRIDO', titulo: 'Sábado libre · hoy no hay plan', usmle: null, bloques: [], corrida: 'sin_sesion', notas: ['Sábado libre: ni plan ni revisión; lo de los sábados va los domingos.', NOTA_CORRIDA] };
   }
   // v6.09 (mar 17-nov · Joseph: «el 22 a partir de las 2 de la tarde se puede hacer»): DOMINGO DE LLEGADA (encapsManana.encapsRecuperaDe(iso).llegada;
-  //   dom 22-nov). Sigue SIN SESIÓN en corrida_s1 —SYNAPSE, vibe, Business… no tienen nada ese día—, pero la mañana es libre (viaje) y desde la llegada
-  //   (14:00) hay dos bloques, los de plantillaBase de ese domingo: la RECUPERACIÓN FIJA del viaje (encaps-rec 15:00-16:30; hasta ahora dom 29 07:15-08:45)
-  //   y el Anki del domingo opcional (anki-dom 16:45-17:00: la cola USMLE ya tiene vencidas desde el día siguiente al D2 del Step 1). Nada desde las 17:00.
+  //   dom 22-nov). Sigue SIN SESIÓN en corrida_s1 —vibe, Business… no tienen nada ese día—, pero la mañana es libre (viaje) y desde la llegada (14:00) se estudia.
+  // v6.09b (17-nov · auditoría tiempo ↔ material, a1-12/a2-12/a2-14): 14:30-15:00 REVISIÓN SEMANAL S01 (la del sáb 21, sola: rutinaGuia.guiaRevisionDe) ·
+  //   15:00-16:30 la RECUPERACIÓN FIJA del viaje (encaps-rec, de plantillaBase) · 16:30-17:00 el SYNAPSE que recupera el lun 16 y el sáb 21 (rutinaGuia.
+  //   guiaSynapseDe; antes en el PC del dom 29). Sin el Anki opcional de las 16:45 (no cabe: el lunes 23 a las 05:00 empieza por los vencidos). Nada desde las 17:00.
   const recL = c.tipo === 'sin_sesion' && dow(iso) === 0 ? encapsRecuperaDe(iso) : null;
   if (recL?.llegada) {
-    const bsL = base.bloques.filter((b) => b.id === 'encaps-rec' || b.id === 'anki-dom');
-    const d2 = diaPorD(2)?.fecha;
-    const venc = d2 && d2 < iso ? `la cola USMLE ya tiene vencidas desde el ${fCorta(addDias(d2, 1))}` : 'si hay vencidas';
-    const anki = bsL.find((b) => b.id === 'anki-dom');
-    const notaL = `Domingo de llegada: la mañana es libre (viaje). Desde las ${recL.llegada}, de vuelta: ${recL.ini}-${recL.fin}, FIJO, la recuperación del viaje (${recL.tema.charAt(0).toLowerCase()}${recL.tema.slice(1)})${anki ? ` y ${anki.ini}-${anki.fin} el Anki del domingo, ≤15′ y opcional (${venc}; no se registra)` : ''}. Nada de estudio desde las 17:00. Lo demás (SYNAPSE, vibecoding, Business…) no tiene sesión hoy.`;
+    const rec = base.bloques.find((b) => b.id === 'encaps-rec');
+    const gRev = guiaRevisionDe(iso), gSyn = guiaSynapseDe(iso);
+    const fr2 = (g: { franja: string } | null): [string, string] | null => { const m = g ? RANGO.exec(g.franja) : null; return m ? [m[1] as string, m[2] as string] : null; };
+    const hRev = fr2(gRev), hSyn = fr2(gSyn);
+    const bsL = ordenar([
+      ...(hRev ? [bloque('revision', hRev[0], hRev[1], `REVISIÓN SEMANAL S${revisionFicheroDe(revisionSabadoDe(iso)).slice(1, 3)} (la del ${fCorta(revisionSabadoDe(iso))}, sin sesión: viaje)`, 'revision', 'revision')] : []),
+      ...(rec ? [rec] : []),
+      ...(hSyn ? [bloque('syn', hSyn[0], hSyn[1], "SYNAPSE · 30' de recuperación (A/B/C del lun 16 + sáb 21)", 'synapse', 'synapse')] : []),
+    ]);
+    const que = [hRev ? `${hRev[0]}-${hRev[1]} la revisión semanal S${revisionFicheroDe(revisionSabadoDe(iso)).slice(1, 3)} (la del sábado, sola)` : '',
+      `${recL.ini}-${recL.fin}, FIJO, la recuperación del viaje (${recL.tema.charAt(0).toLowerCase()}${recL.tema.slice(1)})`,
+      hSyn ? `${hSyn[0]}-${hSyn[1]} el SYNAPSE que recupera el lun 16 y el sáb 21 (A/B/C)` : ''].filter(Boolean);
+    const notaL = `Domingo de llegada: la mañana es libre (viaje). Desde las ${recL.llegada}, de vuelta: ${que.join(' · ')}. Nada de estudio desde las 17:00 (sin Anki hoy: el lunes a las 05:00 empieza por los vencidos). Lo demás (vibecoding, Business…) no tiene sesión hoy.`;
     return {
       ...base, plantilla: 'DOMINGO', corrida: 'sin_sesion', usmle: null, bloques: bsL,
-      titulo: `Domingo de llegada · mañana libre (viaje) · desde las ${recL.llegada}: ENCAPS ${recL.ini} recuperación del viaje (fija)${anki ? ` + Anki ${anki.ini} (opcional)` : ''}`,
+      titulo: `Domingo de llegada · mañana libre (viaje) · desde las ${recL.llegada}: ${hRev ? `revisión ${hRev[0]} + ` : ''}ENCAPS ${recL.ini} recuperación del viaje (fija)${hSyn ? ` + SYNAPSE ${hSyn[0]}` : ''}`,
       notas: [notaL, NOTA_CORRIDA],
     };
   }

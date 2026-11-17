@@ -92,7 +92,7 @@ const usmleTs = readTs('usmleStep1Daily.ts');
 // fijo (v5.20: S20 = 15-19 feb, examen lun 22-feb), que en v6 etiquetaba como 'examen' todo lo posterior a la sem 20 (pausa ENCAPS y tramo 2).
 const V6 = require('./gen_fechas_v6');
 const F6 = V6.cargarFechasV6();
-const D1 = F6.f1.inicio; // v6.09: mar 17-nov-2026 → la semana del D1 sigue siendo la del lun 16-nov: S1 = lun 16 → vie 20-nov y su fichero S01_2026-11-21 (los NOMBRES no cambian), pero el sáb 21-nov es SIN SESIÓN (viaje, corrida_s1) → la S01 se hace JUNTO con la S02 el sáb 28-nov (`… 2026-11-21 --forzar` + `… 2026-11-28`; la S02 lo avisa en su cabecera) · v6.08: lun 16-nov-2026 → S1 = lun 16 → vie 20-nov, 1.ª revisión con plan = S01_2026-11-21 (sáb 21-nov); el sáb 14-nov está en corrida_s1.sin_sesion · v6.07: lun 9-nov · v6.06: lun 2-nov-2026 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
+const D1 = F6.f1.inicio; // v6.09: mar 17-nov-2026 → la semana del D1 sigue siendo la del lun 16-nov: S1 = lun 16 → vie 20-nov y su fichero S01_2026-11-21 (los NOMBRES no cambian), pero el sáb 21-nov es SIN SESIÓN (viaje, corrida_s1) → v6.09b: la S01 se hace el DOM 22-NOV a las 14:30, sola (domingo de llegada; con --forzar), y la S02 del sáb 28-nov va sola (su cabecera lo recuerda); hasta el 17-nov la S01 iba junto con la S02 el sáb 28 · v6.08: lun 16-nov-2026 → S1 = lun 16 → vie 20-nov, 1.ª revisión con plan = S01_2026-11-21 (sáb 21-nov); el sáb 14-nov está en corrida_s1.sin_sesion · v6.07: lun 9-nov · v6.06: lun 2-nov-2026 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
 const D1ts = (usmleTs.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1];
 // v6.08: el Step de F1 va solo los días step1.f1_dias_semana (v6.07+: mar · jue) → su inicio = 1.er día ≥ f1.inicio con día de Step (v6.08: mar 17-nov;
 //   antes se comparaba con f1.inicio y avisaba «regenerar el plan USMLE» en falso desde la v6.07). Misma regla que la aserción de remap_inicio.js.
@@ -141,9 +141,25 @@ const REV_CORRIDA = Object.values(_C1.reparto).some((x) => x.partes.some((p) => 
 //   siguiente (S02 del sáb 28-nov). Se genera con --forzar ese sábado siguiente; la S02 lo avisa en su cabecera (JUNTO_PREV, abajo).
 const SAB_PRIMERO = addDays(LUNES_D1, 5);
 const _sigConRev = (s) => { let x = addDays(s, 7); for (let i = 0; i < 8 && SIN_SESION.has(x); i++) x = addDays(x, 7); return x; };
+// v6.09b (mar 17-nov · auditoría a2-12/a2-14): DOMINGO DE LLEGADA (DATA/ENCAPS/_encaps_manana_v607.json › domingos[].llegada; dom 22-nov) tras un sábado sin
+//   sesión dentro del plan → la revisión de ese sábado va ESE domingo, sola, 30′ antes de la recuperación ENCAPS (14:30-15:00; = rutinaGuia.revisionDomingoDe),
+//   y la del sábado siguiente (S02 del sáb 28) va sola. Antes: la S01 junto con la S02 el sáb 28, en los mismos 30′.
+const _DOM_LLEGADA = (() => {
+  try {
+    const EJ = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/ENCAPS/_encaps_manana_v607.json'), 'utf8'));
+    return new Map((EJ.domingos || []).filter((x) => x.llegada && x.recupera && Array.isArray(x.recupera.franja)).map((x) => {
+      const [h, m] = x.recupera.franja[0].split(':').map(Number), t = h * 60 + m - 30;
+      return [x.fecha, `${pad(Math.floor(t / 60))}:${pad(t % 60)}`];
+    }));
+  } catch { return new Map(); }
+})();
+/** v6.09b: { domingo, hora } si la revisión del sábado sin sesión `sab` va su domingo de llegada · null si no. */
+const revDomingo = (sab) => { const dom = addDays(sab, 1); return SIN_SESION.has(sab) && sab > D1 && _DOM_LLEGADA.has(dom) ? { domingo: dom, hora: _DOM_LLEGADA.get(dom) } : null; };
 if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar') && SABADO >= SAB_PRIMERO && SABADO > D1) {
-  const sig = _sigConRev(SABADO);
-  console.log(`${fmt(SABADO)}: sin revisión semanal ese día — día sin sesión ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion). La S${NN} (S${NN}_${SABADO}.md, semana ${fmt(LUNES)} → ${fmt(VIERNES)}) va JUNTO con la del ${fmt(sig)}: ese día, \`node DATA/_scripts/gen_revision_semanal.js ${SABADO} --forzar\` y \`node DATA/_scripts/gen_revision_semanal.js ${sig}\`. Nada escrito.`);
+  const sig = _sigConRev(SABADO), rd = revDomingo(SABADO);
+  console.log(rd
+    ? `${fmt(SABADO)}: sin revisión semanal ese día — día sin sesión ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion). La S${NN} (S${NN}_${SABADO}.md, semana ${fmt(LUNES)} → ${fmt(VIERNES)}) va SOLA el ${fmt(rd.domingo)} a las ${rd.hora} (domingo de llegada, antes de la recuperación ENCAPS): ese día, \`node DATA/_scripts/gen_revision_semanal.js ${SABADO} --forzar\`. Nada escrito.`
+    : `${fmt(SABADO)}: sin revisión semanal ese día — día sin sesión ${(F6.corrida_s1 && F6.corrida_s1.version) || ''} (corrida_s1.sin_sesion). La S${NN} (S${NN}_${SABADO}.md, semana ${fmt(LUNES)} → ${fmt(VIERNES)}) va JUNTO con la del ${fmt(sig)}: ese día, \`node DATA/_scripts/gen_revision_semanal.js ${SABADO} --forzar\` y \`node DATA/_scripts/gen_revision_semanal.js ${sig}\`. Nada escrito.`);
   process.exit(0);
 }
 if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar')) {
@@ -538,7 +554,11 @@ function usmleScores() {
   L.push(`# Revisión semanal ${LABEL} · ${fmt(SABADO)} · semana ${fmtY(LUNES)} → ${fmtY(VIERNES)} · hito: ${m2.hitoSemana || '—'} · DELOAD: ${DELOAD ? 'SÍ (secundarios 50%)' : 'no'}`);
   // v6.09: la revisión del sábado ANTERIOR no se hizo (día sin sesión: sáb 21-nov, viaje) → va junto con esta (mismo bloque de 30′)
   const SAB_PREV = addDays(SABADO, -7);
-  if (SIN_SESION.has(SAB_PREV) && SAB_PREV >= SAB_PRIMERO && SAB_PREV > D1) {
+  if (SIN_SESION.has(SAB_PREV) && SAB_PREV >= SAB_PRIMERO && SAB_PREV > D1 && revDomingo(SAB_PREV)) {
+    // v6.09b: la del sábado anterior se hizo su domingo de llegada (dom 22-nov 14:30) → esta va sola
+    const nnPrev = String(Math.max(0, N - 1)).padStart(2, '0'), rd = revDomingo(SAB_PREV);
+    L.push(`La S${nnPrev} (S${nnPrev}_${SAB_PREV}.md, semana ${fmtY(addDays(LUNES, -7))} → ${fmtY(addDays(VIERNES, -7))}) se hizo el ${fmt(rd.domingo)} a las ${rd.hora} (domingo de llegada; el ${fmt(SAB_PREV)} fue día sin sesión). Si no llegaste a hacerla: \`node DATA/_scripts/gen_revision_semanal.js ${SAB_PREV} --forzar\` y deja sus métricas «sin dato»; las 4 decisiones, solo aquí.`);
+  } else if (SIN_SESION.has(SAB_PREV) && SAB_PREV >= SAB_PRIMERO && SAB_PREV > D1) {
     const nnPrev = String(Math.max(0, N - 1)).padStart(2, '0');
     L.push(`⚠ Va JUNTO con la S${nnPrev} (S${nnPrev}_${SAB_PREV}.md, semana ${fmtY(addDays(LUNES, -7))} → ${fmtY(addDays(VIERNES, -7))}): el ${fmt(SAB_PREV)} fue día sin sesión (corrida_s1). Genérala con \`node DATA/_scripts/gen_revision_semanal.js ${SAB_PREV} --forzar\`, rellena primero sus métricas y escribe las 4 decisiones solo aquí (para la semana que entra).`);
   }

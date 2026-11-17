@@ -9,7 +9,7 @@
    "ritmo": "180 palabras/min el texto (lectura de estudio en español, comprensiva) · 90 palabras/min las tablas · 0.5′ por figura · clips ≤12 min por su duración. A 150 palabras/min multiplica los minutos por 1,2.",
    "pesoSeccion": "Preguntas MIR que el propio capítulo cita en cada sección (chips «MIR AAAA-AAAA, Pnnn» = /pregunta/MIR/AAAA-nnn), ponderadas por recencia: ≥2020 ×3 · 2015-2019 ×2 · <2015 ×1; +5 si una pregunta del pre-test cae en esa sección.",
    "lectura15": "Franja 15:38–15:53: 1′ de recuadro «Orientación MIR» + secciones por peso hasta llenar 14′ (enteras; si la de más peso no cabe, se lee PARCIAL: solo los párrafos con chip MIR ≥2015). Las secciones de las preguntas FALLADAS en el pre-test van primero; las de las acertadas se saltan y entra la reserva. Lo que no entra queda para la 2.ª vuelta (fase principal, oct-2027).",
-   "preguntas": "Pre-test = pool oficial de la app (mirPreguntasOficiales, MIR 2022-2026, ids = año del EXAMEN); si hay menos de 5, se completa con citadas ProMIR ≥2015. Quiz 8-10Q, evals ancladas de los días siguientes = preguntas citadas en las secciones LEÍDAS (más recientes primero), sin repetir ninguna. Equivalencia de ids: pool 2024-050 = ProMIR /pregunta/MIR/2023-050 («MIR 2023-2024, P050»), verificada el 18-oct en 3 preguntas. Cierres de asignatura = pool de la app sin usar.",
+   "preguntas": "Pre-test = pool oficial de la app (mirPreguntasOficiales, MIR 2022-2026, ids = año del EXAMEN); si hay menos de 5, se completa con citadas ProMIR ≥2015. Quiz = lista de 8-10Q (se hacen 6, máx. 8, a 77 s + 30 s de comentario; v6.09 lote 1), evals ancladas de los días siguientes = preguntas citadas en las secciones LEÍDAS (más recientes primero), sin repetir ninguna. Equivalencia de ids: pool 2024-050 = ProMIR /pregunta/MIR/2023-050 («MIR 2023-2024, P050»), verificada el 18-oct en 3 preguntas. Cierres de asignatura = pool de la app sin usar.",
    "videos": "Los vídeos de cada capítulo se midieron (duración real del <video>). Regla MIR_FRANJAS: solo entran en la franja los clips ≤12 min (auscultación, ecografía…); Masterclass/Videoclase/Imperdible y el vídeo resumen de la asignatura (resumenVid de mirDailyPlan) quedan como opcionales fuera de la franja.",
    "anclas": "mirDailyPlan.mirAnclas(d) (sin log): D-1 2Q + D-3 1Q + D-7 1Q; D2 solo tiene D-1 (2Q), D3 tiene D-1 + D-3=—; los días de cierre (D4 Epidemiología, D5 Bioética) no hay eval. La app puede cambiar un slot por un tema 🔥 caliente (mirAnclasDinamicas): manda la app.",
    "capitulosPequenos": "v6.03 (76 capítulos): (1) pool de la app de los 76 capítulos reservado antes de repartir; (2) cierre = pool sin usar + citadas no usadas del bloque cerrado si no llega a 10 (≥2015 primero); (3) pre-test: si faltan citadas ≥2015 libres, las anteriores del mismo capítulo; (4) el quiz cede hasta 4 citadas a las anclas sin bajar de 8 y, si aun así no llega a 8, se completa con citadas de capítulos ya leídos (misma asignatura primero, «repaso»); (5) lectura con ≥3′ libres → secciones sin citas del capítulo que caben enteras («contexto»); (6) ancla sin pregunta libre → el paso dice «repite la que FALLASTE ese día».",
@@ -560,8 +560,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 97 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 97 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -617,7 +617,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b1"
      }
     ],
-    "hecho": "Mazo creado + 5Q ciegas extra + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Mazo creado + 5Q ciegas extra + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 25 de Epidemiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -1131,8 +1131,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -1163,7 +1163,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc80d"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 25 de Epidemiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -1653,8 +1653,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -1681,7 +1681,7 @@
       "cantidad": "3Q (2022-044 · 2023-045 · 2024-046)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 25 de Epidemiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -2061,8 +2061,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 22 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 22 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -2094,7 +2094,7 @@
       "min": 50
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 23 de Medicina Legal y Bioética) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -2761,8 +2761,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -2794,7 +2794,7 @@
       "min": 148
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -3510,8 +3510,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
      },
      {
       "min": 10,
@@ -3562,7 +3562,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc78d"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 12Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -4063,8 +4063,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (49)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (49)."
      },
      {
       "min": 10,
@@ -4095,7 +4095,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc731"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 6Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -4760,8 +4760,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 4 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 9Q → 5 en el pre-test y 4 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (83)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 4 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 9Q → 5 en el pre-test y 4 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (83)."
      },
      {
       "min": 10,
@@ -4792,7 +4792,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/64588d5ef704295c924d9289"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 9Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -5793,8 +5793,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (39)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (39)."
      },
      {
       "min": 10,
@@ -5841,7 +5841,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc65a"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 10Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -6557,8 +6557,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -6585,7 +6585,7 @@
       "cantidad": "5Q (2022-127 · 2023-210 · 2024-175 · 2026-110 · 2026-140)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -7414,8 +7414,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (27)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (27)."
      },
      {
       "min": 10,
@@ -7442,7 +7442,7 @@
       "cantidad": "7Q (2022-008 · 2022-023 · 2022-201 · 2023-005 · 2024-114 · 2026-122 · 2026-124)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 83 de Cardiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -7946,8 +7946,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (35)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (35)."
      },
      {
       "min": 10,
@@ -7978,7 +7978,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc825"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 50 de Neumología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -8587,8 +8587,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -8623,7 +8623,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc861"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 50 de Neumología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -9089,8 +9089,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 43 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 43 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -9117,7 +9117,7 @@
       "cantidad": "5Q (2022-001 · 2022-131 · 2022-136 · 2022-206 · 2026-080)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 50 de Neumología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -9821,8 +9821,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
      },
      {
       "min": 10,
@@ -9853,7 +9853,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc883"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 50 de Neumología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -10411,8 +10411,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 41 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 41 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -10439,7 +10439,7 @@
       "cantidad": "5Q (2022-135 · 2024-124 · 2025-016 · 2025-114 · 2026-163)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 50 de Neumología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -11091,8 +11091,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (40)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (40)."
      },
      {
       "min": 10,
@@ -11123,7 +11123,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc608"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 12Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -11781,8 +11781,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 14 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 14 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -11809,7 +11809,7 @@
       "cantidad": "3Q (2025-130 · 2026-137 · 2026-195)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -12281,8 +12281,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 22 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 22 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -12313,7 +12313,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc789"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -12917,8 +12917,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 23 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 23 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -12945,7 +12945,7 @@
       "cantidad": "3Q (2022-153 · 2023-136 · 2023-202)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -13402,8 +13402,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (18)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (18)."
      },
      {
       "min": 10,
@@ -13434,7 +13434,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc72d"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 6Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -14007,8 +14007,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer + 7 de repaso de capítulos ya leídos (D21 · D20 · D19 · D17)",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 7 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer + 7 de repaso de capítulos ya leídos (D21 · D20 · D19 · D17)",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 7 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -14035,7 +14035,7 @@
       "cantidad": "1Q (2023-026)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 1Q del capítulo + 38 de Nefrología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -15056,8 +15056,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (123)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (123)."
      },
      {
       "min": 10,
@@ -15101,7 +15101,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc723"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 10Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -15788,8 +15788,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (98)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (98)."
      },
      {
       "min": 10,
@@ -15820,7 +15820,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc64c"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 14Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -16540,8 +16540,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 80 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 80 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -16568,7 +16568,7 @@
       "cantidad": "4Q (2022-147 · 2024-131 · 2025-120 · 2026-151)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -17291,8 +17291,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 59 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 59 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -17319,7 +17319,7 @@
       "cantidad": "4Q (2022-017 · 2022-051 · 2024-138 · 2026-147)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -17893,8 +17893,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 10 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 17Q → 5 en el pre-test y 10 abren el quiz (en la app)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 10 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 17Q → 5 en el pre-test y 10 abren el quiz (en la app)."
      },
      {
       "min": 10,
@@ -17921,7 +17921,7 @@
       "cantidad": "17Q (2022-140 · 2022-141 · 2023-021 · 2023-132 · 2023-134 · 2024-009 · 2024-018 · 2024-134 · 2024-136 · 2024-137 · 2024-140 · 2025-117 · 2025-118 · 2025-125 · 2026-004 · 2026-023 · 2026-098)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 17Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -18470,8 +18470,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 4 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 9Q → 5 en el pre-test y 4 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (56)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 4 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 9Q → 5 en el pre-test y 4 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (56)."
      },
      {
       "min": 10,
@@ -18498,7 +18498,7 @@
       "cantidad": "9Q (2022-003 · 2023-022 · 2023-130 · 2024-135 · 2025-124 · 2026-095 · 2026-097 · 2026-144 · 2026-152)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 9Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -19009,8 +19009,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (41)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (41)."
      },
      {
       "min": 10,
@@ -19037,7 +19037,7 @@
       "cantidad": "10Q (2022-138 · 2022-209 · 2023-024 · 2023-067 · 2024-042 · 2025-121 · 2025-127 · 2026-100 · 2026-148 · 2026-149)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 10Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -19523,8 +19523,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (28)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (28)."
      },
      {
       "min": 10,
@@ -19551,7 +19551,7 @@
       "cantidad": "8Q (2022-139 · 2023-008 · 2023-133 · 2024-014 · 2024-132 · 2025-116 · 2025-126 · 2026-005)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 8Q del capítulo + 76 de Gastroenterología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -20268,8 +20268,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 10 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 17Q → 5 en el pre-test y 10 abren el quiz (en la app)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 10 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 17Q → 5 en el pre-test y 10 abren el quiz (en la app)."
      },
      {
       "min": 10,
@@ -20305,7 +20305,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc737"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 17Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -21254,8 +21254,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (41)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (41)."
      },
      {
       "min": 10,
@@ -21294,7 +21294,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc65e"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 12Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -22233,8 +22233,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -22265,7 +22265,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7ef"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -23247,8 +23247,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 38 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 38 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -23279,7 +23279,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6ba"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -23856,8 +23856,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 16 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 16 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -23884,7 +23884,7 @@
       "cantidad": "5Q (2023-159 · 2023-161 · 2023-190 · 2026-093 · 2026-186)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -24503,8 +24503,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (20)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (20)."
      },
      {
       "min": 10,
@@ -24531,7 +24531,7 @@
       "cantidad": "8Q (2022-191 · 2022-196 · 2023-006 · 2023-179 · 2024-176 · 2024-207 · 2025-167 · 2025-170)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 8Q del capítulo + 57 de Endocrinología y Nutrición) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -25233,8 +25233,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (36)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (36)."
      },
      {
       "min": 10,
@@ -25265,7 +25265,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc871"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -26107,8 +26107,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 6 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 11Q → 5 en el pre-test y 6 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (52)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 6 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 11Q → 5 en el pre-test y 6 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (52)."
      },
      {
       "min": 10,
@@ -26135,7 +26135,7 @@
       "cantidad": "11Q (2022-015 · 2022-106 · 2022-108 · 2022-198 · 2023-020 · 2023-145 · 2024-020 · 2024-094 · 2025-007 · 2026-078 · 2026-079)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 11Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -26741,8 +26741,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (34)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 3 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 8Q → 5 en el pre-test y 3 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (34)."
      },
      {
       "min": 10,
@@ -26773,7 +26773,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc8a9"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 8Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -27282,8 +27282,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (29)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (29)."
      },
      {
       "min": 10,
@@ -27314,7 +27314,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc873"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -27880,8 +27880,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 27 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 27 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -27908,7 +27908,7 @@
       "cantidad": "5Q (2022-102 · 2023-099 · 2023-104 · 2024-091 · 2026-167)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -28503,8 +28503,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 26 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 26 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -28531,7 +28531,7 @@
       "cantidad": "4Q (2022-092 · 2022-101 · 2025-077 · 2026-165)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -29100,8 +29100,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (17)."
+      "que": "6Q comentadas (máx. 8) de la lista de 9 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (17)."
      },
      {
       "min": 10,
@@ -29132,7 +29132,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc8ab"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 61 de Neurología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -29709,8 +29709,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (48)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (48)."
      },
      {
       "min": 10,
@@ -29737,7 +29737,7 @@
       "cantidad": "14Q (2022-026 · 2022-159 · 2022-160 · 2022-183 · 2023-121 · 2023-147 · 2023-148 · 2023-150 · 2024-145 · 2025-128 · 2025-145 · 2025-146 · 2026-138 · 2026-176)"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 14Q del capítulo + 34 de Hematología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -30270,8 +30270,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -30298,7 +30298,7 @@
       "cantidad": "4Q (2022-161 · 2023-191 · 2024-149 · 2025-147)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 34 de Hematología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -30804,8 +30804,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 17 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 17 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -30840,7 +30840,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b3"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 34 de Hematología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -31282,8 +31282,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer + 1 de repaso de capítulos ya leídos (D45)",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (12)."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer + 1 de repaso de capítulos ya leídos (D45)",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (12)."
      },
      {
       "min": 10,
@@ -31322,7 +31322,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc759"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 6Q del capítulo + 34 de Hematología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -31944,8 +31944,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 19 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 19 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -31972,7 +31972,7 @@
       "cantidad": "2Q (2024-016 · 2026-024)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 34 de Hematología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -32716,8 +32716,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -32749,7 +32749,7 @@
       "min": 73
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -33488,8 +33488,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 44 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -33516,7 +33516,7 @@
       "cantidad": "5Q (2022-019 · 2023-165 · 2024-172 · 2025-172 · 2025-192)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -34341,8 +34341,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 33 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 33 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -34373,7 +34373,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc765"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -35125,8 +35125,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 34 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 34 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -35157,7 +35157,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6e8"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -35800,8 +35800,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 23 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 23 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -35828,7 +35828,7 @@
       "cantidad": "2Q (2022-056 · 2023-164)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -36523,8 +36523,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 30 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -36551,7 +36551,7 @@
       "cantidad": "3Q (2023-167 · 2024-093 · 2025-043)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -37096,8 +37096,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 16 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 16 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -37124,7 +37124,7 @@
       "cantidad": "2Q (2025-168 · 2026-040)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -37682,8 +37682,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (16)."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (16)."
      },
      {
       "min": 10,
@@ -37714,7 +37714,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc763"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 6Q del capítulo + 66 de Enfermedades Infecciosas) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -38387,8 +38387,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 66 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 66 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -38428,7 +38428,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc73f"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 1Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -38937,8 +38937,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 28 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 28 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -38973,7 +38973,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc66a"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -39668,8 +39668,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (19)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (19)."
      },
      {
       "min": 10,
@@ -39696,7 +39696,7 @@
       "cantidad": "7Q (2022-069 · 2022-074 · 2023-072 · 2025-061 · 2025-155 · 2026-055 · 2026-193)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -40395,8 +40395,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer + 2 de repaso de capítulos ya leídos (D59 · D58)",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 12 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer + 2 de repaso de capítulos ya leídos (D59 · D58)",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 12 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -40423,7 +40423,7 @@
       "cantidad": "1Q (2025-044)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 1Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -40911,8 +40911,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer + 2 de repaso de capítulos ya leídos (D58)",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 11 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer + 2 de repaso de capítulos ya leídos (D58)",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 11 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -40943,7 +40943,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6c6"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -41454,8 +41454,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 14 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 8 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 2Q (todas en el pre-test) → el quiz sale de las 14 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -41482,7 +41482,7 @@
       "cantidad": "2Q (2024-197 · 2025-062)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 2Q del capítulo + 50 de Ginecología y Obstetricia) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -42017,8 +42017,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (42)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 5 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 10Q → 5 en el pre-test y 5 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (42)."
      },
      {
       "min": 10,
@@ -42050,7 +42050,7 @@
       "min": 114
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 10Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -42596,8 +42596,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (29)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 1 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 6Q → 5 en el pre-test y 1 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (29)."
      },
      {
       "min": 10,
@@ -42624,7 +42624,7 @@
       "cantidad": "6Q (2023-115 · 2023-205 · 2024-109 · 2025-094 · 2026-179 · 2026-183)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 6Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -43091,8 +43091,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 6 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 11Q → 5 en el pre-test y 6 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (30)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 6 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 11Q → 5 en el pre-test y 6 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (30)."
      },
      {
       "min": 10,
@@ -43119,7 +43119,7 @@
       "cantidad": "11Q (2022-182 · 2023-172 · 2023-175 · 2023-176 · 2023-177 · 2024-025 · 2024-108 · 2024-173 · 2025-022 · 2025-175 · 2025-205)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 11Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -43677,8 +43677,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 25 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 1Q (todas en el pre-test) → el quiz sale de las 25 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -43705,7 +43705,7 @@
       "cantidad": "1Q (2024-110)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 1Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -44236,8 +44236,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 19 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 19 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -44264,7 +44264,7 @@
       "cantidad": "3Q (2023-116 · 2025-095 · 2026-181)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -44776,8 +44776,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 20 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 20 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -44804,7 +44804,7 @@
       "cantidad": "3Q (2023-171 · 2025-165 · 2026-182)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 42 de Reumatología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -45413,8 +45413,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 45 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -45446,7 +45446,7 @@
       "min": 120
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 40 de Pediatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -46678,8 +46678,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (32)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (32)."
      },
      {
       "min": 10,
@@ -46710,7 +46710,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc815"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 40 de Pediatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -47273,8 +47273,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 27 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 27 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -47301,7 +47301,7 @@
       "cantidad": "3Q (2022-083 · 2024-078 · 2026-043)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 40 de Pediatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -47931,8 +47931,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 8 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 13Q → 5 en el pre-test y 8 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (21)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 8 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 13Q → 5 en el pre-test y 8 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (21)."
      },
      {
       "min": 10,
@@ -47963,7 +47963,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b9"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 13Q del capítulo + 40 de Pediatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -48426,8 +48426,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 36 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 3Q (todas en el pre-test) → el quiz sale de las 36 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -48454,7 +48454,7 @@
       "cantidad": "3Q (2023-077 · 2023-084 · 2026-044)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 3Q del capítulo + 40 de Pediatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -49027,8 +49027,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (53)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 9 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 14Q → 5 en el pre-test y 9 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (53)."
      },
      {
       "min": 10,
@@ -49064,7 +49064,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc889"
      }
     ],
-    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Cierre 10Q registrado + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 14Q del capítulo + 40 de Psiquiatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -49862,8 +49862,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 36 preguntas MIR citadas en el capítulo."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 36 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -49890,7 +49890,7 @@
       "cantidad": "4Q (2022-095 · 2023-091 · 2024-089 · 2025-072)"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 4Q del capítulo + 40 de Psiquiatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {
@@ -50544,8 +50544,8 @@
      {
       "min": 12,
       "hora": "15:53–16:05",
-      "que": "8Q comentadas (máx. 10) · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (27)."
+      "que": "6Q comentadas (máx. 8) de la lista de 10 · 2 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 7Q → 5 en el pre-test y 2 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (27)."
      },
      {
       "min": 10,
@@ -50576,7 +50576,7 @@
       "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc777"
      }
     ],
-    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥8Q del quiz registradas + ≤4 APEX creados.",
+    "hecho": "Eval registrada + Anki a cero + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
     "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 7Q del capítulo + 40 de Psiquiatría) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
    },
    "preguntas": {

@@ -10,7 +10,8 @@
  *    estructura de 7 pasos, marcada «sin medir»: anclas fijas de
  *    mirDailyPlan.mirAnclas (D-1 2Q · D-3 1Q · D-7 1Q; la app puede cambiar un slot por un tema 🔥 caliente: manda la app) o TEST DE
  *    CIERRE el 1.er día de bloque · pre-test 5Q (pool oficial de la app → completar con preguntas MIR citadas ≥2015 del capítulo) ·
- *    lectura dirigida 15′ (Orientación MIR 1′ + secciones gap por chips MIR) · quiz 8-10Q (resto del pool + citadas) · ≤4 APEX.
+ *    lectura dirigida 15′ (Orientación MIR 1′ + secciones gap por chips MIR) · quiz: 6Q comentadas (máx. 8; v6.09 · lote 1, antes 8-10) de una lista de 8-10 (resto del pool +
+ *    citadas; las que no entran siguen en la cola del capítulo) · ≤4 APEX.
  *    D77 mini-MIR 40Q · D78 corrección + tabla de neto (no leen capítulo: guía propia).
  *  · Banqueo (mirMantenimiento: mantenimiento + extensión + repuestas tras el Step 1 —v6.08 = v6.07 final: 0 (la extensión llega al vie 3-dic-2027, examen lun 6-dic) · v6.07 (borrador): 14, mar 26-oct → vie 12-nov-2027 · v6.06: 9, mar 26-oct → vie 5-nov · v6.05: 4, mar 26 → vie 29-oct · v6.04: 1 · v6.03: 11 · v6.02c: 9—) = POR REGLA desde las sub-franjas
  *    del día (Anki → 25Q/30Q cronometradas → corrección −1/3), desplazadas al inicio de la franja del turno en el SERUMS; v6.03: la corrección
@@ -236,8 +237,8 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     },
     {
       min: 12,
-      que: `8Q comentadas (máx. 10) · ${quizPool > 0 ? `${quizPool} del pool oficial que no entraron en el pre-test + ` : ''}preguntas MIR citadas en las secciones que acabas de leer`,
-      como: `Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${MIR_SEG_POR_Q} s/Q + lee el comentario · registra en la app (kind quiz): <60 % = tema caliente mañana · a las 16:05 paras donde estés. Pool oficial de la app para este capítulo: ${pool}Q.`,
+      que: `6Q comentadas (máx. 8) · ${quizPool > 0 ? `${quizPool} del pool oficial que no entraron en el pre-test + ` : ''}preguntas MIR citadas en las secciones que acabas de leer`,
+      como: `Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario (≈${MIR_SEG_POR_Q + 30} s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · a las 16:05 paras donde estés: las que no entren siguen en la cola del capítulo para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: ${pool}Q.`,
     },
     { min: 10, que: `≤4 APEX en ${deck}`, como: `Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE (${dia.usmleSystem}) · 1 de cada 4 con imagen · creados directamente en Anki.` },
   );
@@ -252,7 +253,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     totalMin: 60,
     pasos: conHoras(pasos, ini),
     recursos,
-    hecho: `${cierre ? 'Test de cierre 10Q registrado' : 'Eval anclada registrada'} + pre-test 5Q registrado + lectura de las secciones gap + ≥8Q del quiz registradas + ≤4 APEX creados.`,
+    hecho: `${cierre ? 'Test de cierre 10Q registrado' : 'Eval anclada registrada'} + pre-test 5Q registrado + lectura de las secciones gap + ≥6Q del quiz registradas + ≤4 APEX creados.`,
     planB: 'Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR) y lectura en la nota madre de Obsidian (◆ Obsidian). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′).',
     aviso: `Capítulo sin medir (la medición cubre los 76 capítulos del plan v6.03; este día no está en ella): las secciones de la lectura se eligen por regla. Para fijarlas: DATA/MIR/guia_lectura/analiza_cap.js (DevTools) → medicion_promir_*/ → gen_guia_lectura.js → gen_mir_guia.js.`,
   };

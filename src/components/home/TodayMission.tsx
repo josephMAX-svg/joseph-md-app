@@ -41,7 +41,7 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 // v6.02c (E5 · resto del día): guías «qué · cuánto · cómo» de vibecoding · SYNAPSE · Business · AURUM · LIVIANO · revisión · SHIP · Feynman
-import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe } from '../../lib/rutinaGuia';
+import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
 import { aurumObsUrl } from '../../lib/aurumDailyPlan';
 import { bizDiaDe } from '../../lib/businessStudyPlan';
 /** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
@@ -50,7 +50,7 @@ const researchAtomoDe = (iso: string) => [...RESEARCH_DIAS, ...RESEARCH_DIAS_202
 const primerEnlace = (g: GuiaBloque | null | undefined, re: RegExp = /^https?:/): string | null =>
   !g ? null : (g.pasos.find((p) => p.enlace && re.test(p.enlace.url))?.enlace?.url ?? g.recursos.find((r) => re.test(r.url))?.url ?? null);
 const ANKIWEB = 'https://ankiweb.net/decks';
-const vsRevision = (iso: string) => `vscode://file/D:/joseph-md-app/DATA/USMLE/REVISIONES/${revisionFicheroDe(iso)}`;
+const vsRevision = (iso: string) => `vscode://file/D:/joseph-md-app/DATA/USMLE/REVISIONES/${revisionFicheroDe(revisionSabadoDe(iso))}`; // v6.09b: el domingo de llegada (dom 22-nov) abre la del sábado sin sesión de la víspera
 /**
  * v6.02c F2 (E6) · CABECERA de un bloque con guía = «la guía manda»: la franja real (unión de las franjas de la guía) y sus títulos, en vez
  * del texto genérico de la plantilla, que la contradecía (lun 19-oct: 05:00 decía «pasada FSRS… stress set» el día que se CONFIGURA el mazo
@@ -148,7 +148,7 @@ const nombreBase = (n: string): string => {
  * v6.07 (dom 8-nov-2026 · D1 = lun 9-nov · PLAN_PRIMER_PUESTO_2027-I): bloques ENCAPS nuevos de plantillasV6 con su guía (src/lib/encapsManana.ts,
  *  GENERADO por gen_encaps_manana.js): encaps-am (lun · mié · vie 07:15-12:00, las 7 franjas del protocolo) · encaps-pm (18:00 «cifras, normas y
  *  flashcards») · theomed-prep + theomed-vivo (sáb 14:45 / 15:00-17:00) · encaps-dom (domingo, opcional 4 h, FLEXIBLE) + los 15′ de repasos ENCAPS
- *  dentro del Anki 05:00 (05:30-05:45, si la guía USMLE no ocupa ya esa franja) · botones solo al campus de Theomed. Bloques FLEXIBLES sin hora fija
+ *  dentro del Anki 05:00 (v6.09b: 05:20-05:45 lun · mié · vie y jue 31-dic · 05:30-05:45 mar · jue; si la guía USMLE no ocupa ya esa franja) · botones solo al campus de Theomed. Bloques FLEXIBLES sin hora fija
  *  (encaps-dom · PC y Feynman del domingo): la cabecera muestra su hora «flexible · …» (sin AHORA/✓ por reloj) y sus guías la misma etiqueta en vez
  *  de la franja de ejemplo. Mínimo del modo (ÁMBAR/ROJO) de los bloques ENCAPS nuevos = encapsManana.ENCAPS_MINIMO (la mañana ENCAPS es el bloque
  *  PRINCIPAL de lun · mié · vie: en ROJO conserva su mínimo); el ENCAPS del domingo es opcional (sin mínimo). Pie: revisión del sábado a las 14:00.
@@ -455,8 +455,10 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         // v6.02c (E5): botón directo también en el Anki (AnkiWeb en cualquier navegador + el vídeo/recurso pendiente de la guía si lo hay)
         const gU = guiasEn(b.ini ?? '05:00', b.fin ?? '05:45');
         // v6.07: los 15′ de repasos ENCAPS (05:30-05:45, encapsManana) van en este bloque si la guía USMLE no ocupa ya esa franja
+        // v6.09b (a1-11): la franja de ENCAPS depende del día (05:20-05:45 lun · mié · vie y jue 31-dic · 05:30-05:45 mar · jue) → se compara con su inicio
         const gEA = guiaEncapsAnkiDe(iso);
-        const gA = gEA && !gU.some((g) => { const q = partesFranja(g.franja); return !!q && aMinutos(q.fin) > aMinutos('05:30'); }) ? [...gU, gEA] : gU;
+        const iniEA = gEA ? (partesFranja(gEA.franja)?.ini ?? '05:30') : '05:30';
+        const gA = gEA && !gU.some((g) => { const q = partesFranja(g.franja); return !!q && aMinutos(q.fin) > aMinutos(iniEA); }) ? [...gU, gEA] : gU;
         const vidA = gA.map((g) => primerEnlace(g, /youtube|qbankly/)).find(Boolean);
         return { tema: b.detalle ?? 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min', sub: us ? `Step 1 · ${etiquetaDiaUSMLE(us)}` : 'Step 1',
           acciones: [{ lbl: 'AnkiWeb ↗', color: GREEN, url: ANKIWEB, fill: true }, ...(vidA ? [{ lbl: 'Vídeo ↗', color: EDGE, url: vidA }] : [])], guias: gA };
@@ -705,10 +707,12 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     case 'revision': {
       // v6.02c (E5): la revisión del sábado con su fichero S<NN>_<sábado>.md (lo crea gen_revision_semanal.js) y los 30′ partidos
       const gR = guiaRevisionDe(iso);
+      // v6.09b: el domingo de llegada (dom 22-nov) hace la revisión del sábado sin sesión de la víspera (S01_2026-11-21, con --forzar)
+      const sabR = revisionSabadoDe(iso);
       return {
-        tema: `${revisionFicheroDe(iso)} · 10 métricas + checklist G + 4 decisiones`,
-        sub: `node DATA/_scripts/gen_revision_semanal.js ${iso} → abre el fichero · método: DATA/REVISION_SEMANAL.md`,
-        acciones: [{ lbl: `${revisionFicheroDe(iso).slice(0, 3)} ↗`, color: Colors.champagne, url: vsRevision(iso), fill: true }, { lbl: 'Método ↗', color: Colors.champagne, url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/REVISION_SEMANAL.md' }],
+        tema: `${revisionFicheroDe(sabR)} · 10 métricas + checklist G + 4 decisiones`,
+        sub: `node DATA/_scripts/gen_revision_semanal.js ${sabR}${sabR !== iso ? ' --forzar' : ''} → abre el fichero · método: DATA/REVISION_SEMANAL.md`,
+        acciones: [{ lbl: `${revisionFicheroDe(sabR).slice(0, 3)} ↗`, color: Colors.champagne, url: vsRevision(iso), fill: true }, { lbl: 'Método ↗', color: Colors.champagne, url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/REVISION_SEMANAL.md' }],
         ...(gR ? { guias: [gR] } : {}),
       };
     }

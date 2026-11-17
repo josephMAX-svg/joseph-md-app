@@ -14,6 +14,8 @@
 //   (encapsManana.guiaEncapsMananaEnRango) · (c) RUTINA DE LA MAÑANA: ningún bloque con hora pisa 05:45-07:15 (caminata, ducha y desayuno; todos los días).
 // v6.09 (mar 17-nov): (d) DOMINGO DE LLEGADA (encapsManana.encapsRecuperaDe(iso).llegada; dom 22-nov, sigue sin sesión en corrida_s1): solo la recuperación
 //   fija (encaps-rec) y el Anki opcional (anki-dom), con hora, entre la llegada y las 17:00 (ningún plan secundario ese día; nada desde las 17:00).
+// v6.09b (mar 17-nov · auditoría tiempo ↔ material): (d) el domingo de llegada lleva revisión semanal (la del sábado de la víspera) + encaps-rec + SYNAPSE de
+//   recuperación, sin solaparse y sin Anki · (e) los repasos ENCAPS del Anki 05:00 van 05:20-05:45 (lun · mié · vie y jue 31-dic) o 05:30-05:45 (mar · jue).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
@@ -68,8 +70,10 @@ function guiasDe(b, p, iso) {
       if (b.frente === 'usmle-anki') {
         const gs = U.guiaUsmleEnRango(iso, b.ini || '05:00', b.fin || '05:45');
         // v6.07: los 15′ de repasos ENCAPS (05:30-05:45) van en el bloque Anki si la guía USMLE no ocupa ya esa franja
+        // v6.09b (a1-11): su franja depende del día (05:20 lun · mié · vie y jue 31-dic · 05:30 mar · jue) → se compara con su inicio (como TodayMission)
         const gA = EM.guiaEncapsAnkiDe(iso);
-        const ocupa = gs.some((g) => { const q = G.partesFranja(g.franja); return q && hm(q.fin) > hm('05:30'); });
+        const iniA = gA ? (G.partesFranja(gA.franja) || {}).ini || '05:30' : '05:30';
+        const ocupa = gs.some((g) => { const q = G.partesFranja(g.franja); return q && hm(q.fin) > hm(iniA); });
         return gA && !ocupa ? [...gs, gA] : gs;
       }
       if (b.id === 'reentrada') return U.guiaUsmleEnRango(iso, b.ini || '16:15', b.fin || '17:15'); // F3 · 16:15 (como TodayMission)
@@ -142,16 +146,34 @@ function controlRutina(iso, p) {
     .map((b) => `${b.hora} ${b.id} pisa la rutina de la mañana (${RUTINA_AM.join('-')}: caminata, ducha y desayuno; no se toca)`);
 }
 // v6.09 (17-nov): DOMINGO DE LLEGADA → solo encaps-rec + anki-dom, con hora, entre la llegada y las 17:00
+// v6.09b (17-nov · auditoría a2-12/a2-14): revisión semanal (la del sábado sin sesión de la víspera) + encaps-rec + SYNAPSE de recuperación, con hora, entre la
+//   llegada y las 17:00, sin solaparse; sin Anki (anki-dom ya no cabe). La revisión es la S del sábado de la víspera y el SYNAPSE trae el A/B/C del día.
 function controlLlegada(iso, p) {
   const rec = EM.encapsRecuperaDe(iso);
   if (!rec || !rec.llegada) return [];
   const e = [];
   if (!p.bloques.some((b) => b.id === 'encaps-rec')) e.push(`domingo de llegada sin la recuperación fija (encaps-rec ${rec.ini}-${rec.fin})`);
+  const sab = RT.revisionSabadoDe(iso);
+  if (sab === iso || !p.bloques.some((b) => b.id === 'revision')) e.push('domingo de llegada sin la revisión semanal del sábado sin sesión de la víspera');
+  const syn = SY.synDiaDe(iso);
+  if (syn && syn.bloques.some((b) => /^[ABC]$/.test(b.tag)) && !p.bloques.some((b) => b.id === 'syn')) e.push('domingo de llegada con A/B/C del SYNAPSE y sin su bloque');
+  const conHora = p.bloques.filter((b) => b.ini && b.fin);
   for (const b of p.bloques) {
-    if (!['encaps-rec', 'anki-dom'].includes(b.id)) e.push(`domingo de llegada con el bloque ${b.id} (${b.hora}): solo la recuperación fija y el Anki opcional`);
+    if (!['revision', 'encaps-rec', 'syn'].includes(b.id)) e.push(`domingo de llegada con el bloque ${b.id} (${b.hora}): solo la revisión, la recuperación fija y el SYNAPSE de recuperación`);
     else if (!b.ini || !b.fin || hm(b.ini) < hm(rec.llegada) || hm(b.fin) > hm('17:00')) e.push(`domingo de llegada: ${b.id} ${b.hora} fuera de ${rec.llegada}-17:00`);
   }
+  for (let i = 0; i < conHora.length; i++) for (let j = i + 1; j < conHora.length; j++) { const a = conHora[i], b = conHora[j]; if (hm(a.ini) < hm(b.fin) && hm(b.ini) < hm(a.fin)) e.push(`domingo de llegada: ${a.id} ${a.hora} ⟂ ${b.id} ${b.hora}`); }
   return e;
+}
+// v6.09b (a1-11): el Anki 05:00 de F1 reparte por tamaño de mazo → los repasos ENCAPS (encapsManana.guiaEncapsAnkiDe) empiezan a las 05:20 los lun · mié · vie
+//   (y los L-V hábiles de la transición: jue 31-dic) y a las 05:30 los mar · jue (días de Step), y terminan a las 05:45
+function controlAnkiEncaps(iso, p) {
+  const g = EM.guiaEncapsAnkiDe(iso);
+  if (!g) return [];
+  const q = G.partesFranja(g.franja) || {};
+  const step = F6.faseV6(iso) === 'F1' && F6.esDiaStepF1(iso);
+  const ini = step ? '05:30' : '05:20';
+  return q.ini === ini && q.fin === '05:45' ? [] : [`Anki 05:00: los repasos ENCAPS van ${g.franja} y tocan ${ini}–05:45 (${step ? 'mar · jue, día de Step' : 'lun · mié · vie o día de plan de la transición'})`];
 }
 // v6.09 (fix revisión 16-nov, joseph 7): la nota de un día SKIP solo dice que el 31-dic «es / fue día de plan» si lo es de verdad
 function controlSkip31(iso, p) {
@@ -183,7 +205,7 @@ for (const iso of dias) {
     for (const g of gs || []) console.log(`   ${''.padEnd(16)} ${''.padEnd(13)}   ↳ ${flexible ? `(ejemplo ${g.franja})` : g.franja} ${g.titulo.slice(0, 96)}${fuera.includes(g) ? '  ⚠ FUERA DEL BLOQUE' : ''}`);
   }
   // v6.09 (fix revisión 16-nov): aserciones del día (PPT remitidos a un domingo · nota SKIP del 31-dic), tras recorrer sus bloques
-  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p), ...controlRutina(iso, p), ...controlLlegada(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
+  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p), ...controlRutina(iso, p), ...controlLlegada(iso, p), ...controlAnkiEncaps(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
 }
 if (resumen.length) console.log(`\n✗ ${errores} problema(s):\n  ` + resumen.join('\n  '));
 console.log(`\n${errores ? '✗' : '✓'} ${dias.length} día(s) simulados · guías fuera de su bloque o bloques sin contenido: ${errores}`);

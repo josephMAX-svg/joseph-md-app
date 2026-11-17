@@ -725,7 +725,9 @@ if (!argv.includes('--sin-matriz')) {
   const F1F = new Set(DIAS.map((x) => x.fecha));
   // v6.07: «sin Step» dentro de F1 = fines de semana y, con Step solo mar · jue, también lun · mié · vie (guía = Anki 05:00-05:30)
   //   (fix lote 1b: el rango es f1.inicio → f1.fin, no la 1.ª → última fila de Step: el lun 9-nov, antes del D1, y el mié 30-dic, tras el D15, llevan su Anki)
-  const finde = (iso) => iso >= F.f1.inicio && iso <= F.f1.fin && !F.skip.includes(iso) && ([0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay()) || !F.step1.f1_dias_semana.includes(new Date(iso + 'T12:00:00Z').getUTCDay()));
+  // v6.09 · lote 1 (17-nov-2026): + los L-V hábiles de la TRANSICIÓN (jue 31-dic, día de plan): guía = Anki AM USMLE 05:00-05:20 (Step 1 en pausa)
+  const habTrans = (iso) => !!F.transicion && iso >= F.transicion.desde && iso <= F.transicion.hasta && iso < F.encaps.intensiva_desde && !F.skip.includes(iso) && [1, 2, 3, 4, 5].includes(new Date(iso + 'T12:00:00Z').getUTCDay());
+  const finde = (iso) => habTrans(iso) || (iso >= F.f1.inicio && iso <= F.f1.fin && !F.skip.includes(iso) && ([0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay()) || !F.step1.f1_dias_semana.includes(new Date(iso + 'T12:00:00Z').getUTCDay())));
   const filaT = Object.fromEntries(DIAS_T2.map((x) => [x.fecha, x]));
   const huerf = G.GUIA_USMLE_FECHAS.filter((f) => !F1F.has(f) && !finde(f) && !filaT[f]); // v6.07: + días de cola de F4 (bloque A)
   const fuera = [];
@@ -738,6 +740,39 @@ if (!argv.includes('--sin-matriz')) {
   ok(malG.length === 0 && new Set(desplTodas.map((x) => x.dOrig)).size === desplCont.length && huerf.length === 0 && fuera.length === 0,
     `guía USMLE · las ${despl.length} filas desplazadas de F1 que caen en F3 tienen guía en su fecha T (7 franjas USMLE de F3, Σ pasos = franja)${desplTodas.length > despl.length ? ` (${desplTodas.length - despl.length} filas de F4 sin guía por franja: plantilla por turno)` : ''} · 0 fechas huérfanas · franjas del tramo 2 dentro de F3 (F4: bloque A 04:05-04:35 de los días de cola)`,
     [...malG, ...huerf.map((f) => `huérfana ${f}`), ...fuera.map((f) => `fuera de F3 ${f}`)].slice(0, 8).join(' · ') || `${G.GUIA_USMLE_FECHAS.length} fechas (${G.GUIA_USMLE_FECHAS.filter((f) => filaT[f]).length} del tramo 2: ${(M.guiaTramo2 || []).map((t) => t.split(' ')[0]).join(', ')}${(M.colaTramo2 || []).length ? ` + cola ${M.colaTramo2.map((t) => t.split(' ')[0]).join(', ')}` : ''})`);
+  // v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material) · CONTRATO del Anki 05:00 con encapsManana en F1 + transición: el bloque USMLE de las 05:00
+  //   empieza a las 05:00 y acaba a las 05:30 los días de Step (mar · jue) y a las 05:20 los demás L-V (lun · mié · vie + los hábiles de la transición),
+  //   salvo el D1 (configuración 05:00-05:45); ningún paso de vídeo a las 05:00 · consolidación de F1: N1 = 15Q y N2 = 25Q, y cada una dice adónde van
+  //   sus 5Q y ese destino las tiene (eval de las 18:00 con 15Q o 07:15 del siguiente día de Step con el paso «5Q TIMED que quedaron…»)
+  {
+    const malA = [], malC = []; let nA = 0, nC = 0;
+    const stepF = new Set(DIAS.map((x) => x.fecha)); const d1 = DIAS[0].fecha;
+    for (const f of G.GUIA_USMLE_FECHAS.filter((x) => x >= F.f1.inicio && x < F.encaps.intensiva_desde)) {
+      const w = new Date(f + 'T12:00:00Z').getUTCDay(); if (w === 0 || w === 6) continue;
+      const a = G.guiaUsmleDe(f).filter((g) => g.franja.startsWith('05:'));
+      if (!a.length) continue; nA++;
+      const fin = f === d1 ? '05:45' : stepF.has(f) ? '05:30' : '05:20';
+      for (const g of a) {
+        if (g.franja !== `05:00–${fin}`) malA.push(`${f} ${g.franja} (esperado 05:00–${fin})`);
+        if (f !== d1 && g.pasos.some((p) => /^(B&B Step 1 ›|Palmerton ·)/.test(p.que))) malA.push(`${f}: vídeo en el Anki de las 05:00`);
+      }
+    }
+    for (const r of DIAS) {
+      const gs = G.guiaUsmleDe(r.fecha); const c = gs.find((g) => g.franja === '11:00–12:00' && /nivel [12] ·/.test(g.titulo));
+      if (!c) continue; nC++;
+      const n = /nivel 1/.test(c.titulo) ? 15 : 25;
+      if (!c.titulo.includes(` ${n}Q `)) { malC.push(`${r.fecha}: consolidación «${c.titulo}» (esperado ${n}Q)`); continue; }
+      const ev = gs.find((g) => g.franja === '18:00–18:45');
+      if (/EVALUACIÓN ACUMULATIVA de las 18:00 de hoy/.test(c.aviso || '')) { if (!ev || !/\+ 5Q del subtema/.test(ev.titulo)) malC.push(`${r.fecha}: las 5Q van a la eval de las 18:00 y esa eval no las tiene`); }
+      else {
+        const m = /van a las 07:15 del \S+ (\d+)-(\w+) \(D(\d+)\)/.exec(c.aviso || ''); const sig = m && DIAS.find((x) => x.d === Number(m[3]));
+        const g7 = sig && G.guiaUsmleDe(sig.fecha).find((g) => g.franja === '07:15–08:15');
+        if (!g7 || !g7.pasos.some((p) => p.que.startsWith('5Q TIMED que quedaron de la consolidación'))) malC.push(`${r.fecha}: las 5Q de la consolidación no aparecen en las 07:15 de su destino (${m ? 'D' + m[3] : 'sin destino en el aviso'})`);
+      }
+    }
+    ok(malA.length === 0 && malC.length === 0, 'guía USMLE (v6.09 · lote 1) · Anki 05:00 de F1 y la transición = 05:00-05:30 los días de Step, 05:00-05:20 los demás L-V (D1: 05:00-05:45), sin vídeo · consolidación de F1 N1 15Q / N2 25Q con sus 5Q en la eval de las 18:00 o en las 07:15 siguientes',
+      [...malA, ...malC].slice(0, 8).join(' · ') || `${nA} Anki AM · ${nC} consolidaciones N1/N2`);
+  }
   // v6.08 · DAY-AFTER de los hitos del tramo 2 en F3 (NBME 29 y los hitos de F1 desplazados): cada trozo 2/6-6/6 tiene su franja en la guía en
   //   la fila que le toca (n = 1: 07:15 2/6 + 18:00 3/6 · n = 2-4: 18:00 (n + 2)/6) o, si esa fila ya es F4 (plantilla por turno, sin 18:00),
   //   está listado en META.dayAfterSinFranja (DECISIÓN DE JOSEPH, avisado en el hito). Antes de este control, el 6/6 del NBME 27 (T33, F4) se

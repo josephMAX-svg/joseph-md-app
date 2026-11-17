@@ -552,10 +552,10 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo="15:38 · Pre-test 5Q ciegas" qIds={pool.pretest} onSaved={bump} />
           </Plegable>
           <FadeUp delay={90}><ColaItem icon="📖" lbl="LECTURA DIRIGIDA · solo los gaps del pre-test · 15 min" val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
-          <FadeUp delay={120}><ColaItem icon="🧪" lbl="8-10Q COMENTADAS · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
-          <Plegable titulo="Registrar quiz 8-10Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
-            {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={10} />}
-            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={10} totalOpciones={[8, 9, 10]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 8-10Q comentadas" tactica qIds={qIdsQuiz} onSaved={bump} />
+          <FadeUp delay={120}><ColaItem icon="🧪" lbl="6Q COMENTADAS (máx. 8) · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
+          <Plegable titulo="Registrar quiz 6-8Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
+            {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={8} />}
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={6} totalOpciones={[6, 7, 8]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 6Q comentadas (máx. 8)" tactica qIds={qIdsQuiz} onSaved={bump} />
           </Plegable>
           {mirObsUrl(dia.capId) && (
             <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema (lectura / Shopping List)" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · los APEX NO pasan por aquí hasta verificar n8n (P0-2/P0-3): van directos a Anki" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
@@ -601,7 +601,7 @@ function MirGuiaPreguntasView({ d }: { d: number }) {
       {p.eval ? p.eval.map((s) => <React.Fragment key={s.slot}>{fila(`15:15 · eval anclada ${s.slot} (D${s.d} ${s.tema})`, s.qs, BLUE)}</React.Fragment>) : null}
       {p.cierre ? fila('15:15 · test de cierre 10Q (pool de la app: manda su lista si difiere)', p.cierre, CORAL) : null}
       {fila('15:30 · pre-test 5Q (ciego · «pool» = pool oficial de la app)', p.pretest, GREEN)}
-      {fila('15:53 · quiz 8-10Q (en este orden; a las 16:05 paras)', p.quiz, AMBER)}
+      {fila('15:53 · quiz: 6Q (máx. 8) de esta lista, en este orden; a las 16:05 paras y las que no entren siguen en la cola del capítulo', p.quiz, AMBER)}
       <Text style={st.formHint}>Ids de ProMIR (/pregunta/MIR/AAAA-NNN = «MIR AAAA-AAAA+1, Pnnn»). Las del pool también salen abajo en «Pool oficial» con su texto.</Text>
     </View>
   );

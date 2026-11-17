@@ -24,6 +24,11 @@
  *  · d12 (farmacodermias, «no errar»): la lectura de 10′ es la del ÁTOMO (S23 «Adverse Cutaneous Drug Reactions» del Color Atlas 9e, fila del
  *    plan + índice verificado) y el módulo 4 del micro-track de dermatoscopia (sin relación con el átomo) pasa a d42 (`moduloCMEDe`).
  *  · imagen dermatoscópica en Dermoscopedia: respaldo DermNet «Dermoscopy (Dermatoscopy)» (Dermoscopedia falla por HTTPS desde algunas redes).
+ * v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16; SOLO F1 y el jue 31-dic: LOTE1_HASTA, 2027 queda igual):
+ *  · el mismo B&B por 2.ª vez o más (bbAparicion) = «2.ª PASADA a 2× + recall de 60 s»; los minutos que libera → 1-2Q de uWorld del System del átomo
+ *    que el plan no reparte o, si el plan lo reparte entero (Inflammatory y Skin and soft tissue infections), 1-2Q de ProMIR Dermatología del capítulo afín;
+ *  · el paso B&B «1,5× (si no, 1,25×)» lleva los minutos a 1,25× (bbMinReserva): lo que sobre a 1,5× pasa al proyecto Claude;
+ *  · el atlas DermNet sigue «sin medir» (medirlo pide red: queda pendiente con la regla de F1, palabras/120 + 0,25′/imagen).
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -81,6 +86,43 @@ function vel(fecha: string): { v: number; f: number; txt: string } {
 }
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const bbMin = (id: number, fecha: string): number => { const v = BB_DERM[id]; const k = vel(fecha); return v ? Math.round((v.s / 60 / k.v) * k.f) : 0; };
+
+// ── v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16) — SOLO F1 + jue 31-dic (≤ LOTE1_HASTA); 2027 sigue igual (otro lote) ──
+/** Último día al que se aplican las reglas del lote 1 (F1 y la transición). */
+const LOTE1_HASTA = '2027-01-03';
+/** a2-16: el paso B&B «1,5× (si no, 1,25×)» lleva los minutos de la velocidad de RESERVA (1,25×) para que cuadre también si el free recall no deja subir. */
+const bbMinReserva = (id: number, fecha: string): number => {
+  const v = BB_DERM[id]; const k = vel(fecha);
+  return v && fecha <= LOTE1_HASTA && k.v === 1.5 ? Math.round((v.s / 60 / 1.25) * k.f) : bbMin(id, fecha);
+};
+/** a2-8: 2.ª pasada de un B&B ya visto en una sesión anterior = 2× sin pausas + recall de 60 s. */
+const bb2aMin = (id: number): number => { const v = BB_DERM[id]; return v ? Math.round(v.s / 60 / 2) + 1 : 0; };
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const fdc = (iso: string) => { const d = new Date(iso + 'T12:00:00Z'); return `${DOW[d.getUTCDay()]} ${d.getUTCDate()}-${MES[d.getUTCMonth()]}`; };
+let BB_APAR: Map<string, { n: number; primera: string }> | null = null;
+/** Nº de aparición (1 = primera) del vídeo B&B del PLAN B de cada sesión en orden de fecha (curadas d1-d5 por el nombre de su paso; regla por
+ *  afinidad; el SERUMS, 30′, no lleva B&B) y la fecha de su 1.ª vez. Antes el generador repetía 7 vídeos en 25 sesiones presentados como nuevos. */
+function bbAparicion(fecha: string): { n: number; primera: string } | null {
+  if (!BB_APAR) {
+    const m = new Map<string, { n: number; primera: string }>(); const vistos = new Map<number, { n: number; primera: string }>();
+    const idPorNombre = new Map(Object.entries(BB_DERM).map(([id, v]) => [v.nombre, Number(id)]));
+    for (const dia of [...DERMA_DIAS_TODOS].sort((x, y) => (x.fecha < y.fecha ? -1 : x.fecha > y.fecha ? 1 : 0))) {
+      if (faseV6(dia.fecha) === 'F4') continue;
+      const c = DERMA_GUIA_CURADA[dia.d];
+      let id: number | undefined;
+      if (c && c.fecha === dia.fecha) { for (const p of c.planB.pasos) { const r = /^B&B Step 1 ›.*«([^»]+)»/.exec(p.que); if (r && idPorNombre.has(r[1] as string)) id = idPorNombre.get(r[1] as string); } }
+      else { const a = afinDe(dia); if (a.bb && BB_DERM[a.bb]) id = a.bb; }
+      if (id == null) continue;
+      const prev = vistos.get(id); const cur = { n: (prev?.n ?? 0) + 1, primera: prev?.primera ?? dia.fecha };
+      vistos.set(id, cur); m.set(dia.fecha, cur);
+    }
+    BB_APAR = m;
+  }
+  return BB_APAR.get(fecha) ?? null;
+}
+/** Unused de un System de uWorld de Dermatology que el reparto del plan B NO usa en ninguna sesión (stock − lo repartido). */
+const uwSobranteDelPlan = (uw: number): number => { let usado = 0; for (const a of dermaUwAsignacion().values()) if (a.uw === uw) usado += a.toma; return Math.max(0, (UW_DERM[uw]?.q ?? 0) - usado); };
 
 /** Afinidad átomo → B&B (vídeo) · uWorld (System) · ProMIR Dermatología (capítulo). Por palabras del `sub`; si no, por bloque. */
 interface Afin { bb?: number; uw?: number; pmd?: number }
@@ -291,7 +333,25 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
       }
     }
   }
-  if (!corto && a.bb && BB_DERM[a.bb]) { const v = BB_DERM[a.bb]!; const m = bbMin(a.bb, dia.fecha); pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } }); }
+  const ap = !corto && a.bb && BB_DERM[a.bb] && dia.fecha <= LOTE1_HASTA ? bbAparicion(dia.fecha) : null;
+  if (!corto && a.bb && BB_DERM[a.bb] && ap && ap.n >= 2) {
+    // v6.09 · lote 1 (a2-8): el mismo B&B por 2.ª (o 3.ª) vez → 2.ª pasada a 2× + recall de 60 s; los minutos que libera → 1-2Q del System de uWorld del
+    //   átomo que el plan no reparte o, si el plan ya lo reparte entero, de ProMIR Dermatología del capítulo afín (el relleno de siempre)
+    const v = BB_DERM[a.bb]!; const m2 = bb2aMin(a.bb); const libre = bbMinReserva(a.bb, dia.fecha) - m2;
+    pasos.push({ min: m2, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — 2.ª PASADA a 2× (${ap.n}.ª vez en el plan; la 1.ª, el ${fdc(ap.primera)})`, como: `Qbankly › Video Library › B&B Step 1 · 2× sin pausas (ya lo viste: solo lo que conecta con «${dia.sub.split(/[:(—·]/)[0]!.trim()}») · ${Math.round(v.s / 60 / 2)}′ + recall de 60 s: sin mirar, 3 ideas del vídeo aplicadas al átomo de hoy.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
+    const s = a.uw ? UW_DERM[a.uw] : undefined;
+    const kUW = s && a.uw ? Math.min(2, Math.floor(libre / 3), uwSobranteDelPlan(a.uw)) : 0;
+    if (kUW >= 1 && s) pasos.push({ min: kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: 'Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → Tutor · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.', enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+    else {
+      const c = PROMIR_DERMA_CAPS[(a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined) ?? 1) - 1]!;
+      const k = Math.min(2, Math.floor((libre * 60) / SEG_Q));
+      const delTest = !!(dia.promir && cap && cap.n === c.n);
+      if (k >= 1) pasos.push({ min: Math.ceil((k * SEG_Q) / 60), que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${k}Q más a 77 s/Q (con los minutos que libera la 2.ª pasada${s ? `; uWorld «${s.nombre}» ya está repartido entero en este plan` : ''})`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${k} preguntas${delTest ? ' · las siguientes de la lista, después del test del capítulo' : ''} · en las de imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · si una ya la hiciste, sáltala y toma la siguiente · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } });
+    }
+  } else if (!corto && a.bb && BB_DERM[a.bb]) {
+    const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
+    pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al proyecto Claude)' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
+  }
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) pasos.push({ min: corto ? 6 : 8, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — sin medir`, como: 'Primero las imágenes (tapa el pie y describe), después «clinical features» y «differential diagnosis» · ~120 palabras/min.', enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
   else if (!corto && a.pmd && a.pmd !== cap?.n) { const c = PROMIR_DERMA_CAPS[a.pmd - 1]!; pasos.push({ min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. ${c.n} «${c.t}» — la sección del átomo de hoy (sin medir)`, como: 'Solo el apartado del átomo · Whole Page Rule · ritmo de referencia 180 palabras/min.', enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }); }
   pasos.push({ min: 0, que: 'Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · casos de texto del átomo', como: `Pídele: «Dame viñetas de ${dia.sub.split(/[:(—·]/)[0].trim()} de mis libros SIN diagnóstico; yo describo (8 ejes), doy diferencial de 3 y diagnóstico; corrígeme citando libro y página». Cada fallo → tarjeta de MECANISMO.`, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL } });
@@ -301,7 +361,7 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   const rell = p2.find((p) => p.que.startsWith('Proyecto Claude'));
   if (rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
   const recursos: GuiaRecurso[] = [{ t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL }, { t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
-  if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: bbMin(a.bb, dia.fecha) });
+  if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: ap && ap.n >= 2 ? bb2aMin(a.bb) : bbMinReserva(a.bb, dia.fecha) });
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) recursos.push({ t: 'DermNet · atlas del átomo', url: dia.atlasUrl });
   const ids = dia.casoIds;
   return {

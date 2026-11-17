@@ -85,6 +85,11 @@
  *  baile 17:00-20:00— a 07:45, y nunca a las 14:00); (3) el SHIP S1 es el dom 29 (vibecodingPlan) y ese domingo el SYNAPSE recupera una A-unit + las
  *  piezas del lunes de la sem 1 (gen_synapse_plan.js › DOM_RECUPERA): guiaShipDe las suma al PC, SIN restarle minutos al SHIP (el domingo es flexible).
  *  Nada el sáb 21 ni el dom 22.
+ *  v6.09b (mar 17-nov · auditoría tiempo ↔ material, a2-12/a2-14 · el dom 22 es DOMINGO DE LLEGADA: «el 22 a partir de las 2 de la tarde se puede hacer»):
+ *  (1) la revisión S01 del sáb 21 va el dom 22 14:30-15:00, SOLA y en sus 30′ (revisionDomingoDe / revisionSabadoDe; guiaRevisionDe la pinta ese domingo
+ *  con --forzar) y el sáb 28 vuelve a ser solo la S02 (revisionesJuntasDe = []; nombra la S01 del domingo y su comando por si no se hizo); (2) el A/B/C
+ *  del SYNAPSE que recupera el lun 16 y el sáb 21 pasa del PC del dom 29 al dom 22 16:30-17:00, a hora fija (guiaSynapseDe; guiaShipDe = null ese día) y
+ *  el PC del dom 29 vuelve a 2 h (SHIP de ejemplo 14:45-16:45).
  *  v6.09 (rev. adversarial, 16-nov): (a) SYNAPSE: los recursos curados repartidos en varias sesiones avanzan por FECHA (SYN_SERIES, ver su comentario);
  *  (b) Business y LIVIANO: en F1 el OUTPUT / el CASO va el lunes tras su última lectura / lección (los generadores) y los dos días lo avisan; (c) AURUM y
  *  vibecoding: el ciclo de F1 cierra en lunes (se acepta el desfase) y la guía lo dice (cierre de semana de AURUM en lunes · SHIP tras el cierre del
@@ -106,7 +111,7 @@ import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiD
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
-import { theomedSabadoDe, guiaEncapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
+import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De } from './fechasV6';
 
@@ -544,11 +549,17 @@ export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: st
 export function guiaSynapseDe(iso: string): GuiaBloque | null {
   const s = synDiaDe(iso);
   const w = dow(iso);
-  if (!s || w === 0) return null; // domingo → guiaShipDe (PC) + guiaFeynmanDe · v6.07: el sábado (A/B/C sin PC) sí sale de aquí
+  // v6.09b (17-nov · a2-14): el DOMINGO DE LLEGADA (dom 22-nov) sí sale de aquí: el A/B/C que recupera el lun 16 y el sáb 21 (gen_synapse_plan.js ›
+  //   RECUPERA_V609; antes en el PC del dom 29) va a HORA FIJA, al terminar la recuperación ENCAPS del viaje (16:30-17:00; nada desde las 17:00)
+  const lleg = w === 0 ? domingoLlegadaDe(iso) : null;
+  if (!s || (w === 0 && !lleg)) return null; // domingo → guiaShipDe (PC) + guiaFeynmanDe · v6.07: el sábado (A/B/C sin PC) sí sale de aquí
   const abc = s.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   if (!abc.length) return null;
   const min = abc.reduce((a, b) => a + b.min, 0);
-  const { franja, aviso } = synFranjaDe(iso, min);
+  const rcTxt = (() => { const m = abc.map((b) => / · recupera el (.+)$/.exec(b.leccion)).find(Boolean); return m ? m[1] : null; })();
+  const { franja, aviso } = lleg
+    ? { franja: franjaDesde(lleg.fin, min), aviso: `Domingo de llegada: este A/B/C recupera el ${rcTxt ?? 'día sin sesión'} y va a hora fija, al terminar la recuperación ENCAPS del viaje (${lleg.ini}-${lleg.fin}); nada de estudio desde las 17:00. El SHIP S1 del vibecoding es el domingo que viene.` }
+    : synFranjaDe(iso, min);
   const pasos = abc.map((b) => pasoSyn(b, iso));
   const recursos = abc.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min }));
   // v6.09 (joseph 9): 1.ª sesión del plan con días SIN SESIÓN antes (lun 16-nov) → sale como «día 2» en el hub (Misión del día N): se explica
@@ -588,6 +599,7 @@ export function shipEjemploIni(iso: string): string {
  *  (shipEjemploIni; el bloque de plantillasV6 no tiene hora). Si ese día el SYNAPSE trajera A/B/C, van detrás (hoy el domingo solo trae R + PC). */
 export function guiaShipDe(iso: string): GuiaBloque | null {
   if (dow(iso) !== 0) return null;
+  if (domingoLlegadaDe(iso)) return null; // v6.09b: domingo de llegada (dom 22-nov): sin PC; su A/B/C de recuperación, a hora fija en guiaSynapseDe
   const pcs = vibePCDomingo(iso);
   const s = synDiaDe(iso);
   const abc = (s?.bloques ?? []).filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
@@ -1136,12 +1148,12 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       const nL = [1, 2, 3, 4, 5].filter((k) => { const r0 = bizDiaDe(addDias(x, -k)); return !!r0 && bizModo(r0) !== 'DESCANSO' && bizModo(r0) !== 'OUTPUT'; }).length;
       const sigOut = BIZ_DIAS.find((r0) => r0.fecha > x && bizModo(r0) === 'OUTPUT');
       pasos.push(P(10, `TRACKER semanal (1 fila) — semana del ${fCorta(lunesDeIso(addDias(x, -5)))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L ${nL}/${nL} · output 0`,
-        `El ${fCorta(x)} no hubo sesión (viaje) y esa semana no tuvo OUTPUT${sigOut ? ` (el ${sigOut.lectura.split(':')[0].split(' · ')[0]} corrió al ${fCorta(sigOut.fecha)}, tras su última lectura)` : ''}: la fila de ESA semana se llena hoy, con los datos de su revisión ${revisionFicheroDe(x).replace('.md', '')}, que también se hace hoy.`, { t: '◆ 01_PULSO', url: PULSO_OBS }));
+        `El ${fCorta(x)} no hubo sesión (viaje) y esa semana no tuvo OUTPUT${sigOut ? ` (el ${sigOut.lectura.split(':')[0].split(' · ')[0]} corrió al ${fCorta(sigOut.fecha)}, tras su última lectura)` : ''}: la fila de ESA semana se llena hoy, con los datos de su revisión ${revisionFicheroDe(x).replace('.md', '')}${revisionDomingoDe(x) ? ` (hecha el ${fCorta(revisionDomingoDe(x)!.domingo)} a la vuelta del viaje)` : ', que también se hace hoy'}.`, { t: '◆ 01_PULSO', url: PULSO_OBS }));
     }
     for (const { r, entero } of c ? c.outs : bizOutputsDeSemana(sab)) {
       const nom = r.lectura.split(':')[0];
       if (!entero && arrastrado(r)) { pasos.push(
-        P(10, `TRACKER semanal (1 fila) del ${nom} — semana del ${fCorta(lunesDeIso(r.fecha))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${Number(r.fecha.slice(8))}: el ${fCorta(addDias(r.fecha, 6 - dow(r.fecha)))} no hubo sesión (viaje) → la fila de ESA semana se llena hoy (mismos datos que su revisión ${revisionFicheroDe(addDias(r.fecha, 6 - dow(r.fecha))).replace('.md', '')}, que también se hace hoy).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
+        P(10, `TRACKER semanal (1 fila) del ${nom} — semana del ${fCorta(lunesDeIso(r.fecha))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${Number(r.fecha.slice(8))}: el ${fCorta(addDias(r.fecha, 6 - dow(r.fecha)))} no hubo sesión (viaje) → la fila de ESA semana se llena hoy (mismos datos que su revisión ${revisionFicheroDe(addDias(r.fecha, 6 - dow(r.fecha))).replace('.md', '')}${revisionDomingoDe(addDias(r.fecha, 6 - dow(r.fecha))) ? `, hecha el ${fCorta(revisionDomingoDe(addDias(r.fecha, 6 - dow(r.fecha)))!.domingo)} a la vuelta del viaje` : ', que también se hace hoy'}).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
         P(5, `Releer la página del ${nom} y cerrarla`, 'Corrige 1 cosa; ✓ en Empresa › Business › HOY.'),
       ); continue; } // v6.09
       if (entero) pasos.push(
@@ -1240,35 +1252,62 @@ export function revisionFicheroDe(sabado: string): string {
   const n = Math.floor((new Date(lunes + 'T12:00:00Z').getTime() - new Date(lunesD1 + 'T12:00:00Z').getTime()) / 86400000 / 7) + 1;
   return `S${String(Math.max(0, n)).padStart(2, '0')}_${sabado}.md`;
 }
-/** v6.09 (16-nov-2026): sábados cuya revisión se hace HOY además de la propia = los sábados sin sesión inmediatamente anteriores (sáb 21-nov, viaje → la
- *  S01 va el sáb 28 con la S02). Vacío en el resto. */
+/** v6.09 (16-nov-2026): sábados cuya revisión se hace HOY además de la propia = los sábados sin sesión inmediatamente anteriores. Vacío en el resto.
+ *  v6.09b (17-nov): salvo los que la hacen en su DOMINGO DE LLEGADA (revisionDomingoDe: sáb 21-nov → dom 22 14:30) → el sáb 28 vuelve a ser solo la S02. */
 export function revisionesJuntasDe(sab: string): string[] {
   const out: string[] = [];
-  for (let x = addDias(sab, -7), i = 0; i < 8 && sabadoLibre(x); i++, x = addDias(x, -7)) out.unshift(x);
+  for (let x = addDias(sab, -7), i = 0; i < 8 && sabadoLibre(x) && !revisionDomingoDe(x); i++, x = addDias(x, -7)) out.unshift(x);
   return out;
 }
+/** v6.09b (17-nov · auditoría a2-12/a2-14): DOMINGO DE LLEGADA (corrida_s1 sin sesión + encapsManana.encapsRecuperaDe(dom).llegada; dom 22-nov) tras un
+ *  sábado sin sesión (sabadoLibre: sáb 21-nov, viaje) → la revisión de ese sábado va ESE domingo, sola, en los 30′ antes de la recuperación ENCAPS
+ *  (14:30-15:00) · null en el resto. Antes iba junto con la S02 el sáb 28 en los mismos 30′ (38′ de material). */
+export function revisionDomingoDe(sab: string): { domingo: string; ini: string } | null {
+  if (!sabadoLibre(sab)) return null;
+  const dom = addDias(sab, 1), rec = domingoLlegadaDe(dom);
+  return rec ? { domingo: dom, ini: aHHMM(aMin(rec.ini) - 30) } : null;
+}
+/** v6.09b: el domingo de llegada (dom 22-nov: llegada 14:00, recuperación ENCAPS 15:00-16:30) o null. */
+function domingoLlegadaDe(iso: string): { llegada: string; ini: string; fin: string } | null {
+  if (dow(iso) !== 0 || corridaS1De(iso)?.tipo !== 'sin_sesion') return null;
+  const rec = encapsRecuperaDe(iso);
+  return rec && rec.llegada ? { llegada: rec.llegada, ini: rec.ini, fin: rec.fin } : null;
+}
+/** v6.09b: sábado cuya revisión se hace el día `iso` (el propio sábado, o el sábado sin sesión de la víspera si `iso` es su domingo de llegada). */
+export function revisionSabadoDe(iso: string): string {
+  const sab = addDias(iso, -1);
+  return dow(iso) === 0 && revisionDomingoDe(sab)?.domingo === iso ? sab : iso;
+}
 export function guiaRevisionDe(iso: string): GuiaBloque | null {
-  if (dow(iso) !== 6 || iso < FECHAS_V6.f1.inicio) return null;
-  if (sabadoLibre(iso)) return null; // v6.09: sábado sin sesión (viaje) → su revisión va con la del sábado siguiente (revisionesJuntasDe)
-  const fichero = revisionFicheroDe(iso);
+  // v6.09b: + el domingo de llegada (dom 22-nov), con la revisión del sábado sin sesión de la víspera (S01_2026-11-21)
+  const sab = revisionSabadoDe(iso), enDomingo = sab !== iso;
+  if (dow(sab) !== 6 || sab < FECHAS_V6.f1.inicio) return null;
+  if (sabadoLibre(sab) && !enDomingo) return null; // v6.09: sábado sin sesión (viaje) → su revisión va su domingo de llegada (v6.09b) o con la del sábado siguiente (revisionesJuntasDe)
+  const fichero = revisionFicheroDe(sab);
   const ruta = `${REPO}/DATA/USMLE/REVISIONES/${fichero}`;
   const d1 = FECHAS_V6.f1.inicio;
-  const juntas = revisionesJuntasDe(iso); // v6.09: [sáb 21-nov] el sáb 28-nov
+  const juntas = enDomingo ? [] : revisionesJuntasDe(sab); // v6.09: [sáb 21-nov] el sáb 28-nov · v6.09b: [] (la S01 va el dom 22)
   const ficheros = [...juntas.map(revisionFicheroDe), fichero];
+  // v6.09b: la revisión del sábado anterior se hizo en su domingo de llegada (sáb 28-nov: la S01 fue el dom 22)
+  const previa = enDomingo ? null : revisionDomingoDe(addDias(sab, -7));
+  const sabPrev = previa ? addDias(sab, -7) : null;
   // v6.03: 1.er sábado desde el D1 (mié 21 → sáb 24-oct; antes D1 + 5, que solo valía con D1 en lunes) · v6.05: lun 26 → sáb 31-oct · v6.09: si ese sábado fue
-  //   sin sesión (sáb 21-nov), la «primera» es la del sábado siguiente (sáb 28-nov), que se hace junto con ella
-  const primera = (juntas[0] ?? iso) === addDias(d1, (6 - dow(d1) + 7) % 7);
+  //   sin sesión (sáb 21-nov), la «primera» es la del sábado siguiente (sáb 28-nov), que se hace junto con ella · v6.09b: la S01 va el dom 22 (es la primera)
+  const sab1 = addDias(d1, (6 - dow(d1) + 7) % 7);
+  const primera = (juntas[0] ?? sab) === sab1;
   // v6.05: la semana 2 (lunes → jueves de los runners ENCAPS y la semana ISO del journal) sale de la fecha, no de un texto fijo (v6.02c/v6.03: lun 26 → jue 29-oct, 2026-W44)
-  const lun2 = addDias(iso, 2);
+  const lun2 = addDias(sab, 2);
   const prep = primera
     ? `Semana ${Number(fichero.slice(1, 3)) + 1}: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4) · velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea el lunes journal_hoy.js.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
-  const ini = revisionIniDe(iso); // v6.07: 14:00 los sábados con la clase en vivo de Theomed (F1 y transición) · 07:15 en el resto
+  const ini = enDomingo ? (revisionDomingoDe(sab)?.ini ?? revisionIniDe(sab)) : revisionIniDe(sab); // v6.07: 14:00 los sábados con la clase en vivo de Theomed (F1 y transición) · 07:15 en el resto · v6.09b: el domingo de llegada, 30′ antes de la recuperación ENCAPS
   const nomJ = ficheros.map((x) => x.replace('.md', '')).join(' + ');
+  const forzar = (s: string): string => (sabadoLibre(s) ? ' --forzar' : '');
   const cmdJ = juntas.map((s) => `\`node DATA/_scripts/gen_revision_semanal.js ${s} --forzar\` y `).join('');
-  return bloque(franjaDesde(ini, 30), 'revision', `REVISIÓN SEMANAL · ${nomJ}`, [
-    P(3, juntas.length ? `GENERAR y abrir ${ficheros.join(' y ')} (el ${juntas.map(fCorta).join(', ')} no hubo sesión: van juntas)` : `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: ${cmdJ}\`node DATA/_scripts/gen_revision_semanal.js ${iso}\` → crea DATA/USMLE/REVISIONES/${ficheros.join(' y ')} y actualiza _semanas.json.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
-    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (UWSA1 = baseline, sin juicio)' : ''} · 4 ENCAPS: mini-sim /25 del viernes${sabadoTheomed(iso) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
+  const cmdPrev = sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} se generó el ${fCorta(addDias(sabPrev, 1))} con \`node DATA/_scripts/gen_revision_semanal.js ${sabPrev} --forzar\`; si no llegaste a hacerla, córrelo ahora y deja sus métricas «sin dato»: las 4 decisiones van solo aquí)` : '';
+  return bloque(franjaDesde(ini, 30), 'revision', `REVISIÓN SEMANAL · ${nomJ}${enDomingo ? ` (la del ${fCorta(sab)}, hoy domingo de llegada)` : sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} fue el ${fCorta(addDias(sabPrev, 1))})` : ''}`, [
+    P(3, juntas.length ? `GENERAR y abrir ${ficheros.join(' y ')} (el ${juntas.map(fCorta).join(', ')} no hubo sesión: van juntas)` : `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: ${cmdJ}\`node DATA/_scripts/gen_revision_semanal.js ${sab}${forzar(sab)}\` → crea DATA/USMLE/REVISIONES/${ficheros.join(' y ')} y actualiza _semanas.json${cmdPrev}.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
+    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (UWSA1 = baseline, sin juicio)' : ''} · 4 ENCAPS: mini-sim /25 del viernes${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
     P(6, juntas.length ? `DECIDIR (4 líneas, solo en ${fichero.replace('.md', '')}: la semana que entra)` : 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),
     P(5, 'PREPARAR la semana siguiente', prep),
@@ -1276,7 +1315,11 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   ], [...juntas.map((s) => R(revisionFicheroDe(s), vsc(`${REPO}/DATA/USMLE/REVISIONES/${revisionFicheroDe(s)}`))), R(fichero, vsc(ruta)), R('Método: DATA/REVISION_SEMANAL.md (GitHub)', GH + 'DATA/REVISION_SEMANAL.md')],
   `${ficheros.join(' y ')} con las 10 métricas rellenas (o «sin dato») + las 4 decisiones escritas`,
   { planB: 'Si el script falla (sin red / Supabase caído): copia la plantilla de DATA/REVISION_SEMANAL.md y rellénala a mano en los mismos 30′.',
-    aviso: juntas.length
-      ? `${primera ? 'Primera revisión con plan: ' : ''}${ficheros.map((x) => x.replace('.md', '')).join(' + ')} en los mismos 30′ (el ${juntas.map(fCorta).join(', ')} no hubo sesión: viaje). Los ficheros no existen hasta que corres los comandos del paso 1; la S01 necesita --forzar porque su sábado fue sin sesión.`
-      : primera ? 'Primera revisión con plan (S01). El fichero no existe hasta que corres el comando del paso 1.' : undefined });
+    aviso: enDomingo
+      ? `${primera ? 'Primera revisión con plan (S01), ' : ''}hoy domingo de llegada, a las ${ini}: es la del ${fCorta(sab)} (sin sesión: viaje), sola y en sus 30′, antes de la recuperación ENCAPS de las ${aHHMM(aMin(ini) + 30)}. El fichero no existe hasta que corres el comando del paso 1 (lleva --forzar porque su sábado fue sin sesión). La S${String(Number(fichero.slice(1, 3)) + 1).padStart(2, '0')} va el sáb ${Number(addDias(sab, 7).slice(8))}, sola.`
+      : juntas.length
+        ? `${primera ? 'Primera revisión con plan: ' : ''}${ficheros.map((x) => x.replace('.md', '')).join(' + ')} en los mismos 30′ (el ${juntas.map(fCorta).join(', ')} no hubo sesión: viaje). Los ficheros no existen hasta que corres los comandos del paso 1; la S01 necesita --forzar porque su sábado fue sin sesión.`
+        : sabPrev
+          ? `Primera revisión de sábado con plan: la ${revisionFicheroDe(sabPrev).replace('.md', '')} (semana del ${fCorta(addDias(sabPrev, -5))}) se hizo el ${fCorta(addDias(sabPrev, 1))}, a la vuelta del viaje; hoy, solo la ${fichero.replace('.md', '')}, en sus 30′.`
+          : primera ? 'Primera revisión con plan (S01). El fichero no existe hasta que corres el comando del paso 1.' : undefined });
 }

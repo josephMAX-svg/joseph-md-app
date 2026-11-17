@@ -183,8 +183,11 @@ for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) {
   if (RG.sabadoLibre(iso)) { // v6.09 (20): sábado sin sesión → sin guías ese fin de semana; su revisión va con la del sábado siguiente
     for (const [n, f] of [['revision', RG.guiaRevisionDe], ['business', RG.guiaBusinessDe], ['synapse', RG.guiaSynapseDe]]) if (f(iso)) errores.push(`${iso} (20): sábado sin sesión con guía ${n} ${f(iso).franja}`);
     for (const [n, f] of [['ship', RG.guiaShipDe], ['feynman', RG.guiaFeynmanDe]]) if (FV.corridaS1De(addDias(iso, 1)) && f(addDias(iso, 1))) errores.push(`${addDias(iso, 1)} (20): domingo sin sesión con guía ${n}`);
-    const sig = sabConSesion(iso), gj = RG.guiaRevisionDe(sig);
-    if (!gj || !gj.titulo.includes(RG.revisionFicheroDe(iso).replace('.md', '')) || !gj.pasos[0].como.includes(`${iso} --forzar`)) errores.push(`${sig} (20): la revisión no lleva la del ${iso} (sin sesión) junto con la suya`);
+    const rd = RG.revisionDomingoDe(iso); // v6.09b: con domingo de llegada, la revisión del sábado sin sesión va SOLA ese domingo (dom 22-nov 14:30)
+    const sig = rd ? rd.domingo : sabConSesion(iso), gj = RG.guiaRevisionDe(sig);
+    if (!gj || !gj.titulo.includes(RG.revisionFicheroDe(iso).replace('.md', '')) || !gj.pasos[0].como.includes(`${iso} --forzar`)) errores.push(`${sig} (20): la revisión no lleva la del ${iso} (sin sesión)${rd ? ' en su domingo de llegada' : ' junto con la suya'}`);
+    if (rd && gj && gj.franja.split('–')[0] !== rd.ini) errores.push(`${sig} (20): la revisión del domingo de llegada empieza a las ${gj.franja.split('–')[0]} y no a las ${rd.ini}`);
+    if (rd) { const g2 = RG.guiaRevisionDe(sabConSesion(iso)); if (!g2 || g2.pasos.reduce((s, p) => s + p.min, 0) > 30) errores.push(`${sabConSesion(iso)} (20): la revisión del sábado siguiente no cabe en 30′ tras mover la del ${iso} al domingo`); }
     continue;
   }
   if (!RG.guiaRevisionDe(iso)) falta('revision', iso, 'sábado de F1');
@@ -387,7 +390,7 @@ if (SAB_DD0 === SAB_NP && conTexto(RG.guiaSynapseDe(SAB_NP), /deep dive.*minutos
   const s0 = S.SYN_DIAS.find((x) => x.bloques.some((b) => /^[ABC]$/.test(b.tag)));
   if (s0 && s0.d > 1 && S.SYN_DIAS.filter((x) => x.d < s0.d).every((x) => (FV.corridaS1De(x.fecha) || {}).tipo === 'sin_sesion') && !new RegExp(`Primera sesión\\. Sale como día ${s0.d} porque el día 1 era el`).test((RG.guiaSynapseDe(s0.fecha) || {}).aviso || '')) errores.push(`${s0.fecha} (22): SYNAPSE sale como día ${s0.d} sin avisar`);
   // (23) SYNAPSE: recursos repartidos por FECHA — minutos contiguos, sin carril genérico a medias, retoma = sesión anterior del mismo recurso
-  const synPasos = (iso) => { const g = dow(iso) === 0 ? RG.guiaShipDe(iso) : RG.guiaSynapseDe(iso); return g ? g.pasos : []; };
+  const synPasos = (iso) => [...(dow(iso) === 0 ? [RG.guiaShipDe(iso)] : []), RG.guiaSynapseDe(iso)].filter(Boolean).flatMap((g) => g.pasos); // v6.09b: el dom 22 (llegada) lleva el SYNAPSE de recuperación en guiaSynapseDe
   const MESc = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
   const fC = (iso) => `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][dow(iso)]} ${Number(iso.slice(8))}-${MESc[Number(iso.slice(5, 7)) - 1]}`;
   const RECURSOS = [
@@ -561,7 +564,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
             if (t !== '12:00') errores.push(`${tag}: la mañana ENCAPS no cubre 07:15-12:00 (termina ${t})`);
           }
           if (!B_('encaps') || hora('encaps') !== '16:15–17:15') errores.push(`${tag}: falta el ENCAPS 16:15 de la rotación F1`);
-          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/mazos aún vacíos/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
+          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-17' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-18' ? !/mazos aún vacíos/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.09b: el D1 (mar 17) el bloque es la CONFIGURACIÓN de 45′ */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
         }
         if (w === 6 && RG2.sabadoTheomed(iso) && bs.length) {
           const viv = EM2.theomedSabadoDe(iso);

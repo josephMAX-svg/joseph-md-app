@@ -196,7 +196,8 @@ for (let idx = 0; idx < fechas.length; idx++) {
       d, fecha, wd, modulo: c.modulo,
       tema: `${dif ? `${({ Lun: 'LUNES', Mar: 'MARTES', 'Mié': 'MIÉRCOLES', Jue: 'JUEVES' })[wd] || wd.toUpperCase()} CASO` : 'VIERNES CASO'} ${c.id}/${casos.length} · ${c.titulo}`,
       estudio: `Repaso Anki de la semana + montar el caso: ${c.paciente}`,
-      aplicacion: `Role-play 20 min: ${c.consigna} → puntúa la rúbrica 0-2 × 4 (mecanismo · metáfora · people-first · plan)`,
+      // v6.09 · lote 1 (17-nov-2026, auditoría a2-15): el paso de la guía da 15′ (2 tomas de ≤5 min + corrección); antes el texto decía «20 min»
+      aplicacion: `Role-play 15 min (2 tomas de ≤5 min + corrección): ${c.consigna} → puntúa la rúbrica 0-2 × 4 (mecanismo · metáfora · people-first · plan)`,
       fuente: c.fuente, min: 45, casoId: c.id,
     };
     if (dif && wd === 'Lun' && idx > 0) row.pretest = true; // v6.09: el lunes conserva su pre-test ciego 5Q
