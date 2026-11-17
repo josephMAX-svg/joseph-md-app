@@ -302,8 +302,9 @@ const PREVISTO_SEMANA2 = {
  * v6.03b (20-oct-2026) · TÉCNICA DE SIMULACRO (DATA/ENCAPS/METODO_SIMULACRO_ENCAPS.md): la de RaviMedTest («Cómo hacer un simulacro MIR de
  * manera EFICIENTE» · «EL DÍA DEL EXAMEN MIR: MI EXPERIENCIA» · «Cómo gestionar los percentiles» · «Cómo responde preguntas MIR un opositor del
  * percentil 100»; NotebookLM «MIR · RaviMedTest Engine», 20-oct) adaptada al formato ENCAPS del protocolo (72 s/Q, sin pausa, confianza 1-3,
- * corrección al final). Redacción propia. Se mete DENTRO de los pasos del mini-sim (30′/18′/5′/5′) y del pre-test de arranque (24′): no cambia
- * minutos ni franja. `reloj(n, min, formal)` = hitos del reloj del runner (cuenta atrás) cada 10 preguntas dejando `formal` minutos de revisión.
+ * corrección al final). Redacción propia. Se mete DENTRO de los pasos del mini-sim (30′/18′/5′/5′; v6.09b en F1: 30′/20′/4′/4′, ver RECETA_F1) y
+ * del pre-test de arranque (24′): no cambia minutos ni franja. `reloj(n, min, formal)` = hitos del reloj del runner (cuenta atrás) cada 10 preguntas
+ * dejando `formal` minutos de revisión.
  */
 const TECNICA_SIM = {
   doc: 'DATA/ENCAPS/METODO_SIMULACRO_ENCAPS.md',
@@ -327,4 +328,23 @@ const TECNICA_SIM = {
   ENVIO: 'Envío: ⚡ APEX 1-TAP (Ctrl+Shift+A) → n8n → Anki APEX::ENCAPS (subdeck del código) + nota del código en el vault; si el redeploy de n8n aún no está verificado, directo en Anki.',
 };
 
-module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM };
+/**
+ * v6.09b (lote 1-bis G, 17-nov-2026 · «no puede haber poco tiempo con mucho material ni mucho tiempo con poco material»): reparto de los 60′ de la
+ * hora 16:15 de F1 medido con las reglas de la auditoría (72 s/Q ENCAPS · 90 s/Q con corrección inmediata · corrección 0,85′/Q · PDF 2′/p; paso OK
+ * si necesario/asignado ∈ [0,85; 1,15]). Solo F1 (dia 2-32, desde `desde`): el mar 17-nov (D1) ya estaba en curso y conserva el reparto anterior, y
+ * el CARRIL SÁBADO de la intensiva (2027) sigue como en la v6.09 (lote de 2027).
+ *   · BANCO: 20Q del principal en 30′ + 5Q del secundario en 8′ (90 s/Q). El runner trae 16-20 + 0-5 (gen_encaps_minisim.js: pool del código);
+ *     lo que falte hasta 20 / 5 sale del banco de respaldo (QX · App Banqueo, mismo tema) y el rótulo, el «cómo» y el registro lo dicen con números.
+ *     Antes: «2Q en 8′» (0,38) · «16Q en 30′» (0,80) y un «cómo» que mandaba completar hasta 5 sin que el rótulo lo dijera.
+ *   · MATERIAL (7′, solo si ≥2 fallos): acotado a ≤3 p a 2′/p.
+ *   · PRE-TEST (mié 18-nov): eval 5Q = 6′ + 2′ de solución (8′, antes 10′: 0,80) · corrección 20Q × 0,85′ = 17′ (antes 15′).
+ *   · MINI-SIM: corrección 25Q × 0,85′ = 21′ → 20′ (antes 18′: 1,18) · registro + cierre semanal 4′ · APEX + 1 cifra por código caliente 4′.
+ */
+const RECETA_F1 = {
+  desde: '2026-11-18',
+  banco: { principal: 20, secundario: 5, segQ: 90, material: { min: 7, paginas: 3 } },
+  pretest: { eval: 8, correccion: 17 },
+  minisim: { correccion: 20, registro: 4, apex: 4 },
+};
+
+module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1 };

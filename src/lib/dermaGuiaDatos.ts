@@ -69,6 +69,200 @@ export const DERMA_CME_DESPLAZADO: Record<number, { destino: number; libro: stri
 };
 /** Respaldo de Dermoscopedia (falla por HTTPS desde algunas redes): DermNet «Dermoscopy (Dermatoscopy)» (curl 200, 18-oct-2026). */
 export const DERMNET_DERMOSCOPY = "https://dermnetnz.org/topics/dermoscopy";
+/** v6.09b · lote 1-bis: atlas DermNet de F1 MEDIDO el 2026-11-17 (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): secciones del alcance, palabras de prosa,
+ *  imágenes y minutos = palabras/120 + 0,25′ por imagen. Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
+export const DERMNET_MEDIDO: Record<string, { alcance: string[]; palabras: number; imagenes: number; necesario: number; min: number; pagina: { palabras: number; imagenes: number }; motivo?: string }> = {
+ "dermoscopy": {
+  "alcance": [
+   "What is dermoscopy?",
+   "Dermatoscopic features of pigmented lesions"
+  ],
+  "palabras": 293,
+  "imagenes": 9,
+  "necesario": 4.69,
+  "min": 5,
+  "pagina": {
+   "palabras": 471,
+   "imagenes": 9
+  },
+  "motivo": "la página no tiene «clinical features»: su equivalente son los patrones dermatoscópicos"
+ },
+ "psoriasis": {
+  "alcance": [
+   "What are the clinical features of psoriasis?",
+   "Types of psoriasis"
+  ],
+  "palabras": 376,
+  "imagenes": 8,
+  "necesario": 5.13,
+  "min": 5,
+  "pagina": {
+   "palabras": 1882,
+   "imagenes": 27
+  },
+  "motivo": "la franja del d7 deja 6′ (B&B «Skin Disorders I» 19′): «clinical features» + «Types of psoriasis» con sus 8 primeras imágenes (de 24); las otras 16, no hoy"
+ },
+ "atopic-dermatitis": {
+  "alcance": [
+   "What is atopic dermatitis?",
+   "What are the clinical features of atopic dermatitis?",
+   "What is the differential diagnosis for atopic dermatitis?"
+  ],
+  "palabras": 587,
+  "imagenes": 23,
+  "necesario": 10.64,
+  "min": 11,
+  "pagina": {
+   "palabras": 1363,
+   "imagenes": 35
+  }
+ },
+ "acne": {
+  "alcance": [
+   "What is acne?",
+   "What causes acne?",
+   "What are the clinical features of acne?",
+   "What is the treatment for acne?"
+  ],
+  "palabras": 356,
+  "imagenes": 3,
+  "necesario": 3.72,
+  "min": 4,
+  "pagina": {
+   "palabras": 597,
+   "imagenes": 3
+  },
+  "motivo": "sin «differential diagnosis»; el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento (las 3 imágenes están en «What tests…»)"
+ },
+ "pemphigus-vulgaris": {
+  "alcance": [
+   "What is pemphigus vulgaris?",
+   "What are the clinical features of pemphigus vulgaris?",
+   "How is pemphigus vulgaris diagnosed?"
+  ],
+  "palabras": 601,
+  "imagenes": 9,
+  "necesario": 7.26,
+  "min": 7,
+  "pagina": {
+   "palabras": 1598,
+   "imagenes": 9
+  },
+  "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (IFD, biopsia) separa pénfigo de penfigoide"
+ },
+ "urticaria-an-overview": {
+  "alcance": [
+   "What is urticaria?",
+   "Classification of urticaria",
+   "What are the clinical features of urticaria?",
+   "What is the differential diagnosis of urticaria?"
+  ],
+  "palabras": 465,
+  "imagenes": 7,
+  "necesario": 5.63,
+  "min": 6,
+  "pagina": {
+   "palabras": 1968,
+   "imagenes": 7
+  }
+ },
+ "stevens-johnson-syndrome-toxic-epidermal-necrolysis": {
+  "alcance": [
+   "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
+   "What are the clinical features of SJS/TEN?",
+   "What is the differential diagnosis of SJS/TEN?"
+  ],
+  "palabras": 393,
+  "imagenes": 6,
+  "necesario": 4.78,
+  "min": 5,
+  "pagina": {
+   "palabras": 2392,
+   "imagenes": 10
+  }
+ },
+ "cutaneous-lupus-erythematosus": {
+  "alcance": [
+   "What is cutaneous lupus erythematosus?",
+   "What are the clinical features of cutaneous lupus erythematosus?"
+  ],
+  "palabras": 598,
+  "imagenes": 21,
+  "necesario": 10.23,
+  "min": 10,
+  "pagina": {
+   "palabras": 1298,
+   "imagenes": 30
+  },
+  "motivo": "sin «differential diagnosis»"
+ },
+ "cellulitis": {
+  "alcance": [
+   "What is cellulitis?",
+   "What are the clinical features of cellulitis?",
+   "What are the complications of cellulitis?",
+   "What is the differential diagnosis of cellulitis?"
+  ],
+  "palabras": 351,
+  "imagenes": 3,
+  "necesario": 3.68,
+  "min": 4,
+  "pagina": {
+   "palabras": 1284,
+   "imagenes": 3
+  }
+ },
+ "syphilis": {
+  "alcance": [
+   "What is syphilis?",
+   "What are the clinical features of syphilis?",
+   "What is the differential diagnosis of syphilis?"
+  ],
+  "palabras": 992,
+  "imagenes": 15,
+  "necesario": 12.02,
+  "min": 12,
+  "pagina": {
+   "palabras": 2047,
+   "imagenes": 15
+  }
+ },
+ "herpes-simplex": {
+  "alcance": [
+   "What is herpes simplex?",
+   "What are the clinical features of herpes simplex?",
+   "What are the complications of herpes simplex?"
+  ],
+  "palabras": 739,
+  "imagenes": 9,
+  "necesario": 8.41,
+  "min": 8,
+  "pagina": {
+   "palabras": 1553,
+   "imagenes": 9
+  },
+  "motivo": "sin «differential diagnosis»: las complicaciones (eccema herpético, queratitis) son lo que el átomo pide no errar"
+ },
+ "fungal-skin-infections": {
+  "alcance": [
+   "Yeast infections",
+   "Dermatophyte infections",
+   "Deep fungal infections",
+   "Other fungal infections",
+   "Treatment of fungal infections",
+   "Differential diagnosis of fungal infections"
+  ],
+  "palabras": 254,
+  "imagenes": 0,
+  "necesario": 2.12,
+  "min": 2,
+  "pagina": {
+   "palabras": 373,
+   "imagenes": 0
+  },
+  "motivo": "página resumen sin «clinical features» ni imágenes: la página entera"
+ }
+};
 
 /** Sesiones CURADAS (d1-d5): plan A (AccessDerma) y plan B (acceso remoto caducado), 13:30–14:15. */
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {

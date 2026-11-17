@@ -87,6 +87,16 @@
  *       de F1 sigue siendo el Palmerton «High Yield Cardiology Part 2» entero) · un vídeo no se parte si el resto sería < 3′ (NO_PARTIR).
  *   (3) consolidación de F1: N1 = 15Q Tutor a 3′ + revisión 12′ + gate 3′ · N2 = 25Q TIMED + revisión 21′ + gate 2′; las 5Q que faltan → la EVALUACIÓN
  *       ACUMULATIVA de las 18:00 (15Q) o, si las 18:00 son Day-After, las 07:15 del siguiente día de Step (cincoDe). La contabilidad de uWorld no cambia.
+ * v6.09b · lote 1-bis (mar 17-nov-2026, pasos de F1 fuera de 0,85-1,15 con las reglas de la auditoría; SOLO F1 — todo lo ≥ 4-ene-2027 sale idéntico; la
+ *   contabilidad de uWorld (QS), el tope de 30 nuevas/día de la semana 1 y el presupuesto de tarjetas no cambian; el re-test de Status Incorrect no gasta
+ *   preguntas nuevas):
+ *   (1) D2 pre-test: 8Q uWorld (todas las que tiene) + 2Q ciegas de Mehlman «Inflammation and repair» (uWorld solo tiene 2 de inflamación) = 10Q en 30′.
+ *   (2) D4 18:00: eval reducida = 5Q nuevas + 5 re-test de Status Incorrect (10Q TIMED 15′ + corrección 9′); antes 5Q con 16′ de corrección (0,27).
+ *   (3) D5 18:00: cierre de la semana 1 = 5Q nuevas + 10 re-test de Status Incorrect (15Q TIMED 23′ + corrección 13′); antes 10Q con 17′ (0,50).
+ *   (4) 6/6 del Day-After de un NBME de F1 (D12): 10Q mixtas + 2 re-test (12Q TIMED 18′ + corrección 9′); antes 10Q con 12′ de corrección (0,71).
+ *   (5) 07:15: la validación de 5Q TIMED lleva su revisión (11′ = 5 × 90 s + 5 × 0,85′; antes 10′ sin revisión explícita) y la shopping list 1′ menos:
+ *       el vídeo pendiente y el reparto de la cola no cambian.
+ *   (6) Palmerton «High Yield» de F1: el texto dice las pausas para anotar que ya llevaban sus minutos (× 1,15); antes «escucha y anota» (0,82-0,87).
  * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
  *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
  *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
@@ -577,7 +587,8 @@ function pasosVideo(d, arr) {
     const minTxt = `${it.min}′ = ${Math.round((it.fin - it.ini) / 60)} min de vídeo ÷ ${coma(vv.v)} × ${coma(vv.f)} por las pausas`;
     const sigue = it.ini ? (it.dOrig !== d ? ` · PENDIENTE del ${etqD(it.dOrig)}: sigue desde el minuto ${hms(it.ini)}` : ` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`) : '';
     if (METODO[it.id]) return P(it.min, `Palmerton · «${p.t}» ${tramo}`, `YouTube · ${vv.txt}${sigue} · ${METODO[it.id].como} · ${minTxt}`, { t: it.ini ? 'YouTube (desde ese minuto)' : 'YouTube', url: yt(it.id, it.ini) });
-    return P(it.min, `Palmerton · «${p.t}» de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (${etqD(it.dOrig)}): escucha y anota 3 ideas; sin tarjetas`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
+    // v6.09b · lote 1-bis: en F1 (d < 100) el texto dice las pausas que ya llevan los minutos (÷ velocidad × 1,15); el tramo 2 (2027) queda igual (otro lote)
+    return P(it.min, `Palmerton · «${p.t}» de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (${etqD(it.dOrig)}): ${d < 100 ? `escucha, pausa y anota 3 ideas (${minTxt}); sin tarjetas` : 'escucha y anota 3 ideas; sin tarjetas'}`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
   });
 }
 const recVideo = (arr) => arr.map((it) => (it.tipo === 'bb' ? { t: bbRuta(it.id), url: QBV, min: Math.round(BB.get(it.id).s / 60) } : { t: `Palmerton · ${PALM[it.id].t}`, url: yt(it.id, it.ini), min: Math.round(PALM[it.id].s / 60) }));
@@ -616,14 +627,17 @@ function repaso0715(r) {
   // v6.09 · lote 1 (auditoría a1-13): si la consolidación N2 de la víspera (F1, 18:00 = Day-After) bajó a 25Q, sus 5Q que faltan van aquí (11′ =
   //   5 × 90 s + revisión 5 × 0,85′), con 2′ menos de shopping list y ≤28′ de vídeo pendiente (CAP.s0715) → el paso flexible queda ≥ 3′
   const v5 = cinco0715De(r);
-  const sh = v5 ? 8 : 10;
+  // v6.09b · lote 1-bis (F1): la validación de 5Q TIMED lleva su revisión (11′ = 5 × 90 s + 5 × 0,85′; antes 10′ sin revisión) y la shopping list da 1′:
+  //   la franja de vídeo pendiente (CAP.s0715) y el paso flexible no cambian → el reparto de la cola es el mismo. El tramo 2 (2027) queda igual.
+  const f1v = !r.t; const val = f1v ? 11 : 10;
+  const sh = (v5 ? 8 : 10) - (f1v ? 1 : 0);
   const pasos = [
     P(sh, `Shopping list + free recall de ${lejos ? `la ÚLTIMA SESIÓN (${fd(prev.fecha)})` : 'AYER'}: «${corto(txtSub(prev), 80)}» (${etq(prev)})`, `Lee tus notas de 📏 Medición ${lejos ? `del ${fd(prev.fecha)}` : 'de ayer'}; después, SIN mirar, escribe en 90 s la cadena causal del subtema y marca lo que no salió.`),
-    P(10, lejos ? `5Q TIMED del subtema del ${fd(prev.fecha)} (validación a los ${diasEntre(prev.fecha, f)} días · 1.ª mitad del gate de 10Q)` : '5Q TIMED del subtema de ayer (validación 24-48 h · 1.ª mitad del gate de 10Q)', tcUW(uwDe(prev.d), 5, TIMED), L_UW),
+    P(val, lejos ? `5Q TIMED del subtema del ${fd(prev.fecha)} (validación a los ${diasEntre(prev.fecha, f)} días · 1.ª mitad del gate de 10Q)` : '5Q TIMED del subtema de ayer (validación 24-48 h · 1.ª mitad del gate de 10Q)', f1v ? `${tcUW(uwDe(prev.d), 5, TIMED)} · 90 s/Q (7,5′) + revisión del Educational Objective de cada fallo y cada duda (≈0,85′/Q) → tipo de error en 📏 Medición.` : tcUW(uwDe(prev.d), 5, TIMED), L_UW),
     ...(v5 ? [P(11, `5Q TIMED que quedaron de la consolidación del ${fd(v5.fecha)} (${etq(v5)}: 25Q a las 11:00 + estas 5 = las 30 del nivel 2)`, `${tcUW(sistemasSoFar(v5), 5, TIMED)} · 90 s/Q (7,5′) + revisión del Educational Objective de cada fallo (≈0,85′/Q) → tipo de error en 📏 Medición; cuentan para el % de la consolidación de ese día.`, L_UW)] : []),
     ...vids,
   ];
-  const resto = 60 - 10 - sh - (v5 ? 11 : 0) - V;
+  const resto = 60 - val - sh - (v5 ? 11 : 0) - V;
   const dd = [d3 && ['D-3', d3], d7 && ['D-7', d7]].filter(Boolean);
   // v6.09 · lote 1: con ≤ 5′ (días con las 5Q de la víspera) el paso es solo el free recall; las vencidas que quedaran a las 05:00 → mañana 05:00
   if (resto > 0 && v5 && resto <= 5) pasos.push(P(resto, `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x) => `«${corto(txtSub(x[1]), 50)}» (${etq(x[1])})`).join(' y ')}`, 'Sin mirar: 3 ideas de cada uno (≈1′ por subtema); lo que salga < 60 % → busca sus tarjetas y márcalas Again. Hoy no hay «Anki restante»: si quedaron vencidas a las 05:00, van primero en el próximo Anki AM (antes que las nuevas).'));
@@ -731,6 +745,14 @@ function consolidacion(r) {
 function pasosEval(r, comprimido) {
   const ids = [...(VISTOS_ANTES[r.d] || []), ...uwDe(r.d).filter((x) => !(VISTOS_ANTES[r.d] || []).includes(x))];
   const txtSis = `los ${ids.length} Systems ya vistos (los de hoy: ${uwDe(r.d).map((id) => `«${UWY.get(id).nombre}»`).join(', ')}; más los de ${r.t ? 'F1 y de las filas desplazadas anteriores' : 'los días anteriores de F1'})`;
+  // v6.09b · lote 1-bis: en F1 (6/6 del Day-After del NBME 25) la corrección de 10Q en 12′ era 0,71 → + 2 re-test de Status Incorrect (12Q TIMED 18′ +
+  //   corrección 9′ = 12 × 0,85′): no gasta preguntas nuevas (QS igual). El tramo 2 (2027) queda igual (otro lote).
+  if (comprimido && !r.t) return [
+    P(2, 'Armar 2 tests TIMED: 10Q mixtas de lo ya visto + 2 re-test de tus incorrectas', `(a) QBanks › uWorld › New Test → Systems: ${txtSis} · Status Unused · 10 · Timed · (b) los mismos Systems · Status Incorrect · 2 · Timed (las que fallaste en las consolidaciones y evals de F1; el re-test no gasta preguntas nuevas)`, L_UW),
+    P(18, '12Q TIMED (10 mixtas nuevas + 2 re-test de incorrectas; 90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · sin cambiar respuestas salvo error de lectura · primero las 10 nuevas.'),
+    corrEval(r, 9, presupuesto(r).ev),
+    P(1, 'Registrar eval % (las 10 nuevas; el re-test aparte) + horas netas del día', '📏 Medición.'),
+  ];
   if (comprimido) return [
     P(1, 'Armar 10Q mixtas TIMED', `QBanks › uWorld › New Test → Systems: ${txtSis} · Status Unused · 10 · Timed`, L_UW),
     P(15, '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · sin cambiar respuestas salvo error de lectura.'),
@@ -766,7 +788,7 @@ function dayAfter18(r, th) {
   const nom = nomHito(th.hito); const dr = DRILL[th.n];
   const pasos = [P(dr.length * 15, `Drill de cronología del ${nom}: pregunta${dr.length > 1 ? 's' : ''} ${dr.join(', ')} de 10 (las falladas más largas y con más labs)`, `15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente ${pcCardTxt(th.hito)}`)];
   if (th.n === 4) pasos.push(...pasosEval(r, true));
-  return B(r.fecha, '18:00–18:45', `DAY-AFTER ${nom} · ${th.n + 2}/6 — drill de cronología${th.n === 4 ? ' + eval 10Q' : ''}`, pasos, [R_UW], th.n === 4 ? '10/10 PC cards del drill y la eval de 10Q registrada' : `${dr.length} PC cards más`, { aviso: [th.n === 1 ? `Day-After del ${nom} (Palmerton §9.2, ~4 h) repartido: 18:00 del hito (registro + trayectoria + auditoría) · 07:15 de hoy (triaje + gráficos) · 18:00 de hoy y de los 3 días ${DSEM === 'L-V' || r.t ? 'siguientes' : 'de Step siguientes'} (10 drills). La eval de 10Q vuelve el 4.º día${DSEM === 'L-V' || r.t ? '' : ' de Step'}; el subtema de cada día NO cambia.` : '',
+  return B(r.fecha, '18:00–18:45', `DAY-AFTER ${nom} · ${th.n + 2}/6 — drill de cronología${th.n === 4 ? (r.t ? ' + eval 10Q' : ' + eval 10Q (+ 2 re-test)') : ''}`, pasos, [R_UW], th.n === 4 ? `10/10 PC cards del drill y la eval de 10Q registrada${r.t ? '' : ' (+ las 2 del re-test)'}` : `${dr.length} PC cards más`, { aviso: [th.n === 1 ? `Day-After del ${nom} (Palmerton §9.2, ~4 h) repartido: 18:00 del hito (registro + trayectoria + auditoría) · 07:15 de hoy (triaje + gráficos) · 18:00 de hoy y de los 3 días ${DSEM === 'L-V' || r.t ? 'siguientes' : 'de Step siguientes'} (10 drills). La eval de 10Q vuelve el 4.º día${DSEM === 'L-V' || r.t ? '' : ' de Step'}; el subtema de cada día NO cambia.` : '',
     // v6.08: si el trozo siguiente del Day-After cae en F4 (sin franja de 18:00), el último trozo con franja lo avisa
     daEnF4(th.hito).some((o) => o.n === th.n + 1) ? daEnF4Txt(th.hito) : ''].filter(Boolean).join(' ') || undefined });
 }
@@ -935,12 +957,14 @@ function semana1(r) {
   }
   // 08:15
   const pre = {
-    2: ['PRE-TEST · lesión celular + inflamación — 8Q (TODAS las que tiene uWorld)', [P(3, 'Volver a uWorld y armar', `QBanks › USMLE › «uWorld - USMLE Step 1» › Select QBank (${antesTxt(DD(1), DD(2))} quedó activo el UWSA1) › New Test → Systems ${uwNom(1110)} + ${uwNom(1111)} · Subjects todos · Status Unused · 8 · Order por defecto · Tutor → BEGIN TEST`, L_UW), P(30, '8Q ciegas en Tutor (sin reloj)', 'SAQ + CCSN antes de mirar las opciones; después lee la explicación entera (~3′ por pregunta en inglés).'), P(12, 'Free recall 90 s + shopping list', 'Sin mirar: qué sabes de lesión/muerte celular e inflamación; cada duda (también en aciertos) a la shopping list de 📏 Medición.')], `uWorld solo tiene 8Q de «Principles of pathology» (Cellular pathology 6 + Inflammation and repair 2): se usan TODAS aquí; la consolidación de las 11:00 y la validación ${despuesTxt(DD(2), DD(3)) === 'mañana' ? 'de mañana' : 'del ' + fd(DD(3))} van con Mehlman (respaldo).`],
+    // v6.09b · lote 1-bis: 8Q de uWorld en 30′ eran 0,80 (3′/Q) → + 2Q ciegas de Mehlman «Inflammation and repair» (uWorld solo tiene 2 de inflamación):
+    //   10Q en 30′. Tope del día: 10 + 10 (+ 5 del bloque extra) = 25 ≤ 30 nuevas; Mehlman 204 tiene 38 (la consolidación del D3 usa 5-10).
+    2: ['PRE-TEST · lesión celular + inflamación — 8Q uWorld (TODAS las que tiene) + 2Q Mehlman de inflamación', [P(3, 'Volver a uWorld y armar', `QBanks › USMLE › «uWorld - USMLE Step 1» › Select QBank (${antesTxt(DD(1), DD(2))} quedó activo el UWSA1) › New Test → Systems ${uwNom(1110)} + ${uwNom(1111)} · Subjects todos · Status Unused · 8 · Order por defecto · Tutor → BEGIN TEST`, L_UW), P(24, '8Q ciegas en Tutor (sin reloj)', 'SAQ + CCSN antes de mirar las opciones; después lee la explicación entera (~3′ por pregunta en inglés).'), P(1, 'Cambiar a Mehlman y armar 2Q', `QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank › New Test → System ${mhNom(204)} · Status Unused · 2 · Tutor → BEGIN TEST`, L_UW), P(6, '2Q ciegas de inflamación en Tutor (Mehlman)', 'Mismo método: SAQ + CCSN y la explicación entera (~3′ por pregunta). uWorld solo tiene 2 de inflamación: estas 2 completan las 10 del pre-test.'), P(11, 'Free recall 90 s + shopping list', 'Sin mirar: qué sabes de lesión/muerte celular e inflamación; cada duda (también en aciertos) a la shopping list de 📏 Medición.')], `uWorld solo tiene 8Q de «Principles of pathology» (Cellular pathology 6 + Inflammation and repair 2): se usan TODAS aquí y 2Q de Mehlman de inflamación completan las 10; la consolidación de las 11:00 y la validación ${despuesTxt(DD(2), DD(3)) === 'mañana' ? 'de mañana' : 'del ' + fd(DD(3))} van con Mehlman (respaldo). Hoy: 10 + 10 (+ 5 si haces el bloque extra) ≤ 30 preguntas nuevas.`],
     3: ['PRE-TEST · neoplasia — 10Q ciegas (uWorld)', [P(3, 'Volver a uWorld y armar', `QBanks › USMLE › «uWorld - USMLE Step 1» › Select QBank › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} · Status Unused · 10 · Tutor → BEGIN TEST`, L_UW), P(30, '10Q ciegas en Tutor', 'SAQ + CCSN; explicación entera de cada una.'), P(12, 'Free recall 90 s + shopping list', 'Sin mirar: qué sabes de neoplasia; dudas a la shopping list.')]],
     4: ['PRE-TEST · inmunidad innata/adaptativa + MHC + linfocitos — 10Q ciegas', [P(3, 'Volver a uWorld y armar', `QBanks › USMLE › «uWorld - USMLE Step 1» › Select QBank › New Test → System ${uwNom(1004)} · Status Unused · 10 · Tutor → BEGIN TEST`, L_UW), P(30, '10Q ciegas en Tutor', 'SAQ + CCSN; explicación entera de cada una.'), P(12, 'Free recall 90 s + shopping list', 'Sin mirar: qué sabes de inmunidad; dudas a la shopping list.')]],
     5: ['PRE-TEST · hipersensibilidad + autoinmunidad + inmunodeficiencias + trasplante — 10Q ciegas', [P(3, 'Armar el test en el Test Composer', tcUW([1002, 1001, 1000, 1005], 10, TUTOR), L_UW), P(30, '10Q ciegas en Tutor', 'SAQ + CCSN; explicación entera de cada una.'), P(12, 'Free recall 90 s + shopping list', 'Sin mirar: tipos I-IV de hipersensibilidad, inmunodeficiencias que conozcas; dudas a la shopping list.')]],
   }[d];
-  out.push(B(f, '08:15–09:00', pre[0], pre[1], [R_UW], d === 2 ? 'nota /8 en 📏 Medición (40-60 % es normal: es diagnóstico)' : 'nota /10 en 📏 Medición (40-60 % es normal: es diagnóstico)', { planB: respaldo(d, 10), aviso: pre[2] }));
+  out.push(B(f, '08:15–09:00', pre[0], pre[1], [R_UW], d === 2 ? 'nota /10 en 📏 Medición (8 uWorld + 2 Mehlman; 40-60 % es normal: es diagnóstico)' : 'nota /10 en 📏 Medición (40-60 % es normal: es diagnóstico)', { planB: respaldo(d, 10), aviso: pre[2] }));
   // 09:00
   out.push(deepPrime(r));
   // 11:00
@@ -953,19 +977,22 @@ function semana1(r) {
   out.push(B(f, '11:00–12:00', con[0], con[1], [R_UW], '10Q (o 15) hechas, % en 📏 Medición y gate marcado ✓/✗', { aviso: con[2], planB: d >= 4 ? respaldo(d, 10) : undefined }));
   // 18:00
   if (d === 2 || d === 3) out.push(B(f, '18:00–18:45', `DAY-AFTER UWSA1 · ${d === 2 ? '4/6 — drill de cronología (4-6)' : '5/6 — drill de cronología (7-9)'}`, [P(45, `Drill de cronología: 3 incorrectas más del UWSA1 (${d === 2 ? '4, 5 y 6' : '7, 8 y 9'} de 10)`, `15′ cada una: caso reescrito A MANO en orden cronológico y en presente ${pcCardTxt(filaD(1))}`)], [R_UW], `3 PC cards más (${d === 2 ? 6 : 9}/10)`));
-  else if (d === 4) out.push(B(f, '18:00–18:45', 'DAY-AFTER UWSA1 · 6/6 + EVAL reducida (5Q timed)', [
+  // v6.09b · lote 1-bis: D4 y D5 con re-test de Status Incorrect (no gasta preguntas nuevas: el tope de 30/día y la contabilidad QS no cambian).
+  //   D4: 5Q nuevas + 5 re-test = 10Q TIMED 15′ + corrección 9′ (antes 5Q con 16′ de corrección, 0,27) · D5: 5 nuevas + 10 re-test = 15Q TIMED 23′ +
+  //   corrección 13′ (antes 10Q con 17′, 0,50). Las incorrectas salen de los pre-tests y consolidaciones de uWorld del D2-D5 (respaldo: Mehlman).
+  else if (d === 4) out.push(B(f, '18:00–18:45', 'DAY-AFTER UWSA1 · 6/6 + EVAL reducida (5Q nuevas + 5 re-test, timed)', [
     P(15, 'Drill de cronología: la 10.ª incorrecta del UWSA1', `Reescrita a mano en orden cronológico ${pcCardTxt(filaD(1))} Day-After cerrado (≈4 h).`),
-    P(1, 'Armar 5Q TIMED de lo ya visto', `QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} · Status Unused · 5 · Timed`, L_UW),
-    P(8, '5Q TIMED (90 s/Q)', 'Modo examen: cover-the-options; sin cambiar respuestas.'),
-    corrEval(r, 16, presupuesto(r).ev),
-    P(5, 'Registrar eval % + horas netas', '📏 Medición.'),
-  ], [R_UW], 'drill 10/10 y la eval de 5Q registrada', { aviso: 'Eval reducida a 5Q nuevas: el tope de la semana 1 (D1-D5) son 30 preguntas nuevas al día (5 + 10 + 10 + 5). Si hoy hiciste el bloque extra de las 11:00, cambia estas 5 por 5 de Status Incorrect.' }));
-  else out.push(B(f, '18:00–18:45', 'EVAL de cierre de la semana 1 (D1-D5) · 5Q nuevas timed + 5 incorrectas', [
-    P(2, 'Armar 2 tests de 5Q TIMED', `(a) QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} + ${uwNom(1002)} · Status Unused · 5 · Timed · (b) mismo filtro con Status Incorrect · 5 · Timed`, L_UW),
-    P(16, '10Q TIMED (5 nuevas + 5 re-test de incorrectas)', '90 s/Q; cover-the-options.'),
-    corrEval(r, 17, presupuesto(r).ev),
-    P(10, `Registrar + resumen para la revisión semanal del ${fd(sabadoTras(f))}`, '📏 Medición (eval %, horas netas) + gates de D2-D5: lesión celular · inflamación · neoplasia · inmunidad básica · inmunidad clínica (✓/✗) + minutos de vídeo que quedan en la cola.'),
-  ], [R_UW], 'eval registrada y el resumen de la semana escrito', { aviso: 'Tope de la semana 1 (D1-D5): 30 preguntas nuevas/día (5 + 10 + 10 + 5). Si hiciste el bloque extra de las 11:00, el test (a) también va con Status Incorrect.' }));
+    P(2, 'Armar 2 tests de 5Q TIMED: 5 nuevas de lo ya visto + 5 re-test de tus incorrectas', `(a) QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} · Status Unused · 5 · Timed · (b) Systems ${uwNom(1110)} + ${uwNom(1111)} + ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} · Status Incorrect · 5 · Timed (las que fallaste en los pre-tests y la consolidación de uWorld del D2-D4; si salen < 5, completa con Mehlman › Status Incorrect)`, L_UW),
+    P(15, '10Q TIMED (5 nuevas + 5 re-test de incorrectas; 90 s/Q)', 'Modo examen: cover-the-options; sin cambiar respuestas. Primero las 5 nuevas. El re-test no son preguntas nuevas: el tope de 30 nuevas del día no cambia.'),
+    corrEval(r, 9, presupuesto(r).ev),
+    P(4, 'Registrar eval % (nuevas y re-test por separado) + horas netas', '📏 Medición.'),
+  ], [R_UW], 'drill 10/10 y la eval de 10Q (5 nuevas + 5 re-test) registrada', { aviso: 'Eval reducida a 5Q nuevas: el tope de la semana 1 (D1-D5) son 30 preguntas nuevas al día (5 + 10 + 10 + 5); las otras 5 son re-test de tus incorrectas (no cuentan como nuevas). Si hoy hiciste el bloque extra de las 11:00, el test (a) también va con Status Incorrect.' }));
+  else out.push(B(f, '18:00–18:45', 'EVAL de cierre de la semana 1 (D1-D5) · 5Q nuevas timed + 10 re-test de incorrectas', [
+    P(2, 'Armar 2 tests TIMED: 5 nuevas + 10 re-test', `(a) QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} + ${uwNom(1002)} · Status Unused · 5 · Timed · (b) los Systems de la semana ${uwNom(1110)} + ${uwNom(1111)} + ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} + ${uwNom(1002)} · Status Incorrect · 10 · Timed (si salen < 10, completa con Mehlman › Status Incorrect: las consolidaciones del D2 y el D3)`, L_UW),
+    P(23, '15Q TIMED (5 nuevas + 10 re-test de incorrectas; 90 s/Q)', 'Cover-the-options; primero las 5 nuevas. El re-test no son preguntas nuevas: el tope de 30 nuevas del día no cambia.'),
+    corrEval(r, 13, presupuesto(r).ev),
+    P(7, `Registrar + resumen para la revisión semanal del ${fd(sabadoTras(f))}`, '📏 Medición (eval % de las nuevas y del re-test, horas netas) + gates de D2-D5: lesión celular · inflamación · neoplasia · inmunidad básica · inmunidad clínica (✓/✗) + minutos de vídeo que quedan en la cola.'),
+  ], [R_UW], 'eval registrada (nuevas y re-test) y el resumen de la semana escrito', { aviso: 'Tope de la semana 1 (D1-D5): 30 preguntas nuevas/día (5 + 10 + 10 + 5); las 10 del re-test son incorrectas ya vistas (no cuentan como nuevas). Si hiciste el bloque extra de las 11:00, el test (a) también va con Status Incorrect.' }));
   return out;
 }
 

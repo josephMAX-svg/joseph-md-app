@@ -104,7 +104,7 @@ import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
 import { SYN_DIAS, SYN_PLAN_META, synDiaDe } from './synapseDailyPlan';
 import type { SynBloque } from './synapseDailyPlan';
 import { AURUM_DIAS, aurumDiaDe, aurumObsUrl } from './aurumDailyPlan';
-import type { DiaAurum } from './aurumDailyPlan';
+import type { DiaAurum, AurumBloque } from './aurumDailyPlan';
 import { LIV_DIAS, livDiaDe } from './livianoStudyPlan';
 import type { DiaLiviano } from './livianoStudyPlan';
 import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiDeck } from './livianoCasos';
@@ -446,6 +446,9 @@ function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
   const cur = synCurDe(iso, b.tag);
   // v6.09: la pieza que recupera un día sin sesión (dom 29-nov, DOM_RECUPERA) conserva su «· recupera el …» aunque lleve curaduría
   const rec = (/ · recupera el .+$/.exec(b.leccion) || [''])[0];
+  // v6.09b (S1 · a2-4/5/6): F1 troceado con material MEDIDO (gen_synapse_plan.js › synapse_f1_tramos.js): el paso del generador manda sobre la
+  //   curaduría (tramo exacto, velocidad, palabras y adónde va el resto, con fecha); fuera de F1 los bloques no traen `guia` y todo sigue igual
+  if (b.guia) return P(b.min, `${b.tag} · ${b.guia.que}${rec}`, b.guia.como, b.guia.url ? { t: b.guia.t ?? `${b.tag} ↗`, url: b.guia.url } : b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined);
   if (cur) return P(b.min, `${b.tag} · ${cur.que}${rec}`, cur.como, { t: cur.t, url: cur.url });
   const enl = b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined;
   if (b.tag === 'A') return P(b.min, `A (pantalla) · ${b.material} › ${b.leccion}`,
@@ -736,6 +739,145 @@ const AURUM_L_PLANB: Record<number, string> = {
   6: 'Sin préstamo de Archive.org: Wharton (20:28) desde donde lo dejaste — youtube.com/watch?v=J6EjBwrdHgE.',
   9: 'Sin préstamo de Archive.org: Wharton (20:28) desde donde lo dejaste — youtube.com/watch?v=J6EjBwrdHgE.',
 };
+// ── v6.09b (lote 1-bis · S2, 17-nov-2026): AURUM en F1 = TIEMPO ↔ MATERIAL ─────────────────────────────────────────────────────────────────
+//   Joseph: «no puede haber poco tiempo con mucho material ni mucho tiempo con poco material». En F1 (D1-D32, 60′ a las 14:15) la lectura L que no
+//   cabía quedaba como «lectura de huecos (no es núcleo)», sin fecha (272′ en 27 sesiones, a2-1). Ahora: (1) lo que no cabe va al SÁBADO de esa
+//   semana 04:15 (bloque «AURUM · L de la semana», antes de la rutina 05:45-07:15 y del gimnasio; el sáb 21-nov es viaje → la semana del 17 va al
+//   28-nov); (2) el audiolibro de Tracy (D16-D32) va como UN hilo con hora exacta a 1,25×; (3) el A que el plan enlazaba a páginas sin medir o
+//   a un tráiler va con material concreto medido (AURUM_F1_A); (4) el resumen de HubSpot, por capítulos medidos. Desde el 4-ene (min30) nada cambia.
+/** Audiolibro «The Psychology of Selling» (Brian Tracy) que el plan reparte en F1 (A de D16 · D29 · D31 y la L de D16-D32): un solo vídeo de
+ *  8:51:07 (31.867 s, lengthSeconds leído de YouTube el 17-nov-2026), sin capítulos → tramos con hora exacta a 1,25× (1′ de franja = 75 s de
+ *  audio). Lo que el plan le da en F1 (A 64′ + L 364′ = 428′) ≈ el libro entero a 1,25× (425′): termina el jue 31-dic. */
+const TRACY = { id: 'i0B4v-9fLQc', s: 31867, vel: 1.25, t: '«The Psychology Of Selling» (Brian Tracy, audiolibro completo, 8:51:07)' };
+const esTracy = (b?: AurumBloque): boolean => !!b && (b.url ?? '').includes(TRACY.id);
+const hms = (s: number): string => `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(Math.round(s) % 60).padStart(2, '0')}`;
+/** A medido en F1 donde el plan enlazaba páginas sin medir (Wikipedia de Joe Girard = 458 palabras, sin la Ley de los 250 ni las tarjetas «I like
+ *  you»; la página del Automotive Hall of Fame carga por JavaScript y no se puede medir) o un vídeo mucho más corto que su bloque (D20: el «Session»
+ *  de MasterClass es un tráiler de 1:54 para 22′). Medido el 17-nov-2026: lengthSeconds de YouTube y palabras de la API de Wikipedia. Minutos del
+ *  bloque A = vídeos a 1,0× + palabras / 100 (redondeo hacia arriba); lo que sobra o falta frente al plan sale de / va a la lectura L del día. */
+interface AurumAMed { t: string; canal: string; url: string; s?: number; palabras?: number }
+const AURUM_F1_A: Record<number, { items: AurumAMed[]; nota: string }> = {
+  20: { items: [{ t: 'Win Workplace Negotiations with Chris Voss | Sessions by MasterClass', canal: 'MasterClass', url: yt('2gBboDdtTlc'), s: 114 }, { t: 'Make Them Listen: How To Use Your Tone To Control Their Reactions', canal: 'Chris Voss & The Black Swan Group', url: yt('_eZlQCDNx30'), s: 804 }], nota: 'El primero es solo el tráiler (1:54): el tono aplicado está en el segundo. Anota 3 frases donde el tono baja al final.' },
+  26: { items: [{ t: 'Joe Girard — Wikipedia (EN: intro · Early life · Career · Awards)', canal: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Joe_Girard', palabras: 458 }, { t: "The World's Greatest Salesperson - Joe Girard", canal: 'Selling Today', url: yt('n66XgJ80yuM'), s: 203 }], nota: 'Es el «perfil de Girard» del drill: anota los 13.001 autos y en qué estaba su ventaja.' },
+  27: { items: [{ t: "The Rule of 250: How the World's Greatest Salesman Never Lost a Lead", canal: 'Wealth Wisdom Books', url: yt('8hvN_u5savs'), s: 603 }, { t: 'The Law of 250 - Success in Selling', canal: 'Michael Dill', url: yt('xe3c9nUyypc'), s: 337 }], nota: 'La Ley de los 250 no está en la página de Wikipedia del plan: va con estos 2 vídeos.' },
+  28: { items: [{ t: "How to Get More Repeat Sales (Joe Girard's 13,000 Cards a Month)", canal: 'Simple-Growth', url: yt('dHVHGX2jEP8'), s: 169 }, { t: 'Lessons from the Best Salesman in the World', canal: 'goalrichdad', url: yt('wUVP7rQ0WZU'), s: 301 }], nota: 'Las tarjetas mensuales «I like you» no están en la página de Wikipedia del plan: el 1.er vídeo es ese sistema.' },
+  30: { items: [{ t: "13 Sales Tips from Joe Girard: World's Greatest Salesman", canal: 'The Business Guy', url: yt('_vOdePXsFVY'), s: 727 }], nota: 'Repaso del sistema: marca los tips que ya aplica tu máquina de rapport.' },
+};
+/** L medida en F1: el resumen de HubSpot «A 10-Minute Summary of The Psychology of Selling» (2.322 palabras, contadas por capítulo el 17-nov-2026). */
+const AURUM_F1_L: Record<number, { que: string; palabras: number }> = {
+  3: { que: 'HubSpot · «A 10-Minute Summary of The Psychology of Selling» › intro (107 palabras) + Chapter 1 Inner Game (346) + 2 Goals (285) + 3 Why People Buy (361) + 4 Creative Selling (266) = 1.365 palabras', palabras: 1365 },
+  8: { que: 'HubSpot · mismo resumen › Chapter 5 Appointments (226 palabras) + 6 Suggestion (123) + 7 Making the Sale (464) + 8 Ten Keys (126) + 2.ª pasada del Chapter 1 Inner Game: autoconcepto y miedo al rechazo (346) = 1.285 palabras', palabras: 1285 },
+};
+/** Minutos del bloque A de una sesión (los mismos que pinta guiaAurumDe). */
+function aurumAMin(x: DiaAurum): number {
+  const A = x.bloques.find((b) => b.tag === 'A');
+  if (!A) return 0;
+  const med = !x.min30 ? AURUM_F1_A[x.d] : undefined;
+  if (med) return Math.ceil(med.items.reduce((s, i) => s + (i.s ?? 0) / 60 + (i.palabras ?? 0) / PPM_EN, 0));
+  const cur = AURUM_VID[x.d];
+  const seg = cur ? cur.vids.reduce((s, v) => s + v.s, 0) : 0;
+  // v6.09b (lote 1-bis S2): en F1 el vídeo curado manda también si dura MENOS que el estimado del plan (lo que sobra va a la L), salvo que su nota
+  //   ya reparta esos minutos («Los 3′ que sobran: …» → paso ANOTAR aparte); desde el 4-ene, igual
+  return seg && !x.min30 && !/^Los \d+′ que sobran:/.test(cur ? cur.nota : '') ? minDe(seg) : Math.max(A.min, seg ? minDe(seg) : 0);
+}
+interface AurumF1Dia { d: number; fecha: string; aMin: number; lin: number; fuera: number; sab: string | null; adelantado: boolean; tracyA?: [number, number]; tracyL?: [number, number] }
+interface AurumLSab { sab: string; ini: string; fin: string; min: number; items: Array<{ x: DiaAurum; min: number }>; tracy: { min: number; seg: [number, number]; dias: number[]; adelantados: number[] } | null }
+let AURUM_F1_CACHE: { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab> } | null = null;
+/** Reparto de F1 (memo): por sesión, minutos de A y de L que caben en los 60′ (misma cuenta que guiaAurumDe) y lo que no cabe → sábado 04:15 de su
+ *  semana; el hilo de Tracy (A de D16/D29/D31 + L de D16-D32 + sábados) con sus tramos. El último sábado con Tracy (26-dic) lleva lo que falte para
+ *  terminar el libro (incluida, adelantada, la parte que no cabe del 28 al 31-dic: no hay sábado de F1 después). */
+function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab> } {
+  if (AURUM_F1_CACHE) return AURUM_F1_CACHE;
+  const W = 60, INI_SAB = '04:15';
+  const xs = AURUM_DIAS.filter((x) => !x.min30 && x.fecha <= FECHAS_V6.transicion.hasta);
+  const dias = new Map<string, AurumF1Dia>();
+  const sabs = new Map<string, AurumLSab>();
+  if (!xs.length) return (AURUM_F1_CACHE = { dias, sabs });
+  const listaSab: string[] = [];
+  for (let s = siguienteDow(addDias((xs[0] as DiaAurum).fecha, -1), 6); s <= (xs[xs.length - 1] as DiaAurum).fecha; s = addDias(s, 7)) if (!sabadoLibre(s) && !SKIP_V6.has(s) && !motivoProtegido(s)) listaSab.push(s);
+  for (const s of listaSab) sabs.set(s, { sab: s, ini: INI_SAB, fin: INI_SAB, min: 0, items: [], tracy: null });
+  for (const x of xs) {
+    const L = x.bloques.find((b) => b.tag === 'L');
+    const PR = x.bloques.find((b) => b.tag === 'PRAC');
+    const aMin = aurumAMin(x);
+    let fijo = aMin + (PR ? PR.min : 0) + (x.liviano ? x.liviano.min : 0);
+    if (fijo > W && x.liviano) fijo -= x.liviano.min; // como guiaAurumDe (lvFuera)
+    const margen = fijo + 3 <= W;
+    const libre = fijo >= W ? 0 : W - fijo - (margen ? 3 : 0);
+    const tr = esTracy(L);
+    const lPlan = L ? (AURUM_F1_L[x.d] ? Math.ceil((AURUM_F1_L[x.d] as { palabras: number }).palabras / PPM_EN) : L.min) : 0;
+    const lin = !L ? 0 : tr ? (libre >= 3 ? libre : 0) : (libre >= 5 ? Math.min(lPlan, libre) : 0);
+    const fuera = Math.max(0, lPlan - lin);
+    let sab = listaSab.find((s) => s > x.fecha) ?? null;
+    let adelantado = false;
+    if (!sab && tr && fuera > 0) { sab = listaSab[listaSab.length - 1] ?? null; adelantado = true; }
+    dias.set(x.fecha, { d: x.d, fecha: x.fecha, aMin, lin, fuera, sab: fuera > 0 ? sab : null, adelantado });
+    const S = fuera > 0 && sab ? sabs.get(sab) : undefined;
+    if (S && tr) { S.tracy = S.tracy ?? { min: 0, seg: [0, 0], dias: [], adelantados: [] }; S.tracy.min += fuera; (adelantado ? S.tracy.adelantados : S.tracy.dias).push(x.d); }
+    else if (S) S.items.push({ x, min: fuera });
+  }
+  // hilo de Tracy: total del libro a 1,25× − lo que va en las 14:15 − los sábados anteriores = el último sábado con Tracy
+  const TOT = Math.ceil(TRACY.s / 60 / TRACY.vel);
+  const ev: Array<{ fecha: string; orden: number; min: number; set: (t: [number, number]) => void }> = [];
+  let enFranja = 0;
+  for (const x of xs) {
+    const r = dias.get(x.fecha) as AurumF1Dia;
+    if (esTracy(x.bloques.find((b) => b.tag === 'A'))) { enFranja += r.aMin; ev.push({ fecha: x.fecha, orden: 0, min: r.aMin, set: (t) => { r.tracyA = t; } }); }
+    if (esTracy(x.bloques.find((b) => b.tag === 'L')) && r.lin > 0) { enFranja += r.lin; ev.push({ fecha: x.fecha, orden: 1, min: r.lin, set: (t) => { r.tracyL = t; } }); }
+  }
+  const conT = listaSab.filter((s) => (sabs.get(s) as AurumLSab).tracy);
+  const ultT = conT[conT.length - 1];
+  if (ultT) (sabs.get(ultT) as AurumLSab).tracy!.min = Math.max(0, TOT - enFranja - conT.slice(0, -1).reduce((a, s) => a + (sabs.get(s) as AurumLSab).tracy!.min, 0));
+  for (const s of conT) { const T = (sabs.get(s) as AurumLSab).tracy!; if (T.min > 0) ev.push({ fecha: s, orden: 0, min: T.min, set: (t) => { T.seg = t; } }); }
+  ev.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : a.orden - b.orden));
+  let cur = 0;
+  ev.forEach((e, i) => { const fin = i === ev.length - 1 ? TRACY.s : Math.min(TRACY.s, cur + e.min * 60 * TRACY.vel); e.set([cur, fin]); cur = fin; });
+  for (const S of sabs.values()) {
+    if (S.tracy && S.tracy.min <= 0) S.tracy = null;
+    S.min = S.items.reduce((a, it) => a + it.min, 0) + (S.tracy ? S.tracy.min : 0);
+    S.fin = aHHMM(aMin(S.ini) + S.min);
+  }
+  return (AURUM_F1_CACHE = { dias, sabs });
+}
+/** v6.09b (lote 1-bis S2): bloque del SÁBADO de F1 con la lectura L de AURUM que no cupo a las 14:15 de su semana (04:15, antes de la rutina 05:45).
+ *  null si ese sábado no tiene nada pendiente. Lo pinta plantillasV6 (bloque 'aurum-l') y lo guía guiaAurumSabadoDe. */
+export function aurumLSabadoDe(iso: string): { ini: string; fin: string; min: number } | null {
+  const S = aurumF1().sabs.get(iso);
+  return S && S.min > 0 ? { ini: S.ini, fin: S.fin, min: S.min } : null;
+}
+/** Destino legible de lo que no cabe hoy («sáb 28-nov 04:15-05:05»). */
+function aurumDestinoDe(r: AurumF1Dia | undefined): string {
+  const S = r?.sab ? aurumF1().sabs.get(r.sab) : undefined;
+  return S ? `${fCorta(S.sab)} ${S.ini}-${S.fin} (AURUM · L de la semana)` : 'el próximo sábado 04:15 (AURUM · L de la semana)';
+}
+export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
+  const S = aurumF1().sabs.get(iso);
+  if (!S || S.min <= 0) return null;
+  const pasos: GuiaPaso[] = [];
+  const recursos: GuiaRecurso[] = [];
+  for (const it of S.items) {
+    const L = it.x.bloques.find((b) => b.tag === 'L') as AurumBloque;
+    const pb = AURUM_L_PLANB[it.x.d];
+    const med = AURUM_F1_L[it.x.d];
+    const nada = !(aurumF1().dias.get(it.x.fecha)?.lin);
+    pasos.push(P(it.min, `L · ${med ? med.que.split(' › ')[0] : L.leccion} — ${nada ? `los ${it.min}′ del ${fCorta(it.x.fecha)} (D${it.x.d}: a las 14:15 no cupo nada), desde el inicio` : `los ${it.min}′ que no cupieron el ${fCorta(it.x.fecha)} (D${it.x.d}), desde donde marcaste`}`,
+      `${L.formato === 'audio' ? 'Audio/lectura' : 'Lectura'} activa: ${nada ? 'empieza por el principio' : 'sigue desde la marca de ese día'} y marca dónde terminas.${pb ? ` Plan B: ${pb}` : ''}`, L.url ? { t: 'L ↗', url: L.url } : undefined));
+    if (L.url && !recursos.some((r) => r.url === L.url)) recursos.push(R(`L · ${L.material}`, L.url));
+  }
+  if (S.tracy) {
+    const T = S.tracy;
+    const ds = T.dias.map((d) => `D${d}`).join(' · ');
+    const ad = T.adelantados.length ? AURUM_DIAS.filter((x) => T.adelantados.includes(x.d)) : [];
+    const sig = [...aurumF1().dias.values()].filter((r) => r.fecha > iso && (r.tracyA || r.tracyL)).sort((a, b) => (a.fecha < b.fecha ? -1 : 1))[0];
+    pasos.push(P(T.min, `ESCUCHAR · ${TRACY.t} — tramo ${hms(T.seg[0])}–${hms(T.seg[1])} (${T.min}′ a 1,25×)`,
+      `${ds ? `Es lo que el plan daba a la L de ${ds} y no cupo a las 14:15` : 'Hilo del libro'}${ad.length ? `${ds ? '; incluye' : ': incluye'}, ADELANTADO, lo que no cabrá en las 14:15 de ${ad.map((x) => fCorta(x.fecha)).join(' · ')} (no hay sábado de F1 después)` : ''}. Audio activo: 1 frase por idea que usarías con un lead.${sig ? ` El hilo sigue el ${fCorta(sig.fecha)} desde ${hms((sig.tracyA ?? sig.tracyL as [number, number])[0])}.` : ' Con este tramo terminas el libro.'}`,
+      { t: '▶ tramo', url: yt(TRACY.id, T.seg[0]) }));
+    recursos.push(R(TRACY.t, yt(TRACY.id), { min: T.min }));
+  }
+  return bloque(`${S.ini}–${S.fin}`, 'aurum', `AURUM · L de la semana (${S.min}′: lo que no cupo a las 14:15)`, pasos, recursos,
+    'cada tramo leído o escuchado, con su marca (página o minuto) en la nota ◆ del día',
+    { aviso: `Sábado ${S.ini}, antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo en las 14:15 de esta semana${sabadoLibre(addDias(iso, -7)) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
+}
 /** v6.05 (fix 24-oct-2026): AURUM en F4 (SERUMS) = 30′ en el TIEMPO MUERTO del turno, justo DESPUÉS de los 30′ de R↔D (DJ-4), y no a la franja
  *  nominal 14:15–14:45 de F2/F3 (en el turno M chocaba con el almuerzo 13:40-14:30 y con el bloque B del Step 1 14:30-16:00). `rd` = bloque R↔D
  *  del día (plantillasV6): R↔D de tiempo muerto «07:00–13:00» (M) → ventana de AURUM 07:30–13:00 (guía 07:30–08:00) · T 13:00–19:00 → 13:30 ·
@@ -768,16 +910,46 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
   const recursos: GuiaRecurso[] = [];
   const avisos: string[] = [];
   const cur = AURUM_VID[a.d];
+  // v6.09b (lote 1-bis S2): en F1 (60′) el reparto medido de la sesión (A · L en la franja · lo que va al sábado · hilo de Tracy)
+  const f1 = !a.min30 ? aurumF1().dias.get(iso) : undefined;
+  const medA = !a.min30 ? AURUM_F1_A[a.d] : undefined;
   // ── A: vídeo concreto ──
   let pasoA: GuiaPaso | null = null;
+  let pasoAnota: GuiaPaso | null = null; // v6.09b (lote 1-bis S2): minutos de nota que el vídeo curado deja libres (solo F1)
   const segCur = cur ? cur.vids.reduce((s, v) => s + v.s, 0) : 0;
-  const aMinPlan = A ? Math.max(A.min, segCur ? minDe(segCur) : 0) : 0; // si el vídeo concreto dura más que el estimado del plan, manda el real
+  const aMinPlan = f1 ? f1.aMin : A ? Math.max(A.min, segCur ? minDe(segCur) : 0) : 0; // si el vídeo concreto dura más que el estimado del plan, manda el real
   if (A) {
-    if (cur) {
+    if (f1?.tracyA) {
+      // v6.09b (lote 1-bis S2): el A de D16 · D29 · D31 es el mismo audiolibro de Tracy que la L → tramo exacto del hilo a 1,25×
+      pasoA = P(aMinPlan, `ESCUCHAR · ${TRACY.t} — tramo ${hms(f1.tracyA[0])}–${hms(f1.tracyA[1])} (${aMinPlan}′ a 1,25×)`,
+        `Tema del plan: ${A.leccion.replace(/^The Psychology of Selling — /, '')}. El audiolibro no tiene capítulos: va como un solo hilo con hora exacta (A y L de D16-D32 + los sábados 04:15), a 1,25× y sin pantalla. Anota 1 frase por idea que usarías con un lead.`,
+        { t: '▶ tramo', url: yt(TRACY.id, f1.tracyA[0]) });
+      recursos.push(R(TRACY.t, yt(TRACY.id), { min: aMinPlan }));
+    } else if (medA) {
+      // v6.09b (lote 1-bis S2): material concreto medido en lugar de una página sin medir o de un tráiler (AURUM_F1_A)
+      const segs = medA.items.reduce((s, i) => s + (i.s ?? 0), 0), pal = medA.items.reduce((s, i) => s + (i.palabras ?? 0), 0);
+      const cuanto = [segs ? `${mmss(segs)} de vídeo` : '', pal ? `${pal} palabras` : ''].filter(Boolean).join(' + ');
+      if (aMinPlan !== A.min) avisos.push(`Bloque A medido (${cuanto}): ${A.min}′ del plan → ${aMinPlan}′; ${aMinPlan < A.min ? 'lo que sobra va a la lectura L de hoy' : 'lo que falta sale de la lectura L de hoy'}.`);
+      pasoA = P(aMinPlan, `VER/LEER (${cuanto}): ${medA.items.map((v, i) => `${i + 1}) «${v.t}» · ${v.canal} · ${v.s ? mmss(v.s) : `${v.palabras} palabras ≈ ${Math.ceil((v.palabras ?? 0) / PPM_EN)}′ a 100/min`}`).join(' → ')}`,
+        `Vídeo a 1,0× con subtítulos en inglés${pal ? '; la página, a 100 palabras/min' : ''}. ${medA.nota}`, { t: '▶ 1', url: (medA.items[0] as AurumAMed).url });
+      medA.items.forEach((v) => recursos.push(R(`${v.t} (${v.canal})`, v.url, { min: v.s ? minDe(v.s) : Math.ceil((v.palabras ?? 0) / PPM_EN) })));
+      if (A.url && !medA.items.some((v) => v.url === A.url)) recursos.push(R(`${A.material} (enlace del plan${/automotivehalloffame/.test(A.url) ? '; carga por JavaScript, sin medir: opcional' : ''})`, A.url));
+    } else if (!a.min30 && A.url && !/youtube\.com|youtu\.be/.test(A.url)) {
+      // v6.09b (lote 1-bis S2): el plan enlaza una PÁGINA de artículos (no un canal de vídeo) → regla de lectura con su tamaño (min × 100 palabras)
+      pasoA = P(aMinPlan, `LEER · ${A.material}: «${kwDe(A.leccion)}» (${aMinPlan}′ ≈ ${aMinPlan * PPM_EN} palabras a 100/min)`,
+        `Regla fija (el plan enlaza la página de recursos, no un artículo): abre la página → el artículo o la guía más reciente sobre el tema de hoy; lee ${aMinPlan}′ y, si se acaba antes, sigue con el siguiente de la misma sección. Anota el título en la nota ◆ del día.`, { t: 'página ↗', url: A.url });
+      recursos.push(R(A.material, A.url));
+      avisos.push('Lectura A sin fijar en el plan (enlace a una página de recursos): se elige con la regla del paso.');
+    } else if (cur) {
       const seg = segCur;
       if (aMinPlan > A.min) avisos.push(`El vídeo elegido dura ${mmss(seg)}: el bloque A pasa de ${A.min}′ a ${aMinPlan}′ (sale de la lectura L de hoy).`);
-      pasoA = P(aMinPlan, `VER (${mmss(seg)} de vídeo): ${cur.vids.map((v, i) => `${i + 1}) «${v.t}» · ${v.canal} · ${mmss(v.s)}`).join(' → ')}`,
-        `1,0× con subtítulos en inglés (auto-traducción al español solo si pierdes el hilo). ${cur.nota}`, { t: '▶ vídeo 1', url: yt(cur.vids[0].id) });
+      else if (aMinPlan < A.min) avisos.push(`El vídeo elegido dura ${mmss(seg)}: el bloque A baja de ${A.min}′ a ${aMinPlan}′ (lo que sobra va a la lectura L de hoy).`);
+      // v6.09b (lote 1-bis S2): en F1, si la nota ya reparte los minutos que sobran del vídeo («Los 3′ que sobran: …»), va como paso ANOTAR aparte
+      const sobra = !a.min30 ? /^Los (\d+)′ que sobran: (.*)$/.exec(cur.nota) : null;
+      const vMin = sobra ? minDe(seg) : aMinPlan;
+      pasoA = P(vMin, `VER (${mmss(seg)} de vídeo): ${cur.vids.map((v, i) => `${i + 1}) «${v.t}» · ${v.canal} · ${mmss(v.s)}`).join(' → ')}`,
+        `1,0× con subtítulos en inglés (auto-traducción al español solo si pierdes el hilo).${sobra ? '' : ` ${cur.nota}`}`, { t: '▶ vídeo 1', url: yt(cur.vids[0].id) });
+      if (sobra && aMinPlan - vMin > 0) pasoAnota = P(aMinPlan - vMin, `ANOTAR · ${(sobra[2] as string).charAt(0).toUpperCase()}${(sobra[2] as string).slice(1)}`, 'En la nota ◆ del día, sin volver al vídeo.');
       cur.vids.forEach((v) => recursos.push(R(`${v.t} (${v.canal})`, yt(v.id), { min: minDe(v.s) })));
     } else if (A.url && /watch\?v=|youtu\.be\//.test(A.url)) {
       pasoA = P(aMinPlan, `VER · ${A.leccion}${A.dur ? ` (${A.dur})` : ''}`, '1,0× con subtítulos en inglés; anota 3 frases que usarías con un lead.', { t: '▶ vídeo', url: A.url });
@@ -805,17 +977,29 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     const margen = fijo + 3 <= W;
     if (margen) pasos.push(P(1, 'ARRANQUE · abre la nota ◆ del día y lee el drill', 'Así el vídeo se ve con el drill en la cabeza.', obsUrl ? { t: '◆ Obsidian', url: obsUrl } : undefined));
     if (pasoA) pasos.push(pasoA);
+    if (pasoAnota) pasos.push(pasoAnota);
     if (pasoPR) pasos.push(fijo > W ? { ...pasoPR, min: Math.max(1, W - aMinPlan) } : pasoPR);
     if (pasoLV && !lvFuera) pasos.push(pasoLV);
     let libre = W - sumMin(pasos) - (margen ? 2 : 0);
-    if (L && libre >= 5) {
-      const lin = Math.min(L.min, libre);
-      const pb = AURUM_L_PLANB[a.d];
-      pasos.push(P(lin, `LECTURA L · ${L.leccion}${lin < L.min ? ` — los primeros ${lin}′ de ${L.min}′` : ''}`,
-        `${L.formato === 'audio' ? 'Audio/lectura' : 'Lectura'} activa: marca dónde quedas.${lin < L.min ? ` Los ${L.min - lin}′ restantes son lectura de huecos (no es núcleo).` : ''}${pb ? ` Plan B: ${pb}` : ''}`, lUrl ? { t: 'L ↗', url: lUrl } : undefined));
+    // v6.09b (lote 1-bis S2): lo que no cabe ya no es «lectura de huecos» sin fecha → sábado 04:15 de su semana (aurumF1); Tracy = tramo del hilo
+    const dest = aurumDestinoDe(f1);
+    const medL = f1 ? AURUM_F1_L[a.d] : undefined;
+    if (L && f1?.tracyL) {
+      const lin = f1.lin;
+      pasos.push(P(lin, `ESCUCHAR L · ${TRACY.t} — tramo ${hms(f1.tracyL[0])}–${hms(f1.tracyL[1])} (${lin}′ a 1,25×)`,
+        `Tema del plan: ${L.leccion.replace(/^The Psychology of Selling — Brian Tracy /, '')}. Audio activo: 1 frase por idea que usarías con un lead.${f1.fuera > 0 ? ` El plan daba ${L.min}′: los ${f1.fuera}′ que no caben hoy van ${f1.adelantado ? 'ADELANTADOS ' : ''}en el tramo del ${dest}.` : ''}`,
+        { t: '▶ tramo', url: yt(TRACY.id, f1.tracyL[0]) }));
       libre -= lin;
-      if (lin < L.min) avisos.push(`L: ${L.min - lin}′ no caben en la hora → lectura de huecos.`);
-    } else if (L) avisos.push(`L (${L.min}′) no cabe hoy en la hora → lectura de huecos.`);
+      if (f1.fuera > 0) avisos.push(`L: ${f1.fuera}′ no caben en la hora → ${f1.adelantado ? 'ya van ADELANTADOS en el tramo del ' : ''}${dest} (el audiolibro va como un solo hilo con hora exacta).`);
+    } else if (L && libre >= 5) {
+      const lPlan = medL ? Math.ceil(medL.palabras / PPM_EN) : L.min;
+      const lin = Math.min(lPlan, libre);
+      const pb = AURUM_L_PLANB[a.d];
+      pasos.push(P(lin, medL ? `LECTURA L · ${medL.que} (${lPlan}′ a 100 palabras/min)` : `LECTURA L · ${L.leccion}${lin < L.min ? ` — los primeros ${lin}′ de ${L.min}′` : ''}`,
+        `${L.formato === 'audio' ? 'Audio/lectura' : 'Lectura'} activa: marca dónde quedas.${lin < lPlan ? (f1 ? ` Los ${lPlan - lin}′ restantes → ${dest}, desde donde marques hoy.` : ` Los ${L.min - lin}′ restantes son lectura de huecos (no es núcleo).`) : ''}${pb ? ` Plan B: ${pb}` : ''}`, lUrl ? { t: 'L ↗', url: lUrl } : undefined));
+      libre -= lin;
+      if (lin < lPlan) avisos.push(`L: ${lPlan - lin}′ no caben en la hora → ${f1 ? dest : 'lectura de huecos'}.`);
+    } else if (L) avisos.push(`L (${L.min}′) no cabe hoy en la hora → ${f1 ? (f1.adelantado ? `ya va ADELANTADA en el tramo del ${dest}` : dest) : 'lectura de huecos'}.`);
     if (libre > 0) pasos.push(margen
       ? P(libre, 'SEGUNDA TOMA del drill', 'Repite el drill en voz alta o reescríbelo corrigiendo UNA cosa de la primera toma.')
       : P(libre, 'CIERRE · nota ◆ del día + ✓ en Empresa › AURUM', 'Lo que no cupo queda escrito como pendiente en la nota.', obsUrl ? { t: '◆ Obsidian', url: obsUrl } : undefined));
@@ -897,12 +1081,39 @@ const LIV_LECT: Record<string, Array<[string, number]>> = {
   c7: [['Integrative physiology › Determinants of feeding behavior', 659], ['GI factors › Insights from bariatric surgery', 471]],
   c8: [['Neurobiology › Hindbrain circuits and the parabrachial nucleus', 510], ['Concluding Remarks › The gut–brain axis', 110]],
   caso2: [['Integrative physiology › Determinants of feeding behavior (relectura para el caso)', 659]],
-  c9: [['Concluding Remarks › The gut–brain axis', 110], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
+  // v6.09b (lote 1-bis S2): el D11 (integración del mapa) se quedaba en 323 palabras (4′) y 18′ de «tarjetas» → + la sección que une intestino y cerebro
+  c9: [['Concluding Remarks › The gut–brain axis', 110], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213], ['Integrative physiology › Determinants of feeding behavior (2.ª pasada para el mapa: intestino → tronco → hipotálamo)', 659]],
   c10: [['Integrative physiology › Determinants of energy expenditure', 514], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
   c11: [['Other factors › Mechanisms for biological defense of elevated body-fat mass (2.ª pasada)', 849]],
   c12: [['Concluding Remarks › The two distinct components', 213], ['› Developmental determinants of the biologically defended level of body-fat mass', 134], ['› Lessons learned from the weight-reduced state', 242], ['› Translating basic science into more effective pharmacotherapy', 97]],
   caso3: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
 };
+/** v6.09b (lote 1-bis S2, a2-10): módulo GLP-1 de F1 (c17-c27 = D21-D32, 15 → 31-dic) con FUENTE LIBRE MEDIDA en lugar de «sección del tema, sin
+ *  medir» (el Obesity Algorithm 2026 es de pago y los ensayos del NEJM no están en PMC → su resumen de PubMed + la ficha técnica de la FDA en DailyMed
+ *  o un artículo de acceso libre de PMC). Palabras contadas el 17-nov-2026 (PubMed efetch · Europe PMC fullTextXML · DailyMed SPL; sin tablas, figuras
+ *  ni referencias); minutos = palabras / 100 (inglés). Ficha de WEGOVY = DailyMed setid ee06186f… (versión 30-jun-2026, inyección + comprimidos):
+ *  «Study 2» = STEP 1, «Study 7» = OASIS 4 (comprimido 25 mg) · ficha de ZEPBOUND = setid 487cd7e7… (2-sep-2026): «Study 1» = SURMOUNT-1. */
+const PUBMED = (id: number): string => `https://pubmed.ncbi.nlm.nih.gov/${id}/`;
+const PMC = (id: string): string => `https://pmc.ncbi.nlm.nih.gov/articles/${id}/`;
+const WEGOVY_SPL = 'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ee06186f-2aa3-4990-a760-757579d8f77b';
+const ZEPBOUND_SPL = 'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=487cd7e7-434c-4925-99fa-aa80b1cc776b';
+const LIV_LECT_F1: Record<string, Array<[string, number, string]>> = {
+  c17: [['Müller 2019 (Mol Metab, PMC6812410) › Abstract', 184, PMC('PMC6812410')], ['› Molecular mechanisms underlying GLP-1-induced insulin secretion', 126, PMC('PMC6812410')], ['› GLP-1 effects on gastric emptying', 382, PMC('PMC6812410')], ['› Effect of central administration of GLP-1R analogs on food intake', 408, PMC('PMC6812410')]],
+  c18: [['STEP 1 · Wilding 2021 NEJM › resumen (PubMed 33567185)', 389, PUBMED(33567185)], ['STEP 1 extensión (PMC9542252) › Trial design and participants', 483, PMC('PMC9542252')], ['Ficha WEGOVY (FDA) › 14.2 «Study 2» (= STEP 1: diseño) + «After 68 weeks…» (resultado)', 161, WEGOVY_SPL]],
+  c19: [['STEP 1 extensión · Wilding 2022 (Diabetes Obes Metab, PMC9542252) › Abstract', 279, PMC('PMC9542252')], ['› Introduction', 399, PMC('PMC9542252')], ['› Results › Change in body weight and BMI', 249, PMC('PMC9542252')], ['› Results › Change in cardiometabolic risk factors', 286, PMC('PMC9542252')]],
+  c20: [['SELECT · Lincoff 2023 NEJM › resumen (PubMed 37952131)', 304, PUBMED(37952131)], ['Ficha WEGOVY (FDA) › 14.1 Cardiovascular Outcomes Trial (= SELECT)', 891, WEGOVY_SPL]],
+  c21: [['SURMOUNT-1 · Jastreboff 2022 NEJM › resumen (PubMed 35658024)', 420, PUBMED(35658024)], ['Ficha ZEPBOUND (FDA) › 14.1 «Study 1» (= SURMOUNT-1): overview + diseño + abandonos + resultados a 72 semanas', 495, ZEPBOUND_SPL]],
+  c22: [['SURMOUNT-1 a 3 años · Jastreboff 2025 NEJM › resumen (PubMed 39536238)', 390, PUBMED(39536238)], ['Standards of care 2026 (BMJ Open Diabetes Res Care, PMC12815056) › Pre-diabetes', 221, PMC('PMC12815056')]],
+  c23: [['SURMOUNT-5 · Aronne 2025 NEJM › resumen (PubMed 40353578)', 283, PUBMED(40353578)], ['SURMOUNT-5 post hoc (Eur Heart J Open 2025, PMC12448458) › Abstract', 260, PMC('PMC12448458')], ['› Introduction', 396, PMC('PMC12448458')], ['› Study design and population', 161, PMC('PMC12448458')]],
+  c24: [['Ficha WEGOVY (FDA) › 2.2 Recommended Dosage (escalada de dosis)', 353, WEGOVY_SPL], ['› 6.1 Gastrointestinal Adverse Reactions (adultos)', 169, WEGOVY_SPL], ['Wharton 2022 (Postgrad Med) › resumen (PubMed 34775881)', 85, PUBMED(34775881)]],
+  c25: [['Ficha WEGOVY (FDA) › Boxed Warning (tumores de células C)', 237, WEGOVY_SPL], ['› 4 Contraindications', 90, WEGOVY_SPL], ['› 5.1 Thyroid C-Cell Tumors', 251, WEGOVY_SPL], ['› 5.2 Acute Pancreatitis', 75, WEGOVY_SPL], ['› 5.3 Acute Gallbladder Disease', 183, WEGOVY_SPL], ['› 5.6 Severe GI Adverse Reactions (gastroparesia)', 89, WEGOVY_SPL], ['› 5.10 Pulmonary Aspiration', 106, WEGOVY_SPL]],
+  c26: [['«Strategies for minimizing muscle loss during use of incretin-mimetic drugs» (Obes Rev 2025, PMC11611443) › Abstract', 248, PMC('PMC11611443')], ['› Nutrition', 642, PMC('PMC11611443')], ['› Physical activity', 608, PMC('PMC11611443')]],
+  c27: [['Ficha WEGOVY (FDA) › 2.1 Monitoring and Administration (cómo se toma el comprimido)', 309, WEGOVY_SPL], ['› 2.3 Dosage of WEGOVY Tablets', 120, WEGOVY_SPL], ['› 2.5 Switching injection ↔ tablets', 147, WEGOVY_SPL], ['› 14.2 «Study 7» (= OASIS 4) + resultado a 64 semanas', 162, WEGOVY_SPL], ['OASIS 4 · Wharton 2025 NEJM › resumen (PubMed 40934115)', 328, PUBMED(40934115)]],
+};
+/** v6.09b: lectura medida del módulo GLP-1 de F1 (por fila de contenido, como LIV_LECT). */
+function livLectF1De(l: DiaLiviano): Array<[string, number, string]> | undefined {
+  return l.casoId == null ? LIV_LECT_F1[`c${LIV_DIAS.filter((x) => x.casoId == null && x.d <= l.d).length}`] : undefined;
+}
 /** v6.03 (20-oct-2026): LIV_LECT va por FILA del currículo — `c<n>` = n-ésimo tema de contenido · `caso<n>` = caso n —, no por D del plan
  *  (antes 1-15 = D1-D15 de v6.02, con los casos en D5/D10/D15). Con el D1 en miércoles los casos caen D3/D8/D13 y el D# de cada tema cambia;
  *  la lectura medida sigue a su tema. Ojo: con los casos antes, la «relectura para el caso» 1 llega antes de la 1.ª lectura de esa sección (c3).
@@ -966,15 +1177,35 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
     pasos.push(P(15, 'ROLE-PLAY grabado (2 tomas de ≤5 min)', `${l.aplicacion.replace(/ → puntúa.*$/, '')} Toma 2 = corrige 1 cosa de la toma 1. Lenguaje people-first, sin culpa.`));
     pasos.push(P(5, 'RÚBRICA 0-2 × 4 (mecanismo · metáfora · people-first · plan) → guarda el puntaje', 'En la tarjeta del caso (meta ≥ 6/8 por caso; ≥ 80 % de media del bloque). Lo que saque 0 → tarjeta nueva.'));
   } else {
+    // v6.09b (lote 1-bis S2, a2-10): en F1 (≤ 3-ene) el módulo GLP-1 lee una FUENTE LIBRE MEDIDA (LIV_LECT_F1; antes «sección del tema, sin medir» con
+    //   12′ fijos) y lo que sobra tras las tarjetas (2′ por tarjeta + 3′ la propia) va a una 2.ª PASADA de la lectura de ≤ sus minutos, no a «importar
+    //   tarjetas» (antes 4-18′ para 2-4 tarjetas: 18′ el 1-dic). Desde el 4-ene, igual que antes (lo mide otro lote: pendientes).
+    const enF1 = iso <= FECHAS_V6.transicion.hasta;
+    const lectF1 = enF1 && !lect ? livLectF1De(l) : undefined;
+    if (lectF1) { const i = avisos.findIndex((a) => /Obesity Algorithm 2026 de la OMA es DE PAGO/.test(a)); if (i >= 0) avisos[i] = 'El Obesity Algorithm 2026 de la OMA es de pago: la lectura de hoy usa en su lugar una fuente libre y medida (resumen de PubMed, ficha técnica de la FDA o artículo de PMC).'; }
+    const palF1 = lectF1 ? lectF1.reduce((a, x) => a + x[1], 0) : 0;
     let lmin = 0;
     if (lect) lmin = Math.ceil(palabras / PPM_EN);
+    else if (lectF1) lmin = Math.ceil(palF1 / PPM_EN);
     else if (!sinLectura) lmin = 12;
     const tarjetasMin = () => 25 - pre - dr - lmin - 3;
     if (tarjetasMin() < 3) { const sobra = 3 - tarjetasMin(); lmin -= sobra; avisos.push(`Lectura limitada a ${lmin}′ hoy: lo que no leas abre la lectura de mañana.`); }
+    let tarj = tarjetasMin(), segunda = 0;
+    if (enF1 && (lect || lectF1) && !sinLectura) {
+      const need = cards.length ? 2 * cards.length + 3 : 3;
+      if (tarj > need) { const r = tarj - need; segunda = r >= 2 ? Math.min(r, lmin) : 0; tarj = need + (r - segunda); }
+    }
     if (lect) pasos.push(P(lmin, `LECTURA · Schwartz 2017 › ${lect.map((x) => `${x[0]} (${x[1]} palabras)`).join(' + ')} = ${palabras} palabras`,
       `${lmin}′ a ${PPM_EN} palabras/min (inglés de arranque): 1 pasada activa subrayando causa → efecto; no traduzcas palabra por palabra (DeepL/Google solo para 1-2 frases). Estudio de hoy: ${l.estudio}`, { t: 'Schwartz 2017 (PMC)', url: SCHWARTZ }));
+    else if (lectF1) {
+      pasos.push(P(lmin, `LECTURA · ${lectF1.map((x) => `${x[0]} (${x[1]} palabras)`).join(' + ')} = ${palF1} palabras`,
+        `${lmin}′ a ${PPM_EN} palabras/min: 1 pasada activa subrayando las cifras (con su IC) y el mecanismo; no traduzcas palabra por palabra. Fuente libre medida el 17-nov (el Obesity Algorithm 2026 es de pago; de los ensayos del NEJM solo es libre su resumen en PubMed). Estudio de hoy: ${l.estudio}`, { t: 'fuente ↗', url: (lectF1[0] as [string, number, string])[2] }));
+      const urls = [...new Set(lectF1.map((x) => x[2]))];
+      recursos.unshift(...urls.map((u) => R(u.includes('dailymed') ? `Ficha técnica FDA (DailyMed) · ${u.includes('ee06186f') ? 'WEGOVY' : 'ZEPBOUND'}` : u.includes('pubmed') ? `PubMed ${u.replace(/\D/g, '')} (resumen)` : `PMC ${(/PMC\d+/.exec(u) || [''])[0]} (texto libre)`, u)));
+    }
     else if (lmin) pasos.push(P(lmin, `LECTURA · ${l.estudio} — fuente: ${l.fuente} (sección del tema, sin medir)`, `${lmin}′: busca en la fuente la sección del tema de hoy y léela activamente (causa → efecto). Si la fuente es de pago o no carga: la siguiente fuente libre de la lista.`, recursos[0] ? { t: 'fuente ↗', url: recursos[0].url } : undefined));
-    pasos.push(P(tarjetasMin(), sinLectura ? `ESTUDIO · ${l.estudio}` : `TARJETAS de MECANISMO de hoy (${cards.length} en ${deck})`,
+    if (segunda) pasos.push(P(segunda, `2.ª PASADA (${segunda}′) · solo lo subrayado de la lectura de hoy`, 'Relee únicamente los párrafos que subrayaste (cifras y mecanismo) y con ellos escribe la tarjeta propia del «¿por qué?». Si no subrayaste nada, relee el apartado de resultados.'));
+    pasos.push(P(tarj, sinLectura ? `ESTUDIO · ${l.estudio}` : `TARJETAS de MECANISMO de hoy (${cards.length} en ${deck})`,
       sinLectura ? `Hoy no hay lectura nueva: ${l.estudio}. Tarjetas en ${deck}.` : `Empresa › LIVIANO › Academia › HOY › «Anki de hoy» (o CSV DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv) → impórtalas a ${deck} + 1 propia si falta un «¿por qué?». Regla del frente: tu anverso, sin cloze.`));
     pasos.push(P(3, 'FREE RECALL a papel (sin mirar)', 'La cadena causal de hoy en 5 líneas; compara y corrige en rojo.'));
     pasos.push(P(20, `APLICACIÓN · ${l.aplicacion}`, 'En voz alta y grabado (nota de voz ≤60 s): toma 1 tal cual · toma 2 más simple · toma 3 con la metáfora; escucha la 3.ª y corrige 1 cosa. People-first (persona con obesidad), sin culpa.'));
@@ -1018,6 +1249,50 @@ function bizTramoDe(r: DiaBiz) {
   const k = BIZ_DIAS.filter((x) => x.libroN === r.libroN && x.d <= r.d && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).length;
   return BIZ_TRAMO[`${r.libroN}#${k}`];
 }
+/** v6.09b (S1 · mar 17-nov-2026 · auditoría tiempo ↔ material, a2-2): PIEZA FIJA de cada lectura de Business de F1 (24-nov → 31-dic). Antes cada libro
+ *  enlazaba un solo recurso y todas sus sesiones decían «20′ desde donde quedaste»: el recurso se acababa en la 1.ª sesión (TEDx de 18′ para 3 × 20′,
+ *  avance de audiolibro de 5′ para 3 sesiones…) o era un show de Spotify / una búsqueda. Ahora cada fila (libro + nº de lectura, como BIZ_TRAMO) lleva
+ *  su pieza con minuto de inicio y fin, medida el 17-nov-2026 (lengthSeconds de YouTube; palabras de los artículos a 100/min en inglés y 150/min en
+ *  español): una charla, entrevista o episodio del PROPIO autor (o de su editorial) sobre el tema de esa fila. No es el libro: el rótulo dice el tema de
+ *  hoy y la pieza que lo cubre; lo que el vídeo tenga después del tramo no es tarea del plan. Las filas de 2027 (p. ej. ADHD 2.0 crítica del lun 4-ene)
+ *  no tienen entrada aquí y no cambian. */
+type BizPiezaF1 = { t: string; url: string; seg?: [number, number]; palabras?: number; ppm?: number; donde?: string };
+const ytF1 = (id: string, t: string, a: number, b: number): BizPiezaF1 => ({ t, url: yt(id, a || undefined), seg: [a, b] });
+const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string }> = {
+  '8#1': { piezas: [ytF1('4r5zlZxpTkY', 'Penguin Audiobooks · «Why We Sleep» leído por John Sackville (extracto de 82:00)', 0, 1200)], nota: 'El extracto son los primeros capítulos del libro, en orden (no publica marcas de capítulo): hoy, sus primeros 20 minutos.' },
+  '8#2': { piezas: [ytF1('4r5zlZxpTkY', 'Penguin Audiobooks · «Why We Sleep» leído por John Sackville (extracto de 82:00)', 1200, 2400)], nota: 'Sigue el extracto donde paraste el martes (min 20:00): los capítulos siguientes, en orden. Del 40:00 al 82:00 el extracto sigue con capítulos que no son de este plan: no es tarea.' },
+  '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158), ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113)], nota: 'La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker + el clip de la serie Sleeping with Science sobre apetito (grelina/leptina). El extracto del audiolibro no llega a estos capítulos.' },
+  '8#4': { piezas: [ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], nota: 'Los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
+  '9#1': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 0, 1103)], nota: 'La charla de Panda (Salk, 2018) en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
+  '9#2': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 1103, 2206)], nota: 'Tramo 2/3 de la charla de Panda: sigue donde paraste el martes (min 18:23).' },
+  '9#3': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 2206, 3308)], nota: 'Tramo 3/3 de la charla de Panda: hasta el final.' },
+  '9#4': { piezas: [
+    { t: 'LIVIANO ACADEMIA › Módulo 3 «Nutrición» (lo que dice la Academia del ayuno intermitente: 24 RCT, 0,26 kg NS)', url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/BUSINESS/LIVIANO_ACADEMIA.md', palabras: 170, ppm: 150, donde: '≈170 palabras' },
+    { t: 'NEJM 2022 · «Calorie Restriction with or without Time-Restricted Eating in Weight Loss» (resumen)', url: 'https://pubmed.ncbi.nlm.nih.gov/35443107/', palabras: 282, ppm: 100, donde: 'resumen, 282 palabras' },
+    { t: 'JAMA Intern Med 2020 · ensayo TREAT «Effects of Time-Restricted Eating on Weight Loss…» (acceso abierto)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7522780/', palabras: 1404, ppm: 100, donde: 'resumen (333) + Discussion entera (960) + 1.er párrafo de Conclusions (111) = 1.404 palabras' },
+  ], nota: 'Lectura crítica con fuentes concretas: la Academia (meta-análisis) y los 2 ensayos que prueban la «ventana» de Panda contra la misma restricción calórica sin ventana. Con eso rellenas la tabla de la acción.' },
+  '10#1': { piezas: [ytF1('H1T5uMeYv9Q', 'TEDxReno · «Feeling good | David Burns» (17:57)', 0, 1077)], nota: 'La charla del propio Burns, entera.' },
+  '10#2': { piezas: [ytF1('-Id7lQkfuqo', 'Feeling Good Podcast (Burns) · «507: Mastering the Daily Mood Log» (1:02:09)', 0, 1200)], nota: 'El podcast del propio Burns sobre el registro diario de pensamientos (Daily Mood Log: la triple columna está dentro): sus primeros 20 minutos, sin marcas de capítulo.' },
+  '10#3': { piezas: [ytF1('bBO0Rs1iUBE', 'Feeling Good Podcast (Burns) · «461: Ask David: Perfectionism, Procrastination, and More!» (1:05:17)', 0, 1200)], nota: 'Burns responde sobre perfeccionismo y procrastinación: los primeros 20 minutos del episodio, sin marcas de capítulo.' },
+  '11#1': { piezas: [ytF1('MB5IX-np5fE', 'TED · «This could be why you’re depressed or anxious | Johann Hari» (20:32)', 0, 1232)], nota: 'La charla TED del propio Hari, entera (antes «20′ desde donde quedaste»: la 2.ª lectura se quedaba con 0,5′).' },
+  '11#2': { piezas: [ytF1('647AxVPpIGU', 'Politics and Prose · «Johann Hari, “Lost Connections” (w/ Andrew Sullivan)» (1:08:11)', 0, 1200)], nota: 'La presentación del libro por el propio Hari, con Andrew Sullivan: sus primeros 20 minutos (sin marcas de capítulo). Escucha con la pregunta de la acción: dónde exagera.' },
+  '12#1': { piezas: [ytF1('0gks6ceq4eQ', 'TED · «You aren’t at the mercy of your emotions — your brain creates them | Lisa Feldman Barrett» (18:29)', 0, 1109)], nota: 'La charla TED de la propia Barrett, entera.' },
+  '12#2': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 0, 1200)], nota: 'La conferencia del libro, por la propia Barrett: tramo 1 (min 0:00-20:00), sin marcas de capítulo.' },
+  '12#3': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 1200, 2400)], nota: 'Tramo 2 de la conferencia: sigue donde paraste ayer (min 20:00). Del 40:00 al final (preguntas del público) no es tarea.' },
+  '13#1': { piezas: [ytF1('r7_R7EXTYNA', 'Parents League of New York · «ADHD 2.0: A Conversation with Author Ned Hallowell» (1:04:38)', 0, 1200)], nota: 'Conversación con el propio Hallowell sobre ADHD 2.0: tramo 1 (min 0:00-20:00), sin marcas de capítulo.' },
+  '13#2': { piezas: [ytF1('r7_R7EXTYNA', 'Parents League of New York · «ADHD 2.0: A Conversation with Author Ned Hallowell» (1:04:38)', 1200, 2400)], nota: 'Tramo 2: sigue donde paraste ayer (min 20:00). Del 40:00 al final no es tarea.' },
+  '14#1': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 0, 1174)], nota: 'La charla del propio Hallowell en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
+  '14#2': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 1174, 2347)], nota: 'Tramo 2/3: sigue donde paraste el jue 24-dic (min 19:34).' },
+  '14#3': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 2347, 3520)], nota: 'Tramo 3/3: sigue donde paraste el lun 28-dic (min 39:07) hasta el final.' },
+  '15#1': { piezas: [ytF1('k7-hoohObr4', 'ADDitude · «Managing Executive Function & Working Memory Challenges in Adults with ADHD (with Peg Dawson, Ed.D.)» (1:00:44)', 300, 1380)], nota: 'La propia Dawson (adultos): capítulos «what are executive skills?» → «how to build habits» (min 5:00-23:00; los 5 primeros minutos son la presentación del webinar).' },
+  '15#2': { piezas: [ytF1('k7-hoohObr4', 'ADDitude · «Managing Executive Function & Working Memory Challenges in Adults with ADHD (with Peg Dawson, Ed.D.)» (1:00:44)', 1380, 2640)], nota: 'Capítulos «66 days: two case studies» → «what environment is best for people with ADHD?» (min 23:00-44:00). Del 44:00 al final (preguntas) no es tarea.' },
+};
+function bizTramoF1De(r: DiaBiz) {
+  if (r.libroN == null || r.fecha > FECHAS_V6.transicion.hasta) return undefined;
+  const k = BIZ_DIAS.filter((x) => x.libroN === r.libroN && x.d <= r.d && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).length;
+  return BIZ_TRAMO_F1[`${r.libroN}#${k}`];
+}
+const minPiezaF1 = (p: BizPiezaF1): number => (p.seg ? (p.seg[1] - p.seg[0]) / 60 : (p.palabras ?? 0) / (p.ppm ?? 100));
 /** Enlaces del plan Business comprobados el 18-oct-2026 que NO sirven (caídos / no reproducibles / subidas de 2 min) y su sustituto
  *  (el generador gen_business_plan.py ya los reemplaza en businessStudyPlan.ts; esta tabla solo explica el aviso si una fila vieja los trae). */
 const BIZ_CAIDOS = new Set(['nHR8B8V2v9s', 'RzeLu23_XjE', 'UbQvc8QrnJw', '5Bgufm9VwfU', 'hiDeEu9a_UA', 'hd2oXclE15U', 'dhrQqaH_M6Q', 'JM3yjVTmUoY', '3s65q2rTFRk']);
@@ -1220,8 +1495,17 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ ${cierreOutput(iso)} (tracker + cierre).`].join(' ') });
   }
   const tramo = bizTramoDe(r); // v6.03: por fila del plan (libro + nº de lectura), no por fecha
+  const tramoF1 = tramo ? undefined : bizTramoF1De(r); // v6.09b (a2-2): pieza fija de F1
   const pasos: GuiaPaso[] = [P(1, `OBJETIVO · ${r.materia}${modo === 'CRITICA' ? ' (lectura CRÍTICA)' : ''}`, `Lee la lectura y la acción de hoy: ${r.accion}`)];
-  if (tramo) {
+  if (tramoF1) {
+    const tot = tramoF1.piezas.reduce((a, p) => a + minPiezaF1(p), 0), m = Math.ceil(tot - 0.05);
+    const lee = tramoF1.piezas.every((p) => !p.seg);
+    const qp = tramoF1.piezas.map((p) => (p.seg ? `${p.t} → ${mmss(p.seg[0])}-${mmss(p.seg[1])}` : `${p.t} → ${p.donde}`)).join(' + ');
+    pasos.push(P(m, `${lee ? 'LEER' : 'ESCUCHAR/VER'} · ${qp} (${m}′${tramoF1.piezas.length > 1 ? ' en total' : ''}) · tema de hoy: ${r.lectura}`,
+      `${tramoF1.nota} ${lee ? `Lectura a ${tramoF1.piezas.map((p) => `${p.ppm ?? 100}`).filter((x, i, a) => a.indexOf(x) === i).join(' / ')} palabras/min = ${tot.toFixed(1).replace('.', ',')}′.` : `1,0× con subtítulos en inglés (auto-traducción al español si pierdes el hilo) = ${tot.toFixed(1).replace('.', ',')}′.`}`,
+      { t: tramoF1.piezas[0]!.seg ? `▶ desde ${mmss(tramoF1.piezas[0]!.seg[0])}` : '📄 abrir', url: tramoF1.piezas[0]!.url }));
+    for (const p of tramoF1.piezas) recursos.push(R(p.t, p.url, { min: Math.round(minPiezaF1(p) * 10) / 10 }));
+  } else if (tramo) {
     const m = minDe(tramo.fin - tramo.ini);
     pasos.push(P(m, `ESCUCHAR/VER · ${tramo.t} → ${mmss(tramo.ini)}-${mmss(tramo.fin)} (${m}′) = ${r.lectura}`, `Capítulos: ${tramo.caps}. 1,0× con subtítulos en inglés (auto-traducción al español si pierdes el hilo). Es la charla del propio autor.`, { t: `▶ desde ${mmss(tramo.ini)}`, url: yt(tramo.id, tramo.ini) }));
     recursos.push(R(tramo.t, yt(tramo.id, tramo.ini), { min: m }));

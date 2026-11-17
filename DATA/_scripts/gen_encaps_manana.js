@@ -73,6 +73,17 @@
  *   Anki 05:00 (contrato con el lote USMLE): repasos ENCAPS 05:20-05:45 (25′) lun · mié · vie y jue 31-dic, 05:30-05:45 (15′) mar · jue. Domingos: los
  *   primeros pasos NO opcionales (PPT; banqueo previo del dom 3-ene, el 9/19 que no cabía el jue 31-dic) alargan el bloque y la corrección del simulacro
  *   dice cuántas preguntas corrige; dom 22 (llegada) con plan B con fecha (CI 2/8 ↔ ET 2/3 a las 18:00 del vie 27-nov) y sin Anki.
+ * v6.09b lote 1-bis (mar 17-nov · revisión del lote 1, hallazgos 2, 3, 6 y 9 · «nada se quita»): (2) LAS 18:00 YA NO PIERDEN PASOS EN SILENCIO: el lun 30-nov
+ *   recupera la CI S8 por la mañana (CI S6 a 2×; el Theoesencial de CI, 30 p, al dom 6-dic) y el vie 4-dic manda la SP S4 al dom 6-dic → sus 18:00 vuelven
+ *   enteras; las 10Q del mar 5-ene vuelven al propio 5-ene (al final de su teoría, 07:30-09:15: la hoja de reglas pasa a 1 h 24) y el lun 28-dic 18:00
+ *   vuelve entero. Donde la tarde sigue sin caber (25 y 27-nov, 7 y 31-dic: pendiente de la mañana), cada paso que no entra lleva DESTINO CON FECHA
+ *   (mananas[].destinos_18: cifras / norma → un domingo ENCAPS o la PIZARRA de una 18:00 posterior; la pizarra → la próxima pizarra; las flashcards:
+ *   las vencidas, el próximo Anki ENCAPS; las nuevas siguen en la cola del mazo) y el aviso lo dice; si falta un destino, ABORTA. (3) Plan B del dom 22 →
+ *   vie 27-nov 18:00: la ET 2/3 = su PPT (9′) + 36′ de tramos útiles; los 9′ que faltan, el dom 29-nov. (6) Nada «en audio en un tiempo muerto»: lo que
+ *   falta hasta el 60 % de cada clase en diferido (mananas[].teoria[].resto_en) y el tramo 17:00-17:30 de cada clase en vivo del sábado de F1 (grabación
+ *   a 2×, 15′) van como PRIMEROS PASOS NO OPCIONALES del ENCAPS de un domingo con fecha (domingos[].antes + los automáticos); en los domingos de tarde
+ *   (6, 13 y 20-dic) esos pasos van antes del compromiso personal y la guía lleva la pausa (domingos[].antes_hasta). (9) Dom 3-ene: la corrección
+ *   del simulacro opcional, entera (80′; de ejemplo 07:15-12:54) — ya no manda 22 preguntas a la revisión del sáb 9-ene, que está llena.
  */
 'use strict';
 const fs = require('fs');
@@ -299,11 +310,18 @@ const pct100 = (x) => `${Math.round(x * 100)} %`;
 const MODO = J._meta.modos;
 /** v6.09b: minutos de tramos útiles de una clase en vivo en diferido (60 % de la clase a 2×). */
 const vivoMin = (dur) => Math.round(dur * VIVO_FRAC / VIVO_VEL);
-/** v6.09b: «→ 45′ de tramos útiles a 2× (60 % de la clase)» o, si la mañana no da para el 60 %, «→ 30′ … (40 % de la clase; lo que falta hasta el 60 %, 15′, en audio …)». */
-const vivoQue = (item, dur, min) => {
+/** v6.09b: «→ 45′ de tramos útiles a 2× (60 % de la clase)» o, si la mañana no da para el 60 %, «→ 30′ … (40 % de la clase; lo que falta hasta el 60 %, 15′,
+ *  el dom 13-dic …)». v6.09b lote 1-bis (hallazgo 6): lo que falta lleva FECHA (`destino`; antes «en audio en un tiempo muerto», sin franja). */
+const vivoQue = (item, dur, min, destino) => {
   const ref = vivoMin(dur);
-  return `${item} · clase de ${durTxt(dur)} → ${min}′ de tramos útiles a ${vel(VIVO_VEL)} (${min >= ref ? `${pct100(VIVO_FRAC)} de la clase` : `${pct100(min * VIVO_VEL / dur)} de la clase; lo que falta hasta el ${pct100(VIVO_FRAC)}, ${ref - min}′ de tramos útiles, en audio en un tiempo muerto`})`;
+  if (min < ref && !destino) aborta(`«${item}»: ${min}′ de ${ref}′ (${pct100(VIVO_FRAC)} de la clase) y lo que falta no tiene destino con fecha (resto_en)`);
+  return `${item} · clase de ${durTxt(dur)} → ${min}′ de tramos útiles a ${vel(VIVO_VEL)} (${min >= ref ? `${pct100(VIVO_FRAC)} de la clase` : `${pct100(min * VIVO_VEL / dur)} de la clase; lo que falta hasta el ${pct100(VIVO_FRAC)}, ${ref - min}′ de tramos útiles, ${destino}`})`;
 };
+/** v6.09b lote 1-bis (hallazgo 6): lo que falta hasta el 60 % de cada clase en diferido con `min` (mananas[].teoria[].resto_en = un domingo con ENCAPS) →
+ *  primer paso NO opcional del ENCAPS de ese domingo. Se rellena al expandir las mañanas (unidades) y lo consume el ENCAPS del domingo (antesDom). */
+const RESTOS = [];
+const domConEncaps = (f) => J.domingos.find((x) => x.fecha === f && !['sin_sesion', 'manana'].includes(x.modo || 'simulacro')) || null;
+const destDomTxt = (f) => `el ${corta(f)}, primer paso de su ENCAPS del domingo`;
 /** Expande un ítem de teoría del JSON en unidades con su «cuánto» (min), lo que pide de verdad su material (exact) y su ruta. `que(min)` escribe el
  *  texto con los minutos FINALES (v6.09b). */
 function unidades(it) {
@@ -358,11 +376,25 @@ function unidades(it) {
     // v6.09b: REGLA FIJA = 60 % de la clase a 2× (2 h 30 → 45′); `min` del JSON = la mañana no da para el 60 % → lo que falta, explícitamente en audio
     const ref = vivoMin(durJ);
     if (it.min != null && !(it.min > 0 && it.min < ref)) aborta(`«${it.item}» (${it.fecha}): «min» ${it.min} solo vale por debajo del ${pct100(VIVO_FRAC)} de la clase (${ref}′)`);
+    // v6.09b lote 1-bis (hallazgo 6): con `min`, lo que falta hasta el 60 % va a un domingo con ENCAPS (resto_en), posterior a la mañana; sin `min`, nada
+    if ((it.min != null) !== !!it.resto_en) aborta(`«${it.item}» (${it.fecha}): «resto_en» va solo (y siempre) con «min»: lo que falta hasta el ${pct100(VIVO_FRAC)} necesita fecha`);
+    if (it.resto_en && (!domConEncaps(it.resto_en) || it.resto_en <= it.fecha)) aborta(`«${it.item}» (${it.fecha}): resto_en ${it.resto_en} no es un domingo con ENCAPS posterior (domingos del JSON sin «sin_sesion» ni «manana»)`);
+    if (it.resto_en) RESTOS.push({ dom: it.resto_en, de: it.fecha, clase: `${v[1]} ${v[2]}/${v[3]}`, item: it.item, dur: durJ, min: it.min, resto: ref - it.min });
     const ex = it.min != null ? it.min : durJ * VIVO_FRAC / VIVO_VEL;
     return [{ tipo: 'vivo', cond, area: v[1], dur: durJ, min: Math.round(ex), exact: ex, postTest: `${v[1]} ${v[2]}/${v[3]}`,
-      que: (min) => vivoQue(it.item, durJ, min),
+      que: (min) => vivoQue(it.item, durJ, min, it.resto_en ? destDomTxt(it.resto_en) : null),
       como: `${cap(MODO.vivo_diferido)}. Primero el PPT; el vídeo solo donde el PPT no explica.${cond ? ' Si la viste EN VIVO el sábado, este tiempo va a la otra clase o a la norma del tema.' : ''}${it.alternativa ? ` ${it.alternativa}` : ''} Ruta: ${RUTA.vivo(AREA[v[1]])}.`,
       enlace: L99 }];
+  }
+  // v6.09b lote 1-bis (hallazgo 2): preguntas en bloque dentro de la teoría (mar 5-ene: las 10Q que no caben en el banqueo de las 09:45, con su corrección)
+  if (it.modo === 'preguntas') {
+    if (!(it.n > 0) || !it.motivo) aborta(`«${it.item}» (${it.fecha}): modo preguntas sin n o sin motivo`);
+    const mQ = Math.ceil(it.n * 72 / 60), mC = Math.ceil(it.n * CORR_Q);
+    if (mQ + mC !== durJ) aborta(`«${it.item}» (${it.fecha}): ${it.n}Q × 72 s + corrección ${it.n} × ${CORR_Q}′ = ${mQ + mC}′ y la duración dice ${it.duracion}`);
+    return [
+      { tipo: 'preguntas', min: mQ, exact: it.n * 1.2, que: (min) => `${it.n}Q de ${it.item} · EN BLOQUE CRONOMETRADO · modo examen (72 s c/u) → ${min}′`, como: `Sin mirar nada. ${it.motivo} ${CONFIANZA} ${RESERVA}` },
+      { tipo: 'preguntas', min: mC, exact: it.n * CORR_Q, que: (min) => `Cada fallo y cada dudosa de las ${it.n}Q → ${min}′`, como: `${cap(TIPOS_ERROR)}. ${String(CORR_Q).replace('.', ',')}′ por pregunta.` },
+    ];
   }
   if (/^Normas de la semana|^Hoja de reglas/.test(it.item)) {
     const normas = /^Normas/.test(it.item);
@@ -475,6 +507,10 @@ for (const d of DIAS_GA) (usmleOcupaGA(d) ? GA_OCULTOS : GA_FECHAS).push(d);
 
 // ── guías de la MAÑANA ─────────────────────────────────────────────────────────────────────────────────────────
 const GM = {}, GT = {}, MD = {}, QUE_TRAMOS = {}; // v6.09 (fix 2): QUE_TRAMOS = qué lleva cada tramo de un domingo de plan en tramos
+// v6.09b lote 1-bis (hallazgo 2): pasos de las 18:00 que no caben (lo pendiente de la mañana los desplaza) → se les da destino después de generar todas las tardes
+const DESPL = [];
+const PIZARRA_QUE = 'Pizarra del mes (memoria visible)';
+const PIZARRA_COMO = 'Cifras y definiciones del mes en la pizarra: plazos de notificación, esquema de vacunas, dosis de hierro, metas de indicadores. Lo que se aprende aquí pasa a tarjeta.';
 for (const dia of J.mananas) {
   const lunes = dow(dia.fecha) === 1;
   const prevM = J.mananas[dia.n - 2] || null;
@@ -532,7 +568,7 @@ for (const dia of J.mananas) {
     //   sus páginas. Lo que sobra (≥ 5′) va a la NORMA DEL DÍA (la regla de la auditoría: «su sobrante pasa a la norma del día»)
     if (rep.libre >= 5) pasosT.push(P(rep.libre, `Norma del día: ${normaTxt(dia)} → ${rep.libre}′`,
       `Lectura de VERIFICACIÓN de esa norma: definiciones de las primeras páginas, tablas, flujogramas, plazos y cifras (tapa y di). Lo que no salga → tarjeta a las 11:40. ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99));
-    const resumenT = dia.teoria.filter((t) => t.modo !== 'theoesencial').map((t) => t.item.replace(/\s*\(.*\)$/, '')).join(' + ') + (dia.teoria.some((t) => t.modo === 'theoesencial') ? ' + Theoesencial' : '');
+    const resumenT = dia.teoria.filter((t) => t.modo !== 'theoesencial').map((t) => (t.modo === 'preguntas' ? `${t.n}Q cronometradas` : t.item.replace(/\s*\(.*\)$/, ''))).join(' + ') + (dia.teoria.some((t) => t.modo === 'theoesencial') ? ' + Theoesencial' : '');
     const noCabe = rep.tarde.filter((u) => !u.forzada), a18 = rep.tarde.filter((u) => u.forzada); // v6.08: + lo que va directo a las 18:00
     // v6.09: en un domingo de plan lo pendiente va a sus cifras, normas y flashcards FLEXIBLES (a las 18:00 está el baile)
     // v6.09 (fix revisión 16-nov, joseph 3): ese bloque ya no es flexible: va a hora fija al terminar la mañana (sin la hora escrita: la mañana se desplaza)
@@ -671,12 +707,33 @@ for (const dia of J.mananas) {
   const cifras = (m) => (cierre
     ? P(m, 'Cifras de lo que fallaste en el simulacro', `Busca cada cifra fallada en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para ${proxAnkiTxt(dia.fecha, GA_FECHAS) || 'la próxima sesión de Anki'}.`)
     : P(m, `Cifras y plazos de ${codTxt}`, `Las filas de esos códigos en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para ${proxAnkiTxt(dia.fecha, GA_FECHAS) || 'la próxima sesión de Anki'}.`));
-  if (Rr >= 30) {
-    pasosR.push(flash(Rr - 20), cifras(10));
-    pasosR.push(normaTxt(dia) ? P(10, `Norma del día: ${normaTxt(dia)}`, `Una tabla o flujograma más de esa norma → tarjeta. Ruta: ${RUTA.normas}.`, L99)
-      : P(10, 'Pizarra del mes (memoria visible)', 'Cifras y definiciones del mes en la pizarra: plazos de notificación, esquema de vacunas, dosis de hierro, metas de indicadores. Lo que se aprende aquí pasa a tarjeta.'));
-  } else if (Rr >= 15) pasosR.push(flash(Rr - 10), cifras(10));
-  else if (Rr > 0) pasosR.push(flash(Rr));
+  const extra10 = () => (normaTxt(dia) ? P(10, `Norma del día: ${normaTxt(dia)}`, `Una tabla o flujograma más de esa norma → tarjeta. Ruta: ${RUTA.normas}.`, L99)
+    : P(10, PIZARRA_QUE, PIZARRA_COMO));
+  // los 3 pasos de siempre (flashcards 25′ · cifras 10′ · norma o pizarra 10′); si lo pendiente no los deja entrar, cada uno que sale lleva DESTINO (DESPL)
+  let kFlash = 0, kCifras = false, kExtra = false;
+  if (Rr >= 30) { kFlash = Rr - 20; kCifras = kExtra = true; } else if (Rr >= 15) { kFlash = Rr - 10; kCifras = true; } else if (Rr > 0) kFlash = Rr;
+  const pFlash = kFlash ? flash(kFlash) : null;
+  if (pFlash) pasosR.push(pFlash);
+  if (kCifras) pasosR.push(cifras(10));
+  if (kExtra) pasosR.push(extra10());
+  // v6.09b lote 1-bis (hallazgo 2): NADA SALE EN SILENCIO — cifras y norma necesitan destino en el JSON (mananas[].destinos_18); la pizarra (repaso del mes,
+  //   no material propio) vuelve en la próxima pizarra; las flashcards: las vencidas, el próximo Anki ENCAPS; las nuevas, primeras de la cola del mazo
+  if (Rr < CAP_TARDE) {
+    if (cierre) aborta(`${dia.fecha}: el cierre (simulacro) con pendiente a las 18:00: sin destinos previstos`);
+    const ds = dia.destinos_18 || {};
+    for (const k of Object.keys(ds)) if (!['cifras', 'norma'].includes(k)) aborta(`${dia.fecha}: destinos_18.${k} no existe (solo cifras y norma)`);
+    if (!kCifras) {
+      if (!ds.cifras) aborta(`${dia.fecha} 18:00: las «Cifras y plazos de ${codTxt}» no caben (lo pendiente ocupa ${P_}′) y no tienen destino: pon mananas[].destinos_18.cifras`);
+      DESPL.push({ tipo: 'cifras', de: dia.fecha, dest: ds.cifras, nombre: `cifras y plazos de ${codTxt}`, que: `Cifras y plazos de ${codTxt}` });
+    } else if (ds.cifras) aborta(`${dia.fecha}: destinos_18.cifras sobra (las cifras caben a las 18:00)`);
+    if (!kExtra && normaTxt(dia)) {
+      if (!ds.norma) aborta(`${dia.fecha} 18:00: la «Norma del día» (${normaTxt(dia)}) no cabe y no tiene destino: pon mananas[].destinos_18.norma`);
+      DESPL.push({ tipo: 'norma', de: dia.fecha, dest: ds.norma, nombre: `una tabla o flujograma más de la norma del día, ${normaTxt(dia)}`, que: `la norma del ${corta(dia.fecha)}: ${normaTxt(dia)} — una tabla o flujograma más → tarjeta` });
+    } else if (ds.norma) aborta(`${dia.fecha}: destinos_18.norma sobra (${normaTxt(dia) ? 'la norma cabe' : 'el día no tiene norma'})`);
+    if (!kExtra && !normaTxt(dia)) DESPL.push({ tipo: 'pizarra', de: dia.fecha });
+    const nuevas = pFlash ? Math.min(30, Math.floor(kFlash * 60 / 50)) : 0;
+    if (nuevas < 30) DESPL.push({ tipo: 'flash', de: dia.fecha, paso: pFlash, faltan: 30 - nuevas });
+  }
   // v6.09 (16-nov-2026): en un DOMINGO DE PLAN (dom 27-dic) a las 17:00 está el baile → estos 45′ son FLEXIBLES (bloque sin hora en plantillasV6); la
   //   franja de la guía es solo un ejemplo: 20:00-20:45, al volver (la tarde es del SHIP y del Anki del domingo)
   const domP = esDomPlan(dia.fecha);
@@ -687,8 +744,8 @@ for (const dia of J.mananas) {
     ? `Domingo de plan: estos 45′ van a hora fija, al terminar la mañana (${hDom.tarde[0]}-${hDom.tarde[1]}), no después del baile de las 17:00.${hDom.compromiso ? ` Quedan ${aMin(hDom.compromiso) - aMin(hDom.tarde[1])}′ de margen antes del compromiso personal de las ${hDom.compromiso}.` : ''}`
     : 'Hoy es domingo: a las 17:00 está el baile, así que estos 45′ son flexibles (de ejemplo 20:00-20:45, al volver; o en un hueco antes de las 17:00).';
   GT[dia.fecha] = guia(domP ? (hDom ? fr(hDom.tarde[0], hDom.tarde[1]) : fr('20:00', '20:45')) : fr('18:00', '18:45'), `ENCAPS · CIFRAS, NORMAS Y FLASHCARDS${domP ? (hDom ? ' (domingo de plan: al terminar la mañana)' : ' (flexible: hoy es domingo)') : ''}${pendM.length ? ' (+ lo pendiente de la mañana)' : ''}${pendF.length ? ` (+ ${pendF.map((u) => u.postTest).join(' + ')} en diferido)` : ''}${tx ? ` (+ ${tx.q}Q de la mañana del ${corta(tx.de)})` : ''}`, [...pasosP, ...pasosR], [R99],
-    pendM.length ? 'lo pendiente de la mañana terminado y las flashcards del día hechas' : pendF.length ? `${pendF.map((u) => u.postTest).join(' + ')} vista en sus tramos útiles${Rr > 0 ? ' y las flashcards del día hechas' : ' (el resto, en audio en un tiempo muerto)'}` : 'flashcards del día hechas y las cifras de hoy dichas en voz alta',
-    { aviso: [avisoDom, pendM.length ? `Hoy la teoría no cupo entera en ${GM[dia.fecha].filter((g) => / · TEORÍA · /.test(g.titulo)).map((g) => g.franja.replace('–', '-')).join(' y ') || `${horaProt(dia.fecha, '07:30')}-${horaProt(dia.fecha, '09:15')}`}: lo que falta va primero (${P_}′).` : pendF.length ? `Hoy a las 18:00 va ${pendF.map((u) => u.postTest).join(' + ')} en diferido (${P_}′): es la clase que no cabe en ninguna mañana; las flashcards de hoy van al próximo Anki.` : '',
+    pendM.length ? `lo pendiente de la mañana terminado${pFlash ? ' y las flashcards del día hechas' : ''}` : pendF.length ? `${pendF.map((u) => u.postTest).join(' + ')} vista en sus tramos útiles${pFlash ? ' y las flashcards del día hechas' : ''}` : 'flashcards del día hechas y las cifras de hoy dichas en voz alta',
+    { aviso: [avisoDom, pendM.length ? `Hoy la teoría no cupo entera en ${GM[dia.fecha].filter((g) => / · TEORÍA · /.test(g.titulo)).map((g) => g.franja.replace('–', '-')).join(' y ') || `${horaProt(dia.fecha, '07:30')}-${horaProt(dia.fecha, '09:15')}`}: lo que falta va primero (${P_}′).` : pendF.length ? `Hoy a las 18:00 va ${pendF.map((u) => u.postTest).join(' + ')} en diferido (${P_}′): es la clase que no cabe en ninguna mañana.` : '',
       tx ? `Hoy, primero, ${tx.q}Q de la mañana ${J.mananas.find((x) => x.fecha === tx.de).n}/${NM} (${corta(tx.de)}): allí van ${J.mananas.find((x) => x.fecha === tx.de).banqueo.n}Q cronometradas y estas ya no caben (corrección a ${String(CORR_Q).replace('.', ',')}′ por pregunta).` : ''].filter(Boolean).join(' ') || undefined });
 }
 function normaTxt(dia) { return dia.norma && dia.norma !== 'verificación' ? dia.norma : null; }
@@ -728,8 +785,73 @@ for (const d of DIAS_GA) {
   ], [], minGA >= 25 ? '0 vencidas en ENCAPS::Cifras, ENCAPS::Flashcards y APEX::ENCAPS' : '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: GT_FECHAS.includes(d) ? 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' : undefined }); // v6.09: el aviso, si ese día hay mañana ENCAPS (jue 31-dic: jueves sin Step); antes, si no era día de Step
 }
 
+// ── v6.09b lote 1-bis (hallazgo 2): DESTINO de cada paso de las 18:00 que no cabe ──────────────────────────────────────────────
+//   cifras / norma → mananas[].destinos_18 = un domingo con ENCAPS (primer paso NO opcional de su ENCAPS: SUN_AUTO) o una 18:00 POSTERIOR con la pizarra del
+//   mes libre (la pizarra de ese día lleva ese material: es el mismo repaso de cifras y normas del mes) · pizarra → la próxima pizarra (repaso del mes, sin
+//   material propio) · flashcards → las vencidas, el próximo Anki ENCAPS (05:20 / 05:30); las nuevas que faltan para las 30, primeras de la cola del mazo en la
+//   próxima 18:00 con nuevas (el mazo, 1 184 tarjetas, es una cola en el orden del temario). Lo que no encuentra destino ABORTA. El aviso de la tarde lo dice.
+const SUN_AUTO = {}; // domingo → [{ de, min, paso, corto, desc }]
+{
+  const esPiz = (p) => p.que.startsWith(PIZARRA_QUE.replace(/ \(.*$/, ''));
+  const gtF = Object.keys(GT).sort();
+  const PIZ_USADA = new Map();
+  const destTxt = {};
+  const add = (f, t) => { (destTxt[f] = destTxt[f] || []).push(t); };
+  for (const x of DESPL.filter((y) => y.tipo === 'cifras' || y.tipo === 'norma')) {
+    const f = x.dest;
+    if (!/^20\d\d-\d\d-\d\d$/.test(f || '') || f <= x.de) aborta(`${x.de} 18:00: destinos_18.${x.tipo} = ${f}: tiene que ser una fecha posterior`);
+    const como = x.tipo === 'cifras'
+      ? (d) => `Las filas de esos códigos en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para ${proxAnkiTxt(d, GA_FECHAS) || 'la próxima sesión de Anki'}.`
+      : () => `Una tabla o flujograma más de esa norma → tarjeta. Ruta: ${RUTA.normas}.`;
+    if (domConEncaps(f)) {
+      (SUN_AUTO[f] = SUN_AUTO[f] || []).push({ de: x.de, min: 10, corto: x.tipo === 'cifras' ? `cifras del ${corta(x.de)}` : `norma del ${corta(x.de)}`,
+        desc: `${x.nombre} (10′), que no ${x.tipo === 'cifras' ? 'cupieron' : 'cupo'} a las 18:00 del ${corta(x.de)}`,
+        paso: P(10, `${x.tipo === 'cifras' ? `${x.que} (las del ${corta(x.de)}: no cupieron a las 18:00)` : cap(x.que)} · NO opcional`, como(f), x.tipo === 'norma' ? L99 : undefined) });
+      add(x.de, `${x.nombre} → ${destDomTxt(f)}`);
+    } else if (GT[f] && GT[f].pasos.some(esPiz) && !PIZ_USADA.has(f)) {
+      const i = GT[f].pasos.findIndex(esPiz);
+      GT[f].pasos[i] = P(10, `Pizarra del mes · hoy con ${x.tipo === 'cifras' ? `las cifras y plazos del ${corta(x.de)}: ${x.que.replace(/^Cifras y plazos de /, '')}` : x.que} (no ${x.tipo === 'cifras' ? 'cupieron' : 'cupo'} a las 18:00 de ese día)`,
+        `${como(f)} Es el repaso de la pizarra del mes, con ese material.`, x.tipo === 'norma' ? L99 : undefined);
+      PIZ_USADA.set(f, x.de);
+      add(x.de, `${x.nombre} → ${corta(f)} 18:00 (en la pizarra del mes)`);
+    } else aborta(`${x.de} 18:00: destinos_18.${x.tipo} = ${f}: no es un domingo con ENCAPS ni una 18:00 con la pizarra del mes libre${PIZ_USADA.has(f) ? ` (ya la usa lo del ${PIZ_USADA.get(f)})` : ''}`);
+  }
+  for (const x of DESPL.filter((y) => y.tipo === 'pizarra')) {
+    const f = gtF.find((d) => d > x.de && GT[d].pasos.some(esPiz));
+    if (!f) aborta(`${x.de} 18:00: la pizarra del mes no cabe y no hay otra pizarra después`);
+    add(x.de, `la pizarra del mes (repaso, sin material propio) vuelve el ${corta(f)} 18:00`);
+  }
+  for (const x of DESPL.filter((y) => y.tipo === 'flash')) {
+    const fN = gtF.find((d) => d > x.de && GT[d].pasos.some((p) => /^Flashcards ENCAPS::Flashcards · \d+ nuevas/.test(p.que)));
+    if (!fN) aborta(`${x.de} 18:00: faltan ${x.faltan} flashcards nuevas y no hay otra 18:00 con nuevas después`);
+    if (x.paso) {
+      x.paso.que += ` (las otras ${x.faltan} de las 30, primeras de la cola el ${corta(fN)} 18:00)`;
+      add(x.de, `flashcards: ${30 - x.faltan} nuevas en vez de 30 (las otras ${x.faltan}, primeras de la cola del mazo el ${corta(fN)} 18:00)`);
+    } else {
+      const fV = GA_FECHAS.find((d) => d > x.de);
+      add(x.de, `flashcards: las vencidas, ${fV && fV <= fN ? `el ${corta(fV)} a las ${gaIni(fV)} (Anki: ENCAPS::Flashcards)` : `el ${corta(fN)} 18:00`}; las 30 nuevas siguen primeras en la cola del mazo (el ${corta(fN)} 18:00)`);
+    }
+  }
+  for (const [f, ts] of Object.entries(destTxt)) GT[f].aviso = [GT[f].aviso, `No cabe hoy y va con fecha: ${ts.join(' · ')}.`].filter(Boolean).join(' ');
+  // ningún día pierde un paso de las 18:00 sin destino: los 3 de siempre (flashcards · cifras · norma o pizarra) o su destino
+  for (const dia of J.mananas) {
+    const g = GT[dia.fecha]; if (!g || dia.fase === 'cierre') continue;
+    const tiene = (re) => g.pasos.some((p) => re.test(p.que));
+    const dsp = (t) => DESPL.some((x) => x.de === dia.fecha && x.tipo === t);
+    if (!tiene(/^Flashcards ENCAPS::Flashcards/) && !dsp('flash')) aborta(`${dia.fecha} 18:00: sin flashcards y sin destino`);
+    if (!tiene(/^Cifras y plazos de /) && !dsp('cifras')) aborta(`${dia.fecha} 18:00: sin cifras y sin destino`);
+    if (!tiene(/^Norma del día: |^Pizarra del mes/) && !dsp('norma') && !dsp('pizarra')) aborta(`${dia.fecha} 18:00: sin norma ni pizarra y sin destino`);
+  }
+}
+
 // ── sábado · THEOMED EN VIVO (14:45 preparar · 15:00-17:00 en vivo) ─────────────────────────────────────────────
 const SAB = {}, GSP = {}, GSV = {};
+// v6.09b lote 1-bis (hallazgo 6): el tramo 17:00-17:30 de cada clase en vivo del sábado de F1 (el baile empieza a las 17:00) = su grabación a 2× (15′),
+//   primer paso NO opcional del ENCAPS del domingo siguiente (antes «solo audio, en un tiempo muerto de la semana», sin franja). Theomed cuelga la grabación
+//   1-3 días después: si el domingo aún no está, el paso va al domingo con ENCAPS que sigue (planB, con fecha).
+const SAB_TRAMO = [];
+const TRAMO_MIN = 15; // 30′ de clase a 2×
+const domEncapsTras = (f) => J.domingos.map((x) => x.fecha).find((x) => x > f && domConEncaps(x)) || null;
 for (const s of J.sabados) {
   if (s.sin_sesion) continue; // v6.09: sábado sin sesión (sáb 21-nov, viaje): sin guías ni índice (la clase consta en el JSON, en diferido)
   // v6.08 (fix est6): el área sale del título («Cuidado Integral 6/8») o, en F2, de `area` (código SP · CI · GES · INV · ET, o null = varias áreas:
@@ -770,6 +892,10 @@ for (const s of J.sabados) {
     });
     continue;
   }
+  const domT = addDias(s.fecha, 1), domT2 = domEncapsTras(domT);
+  if (!domConEncaps(domT) || !domT2) aborta(`sábado ${s.fecha}: el tramo 17:00-17:30 de ${s.vivo} necesita el ENCAPS del domingo ${domT} y otro domingo con ENCAPS después (plan B)`);
+  const codS = `${a} ${(/(\d+\/\d+)/.exec(s.vivo) || [])[1] || ''}`.trim();
+  SAB_TRAMO.push({ dom: domT, de: s.fecha, clase: codS, planB: domT2 });
   GSP[s.fecha] = guia(fr('14:45', '15:00'), `ENCAPS · PREPARAR LA CLASE · ${s.vivo}`, [
     P(5, `Abre el PPT de ${s.vivo}`, `Lee títulos e índice. Ruta: ${RUTA.vivo(AREA[a])} (si ya está publicado).`, L99),
     P(7, '3 preguntas que la clase te tiene que responder', 'Escríbelas en forma de pregunta, de tus errores del área o de lo que no entiendes del PPT.'),
@@ -778,11 +904,11 @@ for (const s of J.sabados) {
   GSV[s.fecha] = guia(fr('15:00', '17:00'), `THEOMED EN VIVO · ${s.vivo}`, [
     P(5, `Entrar a la clase: ${s.vivo}`, `Ruta: ${RUTA.vivo(AREA[a])}. Puntual: la asistencia cuenta.`, L99),
     P(105, 'Clase EN VIVO, participando', 'Antes de que el docente responda, responde tú. Notas SOLO en forma de pregunta. Marca ★ lo que sea cifra, plazo o definición textual: va a tarjetas.'),
-    // v6.09b (a1-18): el tramo 17:00-17:30 se declara SOLO audio (no tiene hueco propio)
-    P(10, 'Cierre a las 17:00', 'Mira si tus 3 preguntas quedaron respondidas. Anota el minuto donde te vas: el tramo 17:00-17:30 (30′ de clase) va SOLO en audio, a 2× (15′), en un tiempo muerto de la semana: no lleva hueco propio. El post-test de la clase, en cuanto lo publiquen: primer intento ciego (el domingo o al empezar el banqueo del lunes 09:45).'),
+    // v6.09b (a1-18): el tramo 17:00-17:30 se declaraba SOLO audio · v6.09b lote 1-bis (hallazgo 6): su grabación a 2× (15′), con fecha: el ENCAPS del domingo
+    P(10, 'Cierre a las 17:00', `Mira si tus 3 preguntas quedaron respondidas. Anota el minuto donde te vas: el tramo 17:00-17:30 (30′ de clase) va en la grabación a 2× (${TRAMO_MIN}′) ${destDomTxt(domT)}; si aún no está publicada, el ${corta(domT2)}. El post-test de la clase, en cuanto lo publiquen: primer intento ciego (el domingo o al empezar el banqueo del lunes 09:45).`),
   ], [R99], 'clase seguida en vivo hasta las 17:00 y las ★ anotadas', {
-    aviso: 'La clase dura hasta las 17:30: vas en vivo hasta las 17:00; el último tramo, en la grabación.',
-    planB: 'Si no puedes conectarte: la grabación en el ENCAPS del domingo (tramos que el PPT no explica, a 1,75-2×) y el resto en audio.',
+    aviso: `La clase dura hasta las 17:30: vas en vivo hasta las 17:00; el último tramo, en la grabación ${destDomTxt(domT)}.`,
+    planB: `Si no puedes conectarte: ${destDomTxt(domT)} va la clase entera en diferido (${vivoMin(150)}′ de tramos útiles a 2×, como las de entre semana) en lugar de su tramo de ${TRAMO_MIN}′; si la grabación aún no está, el ${corta(domT2)}.`,
   });
 }
 
@@ -800,6 +926,65 @@ const WD_LARGO = (iso) => `${WDL[dow(iso)]} ${Number(iso.slice(8))}`;
 // v6.09b (a1-7/a1-17): banqueo grabado a 1,25× + la pausa en cada pregunta (×1,2) = su duración × 0,96 (antes «en activo = su duración», aunque pide pausar)
 const mmssEx = (s) => { const m = /^(\d+):(\d\d)$/.exec(String(s || '')); if (!m) aborta(`duración mm:ss ilegible «${s}»`); return Number(m[1]) + Number(m[2]) / 60; };
 const PASO_BANQUEO = `Pausa el vídeo en cada pregunta: léela, responde y marca tu confianza (1-3) ANTES de ver la resolución; después, la resolución completa (Palmerton). A ${vel(VEL_ACTIVO)} (las explicaciones), con la pausa de cada pregunta: su duración ÷ ${vel(VEL_ACTIVO)} × ${String(PAUSA).replace('.', ',')}.`;
+
+const COD_CLASE = /^(SP|CI|GES|INV|ET) \d+\/\d+$/;
+const areaDe = (c) => AREA[c.split(' ')[0]];
+// v6.09b lote 1-bis (hallazgo 6): «El audio de la clase, en tiempos muertos» → la grabación tiene su fecha propia
+const comoPPT = `Títulos y diapositivas de concepto; notas SOLO en forma de pregunta (cifra, plazo o definición textual → tarjeta a ENCAPS::Cifras). La grabación (sus tramos útiles) va aparte, con su fecha.`;
+// v6.09b lote 1-bis (hallazgos 2, 3 y 6): PRIMEROS PASOS NO OPCIONALES del ENCAPS de un domingo, en el orden en que se originaron: el banqueo grabado que no cupo
+//   en una mañana (previo) · PPT en diferido (ppt) · teoría que no cupo en una mañana (antes: Theoesencial, sesiones; con su «origen») · lo que falta hasta el
+//   60 % de una clase en diferido (RESTOS, mananas[].teoria[].resto_en) · el tramo 17:00-17:30 de la clase en vivo del sábado (SAB_TRAMO) · cifras o norma
+//   que no cupieron a las 18:00 (SUN_AUTO). Alargan el bloque: antes del simulacro o de los banqueos; en los domingos de tarde, antes del compromiso personal
+//   (domingos[].antes_hasta) y la guía lleva la pausa. ANTES_USADOS = control de que cada resto, tramo y destino automático sale en la guía de su domingo.
+const ANTES_USADOS = new Set();
+const sigManana = (f) => (J.mananas.find((x) => x.fecha > f) || {}).fecha || null;
+function antesDom(d) {
+  const L = [];
+  const pv = d.previo || null;
+  if (pv) {
+    if (!pv.motivo || !Array.isArray(pv.items) || !pv.items.length || !pv.de) aborta(`domingo ${d.fecha}: previo sin motivo / items / de (la mañana de la que viene)`);
+    const us = pv.items.flatMap((it) => unidades({ ...it, fecha: d.fecha }));
+    if (us.some((u) => u.tipo !== 'activo')) aborta(`domingo ${d.fecha}: previo solo admite banqueos grabados (modo activo)`);
+    const nom = pv.items.map((x) => x.item.replace(/\s*\(.*\)$/, '')).join(' y ');
+    for (const u of us) L.push({ de: pv.de, min: u.min, corto: nom, recurso: R116, desc: `el ${nom} (${u.min}′, en activo), que no cupo en la mañana del ${corta(pv.de)}`,
+      paso: P(u.min, `${u.que(u.min)} · NO opcional`, `${u.como} Aunque hoy descanses del simulacro, este banqueo sí: no cupo en la mañana del ${corta(pv.de)}.`, u.enlace) });
+  }
+  const pp = d.ppt || null;
+  if (pp) {
+    if (!Array.isArray(pp.clases) || !pp.clases.length || !(pp.min > 0) || !pp.motivo) aborta(`domingo ${d.fecha}: ppt sin clases / min / motivo`);
+    if (pp.min !== PPT_MIN) aborta(`domingo ${d.fecha}: ppt.min ${pp.min}′ ≠ ${PPT_MIN}′ (_meta.reglas_tiempo.ppt_min)`);
+    for (const c of pp.clases) {
+      if (!COD_CLASE.test(c.clase) || !/^20\d\d-\d\d-\d\d$/.test(c.de) || c.de >= d.fecha) aborta(`domingo ${d.fecha}: ppt › «${c.clase}» del ${c.de}: clase o fecha no válida (tiene que ser anterior al domingo)`);
+      L.push({ de: c.de, min: pp.min, corto: `PPT ${c.clase}`, recurso: R99, desc: `el PPT de ${c.clase} (${pp.min}′), diferido de la clase en vivo del ${corta(c.de)}`,
+        paso: P(pp.min, `PPT de ${c.clase} (${corta(c.de)}, en diferido) · NO opcional`, `${comoPPT} Ruta: ${RUTA.vivo(areaDe(c.clase))}. Aunque hoy descanses del simulacro, este PPT sí: es el diferido de su clase en vivo.`, L99) });
+    }
+  }
+  for (const it of d.antes || []) {
+    if (!/^20\d\d-\d\d-\d\d$/.test(it.origen || '') || it.origen >= d.fecha || !it.motivo) aborta(`domingo ${d.fecha}: antes › «${it.item}» sin «origen» (la mañana de la que sale, anterior al domingo) o sin motivo`);
+    if (!['theoesencial', 'video', 'texto'].includes(it.modo)) aborta(`domingo ${d.fecha}: antes › «${it.item}»: solo Theoesencial o sesiones (vídeo / texto)`);
+    const nom = it.modo === 'theoesencial' ? `Theoesencial ${it.area}` : it.item.replace(/\s*\(.*\)$/, '');
+    const sigM = sigManana(d.fecha);
+    for (const u of unidades({ ...it, fecha: d.fecha })) L.push({ de: it.origen, min: u.min, corto: nom, recurso: R99, desc: `${it.modo === 'theoesencial' ? `el ${nom} (${it.paginas} p` : `la ${nom} (vídeo`}, ${u.min}′), que no cupo en la mañana del ${corta(it.origen)}`,
+      paso: P(u.min, `${u.que(u.min)} · NO opcional`, `${u.como.replace('tarjeta a las 11:40', 'tarjeta al terminar este paso')} ${it.motivo}${u.postTest ? ` Al terminar, su post-test (primer intento ciego); si no cabe, abre el banqueo del ${sigM ? corta(sigM) : 'próximo día ENCAPS'} 09:45.` : ''}`, u.enlace) });
+  }
+  for (const r of RESTOS.filter((x) => x.dom === d.fecha)) {
+    ANTES_USADOS.add(r);
+    L.push({ de: r.de, min: r.resto, corto: `${r.clase} (lo que falta)`, recurso: R99, desc: `los ${r.resto}′ que faltan hasta el ${pct100(VIVO_FRAC)} de la ${r.clase} (tras sus ${r.min}′ del ${corta(r.de)})`,
+      paso: P(r.resto, `${r.item} · clase de ${durTxt(r.dur)} → ${r.resto}′ de tramos útiles a ${vel(VIVO_VEL)} (${pct100(r.resto * VIVO_VEL / r.dur)} de la clase; lo que falta hasta el ${pct100(VIVO_FRAC)}, tras los ${r.min}′ del ${corta(r.de)}) · NO opcional`,
+        `${cap(MODO.vivo_diferido)}. Sigue donde lo dejaste el ${corta(r.de)}: los tramos que el PPT no explica y que aún no viste. Notas SOLO en forma de pregunta. Ruta: ${RUTA.vivo(areaDe(r.clase))}.`, L99) });
+  }
+  for (const t of SAB_TRAMO.filter((x) => x.dom === d.fecha)) {
+    ANTES_USADOS.add(t);
+    L.push({ de: t.de, min: TRAMO_MIN, corto: `tramo 17:00-17:30 de ${t.clase}`, recurso: R99, desc: `el tramo 17:00-17:30 de la ${t.clase} (clase en vivo del ${corta(t.de)}; ${TRAMO_MIN}′ en la grabación a ${vel(VIVO_VEL)})`,
+      paso: P(TRAMO_MIN, `${t.clase} (en vivo, ${corta(t.de)}) · tramo 17:00-17:30 de la clase (30′) en la grabación → ${TRAMO_MIN}′ a ${vel(VIVO_VEL)} · NO opcional`,
+        `Lo que no viste en vivo (a las 17:00 empieza el baile), desde el minuto que anotaste. Notas SOLO en forma de pregunta; ★ lo que sea cifra, plazo o definición textual. Si la grabación aún no está publicada (Theomed la cuelga 1-3 días después), este paso va al ${corta(t.planB)}, primer paso de su ENCAPS del domingo. Ruta: ${RUTA.vivo(areaDe(t.clase))}.`, L99) });
+  }
+  for (const a of SUN_AUTO[d.fecha] || []) { ANTES_USADOS.add(a); L.push({ ...a, recurso: R99 }); }
+  return L.map((x, i) => [x, i]).sort((x, y) => (x[0].de < y[0].de ? -1 : x[0].de > y[0].de ? 1 : x[1] - y[1])).map((x) => x[0]);
+}
+/** «salvo su primer paso: … » / «salvo sus primeros pasos (35′): … · …» (nota del día en plantillasV6). */
+const antesAviso = (L) => (L.length === 1 ? `salvo su primer paso: ${L[0].desc}` : `salvo sus primeros pasos (${L.reduce((a, x) => a + x.min, 0)}′): ${L.map((x) => x.desc).join(' · ')}`);
+const recursosDe = (L, ...extra) => [...new Map([...L.map((x) => x.recurso), ...extra].filter(Boolean).map((r) => [r.url, r])).values()];
 for (const d of J.domingos.filter((x) => x.modo && !['simulacro', 'sin_sesion', 'manana'].includes(x.modo))) { // v6.09: sin_sesion (dom 22-nov, viaje) y manana (dom 27-dic, domingo de plan) no llevan el ENCAPS opcional
   if (!['banqueos', 'simulacro_2h', 'banqueos_correccion'].includes(d.modo)) aborta(`domingo ${d.fecha}: modo desconocido «${d.modo}»`);
   if (!Array.isArray(d.franja) || d.franja.length !== 2) aborta(`domingo ${d.fecha}: modo ${d.modo} sin franja [ini, fin]`);
@@ -860,22 +1045,45 @@ for (const d of J.domingos.filter((x) => x.modo && !['simulacro', 'sin_sesion', 
     campus = 'simulacros';
     recursos = [R105];
   }
-  GD[d.fecha] = guia(fr(ini, fin), titulo, pasos, recursos, hecho, { aviso, planB });
+  // v6.09b lote 1-bis (hallazgo 6): primeros pasos NO opcionales (lo que falta de las clases en diferido, el tramo final de la clase del sábado, la teoría y
+  //   las cifras que no cupieron) ANTES de la franja de siempre; si el compromiso personal va en medio (antes_hasta < ini), la guía lleva la pausa
+  const L = antesDom(d), antesMin = L.reduce((a, x) => a + x.min, 0);
+  let iniG = ini;
+  if (d.antes_hasta && !L.length) aborta(`domingo ${d.fecha}: antes_hasta sin primeros pasos`);
+  if (L.length) {
+    const hasta = d.antes_hasta || ini;
+    if (!/^\d\d:\d\d$/.test(hasta) || aMin(hasta) > aMin(ini)) aborta(`domingo ${d.fecha}: antes_hasta ${hasta} después del inicio de su franja (${ini})`);
+    iniG = hhmm(aMin(hasta) - antesMin);
+    if (aMin(iniG) < aMin(RUTINA_AM[1])) aborta(`domingo ${d.fecha}: los primeros pasos (${antesMin}′) empezarían a las ${iniG}: antes de las ${RUTINA_AM[1]} (rutina de la mañana)`);
+    const pre = L.map((x) => x.paso);
+    if (hasta !== ini) pre.push(P(G.minutosFranja(fr(hasta, ini)), `Pausa (${hasta}-${ini})`, `${d.antes_pausa || 'Compromiso personal'}: no es tiempo de estudio.`));
+    pasos.unshift(...pre);
+    const cortos = L.map((x) => x.corto).join(' + ');
+    titulo = `${titulo.replace(/^ENCAPS · DOMINGO 2 h · (.*)$/, (m0, r0) => `ENCAPS · DOMINGO · ${r0} (2 h)`)} · primero ${antesMin}′ NO opcionales: ${cortos}`;
+    hecho = `los ${antesMin}′ no opcionales hechos (${cortos}) · ${hecho}`;
+    aviso = `Primero, NO opcionales (${antesMin}′; de ejemplo ${iniG}-${hasta}${hasta !== ini ? `; después, ${(d.antes_pausa || 'compromiso personal').replace(/^./, (c) => c.toLowerCase())}` : ''}): ${L.map((x) => x.desc).join(' · ')}. ${aviso}`;
+    nombre = nombre.replace(/^ENCAPS · domingo(?: 2 h)? \(flexible\): |^ENCAPS · opcional 2 h \(flexible\): /, `ENCAPS · domingo (flexible): ${cortos} (NO opcional) + `);
+    sub = `flexible · primero ${antesMin}′ NO opcionales (${iniG}-${hasta}) · después: ${sub.replace(/^flexible · /, '')}`;
+    etiqueta = etiqueta.replace(/^ENCAPS · domingo(?: 2 h)?(?::)? ?\(?/, `ENCAPS · domingo (${antesMin}′ NO opcionales + `).replace(/\)?$/, ')');
+    recursos = recursosDe(L, ...recursos);
+  }
+  GD[d.fecha] = guia(fr(iniG, fin), titulo, pasos, recursos, hecho, { aviso, planB });
   const min = pasos.filter((p) => !/^Pausa \(/.test(p.que)).reduce((a, p) => a + p.min, 0);
   const pausa = pasos.filter((p) => /^Pausa \(/.test(p.que)).reduce((a, p) => a + p.min, 0);
   // la hora del bloque cuadra con el chip de la guía (totalMin, pausa incluida) y dice cuánto es estudio
-  const hora = pausa ? `flexible · ${fmtMin(min + pausa)} con ${pausa}′ de pausa (${fmtMin(min)} de estudio)` : `flexible · ${fmtMin(min)}`;
-  DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro || null, ranking: !!d.ranking, modo: d.modo, nombre, hora, min, sub, etiqueta, tema, campus };
+  const hora = pausa ? `flexible · ${fmtMin(min + pausa)} con ${fmtMin(pausa)} de pausa (${fmtMin(min)} de estudio)` : `flexible · ${fmtMin(min)}`;
+  DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro || null, ranking: !!d.ranking, modo: d.modo, nombre, hora, min, sub, etiqueta, tema, campus,
+    ...(L.length ? { ppt: L.map((x) => x.corto), pptAviso: antesAviso(L) } : {}) };
 }
 // v6.09 (fix revisión 16-nov, joseph 4): DOMINGO CON RECUPERACIÓN FIJA (domingos[].recupera; v6.09: dom 29-nov, el siguiente al viaje) = bloque ENCAPS
 //   OBLIGATORIO a hora fija (franja; fix 2: 07:15-08:45, tras la rutina de la mañana) con la GRABACIÓN de la clase en vivo que se perdió (tramos útiles a 2×) + los PPT en diferido que las
 //   notas de la semana mandan a ese domingo (ppt_min c/u; el de la clase grabada va antes de su grabación). Antes esas notas decían «el PPT el dom 29» y
 //   ese domingo no tenía ningún paso que los nombrara. El ENCAPS opcional del día (simulacro) sigue aparte, de ejemplo después (franja_ejemplo).
 const REC = {}, GR = {};
-const COD_CLASE = /^(SP|CI|GES|INV|ET) \d+\/\d+$/;
-const areaDe = (c) => AREA[c.split(' ')[0]];
-const comoPPT = `Títulos y diapositivas de concepto; notas SOLO en forma de pregunta (cifra, plazo o definición textual → tarjeta a ENCAPS::Cifras). El audio de la clase, en tiempos muertos.`;
 const REC_PPT_MIN = []; // minutos de PPT de cada recuperación (ENCAPS_MINIMO de encaps-rec)
+// v6.09b lote 1-bis (hallazgo 3): plan B de una recuperación → la clase que pasa a una 18:00 de 45′ lleva su PPT + (45′ − PPT) de tramos útiles; lo que falta
+//   hasta el 60 % (= los minutos del PPT) va al domingo con ENCAPS siguiente, en su plan B (antes «primero su PPT y después 45′» en un paso de 45′)
+const PLANB_DOM = [];
 for (const d of J.domingos.filter((x) => x.recupera)) {
   const r = d.recupera;
   // v6.09 (17-nov): un domingo SIN SESIÓN con «llegada» (dom 22-nov, de vuelta del viaje a las 14:00) sí lleva la recuperación, después de la llegada
@@ -910,7 +1118,15 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
     if (vivoMin(durMin(g2.duracion)) !== grabMin) aborta(`domingo ${d.fecha}: la grabación del plan B (${g2.clase}) no dura lo mismo que la del plan A: la franja no cuadraría`);
     const m18 = MD[ps.fecha] && MD[ps.fecha].tarde;
     if (!m18 || !m18.some((u) => u.postTest === g2.clase)) aborta(`domingo ${d.fecha}: plan_b › la 18:00 del ${ps.fecha} no lleva la ${g2.clase} (con la que se intercambia la ${ps.clase})`);
-    planBTxt = ` PLAN B, si a las ${ini} la grabación de la ${r.grabacion.clase} aún no está publicada (Theomed la cuelga 1-3 días después de la clase): en su lugar, la ${g2.clase} (${corta(g2.de)}, ya publicada): su PPT (${r.ppt_min}′) + ${grabMin}′ de tramos útiles a 2×, y los PPT de ${r.ppt.filter((x) => x !== pptG).map((x) => x.clase).join(', ')} igual (${r.ppt_min}′ c/u) = ${G.minutosFranja(fr(ini, fin))}′. La ${ps.clase} (PPT + grabación) pasa al ${corta(ps.fecha)} a las ${ps.hora}, al hueco que deja la ${g2.clase}. Si algún otro PPT aún no está, sus ${r.ppt_min}′ van a la grabación.`;
+    const m18c = m18.find((u) => u.postTest === g2.clase);
+    if (m18c.min !== grabMin) aborta(`domingo ${d.fecha}: plan_b › la ${g2.clase} del ${ps.fecha} 18:00 dura ${m18c.min}′ y la grabación ${grabMin}′: el intercambio no cuadra`);
+    const domPB = domEncapsTras(ps.fecha);
+    if (!domPB) aborta(`domingo ${d.fecha}: plan_b › no hay domingo con ENCAPS después del ${ps.fecha} para lo que falta de la ${ps.clase}`);
+    // el texto del ítem de la 18:00 (alternativa) dice los mismos minutos
+    const alt = (J.mananas.find((x) => x.fecha === ps.fecha).teoria.find((t) => t.item.startsWith(g2.clase)) || {}).alternativa || '';
+    if (!alt.includes(`su PPT (${r.ppt_min}′) + ${grabMin - r.ppt_min}′ de tramos útiles`) || !alt.toLowerCase().includes(`los ${r.ppt_min}′ que faltan`) || !alt.includes(corta(domPB))) aborta(`${ps.fecha}: la «alternativa» de la ${g2.clase} no dice «su PPT (${r.ppt_min}′) + ${grabMin - r.ppt_min}′ de tramos útiles», «los ${r.ppt_min}′ que faltan» y el ${corta(domPB)}`);
+    PLANB_DOM.push({ dom: domPB, desde: d.fecha, de: ps.fecha, clase: ps.clase, min: r.ppt_min });
+    planBTxt = ` PLAN B, si a las ${ini} la grabación de la ${r.grabacion.clase} aún no está publicada (Theomed la cuelga 1-3 días después de la clase): en su lugar, la ${g2.clase} (${corta(g2.de)}, ya publicada): su PPT (${r.ppt_min}′) + ${grabMin}′ de tramos útiles a 2×, y los PPT de ${r.ppt.filter((x) => x !== pptG).map((x) => x.clase).join(', ')} igual (${r.ppt_min}′ c/u) = ${G.minutosFranja(fr(ini, fin))}′. La ${ps.clase} pasa al ${corta(ps.fecha)} a las ${ps.hora}, a los ${grabMin}′ que deja la ${g2.clase}: su PPT (${r.ppt_min}′) + ${grabMin - r.ppt_min}′ de tramos útiles a 2×. Los ${r.ppt_min}′ que faltan hasta el ${pct100(VIVO_FRAC)}, ${destDomTxt(domPB)}. Si algún otro PPT aún no está, sus ${r.ppt_min}′ van a la grabación.`;
   }
   // el ENCAPS opcional del MISMO domingo (si lo hay: modo simulacro) va después de la recuperación
   const conOpcional = !d.modo || d.modo === 'simulacro';
@@ -924,7 +1140,7 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
   GR[d.fecha] = guia(fr(ini, fin), `ENCAPS · RECUPERACIÓN DEL VIAJE (fija) · grabación ${r.grabacion.clase} + ${r.ppt.length} PPT en diferido`, pasos, [R99],
     `${r.grabacion.clase} vista en sus tramos útiles y los ${r.ppt.length} PPT leídos, con las notas en forma de pregunta`, {
       aviso: `Fijo, no opcional: recupera lo de la semana del viaje.${llegadaTxt} Los PPT que las notas de esos días mandan a este domingo van aquí (${r.ppt.map((x) => x.clase).join(' · ')}).${sigTxt}${conOpcional ? ` Después, el ENCAPS opcional${d.simulacro ? ` (simulacro${d.ranking ? ' con RANKING' : ''})` : ''}, de ejemplo ${ejI}-${ejF}.` : ''}`,
-      planB: `${planBTxt.trim()}${planBTxt ? ' ' : ''}Si ${d.llegada ? 'llegas tarde o ' : ''}no llegas a todo: primero los ${r.ppt.length} PPT (${r.ppt.length * r.ppt_min}′); la grabación, en audio en tiempos muertos de la semana.`,
+      planB: `${planBTxt.trim()}${planBTxt ? ' ' : ''}Si ${d.llegada ? 'llegas tarde o ' : ''}no llegas a todo: primero los ${r.ppt.length} PPT (${r.ppt.length * r.ppt_min}′). La grabación, el ${corta(domEncapsTras(d.fecha))}, en lugar del simulacro opcional de ese domingo.`,
     });
   REC_PPT_MIN.push(r.ppt.length * r.ppt_min);
   REC[d.fecha] = { fecha: d.fecha, ini, fin, nombre: `ENCAPS · recuperación del viaje (fija): grabación ${r.grabacion.clase} + ${r.ppt.length} PPT en diferido`, tema: `Grabación ${r.grabacion.clase} a 2× en sus tramos útiles + PPT ${r.ppt.map((x) => x.clase).join(' · ')}`, clases: r.ppt.map((x) => x.clase), motivo: r.motivo, ...(d.llegada ? { llegada: d.llegada } : {}) };
@@ -938,57 +1154,49 @@ for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
   // v6.09b (17-nov · a1-1): PRIMER PASO NO OPCIONAL que alarga el bloque (domingos[].previo: dom 3-ene, el Banqueo 9/19 grabado, 58′ a 1,25× con pausa,
   //   que ya no cabía en la mañana del jue 31-dic): el simulacro opcional va detrás, en lo que queda de la franja de ejemplo (y su corrección se recorta)
   const [ejI, ejF] = d.franja_ejemplo || ['08:00', '12:00'];
-  const pv = d.previo || null;
-  if (pv && (!pv.motivo || !Array.isArray(pv.items) || !pv.items.length || !pv.de)) aborta(`domingo ${d.fecha}: previo sin motivo / items / de (la mañana de la que viene)`);
-  const pvU = pv ? pv.items.flatMap((it) => unidades({ ...it, fecha: d.fecha })) : [];
-  if (pvU.some((u) => u.tipo !== 'activo')) aborta(`domingo ${d.fecha}: previo solo admite banqueos grabados (modo activo)`);
-  const pvMin = pvU.reduce((a, u) => a + u.min, 0);
   const minEj = G.minutosFranja(fr(ejI, ejF));
   if (d.compromiso && aMin(d.compromiso) < aMin(ejF)) aborta(`domingo ${d.fecha}: el ejemplo del ENCAPS opcional (${ejF}) termina después del compromiso (${d.compromiso})`);
   if (aMin(ejI) < aMin('07:15') && aMin(ejF) > aMin('05:45')) aborta(`domingo ${d.fecha}: el ejemplo del ENCAPS opcional ${ejI}-${ejF} pisa la rutina de la mañana (05:45-07:15)`);
-  // v6.09 (17-nov): PPT en diferido como PRIMER PASO (no opcional) del ENCAPS del domingo (domingos[].ppt; dom 29-nov: SP 2/11, clase del lun 23, que ya no
-  //   cabe en la recuperación del dom 22 por ser posterior a ella). Sus minutos salen de la corrección (como el recorte por compromiso): v6.09b, PPT = 10′ → 80′ → 70′
-  const pp = d.ppt || null;
-  if (pp && (!Array.isArray(pp.clases) || !pp.clases.length || !(pp.min > 0) || !pp.motivo)) aborta(`domingo ${d.fecha}: ppt sin clases / min / motivo`);
-  if (pp && pp.min !== PPT_MIN) aborta(`domingo ${d.fecha}: ppt.min ${pp.min}′ ≠ ${PPT_MIN}′ (_meta.reglas_tiempo.ppt_min)`);
-  for (const c of pp ? pp.clases : []) if (!COD_CLASE.test(c.clase) || !/^20\d\d-\d\d-\d\d$/.test(c.de) || c.de >= d.fecha) aborta(`domingo ${d.fecha}: ppt › «${c.clase}» del ${c.de}: clase o fecha no válida (tiene que ser anterior al domingo)`);
-  // v6.09b: los primeros pasos NO opcionales (banqueo previo y PPT) ALARGAN el bloque; el simulacro (4 h) va en lo que queda de la franja de ejemplo y,
-  //   si no cabe entero, se recorta SOLO la corrección (≤ 30′; antes el PPT salía de la corrección: 80′ → 75′). La corrección dice cuántas preguntas
-  //   corrige (0,85′ c/u) y adónde van las demás, con fecha.
-  const pptTot = pp ? pp.min * pp.clases.length : 0, recorte = 240 + pvMin + pptTot - minEj, corr = 80 - recorte;
-  if (recorte < 0 || recorte > 30) aborta(`domingo ${d.fecha}: franja_ejemplo ${ejI}-${ejF} (${minEj}′${pvMin + pptTot ? `, ${pvMin + pptTot}′ de primeros pasos no opcionales` : ''}) deja para el simulacro ${minEj - pvMin - pptTot}′: debe estar entre 3 h 30 y 4 h`);
+  // v6.09b: los primeros pasos NO opcionales ALARGAN el bloque; el simulacro (4 h) va en lo que queda de la franja de ejemplo y, si no cabe entero, se recorta
+  //   SOLO la corrección (≤ 30′). La corrección dice cuántas preguntas corrige (0,85′ c/u) y adónde van las demás, con fecha.
+  // v6.09b lote 1-bis: primeros pasos = antesDom (banqueo previo · PPT · lo que falta de las clases en diferido · tramo final de la clase del sábado · cifras
+  //   que no cupieron a las 18:00); (hallazgo 9) el dom 3-ene corrige las 100 (franja_ejemplo hasta las 12:54: recorte 0)
+  const L = antesDom(d), antesMin = L.reduce((a, x) => a + x.min, 0);
+  const recorte = 240 + antesMin - minEj, corr = 80 - recorte;
+  if (recorte < 0 || recorte > 30) aborta(`domingo ${d.fecha}: franja_ejemplo ${ejI}-${ejF} (${minEj}′${antesMin ? `, ${antesMin}′ de primeros pasos no opcionales` : ''}) deja para el simulacro ${minEj - antesMin}′: debe estar entre 3 h 30 y 4 h`);
   // la corrección cubre las 100 si su ratio cabe en la tolerancia (100 × 0,85′ ≤ corr × 1,15: ≥ 74′); si no, dice cuántas corrige y adónde van las demás
   const nCorr = 100 * CORR_Q <= corr * 1.15 ? 100 : Math.floor(corr / CORR_Q);
-  if (corr < 50) aborta(`domingo ${d.fecha}: la corrección del simulacro queda en ${corr}′ (< 50′) con el recorte (${recorte}′) y los PPT (${pptTot}′)`);
-  const pptNom = pp ? pp.clases.map((c) => c.clase).join(' y ') : '';
-  const pvNom = pv ? pv.items.map((x) => x.item.replace(/\s*\(.*\)$/, '')).join(' y ') : '';
-  const noOpc = [pv ? `el ${pvNom} (${pvMin}′, en activo)` : '', pp ? `el PPT de ${pptNom} (${pptTot}′)` : ''].filter(Boolean).join(' y ');
-  const noOpcDe = [pv ? `no cupo en la mañana del ${corta(pv.de)}` : '', pp ? `diferido de la clase en vivo del ${pp.clases.map((c) => corta(c.de)).join(' y ')}` : ''].filter(Boolean).join('; ');
-  const pptAviso = noOpc ? `salvo su primer paso: ${noOpc}, ${noOpcDe}` : null;
-  const motRec = recorte ? (d.compromiso ? 'recortada: hay un compromiso' : pv ? `recortada: el ${pvNom} va antes` : 'recortada') : '';
+  if (corr < 50) aborta(`domingo ${d.fecha}: la corrección del simulacro queda en ${corr}′ (< 50′) con el recorte (${recorte}′)`);
+  const cortos = L.map((x) => x.corto).join(' + ');
+  const pptAviso = L.length ? antesAviso(L) : null;
+  const motRec = recorte ? (d.compromiso ? 'recortada: hay un compromiso' : L.length ? 'recortada: los primeros pasos van antes' : 'recortada') : '';
+  // v6.09b lote 1-bis (hallazgo 3): si el plan B de una recuperación manda aquí lo que falta de su clase (dom 22 → vie 27-nov 18:00 → dom 29-nov), el plan B lo dice
+  const pbAqui = PLANB_DOM.filter((x) => x.dom === d.fecha);
+  for (const x of pbAqui) if (d.compromiso && aMin(ejF) + x.min > aMin(d.compromiso)) aborta(`domingo ${d.fecha}: con el plan B (${x.clase}, +${x.min}′) el ejemplo pasaría del compromiso de las ${d.compromiso}`);
   DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro, ranking: !!d.ranking, modo: 'simulacro',
-    nombre: pv ? `ENCAPS · domingo ${fmtMin(minEj)} (flexible): ${pvNom} (NO opcional) + simulacro 100Q opcional${d.ranking ? ' · RANKING Theomed' : ''}`
-      : `ENCAPS · opcional ${fmtMin(minEj)} (flexible): ${pp ? `PPT ${pptNom} (no opcional) + ` : ''}simulacro 100Q + corrección${d.ranking ? ' · RANKING Theomed' : ''}`,
+    nombre: L.length ? `ENCAPS · domingo ${fmtMin(minEj)} (flexible): ${cortos} (NO opcional) + simulacro 100Q opcional${d.ranking ? ' · RANKING Theomed' : ''}`
+      : `ENCAPS · opcional ${fmtMin(minEj)} (flexible): simulacro 100Q + corrección${d.ranking ? ' · RANKING Theomed' : ''}`,
     hora: `flexible · ${fmtMin(minEj)}`, min: minEj,
-    sub: `${pv ? `flexible · primero el ${pvNom} (${pvMin}′, NO opcional) · después, opcional: ` : `opcional y flexible · ${pp ? `primero el PPT de ${pptNom} (${pptTot}′, no opcional) · ` : ''}`}2 h de simulacro + ${fmtMin(minEj - pvMin - 120 - pptTot)} de corrección${motRec ? ` (${motRec})` : pptTot ? ` (${corr}′ de corrección en vez de 80′)` : ''}${d.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`,
-    etiqueta: pv ? `ENCAPS · domingo ${fmtMin(minEj)} (${pvNom} + simulacro 100Q opcional)` : `ENCAPS · domingo opcional ${fmtMin(minEj)} (${pp ? `PPT ${pptNom} + ` : ''}simulacro 100Q)`,
+    sub: `${L.length ? `flexible · primero ${antesMin}′ NO opcionales (${cortos}) · después, opcional: ` : 'opcional y flexible · '}2 h de simulacro + ${fmtMin(minEj - antesMin - 120)} de corrección${motRec ? ` (${motRec})` : ''}${d.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`,
+    etiqueta: L.length ? `ENCAPS · domingo ${fmtMin(minEj)} (${antesMin}′ NO opcionales + simulacro 100Q opcional)` : `ENCAPS · domingo opcional ${fmtMin(minEj)} (simulacro 100Q)`,
     tema: d.simulacro, campus: /^Theomed/.test(d.simulacro) ? 'simulacros' : null,
-    ...(noOpc ? { ppt: [...(pv ? [pvNom] : []), ...(pp ? pp.clases.map((c) => c.clase) : [])], pptAviso } : {}) };
+    ...(L.length ? { ppt: L.map((x) => x.corto), pptAviso } : {}) };
   const theomed = /^Theomed/.test(d.simulacro);
   const num = (/DR LOPEZ simulacro (\d+)/.exec(d.simulacro) || [])[1];
   const ruta = theomed ? 'Campus › curso 105 (SIMULACROS MEDICINA 2027) › el simulacro indicado' : `${RUTA.drLopezSim} › ${num ? `${num}.° simulacro` : 'simulacro'} (versión SIN claves; la de claves, solo para corregir)`;
-  GD[d.fecha] = guia(fr(ejI, ejF), pv ? `ENCAPS · DOMINGO (sin hora fija) · ${pvNom} (NO opcional) + simulacro 100Q OPCIONAL + corrección` : `ENCAPS · OPCIONAL ${fmtMin(minEj)} (sin hora fija) · ${pp ? `PPT ${pptNom} + ` : ''}simulacro 100Q + corrección`, [
-    ...pvU.map((u) => P(u.min, `${u.que(u.min)} · NO opcional`, `${u.como} Aunque hoy descanses del simulacro, este banqueo sí: no cupo en la mañana del ${corta(pv.de)}.`, u.enlace)),
-    ...(pp ? pp.clases.map((c) => P(pp.min, `PPT de ${c.clase} (${corta(c.de)}, en diferido) · NO opcional`, `${comoPPT} Ruta: ${RUTA.vivo(areaDe(c.clase))}. Aunque hoy descanses del simulacro, este PPT sí: es el diferido de su clase en vivo.`, L99)) : []),
+  const pbTxt = pbAqui.map((x) => `Si el dom ${Number(x.desde.slice(8))} fue con el plan B (la grabación de la ${x.clase} aún no estaba publicada): antes de nada, los ${x.min}′ de tramos útiles de la ${x.clase} que no cupieron el ${corta(x.de)} a las 18:00 (lo que falta hasta el ${pct100(VIVO_FRAC)}); el bloque se alarga ${x.min}′, de ejemplo hasta las ${hhmm(aMin(ejF) + x.min)}.`).join(' ');
+  GD[d.fecha] = guia(fr(ejI, ejF), L.length ? `ENCAPS · DOMINGO (sin hora fija) · ${cortos} (NO opcional) + simulacro 100Q OPCIONAL + corrección` : `ENCAPS · OPCIONAL ${fmtMin(minEj)} (sin hora fija) · simulacro 100Q + corrección`, [
+    ...L.map((x) => x.paso),
     P(10, `Preparar: ${d.simulacro}`, `Ruta: ${ruta}. Sin reloj a la vista, móvil fuera, hoja de respuestas si puedes.`, theomed ? L105 : undefined),
     P(120, 'SIMULACRO 100Q · 2 h sin parar', 'Primero las básicas e intermedias; marca las dudosas y vuelve al final. Ninguna en blanco: no restan. 72 s por pregunta, con 10-15′ de reserva.'),
     P(15, 'Pausa', 'De pie, agua, sin pantalla.'),
-    P(corr, nCorr < 100 ? `Corrección: las primeras ${nCorr} de las 100 (cada error y cada dudosa) → ${corr}′` : 'Corrección: cada error y cada dudosa', `${cap(TIPOS_ERROR)} + verificación en la norma.${nCorr < 100 ? ` Hoy ${corr}′ (en vez de 80′${pv ? `: el ${pvNom} va antes` : ''}; ${String(CORR_Q).replace('.', ',')}′ por pregunta): primero las «seguras» falladas; las ${100 - nCorr} que no llegues a corregir, a la revisión del ${revSab(d.fecha)}.` : ''}`),
+    P(corr, nCorr < 100 ? `Corrección: las primeras ${nCorr} de las 100 (cada error y cada dudosa) → ${corr}′` : 'Corrección: cada error y cada dudosa', `${cap(TIPOS_ERROR)} + verificación en la norma.${nCorr < 100 ? ` Hoy ${corr}′ (en vez de 80′${L.length ? ': los primeros pasos van antes' : ''}; ${String(CORR_Q).replace('.', ',')}′ por pregunta): primero las «seguras» falladas; las ${100 - nCorr} que no llegues a corregir, a la revisión del ${revSab(d.fecha)}.` : ''}`),
     P(15, 'Registro', `Nota (aciertos × 0,2), % por área y errores repetidos. Va a la revisión del ${revSab(d.fecha)}.`),
-  ], [...(pp ? [R99] : []), ...(pv ? [R116] : []), ...(theomed ? [R105] : [])], `${pv ? `${pvNom} hecho en activo, con los fallos en el registro (no opcional) · ` : ''}${pp ? `PPT de ${pptNom} leído, con las notas en forma de pregunta (no opcional) · ` : ''}simulacro hecho en 2 h y corregido, con la nota en el registro (o descanso: es opcional)`, {
-    aviso: `${noOpc ? 'Flexible' : 'Opcional y flexible'}: a la hora que puedas (${ejI}-${ejF} es solo un ejemplo${REC[d.fecha] ? `: hoy va después de la recuperación FIJA de las ${REC[d.fecha].ini}-${REC[d.fecha].fin}` : ''}${d.compromiso ? ` y termina antes del compromiso personal de las ${d.compromiso}` : ''}). ${noOpc ? `El primer paso NO es opcional: ${noOpc}, ${noOpcDe}; aunque descanses del simulacro, hazlo. ` : ''}Si vas atrasado, usa estas horas para lo pendiente de la semana.${d.ranking ? ' RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.' : ''}`,
-    planB: theomed ? `Si ese simulacro no está: uno antiguo del campus que no hayas hecho, o uno de DR LOPEZ (${RUTA.drLopezSim}).` : 'Si prefieres descansar antes de la intensiva, descansa: es opcional.',
+  ], recursosDe(L, ...(theomed ? [R105] : [])), `${L.length ? `los ${antesMin}′ no opcionales hechos (${cortos}) · ` : ''}simulacro hecho en 2 h y corregido, con la nota en el registro (o descanso: es opcional)`, {
+    aviso: `${L.length ? 'Flexible' : 'Opcional y flexible'}: a la hora que puedas (${ejI}-${ejF} es solo un ejemplo${REC[d.fecha] ? `: hoy va después de la recuperación FIJA de las ${REC[d.fecha].ini}-${REC[d.fecha].fin}` : ''}${d.compromiso ? ` y termina antes del compromiso personal de las ${d.compromiso}` : ''}). ${L.length ? `Los primeros ${antesMin}′ NO son opcionales: ${L.map((x) => x.desc).join(' · ')}; aunque descanses del simulacro, hazlos. ` : ''}Si vas atrasado, usa estas horas para lo pendiente de la semana.${d.ranking ? ' RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.' : ''}`,
+    planB: [pbTxt, theomed ? `Si ese simulacro no está: uno antiguo del campus que no hayas hecho, o uno de DR LOPEZ (${RUTA.drLopezSim}).` : 'Si prefieres descansar antes de la intensiva, descansa: es opcional.'].filter(Boolean).join(' '),
   });
+  for (const x of pbAqui) ANTES_USADOS.add(x);
 }
 
 // v6.09b (a1-6): CONTROL DEL THEOESENCIAL — por área, las páginas de las sesiones que van en VÍDEO (páginas del área ÷ sesiones × sesiones en vídeo;
@@ -997,7 +1205,8 @@ for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
 {
   const EGI = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'));
   const video = {}, puestas = {};
-  for (const dia of J.mananas) for (const t of [...dia.teoria, ...(dia.a_las_18 || [])]) {
+  // v6.09b lote 1-bis: + la teoría que no cupo en una mañana y va a un domingo (domingos[].antes: Theoesencial de CI → dom 6-dic, SP S4 → dom 6-dic)
+  for (const t of [...J.mananas.flatMap((dia) => [...dia.teoria, ...(dia.a_las_18 || [])]), ...J.domingos.flatMap((d) => d.antes || [])]) {
     if (t.modo === 'theoesencial') puestas[t.area] = (puestas[t.area] || 0) + t.paginas;
     const s = /^(SP|CI|GES|INV|ET) S(\d)(?:-S?(\d))?\b/.exec(t.item);
     if (s && t.modo === 'video') video[s[1]] = (video[s[1]] || 0) + Number(s[3] || s[2]) - Number(s[2]) + 1;
@@ -1011,6 +1220,16 @@ for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
     const req = Math.round(THEO_P_AREA[a] * (video[a] || 0) / N_SES[a]);
     if ((puestas[a] || 0) !== req) aborta(`Theoesencial de ${a}: las sesiones en vídeo piden ${req} p (${THEO_P_AREA[a]} p × ${video[a] || 0}/${N_SES[a]}) y el JSON pone ${puestas[a] || 0} (mañanas + fuera_f1)`);
   }
+}
+
+// v6.09b lote 1-bis (hallazgos 2, 3 y 6): CONTROL DE DESTINOS — cada resto de clase en diferido, cada tramo 17:00-17:30 del sábado, cada cifra o norma que no
+//   cupo a las 18:00 y cada plan B con fecha sale en la guía del domingo al que va (si no, el texto de origen prometería un paso que no existe)
+for (const [nom, xs] of [['resto de clase en diferido', RESTOS], ['tramo 17:00-17:30 del sábado', SAB_TRAMO], ['18:00 que no cupo', Object.values(SUN_AUTO).flat()], ['plan B de la recuperación', PLANB_DOM]]) {
+  for (const x of xs) if (!ANTES_USADOS.has(x)) aborta(`${nom} (${x.clase || x.corto || ''}, del ${x.de}) → ${x.dom || '?'}: ese domingo no lo lleva en su guía`);
+}
+// … y ningún texto de las guías ENCAPS de F1 manda nada «en un tiempo muerto» (sin fecha ni franja)
+for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [f, g])), ...Object.entries(GT), ...Object.entries(GD), ...Object.entries(GR), ...Object.entries(GSV).filter(([f]) => !esSabF2(f))]) {
+  if (/tiempo muerto|tiempos muertos/.test(JSON.stringify(g))) aborta(`${f} «${g.titulo.slice(0, 60)}»: manda algo «en un tiempo muerto» (sin fecha ni franja)`);
 }
 
 // ── validación de todas las guías ─────────────────────────────────────────────────────────────────────────────
@@ -1027,7 +1246,7 @@ if (ERR.length) aborta(`${ERR.length} error(es) de forma:\n  ` + ERR.slice(0, 40
 // ── emisión ───────────────────────────────────────────────────────────────────────────────────────────────────
 const RESUMEN = {};
 for (const dia of J.mananas) {
-  const t = dia.teoria.length ? dia.teoria.map((x) => x.item.replace(/\s*\(.*\)$/, '')).join(' + ') : dia.banqueo.area.replace(/\s*\+ corrección$/, '');
+  const t = dia.teoria.length ? dia.teoria.map((x) => (x.modo === 'preguntas' ? `${x.n}Q cronometradas` : x.item.replace(/\s*\(.*\)$/, ''))).join(' + ') : dia.banqueo.area.replace(/\s*\+ corrección$/, '');
   RESUMEN[dia.fecha] = `${t} · ${dia.fase === 'cierre' ? 'simulacro 100Q' : `banqueo ${dia.banqueo.n}Q ${dia.banqueo.area}`}`;
 }
 const M = Object.fromEntries(J.mananas.map((d) => [d.fecha, { fecha: d.fecha, n: d.n, de: NM, fase: d.fase, teoria: d.teoria, banqueo: d.banqueo, norma: d.norma, extra: d.extra, resumen: RESUMEN[d.fecha], pendiente18: (MD[d.fecha] && MD[d.fecha].tarde.map((u) => u.postTest || u.que)) || [], ...(EXTRA.has(d.fecha) ? { diaExtra: EXTRA.get(d.fecha) } : {}), ...(DOM_PLAN.has(d.fecha) ? { domingoPlan: DOM_PLAN.get(d.fecha) } : {}), ...(DOM_PLAN_H.has(d.fecha) ? { domingoPlanHoras: { manana: DOM_PLAN_H.get(d.fecha).manana, que: QUE_TRAMOS[d.fecha], tarde: DOM_PLAN_H.get(d.fecha).tarde, compromiso: DOM_PLAN_H.get(d.fecha).compromiso } } : {}) }]));
@@ -1058,8 +1277,9 @@ const ts = `/**
  */
 import type { GuiaBloque } from './guia';
 
-/** v6.09b: + Theoesencial (modo 'theoesencial': paginas, de, resto) · clase en diferido por debajo del 60 % (min) · alternativa (plan B con fecha) */
-export interface EncapsTeoria { item: string; area: string; duracion: string; modo: string; velocidad?: string; codigos?: string[]; paginas?: number; de?: string; resto?: string; min?: number; alternativa?: string }
+/** v6.09b: + Theoesencial (modo 'theoesencial': paginas, de, resto) · clase en diferido por debajo del 60 % (min) · alternativa (plan B con fecha)
+ *  v6.09b lote 1-bis: + resto_en (domingo al que va lo que falta hasta el 60 % de una clase con «min») · modo 'preguntas' (n preguntas en bloque + su corrección; motivo) */
+export interface EncapsTeoria { item: string; area: string; duracion: string; modo: string; velocidad?: string; codigos?: string[]; paginas?: number; de?: string; resto?: string; min?: number; alternativa?: string; resto_en?: string; n?: number; motivo?: string }
 export interface EncapsMananaDia {
   fecha: string; n: number; de: number; fase: 'recuperacion' | 'ciclo' | 'cierre'; teoria: EncapsTeoria[];
   banqueo: { area: string; n: number; cronometrado?: boolean; /** v6.09b: otra franja del banqueo (mar 5-ene: 09:45-10:57, la de la fila D34 ya sembrada) */ franja?: [string, string] }; norma: string | null; extra: string | null;
@@ -1085,7 +1305,9 @@ export interface EncapsDomingo {
   fecha: string; simulacro: string | null; ranking: boolean;
   modo: 'simulacro' | 'banqueos' | 'simulacro_2h' | 'banqueos_correccion';
   nombre: string; hora: string; min: number; sub: string; etiqueta: string; tema: string; campus: 'simulacros' | 'adicionales' | null;
-  /** v6.09 (17-nov): PPT en diferido que van como PRIMER PASO (no opcional) de este ENCAPS del domingo (dom 29-nov: SP 2/11) y la frase para la nota del día */
+  /** v6.09 (17-nov): PPT en diferido que van como PRIMER PASO (no opcional) de este ENCAPS del domingo (dom 29-nov: SP 2/11) y la frase para la nota del día ·
+   *  v6.09b lote 1-bis: todos los PRIMEROS PASOS NO OPCIONALES (PPT, banqueo que no cupo, teoría que no cupo, lo que falta hasta el 60 % de una clase en
+   *  diferido, el tramo 17:00-17:30 de la clase del sábado, cifras que no cupieron a las 18:00), con su nombre corto, y la frase para la nota del día */
   ppt?: string[]; pptAviso?: string;
 }
 
@@ -1154,7 +1376,7 @@ export const ENCAPS_MINIMO: Record<string, { AMBAR: string | null; ROJO: string 
   'encaps-pm': { AMBAR: "15': solo las flashcards (vencidas + 15 nuevas).", ROJO: 'Omitido hoy.' },
   'theomed-prep': { AMBAR: 'Omitido hoy: entra directo a la clase.', ROJO: 'Omitido hoy.' },
   'theomed-vivo': { AMBAR: null, ROJO: 'En vivo, omitida: la grabación cuando te recuperes (domingo o en audio).' },
-  'encaps-rec': { AMBAR: null, ROJO: 'Solo los PPT en diferido (${REC_PPT_MIN.length && REC_PPT_MIN.every((x) => x === REC_PPT_MIN[0]) ? REC_PPT_MIN[0] + '′' : 'sus minutos'}); la grabación, en audio en tiempos muertos de la semana.' },
+  'encaps-rec': { AMBAR: null, ROJO: 'Solo los PPT en diferido (${REC_PPT_MIN.length && REC_PPT_MIN.every((x) => x === REC_PPT_MIN[0]) ? REC_PPT_MIN[0] + '′' : 'sus minutos'}); la grabación, el domingo siguiente, en lugar del simulacro opcional.' },
   // v6.09 (fix 2): 2.º tramo de la mañana de un domingo de plan en tramos (dom 27-dic 07:15-10:30)
   'encaps-am2': { AMBAR: null, ROJO: 'Solo el post-test + 10Q ciegas del tema de hoy y sus tarjetas. El resto = dormir/recuperar.' },
 };

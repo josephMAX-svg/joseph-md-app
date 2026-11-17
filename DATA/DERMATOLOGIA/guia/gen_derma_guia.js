@@ -34,6 +34,10 @@
 //   B&B repetido (2× + recall 60 s, minutos liberados → 1-2Q) y los minutos B&B a la velocidad de reserva 1,25× viven en src/lib/dermaGuia.ts (solo F1
 //   y el jue 31-dic). Este --check valida además que esas sesiones cuadran y que el reparto de uWorld del plan B no se pasa del stock. La velocidad de
 //   Derma sigue en sus cortes D5/D15 (el Step 1 adelanta su 1,25× al D3, pero el d3/d4 curados de Derma —mar 24 y jue 26-nov— van a 1,0× con su guion).
+// v6.09b · lote 1-bis (17-nov-2026, auditoría a2-9): DERMNET_MEDIDO (dermnet_medidas_f1.json: las 11 páginas DermNet del plan B de F1 medidas → minutos
+//   = palabras/120 + 0,25′/imagen con su alcance por secciones). El --check valida además que cada sesión de F1 con atlas DermNet lo lleva medido y con
+//   esos minutos (y que no se cae por el «relleno < 3′»). 2027 no cambia (otro lote). La velocidad de Derma se queda en sus cortes D5/D15: medido el
+//   d3/d4 (mar 24 y jue 26-nov), su franja cuadra a 1,0× (ver el informe del lote 1-bis), así que adelantar el 1,25× no arregla ninguna franja.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -85,6 +89,17 @@ const fechaD = (d) => (U.DIAS.find((x) => x.d === d) || {}).fecha;
 const VEL = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DIAS.length < 15 ? U.DIAS[U.DIAS.length - 1].fecha : undefined) }; // v6.08: F1 con < 15 filas → fin de la F1 (mar 29-dic)
 if (!VEL.s1Hasta || !VEL.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
 const vel = (fecha) => (fecha <= VEL.s1Hasta ? { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : fecha <= VEL.s23Hasta ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
+
+// v6.09b · lote 1-bis (17-nov-2026, auditoría tiempo ↔ material a2-9): el atlas DermNet de F1 MEDIDO (páginas públicas, curl): alcance por secciones,
+//   palabras de prosa e imágenes → min = palabras/120 + 0,25′ por imagen (razón 0,85-1,15). Solo recuentos y títulos de sección (nada del texto).
+const DN = rd('DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json');
+for (const [slug, m] of Object.entries(DN.paginas)) {
+  const need = m.palabras / 120 + 0.25 * m.imagenes;
+  if (!(m.min >= 2 && need / m.min >= 0.85 && need / m.min <= 1.15)) aborta(`DermNet ${slug}: ${m.min}′ para ${need.toFixed(2)}′ medidos (fuera de 0,85-1,15)`);
+  if (Math.abs(need - m.necesario) > 0.01) aborta(`DermNet ${slug}: «necesario» ${m.necesario} ≠ ${need.toFixed(2)} (palabras/120 + 0,25′ × imágenes)`);
+  if (!m.alcance.length || m.palabras > m.pagina.palabras || m.imagenes > m.pagina.imagenes) aborta(`DermNet ${slug}: alcance incoherente con la página`);
+}
+const DERMNET_MEDIDO = Object.fromEntries(Object.entries(DN.paginas).map(([slug, m]) => [slug, { alcance: m.alcance, palabras: m.palabras, imagenes: m.imagenes, necesario: m.necesario, min: m.min, pagina: m.pagina, ...(m.motivo ? { motivo: m.motivo } : {}) }]));
 
 const E2 = rd('DATA/MIR/guia_lectura_semana1-2.json');
 const E2D = (d) => E2.derma.find((x) => x.d === d) || aborta(`E2 sin derma d${d}`);
@@ -200,6 +215,9 @@ export const DERMA_TEST_PROMIR_D3 = ${JSON.stringify({ nQ: t3.nQ, citadas: t3.ci
 export const DERMA_CME_DESPLAZADO: Record<number, { destino: number; libro: string; capitulo: string; url: string; foco: string; motivo: string }> = ${J1(CME_DESPLAZADO)};
 /** Respaldo de Dermoscopedia (falla por HTTPS desde algunas redes): DermNet «Dermoscopy (Dermatoscopy)» (curl 200, 18-oct-2026). */
 export const DERMNET_DERMOSCOPY = ${JSON.stringify(CAT.DERMNET_DERMOSCOPY)};
+/** v6.09b · lote 1-bis: atlas DermNet de F1 MEDIDO el ${DN._meta.medido} (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): secciones del alcance, palabras de prosa,
+ *  imágenes y minutos = palabras/120 + 0,25′ por imagen. Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
+export const DERMNET_MEDIDO: Record<string, { alcance: string[]; palabras: number; imagenes: number; necesario: number; min: number; pagina: { palabras: number; imagenes: number }; motivo?: string }> = ${J1(DERMNET_MEDIDO)};
 
 /** Sesiones CURADAS (d1-d5): plan A (AccessDerma) y plan B (acceso remoto caducado), 13:30–14:15. */
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = ${J1(curada)};
@@ -245,7 +263,16 @@ function validarTodo(tsDatos) {
       if (tA && tB) { const qa = /TEST (\d+)Q/.exec(tA.que)[1], qb = /TEST (\d+)Q/.exec(tB.que)[1]; if (qa !== qb || tA.min !== tB.min) errores.push(`d${dia.d} ${dia.fecha}: test ProMIR plan A ${qa}Q/${tA.min}′ ≠ plan B ${qb}Q/${tB.min}′`); else pmd.push(`d${dia.d} ${qa}Q`); }
     }
   }
-  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length };
+  // v6.09b · lote 1-bis: en F1 (≤ 3-ene-2027) cada atlas DermNet del plan B (45′) está medido y lleva sus minutos (no se cae por el relleno < 3′)
+  let dnF1 = 0;
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03' && x.atlasUrl && x.atlasUrl.startsWith('https://dermnetnz.org/'))) {
+    const c = curada[dia.d]; if (c && c.fecha === dia.fecha) continue; // curadas d1-d5: su guion propio
+    const slug = dia.atlasUrl.replace('https://dermnetnz.org/topics/', ''); const m = DERMNET_MEDIDO[slug];
+    if (!m) { errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» de F1 sin medir (falta en dermnet_medidas_f1.json)`); continue; }
+    const p = DG.dermaGuiaPar(dia).planB.pasos.find((x) => /^DermNet · atlas del átomo/.test(x.que));
+    if (!p || p.min !== m.min) errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» ${p ? `con ${p.min}′` : 'no aparece en el plan B'} (medido: ${m.min}′)`); else dnF1++;
+  }
+  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1 };
   return { errores, n, resumen };
 }
 const v = validarTodo(out);
@@ -253,7 +280,7 @@ if (v.errores.length) { console.error(v.errores.slice(0, 40).join('\n')); aborta
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/dermaGuiaDatos.ts NO está al día → node DATA/DERMATOLOGIA/guia/gen_derma_guia.js'); process.exit(1); }
-  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD`);
+  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/dermaGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total}`);

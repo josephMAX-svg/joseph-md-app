@@ -31,7 +31,8 @@
  *    Interior rebalanceado (Palmerton, preguntas > lectura): eval 4Q multi-temporal (2Q D-1 + 2 slots
  *    dinámicos: mirEvalLog.mirAnclasDinamicas prioriza temas 'caliente' del gate; sin log = D-3 + D-7) →
  *    Anki → log → pre-test 5Q ciegas (se registra) → lectura dirigida a los gaps (Whole Page Rule) →
- *    8-10Q comentadas Rule-In→Rule-Out (se registran, kind 'quiz') → ≤4 APEX. 17-19 Q/día.
+ *    6Q comentadas (máx. 8) Rule-In→Rule-Out (se registran, kind 'quiz') → ≤4 APEX. 15-17 Q/día.
+ *    (v6.09b: antes «8-10Q comentadas · 17-19 Q/día»; a 77 s + 30 s de comentario, 6Q ≈ 10,7′ caben en los 12′ de las 15:53.)
  *  · v3b (12-sep-2026): campo opcional `delta:true` en las filas con delta-España previsible (DELTA_CAPIDS
  *    del generador · DATA/MIR/DELTA_ESPANA.md) → chip 🇪🇸 en HOY. Solo se emite cuando es true.
  *  · Tiempo real por pregunta MIR: 210Q / 270 min ≈ 77 s (MIR_SEG_POR_Q).
@@ -54,7 +55,7 @@ export const mirMinutos = (nQ: number): number => Math.round((nQ * MIR_SEG_POR_Q
 // ── GENERADO por STUDY_HUB/_scrape/gen_mir_daily.js (v3 · top-N por Peso MIR + núcleo rabi_94) — NO editar a mano entre marcadores ──
 export const MIR_DAILY_META = {
   inicio: '2026-11-17', fin: '2027-03-08', totalDias: 78, // D1=2026-11-17 · L-V (sáb+dom libres) · 76 temas + D77 mini-MIR + D78 corrección · orden alineado a Step 1 (cada asignatura precede ~1 semana a su sistema)
-  bloque: '15:15–15:30 Evaluación Anclada D-1/D-3/D-7 · 15:30–16:15 Deep Work Mini (pre-test 5Q → lectura dirigida → 8-10Q → APEX)',
+  bloque: '15:15–15:30 Evaluación Anclada D-1/D-3/D-7 · 15:30–16:15 Deep Work Mini (pre-test 5Q → lectura dirigida → 6Q comentadas (máx. 8) → APEX)',
   coberturaPeso: 957.4, optimoTopN: 957.76, // suma de Peso MIR % de los 76 capítulos vs óptimo top-N puro (plan previo: 744,2)
 };
 
@@ -81,7 +82,8 @@ export interface FranjaMIR { hora: string; fase: string; tipo: 'eval' | 'anki' |
 
 /**
  * Franjas del bloque 15:15–16:15 (Calendar intacto; solo se rebalancea el interior).
- * 4Q eval + 5Q pre-test + 8-10Q comentadas = 17-19 Q/día (antes 7Q) con −40 % de lectura.
+ * 4Q eval + 5Q pre-test + 6Q comentadas (máx. 8) = 15-17 Q/día (antes 7Q) con −40 % de lectura.
+ * v6.09b: el quiz era «8-10Q» (14,3′ en 12′); a 77 s + 30 s de comentario caben 6Q (≈10,7′) y la 7.ª-8.ª solo si vas rápido (= mirGuia.ts).
  */
 export const MIR_FRANJAS: FranjaMIR[] = [
   { hora: '15:15–15:22', fase: 'EVAL ANCLADA 4Q = 2Q tema D-1 + 1Q tema D-3 + 1Q tema D-7 (test del capítulo ProMIR · 77 s/Q · opción en blanco)', tipo: 'eval' },
@@ -89,7 +91,7 @@ export const MIR_FRANJAS: FranjaMIR[] = [
   { hora: '15:27–15:30', fase: 'Log de la eval: aciertos/4 · brecha knowledge / transfer / proceso · 🇪🇸 delta-España · fallo D-7 → cola D+14', tipo: 'log' },
   { hora: '15:30–15:38', fase: 'PRE-TEST: 5Q ciegas del capítulo NUEVO (test del capítulo ProMIR) → marca los gaps', tipo: 'pretest' },
   { hora: '15:38–15:53', fase: 'LECTURA DIRIGIDA solo a los gaps del pre-test (Whole Page Rule sobre el capítulo ProMIR · vídeo solo si el clip es ≤12 min verificado)', tipo: 'read' },
-  { hora: '15:53–16:05', fase: '8-10Q comentadas del capítulo (test ProMIR) · Rule-In → Rule-Out · cover-the-options', tipo: 'quiz' },
+  { hora: '15:53–16:05', fase: '6Q comentadas (máx. 8) del capítulo (test ProMIR) · 77 s + 30 s de comentario · Rule-In → Rule-Out · cover-the-options', tipo: 'quiz' },
   { hora: '16:05–16:15', fase: '≤4 APEX desde el Shopping List (SAQ + por qué + 🇪🇸 delta + tag sistema USMLE · 1 de cada 4 con imagen)', tipo: 'apex' },
 ];
 /** 1er día de un bloque nuevo: la franja 15:15–15:30 es el TEST DE CIERRE de la asignatura anterior. */

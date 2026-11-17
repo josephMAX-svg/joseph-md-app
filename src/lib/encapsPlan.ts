@@ -112,7 +112,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT } from './encapsRentabilidad';
 import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion, type TipoRonda } from './encapsProgressSync';
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): hora y duración de la corrección de los simulacros y del cierre semanal de F2 (= Home = Horario)
-import { sesionEncapsDe, sesionEncapsCuadra, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque
+import { sesionEncapsDe, sesionEncapsCuadra, guiaEncapsDe, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque · v6.09b: + minutos del pre-test desde su guía
 
 // ── D1 por examen (para calcular el día actual) ──
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
@@ -908,6 +908,12 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
   const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
   const ev = evalAncladaDe(day, prev);
   const pre = ses?.tipo === 'pretest' ? ses.pretest : null;
+  // v6.09b (lote 1-bis G): minutos de la eval y de la corrección del pre-test = los de su guía (mié 18-nov: 8′ + 17′; el mar 17, ya en curso, 10′ + 15′)
+  const gPre = pre ? guiaEncapsDe(String(day.fecha).slice(0, 10)) : null;
+  const minEvalPre = gPre?.pasos.find((p) => p.que.startsWith('EVAL ANCLADA'))?.min ?? 10;
+  const minCorrPre = gPre?.pasos.find((p) => p.que.startsWith('Corrección del pre-test'))?.min ?? 15;
+  const hhPre = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  const iniPre = 16 * 60 + 17 + minEvalPre; // fin de la eval = inicio del pre-test (16:17 + eval)
   const runEval = runnerUrl(ses?.eval);
   items.push({
     key: `D${N}:m_eval`, kind: 'eval',
@@ -915,22 +921,22 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     detail: `${ev.detail}${runEval ? ` · runner ${ses?.eval?.f} (5Q, 72 s/Q)` : ''}`,
     code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
     ...(runEval ? { url: runEval, source: 'BANCO_PROPIO · runner' } : {}),
-    dur: ses ? (pre ? 10 : 8) : 15, hora: ses ? (pre ? '16:17–16:27' : '16:17–16:25') : '16:15–16:30',
+    dur: ses ? (pre ? minEvalPre : 8) : 15, hora: ses ? (pre ? `16:17–${hhPre(iniPre)}` : '16:17–16:25') : '16:15–16:30',
   });
   if (pre && ses) {
     // v6.02c: el pre-test de arranque SUSTITUYE el banco del día (y su secundario de cola larga, que entra en el mini-sim del viernes)
     items.push({
       key: `D${N}:m_banco`, kind: 'sim',
       label: `🧪 PRE-TEST DE ARRANQUE parte ${pre.parte}/${pre.de}: ${pre.n}Q CIEGAS (${pre.codigos.join(' · ')}) · modo examen 72 s/Q`,
-      detail: `Sustituye el banco del día (${day.codigo} · ${se?.key || ''}); ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 · sin material ni pausa · solución al final · confianza 1-3 obligatoria = LÍNEA BASE ciega por crítico · luego 15′ de corrección`,
-      url: runnerUrl(ses.principal), source: 'BANCO_PROPIO · pre-test de arranque', code: day.codigo, dur: 24, hora: '16:27–16:51',
+      detail: `Sustituye el banco del día (${day.codigo} · ${se?.key || ''}); ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 · sin material ni pausa · solución al final · confianza 1-3 obligatoria = LÍNEA BASE ciega por crítico · luego ${minCorrPre}′ de corrección`,
+      url: runnerUrl(ses.principal), source: 'BANCO_PROPIO · pre-test de arranque', code: day.codigo, dur: 24, hora: `${hhPre(iniPre)}–${hhPre(iniPre + 24)}`,
     });
   } else {
     const runBanco = runnerUrl(ses?.principal);
     items.push({
       key: `D${N}:m_banco`, kind: 'theomed',
       label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${ses?.principal ? `${ses.principal.n}Q con el secundario` : secCL ? '16-20Q' : '20-25Q'} ciegas)`,
-      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ''}`,
+      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ''}${ses ? ' · 20Q en 30′ (90 s/Q): las que el runner no traiga, de QX App Banqueo, mismo tema (la guía de la hora dice cuántas)' : ''}`,
       url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: day.codigo,
       dur: ses ? 30 : (secCL ? 32 : 40), hora: ses ? '16:25–16:55' : (secCL ? '16:30–17:02' : '16:30–17:10'),
     });
@@ -938,7 +944,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
       items.push({
         key: `D${N}:m_sec`, kind: 'theomed',
         label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
-        detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}`,
+        detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · ${ses ? '5Q ciegas en 8′ (90 s/Q)' : '4-5Q ciegas'} dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}${ses ? ' · si trae menos de 5, las que falten de QX App Banqueo (la guía de la hora dice cuántas)' : ''}`,
         url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: secCL.codigo, dur: 8, hora: ses ? '16:55–17:03' : '17:02–17:10',
       });
     }

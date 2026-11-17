@@ -41,7 +41,7 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 // v6.02c (E5 · resto del día): guías «qué · cuánto · cómo» de vibecoding · SYNAPSE · Business · AURUM · LIVIANO · revisión · SHIP · Feynman
-import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
+import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
 import { aurumObsUrl } from '../../lib/aurumDailyPlan';
 import { bizDiaDe } from '../../lib/businessStudyPlan';
 /** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
@@ -651,6 +651,17 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       return { tema, sub: subRD, acciones: [] };
     }
     case 'aurum': {
+      // v6.09b (lote 1-bis S2): sábado de F1 04:15 · la lectura L de AURUM que no cupo a las 14:15 de la semana (rutinaGuia.guiaAurumSabadoDe)
+      if (b.id === 'aurum-l') {
+        const gS = guiaAurumSabadoDe(iso);
+        const urlS = primerEnlace(gS);
+        return {
+          tema: 'L de la semana · lo que no cupo a las 14:15',
+          sub: gS ? `${gS.totalMin}′ · ${gS.pasos.length} tramo(s) con su marca` : '',
+          acciones: urlS ? [{ lbl: 'Tramo ↗', color: Colors.gold, url: urlS, fill: true }] : [],
+          ...(gS ? { guias: [gS] } : {}),
+        };
+      }
       const a = aurumDiaDe(iso);
       // v6.02c (E5): vídeo CONCRETO (semana 1) o regla fija de elección + drill + lectura L en los minutos libres de la hora
       // v6.05 (fix): en F4 (SERUMS) la guía arranca en la ventana del bloque (tiempo muerto del turno tras el R↔D), no a las 14:15 nominales

@@ -142,7 +142,7 @@ import { LIV_META, livDiaDe } from './livianoStudyPlan';
 import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
-import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
+import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
@@ -764,7 +764,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')}${pptD ? ', su primer paso NO opcional' : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')}${pptD ? ((encapsDomingoDe(iso)?.ppt?.length ?? 0) > 1 ? ', sus primeros pasos NO opcionales' : ', su primer paso NO opcional') : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre'; // v6.09b lote 1-bis: varios primeros pasos no opcionales (encapsManana.EncapsDomingo.ppt)
     const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
@@ -804,8 +804,10 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       // v6.07b (mar 10-nov): con el horario real (gimnasio 08:30-14:00 · baile 17:00-20:00) → SYNAPSE 21:00 y Anki 21:30, al volver
       if (w === 6) {
         const viv = theomedSabadoDe(iso);
+        // v6.09b (lote 1-bis S2): + AURUM · L de la semana 04:15 (la lectura L que no cupo a las 14:15; rutinaGuia.aurumLSabadoDe)
+        const auL = aurumLSabadoDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',
-          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso)]);
+          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : [])]);
       }
       return out('F1', esDiaStepF1(iso) ? 'F1 · mañana Step 1 (mar · jue) + ENCAPS 16:15' : 'F1 · mañana ENCAPS (lun · mié · vie) + ENCAPS 16:15 y 18:00', bloquesF1(iso, usmleExacto));
     case 'F2': {

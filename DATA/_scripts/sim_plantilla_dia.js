@@ -50,7 +50,7 @@ function guiasDe(b, p, iso) {
     case 'vibecoding': { const g = b.id === 'pc' ? RT.guiaShipDe(iso) : b.id === 'feynman' ? RT.guiaFeynmanDe(iso) : VB.vibeDiaDe(iso) ? RT.guiaVibeDe(iso) : null; return g ? [g] : null; }
     case 'synapse': { const g = RT.guiaSynapseDe(iso); return g ? [g] : null; }
     case 'business': { const g = RT.guiaBusinessDe(iso); return g ? [g] : null; }
-    case 'aurum': { const g = AU.aurumDiaDe(iso) ? RT.guiaAurumDe(iso, F6.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
+    case 'aurum': { const g = b.id === 'aurum-l' ? RT.guiaAurumSabadoDe(iso) /* v6.09b lote 1-bis S2: sábado 04:15 de F1 */ : AU.aurumDiaDe(iso) ? RT.guiaAurumDe(iso, F6.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
     case 'liviano': { const g = LV.livDiaDe(iso) ? RT.guiaLivianoDe(iso) : null; return g ? [g] : null; }
     case 'revision': { const g = RT.guiaRevisionDe(iso); return g ? [g] : null; }
     case 'mir': { if (!MD.mirSesionDe(iso)) return null; const g = MG.mirGuiaDe(iso, b.ini); return g ? [g] : []; }

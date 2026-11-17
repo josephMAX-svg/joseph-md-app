@@ -178,11 +178,12 @@ export const PROMIR_FASES = [
   { fase: 'Calibración', desc: 'Opcional (repetidores): personaliza calendario por fortalezas/debilidades.' },
 ];
 
-// Estructura de la hora diaria (aprendizaje basado en preguntas · 17-19 Q/día · = MIR_FRANJAS de mirDailyPlan.ts)
+// Estructura de la hora diaria (aprendizaje basado en preguntas · 15-17 Q/día · = MIR_FRANJAS de mirDailyPlan.ts)
+// v6.09b: el bloque C pasa de «8-10Q comentadas» a «6Q comentadas (máx. 8)» (77 s + 30 s de comentario: 6Q ≈ 10,7′ en sus 12′), como mirGuia.ts.
 export const MIR_HORA = [
   { bloque: 'A · Eval anclada + Anki + log', min: '0–15', act: '4Q multi-temporales (2Q D-1 + 2 slots dinámicos que priorizan temas calientes; test del capítulo ProMIR, 77 s/Q) → Anki APEX::MIR → log (knowledge/transfer/proceso + 🇪🇸 delta + táctica). Lo PRIMERO, no negociable. 1er día de bloque: test de cierre 10Q de la asignatura anterior.' },
   { bloque: 'B · Pre-test + lectura dirigida', min: '15–38', act: '5Q ciegas del capítulo nuevo (se registran: cuentan para el gate del tema) → lectura SOLO de los gaps (Whole Page Rule sobre el capítulo ProMIR; vídeo solo si el clip ≤12 min está verificado).' },
-  { bloque: 'C · 8-10Q comentadas', min: '38–50', act: 'Test del capítulo ProMIR con Rule-In → Rule-Out y cover-the-options; cada fallo → Shopping List. Registro n/total en el log (kind quiz, 20 s): <60 % = tema caliente → ancla de mañana.' },
+  { bloque: 'C · 6Q comentadas (máx. 8)', min: '38–50', act: 'Test del capítulo ProMIR con Rule-In → Rule-Out y cover-the-options, a 77 s + 30 s de comentario por pregunta (6Q ≈ 11′; la 7.ª y la 8.ª solo si vas rápido; las que no entran siguen en la cola del capítulo); cada fallo → Shopping List. Registro n/total en el log (kind quiz, 20 s): <60 % = tema caliente → ancla de mañana.' },
   { bloque: 'D · APEX', min: '50–60', act: '≤4 tarjetas APEX creadas DIRECTAMENTE en Anki (SAQ + por qué + 🇪🇸 delta + tag sistema USMLE; 1 de cada 4 con imagen) hasta que el redeploy de n8n esté verificado.' },
 ];
 

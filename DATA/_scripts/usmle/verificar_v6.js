@@ -773,6 +773,30 @@ if (!argv.includes('--sin-matriz')) {
     ok(malA.length === 0 && malC.length === 0, 'guía USMLE (v6.09 · lote 1) · Anki 05:00 de F1 y la transición = 05:00-05:30 los días de Step, 05:00-05:20 los demás L-V (D1: 05:00-05:45), sin vídeo · consolidación de F1 N1 15Q / N2 25Q con sus 5Q en la eval de las 18:00 o en las 07:15 siguientes',
       [...malA, ...malC].slice(0, 8).join(' · ') || `${nA} Anki AM · ${nC} consolidaciones N1/N2`);
   }
+  // v6.09b · lote 1-bis (17-nov-2026, auditoría tiempo ↔ material, reglas de _encaps_manana_v607.json _meta.reglas_tiempo): en los días de Step de F1
+  //   (1) cada corrección de preguntas TIMED de las 18:00 tiene entre 0,74 y 1 minuto por pregunta (0,85′/Q ∈ [0,85; 1,15] del tiempo del paso), con N =
+  //   el «NQ TIMED» del paso anterior · (2) cada pre-test de las 08:15 tiene ≥ 1 pregunta ciega por cada 3′ de sus pasos «NQ ciegas» (Tutor ~3′/Q) ·
+  //   (3) la validación «5Q TIMED del subtema» de las 07:15 declara su revisión y tiene 11′ (5 × 90 s + 5 × 0,85′).
+  {
+    const malT = []; let nE = 0, nP = 0, nV = 0;
+    for (const r of DIAS) {
+      for (const g of G.guiaUsmleDe(r.fecha)) {
+        g.pasos.forEach((p, i) => {
+          const prev = g.pasos[i - 1];
+          if (g.franja === '18:00–18:45' && /^Corrección: Educational Objective/.test(p.que)) {
+            const m = prev && /^(\d+)Q TIMED/.exec(prev.que); if (!m) return; nE++;
+            const n = Number(m[1]), rat = (n * 0.85) / p.min;
+            if (rat < 0.85 || rat > 1.15) malT.push(`${r.fecha} 18:00: corrección de ${n}Q en ${p.min}′ (${rat.toFixed(2)})`);
+          }
+          const c = /^(\d+)Q ciegas/.exec(p.que);
+          if (g.franja === '08:15–09:00' && c) { nP++; const rat = (Number(c[1]) * 3) / p.min; if (rat < 0.85 || rat > 1.15) malT.push(`${r.fecha} 08:15: ${c[1]}Q ciegas en ${p.min}′ (${rat.toFixed(2)})`); }
+          if (g.franja === '07:15–08:15' && /^5Q TIMED del subtema/.test(p.que)) { nV++; if (p.min !== 11 || !/revisión/.test(p.como)) malT.push(`${r.fecha} 07:15: validación de 5Q TIMED en ${p.min}′${/revisión/.test(p.como) ? '' : ' sin revisión'} (esperado 11′ con revisión)`); }
+        });
+      }
+    }
+    ok(malT.length === 0, 'guía USMLE (v6.09b · lote 1-bis) · F1: correcciones de las 18:00 a 0,85′/Q (± 15 %), pre-tests a ~3′ por pregunta ciega y validación de 5Q TIMED con su revisión (11′)',
+      malT.slice(0, 8).join(' · ') || `${nE} correcciones · ${nP} pasos de pre-test · ${nV} validaciones`);
+  }
   // v6.08 · DAY-AFTER de los hitos del tramo 2 en F3 (NBME 29 y los hitos de F1 desplazados): cada trozo 2/6-6/6 tiene su franja en la guía en
   //   la fila que le toca (n = 1: 07:15 2/6 + 18:00 3/6 · n = 2-4: 18:00 (n + 2)/6) o, si esa fila ya es F4 (plantilla por turno, sin 18:00),
   //   está listado en META.dayAfterSinFranja (DECISIÓN DE JOSEPH, avisado en el hito). Antes de este control, el 6/6 del NBME 27 (T33, F4) se

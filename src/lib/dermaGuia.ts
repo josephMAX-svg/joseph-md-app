@@ -29,6 +29,9 @@
  *    que el plan no reparte o, si el plan lo reparte entero (Inflammatory y Skin and soft tissue infections), 1-2Q de ProMIR Dermatología del capítulo afín;
  *  · el paso B&B «1,5× (si no, 1,25×)» lleva los minutos a 1,25× (bbMinReserva): lo que sobre a 1,5× pasa al proyecto Claude;
  *  · el atlas DermNet sigue «sin medir» (medirlo pide red: queda pendiente con la regla de F1, palabras/120 + 0,25′/imagen).
+ * v6.09b · lote 1-bis (17-nov-2026, auditoría a2-9; SOLO F1 y la transición, ≤ LOTE1_HASTA): el atlas DermNet del plan B lleva su MEDIDA (DERMNET_MEDIDO de
+ *  dermaGuiaDatos.ts: alcance por secciones + palabras + imágenes → minutos = palabras/120 + 0,25′/imagen); lo que no usa de sus 8′ pasa al proyecto Claude
+ *  (con su nº de viñetas) y, si necesita más, sale del proyecto Claude (que nunca queda < 3′). 2027 sigue «sin medir» (otro lote).
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -41,7 +44,7 @@ import { faseV6 } from './fechasV6';
 import { dermaAnkiDeck } from './ankiLinks';
 import {
   DERMA_CASO_GBOS, DERMA_GUIA_CURADA, PICTORIAL_ASIGNACION, PICTORIAL_TEMAS, BB_DERM, UW_DERM, DERMA_VELOCIDAD, DERMA_TEST_PROMIR_D3,
-  DERMA_GUIA_DATOS_META, DERMA_CME_DESPLAZADO, DERMNET_DERMOSCOPY,
+  DERMA_GUIA_DATOS_META, DERMA_CME_DESPLAZADO, DERMNET_DERMOSCOPY, DERMNET_MEDIDO,
 } from './dermaGuiaDatos';
 
 export { DERMA_GUIA_DATOS_META, DERMA_TEST_PROMIR_D3, DERMNET_DERMOSCOPY };
@@ -352,7 +355,10 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
     pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al proyecto Claude)' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
   }
-  if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) pasos.push({ min: corto ? 6 : 8, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — sin medir`, como: 'Primero las imágenes (tapa el pie y describe), después «clinical features» y «differential diagnosis» · ~120 palabras/min.', enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
+  // v6.09b · lote 1-bis (a2-9): en F1 el atlas lleva su medida (alcance + palabras + imágenes → minutos); 2027 sigue «sin medir» (otro lote)
+  const dn = !corto && dia.fecha <= LOTE1_HASTA && dia.atlasUrl && dia.atlasUrl.startsWith(`${DERMNET}/topics/`) ? DERMNET_MEDIDO[dia.atlasUrl.replace(`${DERMNET}/topics/`, '')] : undefined;
+  if (dn && dia.atlasUrl) pasos.push({ min: dn.min, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — ${dn.alcance.map((t) => `«${t}»`).join(' + ')} (${dn.palabras} palabras${dn.imagenes ? ` + ${dn.imagenes} imágenes` : '; la página no tiene imágenes'}) → ${dn.min}′`, como: `${dn.imagenes ? `Primero las ${dn.imagenes} imágenes de esas secciones (tapa el pie y describe; ≈15 s cada una), después ` : ''}esas secciones a ~120 palabras/min (medido el 17-nov-2026: ${dn.palabras}/120 + ${dn.imagenes} × 0,25′ = ${String(dn.necesario).replace('.', ',')}′)${dn.motivo ? ` · ${dn.motivo}` : ''} · el resto de la página (${dn.pagina.palabras} palabras en total), no hoy.`, enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
+  else if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) pasos.push({ min: corto ? 6 : 8, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — sin medir`, como: 'Primero las imágenes (tapa el pie y describe), después «clinical features» y «differential diagnosis» · ~120 palabras/min.', enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
   else if (!corto && a.pmd && a.pmd !== cap?.n) { const c = PROMIR_DERMA_CAPS[a.pmd - 1]!; pasos.push({ min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. ${c.n} «${c.t}» — la sección del átomo de hoy (sin medir)`, como: 'Solo el apartado del átomo · Whole Page Rule · ritmo de referencia 180 palabras/min.', enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }); }
   pasos.push({ min: 0, que: 'Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · casos de texto del átomo', como: `Pídele: «Dame viñetas de ${dia.sub.split(/[:(—·]/)[0].trim()} de mis libros SIN diagnóstico; yo describo (8 ejes), doy diferencial de 3 y diagnóstico; corrígeme citando libro y página». Cada fallo → tarjeta de MECANISMO.`, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL } });
   pasos.push(cierrePaso(2));
@@ -360,6 +366,8 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   // si el relleno quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar
   const rell = p2.find((p) => p.que.startsWith('Proyecto Claude'));
   if (rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
+  // v6.09b · lote 1-bis: con el atlas medido (F1), el proyecto Claude dice cuántas viñetas caben en sus minutos (≈5′ cada una: 8 ejes + diferencial + corrección)
+  if (dn) p2 = p2.map((p) => { if (!p.que.startsWith('Proyecto Claude')) return p; const n = Math.max(1, Math.round(p.min / 5)); return { ...p, que: `${p.que} · hoy ${p.min}′ ≈ ${n} viñeta${n === 1 ? '' : 's'} (≈5′ cada una)` }; });
   const recursos: GuiaRecurso[] = [{ t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL }, { t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
   if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: ap && ap.n >= 2 ? bb2aMin(a.bb) : bbMinReserva(a.bb, dia.fecha) });
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) recursos.push({ t: 'DermNet · atlas del átomo', url: dia.atlasUrl });

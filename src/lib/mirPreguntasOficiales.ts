@@ -6,7 +6,7 @@
  *   --descargar → cuadernos v0 + hojas de respuestas DEFINITIVAS del portal FSE (token anónimo) → --parse → AAAA.json
  *   → --clasificar (etiquetas LLM en _clasificacion_llm/AAAA.json, contraste con CTO/ConSalud) → AAAA_clasificado.json
  *   → --verificar (2ª pasada a ciegas sobre el 10 %) → --emit (este fichero).
- * Palmerton "questions as the curriculum": pre-test 5Q, anclas, quiz 8-10Q, cierre 10Q, mini-MIR 40Q y el banqueo ene-mar
+ * Palmerton "questions as the curriculum": pre-test 5Q, anclas, quiz 6Q (máx. 8), cierre 10Q, mini-MIR 40Q y el banqueo ene-mar
  * consumen preguntasSinUsar(capId, mirUsadasIds()) / preguntasSinUsarDeAsignatura(); el log guarda los qIds (anti-repetición).
  *
  * Reglas: texto oficial sin corregir (erratas incluidas) · clave DEFINITIVA (null = anulada; las anuladas NO se sirven por

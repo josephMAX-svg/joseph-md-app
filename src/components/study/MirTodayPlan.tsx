@@ -34,7 +34,7 @@ import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
  * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. v3 Palmerton (5-sep-2026) + v3b (12-sep-2026):
  *  · Anclas DINÁMICAS: D-1 fijo (2Q) + 2 slots que priorizan temas 'caliente' del gate (mirAnclasDinamicas);
  *    formulario de la eval que escribe en mirEvalLog con el D# real de cada slot (anclasD).
- *  · GATE PALMERTON por tema (gap 1): se registran el pre-test 5Q y el quiz 8-10Q (kind 'quiz', 20 s);
+ *  · GATE PALMERTON por tema (gap 1): se registran el pre-test 5Q y el quiz 6-8Q (kind 'quiz', 20 s; v6.09b, antes 8-10Q);
  *    pre-test + quiz + ancla D-1 ≥80 % → ✓ validado; quiz <60 % / acumulado <50 % / ancla ✗ → ● caliente
  *    (ocupa un slot mañana hasta 2 aciertos seguidos); al 2º fallo del tema, `ajuste` obligatorio.
  *  · Táctica −1/3 (gap 6): campos opcionales blancos acertables / fallos entre dos / cambiadas + cronómetro
@@ -65,7 +65,7 @@ import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
  *    (mirFranjaPorTurno con el turno marcado: M 16:00 · T 10:35 · L 15:15 · día de hito 04:05 · G 1 h en tiempo muerto) ·
  *    sábado (tipo 'sabado') = mini-simulacro 30Q mixtas de las 14 · banner de día protegido · handoff vie 24-sep (fase principal oct-2027).
  *  · Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki hasta que el redeploy de n8n esté verificado.
- *  · Pool oficial (19-sep-2026, DATA/MIR/POOL_USO.md §2-§5): anclada 4Q · pre-test 5Q · quiz 8-10Q · cierre 10Q · mini-MIR 40Q
+ *  · Pool oficial (19-sep-2026, DATA/MIR/POOL_USO.md §2-§5): anclada 4Q · pre-test 5Q · quiz 6Q (máx. 8; lista de 8-10) · cierre 10Q · mini-MIR 40Q
  *    reservan `qIds` en orden horario del día (cada segmento excluye las usadas del log + las reservadas antes ese día; si el
  *    segmento ya se guardó, se muestran sus ids); banqueo: foco + 2.º EvalForm los jueves Tier C (`dia.tierC`, entrada propia);
  *    vista de pregunta con `preguntaPorId` (MirPoolEval.tsx). Fallback declarado: test del capítulo/asignatura ProMIR.
@@ -545,7 +545,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
 
       {esTema && (
         <>
-          <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 17-19 Q/día</Text>
+          <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 15-17 Q/día</Text>
           <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (pool oficial → test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar pre-test 5Q (10 s · diagnóstico, no cuenta para readiness; sí para validar el tema)" color={GREEN}>
             {poolOK && <MirPoolLista qIds={pool.pretest} color={GREEN} titulo="Pool oficial · pre-test (ciego: no abras la clave antes de contestar)" pedidas={5} />}
@@ -658,7 +658,7 @@ function HorarioView({ dia }: { dia: DiaMIR }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>15:15–15:30 = eval anclada multi-temporal (D-1 fijo + 2 slots que priorizan temas calientes) o test de cierre el 1er día de bloque. 15:30–16:15 = capítulo nuevo (pre-test → lectura dirigida → 8-10Q → APEX). Sáb y dom libres: lo que falla va a la cola D+7/D+14, no al finde.</Text>
+      <Text style={st.note}>15:15–15:30 = eval anclada multi-temporal (D-1 fijo + 2 slots que priorizan temas calientes) o test de cierre el 1er día de bloque. 15:30–16:15 = capítulo nuevo (pre-test → lectura dirigida → 6Q comentadas (máx. 8) → APEX). Sáb y dom libres: lo que falla va a la cola D+7/D+14, no al finde.</Text>
     </View>
   );
 }

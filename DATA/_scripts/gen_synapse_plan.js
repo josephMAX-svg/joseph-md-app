@@ -142,6 +142,10 @@ const SIN_SESION_SYN = new Set(require('./gen_fechas_v6').cargarFechasV6().corri
 //   corrida_s1.sin_sesion: solo lleva la recuperación, sin Feynman ni PC; `llegada: true`), a las 16:30-17:00, tras la recuperación ENCAPS del viaje
 //   (rutinaGuia.guiaSynapseDe). El PC del dom 29 (SHIP S1) vuelve a 2 h. Las A-units del dom 22 → sáb 28 corren un día; desde el lun 30-nov, el `d` y
 //   2027 quedan idénticos.
+// v6.09b · S1 (mar 17-nov · a2-4 / a2-5 / a2-6): F1 (mié 18-nov → dom 3-ene) TROCEADO POR FECHA con material MEDIDO — DATA/SYNAPSE/medidas_f1.json
+//   (medir_synapse_f1.js) + synapse_f1_tramos.js: cada A/B/C lleva su tramo real (vídeo entero a 1,0/1,25/1,5×; audio por minutos a 1,5×, el deep dive a
+//   1,0×; lectura en ventanas de ≈500 palabras con localizador sección + párrafo) y lo que no cabe va con FECHA (comodines del sábado, hueco de Lex, lun 4 /
+//   mar 5 / vie 8-ene ya previstos, y la COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027 → SYN_COLA_POST_STEP1). `--check` compara sin escribir.
 const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16', '2026-11-21'], wd: 'Lun', semana: 1, motivo: 'lun 16-nov (no se estudió) + sáb 21-nov (viaje)' };
 let DOM_RECUPERA = new Map(); // se fija tras leer el START (abajo)
 // v5.20: último SÁBADO del plan (≤ FIN_PLAN). Si la sem 1 no tiene martes (START en miércoles o después), la pieza del carril del
@@ -614,7 +618,10 @@ function bloqueDom(semana, fecha) {
 // v5.20 (6-oct-2026): START = mié 7-oct → OFF_WD.Lun = 1 y OFF_WD.Mar = 1 (mié = 0). El plan se ALARGA al lun 15-feb (FIN_PLAN), así
 //   el carril del lunes recupera su pieza en ese lunes (19 lunes); la pieza del martes que se cae va al último sábado (ULT_SAB = sáb 13-feb).
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-11-16'; // v6.09 (16-nov-2026): default = lun 16-nov, como la v6.08, pero SIN SESIÓN (corrida_s1; 1.ª sesión mar 17): así el `d` de todas las fechas = v6.08 · v6.08 (14-nov-2026): default = D1 v6.08 lun 16-nov · v6.07 (8-nov-2026): default = D1 v6.07 lun 9-nov · v6.06 (31-oct-2026): default = D1 v6.06 lun 2-nov · v6.05 (24-oct-2026): default = D1 v6.05 lun 26-oct (antes '2026-09-03', el D1 v5.4, sin actualizar desde entonces: sin argumento abortaba en la guarda de los PC); el pipeline pasa siempre la fecha
+// v6.09b (S1, 17-nov-2026): `--check` = genera en memoria (START del régimen vigente, lun 16-nov) y compara con src/lib/synapseDailyPlan.ts sin escribir
+//   (la batería lo llama así; antes `--check` abortaba como START inválido)
+const CHECK = process.argv.includes('--check');
+const START_ISO = process.argv.slice(2).find((a) => !a.startsWith('--')) || '2026-11-16'; // v6.09 (16-nov-2026): default = lun 16-nov, como la v6.08, pero SIN SESIÓN (corrida_s1; 1.ª sesión mar 17): así el `d` de todas las fechas = v6.08 · v6.08 (14-nov-2026): default = D1 v6.08 lun 16-nov · v6.07 (8-nov-2026): default = D1 v6.07 lun 9-nov · v6.06 (31-oct-2026): default = D1 v6.06 lun 2-nov · v6.05 (24-oct-2026): default = D1 v6.05 lun 26-oct (antes '2026-09-03', el D1 v5.4, sin actualizar desde entonces: sin argumento abortaba en la guarda de los PC); el pipeline pasa siempre la fecha
 if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 const SDOW = START.getDay();                    // día de la semana del START (0=Dom … 6=Sáb)
@@ -732,6 +739,37 @@ if (VIBE_FECHAS.length) {
 }
 if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar el ${FIN_PLAN} (v6.08: jue 1-abr · v6.07: mar 23-mar · v6.06: mar 16-mar · v6.05: vie 5-mar · v6.03: lun 1-mar · v6.02: vie 26-feb · v6.01: vie 19-feb · lun 15-feb en v6.00 = v5.20; v5.19: sáb 13-feb); termina el ${dias[TOTAL - 1].fecha}: ajusta las A-units de F2`);
 
+// ─── v6.09b (S1 · mar 17-nov-2026 · auditoría tiempo ↔ material, a2-4 / a2-5 / a2-6): F1 TROCEADO POR FECHA con material MEDIDO ───
+// Del mié 18-nov-2026 al dom 3-ene-2027 (el mar 17 está en curso) cada A/B/C con material medible lleva su tamaño real (DATA/SYNAPSE/medidas_f1.json,
+//   medir_synapse_f1.js): `leccion` dice el tramo de verdad («tramo 2/3 del plan · min 10:00-25:00 de 1:58:43 a 1,5×», «≈500 palabras: desde «4.1…» hasta
+//   el final de «4.3…»») y `guia` es el paso de la guía (rutinaGuia.pasoSyn lo usa antes que la curaduría). Lo que no cabe NO se quita: cola de F1
+//   (comodines del sábado, hueco de Lex, 4/5/8-ene ya previstos) y COLA POST-STEP 1 (30′/día L-V desde el lun 13-dic-2027), y cada sesión dice adónde va.
+//   Las A-units, el `d`, las piezas por carril y TODO 2027 quedan idénticos (synapse_f1_tramos.js solo reescribe bloques de F1). Solo con el START del
+//   régimen v6.09 (lun 16-nov): con otro START (reproducir versiones viejas) no se aplica.
+let COLA_POST = [];
+{
+  const MED_F1 = path.join(ROOT, 'DATA/SYNAPSE/medidas_f1.json');
+  if (START_ISO === '2026-11-16' && fs.existsSync(MED_F1)) {
+    const hhmm = (s) => String(s).split(':').reduce((a, x) => a * 60 + Number(x), 0);
+    const lexCaps = cur('lex-452').lecciones.map((l) => ({ n: l.n, titulo: l.titulo, ini: hhmm(l.dur) }));
+    const MED = JSON.parse(fs.readFileSync(MED_F1, 'utf8'));
+    // URLs medidas (curl 200 el 17-nov-2026, medir_synapse_f1.js) → allowlist (regla «cero URLs inventadas»)
+    for (const L of Object.values(MED.lectura)) { ALLOWED.add(L.url); for (const sx of L.secciones) if (sx.url) ALLOWED.add(sx.url); }
+    for (const A of Object.values(MED.audio)) ALLOWED.add(A.url);
+    const T = require('./synapse_f1_tramos').crear(MED, { dias, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()) });
+    let n = 0;
+    for (const x of dias) for (const b of x.bloques) {
+      const o = T.sesiones.get(`${x.fecha}|${b.tag}`);
+      if (!o || !['A', 'B', 'C'].includes(b.tag)) continue;
+      if (x.fecha > require('./synapse_f1_tramos').HASTA || x.fecha < require('./synapse_f1_tramos').DESDE) throw new Error('v6.09b: tramo F1 fuera de F1 en ' + x.fecha);
+      b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; n++;
+      if (o.guia && o.guia.url) assertUrl(o.guia.url);
+    }
+    COLA_POST = T.cola;
+    if (!CHECK) console.log(`v6.09b · F1 troceado con material medido: ${n} bloques A/B/C reescritos · cola post-Step 1: ${COLA_POST.length} días (${COLA_POST[0] ? COLA_POST[0].fecha : '—'} → ${COLA_POST.length ? COLA_POST[COLA_POST.length - 1].fecha : '—'})`);
+  }
+}
+
 // ─── Emitir TypeScript ───
 const esc = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 const blkTs = (b) => {
@@ -740,6 +778,7 @@ const blkTs = (b) => {
   if (b.dur) o += `,dur:"${esc(b.dur)}"`;
   o += `,real:${b.real !== false}`;
   if (b.audit) o += `,audit:true`;
+  if (b.guia) o += `,med:${b.med},guia:{que:"${esc(b.guia.que)}",como:"${esc(b.guia.como)}"${b.guia.url ? `,url:"${esc(b.guia.url)}"` : ''}${b.guia.t ? `,t:"${esc(b.guia.t)}"` : ''}}`; // v6.09b: F1 medido
   o += `}`;
   return o;
 };
@@ -785,6 +824,10 @@ export interface SynBloque {
   dur?: string;
   real: boolean;
   audit?: boolean; // F0: "auditar con Joseph: ✓ si ya hecho"
+  /** v6.09b (F1 medido, 18-nov-2026 → 3-ene-2027): minutos que pide el material (duración ÷ velocidad · palabras ÷ 100) */
+  med?: number;
+  /** v6.09b: paso de la guía con el tramo exacto y adónde va el resto (rutinaGuia.pasoSyn lo usa antes que la curaduría) */
+  guia?: { que: string; como: string; url?: string; t?: string };
 }
 export interface DiaSynapse {
   d: number; fecha: string; wd: string; semana: number;
@@ -807,6 +850,12 @@ ${dias.map(diaTs).join(',\n')}
 ];
 
 export function synDiaDe(fechaISO: string): DiaSynapse | undefined { return SYN_DIAS.find(x => x.fecha === fechaISO); }
+
+/** v6.09b (S1, 17-nov-2026): COLA POST-STEP 1 del SYNAPSE de F1 — lo que no cupo en su sesión de F1 (ni en los comodines del sábado, el hueco de Lex o
+ *  las sesiones de 2027 que ya lo prevén), con fecha: 30′/día L-V desde el lun 13-dic-2027 (tras el examen del lun 6-dic). Audio a la velocidad de su
+ *  serie; lectura a 100 palabras/min. Cada sesión de F1 que deja un resto dice aquí qué días le tocan. Aún no la pinta ninguna plantilla (F5 es un esbozo). */
+export interface SynColaPieza { titulo: string; url: string; desde: string; hasta?: string; palabras?: number; vel?: number; min: number }
+export const SYN_COLA_POST_STEP1: Array<{ fecha: string; piezas: SynColaPieza[] }> = ${JSON.stringify(COLA_POST)};
 export function syn7d(fromD: number): DiaSynapse[] { return SYN_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
 
 export const SYN_FORMATO_ICON: Record<SynFormato, string> = {
@@ -817,6 +866,15 @@ export const SYN_TAG_LABEL: Record<SynBloque['tag'], string> = {
 };
 `;
 
+if (CHECK) {
+  // v6.09b: --check = mismo contenido que el .ts en disco (sin escribir nada; CRLF/LF indiferente)
+  if (process.env.SYN_DUMP) fs.writeFileSync(process.env.SYN_DUMP, ts, "utf8"); // depuración: volcar lo generado
+  const nl = (x) => x.split(String.fromCharCode(13, 10)).join(String.fromCharCode(10));
+  const disco = nl(fs.readFileSync(path.join(ROOT, 'src/lib/synapseDailyPlan.ts'), 'utf8'));
+  if (disco !== nl(ts)) { console.error('✗ src/lib/synapseDailyPlan.ts NO está al día: node DATA/_scripts/gen_synapse_plan.js ' + START_ISO); process.exit(1); }
+  console.log(`✓ synapseDailyPlan.ts al día · ${TOTAL} días · ${aUnits.length} A-units · fin ${dias[TOTAL - 1].fecha} · F1 medido: ${dias.reduce((a, x) => a + x.bloques.filter((b) => b.guia).length, 0)} bloques · cola post-Step 1: ${COLA_POST.length} días`);
+  process.exit(0);
+}
 fs.writeFileSync(path.join(ROOT, 'src/lib/synapseDailyPlan.ts'), ts, 'utf8');
 console.log('OK src/lib/synapseDailyPlan.ts ·', TOTAL, 'días ·', aUnits.length, 'A-units · F0 sem 1-8 (audit) · F1 sem 9-12 = stack vibecoding · F2 sem 13-19 = Academy restante + CCA-F (' + nF2 + ' días) · PC = SHIP S1-S12 · fin', dias[TOTAL - 1].fecha);
 

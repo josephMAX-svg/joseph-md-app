@@ -10,8 +10,9 @@
  *  · anclada      — 15:15 eval 4Q (2Q D-1 + 2 slots dinámicos); `anclas` = resultado por slot, `anclasD` = D# del
  *                   tema que ocupó cada slot (anclas dinámicas, v3b).
  *  · pretest      — 15:30 5Q ciegas del capítulo nuevo (diagnóstico: NO cuenta para readiness, SÍ para el gate del tema).
- *  · quiz         — 15:53 8-10Q comentadas del capítulo (Rule-In → Rule-Out). v3b: era el 50 % de las preguntas del día
- *                   y no se registraba. Cuenta para el gate del tema y para el agregado por asignatura.
+ *  · quiz         — 15:53 6Q comentadas (máx. 8) del capítulo (Rule-In → Rule-Out; v6.09b, antes 8-10Q: 77 s + 30 s de
+ *                   comentario → 6Q ≈ 10,7′ en 12′). v3b: era el 50 % de las preguntas del día y no se registraba. Cuenta
+ *                   para el gate del tema y para el agregado por asignatura.
  *  · cierre       — 1er día del bloque siguiente, 10Q reales de la asignatura cerrada (77 s/Q).
  *  · miniMIR      — D77: 40Q mixto cronometrado (51 min).
  *  · mantenimiento— ene-mar 2027: 25Q/30Q/10Q reales mixtas.
@@ -20,7 +21,7 @@
  *                   mirStatsPorAsignatura pero NO en readiness, cierres ni cola D+14.
  *
  * GATE PALMERTON como selección de anclas (v3b, gap 1): con 1h/día el gate no puede parar el calendario, así que
- * decide QUÉ pregunta ocupa cada ancla. Por tema: pre-test 5Q + quiz 8-10Q + ancla D-1 ≥ 80 % acumulado → 'validado';
+ * decide QUÉ pregunta ocupa cada ancla. Por tema: pre-test 5Q + quiz 6-8Q + ancla D-1 ≥ 80 % acumulado → 'validado';
  * quiz < 60 % o acumulado < 50 % o ancla ✗ → 'caliente' (ocupa uno de los 2 slots dinámicos del día siguiente hasta
  * 2 aciertos de ancla consecutivos). Al 2º fallo del tema, `ajuste` obligatorio (recursos / comprensión / aplicación /
  * retención = los 4 ajustes de Palmerton). Ningún minuto nuevo.
@@ -340,7 +341,7 @@ export function mirDermaResumen(entries: MirEvalEntry[] = leer()): { n: number; 
 export const MIR_GATE = {
   /** acumulado (pre-test + quiz + ancla D-1) para 'validado' */
   validadoPct: 80,
-  /** quiz 8-10Q por debajo → 'caliente' */
+  /** quiz 6-8Q (v6.09b; antes 8-10Q) por debajo → 'caliente' */
   quizMinPct: 60,
   /** acumulado por debajo → 'caliente' */
   acumMinPct: 50,

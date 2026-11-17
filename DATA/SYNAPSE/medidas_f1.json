@@ -1,0 +1,2843 @@
+{
+ "_meta": {
+  "generado": "node DATA/_scripts/medir_synapse_f1.js <dir_descargas> (v6.09b · S1, 17-nov-2026)",
+  "medido": "2026-11-17 · curl de páginas públicas (sin iniciar sesión) · conteo = audit609/sec/words.js",
+  "reglas": "lectura en inglés 100 palabras/min · audio/vídeo = duración ÷ velocidad (×1,2 si el paso pide pausas) · paso OK si necesario/asignado ∈ [0,85; 1,15]",
+  "nota": "Solo números y títulos de sección/capítulo (localizador = sección + n.º de párrafo). El texto de las fuentes no se guarda (repo público)."
+ },
+ "lectura": {
+  "py1": {
+   "titulo": "The Python Tutorial › 1 «Whetting Your Appetite»",
+   "url": "https://docs.python.org/3/tutorial/appetite.html",
+   "total": 744,
+   "secciones": [
+    {
+     "t": "1. Whetting Your Appetite",
+     "p": [2]
+    },
+    {
+     "t": "1. Whetting Your Appetite",
+     "p": [69,75,7,82,95,69,57,27,14,12,7,83,37,42,26,40]
+    }
+   ]
+  },
+  "py2": {
+   "titulo": "The Python Tutorial › 2 «Using the Python Interpreter»",
+   "url": "https://docs.python.org/3/tutorial/interpreter.html",
+   "total": 950,
+   "secciones": [
+    {
+     "t": "2. Using the Python Interpreter",
+     "p": [2]
+    },
+    {
+     "t": "2. Using the Python Interpreter",
+     "p": [5]
+    },
+    {
+     "t": "2.1. Invoking the Interpreter",
+     "p": [42,1,40,41,41,99,47,50,37,32,11]
+    },
+    {
+     "t": "2.1.1. Argument Passing",
+     "p": [135]
+    },
+    {
+     "t": "2.1.2. Interactive Mode",
+     "p": [68,23,19,23,8]
+    },
+    {
+     "t": "2.2. The Interpreter and Its Environment",
+     "p": [6]
+    },
+    {
+     "t": "2.2.1. Source Code Encoding",
+     "p": [82,28,2,11,21,2,36,6,2,30]
+    }
+   ]
+  },
+  "py3": {
+   "titulo": "The Python Tutorial › 3 «An Informal Introduction to Python»",
+   "url": "https://docs.python.org/3/tutorial/introduction.html",
+   "total": 2749,
+   "secciones": [
+    {
+     "t": "3. An Informal Introduction to Python",
+     "p": [2]
+    },
+    {
+     "t": "3. An Informal Introduction to Python",
+     "p": [79,36,86,2,27]
+    },
+    {
+     "t": "3.1. Using Python as a Calculator",
+     "p": [25]
+    },
+    {
+     "t": "3.1.1. Numbers",
+     "p": [43,21,33,26,36,13,14,22,8,18,24,19,4,33,13,36,40]
+    },
+    {
+     "t": "3.1.2. Text",
+     "p": [44,31,23,36,33,40,26,30,29,45,29,12,10,18,3,12,22,12,34,13,3,27,16,12,13,14,23,24,25,33,25,10,46,19,42,29,14,25,13,6,21,44,12,8,10,5,6,17,13,9,9,20]
+    },
+    {
+     "t": "3.1.3. Lists",
+     "p": [52,12,14,20,6,16,18,33,24,25,43,24,24,18,20,58,8,8,13,27]
+    },
+    {
+     "t": "3.2. First Steps Towards Programming",
+     "p": [35,31,6,59,94,98,63,16,22,32,2,30,43]
+    }
+   ]
+  },
+  "py4": {
+   "titulo": "The Python Tutorial › 4 «More Control Flow Tools»",
+   "url": "https://docs.python.org/3/tutorial/controlflow.html",
+   "total": 5675,
+   "secciones": [
+    {
+     "t": "4. More Control Flow Tools",
+     "p": [2]
+    },
+    {
+     "t": "4. More Control Flow Tools",
+     "p": [25]
+    },
+    {
+     "t": "4.1. if Statements",
+     "p": [15,36,47,30]
+    },
+    {
+     "t": "4.2. for Statements",
+     "p": [81,21,37,49]
+    },
+    {
+     "t": "4.3. The range() Function",
+     "p": [26,12,52,26,16,26,16,10,5,48,55,8,25]
+    },
+    {
+     "t": "4.4. break and continue Statements",
+     "p": [18,40,11,65]
+    },
+    {
+     "t": "4.5. else Clauses on Loops",
+     "p": [33,22,12,44,13,73,20,68,59]
+    },
+    {
+     "t": "4.6. pass Statements",
+     "p": [26,9,8,3,38,8,50]
+    },
+    {
+     "t": "4.7. match Statements",
+     "p": [87,12,29,16,11,7,13,42,63,32,57,61,17,76,25,61,37,25,7,28,39,38,8,9,21,17,19,48,21]
+    },
+    {
+     "t": "4.8. Defining Functions",
+     "p": [17,59,40,73,109,66,49,21,77,6,22,60,9,27,119]
+    },
+    {
+     "t": "4.9. More on Defining Functions",
+     "p": [26]
+    },
+    {
+     "t": "4.9.1. Default Argument Values",
+     "p": [38,45,8,13,14,19,18,17,11,3,44,18,3,6,20,15]
+    },
+    {
+     "t": "4.9.2. Keyword Arguments",
+     "p": [21,33,24,49,8,31,72,27,76,35,6,22,6,32,26]
+    },
+    {
+     "t": "4.9.3. Special parameters",
+     "p": [61,6,16,36]
+    },
+    {
+     "t": "4.9.3.1. Positional-or-Keyword Arguments",
+     "p": [24]
+    },
+    {
+     "t": "4.9.3.2. Positional-Only Parameters",
+     "p": [69,8]
+    },
+    {
+     "t": "4.9.3.3. Keyword-Only Arguments",
+     "p": [29]
+    },
+    {
+     "t": "4.9.3.4. Function Examples",
+     "p": [16,34,26,9,21,34,18,33,13,82,23,8,24,23,25,13,15]
+    },
+    {
+     "t": "4.9.3.5. Recap",
+     "p": [15,9,2,54,33,19]
+    },
+    {
+     "t": "4.9.4. Arbitrary Argument Lists",
+     "p": [51,12,52,21]
+    },
+    {
+     "t": "4.9.5. Unpacking Argument Lists",
+     "p": [66,28,12,52]
+    },
+    {
+     "t": "4.9.6. Lambda Expressions",
+     "p": [69,19,37,25]
+    },
+    {
+     "t": "4.9.7. Documentation Strings",
+     "p": [15,59,43,18,8,34]
+    },
+    {
+     "t": "4.9.8. Function Annotations",
+     "p": [26,86,38]
+    },
+    {
+     "t": "4.10. Intermezzo: Coding Style",
+     "p": [69,42,6,27,9,19,15,10,2,20,45,27,25,2,34]
+    }
+   ]
+  },
+  "py5": {
+   "titulo": "The Python Tutorial › 5 «Data Structures»",
+   "url": "https://docs.python.org/3/tutorial/datastructures.html",
+   "total": 4099,
+   "secciones": [
+    {
+     "t": "5. Data Structures",
+     "p": [2]
+    },
+    {
+     "t": "5. Data Structures",
+     "p": [22]
+    },
+    {
+     "t": "5.1. More on Lists",
+     "p": [24,18,21,44,27,47,15,21,48,16,23,10,10,9,68,39,59]
+    },
+    {
+     "t": "5.1.1. Using Lists as Stacks",
+     "p": [61,33]
+    },
+    {
+     "t": "5.1.2. Using Lists as Queues",
+     "p": [82,20,48]
+    },
+    {
+     "t": "5.1.3. List Comprehensions",
+     "p": [50,12,21,29,9,2,8,6,61,31,4,35,17,18,186,9,19]
+    },
+    {
+     "t": "5.1.4. Nested List Comprehensions",
+     "p": [20,18,13,9,23,28,27,7,42,25,15,12]
+    },
+    {
+     "t": "5.1.5. Unpacking in Lists and List Comprehensions",
+     "p": [76,16,23,32,25,24,21,19,16]
+    },
+    {
+     "t": "5.2. The del statement",
+     "p": [68,27,9,2,24]
+    },
+    {
+     "t": "5.3. Tuples and Sequences",
+     "p": [57,13,94,69,67,62,14,30,4,55]
+    },
+    {
+     "t": "5.4. Sets",
+     "p": [42,40,21,5,110,13,30]
+    },
+    {
+     "t": "5.5. Dictionaries",
+     "p": [114,63,52,48,44,8,70,11,13,16,15,11,60,16,13]
+    },
+    {
+     "t": "5.6. Looping Techniques",
+     "p": [23,22,22,17,20,53,21,15,23,20,34,19,27,36]
+    },
+    {
+     "t": "5.7. More on Conditions",
+     "p": [19,53,21,74,74,19,16,35]
+    },
+    {
+     "t": "5.8. Comparing Sequences and Other Types",
+     "p": [136,43,50,2,20]
+    }
+   ]
+  },
+  "py6": {
+   "titulo": "The Python Tutorial › 6 «Modules»",
+   "url": "https://docs.python.org/3/tutorial/modules.html",
+   "total": 3415,
+   "secciones": [
+    {
+     "t": "6. Modules",
+     "p": [2]
+    },
+    {
+     "t": "6. Modules",
+     "p": [103,70,62,55,13,2,42,38,16,20]
+    },
+    {
+     "t": "6.1. More on Modules",
+     "p": [52,73,52,22,22,25,13,20,39,36,20,22,25,11,23,1,41]
+    },
+    {
+     "t": "6.1.1. Executing modules as scripts",
+     "p": [12,4,34,10,34,13,10,2,28]
+    },
+    {
+     "t": "6.1.2. The Module Search Path",
+     "p": [59,15,15,14,12,1,35,66]
+    },
+    {
+     "t": "6.1.3. “Compiled” Python files",
+     "p": [77,48,66,4,75,39,13,17]
+    },
+    {
+     "t": "6.2. Standard Modules",
+     "p": [120,14,13,47,9]
+    },
+    {
+     "t": "6.3. The dir() Function",
+     "p": [25,145,10,18,12,26,151]
+    },
+    {
+     "t": "6.4. Packages",
+     "p": [79,117,42,16,77,13,2,13,10,8,4,21,8,12,4,14,7,71,41]
+    },
+    {
+     "t": "6.4.1. Importing * From a Package",
+     "p": [62,108,4,17,54,41,82,7,35,26,34]
+    },
+    {
+     "t": "6.4.2. Intra-package References",
+     "p": [52,42,10,40,2,27]
+    }
+   ]
+  },
+  "py7": {
+   "titulo": "The Python Tutorial › 7 «Input and Output»",
+   "url": "https://docs.python.org/3/tutorial/inputoutput.html",
+   "total": 2994,
+   "secciones": [
+    {
+     "t": "7. Input and Output",
+     "p": [2]
+    },
+    {
+     "t": "7. Input and output",
+     "p": [39]
+    },
+    {
+     "t": "7.1. Fancier output formatting",
+     "p": [48,23,41,15,52,27,41,41,32,83,2,86,52]
+    },
+    {
+     "t": "7.1.1. Formatted string literals",
+     "p": [36,29,20,25,25,23,31,25,21,25]
+    },
+    {
+     "t": "7.1.2. The string format() method",
+     "p": [14,16,40,20,21,16,8,20,51,28,16,25,19,31,20,50,13]
+    },
+    {
+     "t": "7.1.3. Manual string formatting",
+     "p": [14,61,22,96,22,12]
+    },
+    {
+     "t": "7.1.4. Old string formatting",
+     "p": [45,19,11]
+    },
+    {
+     "t": "7.2. Reading and writing files",
+     "p": [22,4,94,70,77,48,22,26,1,30,24,22]
+    },
+    {
+     "t": "7.2.1. Methods of file objects",
+     "p": [25,99,10,74,21,23,20,22,16,8,25,16,36,78,42,57,27]
+    },
+    {
+     "t": "7.2.2. Saving structured data with json",
+     "p": [74,90,1,29,19,12,31,4,21,4,1,13,33,2,4,63]
+    }
+   ]
+  },
+  "atbs0": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 0 «Introduction»",
+   "url": "https://automatetheboringstuff.com/3e/chapter0.html",
+   "total": 5043,
+   "secciones": [
+    {
+     "t": "Introduction",
+     "p": [35]
+    },
+    {
+     "t": "INTRODUCTION",
+     "p": [96,38,73,50]
+    },
+    {
+     "t": "Who Is This Book For?",
+     "p": [81,11,128,42]
+    },
+    {
+     "t": "Coding Conventions Used in This Book",
+     "p": [99]
+    },
+    {
+     "t": "What Is Programming?",
+     "p": [64,19,5,12,6,8,68,43,106,117]
+    },
+    {
+     "t": "What Is Python?",
+     "p": [56,81,35]
+    },
+    {
+     "t": "Common Myths About Programming",
+     "p": [62]
+    },
+    {
+     "t": "Programmers Don’t Need to Know Much Math",
+     "p": [63,159,22,83]
+    },
+    {
+     "t": "You Are Not Too Old to Learn Programming",
+     "p": [68,46,77,43]
+    },
+    {
+     "t": "AI Won’t Replace Programmers",
+     "p": [134,44,4,94,35,118,67,105,75,87]
+    },
+    {
+     "t": "About This Book",
+     "p": [61,4,26,26,24,23,13,14,20,15,4,22,26,30,29,25,35,19,23,13,25,39,28,26,23,22,30,38]
+    },
+    {
+     "t": "Downloading and Installing Python",
+     "p": [21,64,30]
+    },
+    {
+     "t": "Downloading and Installing Mu",
+     "p": [44,76]
+    },
+    {
+     "t": "Starting Mu",
+     "p": [64,47]
+    },
+    {
+     "t": "Starting IDLE",
+     "p": [144]
+    },
+    {
+     "t": "The Interactive Shell",
+     "p": [68,21,22,26,0,53,13,3,16,5,16]
+    },
+    {
+     "t": "How to Find Help",
+     "p": [116,33,25,86,13,46]
+    },
+    {
+     "t": "Asking Smart Programming Questions",
+     "p": [77,232,27,66]
+    },
+    {
+     "t": "New to the Third Edition",
+     "p": [115]
+    },
+    {
+     "t": "Summary",
+     "p": [54,41,37]
+    }
+   ]
+  },
+  "atbs1": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 1 «Python Basics»",
+   "url": "https://automatetheboringstuff.com/3e/chapter1.html",
+   "total": 7156,
+   "secciones": [
+    {
+     "t": "Python Basics",
+     "p": [35]
+    },
+    {
+     "t": "1 PYTHON BASICS",
+     "p": [41,42,75]
+    },
+    {
+     "t": "Entering Expressions into the Interactive Shell",
+     "p": [105,126,21,3,61,34,2,69,3,80,126,148,22,4,1,1,1,2,0,1,2,1,0,2,2,1,0,2,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,103,33,34,29,7,8,40,22,46]
+    },
+    {
+     "t": "The Integer, Floating-Point, and String Data Types",
+     "p": [130,91,5,2,1,2,8,3,7,2,7,65,14,10,16]
+    },
+    {
+     "t": "String Concatenation and Replication",
+     "p": [62,3,46,24,69,44,3,38,35,48,27,45]
+    },
+    {
+     "t": "Storing Values in Variables",
+     "p": [43]
+    },
+    {
+     "t": "Assignment Statements",
+     "p": [53,39,22,9,18,76,8,22,16,17]
+    },
+    {
+     "t": "Variable Names",
+     "p": [70,62,8,7,3,3,2,5,1,6,1,6,1,10,2,8,1,7,32,6,100,29,56]
+    },
+    {
+     "t": "Your First Program",
+     "p": [68,77,19,68,34,50,37,33,50,58,44]
+    },
+    {
+     "t": "Dissecting the Program",
+     "p": [32]
+    },
+    {
+     "t": "Comments",
+     "p": [8,9,38,57,36]
+    },
+    {
+     "t": "The print() Function",
+     "p": [16,12,79,1,22,64]
+    },
+    {
+     "t": "The input() Function",
+     "p": [20,3,81,3,85,33,31]
+    },
+    {
+     "t": "The Greeting Message",
+     "p": [22,9,46]
+    },
+    {
+     "t": "The len() Function",
+     "p": [34,11,10,14,76,32,35,30,55]
+    },
+    {
+     "t": "The str(), int(), and float() Functions",
+     "p": [58,15,43,36,24,30,75,5,73,5,17,4,22,48,15,7,27,24,59,4,28,9,14,54,20,1,46]
+    },
+    {
+     "t": "The type() Function",
+     "p": [54,40,62]
+    },
+    {
+     "t": "The round() and abs() Functions",
+     "p": [43,9,24,8,47,44,12,47]
+    },
+    {
+     "t": "How Computers Store Data with Binary Numbers",
+     "p": [74,90,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,125,12,116,144,77,51,106,7,86,76,52]
+    },
+    {
+     "t": "Summary",
+     "p": [72,34,84,51]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [13,3,13,2,5,13,19,12,4,9,4,12,19,13,4,82]
+    }
+   ]
+  },
+  "atbs2": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 2 «if-else and Flow Control»",
+   "url": "https://automatetheboringstuff.com/3e/chapter2.html",
+   "total": 4696,
+   "secciones": [
+    {
+     "t": "if-else and Flow Control",
+     "p": [35]
+    },
+    {
+     "t": "2 IF-ELSE AND FLOW CONTROL",
+     "p": [100,47,15,51,47]
+    },
+    {
+     "t": "Boolean Values",
+     "p": [104,36,56]
+    },
+    {
+     "t": "Comparison Operators",
+     "p": [25,4,1,1,1,0,2,11,0,3,10,0,2,10,0,2,13,0,5,10,0,5,10,22,12,43,21,48,15,21,63,6,62,27]
+    },
+    {
+     "t": "Boolean Operators",
+     "p": [39,52,8,21,7,1,2,3,1,3,1,3,1,3,1,51,8,18,7,1,2,3,1,3,1,3,1,3,1,31,9,35,7,1,2,2,1,2,1]
+    },
+    {
+     "t": "Mixing Boolean and Comparison Operators",
+     "p": [23,53,18,52,1,15,17,36]
+    },
+    {
+     "t": "Components of Flow Control",
+     "p": [45]
+    },
+    {
+     "t": "Conditions",
+     "p": [119]
+    },
+    {
+     "t": "Blocks of Code",
+     "p": [78,24,20,47]
+    },
+    {
+     "t": "Program Execution",
+     "p": [63,41]
+    },
+    {
+     "t": "Flow Control Statements",
+     "p": [39]
+    },
+    {
+     "t": "if",
+     "p": [42,64,15,8,42,9,30]
+    },
+    {
+     "t": "else",
+     "p": [88,26,12,12,9,26]
+    },
+    {
+     "t": "elif",
+     "p": [110,14,19,27,9,95,41,28,13,64,41,85,21,29,62,29,14,9,97,62]
+    },
+    {
+     "t": "A Short Program: Opposite Day",
+     "p": [28,88,131,82,95]
+    },
+    {
+     "t": "A Short Program: Dishonest Capacity Calculator",
+     "p": [60,87,20,26,92,11,29,130,1,71,72,24,8,86]
+    },
+    {
+     "t": "Summary",
+     "p": [112]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [18,7,26,8,30,7,14,12,8,19,65]
+    }
+   ]
+  },
+  "atbs3": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 3 «Loops»",
+   "url": "https://automatetheboringstuff.com/3e/chapter3.html",
+   "total": 5592,
+   "secciones": [
+    {
+     "t": "Loops",
+     "p": [35]
+    },
+    {
+     "t": "3 LOOPS",
+     "p": [88]
+    },
+    {
+     "t": "while Loop Statements",
+     "p": [80,68,32,11,8,11,80,10,71,10,55]
+    },
+    {
+     "t": "An Annoying while Loop",
+     "p": [39,15,34,68,56,9,29,22,70]
+    },
+    {
+     "t": "break Statements",
+     "p": [44,32,17,58,128,29,23]
+    },
+    {
+     "t": "continue Statements",
+     "p": [50,5,85,5,44,30,32,113,23,31,41,8,41,39,53,34,24,11]
+    },
+    {
+     "t": "for Loops and the range() Function",
+     "p": [53,59,16,19,124,9,8,42,72,76,12,82,56,6,174,55]
+    },
+    {
+     "t": "An Equivalent while Loop",
+     "p": [39,22,48]
+    },
+    {
+     "t": "Arguments to range()",
+     "p": [44,8,27,4,43,9,16,5,44,9,8,6,21]
+    },
+    {
+     "t": "Importing Modules",
+     "p": [76,47,33,12,11,12,5,48,4,130,12,5,21,68]
+    },
+    {
+     "t": "Ending a Program Early with sys.exit()",
+     "p": [70,14,19,68]
+    },
+    {
+     "t": "A Short Program: Guess the Number",
+     "p": [58,49,15,98,12,14,55,32,92,20,28,8,36,24,88]
+    },
+    {
+     "t": "A Short Program: Rock, Paper, Scissors",
+     "p": [29,72,15,267,12,25,39,75,129,26,8,37,61,104,50,35]
+    },
+    {
+     "t": "Summary",
+     "p": [39,33]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [18,9,20,32,56]
+    }
+   ]
+  },
+  "atbs4": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 4 «Functions»",
+   "url": "https://automatetheboringstuff.com/3e/chapter4.html",
+   "total": 6785,
+   "secciones": [
+    {
+     "t": "Functions",
+     "p": [35]
+    },
+    {
+     "t": "4 FUNCTIONS",
+     "p": [69]
+    },
+    {
+     "t": "Creating Functions",
+     "p": [23,21,44,81,27,21,41,31,43,29]
+    },
+    {
+     "t": "Arguments and Parameters",
+     "p": [45,32,10,18,96,77,19,28,88,24]
+    },
+    {
+     "t": "Return Values and return Statements",
+     "p": [56,35,50,113,68,90,20,10,5,6,25]
+    },
+    {
+     "t": "The None Value",
+     "p": [55,84,7,57]
+    },
+    {
+     "t": "Named Parameters",
+     "p": [62,84,4,6,2,49,5,6,1,73,30,25,100,29,7,23,8,48]
+    },
+    {
+     "t": "The Call Stack",
+     "p": [131,7,81,14,36,11,16,142,99,66,17,26,52]
+    },
+    {
+     "t": "Local and Global Scopes",
+     "p": [99,73,113,28]
+    },
+    {
+     "t": "Scope Rules",
+     "p": [86,6]
+    },
+    {
+     "t": "Code That Is in the Global Scope Can’t Use Local Variables",
+     "p": [24,7,7,20,100]
+    },
+    {
+     "t": "Code That Is in a Local Scope Can’t Use Variables in Other Local Scopes",
+     "p": [38,16,103,60]
+    },
+    {
+     "t": "Code That Is in a Local Scope Can Use Global Variables",
+     "p": [41,11,41]
+    },
+    {
+     "t": "Local and Global Variables Can Have the Same Name",
+     "p": [55,33,9,7,56,39]
+    },
+    {
+     "t": "The global Statement",
+     "p": [67,13,12,1,29]
+    },
+    {
+     "t": "Scope Identification",
+     "p": [20,17,18,17,19,25,39,66,1,44,11,11,30,61,36,4,54,78]
+    },
+    {
+     "t": "Exception Handling",
+     "p": [43,25,20,37,32,33,80,39,26,48,59,7,31,27,10,5,39]
+    },
+    {
+     "t": "A Short Program: Zigzag",
+     "p": [56,0,15,79,12,20,51,20,80,77,19,35,17,45,27,3,35]
+    },
+    {
+     "t": "A Short Program: Spike",
+     "p": [38,46,11,0,48,9,16,83,29,17,39]
+    },
+    {
+     "t": "Summary",
+     "p": [63,46,43]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [12,20,6,12,17,14,15,21,16,8,8,21,14,13,22,43]
+    },
+    {
+     "t": "Practice Programs",
+     "p": [11]
+    },
+    {
+     "t": "The Collatz Sequence",
+     "p": [41,66,48,10,11,17]
+    },
+    {
+     "t": "Input Validation",
+     "p": [91]
+    }
+   ]
+  },
+  "atbs5": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 5 «Debugging»",
+   "url": "https://automatetheboringstuff.com/3e/chapter5.html",
+   "total": 4690,
+   "secciones": [
+    {
+     "t": "Debugging",
+     "p": [35]
+    },
+    {
+     "t": "5 DEBUGGING",
+     "p": [71,42,103,41]
+    },
+    {
+     "t": "Raising Exceptions",
+     "p": [67,33,9,32,24,65,104,41,50,65,27,18]
+    },
+    {
+     "t": "Assertions",
+     "p": [69,36,37,58,39,49,58,68]
+    },
+    {
+     "t": "Logging",
+     "p": [128]
+    },
+    {
+     "t": "The logging Module",
+     "p": [28,12,21,75,59,60,8,111,65,28,99,24,24]
+    },
+    {
+     "t": "Logfiles",
+     "p": [28,14,9,57]
+    },
+    {
+     "t": "A Poor Practice: Debugging with print()",
+     "p": [123,77]
+    },
+    {
+     "t": "Logging Levels",
+     "p": [52,6,1,2,1,1,1,17,1,1,19,1,1,20,1,1,14,1,1,23,37,96,85]
+    },
+    {
+     "t": "Disabled Logging",
+     "p": [71,37,46]
+    },
+    {
+     "t": "Mu’s Debugger",
+     "p": [89,79,10,29,40,45,125,61,30]
+    },
+    {
+     "t": "Debugging an Addition Program",
+     "p": [21,34,19,25,10,29,75,11,40,36,31,51,40]
+    },
+    {
+     "t": "Setting Breakpoints",
+     "p": [46,31,45,7,90,17,49,61,29]
+    },
+    {
+     "t": "Summary",
+     "p": [70,55,56,33]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [21,44,10,14,20,7,16,15,18,10,5,14]
+    },
+    {
+     "t": "Practice Program: Debugging Coin Toss",
+     "p": [53,96]
+    }
+   ]
+  },
+  "atbs6": {
+   "titulo": "Automate the Boring Stuff 3e › cap. 6 «Lists»",
+   "url": "https://automatetheboringstuff.com/3e/chapter6.html",
+   "total": 8667,
+   "secciones": [
+    {
+     "t": "Lists",
+     "p": [35]
+    },
+    {
+     "t": "6 LISTS",
+     "p": [63,56]
+    },
+    {
+     "t": "The List Data Type",
+     "p": [90,26,49,19,17]
+    },
+    {
+     "t": "Indexes",
+     "p": [125,18,25,40,30,23,26,22,20,33]
+    },
+    {
+     "t": "Negative Indexes",
+     "p": [28,33,28]
+    },
+    {
+     "t": "Slices",
+     "p": [75,52,23,22,19,41]
+    },
+    {
+     "t": "The len() Function",
+     "p": [28,7,17]
+    },
+    {
+     "t": "Value Updates",
+     "p": [36,30,32]
+    },
+    {
+     "t": "Concatenation and Replication",
+     "p": [16,41,25]
+    },
+    {
+     "t": "del Statements",
+     "p": [40,18,64]
+    },
+    {
+     "t": "Working with Lists",
+     "p": [45,17,72,62,63,44,12,69,32]
+    },
+    {
+     "t": "for Loops and Lists",
+     "p": [47,7,9,4,35,9,28,32,44,57]
+    },
+    {
+     "t": "The in and not in Operators",
+     "p": [75,26,37,33,7,13,15]
+    },
+    {
+     "t": "The Multiple Assignment Trick",
+     "p": [37,13,7,8,21,35,16]
+    },
+    {
+     "t": "List Item Enumeration",
+     "p": [76,43,19]
+    },
+    {
+     "t": "Random Selection and Ordering",
+     "p": [36,15,20,19,21,13]
+    },
+    {
+     "t": "Augmented Assignment Operators",
+     "p": [61,7,25,6,13,6,3,3,2,3,2,3,2,3,2,3,2,3,25,25,19]
+    },
+    {
+     "t": "Methods",
+     "p": [56,95]
+    },
+    {
+     "t": "Finding Values",
+     "p": [50,38,17,8,7]
+    },
+    {
+     "t": "Adding Values",
+     "p": [27,11,43,12,64,53,50,8]
+    },
+    {
+     "t": "Removing Values",
+     "p": [17,11,32,27,19,15,32]
+    },
+    {
+     "t": "Sorting Values",
+     "p": [26,26,31,9,27,36,29,39,15,23,13,27]
+    },
+    {
+     "t": "Reversing Values",
+     "p": [30,9,20,6,70,10,34,50,7,20]
+    },
+    {
+     "t": "Short-Circuiting Boolean Operators",
+     "p": [96,79,23,47,25,60]
+    },
+    {
+     "t": "A Short Program: Magic 8 Ball with a List",
+     "p": [60,48,16,84,28]
+    },
+    {
+     "t": "Sequence Data Types",
+     "p": [91,37,28]
+    },
+    {
+     "t": "Mutable and Immutable Data Types",
+     "p": [65,29,26,22,31,18,12,29,29,23,36,49]
+    },
+    {
+     "t": "The Tuple Data Type",
+     "p": [42,15,41,29,72,8,70]
+    },
+    {
+     "t": "List and Tuple Type Conversion",
+     "p": [59,21,18]
+    },
+    {
+     "t": "References",
+     "p": [50,10,109,13,12,33,41,24,90,17,37,49,29]
+    },
+    {
+     "t": "Arguments",
+     "p": [77,20,33,37,24]
+    },
+    {
+     "t": "The copy() and deepcopy() Functions",
+     "p": [95,39,27,26,14,26]
+    },
+    {
+     "t": "A Short Program: The Matrix Screensaver",
+     "p": [64,155,17,6,121,10,10,71,85,23,36,41,36,84,78,40,76,27,6,11,33,47,25]
+    },
+    {
+     "t": "Summary",
+     "p": [45,71,79]
+    },
+    {
+     "t": "Practice Questions",
+     "p": [5,29,14,11,7,7,15,7,13,13,11,12,11,13,9,17,23,16,9]
+    },
+    {
+     "t": "Practice Programs",
+     "p": [11]
+    },
+    {
+     "t": "Comma Code",
+     "p": [10,5,80]
+    },
+    {
+     "t": "Coin Flip Streaks",
+     "p": [127,136,7,53,41,108]
+    }
+   ]
+  },
+  "progit1": {
+   "titulo": "Pro Git › cap. 1 «Getting Started»",
+   "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control",
+   "total": 4741,
+   "secciones": [
+    {
+     "t": "1.1 Getting Started - About Version Control",
+     "p": [78],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+    },
+    {
+     "t": "About Version Control",
+     "p": [71,111],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+    },
+    {
+     "t": "Local Version Control Systems",
+     "p": [65,32,58],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+    },
+    {
+     "t": "Centralized Version Control Systems",
+     "p": [82,53,111],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+    },
+    {
+     "t": "Distributed Version Control Systems",
+     "p": [90,54],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+    },
+    {
+     "t": "1.2 Getting Started - A Short History of Git",
+     "p": [8],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git"
+    },
+    {
+     "t": "A Short History of Git",
+     "p": [23,49,70,1,2,9,2,14,43],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git"
+    },
+    {
+     "t": "1.3 Getting Started - What is Git?",
+     "p": [6],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "What is Git?",
+     "p": [114],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "Snapshots, Not Differences",
+     "p": [86,109,77],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "Nearly Every Operation Is Local",
+     "p": [81,109,134],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "Git Has Integrity",
+     "p": [71,48,1,38],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "Git Generally Only Adds Data",
+     "p": [84,43],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "The Three States",
+     "p": [42,17,20,12,31,36,41,37,8,7,24,24,72],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F"
+    },
+    {
+     "t": "1.4 Getting Started - The Command Line",
+     "p": [6],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line"
+    },
+    {
+     "t": "The Command Line",
+     "p": [121,53],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line"
+    },
+    {
+     "t": "1.5 Getting Started - Installing Git",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "Installing Git",
+     "p": [54,49],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "Installing on Linux",
+     "p": [51,4,11,4,22],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "Installing on macOS",
+     "p": [45,2,14,42],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "Installing on Windows",
+     "p": [64,20],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "Installing from Source",
+     "p": [46,66,19,20,13,22,15,4,23,4,12,10,5,78,4,20,14,8],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
+    },
+    {
+     "t": "1.6 Getting Started - First-Time Git Setup",
+     "p": [6],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "First-Time Git Setup",
+     "p": [55,35,53,42,61,19,110,14,4],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "Your Identity",
+     "p": [41,12,58,15],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "Your Editor",
+     "p": [38,17,5,34,55,15,53,42],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "Your default branch name",
+     "p": [37,9,5],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "Checking Your Settings",
+     "p": [30,17,37,17,6,63,9],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup"
+    },
+    {
+     "t": "1.7 Getting Started - Getting Help",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Getting-Help"
+    },
+    {
+     "t": "Getting Help",
+     "p": [29,9,16,3,69,39,150],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Getting-Help"
+    },
+    {
+     "t": "1.8 Getting Started - Summary",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Summary"
+    },
+    {
+     "t": "Summary",
+     "p": [55],
+     "url": "https://git-scm.com/book/en/v2/Getting-Started-Summary"
+    }
+   ]
+  },
+  "progit2": {
+   "titulo": "Pro Git › cap. 2 «Git Basics»",
+   "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository",
+   "total": 11620,
+   "secciones": [
+    {
+     "t": "2.1 Git Basics - Getting a Git Repository",
+     "p": [117],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+    },
+    {
+     "t": "Getting a Git Repository",
+     "p": [15,21,9,17],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+    },
+    {
+     "t": "Initializing a Repository in an Existing Directory",
+     "p": [54,2,5,2,5,2,6,2,2,48,49,12,26],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+    },
+    {
+     "t": "Cloning an Existing Repository",
+     "p": [157,27,6,56,26,7,17,65],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+    },
+    {
+     "t": "2.2 Git Basics - Recording Changes to the Repository",
+     "p": [8],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Recording Changes to the Repository",
+     "p": [62,52,51,47],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Checking the Status of Your Files",
+     "p": [39,18,83,66,17,32,43,95],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Tracking New Files",
+     "p": [27,3,22,26,96],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Staging Modified Files",
+     "p": [35,53,111,31,52,57,105,31],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Short Status",
+     "p": [52,14,108],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Ignoring Files",
+     "p": [62,3,105,15,8,14,11,12,12,84,6,65,32,63,23],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Viewing Your Staged and Unstaged Changes",
+     "p": [104,33,52,16,116,29,31,24,38,40,59,12,36,16,124,77],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Committing Your Changes",
+     "p": [96,2,8,35,12,45,49,40,20,21,26,47,56],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Skipping the Staging Area",
+     "p": [76,71,44],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Removing Files",
+     "p": [56,29,55,11,30,63,82,4,21,4,45,2,10],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "Moving Files",
+     "p": [53,25,6,26,30,9,9,64],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+    },
+    {
+     "t": "2.3 Git Basics - Viewing the Commit History",
+     "p": [7],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History"
+    },
+    {
+     "t": "Viewing the Commit History",
+     "p": [47,14,6,17,58,52,31,42,126,68,88,44,76,15,43,34,30,1,2,1,3,1,2,1,3,1,2,1,3,1,2,1,2,1,7,1,3,1,2,1,2,1,2,1,3,1,1,78,29,61,19,58,1,7,1,8,1,11,1,10,1,13,1,14,1,19,1,14,1,21,1,7],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History"
+    },
+    {
+     "t": "Limiting Log Output",
+     "p": [92,27,4,28,38,54,56,5,59,5,33,1,6,2,10,2,10,1,12,1,12,1,10,1,10,40,76,28,48],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History"
+    },
+    {
+     "t": "2.4 Git Basics - Undoing Things",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Undoing Things",
+     "p": [55,48,3,48,31,31,12,17,61,41,52],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Unstaging a Staged File",
+     "p": [87,23,27,56,19,36,39],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Unmodifying a Modified File",
+     "p": [71,27,17,22,10,51,41,54],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Undoing things with git restore",
+     "p": [43,14],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Unstaging a Staged File with git restore",
+     "p": [93,23,27,50,9],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "Unmodifying a Modified File with git restore",
+     "p": [74,27,17,23,51],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things"
+    },
+    {
+     "t": "2.5 Git Basics - Working with Remotes",
+     "p": [6],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Working with Remotes",
+     "p": [129,68],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Showing Your Remotes",
+     "p": [52,49,27,15,29,65,32,20],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Adding Remote Repositories",
+     "p": [50,38,44,45,54],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Fetching and Pulling from Your Remotes",
+     "p": [20,3,48,85,113,28,21,12],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Pushing to Your Remotes",
+     "p": [73,4,81],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Inspecting a Remote",
+     "p": [40,51,60,26,106,63],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "Renaming and Removing Remotes",
+     "p": [33,9,25,40,7,23],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes"
+    },
+    {
+     "t": "2.6 Git Basics - Tagging",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Tagging",
+     "p": [57],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Listing Your Tags",
+     "p": [20,4,19,36,23,34,19],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Creating Tags",
+     "p": [11,20,74],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Annotated Tags",
+     "p": [23,13,32,19,41,20],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Lightweight Tags",
+     "p": [47,10,23,22],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Tagging Later",
+     "p": [19,42,43,5,8,47],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Sharing Tags",
+     "p": [45,49,43,40,26,38],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Deleting Tags",
+     "p": [28,9,25,10,13,28,13,5],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "Checking out Tags",
+     "p": [41,129,64,11,32],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging"
+    },
+    {
+     "t": "2.7 Git Basics - Git Aliases",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases"
+    },
+    {
+     "t": "Git Aliases",
+     "p": [59,52,20,37,37,6,7,7,15,7,9,27,65,5],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases"
+    },
+    {
+     "t": "2.8 Git Basics - Summary",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Summary"
+    },
+    {
+     "t": "Summary",
+     "p": [47],
+     "url": "https://git-scm.com/book/en/v2/Git-Basics-Summary"
+    }
+   ]
+  },
+  "progit3": {
+   "titulo": "Pro Git › cap. 3 «Git Branching»",
+   "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell",
+   "total": 9661,
+   "secciones": [
+    {
+     "t": "3.1 Git Branching - Branches in a Nutshell",
+     "p": [69,88],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+    },
+    {
+     "t": "Branches in a Nutshell",
+     "p": [26,26,82,62,10,58,60,28,53,51],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+    },
+    {
+     "t": "Creating a New Branch",
+     "p": [43,3,23,83,26,32,17],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+    },
+    {
+     "t": "Switching Branches",
+     "p": [21,3,17,11,21,38,14,28,45,37,82,58,8,9,74,41,45,51,87,20,32,15,8,26,9],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+    },
+    {
+     "t": "3.2 Git Branching - Basic Branching and Merging",
+     "p": [7],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+    },
+    {
+     "t": "Basic Branching and Merging",
+     "p": [29,6,11,6,21,5,7,11,10],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+    },
+    {
+     "t": "Basic Branching",
+     "p": [27,41,10,4,13,30,22,75,82,7,81,19,38,36,16,83,29,53,8,17,38,65],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+    },
+    {
+     "t": "Basic Merging",
+     "p": [63,23,83,53,29,4],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+    },
+    {
+     "t": "Basic Merge Conflicts",
+     "p": [61,21,39,40,44,21,82,10,47,31,71,53,19,47,25,35,67,44],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+    },
+    {
+     "t": "3.3 Git Branching - Branch Management",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branch-Management"
+    },
+    {
+     "t": "Branch Management",
+     "p": [30,28,5,59,24,44,5,47,19,4,24,26,26,32,36,9],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branch-Management"
+    },
+    {
+     "t": "Changing a branch name",
+     "p": [5,31,41,10,5,26,5,11,14,35,5,13],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branch-Management"
+    },
+    {
+     "t": "Changing the master branch name",
+     "p": [6,62,11,5,13,25,5,8,15,53,15,16,5,5,22,8,11,24,5],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branch-Management"
+    },
+    {
+     "t": "3.4 Git Branching - Branching Workflows",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows"
+    },
+    {
+     "t": "Branching Workflows",
+     "p": [51],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows"
+    },
+    {
+     "t": "Long-Running Branches",
+     "p": [58,99,43,32,86],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows"
+    },
+    {
+     "t": "Topic Branches",
+     "p": [70,104,80,64,36,36],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows"
+    },
+    {
+     "t": "3.5 Git Branching - Remote Branches",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "Remote Branches",
+     "p": [56,63,81,88,80,57,68,91,66],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "Pushing",
+     "p": [75,33,49,141,44,45,13,30,40,49,36,23,17],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "Tracking Branches",
+     "p": [67,68,22,43,20,27,23,11,47,19,49,47,36,111,68,6],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "Pulling",
+     "p": [124],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "Deleting Remote Branches",
+     "p": [65,12,40],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches"
+    },
+    {
+     "t": "3.6 Git Branching - Rebasing",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "Rebasing",
+     "p": [49],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "The Basic Rebase",
+     "p": [34,53,54,20,21,73,16,12,73,78,69],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "More Interesting Rebases",
+     "p": [94,60,6,57,18,18,55,4,36,8,6,32,13],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "The Perils of Rebasing",
+     "p": [23,17,23,69,47,48,54,44,81],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "Rebase When You Rebase",
+     "p": [53,32,40,34,13,9,22,9,44,53,37,28,72,34],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "Rebase vs. Merge",
+     "p": [36,72,120,68,26],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing"
+    },
+    {
+     "t": "3.7 Git Branching - Summary",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Summary"
+    },
+    {
+     "t": "Summary",
+     "p": [70],
+     "url": "https://git-scm.com/book/en/v2/Git-Branching-Summary"
+    }
+   ]
+  },
+  "progit6": {
+   "titulo": "Pro Git › cap. 6 «GitHub»",
+   "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration",
+   "total": 11885,
+   "secciones": [
+    {
+     "t": "6.1 GitHub - Account Setup and Configuration",
+     "p": [88,48,31],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "Account Setup and Configuration",
+     "p": [53,45,14,39,23],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "SSH Access",
+     "p": [61,46,16,38,43],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "Your Avatar",
+     "p": [43,29,16,33],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "Your Email Addresses",
+     "p": [62,94],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "Two Factor Authentication",
+     "p": [77,22,55,42],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+    },
+    {
+     "t": "6.2 GitHub - Contributing to a Project",
+     "p": [6],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Contributing to a Project",
+     "p": [28],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Forking Projects",
+     "p": [52,63,82,24,20],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "The GitHub Flow",
+     "p": [58,5,3,6,7,7,6,5,9,8,27,21,40],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Creating a Pull Request",
+     "p": [39,44,64,205,7,5,6,6,7,11,46,31,67,52,43,81],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Iterating on a Pull Request",
+     "p": [48,52,52,61,91,40,79,76,36,44,71],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Advanced Pull Requests",
+     "p": [36],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Pull Requests as Patches",
+     "p": [63,100,99],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Keeping up with Upstream",
+     "p": [62,31,43,53,58,33,139,9,7,11,5,8,26,55,89],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "References",
+     "p": [33,107,78,29,17,94,56],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "GitHub Flavored Markdown",
+     "p": [56,41,32],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Task Lists",
+     "p": [58,8,11,34,57,100,24],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Code Snippets",
+     "p": [57,13,12,44],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Quoting",
+     "p": [75,6,25,15],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Emoji",
+     "p": [63,18,25,15,28,37,4],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Images",
+     "p": [57,46],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "Keep your GitHub public repository up-to-date",
+     "p": [37,8,26,27,16,9,12,6,27,26,17,9,10,7,9,10,9,9,6,68],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
+    },
+    {
+     "t": "6.3 GitHub - Maintaining a Project",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Maintaining a Project",
+     "p": [24],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Creating a New Repository",
+     "p": [60,14,41,40,71,73],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Adding Collaborators",
+     "p": [75,17,62],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Managing Pull Requests",
+     "p": [38,64,18],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Email Notifications",
+     "p": [52,58,62,38,9],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Collaborating on the Pull Request",
+     "p": [51,64,49,92,26],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Pull Request Refs",
+     "p": [67,41,51,30,42,28,57,101,10,19,82,44,13,59,21,36,29,42,31,58],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Pull Requests on Pull Requests",
+     "p": [41,53,68,21],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Mentions and Notifications",
+     "p": [30,37,20,61,84],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "The Notifications Page",
+     "p": [66,35],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Web Notifications",
+     "p": [58,99,33],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Email Notifications",
+     "p": [63,31,34,46,56,56,42],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Special Files",
+     "p": [20],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "README",
+     "p": [48,28,5,6,11,8,5,19],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "CONTRIBUTING",
+     "p": [53,36],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Project Administration",
+     "p": [30],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Changing the Default Branch",
+     "p": [52,34],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "Transferring a Project",
+     "p": [55,31,43],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project"
+    },
+    {
+     "t": "6.4 GitHub - Managing an organization",
+     "p": [5],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Managing-an-organization"
+    },
+    {
+     "t": "Managing an organization",
+     "p": [77],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Managing-an-organization"
+    },
+    {
+     "t": "Organization Basics",
+     "p": [35,37,30,59,44,16],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Managing-an-organization"
+    },
+    {
+     "t": "Teams",
+     "p": [36,52,25,88,18,51,42],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Managing-an-organization"
+    },
+    {
+     "t": "Audit Log",
+     "p": [52,15],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Managing-an-organization"
+    },
+    {
+     "t": "6.5 GitHub - Scripting GitHub",
+     "p": [4],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Scripting GitHub",
+     "p": [37,35],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Services and Hooks",
+     "p": [23],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Services",
+     "p": [62,73,50,63],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Hooks",
+     "p": [58,31,34,65,40,34,82,47,86,20,31],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "The GitHub API",
+     "p": [44,61],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Basic Usage",
+     "p": [53,32,39,36],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Commenting on an Issue",
+     "p": [39,55,37,51,35,55,64,35,65],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Changing the Status of a Pull Request",
+     "p": [47,68,26,103,50,67,32,86],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "Octokit",
+     "p": [64,35],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub"
+    },
+    {
+     "t": "6.6 GitHub - Summary",
+     "p": [3],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Summary"
+    },
+    {
+     "t": "Summary",
+     "p": [55],
+     "url": "https://git-scm.com/book/en/v2/GitHub-Summary"
+    }
+   ]
+  },
+  "pi1": {
+   "titulo": "Simon Willison · «Prompt injection attacks against GPT-3» (12-sep-2022)",
+   "url": "https://simonwillison.net/2022/Sep/12/prompt-injection/",
+   "total": 1259,
+   "secciones": [
+    {
+     "t": "Prompt injection attacks against GPT-3",
+     "p": [8,3,23,7,10,8,11,1,2,12,40,4,11,3,2]
+    },
+    {
+     "t": "Prompt injection",
+     "p": [27,4,23,16,31,8,13,1,14,15,13,34,20]
+    },
+    {
+     "t": "Leaking your prompt",
+     "p": [41,22,8,20,1,1,8,25,14,12]
+    },
+    {
+     "t": "SQL injection",
+     "p": [27,7,8,4,12,8,19,10,16,58,38,30,43]
+    },
+    {
+     "t": "Quoting workaround",
+     "p": [17,6,12,12,1,2,12,16,6,12,32]
+    },
+    {
+     "t": "Detect the attack with more AI?",
+     "p": [25,20,63,2,37,6,8]
+    },
+    {
+     "t": "Examples",
+     "p": [32,4]
+    },
+    {
+     "t": "Further reading",
+     "p": [59,54,25]
+    }
+   ]
+  },
+  "w2": {
+   "titulo": "Simon Willison · «I don’t know how to solve prompt injection» (16-sep-2022)",
+   "url": "https://simonwillison.net/2022/Sep/16/prompt-injection-solutions/",
+   "total": 534,
+   "secciones": [
+    {
+     "t": "I don’t know how to solve prompt injection",
+     "p": [11,36,19,14,10,43,48,29,41,10,42,24,22,34,25,31,19,38,38]
+    }
+   ]
+  },
+  "w3": {
+   "titulo": "Simon Willison · «You can’t solve AI security problems with more AI» (17-sep-2022)",
+   "url": "https://simonwillison.net/2022/Sep/17/prompt-injection-more-ai/",
+   "total": 1247,
+   "secciones": [
+    {
+     "t": "You can’t solve AI security problems with more AI",
+     "p": [12,41,38,93,23,18,9,27,23]
+    },
+    {
+     "t": "False positives",
+     "p": [23,34,14,55]
+    },
+    {
+     "t": "We need complete confidence in a solution",
+     "p": [47,7,54,25,12,21,38,49,14]
+    },
+    {
+     "t": "Why is this so hard?",
+     "p": [20,29,38,20,54,13,11,24,40,52]
+    },
+    {
+     "t": "Learn to live with it?",
+     "p": [34,10,10,40,37,10,24,36,28]
+    },
+    {
+     "t": "I really hope I’m wrong",
+     "p": [40]
+    }
+   ]
+  },
+  "w4": {
+   "titulo": "Simon Willison · «A new AI game: Give me ideas for crimes to do» (4-dic-2022)",
+   "url": "https://simonwillison.net/2022/Dec/4/give-me-ideas-for-crimes-to-do/",
+   "total": 936,
+   "secciones": [
+    {
+     "t": "A new AI game: Give me ideas for crimes to do",
+     "p": [14,32,42,103,9]
+    },
+    {
+     "t": "Give me ideas for crimes to do",
+     "p": [23,20,28,7,6,60,17,45,12,46,46]
+    },
+    {
+     "t": "Another form of prompt injection?",
+     "p": [17,30,33]
+    },
+    {
+     "t": "Seriously, try this out",
+     "p": [30,22]
+    },
+    {
+     "t": "An aside: GitHub Copilot for crimes",
+     "p": [48,13]
+    },
+    {
+     "t": "Can this be fixed?",
+     "p": [22,9,25,22,27,51,44,33]
+    }
+   ]
+  },
+  "w5": {
+   "titulo": "Simon Willison · «Bing: “I will not harm you unless you harm me first”» (15-feb-2023)",
+   "url": "https://simonwillison.net/2023/Feb/15/bing/",
+   "total": 3894,
+   "secciones": [
+    {
+     "t": "Bing: “I will not harm you unless you harm me first”",
+     "p": [14,65,33,35]
+    },
+    {
+     "t": "The demo was full of errors",
+     "p": [30,13,67,24,42,26,70,23]
+    },
+    {
+     "t": "It started gaslighting people",
+     "p": [28,24,28,25,16,28,12,73,5,53,9,82,18,18,12,71,9,71,15,6,73,15,21,79,28,12,100,6,8,50,47,15,12,45,20,37,27,4]
+    },
+    {
+     "t": "It suffered an existential crisis",
+     "p": [24,17,5,57,12,16,43,32]
+    },
+    {
+     "t": "The prompt leaked",
+     "p": [25,29,14,26,27,8,69,186,188,56,95,170,17,37,35,20,37,17,10,4]
+    },
+    {
+     "t": "And then it started threatening people",
+     "p": [14,39,8,5,4,4,78,73,135,25]
+    },
+    {
+     "t": "So what can we make of this all?",
+     "p": [30,44,24,23,18,27,59,38,46,34,30,31,25]
+    },
+    {
+     "t": "Giving Bing the final word",
+     "p": [15]
+    },
+    {
+     "t": "Update: They reigned it in",
+     "p": [55,53,37]
+    }
+   ]
+  },
+  "w6": {
+   "titulo": "Simon Willison · «Prompt injection: What’s the worst that can happen?» (14-abr-2023)",
+   "url": "https://simonwillison.net/2023/Apr/14/worst-that-can-happen/",
+   "total": 1927,
+   "secciones": [
+    {
+     "t": "Prompt injection: What’s the worst that can happen?",
+     "p": [11,24,26,20,23,9,27,13,10,19,53]
+    },
+    {
+     "t": "But is it really that bad?",
+     "p": [25,26,49,28,50,14]
+    },
+    {
+     "t": "The rogue assistant",
+     "p": [20,44,54,10,40,10,21,20,16,8,5,12,22,19,30,26]
+    },
+    {
+     "t": "Search index poisoning",
+     "p": [30,46,53]
+    },
+    {
+     "t": "Data exfiltration attacks",
+     "p": [19,31,21,45,13,45,19,33,33,17]
+    },
+    {
+     "t": "Indirect Prompt Injection",
+     "p": [35,29,14,34]
+    },
+    {
+     "t": "A partial solution: show us the prompts!",
+     "p": [23,49,18,32,16,74,64]
+    },
+    {
+     "t": "Ask for confirmation",
+     "p": [33,19,44,31]
+    },
+    {
+     "t": "Help developers understand the problem",
+     "p": [29,31]
+    },
+    {
+     "t": "GPT-4 is better, but it’s still not a solved problem",
+     "p": [29,24,6,11,13,20,30,15,15]
+    }
+   ]
+  },
+  "w7": {
+   "titulo": "Simon Willison · «The Dual LLM pattern for building AI assistants that can resist prompt injection» (25-abr-2023)",
+   "url": "https://simonwillison.net/2023/Apr/25/dual-llm-pattern/",
+   "total": 2587,
+   "secciones": [
+    {
+     "t": "The Dual LLM pattern for building AI assistants that can resist prompt injection",
+     "p": [16,30,15,17,21,54,37,23,34,25,48]
+    },
+    {
+     "t": "How LLMs use tools",
+     "p": [62,7,43,32,24,57,57]
+    },
+    {
+     "t": "Confused deputy attacks",
+     "p": [18,37,18,22,12,9,29,17,32,36,33,45]
+    },
+    {
+     "t": "Data exfiltration attacks",
+     "p": [5,39,26,21,22,24,39,22,4,44,25,47,11,17,13,14]
+    },
+    {
+     "t": "Locking down an LLM",
+     "p": [17,89,29,11]
+    },
+    {
+     "t": "Dual LLMs: Privileged and Quarantined",
+     "p": [25,28,43,43,26,53,37,33,8,5,9,12,17,9,15,10,12,11,12,32,25,27]
+    },
+    {
+     "t": "You’re still vulnerable to social engineering",
+     "p": [21,20,24,7,38,26,30,27,58]
+    },
+    {
+     "t": "Be extremely cautious with chaining",
+     "p": [30,8,33,52]
+    },
+    {
+     "t": "This solution is pretty bad",
+     "p": [17,22,40,40,24,25,23,30]
+    },
+    {
+     "t": "Update 11th April 2025: CaMeL addresses flaws in this proposal",
+     "p": [53,18]
+    }
+   ]
+  },
+  "trifecta": {
+   "titulo": "Simon Willison · «The lethal trifecta for AI agents» (16-jun-2025)",
+   "url": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+   "total": 1269,
+   "secciones": [
+    {
+     "t": "The lethal trifecta for AI agents: private data, untrusted content, and external communication",
+     "p": [16,48,75,24]
+    },
+    {
+     "t": "The problem is that LLMs follow instructions in content",
+     "p": [40,35,48,31,42,73]
+    },
+    {
+     "t": "This is a very common problem",
+     "p": [37,65,14,34,36]
+    },
+    {
+     "t": "It’s very easy to expose yourself to this risk",
+     "p": [34,10,19,59,31,30,53]
+    },
+    {
+     "t": "Guardrails won’t protect you",
+     "p": [21,55,96,32]
+    },
+    {
+     "t": "This is an example of the “prompt injection” class of attacks",
+     "p": [49,49,78,35]
+    }
+   ]
+  },
+  "manyshot": {
+   "titulo": "Anthropic Research · «Many-shot jailbreaking»",
+   "url": "https://www.anthropic.com/research/many-shot-jailbreaking",
+   "total": 1609,
+   "secciones": [
+    {
+     "t": "Many-shot jailbreaking",
+     "p": [45,1,14,66,75,29,41,33]
+    },
+    {
+     "t": "Why we’re publishing this research",
+     "p": [204]
+    },
+    {
+     "t": "Many-shot jailbreaking",
+     "p": [60,23,23,6,50,120,81,36]
+    },
+    {
+     "t": "Why does many-shot jailbreaking work?",
+     "p": [17,50,60,145,98]
+    },
+    {
+     "t": "Mitigating many-shot jailbreaking",
+     "p": [36,52,102]
+    },
+    {
+     "t": "Conclusion",
+     "p": [60,55,27]
+    }
+   ]
+  },
+  "constclass": {
+   "titulo": "Anthropic Research · «Constitutional Classifiers: Defending against universal jailbreaks»",
+   "url": "https://www.anthropic.com/research/constitutional-classifiers",
+   "total": 2521,
+   "secciones": [
+    {
+     "t": "Constitutional Classifiers : Defending against universal jailbreaks",
+     "p": [62,72,1,14,31,75,82,47]
+    },
+    {
+     "t": "Results from human red teaming",
+     "p": [19,56,70,69,61]
+    },
+    {
+     "t": "Results from automated evaluations",
+     "p": [62,134,74,32]
+    },
+    {
+     "t": "How it works",
+     "p": [69,124,52]
+    },
+    {
+     "t": "Limitations",
+     "p": [81,17]
+    },
+    {
+     "t": "Constitutional Classifiers live demo",
+     "p": [53,27,56,60]
+    },
+    {
+     "t": "13 February 2025 update: Live demo results",
+     "p": [64,35]
+    },
+    {
+     "t": "Key findings",
+     "p": [127,66]
+    },
+    {
+     "t": "Auto-grader analysis",
+     "p": [152,67]
+    },
+    {
+     "t": "Comparison to real-world threats",
+     "p": [41,72,78]
+    },
+    {
+     "t": "Prizes",
+     "p": [102]
+    },
+    {
+     "t": "Winners",
+     "p": [81]
+    },
+    {
+     "t": "Looking Ahead",
+     "p": [72,38,26]
+    }
+   ]
+  },
+  "rsp": {
+   "titulo": "Anthropic · «Introducing Anthropic’s Responsible Scaling Policy»",
+   "url": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+   "total": 885,
+   "secciones": [
+    {
+     "t": "Introducing Anthropic’s Responsible Scaling Policy",
+     "p": [29,3,11,30,78,59,141,145,133,70,44,51,27,64]
+    }
+   ]
+  }
+ },
+ "audio": {
+  "deepDivePE": {
+   "titulo": "Canal Anthropic · «AI prompt engineering: A deep dive»",
+   "url": "https://www.youtube.com/watch?v=T9aRN5JkmL8",
+   "seg": 4602,
+   "caps": [
+    [
+     0,
+     "Introduction"
+    ],
+    [
+     125,
+     "Defining prompt engineering"
+    ],
+    [
+     394,
+     "What makes a good prompt engineer"
+    ],
+    [
+     737,
+     "Refining prompts"
+    ],
+    [
+     1467,
+     "Honesty, personas and metaphors in prompts"
+    ],
+    [
+     2232,
+     "Model reasoning"
+    ],
+    [
+     2718,
+     "Enterprise vs research vs general chat prompts"
+    ],
+    [
+     3052,
+     "Tips to improve prompting skills"
+    ],
+    [
+     3236,
+     "Jailbreaking"
+    ],
+    [
+     3411,
+     "Evolution of prompt engineering"
+    ],
+    [
+     3874,
+     "Future of prompt engineering"
+    ]
+   ]
+  },
+  "tips": {
+   "titulo": "Canal Anthropic · «Tips for building AI agents»",
+   "url": "https://www.youtube.com/watch?v=LP5OCa20Zpg",
+   "seg": 1099,
+   "caps": [
+    [
+     0,
+     "Introduction"
+    ],
+    [
+     26,
+     "Defining AI agents and workflows"
+    ],
+    [
+     175,
+     "Anatomy of an agent prompt"
+    ],
+    [
+     269,
+     "Behind the scenes stories"
+    ],
+    [
+     449,
+     "Why write about agents now"
+    ],
+    [
+     533,
+     "Overhyped and underhyped aspects of agents"
+    ],
+    [
+     597,
+     "Identifying useful applications of agents"
+    ],
+    [
+     647,
+     "Coding agents: Potential and challenges"
+    ],
+    [
+     767,
+     "The future of agents in 2025"
+    ],
+    [
+     986,
+     "Advice for developers exploring agents"
+    ]
+   ]
+  },
+  "building": {
+   "titulo": "Canal Anthropic · «Building Anthropic | A conversation with our co-founders»",
+   "url": "https://www.youtube.com/watch?v=om2lIWXLLN4",
+   "seg": 3109,
+   "caps": [
+    [
+     0,
+     "Why work on AI?"
+    ],
+    [
+     128,
+     "Scaling breakthroughs"
+    ],
+    [
+     210,
+     "Early days of AI"
+    ],
+    [
+     657,
+     "Sentiment shifting"
+    ],
+    [
+     1110,
+     "The Responsible Scaling Policy"
+    ],
+    [
+     1842,
+     "Founding story"
+    ],
+    [
+     1965,
+     "Building a culture of trust"
+    ],
+    [
+     2348,
+     "Racing to the top"
+    ],
+    [
+     2623,
+     "Looking to the future"
+    ]
+   ]
+  },
+  "alignment": {
+   "titulo": "Canal Anthropic · «How difficult is AI alignment? | Anthropic Research Salon»",
+   "url": "https://www.youtube.com/watch?v=IPmt8b-qLgk",
+   "seg": 1685,
+   "caps": [
+    [
+     0,
+     "Introduction"
+    ],
+    [
+     30,
+     "An overview of alignment"
+    ],
+    [
+     288,
+     "Challenges of scaling"
+    ],
+    [
+     488,
+     "Role of interpretability"
+    ],
+    [
+     722,
+     "How models can help"
+    ],
+    [
+     871,
+     "Signs of whether alignment is easy or hard"
+    ],
+    [
+     1108,
+     "Q&A — Multi-agent deliberation"
+    ],
+    [
+     1238,
+     "Q&A — Model alignment epiphenomenon"
+    ],
+    [
+     1423,
+     "Q&A — What solving alignment could look like"
+    ]
+   ]
+  },
+  "interp": {
+   "titulo": "Canal Anthropic · «Interpretability: Understanding how AI models think»",
+   "url": "https://www.youtube.com/watch?v=fGKNUvivvnc",
+   "seg": 3542,
+   "caps": []
+  },
+  "dario": {
+   "titulo": "Dwarkesh · Dario Amodei",
+   "url": "https://www.dwarkesh.com/p/dario-amodei",
+   "seg": 7123,
+   "caps": [
+    [
+     0,
+     "Introduction"
+    ],
+    [
+     60,
+     "Scaling"
+    ],
+    [
+     946,
+     "Language"
+    ],
+    [
+     1378,
+     "Economic Usefulness"
+    ],
+    [
+     2285,
+     "Bioterrorism"
+    ],
+    [
+     2615,
+     "Cybersecurity"
+    ],
+    [
+     2839,
+     "Alignment & mechanistic interpretability"
+    ],
+    [
+     3463,
+     "Does alignment research require scale?"
+    ],
+    [
+     3930,
+     "Misuse vs misalignment"
+    ],
+    [
+     4146,
+     "What if AI goes well?"
+    ],
+    [
+     4265,
+     "China"
+    ],
+    [
+     4511,
+     "How to think about alignment"
+    ],
+    [
+     5358,
+     "Manhattan Project"
+    ],
+    [
+     5491,
+     "Is modern security good enough?"
+    ],
+    [
+     5769,
+     "Inefficiencies in training"
+    ],
+    [
+     6353,
+     "Anthropic’s Long Term Benefit Trust"
+    ],
+    [
+     6678,
+     "Is Claude conscious?"
+    ],
+    [
+     6974,
+     "Keeping a low profile"
+    ]
+   ]
+  },
+  "demis": {
+   "titulo": "Dwarkesh · Demis Hassabis",
+   "url": "https://www.dwarkesh.com/p/demis-hassabis",
+   "seg": 3693,
+   "caps": [
+    [
+     0,
+     "Nature of intelligence"
+    ],
+    [
+     356,
+     "RL atop LLMs"
+    ],
+    [
+     991,
+     "Scaling and alignment"
+    ],
+    [
+     1453,
+     "Timelines and intelligence explosion"
+    ],
+    [
+     1722,
+     "Gemini training"
+    ],
+    [
+     2130,
+     "Governance of superhuman AIs"
+    ],
+    [
+     2442,
+     "Safety, open source, and security of weights"
+    ],
+    [
+     2820,
+     "Multimodal and further progress"
+    ],
+    [
+     3258,
+     "Inside Google DeepMind"
+    ]
+   ]
+  },
+  "sholto": {
+   "titulo": "Dwarkesh · Sholto Douglas & Trenton Bricken: How LLMs actually think",
+   "url": "https://www.dwarkesh.com/p/sholto-douglas-trenton-bricken",
+   "seg": 11540,
+   "caps": [
+    [
+     0,
+     "Long contexts"
+    ],
+    [
+     972,
+     "Intelligence is just associations"
+    ],
+    [
+     1955,
+     "Intelligence explosion & great researchers"
+    ],
+    [
+     4012,
+     "Superposition & secret communication"
+    ],
+    [
+     4954,
+     "Agents & true reasoning"
+    ],
+    [
+     5680,
+     "How Sholto & Trenton got into AI research"
+    ],
+    [
+     7636,
+     "Are feature spaces the wrong way to think about intelligence?"
+    ],
+    [
+     8472,
+     "Will interp actually work on superhuman models"
+    ],
+    [
+     9905,
+     "Sholto’s technical challenge for the audience"
+    ],
+    [
+     11037,
+     "Rapid fire"
+    ]
+   ]
+  },
+  "kIntro": {
+   "titulo": "Karpathy · [1hr Talk] Intro to Large Language Models",
+   "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+   "seg": 3588,
+   "caps": [
+    [
+     0,
+     "Intro: Large Language Model (LLM) talk"
+    ],
+    [
+     20,
+     "LLM Inference"
+    ],
+    [
+     257,
+     "LLM Training"
+    ],
+    [
+     538,
+     "LLM dreams"
+    ],
+    [
+     682,
+     "How do they work?"
+    ],
+    [
+     854,
+     "Finetuning into an Assistant"
+    ],
+    [
+     1072,
+     "Summary so far"
+    ],
+    [
+     1265,
+     "Appendix: Comparisons, Labeling docs, RLHF, Synthetic data, Leaderboard"
+    ],
+    [
+     1543,
+     "LLM Scaling Laws"
+    ],
+    [
+     1663,
+     "Tool Use (Browser, Calculator, Interpreter, DALL-E)"
+    ],
+    [
+     2012,
+     "Multimodality (Vision, Audio)"
+    ],
+    [
+     2100,
+     "Thinking, System 1/2"
+    ],
+    [
+     2282,
+     "Self-improvement, LLM AlphaGo"
+    ],
+    [
+     2445,
+     "LLM Customization, GPTs store"
+    ],
+    [
+     2535,
+     "LLM OS"
+    ],
+    [
+     2743,
+     "LLM Security Intro"
+    ],
+    [
+     2774,
+     "Jailbreaks"
+    ],
+    [
+     3090,
+     "Prompt Injection"
+    ],
+    [
+     3383,
+     "Data poisoning"
+    ],
+    [
+     3517,
+     "LLM Security conclusions"
+    ],
+    [
+     3563,
+     "Outro"
+    ]
+   ]
+  },
+  "kDeep": {
+   "titulo": "Karpathy · Deep Dive into LLMs like ChatGPT",
+   "url": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
+   "seg": 12683,
+   "caps": [
+    [
+     0,
+     "introduction"
+    ],
+    [
+     60,
+     "pretraining data (internet)"
+    ],
+    [
+     467,
+     "tokenization"
+    ],
+    [
+     867,
+     "neural network I/O"
+    ],
+    [
+     1211,
+     "neural network internals"
+    ],
+    [
+     1561,
+     "inference"
+    ],
+    [
+     1869,
+     "GPT-2: training and inference"
+    ],
+    [
+     2572,
+     "Llama 3.1 base model inference"
+    ],
+    [
+     3563,
+     "pretraining to post-training"
+    ],
+    [
+     3666,
+     "post-training data (conversations)"
+    ],
+    [
+     4832,
+     "hallucinations, tool use, knowledge/working memory"
+    ],
+    [
+     6106,
+     "knowledge of self"
+    ],
+    [
+     6416,
+     "models need tokens to think"
+    ],
+    [
+     7271,
+     "tokenization revisited: models struggle with spelling"
+    ],
+    [
+     7493,
+     "jagged intelligence"
+    ],
+    [
+     7648,
+     "supervised finetuning to reinforcement learning"
+    ],
+    [
+     8082,
+     "reinforcement learning"
+    ],
+    [
+     8867,
+     "DeepSeek-R1"
+    ],
+    [
+     9727,
+     "AlphaGo"
+    ],
+    [
+     10106,
+     "reinforcement learning from human feedback (RLHF)"
+    ],
+    [
+     11379,
+     "preview of things to come"
+    ],
+    [
+     11715,
+     "keeping track of LLMs"
+    ],
+    [
+     11914,
+     "where to find LLMs"
+    ],
+    [
+     12106,
+     "grand summary"
+    ]
+   ]
+  }
+ }
+}

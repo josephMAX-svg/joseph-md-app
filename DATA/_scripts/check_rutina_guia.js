@@ -485,7 +485,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       case 'vibecoding': { const g = b.id === 'pc' ? RG2.guiaShipDe(iso) : b.id === 'feynman' ? RG2.guiaFeynmanDe(iso) : VB2.vibeDiaDe(iso) ? RG2.guiaVibeDe(iso) : null; return g ? [g] : null; }
       case 'synapse': { const g = SY2.synDiaDe(iso) ? RG2.guiaSynapseDe(iso) : null; return g ? [g] : null; }
       case 'business': { const g = RG2.guiaBusinessDe(iso); return g ? [g] : null; }
-      case 'aurum': { const g = AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso, F62.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
+      case 'aurum': { const g = b.id === 'aurum-l' ? RG2.guiaAurumSabadoDe(iso) /* v6.09b lote 1-bis S2: sábado 04:15 de F1 */ : AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso, F62.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
       case 'liviano': { const g = LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null; return g ? [g] : null; }
       case 'revision': { const g = RG2.guiaRevisionDe(iso); return g ? [g] : null; }
       case 'mir': return MD2.mirSesionDe(iso) ? [] : null;

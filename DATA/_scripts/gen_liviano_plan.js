@@ -111,7 +111,13 @@ const OUT_CASOS = path.join(ROOT, 'src', 'lib', 'livianoCasos.ts');
 const OUT_CSV = path.join(ROOT, 'DATA', 'BUSINESS', 'ANKI_COLA', 'LIVIANO_mecanismo.csv');
 
 const CUR = JSON.parse(fs.readFileSync(CUR_PATH, 'utf8'));
-const START = process.argv[2] || CUR.inicioDefault;
+// v6.09b (S1, 17-nov-2026): `--check` = genera en memoria y compara con los 3 ficheros en disco sin escribir (la batería lo llama así; antes abortaba
+//   como START inválido). START = el 1.er argumento que no es un flag (default: inicioDefault del JSON).
+const CHECK = process.argv.includes('--check');
+const DIFIERE = [];
+const sinCR = (x) => x.split('\r\n').join('\n');
+const escribe = (f, txt) => { if (!CHECK) { fs.writeFileSync(f, txt, 'utf8'); return; } if (!fs.existsSync(f) || sinCR(fs.readFileSync(f, 'utf8')) !== sinCR(txt)) DIFIERE.push(path.relative(ROOT, f)); };
+const START = process.argv.slice(2).find((a) => !a.startsWith('--')) || CUR.inicioDefault;
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 const TOTAL = CUR.totalDias || 90;
 // v6.07: + SKIP y PROTEGIDOS de _fechas_v6.json + el D-2 del ENCAPS (ver cabecera)
@@ -301,7 +307,7 @@ export function livSemanaPrevia(d: number): DiaLiviano[] { return LIV_DIAS.filte
 export const LIV_MODULO_COLOR: Record<string, string> = ${JSON.stringify(colores, null, 2).replace(/"([^"]+)":/g, "'$1':").replace(/"/g, "'")};
 export const livColor = (m: string) => LIV_MODULO_COLOR[m] || '#9DB07F';
 `;
-fs.writeFileSync(OUT_PLAN, planTS, 'utf8');
+escribe(OUT_PLAN, planTS);
 
 // ─── salida 2: livianoCasos.ts ───
 const casosOut = casos.map((c) => ({
@@ -371,7 +377,7 @@ export function livPretest(d: number, n = 5): LivAnkiCard[] {
   return out;
 }
 `;
-fs.writeFileSync(OUT_CASOS, casosTS, 'utf8');
+escribe(OUT_CASOS, casosTS);
 
 // ─── salida 3: CSV Anki (tab-separado, cabeceras de importación de Anki) ───
 fs.mkdirSync(path.dirname(OUT_CSV), { recursive: true });
@@ -387,7 +393,7 @@ for (const c of cards) {
   const slug = c.deck.split('::').pop();
   csvLines.push([clean(c.q), clean(c.a), c.deck, `liviano::${slug} d${String(c.d).padStart(2, '0')} mecanismo`].join('\t'));
 }
-fs.writeFileSync(OUT_CSV, csvLines.join('\n') + '\n', 'utf8');
+escribe(OUT_CSV, csvLines.join('\n') + '\n');
 
 // ─── informe ───
 const porModulo = {};
@@ -400,4 +406,7 @@ console.log(`  pre-tests (lunes): ${rows.filter((r) => r.pretest).length} · dri
 console.log(`  filas por módulo (incl. casos): ${Object.entries(porModulo).map(([k, v]) => k + ' ' + v).join(' · ')}`);
 console.log(`  síntesis→protocolo: ${rows.filter((r) => /Síntesis módulo|Capstone/.test(r.tema)).map((r) => 'D' + r.d).join(', ')}`);
 console.log(`  Anki: ${cards.length} tarjetas · por semana: ${Object.entries(cardsPorSemana).map(([k, v]) => 'S' + k + ':' + v).join(' ')}`);
-console.log(`  escritos: ${path.relative(ROOT, OUT_PLAN)} · ${path.relative(ROOT, OUT_CASOS)} · ${path.relative(ROOT, OUT_CSV)}`);
+if (CHECK) {
+  if (DIFIERE.length) { console.error(`✗ gen_liviano_plan --check: NO están al día: ${DIFIERE.join(' · ')} (regenerar: node DATA/_scripts/gen_liviano_plan.js ${START})`); process.exit(1); }
+  console.log(`✓ gen_liviano_plan --check: ${path.relative(ROOT, OUT_PLAN)} · ${path.relative(ROOT, OUT_CASOS)} · ${path.relative(ROOT, OUT_CSV)} al día (START ${START})`);
+} else console.log(`  escritos: ${path.relative(ROOT, OUT_PLAN)} · ${path.relative(ROOT, OUT_CASOS)} · ${path.relative(ROOT, OUT_CSV)}`);
