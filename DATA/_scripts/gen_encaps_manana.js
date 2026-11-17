@@ -48,9 +48,16 @@
  *   del Anki 05:30 son libres (antes «10′ más de vencidas USMLE»); la 1.ª mañana no cita reglas ★ del arranque y su 18:00 dice «(aún no hay vencidas)» ·
  *   (joseph 3) DOMINGO DE PLAN con hora propia (_meta.domingos_plan: manana · tarde · compromiso; dom 27-dic 06:00-10:45 + cifras 10:45-11:30 a hora fija):
  *   las 7 franjas y las horas del protocolo de sus textos se desplazan en bloque (desfManana) y la mañana siguiente cita la hora real de sus tarjetas
- *   («las de las 10:25 del dom 27-dic») · (joseph 4) RECUPERACIÓN FIJA de un domingo (domingos[].recupera; dom 29-nov 06:30-08:00: grabación de la ET 2/3 +
+ *   («las de las 10:25 del dom 27-dic»; fix 2: 10:10) · (joseph 4) RECUPERACIÓN FIJA de un domingo (domingos[].recupera; dom 29-nov 06:30-08:00 → fix 2: 07:15-08:45; grabación de la ET 2/3 +
  *   los PPT en diferido que las notas mandan a ese domingo) → encapsRecuperaDe / guiaEncapsRecuperaDe (bloque encaps-rec de plantillasV6); el ENCAPS
  *   opcional de ese domingo, de ejemplo en franja_ejemplo (08:15-12:15, antes del compromiso de las 12:30).
+ * v6.09 (fix 2, lun 16-nov noche · la rutina de la mañana 05:45-07:15 —caminata, ducha y desayuno— NO se toca ningún día): (a) el DOMINGO DE PLAN va en
+ *   TRAMOS (_meta.domingos_plan[].manana = [[ini, fin], …], Σ = 285′; dom 27-dic: 04:15-05:45 + 07:15-10:30, cifras 10:30-11:15): las 7 franjas del protocolo
+ *   se reparten por los tramos (protocoloAReal) y la franja que cae en el corte se parte en dos guías («1.ª parte» / «2.ª parte», pasos partidos por minutos;
+ *   solo puede caer dentro de la TEORÍA o en el borde de una franja); ningún tramo puede pisar 05:45-07:15 · M[fecha].domingoPlanHoras.manana = los tramos y
+ *   .que = qué lleva cada uno (un bloque del Home por tramo: encaps-am + encaps-am2; guiaEncapsMananaEnRango) · (b) la RECUPERACIÓN FIJA del dom 29-nov pasa a
+ *   07:15-08:45 (antes 06:30-08:00, encima de la ducha y el desayuno) y el simulacro opcional de ese domingo, de ejemplo 08:45-12:15: un franja_ejemplo de
+ *   3 h 30-4 h recorta solo la corrección (80′ → 50′; lo que no se corrija, a la revisión del sábado) y el bloque dice su duración real.
  */
 'use strict';
 const fs = require('fs');
@@ -173,6 +180,10 @@ const DOM_PLAN = new Map((J._meta.domingos_plan || []).map((x) => [x.fecha, x.mo
 //   compromiso personal a mediodía): `manana` [ini, fin] = las 7 franjas del protocolo desplazadas (dom 27-dic: 06:00-10:45, 75′ antes) · `tarde`
 //   [ini, fin] = sus cifras, normas y flashcards (45′) a hora FIJA al terminar la mañana (10:45-11:30; antes flexibles, de ejemplo 20:00-20:45, después
 //   del baile) · `compromiso` = hora del compromiso personal de ese día (el margen se dice en el aviso). Sin `manana`, el protocolo de siempre (07:15-12:00).
+// v6.09 (fix 2, 16-nov noche): `manana` = lista de TRAMOS [[ini, fin], …] (Σ = 285′, las 7 franjas del protocolo repartidas en orden; dom 27-dic:
+//   04:15-05:45 + 07:15-10:30) para que el domingo de plan empiece a las 04:15 como entre semana y no pise la rutina de la mañana (05:45-07:15).
+const PROT_INI = '07:15', PROT_FIN = '12:00', PROT_MIN = aMin(PROT_FIN) - aMin(PROT_INI);
+const RUTINA_AM = ['05:45', '07:15']; // caminata · ducha · desayuno, todos los días: no se toca
 const DOM_PLAN_H = new Map((J._meta.domingos_plan || []).filter((x) => x.manana).map((x) => [x.fecha, { manana: x.manana, tarde: x.tarde, compromiso: x.compromiso || null }]));
 for (const [f, motivo] of DOM_PLAN) {
   if (!/^20\d\d-\d\d-\d\d$/.test(f) || dow(f) !== 0 || f < F6.f1.inicio || f > F6.f1.fin) aborta(`_meta.domingos_plan ${f}: debe ser un domingo de F1 (${F6.f1.inicio} → ${F6.f1.fin})`);
@@ -180,18 +191,39 @@ for (const [f, motivo] of DOM_PLAN) {
   if (!motivo) aborta(`_meta.domingos_plan ${f}: sin motivo`);
   const h = DOM_PLAN_H.get(f);
   if (h) {
-    const ok = (x) => Array.isArray(x) && x.length === 2 && x.every((t) => /^\d\d:\d\d$/.test(t));
-    if (!ok(h.manana) || aMin(h.manana[1]) - aMin(h.manana[0]) !== aMin('12:00') - aMin('07:15')) aborta(`_meta.domingos_plan ${f}: «manana» debe ser [ini, fin] de ${aMin('12:00') - aMin('07:15')}′ (las 7 franjas del protocolo)`);
-    if (!ok(h.tarde) || aMin(h.tarde[1]) - aMin(h.tarde[0]) !== 45 || aMin(h.tarde[0]) < aMin(h.manana[1])) aborta(`_meta.domingos_plan ${f}: «tarde» debe ser [ini, fin] de 45′ después de la mañana`);
+    const ok = (x) => Array.isArray(x) && x.length === 2 && x.every((t) => /^\d\d:\d\d$/.test(t)) && aMin(x[1]) > aMin(x[0]);
+    if (!Array.isArray(h.manana) || !h.manana.length || h.manana.length > 2 || !h.manana.every(ok)) aborta(`_meta.domingos_plan ${f}: «manana» debe ser una lista de 1 o 2 tramos [ini, fin]`);
+    for (let i = 1; i < h.manana.length; i++) if (aMin(h.manana[i][0]) < aMin(h.manana[i - 1][1])) aborta(`_meta.domingos_plan ${f}: los tramos de la mañana se solapan o no van en orden`);
+    const suma = h.manana.reduce((a, t) => a + aMin(t[1]) - aMin(t[0]), 0);
+    if (suma !== PROT_MIN) aborta(`_meta.domingos_plan ${f}: los tramos de la mañana suman ${suma}′ y deben sumar ${PROT_MIN}′ (las 7 franjas del protocolo)`);
+    for (const t of h.manana) {
+      if (aMin(t[0]) < aMin('04:15')) aborta(`_meta.domingos_plan ${f}: el tramo ${t.join('-')} empieza antes de las 04:15`);
+      if (aMin(t[0]) < aMin(RUTINA_AM[1]) && aMin(RUTINA_AM[0]) < aMin(t[1])) aborta(`_meta.domingos_plan ${f}: el tramo ${t.join('-')} pisa la rutina de la mañana (${RUTINA_AM.join('-')}: caminata, ducha y desayuno; no se toca)`);
+    }
+    const finM = h.manana[h.manana.length - 1][1];
+    if (!ok(h.tarde) || aMin(h.tarde[1]) - aMin(h.tarde[0]) !== 45 || aMin(h.tarde[0]) < aMin(finM)) aborta(`_meta.domingos_plan ${f}: «tarde» debe ser [ini, fin] de 45′ después de la mañana`);
     if (h.compromiso && (!/^\d\d:\d\d$/.test(h.compromiso) || aMin(h.compromiso) < aMin(h.tarde[1]))) aborta(`_meta.domingos_plan ${f}: «compromiso» ${h.compromiso} antes del fin de las cifras (${h.tarde[1]})`);
     if (aMin(h.tarde[1]) > aMin('17:00')) aborta(`_meta.domingos_plan ${f}: las cifras terminan después de las 17:00 (domingo: estudio solo antes del baile)`);
   }
   ESPERADAS.push(f);
 }
-/** v6.09 (fix revisión 16-nov, joseph 3): desfase (min) de la mañana ENCAPS de `iso` respecto al protocolo 07:15 (0 salvo domingo de plan con hora propia). */
-const desfManana = (iso) => { const h = DOM_PLAN_H.get(iso); return h ? aMin(h.manana[0]) - aMin('07:15') : 0; };
-/** hora real de una hora del protocolo («11:40») en la mañana de `iso` (dom 27-dic: 10:25). */
-const horaProt = (iso, h) => hhmm(aMin(h) + desfManana(iso));
+/** v6.09 (fix 2): tramos reales de la mañana ENCAPS de `iso` ([[07:15, 12:00]] salvo domingo de plan con hora propia). */
+const tramosManana = (iso) => { const h = DOM_PLAN_H.get(iso); return h ? h.manana : [[PROT_INI, PROT_FIN]]; };
+/** v6.09 (fix 2): hora REAL de una hora del protocolo (07:15-12:00) en la mañana de `iso`, recorriendo sus tramos en orden. En el corte entre dos tramos,
+ *  `lado` = 'ini' (algo que EMPIEZA ahí: el tramo siguiente) o 'fin' (algo que TERMINA ahí: el tramo anterior). Dom 27-dic: 07:15 → 04:15 · 08:45 → 05:45
+ *  (fin) / 07:15 (ini) · 11:40 → 10:10 · 12:00 → 10:30. Sin tramos propios, la misma hora. */
+function protocoloAReal(iso, h, lado = 'ini') {
+  let o = aMin(h) - aMin(PROT_INI);
+  const ts = tramosManana(iso);
+  for (let i = 0; i < ts.length; i++) {
+    const len = aMin(ts[i][1]) - aMin(ts[i][0]);
+    if (o < len || (o === len && (lado === 'fin' || i === ts.length - 1))) return hhmm(aMin(ts[i][0]) + o);
+    o -= len;
+  }
+  return h;
+}
+/** hora real de una hora del protocolo («11:40») en la mañana de `iso` (dom 27-dic: 10:10). */
+const horaProt = (iso, h) => protocoloAReal(iso, h, 'ini');
 ESPERADAS.sort();
 const esDomPlan = (iso) => DOM_PLAN.has(iso);
 const SAB_ESP = [], DOM_ESP = [];
@@ -373,7 +405,7 @@ const GA_FECHAS = [], GA_OCULTOS = [];
 for (const d of DIAS_GA) (usmleOcupa0530(d) ? GA_OCULTOS : GA_FECHAS).push(d);
 
 // ── guías de la MAÑANA ─────────────────────────────────────────────────────────────────────────────────────────
-const GM = {}, GT = {}, MD = {};
+const GM = {}, GT = {}, MD = {}, QUE_TRAMOS = {}; // v6.09 (fix 2): QUE_TRAMOS = qué lleva cada tramo de un domingo de plan en tramos
 for (const dia of J.mananas) {
   const lunes = dow(dia.fecha) === 1;
   const prevM = J.mananas[dia.n - 2] || null;
@@ -421,7 +453,7 @@ for (const dia of J.mananas) {
         P(15, 'Orientación en el campus (es el primer día: no hay tarjetas de ayer)', 'Cronograma en vivo y asíncrono; dónde están PPT, post-tests, Theoesenciales, glosarios y las 100 normas técnicas. Ruta: Campus › curso 99 (y el 116 de sesiones adicionales).', L99),
       ]
       : [
-        // v6.09 (fix revisión 16-nov, joseph 3): la hora de las tarjetas de la mañana anterior es la REAL (dom 27-dic, domingo de plan: 10:25)
+        // v6.09 (fix revisión 16-nov, joseph 3): la hora de las tarjetas de la mañana anterior es la REAL (dom 27-dic, domingo de plan: 10:10 — fix 2)
         P(8, `10 tarjetas ${pv.de}, de memoria`, `Las de las ${horaProt(prevM.fecha, '11:40')} del ${corta(prevM.fecha)}${porSkip}${delDomingo}. Tapa la respuesta, dila en voz alta, comprueba.`),
         P(7, `Reglas de los errores ${pv.de}, sin mirar`, 'Lee solo el error en el registro y di la regla. Si no sale, márcala ★: va primero en el banqueo de hoy.'),
       ], [R99], primera ? 'sabes dónde está cada cosa del campus' : 'las 10 tarjetas dichas y las reglas repasadas (las que no salieron, con ★)', { aviso: dia.extra || undefined }));
@@ -478,20 +510,58 @@ for (const dia of J.mananas) {
   let t = '07:15';
   for (const g of gs) { const p = G.partesFranja(g.franja); if (!p || p.ini !== t) aborta(`${dia.fecha}: hueco o solape antes de ${g.franja} (esperaba ${t})`); t = p.fin; }
   if (t !== '12:00') aborta(`${dia.fecha}: la mañana termina a las ${t}, no a las 12:00`);
-  // v6.09 (fix revisión 16-nov, joseph 3): DOMINGO DE PLAN con hora propia (dom 27-dic: 06:00-10:45) → las 7 franjas se desplazan en bloque (desfManana) y,
-  //   con ellas, toda hora del protocolo (07:15-12:00) escrita en títulos, pasos, plan B y avisos («tarjeta a las 11:40» → 10:25). No se tocan: las horas
-  //   de OTRO día («las de las 11:40 del mié 23-dic») ni el aviso del JSON (dia.extra: ya trae las horas reales del domingo)
-  const desf = desfManana(dia.fecha);
-  if (desf) {
-    const mov = (s) => (typeof s !== 'string' ? s : s.replace(/\b(\d\d):(\d\d)\b(?!\s+del\s+(?:lun|mar|mié|jue|vie|sáb|dom)\s)/g, (x, h, m) => {
-      const v = Number(h) * 60 + Number(m);
-      return v >= aMin('07:15') && v <= aMin('12:00') ? hhmm(v + desf) : x;
+  // v6.09 (fix revisión 16-nov, joseph 3): DOMINGO DE PLAN con hora propia → las franjas van a su hora real y, con ellas, toda hora del protocolo (07:15-12:00)
+  //   escrita en títulos, pasos, plan B y avisos («tarjeta a las 11:40» → 10:10). No se tocan: las horas de OTRO día («las de las 11:40 del mié 23-dic») ni el
+  //   aviso del JSON (dia.extra: ya trae las horas reales del domingo).
+  // v6.09 (fix 2, 16-nov noche): en TRAMOS (dom 27-dic: 04:15-05:45 + 07:15-10:30; la rutina de 05:45-07:15 no se toca) → protocoloAReal en vez de un
+  //   desfase único, y la franja en la que cae el corte (solo la TEORÍA, o un borde de franja) se parte en dos guías: sus pasos se reparten por minutos
+  //   (el que cruza el corte, en «1.ª parte» y «2.ª parte») y cada parte dice dónde está la otra.
+  if (DOM_PLAN_H.has(dia.fecha)) {
+    const real = (h, lado) => protocoloAReal(dia.fecha, h, lado);
+    const mov = (s) => (typeof s !== 'string' ? s : s.replace(/\b(\d\d):(\d\d)\b(?!\s+del\s+(?:lun|mar|mié|jue|vie|sáb|dom)\s)/g, (x) => {
+      const v = aMin(x);
+      return v >= aMin(PROT_INI) && v <= aMin(PROT_FIN) ? real(x, 'ini') : x;
     }));
-    for (let i = 0; i < gs.length; i++) {
-      const g = gs[i];
-      gs[i] = { ...g, franja: mov(g.franja), titulo: mov(g.titulo), pasos: g.pasos.map((p) => ({ ...p, que: mov(p.que), como: mov(p.como) })), hecho: mov(g.hecho),
-        ...(g.planB ? { planB: mov(g.planB) } : {}), ...(g.aviso ? { aviso: g.aviso === dia.extra ? g.aviso : mov(g.aviso) } : {}) };
+    const ts = tramosManana(dia.fecha);
+    const cortes = []; { let acc = 0; for (const t0 of ts.slice(0, -1)) { acc += aMin(t0[1]) - aMin(t0[0]); cortes.push(acc); } } // minutos del protocolo en los que se corta
+    const out = [];
+    for (const g0 of gs) {
+      const p = G.partesFranja(g0.franja);
+      const a = aMin(p.ini) - aMin(PROT_INI), b = aMin(p.fin) - aMin(PROT_INI);
+      const g = { ...g0, titulo: mov(g0.titulo), pasos: g0.pasos.map((x) => ({ ...x, que: mov(x.que), como: mov(x.como) })), hecho: mov(g0.hecho),
+        ...(g0.planB ? { planB: mov(g0.planB) } : {}), ...(g0.aviso ? { aviso: g0.aviso === dia.extra ? g0.aviso : mov(g0.aviso) } : {}) };
+      const dentro = cortes.filter((c) => c > a && c < b);
+      if (!dentro.length) { out.push({ ...g, franja: fr(real(p.ini, 'ini'), real(p.fin, 'fin')) }); continue; }
+      if (dentro.length > 1 || !/ · TEORÍA · /.test(g0.titulo)) aborta(`${dia.fecha}: el corte entre tramos cae dentro de «${g0.titulo}» (${g0.franja}): solo puede caer dentro de la TEORÍA o en el borde de una franja`);
+      const tC = hhmm(aMin(PROT_INI) + dentro[0]), k = dentro[0] - a;
+      const [i1, f1, i2, f2] = [real(p.ini, 'ini'), real(tC, 'fin'), real(tC, 'ini'), real(p.fin, 'fin')];
+      const pa = [], pb = []; let s0 = 0;
+      for (const x of g.pasos) {
+        const e = s0 + x.min;
+        if (e <= k) pa.push(x);
+        else if (s0 >= k) pb.push(x);
+        else { const m1 = k - s0, m2 = e - k; pa.push({ ...x, min: m1, que: `${x.que} — 1.ª parte: ${m1}′ (los ${m2}′ restantes, a las ${i2})` }); pb.push({ ...x, min: m2, que: `${x.que} — 2.ª parte: los ${m2}′ restantes` }); }
+        s0 = e;
+      }
+      if (!pa.length || !pb.length) aborta(`${dia.fecha}: el corte de la TEORÍA deja una parte sin pasos`);
+      out.push({ ...g, franja: fr(i1, f1), titulo: `${g.titulo} · 1.ª parte (${k}′)`, totalMin: k, pasos: pa, hecho: 'la 1.ª parte de la teoría vista o leída, con notas SOLO en forma de pregunta',
+        aviso: [g.aviso, `La teoría sigue a las ${i2} (${b - a - k}′): entre medias, la rutina de la mañana (${f1}-${i2}), que no se toca.`].filter(Boolean).join(' ') });
+      out.push({ ...g, franja: fr(i2, f2), titulo: `${g.titulo} · 2.ª parte (${b - a - k}′, tras la rutina de la mañana)`, totalMin: b - a - k, pasos: pb, aviso: `Es la 2.ª parte de la teoría de hoy (la 1.ª, ${i1}-${f1}): termina lo que quedó y sigue al post-test.` });
     }
+    // continuidad: cada tramo cubierto de punta a punta, sin huecos ni solapes, y nada fuera de los tramos
+    let j = 0;
+    for (const t0 of ts) {
+      let c = t0[0];
+      while (j < out.length && G.partesFranja(out[j].franja).ini === c) { c = G.partesFranja(out[j].franja).fin; j++; }
+      if (c !== t0[1]) aborta(`${dia.fecha}: el tramo ${t0.join('-')} de la mañana no queda cubierto (llega a ${c})`);
+    }
+    if (j !== out.length) aborta(`${dia.fecha}: hay franjas de la mañana fuera de sus tramos (${out.slice(j).map((x) => x.franja).join(', ')})`);
+    gs.splice(0, gs.length, ...out);
+    // qué lleva cada tramo (lo pinta el Home: un bloque por tramo)
+    const etq = (x) => (/ARRANQUE/.test(x.titulo) ? 'arranque' : / · TEORÍA · /.test(x.titulo) ? `teoría${/ · 1\.ª parte/.test(x.titulo) ? ' (1.ª parte)' : / · 2\.ª parte/.test(x.titulo) ? ' (2.ª parte)' : ''}`
+      : /POST-TEST/.test(x.titulo) ? 'post-test' : /RECALL/.test(x.titulo) ? 'recall' : /^Pausa$/.test(x.titulo) ? null : /BANQUEO/.test(x.titulo) ? 'banqueo'
+        : /CORRECCIÓN/.test(x.titulo) ? 'corrección' : /TARJETAS/.test(x.titulo) ? 'tarjetas' : /SIMULACRO/.test(x.titulo) ? 'simulacro' : 'mañana');
+    QUE_TRAMOS[dia.fecha] = ts.map((t0) => gs.filter((x) => { const q = G.partesFranja(x.franja); return aMin(q.ini) >= aMin(t0[0]) && aMin(q.ini) < aMin(t0[1]); }).map(etq).filter(Boolean).join(' → '));
   }
   GM[dia.fecha] = gs;
 
@@ -528,7 +598,7 @@ for (const dia of J.mananas) {
     : 'Hoy es domingo: a las 17:00 está el baile, así que estos 45′ son flexibles (de ejemplo 20:00-20:45, al volver; o en un hueco antes de las 17:00).';
   GT[dia.fecha] = guia(domP ? (hDom ? fr(hDom.tarde[0], hDom.tarde[1]) : fr('20:00', '20:45')) : fr('18:00', '18:45'), `ENCAPS · CIFRAS, NORMAS Y FLASHCARDS${domP ? (hDom ? ' (domingo de plan: al terminar la mañana)' : ' (flexible: hoy es domingo)') : ''}${pendM.length ? ' (+ lo pendiente de la mañana)' : ''}${pendF.length ? ` (+ ${pendF.map((u) => u.postTest).join(' + ')} en diferido)` : ''}`, [...pasosP, ...pasosR], [R99],
     pendM.length ? 'lo pendiente de la mañana terminado y las flashcards del día hechas' : pendF.length ? `${pendF.map((u) => u.postTest).join(' + ')} vista en sus tramos útiles${Rr > 0 ? ' y las flashcards del día hechas' : ' (el resto, en audio en un tiempo muerto)'}` : 'flashcards del día hechas y las cifras de hoy dichas en voz alta',
-    { aviso: [avisoDom, pendM.length ? `Hoy la teoría no cupo entera en ${horaProt(dia.fecha, '07:30')}-${horaProt(dia.fecha, '09:15')}: lo que falta va primero (${P_}′).` : pendF.length ? `Hoy a las 18:00 va ${pendF.map((u) => u.postTest).join(' + ')} en diferido (${P_}′): es la clase que no cabe en ninguna mañana; las flashcards de hoy van al próximo Anki.` : ''].filter(Boolean).join(' ') || undefined });
+    { aviso: [avisoDom, pendM.length ? `Hoy la teoría no cupo entera en ${GM[dia.fecha].filter((g) => / · TEORÍA · /.test(g.titulo)).map((g) => g.franja.replace('–', '-')).join(' y ') || `${horaProt(dia.fecha, '07:30')}-${horaProt(dia.fecha, '09:15')}`}: lo que falta va primero (${P_}′).` : pendF.length ? `Hoy a las 18:00 va ${pendF.map((u) => u.postTest).join(' + ')} en diferido (${P_}′): es la clase que no cabe en ninguna mañana; las flashcards de hoy van al próximo Anki.` : ''].filter(Boolean).join(' ') || undefined });
 }
 function normaTxt(dia) { return dia.norma && dia.norma !== 'verificación' ? dia.norma : null; }
 
@@ -699,7 +769,7 @@ for (const d of J.domingos.filter((x) => x.modo && !['simulacro', 'sin_sesion', 
   DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro || null, ranking: !!d.ranking, modo: d.modo, nombre, hora, min, sub, etiqueta, tema, campus };
 }
 // v6.09 (fix revisión 16-nov, joseph 4): DOMINGO CON RECUPERACIÓN FIJA (domingos[].recupera; v6.09: dom 29-nov, el siguiente al viaje) = bloque ENCAPS
-//   OBLIGATORIO a hora fija (franja; 06:30-08:00) con la GRABACIÓN de la clase en vivo que se perdió (tramos útiles a 2×) + los PPT en diferido que las
+//   OBLIGATORIO a hora fija (franja; fix 2: 07:15-08:45, tras la rutina de la mañana) con la GRABACIÓN de la clase en vivo que se perdió (tramos útiles a 2×) + los PPT en diferido que las
 //   notas de la semana mandan a ese domingo (ppt_min c/u; el de la clase grabada va antes de su grabación). Antes esas notas decían «el PPT el dom 29» y
 //   ese domingo no tenía ningún paso que los nombrara. El ENCAPS opcional del día (simulacro) sigue aparte, de ejemplo después (franja_ejemplo).
 const REC = {}, GR = {};
@@ -731,23 +801,26 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
 }
 for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
   if (!d.simulacro) aborta(`domingo ${d.fecha}: modo simulacro sin «simulacro»`);
-  // v6.09 (fix revisión 16-nov, joseph 4): hora de EJEMPLO del ENCAPS opcional (franja_ejemplo; dom 29-nov: 08:15-12:15, tras la recuperación fija y antes del
+  // v6.09 (fix revisión 16-nov, joseph 4): hora de EJEMPLO del ENCAPS opcional (franja_ejemplo; dom 29-nov, tras la recuperación fija y antes del
   //   compromiso personal) · por defecto 08:00-12:00 como siempre
+  // v6.09 (fix 2, 16-nov noche): la recuperación del dom 29-nov pasa a 07:15-08:45 (tras la rutina) → su ejemplo, 08:45-12:15 = 3 h 30: un franja_ejemplo
+  //   de 3 h 30-4 h RECORTA solo la corrección (80′ → 50′; lo que no se corrija, a la revisión del sábado) y el bloque dice su duración real
   const [ejI, ejF] = d.franja_ejemplo || ['08:00', '12:00'];
-  if (G.minutosFranja(fr(ejI, ejF)) !== 240) aborta(`domingo ${d.fecha}: franja_ejemplo ${ejI}-${ejF} no es de 4 h`);
+  const minEj = G.minutosFranja(fr(ejI, ejF)), recorte = 240 - minEj;
+  if (recorte < 0 || recorte > 30) aborta(`domingo ${d.fecha}: franja_ejemplo ${ejI}-${ejF} (${minEj}′) debe durar entre 3 h 30 y 4 h`);
   if (d.compromiso && aMin(d.compromiso) < aMin(ejF)) aborta(`domingo ${d.fecha}: el ejemplo del ENCAPS opcional (${ejF}) termina después del compromiso (${d.compromiso})`);
   DOM[d.fecha] = { fecha: d.fecha, simulacro: d.simulacro, ranking: !!d.ranking, modo: 'simulacro',
-    nombre: `ENCAPS · opcional 4 h (flexible): simulacro 100Q + corrección${d.ranking ? ' · RANKING Theomed' : ''}`, hora: 'flexible · 4 h', min: 240,
-    sub: `opcional y flexible · 2 h de simulacro + 2 h de corrección${d.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`,
-    etiqueta: 'ENCAPS · domingo opcional 4 h (simulacro 100Q)', tema: d.simulacro, campus: /^Theomed/.test(d.simulacro) ? 'simulacros' : null };
+    nombre: `ENCAPS · opcional ${fmtMin(minEj)} (flexible): simulacro 100Q + corrección${d.ranking ? ' · RANKING Theomed' : ''}`, hora: `flexible · ${fmtMin(minEj)}`, min: minEj,
+    sub: `opcional y flexible · 2 h de simulacro + ${fmtMin(minEj - 120)} de corrección${recorte ? ' (recortada: hay un compromiso)' : ''}${d.ranking ? ' · RANKING: primer intento dentro de 89 h desde el viernes 16:00' : ''}`,
+    etiqueta: `ENCAPS · domingo opcional ${fmtMin(minEj)} (simulacro 100Q)`, tema: d.simulacro, campus: /^Theomed/.test(d.simulacro) ? 'simulacros' : null };
   const theomed = /^Theomed/.test(d.simulacro);
   const num = (/DR LOPEZ simulacro (\d+)/.exec(d.simulacro) || [])[1];
   const ruta = theomed ? 'Campus › curso 105 (SIMULACROS MEDICINA 2027) › el simulacro indicado' : `${RUTA.drLopezSim} › ${num ? `${num}.° simulacro` : 'simulacro'} (versión SIN claves; la de claves, solo para corregir)`;
-  GD[d.fecha] = guia(fr(ejI, ejF), `ENCAPS · OPCIONAL 4 h (sin hora fija) · simulacro 100Q + corrección`, [
+  GD[d.fecha] = guia(fr(ejI, ejF), `ENCAPS · OPCIONAL ${fmtMin(minEj)} (sin hora fija) · simulacro 100Q + corrección`, [
     P(10, `Preparar: ${d.simulacro}`, `Ruta: ${ruta}. Sin reloj a la vista, móvil fuera, hoja de respuestas si puedes.`, theomed ? L105 : undefined),
     P(120, 'SIMULACRO 100Q · 2 h sin parar', 'Primero las básicas e intermedias; marca las dudosas y vuelve al final. Ninguna en blanco: no restan. 72 s por pregunta, con 10-15′ de reserva.'),
     P(15, 'Pausa', 'De pie, agua, sin pantalla.'),
-    P(80, 'Corrección: cada error y cada dudosa', `${cap(TIPOS_ERROR)} + verificación en la norma.`),
+    P(80 - recorte, 'Corrección: cada error y cada dudosa', `${cap(TIPOS_ERROR)} + verificación en la norma.${recorte ? ` Hoy ${80 - recorte}′ (en vez de 80′): primero las «seguras» falladas; lo que no llegues a corregir, a la revisión del ${revSab(d.fecha)}.` : ''}`),
     P(15, 'Registro', `Nota (aciertos × 0,2), % por área y errores repetidos. Va a la revisión del ${revSab(d.fecha)}.`),
   ], theomed ? [R105] : [], 'simulacro hecho en 2 h y corregido, con la nota en el registro (o descanso: es opcional)', {
     aviso: `Opcional y flexible: a la hora que puedas (${ejI}-${ejF} es solo un ejemplo${REC[d.fecha] ? `: hoy va después de la recuperación FIJA de las ${REC[d.fecha].ini}-${REC[d.fecha].fin}` : ''}${d.compromiso ? ` y termina antes del compromiso personal de las ${d.compromiso}` : ''}). Si vas atrasado, usa estas horas para lo pendiente de la semana.${d.ranking ? ' RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.' : ''}`,
@@ -772,7 +845,7 @@ for (const dia of J.mananas) {
   const t = dia.teoria.length ? dia.teoria.map((x) => x.item.replace(/\s*\(.*\)$/, '')).join(' + ') : dia.banqueo.area.replace(/\s*\+ corrección$/, '');
   RESUMEN[dia.fecha] = `${t} · ${dia.fase === 'cierre' ? 'simulacro 100Q' : `banqueo ${dia.banqueo.n}Q ${dia.banqueo.area}`}`;
 }
-const M = Object.fromEntries(J.mananas.map((d) => [d.fecha, { fecha: d.fecha, n: d.n, de: NM, fase: d.fase, teoria: d.teoria, banqueo: d.banqueo, norma: d.norma, extra: d.extra, resumen: RESUMEN[d.fecha], pendiente18: (MD[d.fecha] && MD[d.fecha].tarde.map((u) => u.postTest || u.que)) || [], ...(EXTRA.has(d.fecha) ? { diaExtra: EXTRA.get(d.fecha) } : {}), ...(DOM_PLAN.has(d.fecha) ? { domingoPlan: DOM_PLAN.get(d.fecha) } : {}), ...(DOM_PLAN_H.has(d.fecha) ? { domingoPlanHoras: DOM_PLAN_H.get(d.fecha) } : {}) }]));
+const M = Object.fromEntries(J.mananas.map((d) => [d.fecha, { fecha: d.fecha, n: d.n, de: NM, fase: d.fase, teoria: d.teoria, banqueo: d.banqueo, norma: d.norma, extra: d.extra, resumen: RESUMEN[d.fecha], pendiente18: (MD[d.fecha] && MD[d.fecha].tarde.map((u) => u.postTest || u.que)) || [], ...(EXTRA.has(d.fecha) ? { diaExtra: EXTRA.get(d.fecha) } : {}), ...(DOM_PLAN.has(d.fecha) ? { domingoPlan: DOM_PLAN.get(d.fecha) } : {}), ...(DOM_PLAN_H.has(d.fecha) ? { domingoPlanHoras: { manana: DOM_PLAN_H.get(d.fecha).manana, que: QUE_TRAMOS[d.fecha], tarde: DOM_PLAN_H.get(d.fecha).tarde, compromiso: DOM_PLAN_H.get(d.fecha).compromiso } } : {}) }]));
 const META = {
   version: J._meta.version, decidido: J._meta.decidido, fechas: F6.version, fuente: J._meta.fuente, mananas: NM,
   primera: J.mananas[0].fecha, ultima: J.mananas[NM - 1].fecha, ultimaF1: J.mananas.filter((d) => !EXTRA.has(d.fecha)).at(-1).fecha, extra: [...EXTRA.keys()], domingosPlan: [...DOM_PLAN.keys()], protocolo: J._meta.protocolo_manana, campus: CAMPUS,
@@ -812,9 +885,10 @@ export interface EncapsMananaDia {
   diaExtra?: string;
   /** v6.09: mañana de un DOMINGO DE PLAN de F1 (dom 27-dic: ya no cabía entre semana): el motivo */
   domingoPlan?: string;
-  /** v6.09 (fix revisión 16-nov): horas FIJAS del domingo de plan: mañana (las 7 franjas desplazadas; dom 27-dic 06:00-10:45) · sus cifras, normas y
-   *  flashcards al terminar (10:45-11:30) · hora del compromiso personal de ese día (para el margen) */
-  domingoPlanHoras?: { manana: [string, string]; tarde: [string, string]; compromiso: string | null };
+  /** v6.09 (fix revisión 16-nov): horas FIJAS del domingo de plan: TRAMOS de la mañana (las 7 franjas repartidas; fix 2: dom 27-dic 04:15-05:45 +
+   *  07:15-10:30, sin tocar la rutina de 05:45-07:15) y qué lleva cada tramo · sus cifras, normas y flashcards al terminar (10:30-11:15) · hora del
+   *  compromiso personal de ese día (para el margen) */
+  domingoPlanHoras?: { manana: [string, string][]; que: string[]; tarde: [string, string]; compromiso: string | null };
 }
 /** v6.09 (fix revisión 16-nov): bloque ENCAPS FIJO de recuperación de un domingo (dom 29-nov, tras el viaje): grabación de la clase perdida + PPT en diferido. */
 export interface EncapsRecupera { fecha: string; ini: string; fin: string; nombre: string; tema: string; clases: string[]; motivo: string }
@@ -856,6 +930,14 @@ const k = (iso: string): string => iso.slice(0, 10);
 export function encapsMananaDe(iso: string): EncapsMananaDia | null { return M[k(iso)] ?? null; }
 /** Las 7 franjas de la mañana ENCAPS (07:15-12:00; el mié 30-dic, simulacro de cierre) · [] si no hay. */
 export function guiaEncapsMananaDe(iso: string): GuiaBloque[] { return GU.GM[k(iso)] ?? []; }
+/** v6.09 (fix 2, 16-nov): las franjas de la mañana ENCAPS que EMPIEZAN dentro de [ini, fin) — el domingo de plan en tramos (dom 27-dic) lleva un bloque
+ *  del Home por tramo (encaps-am · encaps-am2) · sin ini o fin, todas. */
+export function guiaEncapsMananaEnRango(iso: string, ini?: string | null, fin?: string | null): GuiaBloque[] {
+  const gs = guiaEncapsMananaDe(iso);
+  if (!ini || !fin) return gs;
+  const m = (h: string): number => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
+  return gs.filter((g) => { const a = m(g.franja.slice(0, 5)); return a >= m(ini) && a < m(fin); });
+}
 /** 18:00-18:45 «ENCAPS · cifras, normas y flashcards» (con lo pendiente de la mañana si lo hay). */
 export function guiaEncapsTardeDe(iso: string): GuiaBloque | null { return GU.GT[k(iso)] ?? null; }
 /** 05:30-05:45 · repasos ENCAPS (ENCAPS::Cifras + ENCAPS::Flashcards) tras el Anki USMLE, todos los días de plan de F1. */
@@ -870,7 +952,7 @@ export function guiaTheomedVivoDe(iso: string): GuiaBloque | null { return GU.GS
 export function encapsDomingoDe(iso: string): EncapsDomingo | null { return DOM[k(iso)] ?? null; }
 /** Guía del ENCAPS opcional del domingo (sin hora fija: la franja 08:00-12:00 es solo un ejemplo). */
 export function guiaEncapsDomingoDe(iso: string): GuiaBloque | null { return GU.GD[k(iso)] ?? null; }
-/** v6.09 (fix revisión 16-nov): bloque ENCAPS FIJO de recuperación del domingo (dom 29-nov 06:30-08:00: grabación de la ET 2/3 + PPT en diferido) · null si no hay. */
+/** v6.09 (fix revisión 16-nov): bloque ENCAPS FIJO de recuperación del domingo (fix 2: dom 29-nov 07:15-08:45, tras la rutina de la mañana: grabación de la ET 2/3 + PPT en diferido) · null si no hay. */
 export function encapsRecuperaDe(iso: string): EncapsRecupera | null { return REC[k(iso)] ?? null; }
 /** Guía de ese bloque (hora fija). */
 export function guiaEncapsRecuperaDe(iso: string): GuiaBloque | null { return GU.GR[k(iso)] ?? null; }
@@ -884,6 +966,8 @@ export const ENCAPS_MINIMO: Record<string, { AMBAR: string | null; ROJO: string 
   'theomed-prep': { AMBAR: 'Omitido hoy: entra directo a la clase.', ROJO: 'Omitido hoy.' },
   'theomed-vivo': { AMBAR: null, ROJO: 'En vivo, omitida: la grabación cuando te recuperes (domingo o en audio).' },
   'encaps-rec': { AMBAR: null, ROJO: 'Solo los PPT en diferido (30′); la grabación, en audio en tiempos muertos de la semana.' },
+  // v6.09 (fix 2): 2.º tramo de la mañana de un domingo de plan en tramos (dom 27-dic 07:15-10:30)
+  'encaps-am2': { AMBAR: null, ROJO: 'Solo el post-test + 10Q ciegas del tema de hoy y sus tarjetas. El resto = dormir/recuperar.' },
 };
 `;
 

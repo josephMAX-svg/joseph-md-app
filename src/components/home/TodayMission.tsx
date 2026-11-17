@@ -34,7 +34,7 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
 // v6.02c (E4 · ENCAPS 16:15 + Research): guías «qué · cuánto · cómo» + botones directos (runner BANCO_PROPIO · recurso del átomo · Obsidian)
 import { guiaEncapsDe, sesionEncapsDe, encapsSabadoDe, guiaEncapsSabadoDe, sesionEncapsSabadoDe } from '../../lib/encapsGuia'; // v6.06: + carril SÁBADO de la intensiva · v6.06 (fix): + su guía y sus runners
 import {
-  encapsMananaDe, guiaEncapsMananaDe, guiaEncapsTardeDe, guiaEncapsAnkiDe, theomedSabadoDe, guiaTheomedPrepDe, guiaTheomedVivoDe, encapsDomingoDe,
+  encapsMananaDe, guiaEncapsMananaEnRango, guiaEncapsTardeDe, guiaEncapsAnkiDe, theomedSabadoDe, guiaTheomedPrepDe, guiaTheomedVivoDe, encapsDomingoDe,
   guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO, encapsRecuperaDe, guiaEncapsRecuperaDe,
 } from '../../lib/encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + 18:00 + Anki 05:30 + clase EN VIVO del sábado + ENCAPS opcional del domingo · v6.09 (fix): + recuperación fija del domingo
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
@@ -230,7 +230,7 @@ export function encapsLabelDe(iso: string): string | null {
   if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
   if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
-  // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (dom 29-nov 06:30): va primero en la etiqueta
+  // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (dom 29-nov 07:15; fix 2, antes 06:30): va primero en la etiqueta
   const recE = encapsRecuperaDe(iso);
   if (recE) return `ENCAPS ${recE.ini} recuperación del viaje (fija)${domE ? ` + ${domE.etiqueta.replace(/^ENCAPS · /, '')}` : ''}`;
   if (domE) return domE.etiqueta;
@@ -516,9 +516,11 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     case 'encaps': {
       // v6.07: bloques ENCAPS nuevos de F1 (encapsManana, GENERADO): mañana 07:15-12:00 (lun · mié · vie) · 18:00 · sábado en vivo · domingo opcional
       const campus = (lbl: string, url: string, fill = false): Accion => ({ lbl, color: TEAL, url, fill });
-      if (b.id === 'encaps-am') {
+      // v6.09 (fix 2, 16-nov): el domingo de plan en tramos (dom 27-dic 04:15-05:45 + 07:15-10:30) trae un bloque por tramo (encaps-am · encaps-am2):
+      //   cada uno, las franjas que empiezan dentro (guiaEncapsMananaEnRango; un día normal 07:15-12:00 = todas)
+      if (b.id === 'encaps-am' || b.id === 'encaps-am2') {
         const am = encapsMananaDe(iso);
-        const gs = guiaEncapsMananaDe(iso);
+        const gs = guiaEncapsMananaEnRango(iso, b.ini, b.fin);
         if (am && gs.length) return {
           // v6.08: jue 31-dic (día extra SOLO ENCAPS) y mar 5-ene (en la intensiva) = mañanas de F1 que no cupieron en F1 (am.diaExtra)
           tema: `Mañana ${am.n}/${am.de} · ${am.diaExtra ? 'mañana de F1 fuera de F1 (no cupo)' : am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
@@ -537,7 +539,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         const g = b.id === 'theomed-prep' ? guiaTheomedPrepDe(iso) : guiaTheomedVivoDe(iso);
         if (viv?.vivo && g) return { tema: `${viv.vivo} · ${viv.area ?? ''}`.replace(/ · $/, ''), sub: b.id === 'theomed-prep' ? 'PPT de la clase + 3 preguntas' : 'en vivo, participando · notas en forma de pregunta · el tramo 17:00-17:30 en la grabación', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
-      // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (dom 29-nov 06:30-08:00: grabación de la ET 2/3 + PPT en diferido)
+      // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (dom 29-nov 07:15-08:45 —fix 2; antes 06:30-08:00—: grabación de la ET 2/3 + PPT en diferido)
       if (b.id === 'encaps-rec') {
         const rec = encapsRecuperaDe(iso);
         const g = guiaEncapsRecuperaDe(iso);

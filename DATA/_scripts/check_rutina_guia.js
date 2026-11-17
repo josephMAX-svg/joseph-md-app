@@ -488,7 +488,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       case 'mir': return MD2.mirSesionDe(iso) ? [] : null;
       case 'encaps': {
         // v6.07: bloques ENCAPS nuevos con su guía (encapsManana)
-        if (b.id === 'encaps-am') { const gs = EM2.guiaEncapsMananaDe(iso); return gs.length ? gs : null; }
+        if (b.id === 'encaps-am' || b.id === 'encaps-am2') { const gs = EM2.guiaEncapsMananaEnRango(iso, b.ini, b.fin); return gs.length ? gs : null; } // v6.09 (fix 2): domingo de plan en tramos
         if (b.id === 'encaps-pm') { const g = EM2.guiaEncapsTardeDe(iso); return g ? [g] : null; }
         if (b.id === 'theomed-prep') { const g = EM2.guiaTheomedPrepDe(iso); return g ? [g] : null; }
         if (b.id === 'theomed-vivo') { const g = EM2.guiaTheomedVivoDe(iso); return g ? [g] : null; }

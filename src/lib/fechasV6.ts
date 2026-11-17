@@ -348,10 +348,10 @@ export const FECHAS_V6: FechasV6 = {
     "resumen": "v6.09 (orden del lun 16-nov: «hoy no avancé, todo empieza mañana; sábado y domingo viajo, déjalos libres»): TODO ARRANCA EL MAR 17-NOV. El Step 1 no cambia (UWSA1 mar 17); ENCAPS y los planes secundarios corren un día hábil y el jue 31-dic recupera el día perdido, así que desde el lun 4-ene todo sigue igual. Sáb 21 y dom 22 libres (viaje). Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
     "notas": {
       "2026-11-16": [
-        "Hoy lunes, sin sesión: TODO ARRANCA MAÑANA, MAR 17-NOV, a las 04:15 (v6.09). Mañana es el UWSA1 (08:50-13:00): esta noche, cena ligera y a la cama a las 21:00. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: audio en tiempos muertos y el PPT el domingo 29 a las 06:30."
+        "Hoy lunes, sin sesión: TODO ARRANCA MAÑANA, MAR 17-NOV, a las 04:15 (v6.09). Mañana es el UWSA1 (08:50-13:00): esta noche, cena ligera y a la cama a las 21:00. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: audio en tiempos muertos y el PPT el domingo 29 a las 07:15."
       ],
       "2026-11-21": [
-        "Hoy sábado, libre (viaje): ni plan ni revisión. La clase en vivo de Theomed de hoy (15:00, Ética e Interculturalidad 2/3) va en diferido: audio en tiempos muertos de la semana; su grabación (tramos útiles a 2×) y el PPT, el domingo 29 a las 06:30 (bloque fijo de recuperación). La revisión S01 va junto con la S02 el sáb 28 a las 14:00, y el cierre del OUTPUT de Business, el sáb 28 a las 07:45. El Anki se acumula al lunes: esa mañana, primero los repasos vencidos."
+        "Hoy sábado, libre (viaje): ni plan ni revisión. La clase en vivo de Theomed de hoy (15:00, Ética e Interculturalidad 2/3) va en diferido: audio en tiempos muertos de la semana; su grabación (tramos útiles a 2×) y el PPT, el domingo 29 a las 07:15 (bloque fijo de recuperación). La revisión S01 va junto con la S02 el sáb 28 a las 14:00, y el cierre del OUTPUT de Business, el sáb 28 a las 07:45. El Anki se acumula al lunes: esa mañana, primero los repasos vencidos."
       ],
       "2026-11-22": [
         "Hoy domingo, libre (viaje). El SHIP S1 del vibecoding va el dom 29 (cada SHIP corre un domingo hasta el dom 27-dic). El simulacro opcional de Theomed del vie 13-nov (sin ranking) queda para el dom 3-ene, si te apetece. Mañana lunes 23 a las 04:15 sigue el plan."
@@ -615,7 +615,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */

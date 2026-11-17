@@ -6,15 +6,15 @@
 |---|---|
 | **Step 1** | **Sin cambios** (el lunes no era día de Step): UWSA1 mar 17-nov 08:50-13:00, 13 mañanas mar · jue, NBME 25 jue 10-dic, examen lun 6-dic-2027. |
 | **ENCAPS 16:15** | dia 1-32 del **mar 17 al jue 31-dic** (pre-test 1/2 mar 17 tras el UWSA1, 2/2 mié 18; mini-sims los mismos viernes; CHECKPOINT vie 18-dic). Intensiva sin cambios. |
-| **ENCAPS mañanas** | Corren una ranura: 1.ª mañana **mié 18** (orientación en el campus, sin repasos). La 17/21 va el **dom 27-dic 06:00-10:45** (+ cifras 10:45-11:30; tu compromiso es a las 12:00). Simulacro de cierre mié 30, doble del jue 31 y hoja de reglas del mar 5-ene, igual. |
+| **ENCAPS mañanas** | Corren una ranura: 1.ª mañana **mié 18** (orientación en el campus, sin repasos). La 17/21 va el **dom 27-dic** en dos tramos que no tocan tu rutina: **04:15-05:45 y 07:15-10:30** (+ cifras 10:30-11:15; tu compromiso es a las 12:00). Simulacro de cierre mié 30, doble del jue 31 y hoja de reglas del mar 5-ene, igual. |
 | **Secundarios** | Corren un día hábil dentro de F1 y el **jue 31-dic** (antes libre por la tarde) recupera el lun 16: ese día es completo. **Desde el lun 4-ene todo cae igual que en la v6.08.** Research no cambia (el lun 16 era de Derma). Business y SYNAPSE salen como «D2 / día 2» el mar 17: el D1 era el lun 16 (sin sesión) y así la numeración de 2027 no cambia. |
-| **Fines de semana** | Sáb 21 y dom 22 libres. **Dom 29-nov:** bloque fijo 06:30-08:00 de recuperación del viaje (grabación de la ET 2/3 a 2× + los PPT en diferido de INV 1/4, INV 2/4, GES 1/6, GES 2/6, SP 2/11 y ET 2/3), simulacro opcional con ranking 08:15-12:15, SHIP S1 y un SYNAPSE de recuperación por la tarde. **Sáb 28:** Business 07:45-08:10 (antes del gimnasio) y revisión S01 + S02 a las 14:00. SHIP S2-S5 → dom 6, 13, 20 y 27-dic. |
+| **Fines de semana** | Sáb 21 y dom 22 libres. **Dom 29-nov:** bloque fijo 07:15-08:45 (tras tu rutina) de recuperación del viaje (grabación de la ET 2/3 a 2× + los PPT en diferido de INV 1/4, INV 2/4, GES 1/6, GES 2/6, SP 2/11 y ET 2/3), simulacro opcional con ranking 08:45-12:15, SHIP S1 y un SYNAPSE de recuperación por la tarde. **Sáb 28:** Business 07:45-08:10 (antes del gimnasio) y revisión S01 + S02 a las 14:00. SHIP S2-S5 → dom 6, 13, 20 y 27-dic. |
 
 Lo que te toca a ti (v6.09):
 - [ ] **Mar 17 a las 04:15 empieza todo.** Hoy lunes: cena ligera y a la cama a las 21:00 (mañana UWSA1 08:50).
 - [ ] **Runners ENCAPS del mar 24 al jue 26-nov:** se generan tras el mini-sim del vie 20 (dependen de tus fallos) y antes del mar 24. Como el finde viajas, pídemelo el lunes 23 o el mismo vie 20 por la noche.
 - [ ] **Lun 23 a las 16:15:** la eval anclada es la de V-2 (del jue 19), no la de los fallos del mini-sim: excepción por el viaje.
-- [ ] **Dom 27-dic** es domingo de plan (06:00-11:30), y el **jue 31-dic**, día completo.
+- [ ] **Dom 27-dic** es domingo de plan (04:15-05:45 y 07:15-11:15), y el **jue 31-dic**, día completo.
 - [ ] El simulacro de Theomed del vie 13-nov ya no da ranking: queda opcional para el dom 3-ene (o el antiguo 30/10, o DR LOPEZ 2, o descanso).
 
 **⚡ v6.08 (sáb 14-nov ≈08:00, base de la v6.09; desde el 4-ene vale tal cual) — TODO ARRANCA EL LUN 16-NOV. Re-fecha real: cada plan corre una semana y sus plazos se alargan.** Orden de Joseph: «todo inicia el lunes 16; reestructura todo; si hace falta mueve tiempos; alarga las fechas límite lo que amerite (2-3 días o más) para que no sea fastidioso». La semana del 9 al 15-nov no se estudió; las semanas corridas v6.07a-e (alias) quedan sin efecto. Fechas externas sin cambio: el examen ENCAPS es el dom 14-mar (el campus de Theomed lo marca ese día) y el examen Step 1 el lun 6-dic-2027.

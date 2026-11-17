@@ -10,6 +10,8 @@
 //       de cada clase citada en la frase (y, si la frase dice «a las HH:MM», esa guía empieza a esa hora);
 //   (b) joseph 7 · la nota de un día SKIP dice que el 31-dic «es / fue día de plan» solo si ese 31-dic lo es de verdad (plantilla con mañana ENCAPS):
 //       25-dic-2026 «sí es día de plan» · 1-ene-2027 «fue día de plan» · Jueves y Viernes Santo de 2027, el texto de la v6.08 (sin la frase).
+// v6.09 (fix 2, 16-nov noche): + bloque encaps-am2 (2.º tramo de un domingo de plan en tramos; dom 27-dic) y las franjas de la mañana ENCAPS por bloque
+//   (encapsManana.guiaEncapsMananaEnRango) · (c) RUTINA DE LA MAÑANA: ningún bloque con hora pisa 05:45-07:15 (caminata, ducha y desayuno; todos los días).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
@@ -49,7 +51,7 @@ function guiasDe(b, p, iso) {
     case 'revision': { const g = RT.guiaRevisionDe(iso); return g ? [g] : null; }
     case 'mir': { if (!MD.mirSesionDe(iso)) return null; const g = MG.mirGuiaDe(iso, b.ini); return g ? [g] : []; }
     case 'encaps': {
-      if (b.id === 'encaps-am') { const gs = EM.guiaEncapsMananaDe(iso); return gs.length ? gs : null; }
+      if (b.id === 'encaps-am' || b.id === 'encaps-am2') { const gs = EM.guiaEncapsMananaEnRango(iso, b.ini, b.fin); return gs.length ? gs : null; } // v6.09 (fix 2): domingo de plan en tramos = un bloque por tramo (como TodayMission)
       if (b.id === 'encaps-pm') { const g = EM.guiaEncapsTardeDe(iso); return g ? [g] : null; }
       if (b.id === 'theomed-prep') { const g = EM.guiaTheomedPrepDe(iso); return g ? [g] : null; }
       if (b.id === 'theomed-vivo') { const g = EM.guiaTheomedVivoDe(iso); return g ? [g] : null; }
@@ -128,6 +130,15 @@ function controlPPT(iso, textos) {
   }
   return errs;
 }
+// v6.09 (fix 2, 16-nov noche): RUTINA DE LA MAÑANA 05:45-07:15 (caminata, ducha y desayuno; todos los días hasta el SERUMS: F1 · transición · F2 · F3) →
+//   ningún bloque con hora la pisa. Excepción conocida y anterior (solape informativo, lo decide Joseph): los HITOS USMLE de las 07:00 (NBME 25-28, «sustituye
+//   al bloque de la mañana») pisan 07:00-07:15 del desayuno. En F4 (SERUMS) manda el turno (bloque A 04:05-05:55): no se comprueba.
+const RUTINA_AM = ['05:45', '07:15'];
+function controlRutina(iso, p) {
+  if (!['F1', 'TRANSICION', 'F2', 'LIBRE_POST_ENCAPS', 'F3'].includes(F6.faseV6(iso))) return [];
+  return p.bloques.filter((b) => b.ini && b.fin && b.ini !== b.fin && hm(b.ini) < hm(RUTINA_AM[1]) && hm(RUTINA_AM[0]) < hm(b.fin) && !(b.plan === 'usmle' && /HITO/.test(b.nombre) && b.ini === '07:00'))
+    .map((b) => `${b.hora} ${b.id} pisa la rutina de la mañana (${RUTINA_AM.join('-')}: caminata, ducha y desayuno; no se toca)`);
+}
 // v6.09 (fix revisión 16-nov, joseph 7): la nota de un día SKIP solo dice que el 31-dic «es / fue día de plan» si lo es de verdad
 function controlSkip31(iso, p) {
   if (p.plantilla !== 'SKIP') return [];
@@ -158,7 +169,7 @@ for (const iso of dias) {
     for (const g of gs || []) console.log(`   ${''.padEnd(16)} ${''.padEnd(13)}   ↳ ${flexible ? `(ejemplo ${g.franja})` : g.franja} ${g.titulo.slice(0, 96)}${fuera.includes(g) ? '  ⚠ FUERA DEL BLOQUE' : ''}`);
   }
   // v6.09 (fix revisión 16-nov): aserciones del día (PPT remitidos a un domingo · nota SKIP del 31-dic), tras recorrer sus bloques
-  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
+  for (const e of [...controlPPT(iso, textosDe(p, gsDia)), ...controlSkip31(iso, p), ...controlRutina(iso, p)]) { errores++; resumen.push(`${iso} ${e}`); }
 }
 if (resumen.length) console.log(`\n✗ ${errores} problema(s):\n  ` + resumen.join('\n  '));
 console.log(`\n${errores ? '✗' : '✓'} ${dias.length} día(s) simulados · guías fuera de su bloque o bloques sin contenido: ${errores}`);

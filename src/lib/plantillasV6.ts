@@ -114,6 +114,10 @@
  *  encaps-rec 06:30-08:00 (encapsManana.encapsRecuperaDe: grabación de la ET 2/3 + los PPT en diferido de la semana del viaje); el ENCAPS opcional, de
  *  ejemplo 08:15-12:15 · (joseph 7) la frase del 31-dic «día de plan» en la nota SKIP solo cuando ese 31-dic lo es (25-dic-2026 y 1-ene-2027); en 2027,
  *  el texto de la v6.08.
+ * v6.09 (fix 2, lun 16-nov noche · la rutina de la mañana 05:45-07:15 —caminata, ducha y desayuno— no se toca ningún día): dom 27-dic = domingo de plan en
+ *  DOS TRAMOS, un bloque por tramo: encaps-am 04:15-05:45 (arranque + teoría, 1.ª parte) + encaps-am2 07:15-10:30 (teoría, 2.ª parte → post-test →
+ *  banqueo → corrección → tarjetas) + cifras, normas y flashcards 10:30-11:15 (45′ antes del compromiso de las 12:00); empieza a las 04:15 como entre
+ *  semana · dom 29-nov: encaps-rec 07:15-08:45 (antes 06:30-08:00) y el ENCAPS opcional (simulacro con RANKING), de ejemplo 08:45-12:15 (3 h 30).
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
@@ -716,25 +720,34 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
   //   flashcards 10:45-11:30 → 30′ de margen antes del compromiso personal de las 12:00 y nada después de las 17:00, baile). Antes 07:15-12:00 + cifras flexibles
   //   (solo cabían después del baile). (joseph 4) DOMINGO CON RECUPERACIÓN FIJA (encapsManana.encapsRecuperaDe; dom 29-nov 06:30-08:00: grabación de la ET 2/3
   //   del sáb 21 + los PPT en diferido de la semana del viaje) = bloque encaps-rec con hora; el resto del domingo sigue flexible
+  // v6.09 (fix 2, 16-nov noche · la rutina de la mañana 05:45-07:15 no se toca ningún día): el domingo de plan va en TRAMOS (domingoPlanHoras.manana; dom
+  //   27-dic: 04:15-05:45 + 07:15-10:30, cifras 10:30-11:15) = UN BLOQUE POR TRAMO (encaps-am · encaps-am2; cada uno con las franjas que empiezan dentro:
+  //   encapsManana.guiaEncapsMananaEnRango) y empieza a las 04:15 como entre semana · la recuperación fija del dom 29-nov, 07:15-08:45 (antes 06:30-08:00)
   if (w === 0) {
     const amD = encapsMananaDe(iso);
     const hD = amD?.domingoPlanHoras ?? null;
     const recD = encapsRecuperaDe(iso);
+    const trD: [string, string][] = hD ? hD.manana : [['07:15', '12:00']];
     const bsD = [...(amD ? [
-      bloque('encaps-am', hD ? hD.manana[0] : '07:15', hD ? hD.manana[1] : '12:00', `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', amD.domingoPlan),
+      ...trD.map(([a, z], i) => bloque(i === 0 ? 'encaps-am' : `encaps-am${i + 1}`, a, z, trD.length > 1
+        ? `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN · tramo ${i + 1}/${trD.length} (${hD?.que[i] ?? ''})`
+        : `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', i === 0 ? amD.domingoPlan : undefined)),
       hD ? bloque('encaps-pm', hD.tarde[0], hD.tarde[1], 'ENCAPS · cifras, normas y flashcards (hora fija: al terminar la mañana)', 'encaps', 'encaps')
         : bloque('encaps-pm', null, null, 'ENCAPS · cifras, normas y flashcards (flexible: a las 17:00 está el baile)', 'encaps', 'encaps', undefined, 45, 'flexible · 45′'),
     ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...extrasDomingo(iso)];
     const notasD = ["Anki ≤15' opcional (no se registra)."];
-    if (amD) notasD.unshift(hD
-      ? `Domingo de plan, a hora fija: la mañana ENCAPS ${amD.n}/${amD.de} (${hD.manana[0]}-${hD.manana[1]}) y sus cifras, normas y flashcards (${hD.tarde[0]}-${hD.tarde[1]}) son obligatorias; entre semana ya no cabían.${hD.compromiso ? ` Quedan ${aMin(hD.compromiso) - aMin(hD.tarde[1])}′ de margen antes del compromiso personal de las ${hD.compromiso};` : ''} nada de estudio después de las 17:00 (baile).`
+    const trTxt = trD.map(([a, z]) => `${a}-${z}`).join(' y ');
+    // v6.09 (fix 2): la nota del domingo de plan va PRIMERA (empieza a las 04:15 como entre semana), antes de la de los bloques flexibles
+    const notaPlanD = !amD ? null : (hD
+      ? `Domingo de plan, a hora fija${trD.length > 1 ? `: empieza a las ${trD[0][0]} como entre semana (la rutina de ${trD[0][1]}-${trD[1][0]} no se toca). La mañana ENCAPS ${amD.n}/${amD.de} va en ${trD.length} tramos (${trD.map(([a, z], i) => `${a}-${z}: ${hD.que[i] ?? ''}`).join(' · ')})` : `: la mañana ENCAPS ${amD.n}/${amD.de} (${trTxt})`} y sus cifras, normas y flashcards (${hD.tarde[0]}-${hD.tarde[1]}) son obligatorias; entre semana ya no cabían.${hD.compromiso ? ` Quedan ${aMin(hD.compromiso) - aMin(hD.tarde[1])}′ de margen antes del compromiso personal de las ${hD.compromiso};` : ''} nada de estudio después de las 17:00 (baile).`
       : `Domingo de plan: la mañana ENCAPS ${amD.n}/${amD.de} (07:15-12:00) es obligatoria; entre semana ya no cabía. Sus cifras, normas y flashcards (45′), cuando puedas: al volver del baile o en un hueco antes de las 17:00.`);
     if (recD) notasD.unshift(`Hoy ${recD.ini}-${recD.fin}, FIJO: ENCAPS de recuperación del viaje (${recD.tema.charAt(0).toLowerCase()}${recD.tema.slice(1)}). El resto del domingo es flexible.`);
     const shipObligatorio = bsD.some((b) => b.id === 'pc') && vibePCDomingo(iso).some((x) => x.tipo === 'ship' || x.tipo === 'avance');
     if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
+    if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${hD ? `${hD.manana[0]}-${hD.manana[1]}` : '07:15-12:00'})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
+    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS opcional ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre';
     const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
