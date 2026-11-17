@@ -32,6 +32,10 @@
  * v6.09b · lote 1-bis (17-nov-2026, auditoría a2-9; SOLO F1 y la transición, ≤ LOTE1_HASTA): el atlas DermNet del plan B lleva su MEDIDA (DERMNET_MEDIDO de
  *  dermaGuiaDatos.ts: alcance por secciones + palabras + imágenes → minutos = palabras/120 + 0,25′/imagen); lo que no usa de sus 8′ pasa al proyecto Claude
  *  (con su nº de viñetas) y, si necesita más, sale del proyecto Claude (que nunca queda < 3′). 2027 sigue «sin medir» (otro lote).
+ * v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8; SOLO F1, ≤ LOTE1_HASTA): DERMNET_MEDIDO por FECHA a la regla fija
+ *  (palabras/100 + 0,25′/imagen; antes /120) con el alcance de antes del 1-bis (todas las imágenes + clínica + diferencial o su sustituto): `pasoDermnetMedido`.
+ *  El proyecto Claude es la variable de ajuste: 0′ (sin paso) o k = round(min/5) viñetas con sus minutos reales por viñeta. Lo que no es del alcance «no forma
+ *  parte del átomo» (ya no «no hoy»); lo del átomo que no cabe (vie 4-dic: 2 secciones de psoriasis) pasa al jue 10-dic con su fecha al principio del «cómo».
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -126,6 +130,37 @@ function bbAparicion(fecha: string): { n: number; primera: string } | null {
 }
 /** Unused de un System de uWorld de Dermatology que el reparto del plan B NO usa en ninguna sesión (stock − lo repartido). */
 const uwSobranteDelPlan = (uw: number): number => { let usado = 0; for (const a of dermaUwAsignacion().values()) if (a.uw === uw) usado += a.toma; return Math.max(0, (UW_DERM[uw]?.q ?? 0) - usado); };
+
+// ── v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8): paso DermNet de F1 MEDIDO por fecha ──────────────────────
+const dec = (x: number): string => String(x).replace('.', ',');
+/** Minutos con 1 decimal y coma, sin «,0» (5 → «5», 4.6 → «4,6»). */
+const dec1 = (x: number): string => dec(Math.round(x * 10) / 10);
+type DermnetMedido = NonNullable<(typeof DERMNET_MEDIDO)[string]>;
+/** Paso «DermNet · atlas del átomo» con su medida (palabras/100 + 0,25′/imagen), el alcance de la guía anterior al lote 1-bis (todas las imágenes + clínica +
+ *  diferencial o su sustituto), lo que no es del átomo dicho como tal (nunca «no hoy») y lo del átomo que no cabe con su FECHA al principio del «cómo». */
+function pasoDermnetMedido(dn: DermnetMedido, atlasUrl: string): GuiaPaso {
+  const varias = dn.lecturas.length > 1;
+  const lista = (ts: string[]) => ts.map((t) => `«${t}»`).join(' + ');
+  const otras = dn.lecturas.filter((l) => l.pag !== dn.atlas);
+  const cab = `DermNet · atlas del átomo (${atlasUrl.replace(`${DERMNET}/`, '')})${otras.length ? ` + ${otras.length === 1 && otras[0]!.de ? `${otras[0]!.pag} del ${fdc(otras[0]!.de)}` : `${otras.length} de sus enlaces`}` : ''}`;
+  const que = `${cab} · ${dn.min}′ = ${dn.palabras} palabras${dn.imagenes ? ` + ${dn.imagenes} imágenes` : ''} (${dec(dn.necesario)}′ medidos) — ${varias
+    ? dn.lecturas.map((l) => `${l.pag}${l.de ? ` (del ${fdc(l.de)}, no cupo ese día: ${dec(Math.round((l.palabras / 100 + 0.25 * l.imagenes) * 100) / 100)}′)` : ''}: ${lista(l.texto)}`).join(' · ')
+    : lista(dn.lecturas[0]!.texto)}`;
+  const otro = dn.aOtroDia;
+  const pasa = otro ? `Pasa al ${fdc(otro.fecha)} 13:30 (su paso DermNet, ${dec(otro.necesario)}′): ${lista(otro.texto)}${otro.imagenes ? ` con sus ${otro.imagenes} imágenes` : ''} · ` : '';
+  const soloImg = dn.lecturas.flatMap((l) => l.soloImagenes ?? []);
+  const todasAtlas = !otro && !varias;
+  const imgs = dn.imagenes ? `Primero las ${dn.imagenes} imágenes${todasAtlas ? ' de la página' : ''}${soloImg.length ? ` —también las de ${lista(soloImg)}, sin su texto—` : ''} (tapa el pie y describe; 0,25′ cada una), después ` : '';
+  const propias = dn.lecturas.filter((l) => !l.de).length;
+  const fuera = dn.fuera.palabras > 0
+    ? `el resto de ${propias > 1 ? 'esas páginas' : 'la página'} (${dn.fuera.palabras} palabras: ${dn.fuera.temas.join(', ')}) no forma parte del átomo: el atlas es imagen + clínica + diferencial.`
+    : 'la página entera: no queda nada fuera.';
+  return {
+    min: dn.min, que,
+    como: `${pasa}${imgs}esas secciones a 100 palabras/min (medido el 17-nov-2026: ${dn.palabras}/100 + ${dn.imagenes} × 0,25′ = ${dec(dn.necesario)}′)${dn.motivo ? ` · ${dn.motivo}` : ''} · ${fuera}`,
+    enlace: { t: 'DermNet · atlas del átomo', url: atlasUrl },
+  };
+}
 
 /** Afinidad átomo → B&B (vídeo) · uWorld (System) · ProMIR Dermatología (capítulo). Por palabras del `sub`; si no, por bloque. */
 interface Afin { bb?: number; uw?: number; pmd?: number }
@@ -355,22 +390,28 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
     pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al proyecto Claude)' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
   }
-  // v6.09b · lote 1-bis (a2-9): en F1 el atlas lleva su medida (alcance + palabras + imágenes → minutos); 2027 sigue «sin medir» (otro lote)
-  const dn = !corto && dia.fecha <= LOTE1_HASTA && dia.atlasUrl && dia.atlasUrl.startsWith(`${DERMNET}/topics/`) ? DERMNET_MEDIDO[dia.atlasUrl.replace(`${DERMNET}/topics/`, '')] : undefined;
-  if (dn && dia.atlasUrl) pasos.push({ min: dn.min, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — ${dn.alcance.map((t) => `«${t}»`).join(' + ')} (${dn.palabras} palabras${dn.imagenes ? ` + ${dn.imagenes} imágenes` : '; la página no tiene imágenes'}) → ${dn.min}′`, como: `${dn.imagenes ? `Primero las ${dn.imagenes} imágenes de esas secciones (tapa el pie y describe; ≈15 s cada una), después ` : ''}esas secciones a ~120 palabras/min (medido el 17-nov-2026: ${dn.palabras}/120 + ${dn.imagenes} × 0,25′ = ${String(dn.necesario).replace('.', ',')}′)${dn.motivo ? ` · ${dn.motivo}` : ''} · el resto de la página (${dn.pagina.palabras} palabras en total), no hoy.`, enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
+  // v6.09b · lote 1-bis (a2-9) → lote 1-ter (revisión R, hallazgos 4 · 5 · 8): en F1 el atlas lleva su medida POR FECHA (DERMNET_MEDIDO: lecturas + palabras +
+  //   imágenes → minutos = palabras/100 + 0,25′/imagen); lo que no es del alcance «no forma parte del átomo» y lo del átomo que no cabe va a su fecha con sus
+  //   minutos; 2027 sigue «sin medir» (otro lote)
+  const dnF = !corto && dia.fecha <= LOTE1_HASTA && dia.atlasUrl && dia.atlasUrl.startsWith(`${DERMNET}/topics/`) ? DERMNET_MEDIDO[dia.fecha] : undefined;
+  const dn = dnF && dia.atlasUrl && dnF.atlas === dia.atlasUrl.replace(`${DERMNET}/topics/`, '') ? dnF : undefined;
+  if (dn && dia.atlasUrl) pasos.push(pasoDermnetMedido(dn, dia.atlasUrl));
   else if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) pasos.push({ min: corto ? 6 : 8, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — sin medir`, como: 'Primero las imágenes (tapa el pie y describe), después «clinical features» y «differential diagnosis» · ~120 palabras/min.', enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
   else if (!corto && a.pmd && a.pmd !== cap?.n) { const c = PROMIR_DERMA_CAPS[a.pmd - 1]!; pasos.push({ min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. ${c.n} «${c.t}» — la sección del átomo de hoy (sin medir)`, como: 'Solo el apartado del átomo · Whole Page Rule · ritmo de referencia 180 palabras/min.', enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }); }
-  pasos.push({ min: 0, que: 'Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · casos de texto del átomo', como: `Pídele: «Dame viñetas de ${dia.sub.split(/[:(—·]/)[0].trim()} de mis libros SIN diagnóstico; yo describo (8 ejes), doy diferencial de 3 y diagnóstico; corrígeme citando libro y página». Cada fallo → tarjeta de MECANISMO.`, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL } });
+  // con el atlas medido, el proyecto Claude es la variable de ajuste: si el atlas se lleva toda la franja (4 y 8-dic), hoy no hay viñetas
+  const conClaude = !dn || pasos.reduce((s, p) => s + p.min, 0) + 2 < total;
+  if (conClaude) pasos.push({ min: 0, que: 'Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · casos de texto del átomo', como: `Pídele: «Dame viñetas de ${dia.sub.split(/[:(—·]/)[0].trim()} de mis libros SIN diagnóstico; yo describo (8 ejes), doy diferencial de 3 y diagnóstico; corrígeme citando libro y página». Cada fallo → tarjeta de MECANISMO.`, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL } });
   pasos.push(cierrePaso(2));
   let p2 = cuadrar(pasos, total);
-  // si el relleno quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar
+  // si el relleno quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar (no con el atlas medido de F1: ahí cuadra por medida)
   const rell = p2.find((p) => p.que.startsWith('Proyecto Claude'));
-  if (rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
-  // v6.09b · lote 1-bis: con el atlas medido (F1), el proyecto Claude dice cuántas viñetas caben en sus minutos (≈5′ cada una: 8 ejes + diferencial + corrección)
-  if (dn) p2 = p2.map((p) => { if (!p.que.startsWith('Proyecto Claude')) return p; const n = Math.max(1, Math.round(p.min / 5)); return { ...p, que: `${p.que} · hoy ${p.min}′ ≈ ${n} viñeta${n === 1 ? '' : 's'} (≈5′ cada una)` }; });
-  const recursos: GuiaRecurso[] = [{ t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL }, { t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
+  if (!dn && rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
+  // v6.09b · lote 1-ter (hallazgo 8): con el atlas medido (F1), el proyecto Claude dice cuántas viñetas caben (k = round(min/5)) y los minutos REALES de cada una
+  if (dn) p2 = p2.map((p) => { if (!p.que.startsWith('Proyecto Claude')) return p; const n = Math.max(1, Math.round(p.min / 5)); return { ...p, que: `${p.que} · hoy ${p.min}′ ≈ ${n} viñeta${n === 1 ? '' : 's'} (≈${dec1(p.min / n)}′ cada una)` }; });
+  const recursos: GuiaRecurso[] = [...(conClaude ? [{ t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL }] : []), { t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
   if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: ap && ap.n >= 2 ? bb2aMin(a.bb) : bbMinReserva(a.bb, dia.fecha) });
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) recursos.push({ t: 'DermNet · atlas del átomo', url: dia.atlasUrl });
+  if (dn) for (const l of dn.lecturas) if (l.pag !== dn.atlas) recursos.push({ t: `DermNet · ${l.pag}${l.de ? ` (del ${fdc(l.de)})` : ''}`, url: l.url });
   const ids = dia.casoIds;
   return {
     franja: franjaDe(ini, total), plan: 'research-derma', titulo: `DERMA d${dia.d} · ${dia.sub.slice(0, 80)} — PLAN B (AccessDerma caducado)`, totalMin: total, pasos: p2, recursos,

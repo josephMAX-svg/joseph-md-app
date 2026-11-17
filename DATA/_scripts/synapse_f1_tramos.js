@@ -14,12 +14,31 @@
 //    F1, el hueco de Lex, las sesiones de 2027 que ya lo prevén (lun 4-ene Pro Git «sigue donde quedaste», mar 5-ene Sholto tramo 4/4, vie 8-ene «termina
 //    los tramos pendientes») y, el resto, la COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027 (tras el examen del lun 6-dic). Cada sesión dice adónde
 //    va su resto, con fecha.
+// v6.09b · lote 1-ter S3 (mar 17-nov-2026 · revisión R del lote 1-bis, hallazgos 1, 5 y 9):
+//  · (1) la COLA POST-STEP 1 ya tiene FRANJA REAL: un bloque SYNAPSE 04:15-04:45 L-V (COLA_INI; en F5 el bloque A 04:05 del Step 1 ya no existe y a esa hora
+//    no hay turno del SERUMS: M 07:00-13:00 · T 13:00-19:00) en cada fecha de la cola (plantillasV6 › bloqueSynCola, rutinaGuia › guiaSynapseColaDe). Cada
+//    día lleva sus PASOS con minutos enteros que suman la franja (30′; el último día, lo que haya) y cada paso con necesario/asignado ∈ [0,85; 1,15]:
+//    las piezas < 3,5′ van en el mismo paso que su vecina y el generador ABORTA si algo queda fuera. Feriados (FERIADOS_V6) también fuera de la cola.
+//  · (1, mínimo) el final del deep dive (min 50:00-1:16:42 a 1,0×, 26:42 = 26,7′) ya no va a 2027-2028: F1_EXTRA = sáb 26-dic 07:15-07:42 (ventana de
+//    estudio del sábado 04:15-08:25, entre la rutina de la mañana y el gimnasio; hueco real: ese sábado no hay nada entre 05:45 y 14:00). El vie 8-ene
+//    «termina los tramos pendientes» sigue con lo siguiente del canal, a la velocidad de su serie.
+//  · (9) SÁBADO: el A medido lleva sus minutos reales (redondeados) y el C del comodín baja/sube lo mismo (A + B + C = 30′): el bloque termina a las 21:30,
+//    antes del Anki (sáb 12, 19 y 26-dic: A 17′ · C 3′; lo que el C no lee sigue en la cola de lectura, con fecha).
+//  · (5) toda FECHA DE DESTINO va al principio del «cómo» (≤ 100 caracteres: el volcado del Calendar corta el «cómo» en 110): «Resto → …», «Sigue → …»,
+//    «Lo que queda → …». Ninguna fecha futura después del carácter 100 del «cómo» ni del 140 del «qué» (el generador ABORTA si la hay).
 'use strict';
 const fs = require('fs');
 const path = require('path');
 
 const DESDE = '2026-11-18', HASTA = '2027-01-03', COLA_DESDE = '2027-12-13', COLA_MIN = 30;
+/** v6.09b lote 1-ter: hora del bloque de la cola post-Step 1 (F5, L-V). */
+const COLA_INI = '04:15';
+/** v6.09b lote 1-ter: huecos REALES de F1 (con hora) para lo que no cabe en los comodines del sábado (hallazgo 1 de R: el final del deep dive). */
+const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:15', id: 'deepDivePE' }];
 const VEL = 1.5, PPM = 100, OBJ = 500, MIN_W = 425, MAX_W = 575;
+const RAT = [0.85, 1.15];
+/** corte del volcado del Calendar (lib_txt.js: «qué» 150 · «cómo» 110) con margen: una fecha de destino nunca después de estos caracteres */
+const CORTE_QUE = 140, CORTE_COMO = 100;
 // curaduría del lote 1 que sigue mandando (rutinaGuia SYN_SERIES): el episodio de Greg Brockman (No Priors) del dom 22 al lun 30-nov
 const RESERVADO_B = new Set(['2026-11-22', '2026-11-23', '2026-11-28', '2026-11-30']);
 // ya hecho el mar 17-nov (en curso): Dwarkesh × Dario 0:00-10:00 a 1,0× · «Prompt injection attacks against GPT-3» las primeras ≈500
@@ -34,6 +53,18 @@ const ts = (s) => { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.
 const r10 = (n) => Math.round(n / 10) * 10;
 const fmt1 = (n) => (Math.round(n * 10) / 10).toFixed(1).replace('.', ',');
 const velTxt = (v) => (v === 1 ? '1,0' : String(v).replace('.', ','));
+const aMinH = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+const aHH = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+/** fechas (con o sin día de la semana) de un texto → ISO (año: el escrito, o el de F1: jul-dic = 2026, ene-jun = 2027) */
+const FECHA_RE = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
+function fechasEn(s) {
+  const out = [];
+  for (const m of String(s).matchAll(FECHA_RE)) {
+    const mes = MES.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027;
+    out.push({ iso: `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}`, fin: m.index + m[0].length, txt: m[0] });
+  }
+  return out;
+}
 
 function crear(MED, ctx) {
   // ── lecturas aplanadas a párrafos ──
@@ -73,9 +104,11 @@ function crear(MED, ctx) {
 
   // ── colas: audio (B) y lectura (C: artículos primero, después capítulos), por fecha de origen ──
   const colaB = [], colaC = [];
-  const destinos = new Map(); // clave del resto → [{fecha, txt}]
-  const addDest = (k, fecha, txt) => { if (!destinos.has(k)) destinos.set(k, []); destinos.get(k).push({ fecha, txt }); };
+  const destinos = new Map(); // clave del resto → [{fecha, hora, det}]
+  const addDest = (k, fecha, det, hora) => { if (!destinos.has(k)) destinos.set(k, []); destinos.get(k).push({ fecha, hora: hora || null, det }); };
   const AUD = MED.audio;
+  /** hora de la sesión de destino que conviene escribir (las de hora no habitual): comodín del sábado 21:00 · el resto, la franja de su día */
+  const horaSes = (f) => (dowOf(f) === 6 ? '21:00' : null);
   /** consume `seg` segundos de audio (de reloj, a la velocidad de cada pieza) de la cola B; minutos de audio ENTEROS */
   function tomarB(segReloj, fecha, filtro = () => true) {
     const piezas = [];
@@ -87,7 +120,7 @@ function crear(MED, ctx) {
       if (cabe <= 0) break;
       const fin = Math.min(it.b, it.a + cabe);
       piezas.push({ it, a: it.a, b: fin });
-      addDest(it.k, fecha, `${fC(fecha)} (min ${ts(it.a)}-${ts(fin)})`);
+      addDest(it.k, fecha, `${ts(it.a)}-${ts(fin)}`, horaSes(fecha));
       resto -= (fin - it.a) / it.vel;
       it.a = fin;
       if (it.a >= it.b - 1) colaB.splice(colaB.indexOf(it), 1);
@@ -104,7 +137,7 @@ function crear(MED, ctx) {
       const v = quedan <= falta * 1.15 ? { a: it.a, b: it.b, w: quedan } : ventana(it.L, it.a, falta, it.b);
       if (v.b <= v.a) break;
       piezas.push({ it, a: v.a, b: v.b, w: v.w });
-      addDest(it.k, fecha, `${fC(fecha)} (≈${r10(v.w)} palabras)`);
+      addDest(it.k, fecha, `≈${r10(v.w)} palabras`, horaSes(fecha));
       falta -= v.w;
       it.a = v.b;
       if (it.a >= it.b) colaC.shift();
@@ -115,14 +148,13 @@ function crear(MED, ctx) {
   // ── estado de las series ──
   const posA = {}, posL = {};
   const keyRes = (id) => `${id}#resto`;
-  const res = { sesiones: new Map() }; // fecha|tag → {leccion, guia, med}
+  const res = { sesiones: new Map() }; // fecha|tag → {leccion, guia, med, min?}
   const out = (fecha, tag, o) => res.sesiones.set(`${fecha}|${tag}`, o);
   const audioIdDeCanal = (lec) => /AI prompt engineering: A deep dive/.test(lec) ? 'deepDivePE' : /Tips for building AI agents/.test(lec) ? 'tips' : /Building Anthropic/.test(lec) ? 'building' : /How difficult is AI alignment/.test(lec) ? 'alignment' : /Interpretability/.test(lec) ? 'interp' : null;
   const prevSes = {}; // id → fecha de la última sesión (para «retoma donde paraste el …»)
-  const retoma = (id, defecto) => (prevSes[id] ? `Retoma donde paraste el ${fC(prevSes[id])}.` : defecto || '');
 
   // pendientes que crean las sesiones de F1 y que solo se resuelven al final (texto con fechas)
-  const pendTxt = []; // {fecha, tag, build: () => {leccion, guia}}
+  const pendTxt = []; // {fecha, tag, resto?, restoTxt?, piezas?, base}
 
   const enF1 = (f) => f >= DESDE && f <= HASTA;
   const dias = ctx.dias;
@@ -141,20 +173,25 @@ function crear(MED, ctx) {
     for (const x of c.slice(1)) if (Math.abs(x.r - 1) + 0.05 < Math.abs(pick.r - 1)) pick = x;
     return { v: pick.v, pausa: false, min: d / pick.v };
   }
-  function bloqueA(dia, b) {
-    let seg = null, a = 0, url = b.url, rango = '';
+  /** `sab` (v6.09b lote 1-ter, hallazgo 9): el sábado el A lleva sus minutos reales y el C del comodín compensa → devuelve los minutos del A */
+  function bloqueA(dia, b, sab) {
+    let seg = null, a = 0, rango = '';
     if (/^Karpathy — \[1hr Talk\]/.test(b.material)) { const k = Number((/Part (\d)/.exec(b.leccion) || [])[1]); a = kiCortes[k - 1]; seg = kiCortes[k] - a; rango = `${ts(a)} → ${ts(kiCortes[k])}`; }
     else if (/^Karpathy — Deep Dive/.test(b.material)) { const k = Number((/Tramo (\d+)\/11/.exec(b.leccion) || [])[1]); a = ddCortes[k - 1]; seg = ddCortes[k] - a; rango = `${ts(a)} → ${ts(ddCortes[k])}`; }
     else if (/^3Blue1Brown/.test(b.material) && b.dur && !/mitad/.test(b.leccion)) { const m = /^(\d+):(\d+)/.exec(b.dur); if (m) { seg = Number(m[1]) * 60 + Number(m[2]); rango = `0:00 → ${m[1]}:${m[2]}`; } }
-    if (seg == null) return;
+    if (seg == null) return b.min;
     const v = velDe(seg);
     const minTxt = Math.round(v.min);
+    const asig = sab ? Math.round(v.min) : b.min;
     const auditTxt = b.audit ? ' F0 = auditoría: si ya lo viste, márcalo ✓ y adelanta la siguiente pendiente.' : '';
     const como = v.pausa
-      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′, cabe entero en los 15′.${auditTxt}`
-      : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${v.min > 15.5 ? `, ${fmt1(v.min - 15)}′ más que la franja: dentro del margen del plan (±15 %), termínalo` : ', caben en los 15′'}. Anota 1 idea en el journal.${auditTxt}`;
+      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′, cabe entero en los ${asig}′.${auditTxt}`
+      : sab && asig !== b.min
+        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 21:30 (antes del Anki; nada después de las 22:00). Anota 1 idea en el journal.${auditTxt}`
+        : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${v.min > asig + 0.5 ? `, ${fmt1(v.min - asig)}′ más que la franja: dentro del margen del plan (±15 %), termínalo` : `, caben en los ${asig}′`}. Anota 1 idea en el journal.${auditTxt}`;
     const que = `${b.material} › ${b.leccion} → ${rango} (${ts(seg)} de vídeo) a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′`;
-    out(dia.fecha, 'A', { leccion: `${b.leccion} → ${ts(seg)} de vídeo a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′ (medido el 17-nov)`, dur: `${ts(seg)} (a ${velTxt(v.v)}× = ${minTxt}′)`, guia: { que, como, url: b.url, t: 'A ↗' }, med: v.min });
+    out(dia.fecha, 'A', { leccion: `${b.leccion} → ${ts(seg)} de vídeo a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′ (medido el 17-nov)`, dur: `${ts(seg)} (a ${velTxt(v.v)}× = ${minTxt}′)`, guia: { que, como, url: b.url, t: 'A ↗' }, med: v.min, ...(asig !== b.min ? { min: asig } : {}) });
+    return asig;
   }
 
   // ── B ──
@@ -220,12 +257,12 @@ function crear(MED, ctx) {
     // ¿sigue la serie en su carril? (siguiente aparición del mismo recurso en F1 o en 2027)
     const sig = siguienteMismo(idx, 'B', new RegExp('^' + m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     const sigMismo = sig && (id !== 'deepDivePE' ? (audioIdDeCanal(sig.b.leccion) === id || /^Dwarkesh/.test(m)) : audioIdDeCanal(sig.b.leccion) === id);
-    let it = null, extra2027 = '';
+    let it = null, pre2027 = '';
     const ultimaF1 = !(sigMismo && enF1(sig.dia.fecha));
     if (ultimaF1) {
       if (id === 'sholto' && sig && sig.dia.fecha <= '2027-01-31') {
         // mar 5-ene: «Tramo 4/4 (10')… Exactamente 10′ desde donde quedaste» a 1,0× → 10 min de audio
-        const a5 = posA.sholto, b5 = Math.min(A.seg, a5 + 600); posA.sholto = b5; extra2027 = ` El tramo 4/4 es el ${fC(sig.dia.fecha)}: min ${ts(a5)}-${ts(b5)} a 1,0× (10′, «desde donde quedaste»).`;
+        const a5 = posA.sholto, b5 = Math.min(A.seg, a5 + 600); posA.sholto = b5; pre2027 = `Tramo 4/4 → ${fC(sig.dia.fecha)} (min ${ts(a5)}-${ts(b5)}, 1,0×). `;
         addDest(keyRes(id) + '#5ene', sig.dia.fecha, 'x');
       }
       it = restoAudio(id, f, vel, carril);
@@ -234,10 +271,10 @@ function crear(MED, ctx) {
     const que = `${A.titulo} (${ts(A.seg)}) → ${id === 'deepDivePE' ? 'minutos' : 'min'} ${ts(a)}-${ts(fin)}${tramoTxt ? ` (${tramoTxt})` : ''}${fin >= A.seg - 1 ? ' (final)' : ''}`;
     const comoBase = `Auriculares, ${velTxt(vel)}×${vel === 1 ? ' con subtítulos en inglés' : ''}: ${ts(fin - a)} de audio = ${fmt1((fin - a) / vel / 60)}′${capsTxt(id, a, fin) ? ` (capítulos: ${capsTxt(id, a, fin)})` : ''}. ${prev ? `Retoma donde paraste el ${fC(prev)}.` : 'Empieza en 0:00.'}`;
     const head = /^Canal Anthropic/.test(m) ? `${(/^"[^"]+"/.exec(b.leccion) || [''])[0]} — tramo ${Math.floor(a / (600 * vel)) + 1}` : tramoTxt ? `${tramoTxt[0].toUpperCase()}${tramoTxt.slice(1)}` : '';
-    const base = { leccion: `${head ? `${head}: ` : ''}min ${ts(a)}-${ts(fin)} de ${ts(A.seg)} a ${velTxt(vel)}× (10′)`, guia: { que, como: comoBase + extra2027, url: A.url + (/youtube/.test(A.url) && a ? `&t=${a}s` : ''), t: 'B ↗' }, med: (fin - a) / vel / 60 };
-    if (it) pendTxt.push({ fecha: f, tag: 'B', resto: it.k, restoTxt: `min ${ts(it.a)}-${ts(it.b)}: ${ts(it.b - it.a)} de audio = ${fmt1((it.b - it.a) / vel / 60)}′ a ${velTxt(vel)}×`, base });
-    else if (sigMismo) { base.guia.como += ` Sigue el ${fC(sig.dia.fecha)}.`; out(f, 'B', base); }
-    else out(f, 'B', base);
+    const base = { leccion: `${head ? `${head}: ` : ''}min ${ts(a)}-${ts(fin)} de ${ts(A.seg)} a ${velTxt(vel)}× (10′)`, guia: { que, como: comoBase, url: A.url + (/youtube/.test(A.url) && a ? `&t=${a}s` : ''), t: 'B ↗' }, med: (fin - a) / vel / 60 };
+    if (it) pendTxt.push({ fecha: f, tag: 'B', resto: it.k, restoTxt: `min ${ts(it.a)}-${ts(it.b)} = ${fmt1((it.b - it.a) / vel / 60)}′ a ${velTxt(vel)}×`, base, pre: pre2027 });
+    else if (sigMismo) { base.guia.como = `Sigue → ${fC(sig.dia.fecha)}. ${base.guia.como}`; out(f, 'B', base); }
+    else { base.guia.como = pre2027 + base.guia.como; out(f, 'B', base); }
   }
 
   // ── C ──
@@ -260,20 +297,22 @@ function crear(MED, ctx) {
     for (let si = L.flat[a].si; si >= 0; si--) { const mm = /^(\d+\.\d+) (?:.* - )?(.*)$/.exec(L.secciones[si].t); if (mm) return `Pro Git › ${mm[1]} «${mm[2]}» (${L.titulo.replace(/^Pro Git › /, '')})`; }
     return L.titulo;
   };
-  function lecturaTxt(id, v, extraComo = '', prev) {
+  function lecturaTxt(id, v, extraComo = '', prev, minC = 5) {
     const L = LEC[id];
     return {
       que: `${tituloDe(L, v.a)} → ${loc(L, v.a, v.b)} (≈${r10(v.w)} palabras)`,
-      como: `5′ a 100 palabras/min (${v.w} palabras ≈ ${fmt1(v.w / PPM)}′).${prev ? ` Retoma donde quedaste el ${fC(prev)}.` : ''}${extraComo}`,
+      como: `${minC}′ a 100 palabras/min (${v.w} palabras ≈ ${fmt1(v.w / PPM)}′).${prev ? ` Retoma donde quedaste el ${fC(prev)}.` : ''}${extraComo}`,
       url: urlSec(L, L.flat[v.a].si),
     };
   }
-  function bloqueC(idx, dia, b) {
+  /** `minC`: minutos del C de hoy (5; el sábado, lo que deje el A medido) */
+  function bloqueC(idx, dia, b, minC = 5) {
     const f = dia.fecha, m = b.material;
+    const minO = minC !== b.min ? { min: minC } : {};
     if (/^Simon Willison — serie Prompt injection/.test(m)) {
       // serie de Willison en orden (martes y el vie 18-dic): «Prompt injection attacks…» ya va por la palabra ≈500 (mar 17-nov)
       if (serieW.a == null) { serieW = { i: 0, a: LEC.pi1.flat.findIndex((_, k) => sumW(LEC.pi1, 0, k + 1) >= HECHO_17.pi1) + 1 }; prevSes.pi1 = '2026-11-17'; }
-      const piezas = []; let falta = OBJ;
+      const piezas = []; let falta = minC * PPM;
       while (falta > 60 && serieW.i < SERIE_W.length) {
         const L = LEC[SERIE_W[serieW.i]];
         const quedan = sumW(L, serieW.a, L.flat.length);
@@ -294,27 +333,30 @@ function crear(MED, ctx) {
       const sigW = siguienteMismo(idx, 'C', /^Simon Willison — serie Prompt injection/);
       const enCurso = serieW.i < SERIE_W.length && serieW.a > 0 ? LEC[SERIE_W[serieW.i]] : null;
       const tail = colaC.find((x) => x.serie && x.origen && x.id === piezas[piezas.length - 1].id);
-      const sigTxt = tail ? ` El ${sigW ? fC(sigW.dia.fecha) : 'próximo martes'} empieza el siguiente artículo de la serie.`
-        : enCurso ? ` Sigue el ${sigW ? fC(sigW.dia.fecha) : 'próximo martes'} con el resto de este artículo${sigW && !enF1(sigW.dia.fecha) ? ' (antes de «el siguiente artículo de la serie»)' : ''}.` : sigW ? ` El ${fC(sigW.dia.fecha)}, el siguiente artículo de la serie.` : '';
+      // v6.09b lote 1-ter (hallazgo 5): el destino, al principio del «cómo»
+      const sigF = sigW ? fC(sigW.dia.fecha) : 'el próximo martes';
+      const sigTxt = tail ? `Siguiente artículo de la serie → ${sigF}. `
+        : enCurso ? `Sigue → ${sigF}, con el resto de este artículo${sigW && !enF1(sigW.dia.fecha) ? ' (antes de «el siguiente artículo de la serie»)' : ''}. ` : sigW ? `Siguiente artículo de la serie → ${sigF}. ` : '';
       const base = { leccion: piezas.map((p) => `${LEC[p.id].titulo.replace(/^Simon Willison · /, '')} ${loc(LEC[p.id], p.v.a, p.v.b)}`).join(' + ') + ` (≈${r10(w)} palabras)${recC(b)}`,
-        guia: { que: `Simon Willison · serie Prompt injection: ${partes.map((x) => x.que.replace(/^Simon Willison · /, '')).join(' + ')}`, como: `5′ a 100 palabras/min (${w} palabras ≈ ${fmt1(w / PPM)}′).${prev ? ` Retoma donde quedaste el ${fC(prev)}.` : ''}${sigTxt}`, url: partes[0].url, t: 'C ↗' }, med: w / PPM };
+        guia: { que: `Simon Willison · serie Prompt injection: ${partes.map((x) => x.que.replace(/^Simon Willison · /, '')).join(' + ')}`, como: `${sigTxt}${minC}′ a 100 palabras/min (${w} palabras ≈ ${fmt1(w / PPM)}′).${prev ? ` Retoma donde quedaste el ${fC(prev)}.` : ''}`, url: partes[0].url, t: 'C ↗' }, med: w / PPM, ...minO };
       if (tail) pendTxt.push({ fecha: f, tag: 'C', resto: tail.k, restoTxt: `≈${r10(sumW(tail.L, tail.a, tail.b))} palabras`, base, soloDest: true });
       else out(f, 'C', base);
       return;
     }
     if (/^Comodín de lectura/.test(m)) {
-      const t = tomarC(OBJ, f);
+      const t = tomarC(minC * PPM, f);
       if (!t.piezas.length) return;
       const que = 'Comodín de lectura · ' + t.piezas.map((p) => `${tituloDe(p.it.L, p.a)} → ${loc(p.it.L, p.a, p.b)} (≈${r10(p.w)} palabras)`).join(' + ');
-      const como = `5′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = fC(prevSes[p.it.id] || p.it.origen); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste el ${pv}).` : `Retoma donde quedaste el ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).';
-      pendTxt.push({ fecha: f, tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM } });
+      const sabTxt = minC !== b.min ? ` Sábado: hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′); lo que no leas sigue en la cola de lectura.` : '';
+      const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = fC(prevSes[p.it.id] || p.it.origen); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste el ${pv}).` : `Retoma donde quedaste el ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
+      pendTxt.push({ fecha: f, tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM, ...minO } });
       return;
     }
     const id = CAP_DE(b);
     if (!id || !LEC[id]) return;
     const L = LEC[id];
     const a = posL[id] ?? 0;
-    const v = ventana(L, a);
+    const v = ventana(L, a, minC * PPM);
     posL[id] = v.b;
     const prev = prevSes[id];
     prevSes[id] = f;
@@ -322,16 +364,17 @@ function crear(MED, ctx) {
     // ¿la siguiente sesión de su carril es el MISMO capítulo? (Pro Git: 2 lunes por capítulo; el cap. 6 sigue el lun 4-ene)
     const sig = siguienteMismo(idx, 'C', new RegExp('^' + m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     const sigMismo = sig && CAP_DE(sig.b) === id;
-    let extra2027 = '';
+    let pre2027 = '', post2027 = '';
     if (sigMismo && !enF1(sig.dia.fecha)) {
       const v2 = ventana(L, posL[id]); posL[id] = v2.b;
-      extra2027 = ` Sigue el ${fC(sig.dia.fecha)} (≈${r10(v2.w)} palabras: ${loc(L, v2.a, v2.b)}).`;
+      pre2027 = `Sigue → ${fC(sig.dia.fecha)} (≈${r10(v2.w)} palabras). `;
+      post2027 = ` Ese día: ${loc(L, v2.a, v2.b)}.`;
     }
-    const t = lecturaTxt(id, v, '', prev);
+    const t = lecturaTxt(id, v, '', prev, minC);
     const head = (/^Sección \d+: "[^"]+"/.exec(b.leccion) || [])[0] || ((/cap\. \d+: "[^"]+"/.exec(b.leccion) || [])[0]) || b.leccion.split(' — ')[0];
-    const base = { leccion: `${head} → ${loc(L, v.a, v.b)} (≈${r10(v.w)} palabras de ${L.total})${recC(b)}`, guia: { ...t, t: 'C ↗' }, med: v.w / PPM };
-    if (sigMismo && enF1(sig.dia.fecha)) { base.guia.como += ` Sigue el ${fC(sig.dia.fecha)}.`; out(f, 'C', base); return; }
-    base.guia.como += extra2027;
+    const base = { leccion: `${head} → ${loc(L, v.a, v.b)} (≈${r10(v.w)} palabras de ${L.total})${recC(b)}`, guia: { ...t, t: 'C ↗' }, med: v.w / PPM, ...minO };
+    if (sigMismo && enF1(sig.dia.fecha)) { base.guia.como = `Sigue → ${fC(sig.dia.fecha)}. ${base.guia.como}`; out(f, 'C', base); return; }
+    base.guia.como = pre2027 + base.guia.como + post2027;
     if (posL[id] < L.flat.length) {
       const it = { k: `${id}#resto`, id, L, a: posL[id], b: L.flat.length, origen: f, articulo };
       colaC.push(it);
@@ -342,13 +385,52 @@ function crear(MED, ctx) {
   // ── recorrido de F1 ──
   dias.forEach((dia, idx) => {
     if (!enF1(dia.fecha)) return;
+    const sab = dowOf(dia.fecha) === 6;
+    let minC = 5;
     for (const b of dia.bloques) {
-      if (b.tag === 'A') bloqueA(dia, b);
+      if (b.tag === 'A') { const aMin = bloqueA(dia, b, sab); if (sab) minC = 30 - 10 - aMin; }
       else if (b.tag === 'B') bloqueB(idx, dia, b);
-      else if (b.tag === 'C') bloqueC(idx, dia, b);
+      else if (b.tag === 'C') bloqueC(idx, dia, b, sab ? minC : b.min);
     }
   });
-  // ── 2027 que ya lo prevé: vie 8-ene «termina los tramos pendientes de las semanas previas» (canal Anthropic, 10′ a 1,0×) ──
+
+  // ── pasos con minutos ENTEROS que suman `T` y necesario/asignado ∈ [0,85; 1,15] (las piezas < 3,5′ van con su vecina) ──
+  function pasosDe(piezas, T, donde) {
+    const pasos = piezas.map((pz) => ({ med: pz.med, piezas: [pz] }));
+    for (;;) {
+      const i = pasos.findIndex((p) => p.med < 3.5);
+      if (i < 0 || pasos.length === 1) break;
+      const j = i + 1 < pasos.length ? i + 1 : i - 1, [x, y] = i < j ? [i, j] : [j, i];
+      pasos.splice(x, 2, { med: pasos[x].med + pasos[y].med, piezas: [...pasos[x].piezas, ...pasos[y].piezas] });
+    }
+    const asig = pasos.map((p) => Math.max(1, Math.round(p.med)));
+    let dif = T - asig.reduce((s, x) => s + x, 0);
+    while (dif !== 0) {
+      const sg = Math.sign(dif);
+      let best = -1, bd = Infinity;
+      asig.forEach((x, i) => { if (x + sg < 1) return; const d = Math.abs(pasos[i].med / (x + sg) - 1); if (d < bd) { bd = d; best = i; } });
+      asig[best] += sg; dif -= sg;
+    }
+    pasos.forEach((p, i) => { p.min = asig[i]; p.med = Math.round(p.med * 10) / 10; const r = p.med / p.min; if (r < RAT[0] || r > RAT[1]) throw new Error(`v6.09b lote 1-ter: ${donde}: paso de ${p.min}′ con ${p.med}′ de material (ratio ${r.toFixed(2)})`); });
+    return pasos;
+  }
+  const retomaDe = {}; // id → última fecha (F1 o cola) en que se tocó
+  const piezaAudio = (it, a, b) => { const p = { tipo: 'audio', id: it.id, titulo: it.titulo, url: it.url + (/youtube/.test(it.url) && a ? `&t=${Math.round(a)}s` : ''), desde: ts(a), hasta: ts(b), vel: it.vel, med: Math.round(((b - a) / it.vel / 60) * 10) / 10, retoma: retomaDe[it.id] || prevSes[it.id] || it.origen }; return p; };
+  const piezaLect = (it, a, b, w) => ({ tipo: 'lectura', id: it.id, titulo: it.L.titulo, url: urlSec(it.L, it.L.flat[a].si), desde: loc(it.L, a, b), palabras: w, med: Math.round((w / PPM) * 10) / 10, retoma: retomaDe[it.id] || prevSes[it.id] || it.origen });
+
+  // ── v6.09b lote 1-ter (hallazgo 1, mínimo): huecos REALES de F1 con hora (F1_EXTRA) para lo que no cupo en los comodines del sábado ──
+  const colaF1 = [];
+  for (const x of F1_EXTRA) {
+    const it = colaB.find((y) => y.id === x.id);
+    if (!it) continue;
+    const pz = piezaAudio(it, it.a, it.b);
+    addDest(it.k, x.fecha, `${ts(it.a)}-${ts(it.b)}`, x.ini);
+    retomaDe[it.id] = x.fecha;
+    colaB.splice(colaB.indexOf(it), 1);
+    const T = Math.round(pz.med);
+    colaF1.push({ fecha: x.fecha, ini: x.ini, fin: aHH(aMinH(x.ini) + T), min: T, med: pz.med, pasos: pasosDe([pz], T, `${x.fecha} ${x.ini}`) });
+  }
+  // ── 2027 que ya lo prevé: vie 8-ene «termina los tramos pendientes de las semanas previas» (canal Anthropic, 10′, a la velocidad de su serie) ──
   {
     const d8 = dias.find((d) => d.fecha > HASTA && d.bloques.some((b) => b.tag === 'B' && /^Canal Anthropic/.test(b.material) && /termina los tramos pendientes/.test(b.leccion)));
     if (d8) {
@@ -356,41 +438,52 @@ function crear(MED, ctx) {
       let resto = 600;
       for (const it of delCanal) {
         if (resto <= 30) break;
-        const cabe = Math.floor(resto / 60) * 60, fin = Math.min(it.b, it.a + cabe);
-        addDest(it.k, d8.fecha, `${fC(d8.fecha)} (min ${ts(it.a)}-${ts(fin)} a 1,0×, «termina los tramos pendientes»)`);
-        resto -= fin - it.a; it.a = fin;
+        const cabe = Math.floor((resto * it.vel) / 60) * 60, fin = Math.min(it.b, it.a + cabe);
+        if (fin <= it.a) break;
+        addDest(it.k, d8.fecha, `${ts(it.a)}-${ts(fin)} a ${velTxt(it.vel)}×`);
+        retomaDe[it.id] = d8.fecha; // la cola post-Step 1 retoma donde quedó el vie 8-ene
+        resto -= (fin - it.a) / it.vel; it.a = fin;
       }
       for (let i = colaB.length - 1; i >= 0; i--) if (colaB[i].a >= colaB[i].b - 1) colaB.splice(i, 1);
     }
   }
-  // ── COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027 ──
+  // ── COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027, 04:15-04:45 (v6.09b lote 1-ter: con franja y pasos) ──
   const cola = [];
   const todo = [...colaB.map((x) => ({ ...x, tipo: 'audio' })), ...colaC.map((x) => ({ ...x, tipo: 'lectura' }))]
     .sort((x, y) => (x.origen < y.origen ? -1 : x.origen > y.origen ? 1 : x.tipo === y.tipo ? 0 : x.tipo === 'audio' ? -1 : 1));
+  const habil = (f) => dowOf(f) >= 1 && dowOf(f) <= 5 && !ctx.skip.has(f) && !ctx.protegidos.has(f) && !(ctx.feriados && ctx.feriados.has(f));
   let dia = COLA_DESDE;
-  const habil = (f) => dowOf(f) >= 1 && dowOf(f) <= 5 && !ctx.skip.has(f) && !ctx.protegidos.has(f);
   while (!habil(dia)) dia = addD(dia, 1);
-  let presup = COLA_MIN, hoy = { fecha: dia, piezas: [] };
-  const cerrarDia = () => { if (hoy.piezas.length) cola.push(hoy); dia = addD(dia, 1); while (!habil(dia)) dia = addD(dia, 1); hoy = { fecha: dia, piezas: [] }; presup = COLA_MIN; };
+  let hoy = { fecha: dia, piezas: [], med: 0 };
+  const cerrarDia = () => { if (hoy.piezas.length) cola.push(hoy); dia = addD(dia, 1); while (!habil(dia)) dia = addD(dia, 1); hoy = { fecha: dia, piezas: [], med: 0 }; };
+  const MIN_TROZO = 4.5; // trozo mínimo al final de un día (minutos de reloj)
   for (const it of todo) {
-    while (true) {
+    for (;;) {
+      const libre = COLA_MIN - hoy.med;
       if (it.tipo === 'audio') {
         if (it.a >= it.b - 1) break;
-        const necesita = (it.b - it.a) / it.vel / 60;
-        if (necesita <= presup * 1.1) { hoy.piezas.push({ titulo: it.titulo, url: it.url, desde: ts(it.a), hasta: ts(it.b), min: Math.round(necesita * 10) / 10, vel: it.vel }); addDest(it.k, hoy.fecha, `${fC(hoy.fecha)} (min ${ts(it.a)}-${ts(it.b)})`); presup -= necesita; it.a = it.b; if (presup < 3) cerrarDia(); break; }
-        const cabe = Math.floor(presup * it.vel) * 60;
-        if (cabe < 120) { cerrarDia(); continue; }
-        const fin = it.a + cabe;
-        hoy.piezas.push({ titulo: it.titulo, url: it.url, desde: ts(it.a), hasta: ts(fin), min: Math.round((cabe / it.vel / 60) * 10) / 10, vel: it.vel }); addDest(it.k, hoy.fecha, `${fC(hoy.fecha)} (min ${ts(it.a)}-${ts(fin)})`);
+        const rem = (it.b - it.a) / it.vel / 60;
+        if (hoy.med + rem <= COLA_MIN * 1.1 || (hoy.med + rem <= COLA_MIN * RAT[1] && rem - libre < 3.5)) {
+          const pz = piezaAudio(it, it.a, it.b); hoy.piezas.push(pz); hoy.med += pz.med; addDest(it.k, hoy.fecha, `${pz.desde}-${pz.hasta}`, COLA_INI); retomaDe[it.id] = hoy.fecha; it.a = it.b;
+          if (COLA_MIN - hoy.med < MIN_TROZO) cerrarDia();
+          break;
+        }
+        if (libre < MIN_TROZO) { cerrarDia(); continue; }
+        const cabe = Math.floor(libre * it.vel) * 60, fin = Math.min(it.b, it.a + cabe);
+        const pz = piezaAudio(it, it.a, fin); hoy.piezas.push(pz); hoy.med += pz.med; addDest(it.k, hoy.fecha, `${pz.desde}-${pz.hasta}`, COLA_INI); retomaDe[it.id] = hoy.fecha;
         it.a = fin; cerrarDia();
       } else {
         if (it.a >= it.b) break;
-        const quedan = sumW(it.L, it.a, it.b);
-        if (quedan / PPM <= presup * 1.1) { hoy.piezas.push({ titulo: it.L.titulo, url: urlSec(it.L, it.L.flat[it.a].si), desde: loc(it.L, it.a, it.b), palabras: quedan, min: Math.round((quedan / PPM) * 10) / 10 }); addDest(it.k, hoy.fecha, `${fC(hoy.fecha)} (≈${r10(quedan)} palabras)`); presup -= quedan / PPM; it.a = it.b; if (presup < 3) cerrarDia(); break; }
-        if (presup < 3) { cerrarDia(); continue; }
-        const v = ventana(it.L, it.a, presup * PPM, it.b);
+        const quedan = sumW(it.L, it.a, it.b), rem = quedan / PPM;
+        if (hoy.med + rem <= COLA_MIN * 1.1 || (hoy.med + rem <= COLA_MIN * RAT[1] && rem - libre < 3.5)) {
+          const pz = piezaLect(it, it.a, it.b, quedan); hoy.piezas.push(pz); hoy.med += pz.med; addDest(it.k, hoy.fecha, `≈${r10(quedan)} palabras`, COLA_INI); retomaDe[it.id] = hoy.fecha; it.a = it.b;
+          if (COLA_MIN - hoy.med < MIN_TROZO) cerrarDia();
+          break;
+        }
+        if (libre < MIN_TROZO) { cerrarDia(); continue; }
+        const v = ventana(it.L, it.a, libre * PPM, it.b);
         if (v.b <= v.a) { cerrarDia(); continue; }
-        hoy.piezas.push({ titulo: it.L.titulo, url: urlSec(it.L, it.L.flat[v.a].si), desde: loc(it.L, v.a, v.b), palabras: v.w, min: Math.round((v.w / PPM) * 10) / 10 }); addDest(it.k, hoy.fecha, `${fC(hoy.fecha)} (≈${r10(v.w)} palabras)`);
+        const pz = piezaLect(it, v.a, v.b, v.w); hoy.piezas.push(pz); hoy.med += pz.med; addDest(it.k, hoy.fecha, `≈${r10(v.w)} palabras`, COLA_INI); retomaDe[it.id] = hoy.fecha;
         it.a = v.b; cerrarDia();
       }
     }
@@ -398,29 +491,62 @@ function crear(MED, ctx) {
   if (hoy.piezas.length) cola.push(hoy);
   // nada se quita: todo resto de F1 queda con fecha (si algo quedara sin colocar, ABORTA)
   for (const it of todo) if (it.tipo === 'audio' ? it.a < it.b - 1 : it.a < it.b) throw new Error(`v6.09b: resto sin fecha en la cola post-Step 1: ${it.k}`);
+  // franja y pasos de cada día: 30′ (el último día, si tiene menos de 25,5′ de material, sus minutos redondeados)
+  const colaOut = cola.map((d) => {
+    const med = Math.round(d.piezas.reduce((s, p) => s + p.med, 0) * 10) / 10;
+    const T = med < COLA_MIN * RAT[0] ? Math.max(5, Math.round(med)) : COLA_MIN;
+    if (T !== COLA_MIN && d !== cola[cola.length - 1]) throw new Error(`v6.09b lote 1-ter: día de la cola ${d.fecha} con ${med}′ de material (solo el último puede ir corto)`);
+    if (med / T > RAT[1] || med / T < RAT[0]) throw new Error(`v6.09b lote 1-ter: día de la cola ${d.fecha}: ${med}′ de material en ${T}′`);
+    return { fecha: d.fecha, ini: COLA_INI, fin: aHH(aMinH(COLA_INI) + T), min: T, med, pasos: pasosDe(d.piezas, T, d.fecha) };
+  });
 
-  // ── textos con los destinos (fechas) del resto ──
-  const destTxt = (k) => {
-    const ds = (destinos.get(k) || []).filter((x) => x.txt !== 'x');
+  // ── textos con los destinos (fechas) del resto: SIEMPRE al principio del «cómo» (hallazgo 5) ──
+  const NOMBRE = Object.fromEntries([...Object.entries(MED.lectura).map(([k, v]) => [k, v.titulo.replace(/^.*«|».*$/g, '')]), ...Object.entries(MED.audio).map(([k, v]) => [k, v.titulo.replace(/^.*· /, '').replace(/^«|»$/g, '')])]);
+  const CORTO = { deepDivePE: 'deep dive', tips: 'Tips for building AI agents', building: 'Building Anthropic', alignment: 'AI alignment', interp: 'Interpretability', dario: 'Dario', demis: 'Demis', sholto: 'Sholto', pi1: 'Prompt injection attacks…', trifecta: 'trifecta', manyshot: 'Many-shot', constclass: 'Constitutional Classifiers', rsp: 'RSP' };
+  const cortoDe = (k) => { const id = k.replace(/#.*$/, ''); return CORTO[id] || (/^py(\d+)/.test(id) ? `Python §${id.slice(2)}` : /^atbs(\d+)/.test(id) ? `ATBS cap. ${id.slice(4)}` : /^progit(\d+)/.test(id) ? `Pro Git cap. ${id.slice(6)}` : NOMBRE[id] || id); };
+  const una = (x, det) => `${fC(x.fecha)}${x.hora ? ' ' + x.hora : ''}${det && x.det ? ` (${x.det})` : ''}`;
+  /** destinos de la clave `k` posteriores a `desde`, en ≤ `max` caracteres (con el detalle de cada tramo si cabe) */
+  function destTxt(k, desde, max) {
+    const ds = (destinos.get(k) || []).filter((x) => x.det !== 'x' && x.fecha > desde);
     const f1 = ds.filter((x) => x.fecha < COLA_DESDE), post = ds.filter((x) => x.fecha >= COLA_DESDE);
-    const partes = [];
-    if (f1.length) partes.push(f1.map((x) => x.txt).join(' · '));
-    if (post.length) partes.push(`cola post-Step 1 (30′/día) ${post.length === 1 ? post[0].txt : `${fC(post[0].fecha)} → ${fC(post[post.length - 1].fecha)}`}`);
-    return partes.join(' · ');
-  };
+    const postTxt = post.length ? `cola post-Step 1 ${COLA_INI}: ${post.length === 1 ? fC(post[0].fecha) : `${fC(post[0].fecha)} → ${fC(post[post.length - 1].fecha)}`}` : '';
+    const sinWd = (f) => fC(f).replace(/^\S+ /, '');
+    const postCorto = post.length ? `cola ${COLA_INI}: ${post.length === 1 ? sinWd(post[0].fecha) : `${sinWd(post[0].fecha)} → ${sinWd(post[post.length - 1].fecha)}`}` : '';
+    const f1Rango = f1.length > 2 ? `${una(f1[0], false)} … ${una(f1[f1.length - 1], false)}` : f1.map((x) => una(x, false)).join(' · ');
+    const intentos = [
+      [f1.map((x) => una(x, true)).join(' · '), postTxt],
+      [f1.map((x) => una(x, false)).join(' · '), postTxt],
+      [f1Rango, postTxt],
+      [f1Rango, postCorto],
+      [ds.length ? `${una(ds[0], false)} y siguientes` : ''],
+    ].map((p) => p.filter(Boolean).join(' · '));
+    return intentos.find((s) => s.length <= max) || intentos[intentos.length - 1];
+  }
   for (const p of pendTxt) {
     const o = JSON.parse(JSON.stringify(p.base));
-    if (p.resto) o.guia.como += ` El resto (${p.restoTxt}) va a: ${destTxt(p.resto)}.`;
+    const pre0 = p.pre || '';
+    if (p.resto) {
+      const pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10)}. `;
+      o.guia.como = pre0 + pre + `${o.guia.como} Lo que queda: ${p.restoTxt}.`;
+    } else if (pre0) o.guia.como = pre0 + o.guia.como;
     if (p.piezas) {
-      const fins = p.piezas.map((x) => { const ds = (destinos.get(x.k) || []).filter((d) => d.fecha > p.fecha && d.txt !== 'x'); return ds.length ? `lo que queda de ${x.k.replace(/#resto$/, '')}: ${ds.length > 3 ? `${ds[0].txt} … ${ds[ds.length - 1].txt}` : ds.map((d) => d.txt).join(' · ')}` : null; }).filter(Boolean);
-      if (fins.length) o.guia.como += ` Sigue: ${fins.join(' · ').replace(/(\w+)#resto/g, '$1')}.`;
+      const fins = p.piezas.map((x) => { const ds = (destinos.get(x.k) || []).filter((d) => d.fecha > p.fecha && d.det !== 'x'); return ds.length ? { k: x.k } : null; }).filter(Boolean);
+      if (fins.length) {
+        const arma = (max) => `Lo que queda → ${fins.map((x) => `${p.piezas.length > 1 ? `${cortoDe(x.k)}: ` : ''}${destTxt(x.k, p.fecha, max)}`).join(' · ')}. `;
+        let pre = arma(84); if (pre.length > CORTE_COMO) pre = arma(40); if (pre.length > CORTE_COMO) pre = arma(24);
+        o.guia.como = pre + o.guia.como;
+      }
     }
     res.sesiones.set(`${p.fecha}|${p.tag}`, o);
   }
-  // nombres legibles en «lo que queda de …»
-  const NOMBRE = Object.fromEntries([...Object.entries(MED.lectura).map(([k, v]) => [k, v.titulo.replace(/^.*«|».*$/g, '')]), ...Object.entries(MED.audio).map(([k, v]) => [k, v.titulo.replace(/^.*· /, '')])]);
-  for (const o of res.sesiones.values()) if (o.guia) o.guia.como = o.guia.como.replace(/lo que queda de ([A-Za-z0-9]+):/g, (_, k) => `lo que queda de ${NOMBRE[k] ? `«${NOMBRE[k].replace(/^«|»$/g, '')}»` : k}:`);
-  return { sesiones: res.sesiones, cola };
+  // control (hallazgo 5): ninguna fecha FUTURA después del corte del Calendar en los pasos de F1
+  for (const [k, o] of res.sesiones) {
+    const f = k.split('|')[0];
+    if (!o.guia) continue;
+    for (const x of fechasEn(o.guia.que)) if (x.iso > f && x.fin > CORTE_QUE) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «qué» (> ${CORTE_QUE})`);
+    for (const x of fechasEn(o.guia.como)) if (x.iso > f && x.fin > CORTE_COMO) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «cómo» (> ${CORTE_COMO}): ${o.guia.como.slice(0, 160)}`);
+  }
+  return { sesiones: res.sesiones, cola: colaOut, colaF1 };
 }
 
-module.exports = { crear, DESDE, HASTA, COLA_DESDE, COLA_MIN };
+module.exports = { crear, DESDE, HASTA, COLA_DESDE, COLA_MIN, COLA_INI, F1_EXTRA, fechasEn };

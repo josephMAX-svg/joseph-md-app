@@ -7,7 +7,8 @@
  *   · B&B: DATA/USMLE/qbankly_bb_step1_videos.tsv → C.bb(id) (duración real) · C.bbMin(id, fecha) (velocidad de la semana, regla E1)
  *   · uWorld Step 1: qbankly_uworld_step1_filtros.tsv → C.uw(id) (nº real de preguntas del System)
  *   · ProMIR Dermatología cap. 1: medición E2 (DATA/MIR/guia_lectura_semana1-2.json → derma[]) → C.pmd1Lectura(d) · C.pmd1Test(d)
- *   · DermNet: palabras por apartado medidas el 18-oct (curl + recuento) → minutos a 120 palabras/min (inglés, «desde cero»)
+ *   · DermNet: palabras por apartado medidas el 18-oct (curl + recuento) → minutos a 100 palabras/min + 0,25′ por figura (regla fija de lectura en inglés;
+ *     hasta el lote 1-bis, 120 palabras/min)
  * Pictorial Review 4e (qa.aspx?resourceid=3626) · «Create Custom Quiz»: 34 temas, 381 preguntas (leído el 18-oct). La asignación por
  * sesión NO repite preguntas (el generador aborta si un tema se pasa de sus preguntas): solo las sesiones NO-ProMIR con banco Pictorial
  * consumen tema; en las sesiones ProMIR (d ≡ 0 mod 3) el slot es el test del capítulo.
@@ -15,6 +16,10 @@
  *   (acceso remoto caducado); el resto de sesiones por regla en src/lib/dermaGuia.ts.
  * v6.02c F2 (18-oct-2026, hallazgos E6): CME_DESPLAZADO (d12 → lectura del átomo, módulo 4 al d42) · respaldo DermNet «Dermoscopy» en las
  *   imágenes de Dermoscopedia (d2 · d4) · el test del d3 ya no cita «el caso de 13:36» (lo corrige gen_guia_lectura.js).
+ * v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgo 4): DermNet/PMC del plan B a la regla fija de inglés (100 palabras/min + 0,25′/figura;
+ *   antes 120) y cada paso declara «(N′ medidos»: d1 (mié 18-nov) «Terminology» 6′ → 8′ (7,62′; el dictado inverso 13′ → 11′) · d2 (vie 20-nov)
+ *   «Terminology» 6′ → 7′ (6,71′), Blaschko con su alcance medido (2 apartados + 2 figuras = 1,44′ + dibujo 1,5′; el resto «no forma parte del átomo») y
+ *   cierre 3′ → 2′ · d4 (jue 26-nov) 9′ → 10′ (10,15′; viñetas 16′ → 15′ = 3 de ≈5′, antes «5») · d5 (lun 30-nov) PMC 9′ → 11′ (12,07′; mapa 6′ → 4′).
  */
 'use strict';
 
@@ -89,8 +94,12 @@ const DERMNET_DERMOSCOPY = 'https://dermnetnz.org/topics/dermoscopy';
 const DSC_RESPALDO = ' · si Dermoscopedia no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.';
 const R_DSC = { t: 'DermNet · Dermoscopy (respaldo de Dermoscopedia)', url: DERMNET_DERMOSCOPY };
 const PASSMED = (doc) => `https://qbankly.app/library?e=3&doc=${doc}`;
-/** DermNet: palabras de los apartados usados (recuento del 18-oct-2026, sin menús ni referencias) → min a 120 palabras/min. */
-const DN_MIN = (palabras, figuras = 0) => Math.max(1, Math.round(palabras / 120 + figuras * 0.25));
+/** DermNet: palabras de los apartados usados (recuento del 18-oct-2026, sin menús ni referencias) → min a 100 palabras/min + 0,25′ por figura.
+ *  v6.09b · lote 1-ter (17-nov-2026, revisión R, hallazgo 4): la regla fija de lectura en inglés es 100 palabras/min (antes 120: d1 762 palabras en 6′ = 1,27 y
+ *  d5 1.132 palabras en 9′ = 1,34 quedaban fuera de 0,85-1,15). `DN_NEC` = minutos medidos sin redondear (el paso los declara: «(N′ medidos»). */
+const DN_NEC = (palabras, figuras = 0) => palabras / 100 + figuras * 0.25;
+const DN_MIN = (palabras, figuras = 0) => Math.max(1, Math.round(DN_NEC(palabras, figuras)));
+const DN_TXT = (x) => `${String(Math.round(x * 100) / 100).replace('.', ',')}′ medidos`;
 
 /** Pasos comunes. */
 const anki = (C, d) => (d === 1
@@ -166,8 +175,8 @@ function curadas(C) {
         anki(C, 1),
         uworld(C, 1028, 4, 12, 'en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ~3′/Q en inglés, sin prisa'),
         { min: 9, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${pmd.min}′ medidos · ${pmd.palabras} palabras · ${pmd.figs} figuras)`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
-        { min: DN_MIN(119 + 419 + 224), que: 'DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras)', como: 'Solo esos 3 apartados, a ~120 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
-        proyecto(0, 'DICTADO INVERSO de morfología', 'Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ · cada fallo → tarjeta.'),
+        { min: DN_MIN(119 + 419 + 224), que: `DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = ${DN_TXT(DN_NEC(762))})`, como: 'Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
+        proyecto(0, 'DICTADO INVERSO de morfología', 'Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ (las 6 en 11′) · cada fallo → tarjeta.'),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
         { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '4Q' },
@@ -203,11 +212,11 @@ function curadas(C) {
         anki(C, 2),
         uworld(C, 1031, 3, 9, 'antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color'),
         { min: 6, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${pmd.min}′ medidos · ${pmd.palabras} palabras · ${pmd.figs} figuras · tabla 1-1 de signos)`, como: 'Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
-        { min: DN_MIN(381 + 97 + 193), que: 'DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras)', como: '~120 palabras/min · completa tu tabla de configuraciones con los términos en inglés.', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
+        { min: DN_MIN(381 + 97 + 193), que: `DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = ${DN_TXT(DN_NEC(671))})`, como: '~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés.', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
         bbVideo(C, 74, x.fecha, 'color y distribución de las lesiones vasculares (por título; contenido no verificado)'),
-        { min: 0, que: 'DermNet › «Blaschko lines» (≈250 palabras + 2 tablas + figuras)', como: 'Mira las figuras de tronco y extremidad y dibuja el patrón en V/S sobre una silueta.', enlace: { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` } },
+        { min: 0, que: `DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» (94 palabras + 2 figuras = ${DN_TXT(DN_NEC(94, 2))}) + dibujo del patrón (≈1,5′)`, como: 'Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.', enlace: { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` } },
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa el título y los pies: describe la red antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
-        cierre(3, `≤3 tarjetas en ${C.deck('A')}.`),
+        cierre(2, `≤3 tarjetas en ${C.deck('A')}.`), // v6.09b · lote 1-ter: 3′ → 2′ (como todas las sesiones): el minuto lo pide el «Terminology» a 100 palabras/min
       ], [
         { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '3Q' },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min },
@@ -283,10 +292,10 @@ function curadas(C) {
       planB: B(4, `DERMA d4 · Fototipos I-VI + piel de color — PLAN B (AccessDerma caducado)`, [
         anki(C, 4),
         bbVideo(C, 73, x.fecha),
-        { min: DN_MIN(227, 6) + DN_MIN(438, 8), que: 'DermNet › «Skin phototype» (clasificación de Fitzpatrick, ≈230 palabras + 6 figuras) + «Postinflammatory hyperpigmentation» (≈440 palabras + 8 figuras)', como: 'Tabla fototipo I-VI → quema/broncea → cómo se ve el eritema y la PIH en cada uno.', enlace: { t: 'DermNet · Skin phototype', url: `${DERMNET}/topics/skin-phototype` } },
+        { min: DN_MIN(227, 6) + DN_MIN(438, 8), que: `DermNet (${DN_TXT(DN_NEC(227, 6) + DN_NEC(438, 8))} a 100 palabras/min + 0,25′ por figura) › «Skin phototype» (clasificación de Fitzpatrick, ≈230 palabras + 6 figuras) + «Postinflammatory hyperpigmentation» (≈440 palabras + 8 figuras)`, como: 'Tabla fototipo I-VI → quema/broncea → cómo se ve el eritema y la PIH en cada uno.', enlace: { t: 'DermNet · Skin phototype', url: `${DERMNET}/topics/skin-phototype` } },
         { min: 5, que: 'Diferencial de hipopigmentación · DermNet «Pityriasis alba» (clinical features, 155 palabras + 4 figuras) + PassMedicine «Vitiligo» (Library de Qbankly, sin medir)', como: 'Tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).', enlace: { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` } },
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Globules» (pública)', como: 'Describe antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Globules', url: `${DSC}/Globules` } },
-        proyecto(0, 'viñetas en fototipo IV-VI', 'Pídele 5 viñetas de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).'),
+        proyecto(0, 'viñetas en fototipo IV-VI', 'Pídele 3 viñetas (≈5′ cada una: los 15′ del paso; v6.09b · lote 1-ter, antes 5 en 16′) de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).'),
         cierre(2),
       ], [
         { t: `B&B · ${C.bb(73).nombre}`, url: VIDEOS, min: C.bbMin(73, x.fecha).min },
@@ -295,7 +304,7 @@ function curadas(C) {
         { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` },
         { t: 'PassMedicine · Vitiligo', url: PASSMED(1413) }, R_DSC,
         { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
-      ], 'Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 5 viñetas corregidas + ≤3 tarjetas.',
+      ], 'Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 3 viñetas corregidas + ≤3 tarjetas.',
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -322,7 +331,7 @@ function curadas(C) {
         anki(C, 5),
         proyecto(20, 'tabla de arterias de riesgo', 'Pídele la tabla de arterias de riesgo (facial, angular, supratroclear, supraorbitaria, dorsal nasal, rama frontal de la temporal superficial): trayecto, plano/profundidad y qué produce su oclusión, con libro y página; después 8 preguntas de verificación que respondes sin mirar.'),
         { min: 5, que: 'PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen', como: 'Lee el resumen y apunta qué zonas llama «seguras» y en qué plano.', enlace: { t: 'PubMed 36469395', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' } },
-        { min: DN_MIN(789, 1) + DN_MIN(343, 2) - 1, que: 'PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2', como: 'Solo la Pregunta 3 y las figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica) · es la lectura del d20, aquí solo la anatomía.', enlace: { t: 'PMC7427155', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
+        { min: DN_MIN(789, 1) + DN_MIN(343, 2) - 1, que: `PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2 (343 palabras) = ${DN_TXT(DN_NEC(789, 1) + DN_NEC(343, 2))} a 100 palabras/min`, como: 'Solo la Pregunta 3 y las figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica) · es la lectura del d20, aquí solo la anatomía.', enlace: { t: 'PMC7427155', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
         { min: 0, que: 'MAPA DE MEMORIA', como: 'Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto y corrige en rojo.' },
         cierre(2),
       ], [

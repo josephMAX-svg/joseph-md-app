@@ -27,7 +27,9 @@
  * v6.00 (6-oct-2026): solo textos — las sem 13-19 son el taper «por el ENCAPS» (ya no del Step 1 de febrero) y la F2 de datos arranca
  * después del Step 1 (F5, oct-2027). Las fechas del motor (mié 7-oct → lun 15-feb, 132 días) no cambian.
  * v6.09 (16-nov-2026 · 1.ª sesión mar 17-nov): lun 16-nov → jue 1-abr-2027 (137 días, como la v6.08: el lun 16 queda SIN SESIÓN y el campo d de cada
- * fecha no cambia; sáb 21 y dom 22-nov libres por viaje; el dom 22-nov (llegada, 16:30-17:00; v6.09b) recupera una A-unit + las piezas del lunes de la sem 1, y el jue 31-dic ya es día
+ * fecha no cambia; sáb 21 libre y dom 22-nov libre hasta la llegada (viaje); ese dom 22-nov, a la llegada, el SYNAPSE de 16:30-17:00 (v6.09b; ya no el
+ * dom 29, que queda sin bloque fijo) recupera una A-unit + las piezas B/C del lunes de la sem 1; v6.09b lote 1-ter: lo que no cupo en F1 tiene franja propia (sáb 26-dic 07:15 y la
+ * cola post-Step 1, 04:15-04:45 L-V del lun 13-dic-2027 al mar 1-feb-2028: synapseDailyPlan.synColaDe), y el jue 31-dic ya es día
  * de plan → desde el lun 4-ene todo igual que en la v6.08, d incluido).
  * v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov): lun 16-nov → jue 1-abr-2027 (137 días, mismas 110 A-units; sin SYNAPSE en los PROTEGIDOS
  * vie 12 → lun 15-mar ni en la Semana Santa jue 25 / vie 26-mar). La cabecera de SYNAPSE_META.nota sale ya de SYN_PLAN_META (inicio, fin,

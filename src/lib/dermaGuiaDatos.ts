@@ -69,198 +69,442 @@ export const DERMA_CME_DESPLAZADO: Record<number, { destino: number; libro: stri
 };
 /** Respaldo de Dermoscopedia (falla por HTTPS desde algunas redes): DermNet «Dermoscopy (Dermatoscopy)» (curl 200, 18-oct-2026). */
 export const DERMNET_DERMOSCOPY = "https://dermnetnz.org/topics/dermoscopy";
-/** v6.09b · lote 1-bis: atlas DermNet de F1 MEDIDO el 2026-11-17 (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): secciones del alcance, palabras de prosa,
- *  imágenes y minutos = palabras/120 + 0,25′ por imagen. Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
-export const DERMNET_MEDIDO: Record<string, { alcance: string[]; palabras: number; imagenes: number; necesario: number; min: number; pagina: { palabras: number; imagenes: number }; motivo?: string }> = {
- "dermoscopy": {
-  "alcance": [
-   "What is dermoscopy?",
-   "Dermatoscopic features of pigmented lesions"
+/** v6.09b · lote 1-ter: atlas DermNet de F1 MEDIDO el 2026-11-17 POR SESIÓN (fecha) (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): lecturas (página +
+ *  secciones), palabras de prosa, imágenes y minutos = palabras/100 + 0,25′ por imagen; «fuera» = lo que no forma parte del átomo; «aOtroDia» = lo del átomo que
+ *  no cabe hoy, con su fecha (la sesión destino lo lee con «de»). Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
+export interface DermnetLectura { pag: string; url: string; texto: string[]; soloImagenes?: string[]; palabras: number; imagenes: number; de?: string }
+export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLectura[]; palabras: number; imagenes: number; necesario: number; min: number; fuera: { palabras: number; temas: string[] }; aOtroDia?: { fecha: string; pag: string; texto: string[]; palabras: number; imagenes: number; necesario: number }; motivo?: string }> = {
+ "2026-12-02": {
+  "atlas": "dermoscopy",
+  "lecturas": [
+   {
+    "pag": "dermoscopy",
+    "url": "https://dermnetnz.org/topics/dermoscopy",
+    "texto": [
+     "What is dermoscopy?",
+     "Dermatoscopic features of pigmented lesions",
+     "Dermatoscopes"
+    ],
+    "palabras": 389,
+    "imagenes": 9
+   }
   ],
-  "palabras": 293,
+  "palabras": 389,
   "imagenes": 9,
-  "necesario": 4.69,
-  "min": 5,
-  "pagina": {
-   "palabras": 471,
-   "imagenes": 9
+  "necesario": 6.14,
+  "min": 6,
+  "fuera": {
+   "palabras": 0,
+   "temas": []
   },
-  "motivo": "la página no tiene «clinical features»: su equivalente son los patrones dermatoscópicos"
+  "motivo": "la página no tiene «clinical features» ni diferencial: su equivalente son los patrones dermatoscópicos; se lee entera (también «Dermatoscopes»: con qué se mira)"
  },
- "psoriasis": {
-  "alcance": [
-   "What are the clinical features of psoriasis?",
-   "Types of psoriasis"
+ "2026-12-04": {
+  "atlas": "psoriasis",
+  "lecturas": [
+   {
+    "pag": "psoriasis",
+    "url": "https://dermnetnz.org/topics/psoriasis",
+    "texto": [
+     "What is psoriasis?",
+     "What are the clinical features of psoriasis?",
+     "Types of psoriasis"
+    ],
+    "palabras": 397,
+    "imagenes": 24
+   }
   ],
-  "palabras": 376,
-  "imagenes": 8,
-  "necesario": 5.13,
-  "min": 5,
-  "pagina": {
-   "palabras": 1882,
-   "imagenes": 27
+  "palabras": 397,
+  "imagenes": 24,
+  "necesario": 9.97,
+  "min": 9,
+  "fuera": {
+   "palabras": 885,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "factores agravantes",
+    "tratamiento"
+   ]
   },
-  "motivo": "la franja del d7 deja 6′ (B&B «Skin Disorders I» 19′): «clinical features» + «Types of psoriasis» con sus 8 primeras imágenes (de 24); las otras 16, no hoy"
- },
- "atopic-dermatitis": {
-  "alcance": [
-   "What is atopic dermatitis?",
-   "What are the clinical features of atopic dermatitis?",
-   "What is the differential diagnosis for atopic dermatitis?"
-  ],
-  "palabras": 587,
-  "imagenes": 23,
-  "necesario": 10.64,
-  "min": 11,
-  "pagina": {
-   "palabras": 1363,
-   "imagenes": 35
-  }
- },
- "acne": {
-  "alcance": [
-   "What is acne?",
-   "What causes acne?",
-   "What are the clinical features of acne?",
-   "What is the treatment for acne?"
-  ],
-  "palabras": 356,
-  "imagenes": 3,
-  "necesario": 3.72,
-  "min": 4,
-  "pagina": {
-   "palabras": 597,
-   "imagenes": 3
+  "aOtroDia": {
+   "fecha": "2026-12-10",
+   "pag": "psoriasis",
+   "texto": [
+    "How is psoriasis classified?",
+    "How do clinical features vary in differing types of skin?",
+    "How is psoriasis diagnosed?"
+   ],
+   "palabras": 358,
+   "imagenes": 3,
+   "necesario": 4.33
   },
-  "motivo": "sin «differential diagnosis»; el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento (las 3 imágenes están en «What tests…»)"
+  "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no hay viñetas del proyecto Claude"
  },
- "pemphigus-vulgaris": {
-  "alcance": [
-   "What is pemphigus vulgaris?",
-   "What are the clinical features of pemphigus vulgaris?",
-   "How is pemphigus vulgaris diagnosed?"
+ "2026-12-08": {
+  "atlas": "atopic-dermatitis",
+  "lecturas": [
+   {
+    "pag": "atopic-dermatitis",
+    "url": "https://dermnetnz.org/topics/atopic-dermatitis",
+    "texto": [
+     "What is atopic dermatitis?",
+     "What are the clinical features of atopic dermatitis?",
+     "How do clinical features vary in differing types of skin?",
+     "What are the complications of atopic dermatitis?",
+     "What is the differential diagnosis for atopic dermatitis?"
+    ],
+    "soloImagenes": [
+     "Who gets atopic dermatitis?"
+    ],
+    "palabras": 767,
+    "imagenes": 35
+   }
   ],
-  "palabras": 601,
+  "palabras": 767,
+  "imagenes": 35,
+  "necesario": 16.42,
+  "min": 16,
+  "fuera": {
+   "palabras": 380,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "diagnóstico",
+    "tratamiento",
+    "pronóstico"
+   ]
+  },
+  "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no hay viñetas del proyecto Claude"
+ },
+ "2026-12-10": {
+  "atlas": "acne",
+  "lecturas": [
+   {
+    "pag": "acne",
+    "url": "https://dermnetnz.org/topics/acne",
+    "texto": [
+     "What is acne?",
+     "What causes acne?",
+     "What are the clinical features of acne?",
+     "What tests are necessary for acne?",
+     "What is the treatment for acne?"
+    ],
+    "palabras": 393,
+    "imagenes": 3
+   },
+   {
+    "pag": "psoriasis",
+    "url": "https://dermnetnz.org/topics/psoriasis",
+    "texto": [
+     "How is psoriasis classified?",
+     "How do clinical features vary in differing types of skin?",
+     "How is psoriasis diagnosed?"
+    ],
+    "palabras": 358,
+    "imagenes": 3,
+    "de": "2026-12-04"
+   }
+  ],
+  "palabras": 751,
+  "imagenes": 6,
+  "necesario": 9.01,
+  "min": 9,
+  "fuera": {
+   "palabras": 66,
+   "temas": [
+    "epidemiología",
+    "pronóstico"
+   ]
+  },
+  "motivo": "acné sin «differential diagnosis» ni complicaciones: entra «What tests…» (con sus 3 imágenes); el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento"
+ },
+ "2026-12-14": {
+  "atlas": "pemphigus-vulgaris",
+  "lecturas": [
+   {
+    "pag": "pemphigus-vulgaris",
+    "url": "https://dermnetnz.org/topics/pemphigus-vulgaris",
+    "texto": [
+     "What is pemphigus vulgaris?",
+     "What are the clinical features of pemphigus vulgaris?",
+     "What are the complications of pemphigus vulgaris?",
+     "How is pemphigus vulgaris diagnosed?"
+    ],
+    "palabras": 679,
+    "imagenes": 9
+   }
+  ],
+  "palabras": 679,
   "imagenes": 9,
-  "necesario": 7.26,
-  "min": 7,
-  "pagina": {
-   "palabras": 1598,
-   "imagenes": 9
+  "necesario": 9.04,
+  "min": 9,
+  "fuera": {
+   "palabras": 741,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "gravedad",
+    "tratamiento"
+   ]
   },
-  "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (IFD, biopsia) separa pénfigo de penfigoide"
+  "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (inmunofluorescencia, biopsia) es lo que separa pénfigo de penfigoide"
  },
- "urticaria-an-overview": {
-  "alcance": [
-   "What is urticaria?",
-   "Classification of urticaria",
-   "What are the clinical features of urticaria?",
-   "What is the differential diagnosis of urticaria?"
+ "2026-12-16": {
+  "atlas": "urticaria-an-overview",
+  "lecturas": [
+   {
+    "pag": "urticaria-an-overview",
+    "url": "https://dermnetnz.org/topics/urticaria-an-overview",
+    "texto": [
+     "What is urticaria?",
+     "Classification of urticaria",
+     "What are the clinical features of urticaria?",
+     "What is the differential diagnosis of urticaria?"
+    ],
+    "palabras": 465,
+    "imagenes": 7
+   }
   ],
   "palabras": 465,
   "imagenes": 7,
-  "necesario": 5.63,
-  "min": 6,
-  "pagina": {
-   "palabras": 1968,
-   "imagenes": 7
+  "necesario": 6.4,
+  "min": 7,
+  "fuera": {
+   "palabras": 1333,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "diagnóstico",
+    "tratamiento",
+    "pronóstico"
+   ]
   }
  },
- "stevens-johnson-syndrome-toxic-epidermal-necrolysis": {
-  "alcance": [
-   "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
-   "What are the clinical features of SJS/TEN?",
-   "What is the differential diagnosis of SJS/TEN?"
+ "2026-12-18": {
+  "atlas": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+  "lecturas": [
+   {
+    "pag": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+    "url": "https://dermnetnz.org/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+    "texto": [
+     "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
+     "What causes SJS/TEN?",
+     "What are the clinical features of SJS/TEN?",
+     "What are the complications of SJS/TEN?",
+     "What is the differential diagnosis of SJS/TEN?"
+    ],
+    "soloImagenes": [
+     "How is SJS/TEN diagnosed?",
+     "What is the outlook for SJS/TEN?"
+    ],
+    "palabras": 615,
+    "imagenes": 10
+   }
   ],
-  "palabras": 393,
-  "imagenes": 6,
-  "necesario": 4.78,
-  "min": 5,
-  "pagina": {
-   "palabras": 2392,
-   "imagenes": 10
-  }
+  "palabras": 615,
+  "imagenes": 10,
+  "necesario": 8.65,
+  "min": 8,
+  "fuera": {
+   "palabras": 1577,
+   "temas": [
+    "epidemiología",
+    "diagnóstico",
+    "tratamiento",
+    "prevención",
+    "pronóstico"
+   ]
+  },
+  "motivo": "«What causes SJS/TEN?» entra: los fármacos culpables son el átomo («farmacodermias graves, no errar»)"
  },
- "cutaneous-lupus-erythematosus": {
-  "alcance": [
-   "What is cutaneous lupus erythematosus?",
-   "What are the clinical features of cutaneous lupus erythematosus?"
+ "2026-12-22": {
+  "atlas": "cutaneous-lupus-erythematosus",
+  "lecturas": [
+   {
+    "pag": "cutaneous-lupus-erythematosus",
+    "url": "https://dermnetnz.org/topics/cutaneous-lupus-erythematosus",
+    "texto": [
+     "What is cutaneous lupus erythematosus?",
+     "What are the clinical features of cutaneous lupus erythematosus?",
+     "How do clinical features vary in differing types of skin?",
+     "What are the complications of cutaneous lupus erythematosus?"
+    ],
+    "palabras": 713,
+    "imagenes": 30
+   }
   ],
-  "palabras": 598,
-  "imagenes": 21,
-  "necesario": 10.23,
-  "min": 10,
-  "pagina": {
-   "palabras": 1298,
-   "imagenes": 30
+  "palabras": 713,
+  "imagenes": 30,
+  "necesario": 14.63,
+  "min": 13,
+  "fuera": {
+   "palabras": 411,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "diagnóstico",
+    "tratamiento",
+    "pronóstico"
+   ]
   },
   "motivo": "sin «differential diagnosis»"
  },
- "cellulitis": {
-  "alcance": [
-   "What is cellulitis?",
-   "What are the clinical features of cellulitis?",
-   "What are the complications of cellulitis?",
-   "What is the differential diagnosis of cellulitis?"
+ "2026-12-24": {
+  "atlas": "cellulitis",
+  "lecturas": [
+   {
+    "pag": "cellulitis",
+    "url": "https://dermnetnz.org/topics/cellulitis",
+    "texto": [
+     "What is cellulitis?",
+     "What are the clinical features of cellulitis?",
+     "What are the complications of cellulitis?",
+     "How is the diagnosis of cellulitis made?",
+     "What is the differential diagnosis of cellulitis?"
+    ],
+    "palabras": 423,
+    "imagenes": 3
+   }
   ],
-  "palabras": 351,
+  "palabras": 423,
   "imagenes": 3,
-  "necesario": 3.68,
-  "min": 4,
-  "pagina": {
-   "palabras": 1284,
-   "imagenes": 3
-  }
+  "necesario": 4.98,
+  "min": 5,
+  "fuera": {
+   "palabras": 667,
+   "temas": [
+    "epidemiología",
+    "causas",
+    "tratamiento"
+   ]
+  },
+  "motivo": "«How is the diagnosis … made?» entra: el átomo pide «cuándo NO es celulitis»"
  },
- "syphilis": {
-  "alcance": [
-   "What is syphilis?",
-   "What are the clinical features of syphilis?",
-   "What is the differential diagnosis of syphilis?"
+ "2026-12-28": {
+  "atlas": "syphilis",
+  "lecturas": [
+   {
+    "pag": "syphilis",
+    "url": "https://dermnetnz.org/topics/syphilis",
+    "texto": [
+     "What is syphilis?",
+     "What are the clinical features of syphilis?",
+     "What is the differential diagnosis of syphilis?"
+    ],
+    "palabras": 992,
+    "imagenes": 15
+   }
   ],
   "palabras": 992,
   "imagenes": 15,
-  "necesario": 12.02,
-  "min": 12,
-  "pagina": {
-   "palabras": 2047,
-   "imagenes": 15
+  "necesario": 13.67,
+  "min": 13,
+  "fuera": {
+   "palabras": 874,
+   "temas": [
+    "epidemiología",
+    "diagnóstico",
+    "tratamiento",
+    "prevención",
+    "pronóstico"
+   ]
   }
  },
- "herpes-simplex": {
-  "alcance": [
-   "What is herpes simplex?",
-   "What are the clinical features of herpes simplex?",
-   "What are the complications of herpes simplex?"
+ "2026-12-30": {
+  "atlas": "herpes-simplex",
+  "lecturas": [
+   {
+    "pag": "herpes-simplex",
+    "url": "https://dermnetnz.org/topics/herpes-simplex",
+    "texto": [
+     "What is herpes simplex?",
+     "What causes herpes simplex?",
+     "What are the clinical features of herpes simplex?",
+     "How is herpes simplex diagnosed?",
+     "What are the complications of herpes simplex?"
+    ],
+    "palabras": 923,
+    "imagenes": 9
+   }
   ],
-  "palabras": 739,
+  "palabras": 923,
   "imagenes": 9,
-  "necesario": 8.41,
-  "min": 8,
-  "pagina": {
-   "palabras": 1553,
-   "imagenes": 9
+  "necesario": 11.48,
+  "min": 12,
+  "fuera": {
+   "palabras": 485,
+   "temas": [
+    "epidemiología",
+    "tratamiento",
+    "prevención"
+   ]
   },
-  "motivo": "sin «differential diagnosis»: las complicaciones (eccema herpético, queratitis) son lo que el átomo pide no errar"
+  "motivo": "sin «differential diagnosis»: complicaciones (eccema herpético, queratitis), diagnóstico y causa (HSV-1 / HSV-2) son lo que el átomo pide"
  },
- "fungal-skin-infections": {
-  "alcance": [
-   "Yeast infections",
-   "Dermatophyte infections",
-   "Deep fungal infections",
-   "Other fungal infections",
-   "Treatment of fungal infections",
-   "Differential diagnosis of fungal infections"
+ "2026-12-31": {
+  "atlas": "fungal-skin-infections",
+  "lecturas": [
+   {
+    "pag": "fungal-skin-infections",
+    "url": "https://dermnetnz.org/topics/fungal-skin-infections",
+    "texto": [
+     "Yeast infections",
+     "Dermatophyte infections",
+     "Deep fungal infections",
+     "Other fungal infections",
+     "Treatment of fungal infections",
+     "Differential diagnosis of fungal infections"
+    ],
+    "palabras": 254,
+    "imagenes": 0
+   },
+   {
+    "pag": "laboratory-tests-for-fungal-infection",
+    "url": "https://dermnetnz.org/topics/laboratory-tests-for-fungal-infection",
+    "texto": [
+     "Direct microscopy of skin scrapings and nail clippings"
+    ],
+    "palabras": 131,
+    "imagenes": 3
+   },
+   {
+    "pag": "sporotrichosis",
+    "url": "https://dermnetnz.org/topics/sporotrichosis",
+    "texto": [
+     "What is sporotrichosis?",
+     "What are the clinical features of sporotrichosis?",
+     "How is sporotrichosis diagnosed?"
+    ],
+    "palabras": 431,
+    "imagenes": 0
+   },
+   {
+    "pag": "chromoblastomycosis",
+    "url": "https://dermnetnz.org/topics/chromoblastomycosis",
+    "texto": [
+     "What is chromoblastomycosis?",
+     "What are the clinical features of chromoblastomycosis?",
+     "How is chromoblastomycosis diagnosed?"
+    ],
+    "palabras": 249,
+    "imagenes": 8
+   }
   ],
-  "palabras": 254,
-  "imagenes": 0,
-  "necesario": 2.12,
-  "min": 2,
-  "pagina": {
-   "palabras": 373,
-   "imagenes": 0
+  "palabras": 1065,
+  "imagenes": 11,
+  "necesario": 13.4,
+  "min": 14,
+  "fuera": {
+   "palabras": 872,
+   "temas": [
+    "introducción",
+    "diagnóstico",
+    "causas",
+    "tratamiento"
+   ]
   },
-  "motivo": "página resumen sin «clinical features» ni imágenes: la página entera"
+  "motivo": "la página del átomo es un índice (listas de enlaces, sin clínica ni imágenes): se recorre entera y se leen sus enlaces del átomo —KOH (examen directo), esporotricosis y cromoblastomicosis—"
  }
 };
 
@@ -392,18 +636,18 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 6,
-     "que": "DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras)",
-     "como": "Solo esos 3 apartados, a ~120 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).",
+     "min": 8,
+     "que": "DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = 7,62′ medidos)",
+     "como": "Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).",
      "enlace": {
       "t": "DermNet · Terminology",
       "url": "https://dermnetnz.org/topics/terminology"
      }
     },
     {
-     "min": 13,
+     "min": 11,
      "que": "Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · DICTADO INVERSO de morfología",
-     "como": "Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ · cada fallo → tarjeta.",
+     "como": "Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ (las 6 en 11′) · cada fallo → tarjeta.",
      "enlace": {
       "t": "Proyecto AESTHETIC DERMATOLOGY",
       "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
@@ -574,9 +818,9 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 6,
-     "que": "DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras)",
-     "como": "~120 palabras/min · completa tu tabla de configuraciones con los términos en inglés.",
+     "min": 7,
+     "que": "DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = 6,71′ medidos)",
+     "como": "~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés.",
      "enlace": {
       "t": "DermNet · Terminology",
       "url": "https://dermnetnz.org/topics/terminology"
@@ -593,8 +837,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 3,
-     "que": "DermNet › «Blaschko lines» (≈250 palabras + 2 tablas + figuras)",
-     "como": "Mira las figuras de tronco y extremidad y dibuja el patrón en V/S sobre una silueta.",
+     "que": "DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» (94 palabras + 2 figuras = 1,44′ medidos) + dibujo del patrón (≈1,5′)",
+     "como": "Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.",
      "enlace": {
       "t": "DermNet · Blaschko lines",
       "url": "https://dermnetnz.org/topics/blaschko-lines"
@@ -610,7 +854,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 3,
+     "min": 2,
      "que": "CIERRE · free recall en voz alta + tarjetas de MECANISMO",
      "como": "Free recall en voz alta de lo de hoy (sin mirar) · etiqueta cada fallo con su módulo CORE (med/ped/surg/path) · marca el átomo («Marcar átomo como hecho»). ≤3 tarjetas en APEX::DERMA::A."
     }
@@ -944,8 +1188,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 9,
-     "que": "DermNet › «Skin phototype» (clasificación de Fitzpatrick, ≈230 palabras + 6 figuras) + «Postinflammatory hyperpigmentation» (≈440 palabras + 8 figuras)",
+     "min": 10,
+     "que": "DermNet (10,15′ medidos a 100 palabras/min + 0,25′ por figura) › «Skin phototype» (clasificación de Fitzpatrick, ≈230 palabras + 6 figuras) + «Postinflammatory hyperpigmentation» (≈440 palabras + 8 figuras)",
      "como": "Tabla fototipo I-VI → quema/broncea → cómo se ve el eritema y la PIH en cada uno.",
      "enlace": {
       "t": "DermNet · Skin phototype",
@@ -971,9 +1215,9 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 16,
+     "min": 15,
      "que": "Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · viñetas en fototipo IV-VI",
-     "como": "Pídele 5 viñetas de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).",
+     "como": "Pídele 3 viñetas (≈5′ cada una: los 15′ del paso; v6.09b · lote 1-ter, antes 5 en 16′) de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).",
      "enlace": {
       "t": "Proyecto AESTHETIC DERMATOLOGY",
       "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
@@ -1016,7 +1260,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
     }
    ],
-   "hecho": "Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 5 viñetas corregidas + ≤3 tarjetas.",
+   "hecho": "Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 3 viñetas corregidas + ≤3 tarjetas.",
    "planB": "Casos #21 (Dermatopathology. Case 21) y #194 (Surgical Dermatology. Case 24), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
   }
@@ -1139,8 +1383,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 9,
-     "que": "PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2",
+     "min": 11,
+     "que": "PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (789 palabras) + pies de las Figuras 1-2 (343 palabras) = 12,07′ medidos a 100 palabras/min",
      "como": "Solo la Pregunta 3 y las figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica) · es la lectura del d20, aquí solo la anatomía.",
      "enlace": {
       "t": "PMC7427155",
@@ -1148,7 +1392,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 6,
+     "min": 4,
      "que": "MAPA DE MEMORIA",
      "como": "Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto y corrige en rojo."
     },

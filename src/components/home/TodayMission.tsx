@@ -41,7 +41,7 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 // v6.02c (E5 · resto del día): guías «qué · cuánto · cómo» de vibecoding · SYNAPSE · Business · AURUM · LIVIANO · revisión · SHIP · Feynman
-import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
+import { guiaVibeDe, guiaSynapseDe, guiaSynapseColaDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
 import { aurumObsUrl } from '../../lib/aurumDailyPlan';
 import { bizDiaDe } from '../../lib/businessStudyPlan';
 /** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
@@ -689,6 +689,12 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       };
     }
     case 'synapse': {
+      // v6.09b lote 1-ter: bloque «syn-cola» = la cola del SYNAPSE de F1 con franja real (sáb 26-dic 07:15 · F5 04:15 L-V) → su propia guía
+      if (b.id === 'syn-cola') {
+        const gC = guiaSynapseColaDe(iso);
+        const url = gC?.pasos.find((p) => p.enlace)?.enlace?.url;
+        return { tema: gC ? gC.titulo : 'SYNAPSE · cola', sub: 'audio y lectura que no cupieron en su día (tramo exacto)', acciones: url ? [{ lbl: '▶ abrir', color: OBS, url, fill: true }] : [], ...(gC ? { guias: [gC] } : {}) };
+      }
       const s = synDiaDe(iso);
       // v6.02c (E5): A/B/C con qué y cuánto exactos; el día del UWSA1 (v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) se hace a las 07:25 · días de NBME a las 13:00
       const gS = guiaSynapseDe(iso);

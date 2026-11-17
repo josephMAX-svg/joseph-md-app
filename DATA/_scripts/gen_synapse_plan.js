@@ -146,6 +146,12 @@ const SIN_SESION_SYN = new Set(require('./gen_fechas_v6').cargarFechasV6().corri
 //   (medir_synapse_f1.js) + synapse_f1_tramos.js: cada A/B/C lleva su tramo real (vídeo entero a 1,0/1,25/1,5×; audio por minutos a 1,5×, el deep dive a
 //   1,0×; lectura en ventanas de ≈500 palabras con localizador sección + párrafo) y lo que no cabe va con FECHA (comodines del sábado, hueco de Lex, lun 4 /
 //   mar 5 / vie 8-ene ya previstos, y la COLA POST-STEP 1: 30′/día L-V desde el lun 13-dic-2027 → SYN_COLA_POST_STEP1). `--check` compara sin escribir.
+// v6.09b · lote 1-ter S3 (mar 17-nov · revisión R del lote 1-bis, hallazgos 1, 5 y 9): (1) la COLA POST-STEP 1 tiene FRANJA REAL — cada día lleva ini/fin
+//   (04:15-04:45 L-V, F5) y sus PASOS con minutos enteros (Σ = 30′; ratio de cada paso ∈ [0,85; 1,15]) → plantillasV6 › bloqueSynCola + rutinaGuia ›
+//   guiaSynapseColaDe; los feriados de _fechas_v6.json también quedan fuera; (1, mínimo) SYN_COLA_F1 = huecos reales de F1 con hora: sáb 26-dic 07:15-07:42
+//   con los 26:42 finales del deep dive (antes, a 2027-2028); el vie 8-ene «termina los tramos pendientes» toma lo siguiente del canal a la velocidad de su
+//   serie; (9) el sábado, A medido con sus minutos y el C del comodín compensa (A + B + C = 30′, el bloque termina a las 21:30, antes del Anki); (5) toda fecha
+//   de destino va al principio del «cómo» (≤ 100 caracteres) y el generador aborta si alguna queda después del corte del Calendar.
 const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16', '2026-11-21'], wd: 'Lun', semana: 1, motivo: 'lun 16-nov (no se estudió) + sáb 21-nov (viaje)' };
 let DOM_RECUPERA = new Map(); // se fija tras leer el START (abajo)
 // v5.20: último SÁBADO del plan (≤ FIN_PLAN). Si la sem 1 no tiene martes (START en miércoles o después), la pieza del carril del
@@ -747,6 +753,7 @@ if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar e
 //   Las A-units, el `d`, las piezas por carril y TODO 2027 quedan idénticos (synapse_f1_tramos.js solo reescribe bloques de F1). Solo con el START del
 //   régimen v6.09 (lun 16-nov): con otro START (reproducir versiones viejas) no se aplica.
 let COLA_POST = [];
+let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-dic 07:15: el final del deep dive)
 {
   const MED_F1 = path.join(ROOT, 'DATA/SYNAPSE/medidas_f1.json');
   if (START_ISO === '2026-11-16' && fs.existsSync(MED_F1)) {
@@ -756,16 +763,17 @@ let COLA_POST = [];
     // URLs medidas (curl 200 el 17-nov-2026, medir_synapse_f1.js) → allowlist (regla «cero URLs inventadas»)
     for (const L of Object.values(MED.lectura)) { ALLOWED.add(L.url); for (const sx of L.secciones) if (sx.url) ALLOWED.add(sx.url); }
     for (const A of Object.values(MED.audio)) ALLOWED.add(A.url);
-    const T = require('./synapse_f1_tramos').crear(MED, { dias, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()) });
+    const T = require('./synapse_f1_tramos').crear(MED, { dias, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()), feriados: new Set(require('./gen_fechas_v6').cargarFechasV6().feriados) }); // v6.09b lote 1-ter: + feriados (fuera de la cola)
     let n = 0;
     for (const x of dias) for (const b of x.bloques) {
       const o = T.sesiones.get(`${x.fecha}|${b.tag}`);
       if (!o || !['A', 'B', 'C'].includes(b.tag)) continue;
       if (x.fecha > require('./synapse_f1_tramos').HASTA || x.fecha < require('./synapse_f1_tramos').DESDE) throw new Error('v6.09b: tramo F1 fuera de F1 en ' + x.fecha);
-      b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; n++;
+      b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; if (o.min) b.min = o.min; n++; // v6.09b lote 1-ter: el sábado A/C con sus minutos reales (A + B + C = 30)
       if (o.guia && o.guia.url) assertUrl(o.guia.url);
     }
     COLA_POST = T.cola;
+    COLA_F1 = T.colaF1;
     if (!CHECK) console.log(`v6.09b · F1 troceado con material medido: ${n} bloques A/B/C reescritos · cola post-Step 1: ${COLA_POST.length} días (${COLA_POST[0] ? COLA_POST[0].fecha : '—'} → ${COLA_POST.length ? COLA_POST[COLA_POST.length - 1].fecha : '—'})`);
   }
 }
@@ -853,9 +861,17 @@ export function synDiaDe(fechaISO: string): DiaSynapse | undefined { return SYN_
 
 /** v6.09b (S1, 17-nov-2026): COLA POST-STEP 1 del SYNAPSE de F1 — lo que no cupo en su sesión de F1 (ni en los comodines del sábado, el hueco de Lex o
  *  las sesiones de 2027 que ya lo prevén), con fecha: 30′/día L-V desde el lun 13-dic-2027 (tras el examen del lun 6-dic). Audio a la velocidad de su
- *  serie; lectura a 100 palabras/min. Cada sesión de F1 que deja un resto dice aquí qué días le tocan. Aún no la pinta ninguna plantilla (F5 es un esbozo). */
-export interface SynColaPieza { titulo: string; url: string; desde: string; hasta?: string; palabras?: number; vel?: number; min: number }
-export const SYN_COLA_POST_STEP1: Array<{ fecha: string; piezas: SynColaPieza[] }> = ${JSON.stringify(COLA_POST)};
+ *  serie; lectura a 100 palabras/min. Cada sesión de F1 que deja un resto dice aquí qué días le tocan.
+ *  v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R): con FRANJA REAL — bloque SYNAPSE 04:15-04:45 L-V en F5 (plantillasV6 › bloqueSynCola ·
+ *  rutinaGuia › guiaSynapseColaDe): cada día, sus PASOS con minutos enteros que suman la franja (campo min; campo med = lo que pide el material, ratio en
+ *  [0,85; 1,15]). SYN_COLA_F1 = huecos reales de F1 con hora para lo que no cupo en los comodines del sábado (sáb 26-dic 07:15: el final del deep dive). */
+export interface SynColaPieza { tipo: 'audio' | 'lectura'; id: string; titulo: string; url: string; desde: string; hasta?: string; palabras?: number; vel?: number; med: number; retoma: string }
+export interface SynColaPaso { min: number; med: number; piezas: SynColaPieza[] }
+export interface SynColaDia { fecha: string; ini: string; fin: string; min: number; med: number; pasos: SynColaPaso[] }
+export const SYN_COLA_POST_STEP1: SynColaDia[] = ${JSON.stringify(COLA_POST)};
+export const SYN_COLA_F1: SynColaDia[] = ${JSON.stringify(COLA_F1)};
+/** v6.09b lote 1-ter: día de cola (hueco de F1 con hora o post-Step 1) de una fecha · undefined si no hay */
+export function synColaDe(fechaISO: string): SynColaDia | undefined { return SYN_COLA_F1.find((x) => x.fecha === fechaISO) ?? SYN_COLA_POST_STEP1.find((x) => x.fecha === fechaISO); }
 export function syn7d(fromD: number): DiaSynapse[] { return SYN_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
 
 export const SYN_FORMATO_ICON: Record<SynFormato, string> = {
@@ -872,7 +888,7 @@ if (CHECK) {
   const nl = (x) => x.split(String.fromCharCode(13, 10)).join(String.fromCharCode(10));
   const disco = nl(fs.readFileSync(path.join(ROOT, 'src/lib/synapseDailyPlan.ts'), 'utf8'));
   if (disco !== nl(ts)) { console.error('✗ src/lib/synapseDailyPlan.ts NO está al día: node DATA/_scripts/gen_synapse_plan.js ' + START_ISO); process.exit(1); }
-  console.log(`✓ synapseDailyPlan.ts al día · ${TOTAL} días · ${aUnits.length} A-units · fin ${dias[TOTAL - 1].fecha} · F1 medido: ${dias.reduce((a, x) => a + x.bloques.filter((b) => b.guia).length, 0)} bloques · cola post-Step 1: ${COLA_POST.length} días`);
+  console.log(`✓ synapseDailyPlan.ts al día · ${TOTAL} días · ${aUnits.length} A-units · fin ${dias[TOTAL - 1].fecha} · F1 medido: ${dias.reduce((a, x) => a + x.bloques.filter((b) => b.guia).length, 0)} bloques · cola post-Step 1: ${COLA_POST.length} días (${COLA_POST.reduce((x, d) => x + d.min, 0)}′, ${COLA_POST[0] ? COLA_POST[0].ini : '—'}) · huecos de F1 con hora: ${COLA_F1.map((d) => `${d.fecha} ${d.ini}-${d.fin}`).join(' · ') || '—'}`);
   process.exit(0);
 }
 fs.writeFileSync(path.join(ROOT, 'src/lib/synapseDailyPlan.ts'), ts, 'utf8');

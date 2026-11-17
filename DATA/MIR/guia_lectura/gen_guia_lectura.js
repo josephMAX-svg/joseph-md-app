@@ -40,6 +40,11 @@
  *    (77 s + 30 s de comentario = 107 s/Q: 6Q ≈ 10,7′ en 12′; 8Q eran 14,3′). Solo cambia el TEXTO del paso y del «hecho» (QUIZ_HACER): la lista del quiz
  *    (8-10Q), su reparto con las anclas y las preguntas de todos los días quedan idénticos; las de la lista que no entran siguen en la cola del capítulo.
  *    Aplica a los 76 días-tema (también los de 2027: es el mismo texto).
+ *  · v6.09b · lote 1-ter (17-nov-2026 · revisión R del lote 1-bis: 53 pasos MIR de F1 fuera de 0,85-1,15): SOLO F1 desde el D2 (mié 18-nov → jue 31-dic; el D1
+ *    —en curso— y 2027 quedan idénticos): eval anclada de 4Q 7′ → 6′ (su cronómetro; 4 × 77 s = 5,1′ → 0,86) con el minuto al Anki (5′ → 6′) · pre-test 5Q
+ *    8′ → 7′ (6,4′ → 0,92) con el minuto a la LECTURA DIRIGIDA (15′ → 16′, las mismas secciones): a 150 palabras/min —la regla fija de lectura en español—
+ *    suman 15,5-18,1′ con el recuadro (a 15′, 5 días quedaban por encima de 1,15; a 16′, todos en 0,97-1,13) y el paso lo declara «(N′ medidos a 150
+ *    palabras/min; M′ a 180)». --check valida esas razones en F1 y que fuera de F1 no cambia nada. Preguntas, secciones y reparto: idénticos.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -80,6 +85,23 @@ const QUIZ_N = 8, QUIZ_MAX = 10; // LISTA del quiz: 8-10Q (selección y reparto 
 // v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-7): lo que se HACE en los 12′ = 6Q comentadas (máx. 8): 77 s + 30 s de comentario = 107 s/Q →
 //   6Q ≈ 10,7′ (8Q = 14,3′ no cabían); la lista sigue siendo de 8-10 y las que no entran quedan en la cola del capítulo (esta lista, en orden)
 const QUIZ_HACER = 6, QUIZ_HACER_MAX = 8, SEG_COMENTARIO = 30;
+// v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis: 53 pasos MIR de F1 fuera de 0,85-1,15 —pre-test 5Q en 8′ = 0,80 y eval anclada 4Q en 7′ = 0,73—):
+//   SOLO F1 desde el D2 (mié 18-nov → jue 31-dic; el D1 —mar 17-nov, en curso— y 2027 no cambian), dentro de las mismas franjas y sin material nuevo:
+//   · 15:15-15:30: la eval anclada de 4Q dura su cronómetro (6′; 4 × 77 s = 5,1′) y el minuto pasa al Anki (6′; deuda a cero + mazo de Ravi, paso elástico);
+//     las evals de 2-3Q (D2, D3, D6, D7) siguen con 7′ y «los N′ que sobran, adelanta el Anki».
+//   · 15:30-16:15: el pre-test 5Q pasa a 7′ (5 × 77 s = 6,4′) y el minuto pasa a la LECTURA DIRIGIDA (16′) con las MISMAS secciones: a 150 palabras/min
+//     —la regla fija de lectura en español— suman 15,5-18,1′ con el recuadro (a 180, 13,5-15′): a 15′ había 5 días por encima de 1,15; a 16′, todos en 0,97-1,13.
+const LOTE1T_DESDE = '2026-11-18', LOTE1T_HASTA = '2027-01-03', PPM_REGLA = 150;
+const enLote1t = (iso) => iso >= LOTE1T_DESDE && iso <= LOTE1T_HASTA;
+const dec1 = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+/** Minutos de la lectura elegida (recuadro + secciones) a 150 palabras/min en la prosa (tablas a 90, figuras 0,5′ y clips, como el generador); una sección
+ *  PARCIAL cuenta la misma fracción que a 180. */
+const min150 = (sel) => ORIENT_MIN + sel.reduce((s, u) => {
+  const clip = u.clips.reduce((a, v) => a + v.seg, 0) / 60;
+  const r150 = u.palabras / PPM_REGLA + u.palabrasTabla / RITMO.tablaPpm + u.figs * RITMO.figuraMin + clip;
+  const r180 = u.palabras / RITMO.prosaPpm + u.palabrasTabla / RITMO.tablaPpm + u.figs * RITMO.figuraMin + clip;
+  return s + (u.parcial ? (u.minLeer * r150) / Math.max(r180, 0.01) : r150);
+}, 0);
 const PROMIR = 'https://promir.medicapanamericana.com';
 const capUrl = (id) => `${PROMIR}/capitulo/${id}`;
 const preguntaUrl = (pid) => `${PROMIR}/pregunta/MIR/${pid}`;
@@ -239,6 +261,7 @@ for (const x of DIAS) {
 
 function pasosDia(d) {
   const { x, med, us, pool, pre, sel, reserva, minUsados, quiz, minCompleta } = CAP[d];
+  const L1 = enLote1t(x.fecha); // v6.09b · lote 1-ter: F1 desde el D2
   const deck = ANKI.mirAnkiDeck(x.asignatura);
   const cierre = MD.mirCierreDe(d);
   const anc = MD.mirAnclas(d);
@@ -280,16 +303,21 @@ function pasosDia(d) {
     const cortos = slots.filter((y) => y.ids.length < y.n); // v6.03: capítulos de pocas citadas → la eval repite un fallo de ese día
     preguntas.eval = slots.map((y) => ({ slot: y.k, dia: y.d, tema: CAP[y.d].x.tema, preguntas: y.ids.map((c) => ({ promir: c.pid, url: preguntaUrl(c.pid), seccion: c.u.titulo })) }));
     const minQ = Math.ceil((nQ * SEG_POR_Q) / 60);
-    pasos.push({ min: 7, hora: '15:15–15:22', que: `EVAL ANCLADA ${nQ}Q · ${slots.map((y) => `${y.n}Q ${y.k} (D${y.d} ${CAP[y.d].x.tema.split(' (')[0]})`).join(' + ')}`, como: `Cronómetro ${minQ}′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas)${nQ < 4 ? ` · hoy solo hay ${nQ}Q (no existen D-3/D-7 todavía): los ${7 - minQ}′ que sobran, adelanta el Anki` : ''}${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app.` });
-    pasos.push({ min: 5, hora: '15:22–15:27', que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer.' });
+    // v6.09b · lote 1-ter: en F1 (D2-D32) la eval de 4Q dura su cronómetro (6′) y el minuto pasa al Anki
+    const evalMin = L1 && nQ === 4 ? minQ : 7; const hEval = `15:${15 + evalMin}`;
+    pasos.push({ min: evalMin, hora: `15:15–${hEval}`, que: `EVAL ANCLADA ${nQ}Q · ${slots.map((y) => `${y.n}Q ${y.k} (D${y.d} ${CAP[y.d].x.tema.split(' (')[0]})`).join(' + ')}`, como: `Cronómetro ${minQ}′ (77 s/Q${evalMin !== 7 ? `: ${nQ} × 77 s = ${dec1((nQ * SEG_POR_Q) / 60)}′` : ''}), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas)${nQ < 4 ? ` · hoy solo hay ${nQ}Q (no existen D-3/D-7 todavía): los ${7 - minQ}′ que sobran, adelanta el Anki` : ''}${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app.` });
+    pasos.push({ min: 12 - evalMin, hora: `${hEval}–15:27`, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer.' });
     pasos.push({ min: 3, hora: '15:27–15:30', que: 'Log de la eval en la app', como: 'aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana.' });
   }
-  // pre-test
-  pasos.push({ min: 8, hora: '15:30–15:38', que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial de la app${pre.some((p) => p.fuente !== 'pool app') ? ` + ${pre.filter((p) => p.fuente !== 'pool app').length} citadas en ProMIR` : ''})`, como: 'Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta).' });
+  // pre-test (v6.09b · lote 1-ter: en F1, 7′ = 5 × 77 s ≈ 6,4′; el minuto pasa a la lectura)
+  const preMin = L1 ? 7 : 8; const hPre = `15:${30 + preMin}`;
+  pasos.push({ min: preMin, hora: `15:30–${hPre}`, que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial de la app${pre.some((p) => p.fuente !== 'pool app') ? ` + ${pre.filter((p) => p.fuente !== 'pool app').length} citadas en ProMIR` : ''})`, como: (L1 ? 'Sin leer nada · 77 s/Q (5Q ≈ 6,4′)' : 'Sin leer nada · 77 s/Q') + ' · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta).' });
   preguntas.pretest = pre;
   // lectura
   const linea = (u) => `${u.titulo} (${u.parcial ? `PARCIAL ${u.minLeer}′ de ${u.min}′: solo los párrafos con chip MIR ≥2015` : `${u.min}′`}${u.citasMIR ? ` · ${u.citasMIR} preguntas MIR citadas` : ''}${u.contexto ? ' · contexto, sin preguntas citadas' : ''}${u.clips.length ? ` · clip ${u.clips.map((c) => c.dur).join(' + ')}` : ''})`;
-  pasos.push({ min: 15, hora: '15:38–15:53', que: `LECTURA DIRIGIDA ${LECTURA_MIN}′ · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: `Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (${reserva.map((u) => `${u.titulo} ${u.min}′`).join(' · ') || '—'}). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia ${RITMO.prosaPpm} palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
+  // v6.09b · lote 1-ter: en F1 la lectura es de 16′ con las MISMAS secciones (a 150 palabras/min suman m150′ con el recuadro)
+  const m150 = Math.round(min150(sel) * 10) / 10; const lecMin = L1 ? LECTURA_MIN + (8 - preMin) : LECTURA_MIN;
+  pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `LECTURA DIRIGIDA ${lecMin}′${L1 ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: `Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (${reserva.map((u) => `${u.titulo} ${u.min}′`).join(' · ') || '—'}). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. ${L1 ? `Minutos de cada sección a ${RITMO.prosaPpm} palabras/min (ritmo de referencia del método); a ${PPM_REGLA} —la regla de lectura en español— la lista suma ${dec1(m150)}′ con el recuadro: por eso el paso es de ${lecMin}′` : `Ritmo de referencia ${RITMO.prosaPpm} palabras/min`}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
   // quiz
   preguntas.quiz = quiz;
   const nRepaso = quiz.filter((q) => q.deDia).length; // v6.03: complemento con capítulos ya leídos
@@ -314,7 +342,7 @@ function pasosDia(d) {
     },
     preguntas,
     lectura: {
-      minUsados, ritmo: RITMO,
+      minUsados, ritmo: RITMO, ...(enLote1t(x.fecha) ? { min150: Math.round(min150(sel) * 10) / 10, minPaso: pasos.find((p) => p.que.startsWith('LECTURA DIRIGIDA')).min } : {}),
       secciones: sel.map((u) => ({ titulo: u.titulo, min: u.min, minLeer: u.minLeer, parcial: u.parcial, palabras: u.palabras, palabrasTabla: u.palabrasTabla, figs: u.figs, citasMIR: u.citasMIR, citasDesde2015: u.citasDesde2015, citasDesde2020: u.citasDesde2020, clips: u.clips, ...(u.contexto ? { contexto: true } : {}) })),
       reserva: reserva.map((u) => ({ titulo: u.titulo, min: u.min, citasMIR: u.citasMIR })),
       paraElRepaso: { min: r05(minCompleta - sel.reduce((s, u) => s + u.minLeer, 0)), donde: '2.ª vuelta MIR (fase principal desde oct-2027) · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)', secciones: us.filter((u) => u.nivel !== 'H2' && !sel.some((s) => s.i === u.i && !s.parcial)).map((u) => `${u.titulo} ${u.min}′`) },
@@ -404,6 +432,16 @@ for (const x of salida) {
   if (x.preguntas.pretest.length !== 5) errs.push(`D${x.d}: pre-test con ${x.preguntas.pretest.length}Q`);
   if (x.preguntas.quiz.length < QUIZ_N) errs.push(`D${x.d}: quiz con ${x.preguntas.quiz.length}Q < ${QUIZ_N}`);
   if (x.lectura.minUsados > LECTURA_MIN) errs.push(`D${x.d}: lectura ${x.lectura.minUsados}′ > ${LECTURA_MIN}′`);
+  // v6.09b · lote 1-ter: en F1 (D2-D32) cada paso medible cuadra a la regla fija (razón necesario/asignado 0,85-1,15): eval 4Q × 77 s · pre-test 5Q × 77 s ·
+  //   lectura a 150 palabras/min; fuera de F1, los pasos siguen como estaban (2027 idéntico)
+  if (enLote1t(x.fecha)) {
+    const P = (re) => x.bloque.pasos.find((p) => re.test(p.que));
+    const ok = (n, m) => m > 0 && n / m >= 0.85 && n / m <= 1.15;
+    const ev = P(/^EVAL ANCLADA (\d+)Q/); const pr = P(/^PRE-TEST 5Q/); const le = P(/^LECTURA DIRIGIDA/);
+    if (ev) { const n = +/^EVAL ANCLADA (\d+)Q/.exec(ev.que)[1]; if (n === 4 && !ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
+    if (!pr || !ok((5 * SEG_POR_Q) / 60, pr.min)) errs.push(`D${x.d}: pre-test 5Q en ${pr ? pr.min : '—'}′`);
+    if (!le || !ok(x.lectura.min150, le.min) || !le.que.includes(`(${dec1(x.lectura.min150)}′ medidos`)) errs.push(`D${x.d}: lectura ${x.lectura.min150}′ (a 150) en ${le ? le.min : '—'}′`);
+  } else if (x.lectura.min150 != null) errs.push(`D${x.d}: fuera de F1 con la lectura del lote 1-ter`);
 }
 const todas = salida.flatMap((x) => [].concat(x.preguntas.pretest.map((p) => p.promir), (x.preguntas.extraD1 || []).map((p) => p.promir), x.preguntas.quiz.map((p) => p.promir), (x.preguntas.cierre || []).map((p) => p.promir)));
 const rep = todas.filter((p, i) => todas.indexOf(p) !== i);

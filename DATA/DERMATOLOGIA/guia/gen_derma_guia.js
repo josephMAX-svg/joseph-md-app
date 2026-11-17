@@ -38,6 +38,12 @@
 //   = palabras/120 + 0,25′/imagen con su alcance por secciones). El --check valida además que cada sesión de F1 con atlas DermNet lo lleva medido y con
 //   esos minutos (y que no se cae por el «relleno < 3′»). 2027 no cambia (otro lote). La velocidad de Derma se queda en sus cortes D5/D15: medido el
 //   d3/d4 (mar 24 y jue 26-nov), su franja cuadra a 1,0× (ver el informe del lote 1-bis), así que adelantar el 1,25× no arregla ninguna franja.
+// v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8): DermNet a la regla fija (palabras/100, no /120, + 0,25′/imagen) y medido
+//   POR SESIÓN: dermnet_medidas_f1.json v2 = páginas por sección (+ 3 enlaces del índice de micosis para el 31-dic) y, por fecha, qué se lee. Alcance = el de
+//   la guía anterior al lote 1-bis (todas las imágenes + clínica + diferencial o su sustituto) + lo que añadió el 1-bis; los minutos salen del proyecto
+//   Claude (0′ el 4 y el 8-dic). El resto de cada página «no forma parte del átomo» (sin «no hoy»); lo del átomo que no cabe el 4-dic (2 secciones de
+//   psoriasis) va al jue 10-dic con sus minutos. El --check valida además las viñetas del proyecto Claude (k = round(min/5), k × 5 / min en 0,85-1,15),
+//   el «(N′ medidos» del paso, la fecha de destino dentro del corte del Calendar y que nada diga «no hoy». 2027 no cambia.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -90,16 +96,54 @@ const VEL = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DI
 if (!VEL.s1Hasta || !VEL.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
 const vel = (fecha) => (fecha <= VEL.s1Hasta ? { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : fecha <= VEL.s23Hasta ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
 
-// v6.09b · lote 1-bis (17-nov-2026, auditoría tiempo ↔ material a2-9): el atlas DermNet de F1 MEDIDO (páginas públicas, curl): alcance por secciones,
-//   palabras de prosa e imágenes → min = palabras/120 + 0,25′ por imagen (razón 0,85-1,15). Solo recuentos y títulos de sección (nada del texto).
+// v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8): el atlas DermNet de F1 MEDIDO por SESIÓN (fecha) con la regla fija
+//   min = palabras/100 + 0,25′ por imagen (inglés; antes /120) y el alcance de la guía anterior al lote 1-bis (TODAS las imágenes de la página + clínica +
+//   diferencial; si falta, su sustituto). Lo que no es del alcance «no forma parte del átomo»; lo que es del átomo y no cabe va a otro día con sus minutos
+//   (aOtroDia → lectura «de» en la sesión destino). Solo recuentos y títulos de sección (nada del texto).
 const DN = rd('DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json');
-for (const [slug, m] of Object.entries(DN.paginas)) {
-  const need = m.palabras / 120 + 0.25 * m.imagenes;
-  if (!(m.min >= 2 && need / m.min >= 0.85 && need / m.min <= 1.15)) aborta(`DermNet ${slug}: ${m.min}′ para ${need.toFixed(2)}′ medidos (fuera de 0,85-1,15)`);
-  if (Math.abs(need - m.necesario) > 0.01) aborta(`DermNet ${slug}: «necesario» ${m.necesario} ≠ ${need.toFixed(2)} (palabras/120 + 0,25′ × imágenes)`);
-  if (!m.alcance.length || m.palabras > m.pagina.palabras || m.imagenes > m.pagina.imagenes) aborta(`DermNet ${slug}: alcance incoherente con la página`);
+const DN_PPM = 100, DN_IMG = 0.25;
+/** Tema (en español) de una sección que queda fuera del átomo, por su título. */
+const temaFuera = (t) => (/^Who gets/i.test(t) ? 'epidemiología' : /cause|arise/i.test(t) ? 'causas' : /diagnos|tests? (are|for)|specimen|culture|blood tests|polymerase/i.test(t) ? 'diagnóstico'
+  : /treatment|management/i.test(t) ? 'tratamiento' : /outcome|outlook/i.test(t) ? 'pronóstico' : /prevent/i.test(t) ? 'prevención' : /severity/i.test(t) ? 'gravedad'
+    : /future/i.test(t) ? 'perspectivas' : /aggravate/i.test(t) ? 'factores agravantes' : /complication/i.test(t) ? 'complicaciones' : /^introduction$/i.test(t) ? 'introducción' : 'otros');
+const secDN = (pag, t) => { const P = DN.paginas[pag]; if (!P) aborta(`DermNet: página «${pag}» sin medir`); const s = P.secciones.find((x) => x[0] === t); if (!s) aborta(`DermNet ${pag}: sin sección «${t}»`); return { t, palabras: s[1], imagenes: s[2] }; };
+const r2 = (x) => Math.round(x * 100) / 100;
+/** k viñetas del proyecto Claude en m minutos (≈5′ cada una) y su razón k × 5 / m (0,85-1,15; 0′ = sin viñetas). */
+const vinetas = (m) => { const k = Math.round(m / 5); return { k, razon: m ? (k * 5) / m : 1 }; };
+const DERMNET_MEDIDO = {};
+for (const [fecha, s] of Object.entries(DN.sesiones)) {
+  if (!(fecha <= '2027-01-03')) aborta(`DermNet ${fecha}: fuera de F1`);
+  const lecturas = s.lee.map((l) => {
+    const tx = l.texto.map((t) => secDN(l.pag, t)); const im = (l.imagenes || []).map((t) => secDN(l.pag, t));
+    if (l.de && !(DN.sesiones[l.de] && DN.sesiones[l.de].aOtroDia && DN.sesiones[l.de].aOtroDia.fecha === fecha && DN.sesiones[l.de].aOtroDia.pag === l.pag && JSON.stringify(DN.sesiones[l.de].aOtroDia.texto) === JSON.stringify(l.texto))) aborta(`DermNet ${fecha}: la lectura «de» ${l.de} no coincide con el aOtroDia de esa sesión`);
+    return { pag: l.pag, url: DN.paginas[l.pag].url, texto: l.texto, ...(im.length ? { soloImagenes: l.imagenes } : {}), palabras: tx.reduce((a, x) => a + x.palabras, 0), imagenes: tx.reduce((a, x) => a + x.imagenes, 0) + im.reduce((a, x) => a + x.imagenes, 0), ...(l.de ? { de: l.de } : {}) };
+  });
+  const palabras = lecturas.reduce((a, l) => a + l.palabras, 0), imagenes = lecturas.reduce((a, l) => a + l.imagenes, 0);
+  const necesario = r2(palabras / DN_PPM + DN_IMG * imagenes);
+  if (!(s.min >= 2 && necesario / s.min >= 0.85 && necesario / s.min <= 1.15)) aborta(`DermNet ${fecha}: ${s.min}′ para ${necesario}′ medidos (fuera de 0,85-1,15)`);
+  if (!lecturas.some((l) => l.pag === s.atlas && !l.de)) aborta(`DermNet ${fecha}: no lee su atlas «${s.atlas}»`);
+  // fuera del átomo: lo que queda de las páginas propias de hoy (no las que llegan de otro día) que no se lee hoy ni va a otro día
+  const otro = s.aOtroDia ? s.aOtroDia.texto.map((t) => secDN(s.aOtroDia.pag, t)) : [];
+  let fueraPal = 0; const temas = [];
+  for (const l of lecturas.filter((x) => !x.de)) {
+    for (const [t, w, img] of DN.paginas[l.pag].secciones) {
+      if (l.texto.includes(t) || (s.aOtroDia && s.aOtroDia.pag === l.pag && s.aOtroDia.texto.includes(t))) continue;
+      // la página del átomo: TODAS sus imágenes se ven (hoy o el día de destino); una sección con imágenes fuera del alcance → solo sus imágenes
+      if (l.pag === s.atlas && img > 0 && !(l.soloImagenes || []).includes(t)) aborta(`DermNet ${fecha}: «${t}» tiene ${img} imágenes y no se ven (el alcance pide todas las de la página)`);
+      fueraPal += w; if (w > 0 && !temas.includes(temaFuera(t))) temas.push(temaFuera(t));
+    }
+  }
+  const pagAtlas = DN.paginas[s.atlas]; const imgAtlas = pagAtlas.secciones.reduce((a, x) => a + x[2], 0);
+  const imgVistas = lecturas.filter((l) => l.pag === s.atlas && !l.de).reduce((a, l) => a + l.imagenes, 0) + otro.reduce((a, x) => a + x.imagenes, 0);
+  if (imgVistas !== imgAtlas) aborta(`DermNet ${fecha}: ${imgVistas} imágenes vistas de ${imgAtlas} de la página «${s.atlas}»`);
+  DERMNET_MEDIDO[fecha] = {
+    atlas: s.atlas, lecturas, palabras, imagenes, necesario, min: s.min,
+    fuera: { palabras: fueraPal, temas },
+    ...(s.aOtroDia ? { aOtroDia: { fecha: s.aOtroDia.fecha, pag: s.aOtroDia.pag, texto: s.aOtroDia.texto, palabras: otro.reduce((a, x) => a + x.palabras, 0), imagenes: otro.reduce((a, x) => a + x.imagenes, 0), necesario: r2(otro.reduce((a, x) => a + x.palabras, 0) / DN_PPM + DN_IMG * otro.reduce((a, x) => a + x.imagenes, 0)) } } : {}),
+    ...(s.motivo ? { motivo: s.motivo } : {}),
+  };
 }
-const DERMNET_MEDIDO = Object.fromEntries(Object.entries(DN.paginas).map(([slug, m]) => [slug, { alcance: m.alcance, palabras: m.palabras, imagenes: m.imagenes, necesario: m.necesario, min: m.min, pagina: m.pagina, ...(m.motivo ? { motivo: m.motivo } : {}) }]));
+for (const [fecha, m] of Object.entries(DERMNET_MEDIDO)) if (m.aOtroDia && !(DERMNET_MEDIDO[m.aOtroDia.fecha] && DERMNET_MEDIDO[m.aOtroDia.fecha].lecturas.some((l) => l.de === fecha))) aborta(`DermNet ${fecha}: su aOtroDia (${m.aOtroDia.fecha}) no lo recibe`);
 
 const E2 = rd('DATA/MIR/guia_lectura_semana1-2.json');
 const E2D = (d) => E2.derma.find((x) => x.d === d) || aborta(`E2 sin derma d${d}`);
@@ -157,6 +201,14 @@ for (const [d, par] of Object.entries(CUR)) {
     if (ceros.length > 1) aborta(`d${d} ${k}: más de un paso de relleno (min 0)`);
     if (ceros.length === 1) { const resto = g.totalMin - g.pasos.reduce((s, p) => s + p.min, 0); if (resto < 3) aborta(`d${d} ${k}: el relleno queda en ${resto}′`); ceros[0].min = resto; }
     const e = G.validarGuia(g); if (e.length) aborta(`d${d} ${k}: ${e.join(' · ')}`);
+    // v6.09b · lote 1-ter (hallazgo 4): todo paso que declara «(N′ medidos» (DermNet/PMC a 100 palabras/min + 0,25′/figura; ProMIR a 180) cuadra en 0,85-1,15;
+    //   un dibujo declarado «(≈N′)» se suma; ninguno dice «~120 palabras/min»
+    for (const p of g.pasos) {
+      const m = /(\d+(?:[.,]\d+)?)′ medidos/.exec(p.que); if (!m) continue;
+      const dib = /dibujo[^(]*\(≈(\d+(?:,\d+)?)′\)/.exec(p.que); const nec = Number(m[1].replace(',', '.')) + (dib ? Number(dib[1].replace(',', '.')) : 0);
+      if (!(nec / p.min >= 0.85 && nec / p.min <= 1.15)) aborta(`d${d} ${k}: «${p.que.slice(0, 60)}…» ${p.min}′ para ${nec.toFixed(2)}′ (fuera de 0,85-1,15)`);
+    }
+    if (g.pasos.some((p) => /120 palabras\/min/.test(`${p.que} ${p.como}`))) aborta(`d${d} ${k}: un paso sigue a ~120 palabras/min (la regla de inglés es 100)`);
   }
   curada[d] = { d: Number(d), fecha: fila.fecha, casoIds: fila.casoIds, planA: par.planA, planB: par.planB };
 }
@@ -215,9 +267,11 @@ export const DERMA_TEST_PROMIR_D3 = ${JSON.stringify({ nQ: t3.nQ, citadas: t3.ci
 export const DERMA_CME_DESPLAZADO: Record<number, { destino: number; libro: string; capitulo: string; url: string; foco: string; motivo: string }> = ${J1(CME_DESPLAZADO)};
 /** Respaldo de Dermoscopedia (falla por HTTPS desde algunas redes): DermNet «Dermoscopy (Dermatoscopy)» (curl 200, 18-oct-2026). */
 export const DERMNET_DERMOSCOPY = ${JSON.stringify(CAT.DERMNET_DERMOSCOPY)};
-/** v6.09b · lote 1-bis: atlas DermNet de F1 MEDIDO el ${DN._meta.medido} (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): secciones del alcance, palabras de prosa,
- *  imágenes y minutos = palabras/120 + 0,25′ por imagen. Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
-export const DERMNET_MEDIDO: Record<string, { alcance: string[]; palabras: number; imagenes: number; necesario: number; min: number; pagina: { palabras: number; imagenes: number }; motivo?: string }> = ${J1(DERMNET_MEDIDO)};
+/** v6.09b · lote 1-ter: atlas DermNet de F1 MEDIDO el ${DN._meta.medido} POR SESIÓN (fecha) (DATA/DERMATOLOGIA/guia/dermnet_medidas_f1.json): lecturas (página +
+ *  secciones), palabras de prosa, imágenes y minutos = palabras/100 + 0,25′ por imagen; «fuera» = lo que no forma parte del átomo; «aOtroDia» = lo del átomo que
+ *  no cabe hoy, con su fecha (la sesión destino lo lee con «de»). Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
+export interface DermnetLectura { pag: string; url: string; texto: string[]; soloImagenes?: string[]; palabras: number; imagenes: number; de?: string }
+export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLectura[]; palabras: number; imagenes: number; necesario: number; min: number; fuera: { palabras: number; temas: string[] }; aOtroDia?: { fecha: string; pag: string; texto: string[]; palabras: number; imagenes: number; necesario: number }; motivo?: string }> = ${J1(DERMNET_MEDIDO)};
 
 /** Sesiones CURADAS (d1-d5): plan A (AccessDerma) y plan B (acceso remoto caducado), 13:30–14:15. */
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = ${J1(curada)};
@@ -263,15 +317,40 @@ function validarTodo(tsDatos) {
       if (tA && tB) { const qa = /TEST (\d+)Q/.exec(tA.que)[1], qb = /TEST (\d+)Q/.exec(tB.que)[1]; if (qa !== qb || tA.min !== tB.min) errores.push(`d${dia.d} ${dia.fecha}: test ProMIR plan A ${qa}Q/${tA.min}′ ≠ plan B ${qb}Q/${tB.min}′`); else pmd.push(`d${dia.d} ${qa}Q`); }
     }
   }
-  // v6.09b · lote 1-bis: en F1 (≤ 3-ene-2027) cada atlas DermNet del plan B (45′) está medido y lleva sus minutos (no se cae por el relleno < 3′)
-  let dnF1 = 0;
+  // v6.09b · lote 1-bis / 1-ter: en F1 (≤ 3-ene-2027) cada atlas DermNet del plan B (45′) está medido POR FECHA (regla /100 + 0,25′/imagen) y lleva sus
+  //   minutos; el proyecto Claude (variable de ajuste) tiene 0′ o k = round(min/5) viñetas con k × 5 / min en 0,85-1,15 y su texto dice k y los minutos
+  //   reales por viñeta; ningún paso dice «no hoy»; lo que va a otro día lleva su fecha en los primeros 100 caracteres del «cómo» (corte del Calendar: 110)
+  //   y la sesión destino nombra el origen; el total de la franja es 45′.
+  let dnF1 = 0; const usadasDN = new Set();
   for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03' && x.atlasUrl && x.atlasUrl.startsWith('https://dermnetnz.org/'))) {
     const c = curada[dia.d]; if (c && c.fecha === dia.fecha) continue; // curadas d1-d5: su guion propio
-    const slug = dia.atlasUrl.replace('https://dermnetnz.org/topics/', ''); const m = DERMNET_MEDIDO[slug];
-    if (!m) { errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» de F1 sin medir (falta en dermnet_medidas_f1.json)`); continue; }
-    const p = DG.dermaGuiaPar(dia).planB.pasos.find((x) => /^DermNet · atlas del átomo/.test(x.que));
-    if (!p || p.min !== m.min) errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» ${p ? `con ${p.min}′` : 'no aparece en el plan B'} (medido: ${m.min}′)`); else dnF1++;
+    const slug = dia.atlasUrl.replace('https://dermnetnz.org/topics/', ''); const m = DERMNET_MEDIDO[dia.fecha];
+    if (!m || m.atlas !== slug) { errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» de F1 sin medir para esta fecha (falta en dermnet_medidas_f1.json › sesiones)`); continue; }
+    usadasDN.add(dia.fecha);
+    const g = DG.dermaGuiaPar(dia).planB; const tag = `d${dia.d} ${dia.fecha}`;
+    const p = g.pasos.find((x) => /^DermNet · atlas del átomo/.test(x.que));
+    if (!p || p.min !== m.min) { errores.push(`${tag}: atlas DermNet «${slug}» ${p ? `con ${p.min}′` : 'no aparece en el plan B'} (medido: ${m.min}′)`); continue; }
+    if (g.pasos.reduce((a, x) => a + x.min, 0) !== 45) errores.push(`${tag}: el plan B suma ${g.pasos.reduce((a, x) => a + x.min, 0)}′ (≠ 45′)`);
+    if (g.pasos.some((x) => /no hoy/.test(`${x.que} ${x.como}`))) errores.push(`${tag}: un paso dice «no hoy» (destino sin fecha)`);
+    if (!new RegExp(`\\(${String(m.necesario).replace('.', ',')}′ medidos`).test(p.que)) errores.push(`${tag}: el paso DermNet no declara sus «(${m.necesario}′ medidos»`);
+    const cl = g.pasos.find((x) => x.que.startsWith('Proyecto Claude'));
+    const sumaOtros = g.pasos.filter((x) => x !== cl).reduce((a, x) => a + x.min, 0);
+    if (!cl && sumaOtros !== 45) errores.push(`${tag}: sin proyecto Claude y la franja no cuadra`);
+    if (cl) {
+      const v = vinetas(cl.min);
+      if (!(v.k >= 1 && v.razon >= 0.85 && v.razon <= 1.15)) errores.push(`${tag}: proyecto Claude ${cl.min}′ ≈ ${v.k} viñetas (${v.k} × 5 / ${cl.min} = ${v.razon.toFixed(2)}, fuera de 0,85-1,15)`);
+      const r = /hoy (\d+)′ ≈ (\d+) viñetas? \(≈([\d,]+)′ cada una\)/.exec(cl.que);
+      if (!r || Number(r[1]) !== cl.min || Number(r[2]) !== v.k || Math.abs(Number(r[3].replace(',', '.')) - cl.min / v.k) > 0.051) errores.push(`${tag}: el texto del proyecto Claude no dice «hoy ${cl.min}′ ≈ ${v.k} viñetas (≈${(cl.min / v.k).toFixed(1).replace('.', ',')}′ cada una)»`);
+    }
+    if (m.aOtroDia) {
+      const f = m.aOtroDia.fecha; const dd = new Date(f + 'T12:00:00Z'); const etq = `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][dd.getUTCDay()]} ${dd.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][dd.getUTCMonth()]}`;
+      if (!(p.como.indexOf(etq) >= 0 && p.como.indexOf(etq) + etq.length <= 100)) errores.push(`${tag}: el destino «${etq}» no está en los primeros 100 caracteres del «cómo»`);
+      const dst = D2.DERMA_DIAS_TODOS.find((x) => x.fecha === f); const pd = dst && DG.dermaGuiaPar(dst).planB.pasos.find((x) => /^DermNet · atlas del átomo/.test(x.que));
+      if (!pd || !pd.que.includes(m.aOtroDia.texto[0])) errores.push(`${tag}: la sesión destino (${f}) no lee lo que le llega`);
+    }
+    dnF1++;
   }
+  for (const f of Object.keys(DERMNET_MEDIDO)) if (!usadasDN.has(f)) errores.push(`DermNet ${f}: medida sin sesión Derma de F1 con ese atlas (fecha o atlas desplazados)`);
   const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1 };
   return { errores, n, resumen };
 }

@@ -1,202 +1,917 @@
 {
  "_meta": {
   "medido": "2026-11-17",
-  "fuente": "páginas públicas dermnetnz.org/topics/<slug> (curl, HTTP 200)",
-  "metodo": "palabras de PROSA por sección (h2), sin las galerías —sus pies se leen con la imagen— ni la bibliografía; imágenes = las de la galería del artículo dentro de esas secciones (las 3 de acne están en «What tests…»)",
-  "regla": "min = palabras / 120 + 0,25′ por imagen (la regla de F1), redondeado al entero que deja la razón necesario/asignado en 0,85-1,15",
-  "uso": "src/lib/dermaGuia.ts › paso «DermNet · atlas del átomo» del PLAN B de las sesiones de F1 (≤ 3-ene-2027); el resto de la franja, al proyecto Claude «AESTHETIC DERMATOLOGY»",
-  "alcance2027": "sin medir en la guía (otro lote): sus medidas, en el informe del lote 1-bis"
+  "fuente": "páginas públicas dermnetnz.org/topics/<slug> (curl, HTTP 200): las 12 del atlas de F1 + 3 enlaces del índice de micosis (laboratory-tests-for-fungal-infection, sporotrichosis, chromoblastomycosis)",
+  "metodo": "palabras de PROSA por sección (h2), sin la cabecera (autores + índice de la página), sin los pies de galería —se leen con su imagen— ni la bibliografía; imágenes = las de la galería del artículo en esa sección. Solo recuentos y títulos (nada del texto).",
+  "regla": "min = palabras / 100 + 0,25′ por imagen (regla fija de lectura en inglés); razón necesario/asignado 0,85-1,15 (gen_derma_guia.js lo comprueba)",
+  "alcance": "el de la guía anterior al lote 1-bis: TODAS las imágenes de la página del átomo + clínica + diagnóstico diferencial (si la página no lo tiene, su sustituto: las complicaciones o, si tampoco las tiene, el diagnóstico); se conserva lo que añadió el lote 1-bis (qué es; causa y tratamiento del acné).",
+  "fuera": "lo que no está en el alcance (epidemiología, causas, tratamiento, pronóstico…) no forma parte del átomo: el atlas es imagen + clínica + diferencial. Lo que es del átomo y no cabe lleva fecha («aOtroDia») y sus minutos en el paso de destino.",
+  "uso": "src/lib/dermaGuia.ts › paso «DermNet · atlas del átomo» del PLAN B de las sesiones de F1 (≤ 3-ene-2027), por fecha; el resto de la franja, al proyecto Claude «AESTHETIC DERMATOLOGY» (variable de ajuste: 0′ o ≈5′ por viñeta)",
+  "alcance2027": "sin medir en la guía (otro lote)"
  },
  "paginas": {
   "dermoscopy": {
-   "alcance": [
-    "What is dermoscopy?",
-    "Dermatoscopic features of pigmented lesions"
-   ],
-   "palabras": 293,
-   "imagenes": 9,
-   "necesario": 4.69,
-   "min": 5,
-   "pagina": {
-    "palabras": 471,
-    "imagenes": 9
-   },
-   "motivo": "la página no tiene «clinical features»: su equivalente son los patrones dermatoscópicos"
-  },
-  "psoriasis": {
-   "alcance": [
-    "What are the clinical features of psoriasis?",
-    "Types of psoriasis"
-   ],
-   "palabras": 376,
-   "imagenes": 8,
-   "necesario": 5.13,
-   "min": 5,
-   "pagina": {
-    "palabras": 1882,
-    "imagenes": 27
-   },
-   "motivo": "la franja del d7 deja 6′ (B&B «Skin Disorders I» 19′): «clinical features» + «Types of psoriasis» con sus 8 primeras imágenes (de 24); las otras 16, no hoy"
+   "url": "https://dermnetnz.org/topics/dermoscopy",
+   "cabecera": 82,
+   "secciones": [
+    [
+     "What is dermoscopy?",
+     106,
+     2
+    ],
+    [
+     "Dermatoscopic features of pigmented lesions",
+     187,
+     7
+    ],
+    [
+     "Dermatoscopes",
+     96,
+     0
+    ]
+   ]
   },
   "atopic-dermatitis": {
-   "alcance": [
-    "What is atopic dermatitis?",
-    "What are the clinical features of atopic dermatitis?",
-    "What is the differential diagnosis for atopic dermatitis?"
-   ],
-   "palabras": 587,
-   "imagenes": 23,
-   "necesario": 10.64,
-   "min": 11,
-   "pagina": {
-    "palabras": 1363,
-    "imagenes": 35
-   }
+   "url": "https://dermnetnz.org/topics/atopic-dermatitis",
+   "cabecera": 216,
+   "secciones": [
+    [
+     "What is atopic dermatitis?",
+     21,
+     3
+    ],
+    [
+     "Who gets atopic dermatitis?",
+     118,
+     3
+    ],
+    [
+     "What causes atopic dermatitis?",
+     17,
+     0
+    ],
+    [
+     "What are the clinical features of atopic dermatitis?",
+     501,
+     20
+    ],
+    [
+     "How do clinical features vary in differing types of skin?",
+     139,
+     6
+    ],
+    [
+     "What are the complications of atopic dermatitis?",
+     41,
+     3
+    ],
+    [
+     "How is atopic dermatitis diagnosed?",
+     53,
+     0
+    ],
+    [
+     "What is the differential diagnosis for atopic dermatitis?",
+     65,
+     0
+    ],
+    [
+     "What is the treatment for atopic dermatitis?",
+     24,
+     0
+    ],
+    [
+     "What is the outcome for atopic dermatitis?",
+     168,
+     0
+    ]
+   ]
   },
   "acne": {
-   "alcance": [
-    "What is acne?",
-    "What causes acne?",
-    "What are the clinical features of acne?",
-    "What is the treatment for acne?"
-   ],
-   "palabras": 356,
-   "imagenes": 3,
-   "necesario": 3.72,
-   "min": 4,
-   "pagina": {
-    "palabras": 597,
-    "imagenes": 3
-   },
-   "motivo": "sin «differential diagnosis»; el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento (las 3 imágenes están en «What tests…»)"
+   "url": "https://dermnetnz.org/topics/acne",
+   "cabecera": 138,
+   "secciones": [
+    [
+     "What is acne?",
+     29,
+     0
+    ],
+    [
+     "Who gets acne?",
+     38,
+     0
+    ],
+    [
+     "What causes acne?",
+     74,
+     0
+    ],
+    [
+     "What are the clinical features of acne?",
+     76,
+     0
+    ],
+    [
+     "What tests are necessary for acne?",
+     37,
+     3
+    ],
+    [
+     "What is the treatment for acne?",
+     177,
+     0
+    ],
+    [
+     "What is the outlook for acne?",
+     28,
+     0
+    ]
+   ]
   },
   "pemphigus-vulgaris": {
-   "alcance": [
-    "What is pemphigus vulgaris?",
-    "What are the clinical features of pemphigus vulgaris?",
-    "How is pemphigus vulgaris diagnosed?"
-   ],
-   "palabras": 601,
-   "imagenes": 9,
-   "necesario": 7.26,
-   "min": 7,
-   "pagina": {
-    "palabras": 1598,
-    "imagenes": 9
-   },
-   "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (IFD, biopsia) separa pénfigo de penfigoide"
+   "url": "https://dermnetnz.org/topics/pemphigus-vulgaris",
+   "cabecera": 178,
+   "secciones": [
+    [
+     "What is pemphigus vulgaris?",
+     92,
+     3
+    ],
+    [
+     "Who gets pemphigus vulgaris?",
+     74,
+     0
+    ],
+    [
+     "What causes pemphigus vulgaris?",
+     89,
+     0
+    ],
+    [
+     "What are the clinical features of pemphigus vulgaris?",
+     368,
+     6
+    ],
+    [
+     "What are the complications of pemphigus vulgaris?",
+     78,
+     0
+    ],
+    [
+     "How is pemphigus vulgaris diagnosed?",
+     141,
+     0
+    ],
+    [
+     "How is the severity of pemphigus vulgaris assessed?",
+     51,
+     0
+    ],
+    [
+     "What is the treatment of pemphigus vulgaris?",
+     465,
+     0
+    ],
+    [
+     "Future prospects for treatment",
+     62,
+     0
+    ]
+   ]
   },
   "urticaria-an-overview": {
-   "alcance": [
-    "What is urticaria?",
-    "Classification of urticaria",
-    "What are the clinical features of urticaria?",
-    "What is the differential diagnosis of urticaria?"
-   ],
-   "palabras": 465,
-   "imagenes": 7,
-   "necesario": 5.63,
-   "min": 6,
-   "pagina": {
-    "palabras": 1968,
-    "imagenes": 7
-   }
+   "url": "https://dermnetnz.org/topics/urticaria-an-overview",
+   "cabecera": 170,
+   "secciones": [
+    [
+     "What is urticaria?",
+     78,
+     3
+    ],
+    [
+     "Classification of urticaria",
+     62,
+     4
+    ],
+    [
+     "Who gets urticaria and why?",
+     105,
+     0
+    ],
+    [
+     "What are the clinical features of urticaria?",
+     315,
+     0
+    ],
+    [
+     "What causes urticaria?",
+     481,
+     0
+    ],
+    [
+     "How is urticaria diagnosed?",
+     225,
+     0
+    ],
+    [
+     "What is the treatment for urticaria?",
+     490,
+     0
+    ],
+    [
+     "What is the differential diagnosis of urticaria?",
+     10,
+     0
+    ],
+    [
+     "What is the outlook for chronic urticaria?",
+     32,
+     0
+    ]
+   ]
   },
   "stevens-johnson-syndrome-toxic-epidermal-necrolysis": {
-   "alcance": [
-    "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
-    "What are the clinical features of SJS/TEN?",
-    "What is the differential diagnosis of SJS/TEN?"
-   ],
-   "palabras": 393,
-   "imagenes": 6,
-   "necesario": 4.78,
-   "min": 5,
-   "pagina": {
-    "palabras": 2392,
-    "imagenes": 10
-   }
+   "url": "https://dermnetnz.org/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+   "cabecera": 200,
+   "secciones": [
+    [
+     "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
+     54,
+     0
+    ],
+    [
+     "Who gets SJS/TEN?",
+     265,
+     0
+    ],
+    [
+     "What causes SJS/TEN?",
+     147,
+     0
+    ],
+    [
+     "What are the clinical features of SJS/TEN?",
+     291,
+     6
+    ],
+    [
+     "What are the complications of SJS/TEN?",
+     75,
+     0
+    ],
+    [
+     "How is SJS/TEN diagnosed?",
+     532,
+     1
+    ],
+    [
+     "What is the differential diagnosis of SJS/TEN?",
+     48,
+     0
+    ],
+    [
+     "What is the treatment for SJS/TEN?",
+     518,
+     0
+    ],
+    [
+     "How can SJS/TEN be prevented?",
+     98,
+     0
+    ],
+    [
+     "What is the outlook for SJS/TEN?",
+     164,
+     3
+    ]
+   ]
   },
   "cutaneous-lupus-erythematosus": {
-   "alcance": [
-    "What is cutaneous lupus erythematosus?",
-    "What are the clinical features of cutaneous lupus erythematosus?"
-   ],
-   "palabras": 598,
-   "imagenes": 21,
-   "necesario": 10.23,
-   "min": 10,
-   "pagina": {
-    "palabras": 1298,
-    "imagenes": 30
-   },
-   "motivo": "sin «differential diagnosis»"
+   "url": "https://dermnetnz.org/topics/cutaneous-lupus-erythematosus",
+   "cabecera": 174,
+   "secciones": [
+    [
+     "What is cutaneous lupus erythematosus?",
+     107,
+     3
+    ],
+    [
+     "Who gets cutaneous lupus erythematosus?",
+     82,
+     0
+    ],
+    [
+     "What causes cutaneous lupus erythematosus?",
+     28,
+     0
+    ],
+    [
+     "What are the clinical features of cutaneous lupus erythematosus?",
+     491,
+     18
+    ],
+    [
+     "How do clinical features vary in differing types of skin?",
+     67,
+     6
+    ],
+    [
+     "What are the complications of cutaneous lupus erythematosus?",
+     48,
+     3
+    ],
+    [
+     "How is cutaneous lupus erythematosus diagnosed?",
+     116,
+     0
+    ],
+    [
+     "What is the treatment for cutaneous lupus erythematosus?",
+     117,
+     0
+    ],
+    [
+     "What is the outcome for cutaneous lupus erythematosus?",
+     68,
+     0
+    ]
+   ]
   },
   "cellulitis": {
-   "alcance": [
-    "What is cellulitis?",
-    "What are the clinical features of cellulitis?",
-    "What are the complications of cellulitis?",
-    "What is the differential diagnosis of cellulitis?"
-   ],
-   "palabras": 351,
-   "imagenes": 3,
-   "necesario": 3.68,
-   "min": 4,
-   "pagina": {
-    "palabras": 1284,
-    "imagenes": 3
-   }
+   "url": "https://dermnetnz.org/topics/cellulitis",
+   "cabecera": 194,
+   "secciones": [
+    [
+     "What is cellulitis?",
+     52,
+     3
+    ],
+    [
+     "Who gets cellulitis?",
+     96,
+     0
+    ],
+    [
+     "What causes cellulitis?",
+     113,
+     0
+    ],
+    [
+     "What are the clinical features of cellulitis?",
+     152,
+     0
+    ],
+    [
+     "What are the complications of cellulitis?",
+     92,
+     0
+    ],
+    [
+     "How is the diagnosis of cellulitis made?",
+     72,
+     0
+    ],
+    [
+     "What is the differential diagnosis of cellulitis?",
+     55,
+     0
+    ],
+    [
+     "What is the treatment for cellulitis?",
+     366,
+     0
+    ],
+    [
+     "What is the management of recurrent cellulitis?",
+     92,
+     0
+    ]
+   ]
   },
   "syphilis": {
-   "alcance": [
-    "What is syphilis?",
-    "What are the clinical features of syphilis?",
-    "What is the differential diagnosis of syphilis?"
-   ],
-   "palabras": 992,
-   "imagenes": 15,
-   "necesario": 12.02,
-   "min": 12,
-   "pagina": {
-    "palabras": 2047,
-    "imagenes": 15
-   }
+   "url": "https://dermnetnz.org/topics/syphilis",
+   "cabecera": 181,
+   "secciones": [
+    [
+     "What is syphilis?",
+     72,
+     3
+    ],
+    [
+     "Who gets syphilis?",
+     147,
+     0
+    ],
+    [
+     "What are the clinical features of syphilis?",
+     846,
+     12
+    ],
+    [
+     "What is the differential diagnosis of syphilis?",
+     74,
+     0
+    ],
+    [
+     "How is syphilis diagnosed?",
+     422,
+     0
+    ],
+    [
+     "What is the treatment for syphilis?",
+     164,
+     0
+    ],
+    [
+     "Can syphilis be prevented?",
+     110,
+     0
+    ],
+    [
+     "What is the outcome of syphilis?",
+     31,
+     0
+    ]
+   ]
   },
   "herpes-simplex": {
-   "alcance": [
-    "What is herpes simplex?",
-    "What are the clinical features of herpes simplex?",
-    "What are the complications of herpes simplex?"
-   ],
-   "palabras": 739,
-   "imagenes": 9,
-   "necesario": 8.41,
-   "min": 8,
-   "pagina": {
-    "palabras": 1553,
-    "imagenes": 9
-   },
-   "motivo": "sin «differential diagnosis»: las complicaciones (eccema herpético, queratitis) son lo que el átomo pide no errar"
+   "url": "https://dermnetnz.org/topics/herpes-simplex",
+   "cabecera": 145,
+   "secciones": [
+    [
+     "What is herpes simplex?",
+     66,
+     3
+    ],
+    [
+     "What causes herpes simplex?",
+     140,
+     0
+    ],
+    [
+     "Who gets herpes simplex?",
+     176,
+     0
+    ],
+    [
+     "What are the clinical features of herpes simplex?",
+     471,
+     3
+    ],
+    [
+     "How is herpes simplex diagnosed?",
+     44,
+     0
+    ],
+    [
+     "What are the complications of herpes simplex?",
+     202,
+     3
+    ],
+    [
+     "What is the treatment for herpes simplex?",
+     120,
+     0
+    ],
+    [
+     "Can herpes simplex be prevented?",
+     189,
+     0
+    ]
+   ]
   },
   "fungal-skin-infections": {
-   "alcance": [
-    "Yeast infections",
-    "Dermatophyte infections",
-    "Deep fungal infections",
-    "Other fungal infections",
-    "Treatment of fungal infections",
-    "Differential diagnosis of fungal infections"
+   "url": "https://dermnetnz.org/topics/fungal-skin-infections",
+   "cabecera": 119,
+   "secciones": [
+    [
+     "Yeast infections",
+     51,
+     0
+    ],
+    [
+     "Dermatophyte infections",
+     98,
+     0
+    ],
+    [
+     "Deep fungal infections",
+     15,
+     0
+    ],
+    [
+     "Other fungal infections",
+     8,
+     0
+    ],
+    [
+     "Treatment of fungal infections",
+     13,
+     0
+    ],
+    [
+     "Differential diagnosis of fungal infections",
+     69,
+     0
+    ]
+   ]
+  },
+  "psoriasis": {
+   "url": "https://dermnetnz.org/topics/psoriasis",
+   "cabecera": 242,
+   "secciones": [
+    [
+     "What is psoriasis?",
+     21,
+     0
+    ],
+    [
+     "Who gets psoriasis?",
+     61,
+     0
+    ],
+    [
+     "What causes psoriasis?",
+     103,
+     0
+    ],
+    [
+     "What are the clinical features of psoriasis?",
+     182,
+     0
+    ],
+    [
+     "How is psoriasis classified?",
+     57,
+     0
+    ],
+    [
+     "Types of psoriasis",
+     194,
+     24
+    ],
+    [
+     "How do clinical features vary in differing types of skin?",
+     153,
+     3
+    ],
+    [
+     "Factors that aggravate psoriasis",
+     302,
+     0
+    ],
+    [
+     "How is psoriasis diagnosed?",
+     148,
+     0
+    ],
+    [
+     "Treatment of psoriasis",
+     419,
+     0
+    ]
+   ]
+  },
+  "sporotrichosis": {
+   "url": "https://dermnetnz.org/topics/sporotrichosis",
+   "cabecera": 13,
+   "secciones": [
+    [
+     "What is sporotrichosis?",
+     45,
+     0
+    ],
+    [
+     "How does sporotrichosis arise?",
+     99,
+     0
+    ],
+    [
+     "What are the clinical features of sporotrichosis?",
+     331,
+     0
+    ],
+    [
+     "How is sporotrichosis diagnosed?",
+     55,
+     0
+    ],
+    [
+     "What is the treatment of sporotrichosis?",
+     229,
+     0
+    ]
+   ]
+  },
+  "chromoblastomycosis": {
+   "url": "https://dermnetnz.org/topics/chromoblastomycosis",
+   "cabecera": 87,
+   "secciones": [
+    [
+     "What is chromoblastomycosis?",
+     24,
+     3
+    ],
+    [
+     "What causes chromoblastomycosis?",
+     70,
+     0
+    ],
+    [
+     "What are the clinical features of chromoblastomycosis?",
+     151,
+     3
+    ],
+    [
+     "How is chromoblastomycosis diagnosed?",
+     74,
+     2
+    ],
+    [
+     "What is the treatment for chromoblastomycosis?",
+     91,
+     0
+    ]
+   ]
+  },
+  "laboratory-tests-for-fungal-infection": {
+   "url": "https://dermnetnz.org/topics/laboratory-tests-for-fungal-infection",
+   "cabecera": 133,
+   "secciones": [
+    [
+     "Introduction",
+     47,
+     0
+    ],
+    [
+     "Specimen collection for fungal testing",
+     117,
+     0
+    ],
+    [
+     "Direct microscopy of skin scrapings and nail clippings",
+     131,
+     3
+    ],
+    [
+     "Culture of fungi",
+     145,
+     3
+    ],
+    [
+     "Blood tests for patients with deep or disseminated fungal infection",
+     31,
+     0
+    ],
+    [
+     "Polymerase chain reaction (PCR)",
+     43,
+     0
+    ]
+   ]
+  }
+ },
+ "sesiones": {
+  "2026-12-02": {
+   "atlas": "dermoscopy",
+   "min": 6,
+   "lee": [
+    {
+     "pag": "dermoscopy",
+     "texto": [
+      "What is dermoscopy?",
+      "Dermatoscopic features of pigmented lesions",
+      "Dermatoscopes"
+     ]
+    }
    ],
-   "palabras": 254,
-   "imagenes": 0,
-   "necesario": 2.12,
-   "min": 2,
-   "pagina": {
-    "palabras": 373,
-    "imagenes": 0
+   "motivo": "la página no tiene «clinical features» ni diferencial: su equivalente son los patrones dermatoscópicos; se lee entera (también «Dermatoscopes»: con qué se mira)"
+  },
+  "2026-12-04": {
+   "atlas": "psoriasis",
+   "min": 9,
+   "lee": [
+    {
+     "pag": "psoriasis",
+     "texto": [
+      "What is psoriasis?",
+      "What are the clinical features of psoriasis?",
+      "Types of psoriasis"
+     ]
+    }
+   ],
+   "aOtroDia": {
+    "fecha": "2026-12-10",
+    "pag": "psoriasis",
+    "texto": [
+     "How is psoriasis classified?",
+     "How do clinical features vary in differing types of skin?",
+     "How is psoriasis diagnosed?"
+    ]
    },
-   "motivo": "página resumen sin «clinical features» ni imágenes: la página entera"
+   "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no hay viñetas del proyecto Claude"
+  },
+  "2026-12-08": {
+   "atlas": "atopic-dermatitis",
+   "min": 16,
+   "lee": [
+    {
+     "pag": "atopic-dermatitis",
+     "texto": [
+      "What is atopic dermatitis?",
+      "What are the clinical features of atopic dermatitis?",
+      "How do clinical features vary in differing types of skin?",
+      "What are the complications of atopic dermatitis?",
+      "What is the differential diagnosis for atopic dermatitis?"
+     ],
+     "imagenes": [
+      "Who gets atopic dermatitis?"
+     ]
+    }
+   ],
+   "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no hay viñetas del proyecto Claude"
+  },
+  "2026-12-10": {
+   "atlas": "acne",
+   "min": 9,
+   "lee": [
+    {
+     "pag": "acne",
+     "texto": [
+      "What is acne?",
+      "What causes acne?",
+      "What are the clinical features of acne?",
+      "What tests are necessary for acne?",
+      "What is the treatment for acne?"
+     ]
+    },
+    {
+     "pag": "psoriasis",
+     "de": "2026-12-04",
+     "texto": [
+      "How is psoriasis classified?",
+      "How do clinical features vary in differing types of skin?",
+      "How is psoriasis diagnosed?"
+     ]
+    }
+   ],
+   "motivo": "acné sin «differential diagnosis» ni complicaciones: entra «What tests…» (con sus 3 imágenes); el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento"
+  },
+  "2026-12-14": {
+   "atlas": "pemphigus-vulgaris",
+   "min": 9,
+   "lee": [
+    {
+     "pag": "pemphigus-vulgaris",
+     "texto": [
+      "What is pemphigus vulgaris?",
+      "What are the clinical features of pemphigus vulgaris?",
+      "What are the complications of pemphigus vulgaris?",
+      "How is pemphigus vulgaris diagnosed?"
+     ]
+    }
+   ],
+   "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (inmunofluorescencia, biopsia) es lo que separa pénfigo de penfigoide"
+  },
+  "2026-12-16": {
+   "atlas": "urticaria-an-overview",
+   "min": 7,
+   "lee": [
+    {
+     "pag": "urticaria-an-overview",
+     "texto": [
+      "What is urticaria?",
+      "Classification of urticaria",
+      "What are the clinical features of urticaria?",
+      "What is the differential diagnosis of urticaria?"
+     ]
+    }
+   ]
+  },
+  "2026-12-18": {
+   "atlas": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+   "min": 8,
+   "lee": [
+    {
+     "pag": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
+     "texto": [
+      "What are Stevens–Johnson syndrome and toxic epidermal necrolysis?",
+      "What causes SJS/TEN?",
+      "What are the clinical features of SJS/TEN?",
+      "What are the complications of SJS/TEN?",
+      "What is the differential diagnosis of SJS/TEN?"
+     ],
+     "imagenes": [
+      "How is SJS/TEN diagnosed?",
+      "What is the outlook for SJS/TEN?"
+     ]
+    }
+   ],
+   "motivo": "«What causes SJS/TEN?» entra: los fármacos culpables son el átomo («farmacodermias graves, no errar»)"
+  },
+  "2026-12-22": {
+   "atlas": "cutaneous-lupus-erythematosus",
+   "min": 13,
+   "lee": [
+    {
+     "pag": "cutaneous-lupus-erythematosus",
+     "texto": [
+      "What is cutaneous lupus erythematosus?",
+      "What are the clinical features of cutaneous lupus erythematosus?",
+      "How do clinical features vary in differing types of skin?",
+      "What are the complications of cutaneous lupus erythematosus?"
+     ]
+    }
+   ],
+   "motivo": "sin «differential diagnosis»"
+  },
+  "2026-12-24": {
+   "atlas": "cellulitis",
+   "min": 5,
+   "lee": [
+    {
+     "pag": "cellulitis",
+     "texto": [
+      "What is cellulitis?",
+      "What are the clinical features of cellulitis?",
+      "What are the complications of cellulitis?",
+      "How is the diagnosis of cellulitis made?",
+      "What is the differential diagnosis of cellulitis?"
+     ]
+    }
+   ],
+   "motivo": "«How is the diagnosis … made?» entra: el átomo pide «cuándo NO es celulitis»"
+  },
+  "2026-12-28": {
+   "atlas": "syphilis",
+   "min": 13,
+   "lee": [
+    {
+     "pag": "syphilis",
+     "texto": [
+      "What is syphilis?",
+      "What are the clinical features of syphilis?",
+      "What is the differential diagnosis of syphilis?"
+     ]
+    }
+   ]
+  },
+  "2026-12-30": {
+   "atlas": "herpes-simplex",
+   "min": 12,
+   "lee": [
+    {
+     "pag": "herpes-simplex",
+     "texto": [
+      "What is herpes simplex?",
+      "What causes herpes simplex?",
+      "What are the clinical features of herpes simplex?",
+      "How is herpes simplex diagnosed?",
+      "What are the complications of herpes simplex?"
+     ]
+    }
+   ],
+   "motivo": "sin «differential diagnosis»: complicaciones (eccema herpético, queratitis), diagnóstico y causa (HSV-1 / HSV-2) son lo que el átomo pide"
+  },
+  "2026-12-31": {
+   "atlas": "fungal-skin-infections",
+   "min": 14,
+   "lee": [
+    {
+     "pag": "fungal-skin-infections",
+     "texto": [
+      "Yeast infections",
+      "Dermatophyte infections",
+      "Deep fungal infections",
+      "Other fungal infections",
+      "Treatment of fungal infections",
+      "Differential diagnosis of fungal infections"
+     ]
+    },
+    {
+     "pag": "laboratory-tests-for-fungal-infection",
+     "texto": [
+      "Direct microscopy of skin scrapings and nail clippings"
+     ]
+    },
+    {
+     "pag": "sporotrichosis",
+     "texto": [
+      "What is sporotrichosis?",
+      "What are the clinical features of sporotrichosis?",
+      "How is sporotrichosis diagnosed?"
+     ]
+    },
+    {
+     "pag": "chromoblastomycosis",
+     "texto": [
+      "What is chromoblastomycosis?",
+      "What are the clinical features of chromoblastomycosis?",
+      "How is chromoblastomycosis diagnosed?"
+     ]
+    }
+   ],
+   "motivo": "la página del átomo es un índice (listas de enlaces, sin clínica ni imágenes): se recorre entera y se leen sus enlaces del átomo —KOH (examen directo), esporotricosis y cromoblastomicosis—"
   }
  }
 }

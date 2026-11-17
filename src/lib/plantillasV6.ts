@@ -139,7 +139,7 @@ import { DAILY_META_2027 as RESEARCH_META_2027 } from './researchDailyPlan2027';
 import { DERMA_CICLO2_META } from './dermaCiclo2';                                 // v6.05 (fix): fin del ciclo 2 de Derma
 import { AURUM_PLAN_META, aurumDiaDe } from './aurumDailyPlan';
 import { LIV_META, livDiaDe } from './livianoStudyPlan';
-import { SYN_PLAN_META } from './synapseDailyPlan';
+import { SYN_PLAN_META, synColaDe, SYN_COLA_POST_STEP1 } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real
 import { VIBE_META, vibePCDomingo } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
 import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
@@ -314,6 +314,15 @@ function bloqueSynSabado(iso: string): BloqueV6[] {
   const g = guiaSynapseDe(iso);
   const m = g ? /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja) : null;
   return g && m ? [bloque('syn', m[1] as string, m[2] as string, "SYNAPSE · 30' del sábado (A pantalla · B audio · C lectura)", 'synapse', 'synapse')] : [];
+}
+/** v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R): COLA del SYNAPSE de F1 con FRANJA REAL (synapseDailyPlan.synColaDe; guía: rutinaGuia.guiaSynapseColaDe)
+ *  — sáb 26-dic 07:15-07:42 (el final del deep dive, que no cabe en los comodines de las 21:00) y 04:15-04:45 L-V de F5 (lun 13-dic-2027 → mar 1-feb-2028:
+ *  lo que no cupo en F1; antes solo vivía en los textos, sin bloque). */
+function bloqueSynCola(iso: string): BloqueV6[] {
+  const c = synColaDe(iso);
+  if (!c) return [];
+  const post = SYN_COLA_POST_STEP1.some((x) => x.fecha === iso);
+  return [bloque('syn-cola', c.ini, c.fin, post ? `SYNAPSE · cola post-Step 1 (${c.min}′: lo que no cupo en su día, nov-2026 → ene-2027)` : `SYNAPSE · audio que no cupo en los comodines del sábado (${c.min}′)`, 'synapse', 'synapse')];
 }
 /** v6.07: sábado con clase EN VIVO de Theomed: 14:45-15:00 preparar la clase + 15:00-17:00 en vivo (sin clase ese sábado → sin bloques).
  *  v6.08 (fix revisión 14-nov, est6): también los sábados de F2 (9-ene → 6-mar; encapsManana.theomedSabadoDe, títulos del calendario del campus).
@@ -538,6 +547,7 @@ function bloqueEncapsSabado(iso: string): BloqueV6[] {
 function extrasSabado(iso: string, conAnki: boolean): BloqueV6[] {
   const bs: BloqueV6[] = [];
   bs.push(...bloqueSynSabado(iso));
+  bs.push(...bloqueSynCola(iso)); // v6.09b lote 1-ter: hueco de F1 con hora (sáb 26-dic 07:15)
   const biz = bloqueBiz(iso); if (biz) bs.push(biz);
   if (conAnki) bs.push(bloque('anki-sab', '21:30', '22:00', /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 */ 'USMLE · ANKI del sábado (cola FSRS)', 'usmle', 'usmle-anki', 'Solo vencidas de APEX::USMLE (nuevas = 0 el sábado) · telemetría al terminar'));
   return bs;
@@ -760,11 +770,14 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     const shipObligatorio = bsD.some((b) => b.id === 'pc') && vibePCDomingo(iso).some((x) => x.tipo === 'ship' || x.tipo === 'avance');
     // v6.09 (17-nov): el ENCAPS opcional que empieza por un PPT en diferido (dom 29-nov: SP 2/11) lo dice: ese primer paso NO es opcional
     const pptD = encapsDomingoDe(iso)?.pptAviso;
-    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS de ${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')} es opcional${pptD ? `, ${pptD}` : ''}.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
+    // v6.09b lote 1-ter (revisión R, hallazgo 11): la duración del ENCAPS del domingo en el título y en la nota es la de ESTUDIO, sin la pausa de los compromisos
+    //   personales (dom 13-dic: «5 h 41′ con 2 h 30′ de pausa (3 h 11′ de estudio)» → «3 h 11′ de estudio»)
+    const durD = ((h: string) => { const m = / \(([^()]+) de estudio\)$/.exec(h); return m ? m[1] : h.replace(/^flexible · /, '').replace(/ con .*$/, ''); })(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h');
+    if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom') ? ` El ENCAPS (${durD} de estudio) es opcional${pptD ? `, ${pptD}` : ''}.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
     if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
-    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h').replace(/^flexible · /, '').replace(/ con .*$/, '')}${pptD ? ((encapsDomingoDe(iso)?.ppt?.length ?? 0) > 1 ? ', sus primeros pasos NO opcionales' : ', su primer paso NO opcional') : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre'; // v6.09b lote 1-bis: varios primeros pasos no opcionales (encapsManana.EncapsDomingo.ppt)
+    const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${durD} de estudio${pptD ? ((encapsDomingoDe(iso)?.ppt?.length ?? 0) > 1 ? ', sus primeros pasos NO opcionales' : ', su primer paso NO opcional') : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre'; // v6.09b lote 1-bis: varios primeros pasos no opcionales (encapsManana.EncapsDomingo.ppt)
     const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
@@ -793,7 +806,9 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       const sigMir = ses ? null : (MIR_MANT_DIAS.map((x) => x.fecha).filter((f) => f > iso).sort()[0] ?? null);
       const finMir = MIR_MANT_DIAS.map((x) => x.fecha).sort().pop() ?? iso;
       const nomMir = ses?.tipo === 'mantenimiento' ? `MIR · banqueo 1 h (${ses.dia.repuesta ? 'sesión repuesta tras el Step 1' : 'mantenimiento'})` : 'MIR · fase principal (oct-2027)';
-      return out('F5', 'F5 · post-Step 1 (esbozo)', ses ? [bloque('mir', '15:15', '16:15', nomMir, 'mir', 'mir')] : [],
+      // v6.09b lote 1-ter (S3 · hallazgo 1 de R): + SYNAPSE 04:15-04:45 L-V del lun 13-dic-2027 al mar 1-feb-2028 = la cola de F1 (bloqueSynCola)
+      const synC = bloqueSynCola(iso);
+      return out('F5', `F5 · post-Step 1 (esbozo)${synC.length ? ` + SYNAPSE ${synC[0]!.hora} (cola)` : ''}`, [...(ses ? [bloque('mir', '15:15', '16:15', nomMir, 'mir', 'mir')] : []), ...synC],
         { notas: [iso === addDias(FECHAS_V6.step1.examen, 1) ? 'Regreso a la posta (permiso 1 día; 2 si hoy tienes turno M).' : 'F5 es un esbozo: MIR principal hasta el fin del SERUMS; CURVA/DENSA y Derma c2+ se planifican después del Step 1.',
           ...(ses ? [] : sigMir
             ? [`Sin sesión MIR hoy (el banqueo no tiene fila este día): sigue el ${fCorta(sigMir)} y cierra el ${fCorta(finMir)} (sesiones repuestas tras el Step 1).`]

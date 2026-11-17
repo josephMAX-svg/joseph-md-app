@@ -101,7 +101,7 @@ import {
   VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCDomingo, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
-import { SYN_DIAS, SYN_PLAN_META, synDiaDe } from './synapseDailyPlan';
+import { SYN_DIAS, SYN_PLAN_META, synDiaDe, synColaDe, SYN_COLA_POST_STEP1 } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real
 import type { SynBloque } from './synapseDailyPlan';
 import { AURUM_DIAS, aurumDiaDe, aurumObsUrl } from './aurumDailyPlan';
 import type { DiaAurum, AurumBloque } from './aurumDailyPlan';
@@ -368,10 +368,12 @@ const SYN_SERIES: Array<{ tag: 'B' | 'C'; primera: (b: SynBloque) => boolean; ca
   { tag: 'B', primera: ES_NO_PRIORS, carril: ES_NO_PRIORS, comodin: (b) => /^Comodín de audio/.test(b.material), total: 39, paso0: 10, paso: 10,
     txt: ({ desde, hasta, total, ses, prev, sig }) => {
       const fin = hasta >= total, resto = total - hasta;
-      const tras = fin ? ' Con esto terminas el episodio.' : ` Los ${resto}′ restantes: ${sig.length ? sigTxt(sig) : 'el comodín de audio del sábado'}.`;
-      if (ses.tipo === 'primera') return { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: `Auriculares, 1,0×. Para a los 10:00 y anota el minuto;${sig.length ? ` los ${resto}′ restantes: ${sigTxt(sig)}.` : ' los 29′ restantes van a los B comodín del sábado.'}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
-      if (ses.tipo === 'comodin') return { que: `Comodín de audio · No Priors (Greg Brockman) → minutos ${mmTxt(desde)}-${mmTxt(hasta)}`, como: `Retoma donde paraste el ${prevTxt(prev, 'lunes')}. Nada nuevo.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
-      return { que: `No Priors · sigue el episodio de Greg Brockman → minutos ${mmTxt(desde)}-${mmTxt(hasta)}${fin ? ' (final)' : ''}`, como: `Auriculares, 1,0×. Retoma donde paraste el ${prevTxt(prev, 'lunes')}: el «episodio de esta semana» del plan es este mientras no lo termines.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
+      // v6.09b lote 1-ter (revisión R, hallazgo 5): adónde va lo que queda, AL PRINCIPIO del «cómo» (el volcado del Calendar corta el «cómo» en 110)
+      const pre = fin ? '' : `Los ${resto}′ restantes → ${sig.length ? sigTxt(sig) : 'el comodín de audio del sábado'}. `;
+      const tras = fin ? ' Con esto terminas el episodio.' : '';
+      if (ses.tipo === 'primera') return { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: `${pre}Auriculares, 1,0×. Para a los 10:00 y anota el minuto.`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
+      if (ses.tipo === 'comodin') return { que: `Comodín de audio · No Priors (Greg Brockman) → minutos ${mmTxt(desde)}-${mmTxt(hasta)}`, como: `${pre}Retoma donde paraste el ${prevTxt(prev, 'lunes')}. Nada nuevo.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
+      return { que: `No Priors · sigue el episodio de Greg Brockman → minutos ${mmTxt(desde)}-${mmTxt(hasta)}${fin ? ' (final)' : ''}`, como: `${pre}Auriculares, 1,0×. Retoma donde paraste el ${prevTxt(prev, 'lunes')}: el «episodio de esta semana» del plan es este mientras no lo termines.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
     } },
   { tag: 'C', primera: ES_WILLISON_PI, carril: ES_WILLISON_PI, comodin: (b) => /^Comodín de lectura/.test(b.material), total: 1457, paso0: 500, paso: 500,
     txt: ({ desde, hasta, total, ses, prev, sig }) => {
@@ -573,6 +575,45 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     { aviso: [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''].filter(Boolean).join(' ') || undefined,
       planB: 'Sin PC: B y C en el móvil y A pasa al bloque PC de la semana. Academy/Skilljar caído: adelanta B + C y deja A para mañana.' });
 }
+/** v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R): COLA del SYNAPSE de F1 con FRANJA REAL (synapseDailyPlan.synColaDe, generada por
+ *  gen_synapse_plan.js › synapse_f1_tramos.js) — (a) SYN_COLA_F1: hueco de F1 con hora (sáb 26-dic 07:15-07:42: los 26:42 finales del deep dive, que no
+ *  caben en los comodines de las 21:00) · (b) SYN_COLA_POST_STEP1: 04:15-04:45 L-V del lun 13-dic-2027 al 1-feb-2028 (en F5 el bloque A 04:05 del Step 1
+ *  ya no existe y a esa hora no hay turno del SERUMS). Cada paso = sus piezas con el tramo exacto (minuto o párrafo) y sus minutos enteros; el generador
+ *  garantiza Σ pasos = franja y necesario/asignado ∈ [0,85; 1,15]. Bloque «syn-cola» de plantillasV6 (bloqueSynCola). */
+export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
+  const c = synColaDe(iso);
+  if (!c) return null;
+  const fL = (f: string): string => `${fCorta(f)}${f.slice(0, 4) !== iso.slice(0, 4) ? `-${f.slice(0, 4)}` : ''}`;
+  const v = (x: number): string => (x === 1 ? '1,0' : String(x).replace('.', ','));
+  const m1 = (x: number): string => x.toFixed(1).replace('.', ',');
+  const post = SYN_COLA_POST_STEP1.findIndex((x) => x.fecha === iso);
+  const pasos = c.pasos.map((p) => {
+    const tipos = [...new Set(p.piezas.map((z) => z.tipo))];
+    const que = `${tipos.map((t) => (t === 'audio' ? 'Audio' : 'Lectura')).join(' + ')} · ${p.piezas.map((z) => (z.tipo === 'audio' ? `${z.titulo} → min ${z.desde}-${z.hasta} a ${v(z.vel ?? 1)}×` : `${z.titulo} → ${z.desde} (≈${Math.round((z.palabras ?? 0) / 10) * 10} palabras)`)).join(' + ')}`;
+    const como = p.piezas.map((z) => (z.tipo === 'audio'
+      ? `${p.piezas.length > 1 ? `${z.titulo.replace(/^.*· /, '')}: ` : 'Auriculares, '}${v(z.vel ?? 1)}×${z.vel === 1 ? ' con subtítulos en inglés' : ''}, ${m1(z.med)}′ de reloj. Retoma donde paraste el ${fL(z.retoma)}.`
+      : `${p.piezas.length > 1 ? `${z.titulo.replace(/^.*«|».*$/g, '')}: ` : ''}${z.palabras} palabras a 100/min ≈ ${m1(z.med)}′. Retoma donde quedaste el ${fL(z.retoma)}.`)).join(' ') + ' Anota dónde paras.';
+    const z0 = p.piezas[0]!;
+    return P(p.min, que, como, { t: z0.tipo === 'audio' ? `▶ desde ${z0.desde}` : '📄 abrir', url: z0.url });
+  });
+  const recursos = c.pasos.flatMap((p) => p.piezas.map((z) => R(z.titulo, z.url, { min: z.med })));
+  const franja = `${c.ini}–${c.fin}`;
+  if (post < 0) {
+    return bloque(franja, 'synapse', 'SYNAPSE · audio que no cupo en los comodines del sábado (cola de F1)', pasos, recursos,
+      'tramo escuchado entero, con el minuto anotado en el journal + ✓ en Estudio › SYNAPSE',
+      { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00 (antes iba a la cola post-Step 1).`,
+        planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
+          const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
+          // (synapse_f1_tramos.F1_EXTRA solo usa sábados SIN clase en vivo: sáb 26-dic)
+          return `Si a las ${c.ini} no puedes: ${theomedSabadoDe(iso)?.vivo ? 'hoy hay clase en vivo y la tarde no tiene 27′ libres: 05:15, al terminar la L de AURUM' : `hoy no hay clase en vivo, así que va a las ${tras}, al terminar ${bz && bz.fecha === iso ? 'el cierre de Business' : 'la revisión semanal'}`}.`;
+        })() });
+  }
+  const n = SYN_COLA_POST_STEP1.length;
+  return bloque(franja, 'synapse', `SYNAPSE · cola post-Step 1 (día ${post + 1}/${n}) — lo que no cupo en su día (nov-2026 → ene-2027)`, pasos, recursos,
+    'cada pieza con su minuto o párrafo de parada anotado en el journal + ✓ en Estudio › SYNAPSE',
+    { aviso: `Nada nuevo: lo que no cupo en las sesiones del SYNAPSE de F1 (18-nov-2026 → 3-ene-2027), en orden y con su tramo exacto. ${c.ini}-${c.fin}: en F5 el bloque A del Step 1 (04:05) ya no existe y a esa hora no hay turno del SERUMS.${post === n - 1 ? ' Último día de la cola: con esto el SYNAPSE de F1 queda completo.' : ''}`,
+      planB: 'Día de guardia (o turno que empieza antes de las 05:00): los mismos pasos en el tiempo muerto de la guardia o de la posta, ese mismo día (audio y lectura en el móvil, como el R↔D de F4).' });
+}
 
 // ═══════════════════════ domingo (flexible) · SHIP del vibecoding (PC) + FEYNMAN — v6.07; hasta v6.06, sábado 15:00 ═══════════════════════
 /** v6.08 (rev. dia7): inicio de la franja de EJEMPLO del SHIP del domingo (el bloque es flexible, sin hora). 14:45 → el SHIP de 2 h termina a las
@@ -756,12 +797,18 @@ const hms = (s: number): string => `${Math.floor(s / 3600)}:${String(Math.floor(
  *  de MasterClass es un tráiler de 1:54 para 22′). Medido el 17-nov-2026: lengthSeconds de YouTube y palabras de la API de Wikipedia. Minutos del
  *  bloque A = vídeos a 1,0× + palabras / 100 (redondeo hacia arriba); lo que sobra o falta frente al plan sale de / va a la lectura L del día. */
 interface AurumAMed { t: string; canal: string; url: string; s?: number; palabras?: number }
-const AURUM_F1_A: Record<number, { items: AurumAMed[]; nota: string }> = {
+const AURUM_F1_A: Record<number, { items: AurumAMed[]; nota: string; min?: number }> = {
   20: { items: [{ t: 'Win Workplace Negotiations with Chris Voss | Sessions by MasterClass', canal: 'MasterClass', url: yt('2gBboDdtTlc'), s: 114 }, { t: 'Make Them Listen: How To Use Your Tone To Control Their Reactions', canal: 'Chris Voss & The Black Swan Group', url: yt('_eZlQCDNx30'), s: 804 }], nota: 'El primero es solo el tráiler (1:54): el tono aplicado está en el segundo. Anota 3 frases donde el tono baja al final.' },
   26: { items: [{ t: 'Joe Girard — Wikipedia (EN: intro · Early life · Career · Awards)', canal: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Joe_Girard', palabras: 458 }, { t: "The World's Greatest Salesperson - Joe Girard", canal: 'Selling Today', url: yt('n66XgJ80yuM'), s: 203 }], nota: 'Es el «perfil de Girard» del drill: anota los 13.001 autos y en qué estaba su ventaja.' },
   27: { items: [{ t: "The Rule of 250: How the World's Greatest Salesman Never Lost a Lead", canal: 'Wealth Wisdom Books', url: yt('8hvN_u5savs'), s: 603 }, { t: 'The Law of 250 - Success in Selling', canal: 'Michael Dill', url: yt('xe3c9nUyypc'), s: 337 }], nota: 'La Ley de los 250 no está en la página de Wikipedia del plan: va con estos 2 vídeos.' },
   28: { items: [{ t: "How to Get More Repeat Sales (Joe Girard's 13,000 Cards a Month)", canal: 'Simple-Growth', url: yt('dHVHGX2jEP8'), s: 169 }, { t: 'Lessons from the Best Salesman in the World', canal: 'goalrichdad', url: yt('wUVP7rQ0WZU'), s: 301 }], nota: 'Las tarjetas mensuales «I like you» no están en la página de Wikipedia del plan: el 1.er vídeo es ese sistema.' },
   30: { items: [{ t: "13 Sales Tips from Joe Girard: World's Greatest Salesman", canal: 'The Business Guy', url: yt('_vOdePXsFVY'), s: 727 }], nota: 'Repaso del sistema: marca los tips que ya aplica tu máquina de rapport.' },
+  // v6.09b lote 1-ter (S3 · residuo de la revisión R): D18 · D22 · D25 (jue 10 · mié 16 · lun 21-dic) enlazaban la MISMA playlist «Chris Voss' Favorite
+  //   Negotiation Hacks» con una búsqueda «≤ 20 min» → salía el mismo vídeo tres veces. Ahora, vídeos DISTINTOS y medidos (lengthSeconds y capítulos
+  //   publicados de YouTube, curl 17-nov-2026, sin sesión), uno por tema del día; `min` = los minutos del plan (lo que sobra es para anotar, ratio 0,95-0,98).
+  18: { items: [{ t: 'How to Succeed at Hard Conversations | Chris Voss — caps. «Negotiation Mindset, Playfulness» + «Calm Voice, Emotional Shift, Music» (min 4:59 → 18:59)', canal: 'Huberman Lab', url: yt('q8CHXefn7B4', 299), s: 840 }, { t: 'Importance Of TONE In Negotiations | Derek Gaunt', canal: 'Chris Voss & The Black Swan Group', url: yt('RJjnkxvbxaI'), s: 236 }, { t: 'Chris Voss Technique: The Late Night Radio DJ Tone', canal: 'Michael Foster', url: yt('QqVu9AfyZuY'), s: 60 }], min: 20, nota: 'Las 3 voces del propio Voss: la juguetona/positiva (cap. «Playfulness»), la de DJ de madrugada (cap. «Calm Voice») y la asertiva (el tono, con Derek Gaunt); el último, 1 minuto de ejemplos de inflexión. Anota 1 frase de apertura en cada voz.' },
+  22: { items: [{ t: 'Chris Voss Teaches The Stealth Power of "Mirrors" in Negotiation', canal: 'Chris Voss & The Black Swan Group', url: yt('wIBc2T2RKSA'), s: 267 }, { t: 'How to Succeed at Hard Conversations | Chris Voss — cap. «Tool: Mirroring Technique» (min 2:15:27 → 2:22:20)', canal: 'Huberman Lab', url: yt('q8CHXefn7B4', 8127), s: 413 }, { t: 'The Mirroring Technique | Chris Voss - The Black Swan Group - Part 2', canal: "The Entrepreneur's Studio", url: yt('SJ2az4HxlTs'), s: 120 }, { t: 'The Basics of Mirroring (Derek Gaunt - Negotiations Trainer, Black Swan Group)', canal: 'Evolved Broker Podcast', url: yt('TvCFc3oo84A'), s: 119 }, { t: 'Mastering the Art of Black Swan Mirroring', canal: 'Press 1 For Nick', url: yt('c10wgAZaPI4'), s: 242 }], min: 20, nota: 'Solo mirroring, en 5 voces distintas (Voss, Gaunt y un practicante): anota las 1-3 últimas palabras que repetirías a 3 frases típicas de tus leads.' },
+  25: { items: [{ t: 'How to Succeed at Hard Conversations | Chris Voss — cap. «Readiness & “Small Space Practice”, Labeling» (min 1:37:35 → 1:45:17)', canal: 'Huberman Lab', url: yt('q8CHXefn7B4', 5855), s: 462 }, { t: 'Using Labels To Find Out The Why Behind Their Behavior | Troy Smith', canal: 'Chris Voss & The Black Swan Group', url: yt('qdIA-QxCX_4'), s: 536 }, { t: 'Camille Vasquez Explains How to Deal with Someone Who Uses Mirror to Confuse You!', canal: 'Chris Voss & The Black Swan Group', url: yt('W54KA8Seeyk'), s: 249 }, { t: 'Chris Voss Demonstrates Mirrors and Labels on Swarfcast Podcast', canal: 'Swarfcast', url: yt('vKWN9_M2FoM'), s: 42 }], min: 22, nota: 'Repaso integrado para el role-play: labeling (Voss y Troy Smith), el mirror cuando te lo hacen a ti, y 42 s del propio Voss encadenando mirror + label. Anota la secuencia que usarás: mirror → silencio → label → silencio.' },
 };
 /** L medida en F1: el resumen de HubSpot «A 10-Minute Summary of The Psychology of Selling» (2.322 palabras, contadas por capítulo el 17-nov-2026). */
 const AURUM_F1_L: Record<number, { que: string; palabras: number }> = {
@@ -773,7 +820,7 @@ function aurumAMin(x: DiaAurum): number {
   const A = x.bloques.find((b) => b.tag === 'A');
   if (!A) return 0;
   const med = !x.min30 ? AURUM_F1_A[x.d] : undefined;
-  if (med) return Math.ceil(med.items.reduce((s, i) => s + (i.s ?? 0) / 60 + (i.palabras ?? 0) / PPM_EN, 0));
+  if (med) return med.min ?? Math.ceil(med.items.reduce((s, i) => s + (i.s ?? 0) / 60 + (i.palabras ?? 0) / PPM_EN, 0)); // v6.09b lote 1-ter: + min fijo (D18 · D22 · D25)
   const cur = AURUM_VID[x.d];
   const seg = cur ? cur.vids.reduce((s, v) => s + v.s, 0) : 0;
   // v6.09b (lote 1-bis S2): en F1 el vídeo curado manda también si dura MENOS que el estimado del plan (lo que sobra va a la L), salvo que su nota
@@ -870,7 +917,8 @@ export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
     const ad = T.adelantados.length ? AURUM_DIAS.filter((x) => T.adelantados.includes(x.d)) : [];
     const sig = [...aurumF1().dias.values()].filter((r) => r.fecha > iso && (r.tracyA || r.tracyL)).sort((a, b) => (a.fecha < b.fecha ? -1 : 1))[0];
     pasos.push(P(T.min, `ESCUCHAR · ${TRACY.t} — tramo ${hms(T.seg[0])}–${hms(T.seg[1])} (${T.min}′ a 1,25×)`,
-      `${ds ? `Es lo que el plan daba a la L de ${ds} y no cupo a las 14:15` : 'Hilo del libro'}${ad.length ? `${ds ? '; incluye' : ': incluye'}, ADELANTADO, lo que no cabrá en las 14:15 de ${ad.map((x) => fCorta(x.fecha)).join(' · ')} (no hay sábado de F1 después)` : ''}. Audio activo: 1 frase por idea que usarías con un lead.${sig ? ` El hilo sigue el ${fCorta(sig.fecha)} desde ${hms((sig.tracyA ?? sig.tracyL as [number, number])[0])}.` : ' Con este tramo terminas el libro.'}`,
+      // v6.09b lote 1-ter (revisión R, hallazgo 5): las fechas (adónde sigue el hilo y qué días se adelantan), al principio del «cómo»
+      `${sig ? `Sigue → ${fCorta(sig.fecha)}, desde ${hms((sig.tracyA ?? sig.tracyL as [number, number])[0])}. ` : 'Con este tramo terminas el libro. '}${ad.length ? `Incluye, ADELANTADO, lo de las 14:15 ${ad.length > 1 ? `del ${Number(ad[0]!.fecha.slice(8))} al ${fCorta(ad[ad.length - 1]!.fecha).replace(/^\S+ /, '')}` : `del ${fCorta(ad[0]!.fecha)}`} (no hay sábado de F1 después). ` : ''}${ds ? `Es lo que el plan daba a la L de ${ds} y no cupo a las 14:15.` : 'Hilo del libro.'} Audio activo: 1 frase por idea que usarías con un lead.`,
       { t: '▶ tramo', url: yt(TRACY.id, T.seg[0]) }));
     recursos.push(R(TRACY.t, yt(TRACY.id), { min: T.min }));
   }
@@ -987,7 +1035,8 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     if (L && f1?.tracyL) {
       const lin = f1.lin;
       pasos.push(P(lin, `ESCUCHAR L · ${TRACY.t} — tramo ${hms(f1.tracyL[0])}–${hms(f1.tracyL[1])} (${lin}′ a 1,25×)`,
-        `Tema del plan: ${L.leccion.replace(/^The Psychology of Selling — Brian Tracy /, '')}. Audio activo: 1 frase por idea que usarías con un lead.${f1.fuera > 0 ? ` El plan daba ${L.min}′: los ${f1.fuera}′ que no caben hoy van ${f1.adelantado ? 'ADELANTADOS ' : ''}en el tramo del ${dest}.` : ''}`,
+        // v6.09b lote 1-ter (revisión R, hallazgo 5): el destino de lo que no cabe, al principio del «cómo»
+        `${f1.fuera > 0 ? `Los ${f1.fuera}′ que no caben hoy (el plan daba ${L.min}′) → ${f1.adelantado ? 'ya ADELANTADOS en el tramo del ' : ''}${dest}. ` : ''}Tema del plan: ${L.leccion.replace(/^The Psychology of Selling — Brian Tracy /, '')}. Audio activo: 1 frase por idea que usarías con un lead.`,
         { t: '▶ tramo', url: yt(TRACY.id, f1.tracyL[0]) }));
       libre -= lin;
       if (f1.fuera > 0) avisos.push(`L: ${f1.fuera}′ no caben en la hora → ${f1.adelantado ? 'ya van ADELANTADOS en el tramo del ' : ''}${dest} (el audiolibro va como un solo hilo con hora exacta).`);
@@ -1075,7 +1124,7 @@ const LIV_LECT: Record<string, Array<[string, number]>> = {
   c2: [['Energy Homeostasis… › General principles › Background', 698], ['Mechanisms of Obesity Pathogenesis › Other factors › Mechanisms for biological defense of elevated body-fat mass', 849]],
   c3: [['Neurobiology of energy homeostasis › Background', 217], ['General principles › Leptin and energy homeostasis', 438], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
   c4: [['General principles › Leptin and energy homeostasis (2.ª pasada: los párrafos de «leptin resistance» y del umbral)', 438], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
-  caso1: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
+  caso1: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242], ['Concluding Remarks › Translating basic science into more effective pharmacotherapy (el párrafo que sigue: para el plan del caso)', 97]], // v6.09b lote 1-ter: 242 palabras no cuadran con ningún minuto entero (2′ = 1,21 · 3′ = 0,81) → + el apartado siguiente (97) = 339 en 3′ (1,13)
   c5: [['Neurobiology › Hypothalamic neurons controlling energy balance', 849]],
   c6: [['Neurobiology › Hypothalamic neurons controlling energy balance (2.ª pasada: POMC/α-MSH)', 849]],
   c7: [['Integrative physiology › Determinants of feeding behavior', 659], ['GI factors › Insights from bariatric surgery', 471]],
@@ -1086,7 +1135,7 @@ const LIV_LECT: Record<string, Array<[string, number]>> = {
   c10: [['Integrative physiology › Determinants of energy expenditure', 514], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
   c11: [['Other factors › Mechanisms for biological defense of elevated body-fat mass (2.ª pasada)', 849]],
   c12: [['Concluding Remarks › The two distinct components', 213], ['› Developmental determinants of the biologically defended level of body-fat mass', 134], ['› Lessons learned from the weight-reduced state', 242], ['› Translating basic science into more effective pharmacotherapy', 97]],
-  caso3: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
+  caso3: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242], ['Concluding Remarks › Translating basic science into more effective pharmacotherapy (el párrafo que sigue: para el plan del caso)', 97]], // v6.09b lote 1-ter: ídem (339 palabras en 3′)
 };
 /** v6.09b (lote 1-bis S2, a2-10): módulo GLP-1 de F1 (c17-c27 = D21-D32, 15 → 31-dic) con FUENTE LIBRE MEDIDA en lugar de «sección del tema, sin
  *  medir» (el Obesity Algorithm 2026 es de pago y los ensayos del NEJM no están en PMC → su resumen de PubMed + la ficha técnica de la FDA en DailyMed
@@ -1165,16 +1214,20 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   const avisos: string[] = [...notas];
   const pre = l.pretest ? 6 : 0;
   const dr = drill ? 6 : 0;
-  if (pre) pasos.push(P(6, 'PRE-TEST ciego 5Q de la semana anterior', 'Empresa › LIVIANO › Academia › HOY › pre-test: responde SIN mirar tarjetas; registra x/5 (meta ≥ 4/5 = 80 %). Lo fallado → tarjeta de hoy.'));
+  // v6.09b lote 1-ter (S3 · residuo de la revisión R): en F1 el pre-test y el role-play dicen su cuenta de tiempo (5Q × 72 s = 6′ · 3 × 5′ = 15′);
+  //   desde el 4-ene el texto sigue igual que antes (mismos minutos)
+  const f1Liv = iso <= FECHAS_V6.transicion.hasta;
+  if (pre) pasos.push(P(6, `PRE-TEST ciego 5Q de la semana anterior${f1Liv ? ' (5 × 72 s = 6′)' : ''}`, 'Empresa › LIVIANO › Academia › HOY › pre-test: responde SIN mirar tarjetas; registra x/5 (meta ≥ 4/5 = 80 %). Lo fallado → tarjeta de hoy.'));
   if (drill) pasos.push(P(6, `DRILL de cifras ancla en ciego (${drill.qs.length} preguntas)`, 'Empresa › LIVIANO › HOY › drill: sin mirar; registra el %.'));
   const sinLectura = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de metáforas|Síntesis módulo|REVISIÓN TRIMESTRAL/i.test(l.tema);
   if (caso) {
     const prev = livCardsSemanaPrevia(l.d);
-    const lmin = lect ? Math.ceil(palabras / PPM_EN) : 0;
+    // v6.09b lote 1-ter: en F1, los minutos enteros más cercanos a palabras/100 (339 palabras → 3′, ratio 1,13; con ⌈⌉ eran 4′ = 0,85); desde el 4-ene, ⌈⌉ como antes
+    const lmin = lect ? (f1Liv ? Math.max(1, Math.round(palabras / PPM_EN)) : Math.ceil(palabras / PPM_EN)) : 0;
     pasos.push(P(6, `REPASO Anki de la semana (${prev.length} tarjetas de ${deck})`, 'Anki › el mazo del módulo: revisiones primero; las falladas se dicen en voz alta.'));
     if (lect && lmin) pasos.push(P(lmin, `LECTURA · Schwartz 2017 › ${lect.map((x) => `${x[0]} (${x[1]} palabras)`).join(' + ')}`, `${lmin}′ a ${PPM_EN} palabras/min: busca el MECANISMO que le explicarás a la paciente.`, { t: 'Schwartz 2017 (PMC)', url: SCHWARTZ }));
     pasos.push(P(Math.max(3, 25 - 6 - lmin - pre - dr), `MONTAR EL CASO ${caso.id}/16 · ${caso.titulo}`, `Empresa › LIVIANO › Academia › HOY › Caso: lee paciente, datos y red flags; escribe en 3 líneas: mecanismo · metáfora · plan (1 métrica + fecha de control). Consigna: ${caso.consigna.slice(0, 160)}${caso.consigna.length > 160 ? '…' : ''}`));
-    pasos.push(P(15, 'ROLE-PLAY grabado (2 tomas de ≤5 min)', `${l.aplicacion.replace(/ → puntúa.*$/, '')} Toma 2 = corrige 1 cosa de la toma 1. Lenguaje people-first, sin culpa.`));
+    pasos.push(P(15, f1Liv ? 'ROLE-PLAY grabado: toma 1 (≤5′) → escúchala y anota 1 cosa (≤5′) → toma 2 corrigiéndola (≤5′) = 15′' : 'ROLE-PLAY grabado (2 tomas de ≤5 min)', `${l.aplicacion.replace(/ → puntúa.*$/, '')} Toma 2 = corrige 1 cosa de la toma 1. Lenguaje people-first, sin culpa.`));
     pasos.push(P(5, 'RÚBRICA 0-2 × 4 (mecanismo · metáfora · people-first · plan) → guarda el puntaje', 'En la tarjeta del caso (meta ≥ 6/8 por caso; ≥ 80 % de media del bloque). Lo que saque 0 → tarjeta nueva.'));
   } else {
     // v6.09b (lote 1-bis S2, a2-10): en F1 (≤ 3-ene) el módulo GLP-1 lee una FUENTE LIBRE MEDIDA (LIV_LECT_F1; antes «sección del tema, sin medir» con
@@ -1258,11 +1311,16 @@ function bizTramoDe(r: DiaBiz) {
  *  no tienen entrada aquí y no cambian. */
 type BizPiezaF1 = { t: string; url: string; seg?: [number, number]; palabras?: number; ppm?: number; donde?: string };
 const ytF1 = (id: string, t: string, a: number, b: number): BizPiezaF1 => ({ t, url: yt(id, a || undefined), seg: [a, b] });
-const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string }> = {
+const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: number }> = { // min: minutos del paso fijados (v6.09b lote 1-ter; si no, ⌈material⌉)
   '8#1': { piezas: [ytF1('4r5zlZxpTkY', 'Penguin Audiobooks · «Why We Sleep» leído por John Sackville (extracto de 82:00)', 0, 1200)], nota: 'El extracto son los primeros capítulos del libro, en orden (no publica marcas de capítulo): hoy, sus primeros 20 minutos.' },
-  '8#2': { piezas: [ytF1('4r5zlZxpTkY', 'Penguin Audiobooks · «Why We Sleep» leído por John Sackville (extracto de 82:00)', 1200, 2400)], nota: 'Sigue el extracto donde paraste el martes (min 20:00): los capítulos siguientes, en orden. Del 40:00 al 82:00 el extracto sigue con capítulos que no son de este plan: no es tarea.' },
-  '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158), ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113)], nota: 'La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker + el clip de la serie Sleeping with Science sobre apetito (grelina/leptina). El extracto del audiolibro no llega a estos capítulos.' },
-  '8#4': { piezas: [ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], nota: 'Los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
+  // v6.09b lote 1-ter (S3 · revisión R, hallazgo 7): 25-nov — el extracto de Penguin no publica marcas de capítulo y su transcripción no es pública
+  //   (timedtext / get_transcript piden sesión o token, 17-nov): no se puede comprobar que sus min 20-40 lleguen al cap. 3 (NREM/REM). El tema de hoy va
+  //   con piezas MEDIDAS que lo cubren según su descripción publicada (lengthSeconds 788 y 294, curl 17-nov): el episodio 01 del podcast del propio Walker
+  //   (NREM en 4 fases, REM, ciclos de 90 min, husos) + el clip de FoundMyFitness sobre qué aporta el sueño profundo y el REM = 18,0′ → paso 18′ + acción 6′.
+  //   26-nov: solo la TED (19,3′ → 20′) y la acción vuelve a 4′; el clip del apetito (1:53) pasa al 27-nov: 1,9′ + 18,4′ = 20,3′ en 20′ (min fijo).
+  '8#2': { piezas: [ytF1('y9F47gANUEw', 'Sleep Diplomat (Matt Walker) · «Episode 01: What is Sleep? (What’s going to happen when you fall asleep tonight)» (13:08)', 0, 788), ytF1('x3a0O8F6ZuQ', 'FoundMyFitness Clips · «REM sleep vs. deep sleep and their importance for cardiovascular and emotional health | Matt Walker» (4:54)', 0, 294)], nota: 'La arquitectura del sueño contada por el propio Walker: las 2 clases de sueño (NREM en 4 fases y REM), el ciclo de 90 minutos y los husos del sueño (episodio 01 de su podcast) + qué aporta cada fase, el sueño profundo y el REM (clip de FoundMyFitness). El extracto del audiolibro del martes no publica capítulos ni transcripción: no se pudo comprobar que su min 20:00-40:00 llegue al cap. 3 (NREM/REM), así que lo que tenga después del min 20:00 no es tarea.' },
+  '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158)], nota: 'El clip del apetito (1:53, grelina/leptina) → vie 27-nov, al empezar su sesión (hoy no cabe con la acción de 4′). La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker. El extracto del audiolibro no llega a estos capítulos.' },
+  '8#4': { piezas: [ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113), ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], min: 20, nota: 'Primero el clip del apetito de la serie Sleeping with Science (grelina/leptina), que ayer no cupo junto a la TED: completa la nota sueño↔peso del jueves. Después, los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
   '9#1': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 0, 1103)], nota: 'La charla de Panda (Salk, 2018) en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
   '9#2': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 1103, 2206)], nota: 'Tramo 2/3 de la charla de Panda: sigue donde paraste el martes (min 18:23).' },
   '9#3': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 2206, 3308)], nota: 'Tramo 3/3 de la charla de Panda: hasta el final.' },
@@ -1498,7 +1556,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   const tramoF1 = tramo ? undefined : bizTramoF1De(r); // v6.09b (a2-2): pieza fija de F1
   const pasos: GuiaPaso[] = [P(1, `OBJETIVO · ${r.materia}${modo === 'CRITICA' ? ' (lectura CRÍTICA)' : ''}`, `Lee la lectura y la acción de hoy: ${r.accion}`)];
   if (tramoF1) {
-    const tot = tramoF1.piezas.reduce((a, p) => a + minPiezaF1(p), 0), m = Math.ceil(tot - 0.05);
+    const tot = tramoF1.piezas.reduce((a, p) => a + minPiezaF1(p), 0), m = tramoF1.min ?? Math.ceil(tot - 0.05);
     const lee = tramoF1.piezas.every((p) => !p.seg);
     const qp = tramoF1.piezas.map((p) => (p.seg ? `${p.t} → ${mmss(p.seg[0])}-${mmss(p.seg[1])}` : `${p.t} → ${p.donde}`)).join(' + ');
     pasos.push(P(m, `${lee ? 'LEER' : 'ESCUCHAR/VER'} · ${qp} (${m}′${tramoF1.piezas.length > 1 ? ' en total' : ''}) · tema de hoy: ${r.lectura}`,

@@ -483,7 +483,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   const contenido = (b, iso) => {   // guías del bloque (null = SIN contenido) — mismas consultas que TodayMission.contenidoBloquePlan
     switch (b.plan) {
       case 'vibecoding': { const g = b.id === 'pc' ? RG2.guiaShipDe(iso) : b.id === 'feynman' ? RG2.guiaFeynmanDe(iso) : VB2.vibeDiaDe(iso) ? RG2.guiaVibeDe(iso) : null; return g ? [g] : null; }
-      case 'synapse': { const g = SY2.synDiaDe(iso) ? RG2.guiaSynapseDe(iso) : null; return g ? [g] : null; }
+      case 'synapse': { const g = b.id === 'syn-cola' ? RG2.guiaSynapseColaDe(iso) /* v6.09b lote 1-ter */ : SY2.synDiaDe(iso) ? RG2.guiaSynapseDe(iso) : null; return g ? [g] : null; }
       case 'business': { const g = RG2.guiaBusinessDe(iso); return g ? [g] : null; }
       case 'aurum': { const g = b.id === 'aurum-l' ? RG2.guiaAurumSabadoDe(iso) /* v6.09b lote 1-bis S2: sábado 04:15 de F1 */ : AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso, F62.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
       case 'liviano': { const g = LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null; return g ? [g] : null; }
@@ -974,6 +974,70 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     console.log(`v6.09 · (25) días SKIP posteriores a la transición sin «31-dic … día de plan» en sus notas: ${nSkip25} revisados`);
   }
   console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
+  // v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R) · (26) COLA DEL SYNAPSE DE F1 CON FRANJA REAL — cada fecha de SYN_COLA_POST_STEP1 (F5, fuera del
+  //   rango de la simulación de arriba y del --rango de la batería) y de SYN_COLA_F1 (huecos de F1 con hora): (a) la plantilla del día (todos los turnos en
+  //   F5) trae el bloque «syn-cola» con la hora del generador, sin solaparse con ningún otro bloque con hora; (b) su guía (guiaSynapseColaDe) cae en el
+  //   bloque, Σ pasos = franja = 30′ (el último día de la cola, si va corto, sus minutos) y cada paso con necesario/asignado ∈ [0,85; 1,15]; (c) la cola es
+  //   L-V sin SKIP, protegidos ni feriados; (d) toda fecha de la cola que citan los textos de F1 («cola post-Step 1 04:15: …») existe en la cola, y viceversa
+  //   ninguna pieza queda sin una sesión de F1 que la mande ahí; (e) ninguna fecha FUTURA después del corte del Calendar (140 del «qué» · 100 del «cómo») en
+  //   los pasos de SYNAPSE, Business, AURUM y LIVIANO de F1 (18-nov → 3-ene; hallazgo 5).
+  {
+    const COLA = [...SY2.SYN_COLA_F1.map((d) => ({ ...d, post: false })), ...SY2.SYN_COLA_POST_STEP1.map((d) => ({ ...d, post: true }))];
+    const ultimo = SY2.SYN_COLA_POST_STEP1[SY2.SYN_COLA_POST_STEP1.length - 1];
+    let nCola = 0, nPasosCola = 0;
+    if (!SY2.SYN_COLA_POST_STEP1.length) errores.push('(26) SYN_COLA_POST_STEP1 vacía');
+    for (const c of COLA) {
+      const f5 = F62.faseV6(c.fecha) === 'F5';
+      if (c.post && (!f5 || dow(c.fecha) === 0 || dow(c.fecha) === 6 || F62.SKIP_V6.has(c.fecha) || F62.esFeriado(c.fecha) || F62.motivoProtegido(c.fecha))) errores.push(`(26) ${c.fecha}: día de la cola post-Step 1 que no es L-V hábil de F5`);
+      for (const turno of f5 ? [undefined, 'M', 'T', 'L', 'G'] : [undefined]) {
+        ST2 && global.localStorage.removeItem(ST2.TURNOS_KEY);
+        const p = PL.plantillaDelDia(c.fecha, turno), tag = `(26) ${c.fecha} ${p.plantilla}${turno ? '/' + turno : ''}`;
+        const b = p.bloques.find((x) => x.id === 'syn-cola');
+        if (!b) { errores.push(`${tag}: sin bloque SYNAPSE de la cola (${c.ini}-${c.fin})`); continue; }
+        if (b.ini !== c.ini || b.fin !== c.fin) errores.push(`${tag}: bloque ${b.hora} ≠ ${c.ini}-${c.fin}`);
+        for (const o of p.bloques) if (o !== b && o.ini && o.fin && o.ini !== o.fin && !tmB(o) && hm(o.ini) < hm(b.fin) && hm(b.ini) < hm(o.fin)) errores.push(`${tag}: SYNAPSE ${b.hora} ⟂ ${o.hora} ${o.nombre.slice(0, 40)}`);
+        if (turno) continue;
+        nCola++;
+        const g = RG2.guiaSynapseColaDe(c.fecha);
+        if (!g) { errores.push(`${tag}: sin guía (guiaSynapseColaDe)`); continue; }
+        if (g.franja !== `${c.ini}–${c.fin}`) errores.push(`${tag}: guía ${g.franja} fuera de su bloque ${b.hora}`);
+        const tot = g.pasos.reduce((x, y) => x + y.min, 0);
+        if (tot !== g.totalMin || tot !== c.min) errores.push(`${tag}: Σ pasos ${tot}′ ≠ franja ${g.totalMin}′ / ${c.min}′`);
+        if (c.post && c.min !== 30 && c !== ultimo) errores.push(`${tag}: la cola es de 30′/día y este día lleva ${c.min}′`);
+        if (c.pasos.length !== g.pasos.length) errores.push(`${tag}: ${g.pasos.length} pasos en la guía y ${c.pasos.length} en la cola`);
+        c.pasos.forEach((x, i) => { nPasosCola++; const r = x.med / x.min, gm = (g.pasos[i] || {}).min; if (r < 0.85 || r > 1.15 || gm !== x.min) errores.push(`${tag}: paso ${i + 1} con ${x.med}′ de material en ${x.min}′ (ratio ${r.toFixed(2)}; guía ${gm}′)`); });
+      }
+    }
+    // (d) fechas de la cola citadas en F1 ↔ cola
+    const MESc = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const isoDe = (d, mes, y) => `${y}-${String(MESc.indexOf(mes) + 1).padStart(2, '0')}-${String(Number(d)).padStart(2, '0')}`;
+    const colaSet = new Set(SY2.SYN_COLA_POST_STEP1.map((d) => d.fecha));
+    let nCit = 0;
+    for (const d of SY2.SYN_DIAS) for (const x of d.bloques) {
+      const t = x.guia ? x.guia.como : '';
+      for (const m of t.matchAll(/cola (?:post-Step 1 )?\d\d:\d\d: (?:\S+ )?(\d{1,2})-(\w{3})-(\d{4})(?: → (?:\S+ )?(\d{1,2})-(\w{3})-(\d{4}))?/g)) {
+        nCit++;
+        const a = isoDe(m[1], m[2], m[3]), z = m[4] ? isoDe(m[4], m[5], m[6]) : a;
+        if (!colaSet.has(a) || !colaSet.has(z)) errores.push(`(26) ${d.fecha} ${x.tag}: cita la cola ${a}${z !== a ? ' → ' + z : ''} y esa fecha no está en SYN_COLA_POST_STEP1`);
+      }
+    }
+    if (!nCit) errores.push('(26) ningún texto de F1 cita la cola post-Step 1 (¿se perdió el destino del resto?)');
+    // (e) ninguna fecha FUTURA después del corte del Calendar en los pasos de SYNAPSE · Business · AURUM · LIVIANO de F1 (18-nov → 3-ene)
+    const FR = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
+    const URLX = /(https?|file|obsidian|vscode):\/\/[^\s)»\]]+/g;
+    const fut = (txt, f, corte) => { const o = []; for (const m of String(txt).replace(URLX, '').matchAll(FR)) { const mes = MESc.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027; const iso = `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}`; if (iso > f && m.index + m[0].length > corte) o.push(`«${m[0]}» en ${m.index + m[0].length}`); } return o; };
+    let nDest = 0;
+    for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
+      const gs = [['SYNAPSE', RG2.guiaSynapseDe(iso)], ['SYNAPSE cola', RG2.guiaSynapseColaDe(iso)], ['Business', RG2.guiaBusinessDe(iso)], ['AURUM', AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso) : null], ['AURUM sáb', RG2.guiaAurumSabadoDe(iso)], ['LIVIANO', LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null]];
+      for (const [n, g] of gs) for (const p of (g && g.pasos) || []) {
+        nDest++;
+        for (const e of fut(p.que, iso, 140)) errores.push(`(26e) ${iso} ${n}: fecha de destino ${e} del «qué» (> 140: el Calendar la corta) · «${p.que.slice(0, 60)}…»`);
+        for (const e of fut(p.como, iso, 100)) errores.push(`(26e) ${iso} ${n}: fecha de destino ${e} del «cómo» (> 100: el Calendar la corta) · «${p.como.slice(0, 60)}…»`);
+      }
+    }
+    ST2 && global.localStorage.removeItem(ST2.TURNOS_KEY);
+    console.log(`v6.09b lote 1-ter · (26) cola del SYNAPSE de F1 con franja real: ${nCola} días (${SY2.SYN_COLA_F1.map((d) => `${d.fecha} ${d.ini}`).join(' · ')} + post-Step 1 ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].fecha : '—'} → ${ultimo ? ultimo.fecha : '—'} ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].ini : ''}) · ${nPasosCola} pasos en [0,85; 1,15] · ${nCit} citas de la cola en F1 · ${nDest} pasos de F1 sin fecha de destino tras el corte del Calendar`);
+  }
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));
 }
 

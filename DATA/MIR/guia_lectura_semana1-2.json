@@ -1113,16 +1113,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1.1. Descripción de un caso o series de casos (1′ · 1 preguntas MIR citadas) · 1.2. Estudios descriptivos de prevalencia (0.5′ · 3 preguntas MIR citadas) · 1.3. Estudios ecológicos (1.5′ · 8 preguntas MIR citadas) · 2.1. Estudios de corte transversal o de prevalencia (1.5′ · 5 preguntas MIR citadas) · 2.2. Estudios de casos y controles (3.5′ · 22 preguntas MIR citadas) · 2.3. Estudios de cohortes (3′ · 19 preguntas MIR citadas) · 2.4. Estudios de casos y controles anidados en una cohorte (1.5′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (15,6′ medidos a 150 palabras/min; 13,5′ a 180) · Orientación MIR (1′) + 1.1. Descripción de un caso o series de casos (1′ · 1 preguntas MIR citadas) · 1.2. Estudios descriptivos de prevalencia (0.5′ · 3 preguntas MIR citadas) · 1.3. Estudios ecológicos (1.5′ · 8 preguntas MIR citadas) · 2.1. Estudios de corte transversal o de prevalencia (1.5′ · 5 preguntas MIR citadas) · 2.2. Estudios de casos y controles (3.5′ · 22 preguntas MIR citadas) · 2.3. Estudios de cohortes (3′ · 19 preguntas MIR citadas) · 2.4. Estudios de casos y controles anidados en una cohorte (1.5′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,6′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc80d"
@@ -1313,6 +1313,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 15.6,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1.1. Descripción de un caso o series de casos",
@@ -1635,16 +1637,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.2. Índices de validez diagnóstica (10′ · 34 preguntas MIR citadas) · 3.3. Curvas ROC (3′ · 2 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2. Diagnóstico y cribado 2.5′ · 3.1. Diseño básico de evaluación de la validez 5.5′ · 4.3. Coeficiente de correlación intraclase 1.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 3.2. Índices de validez diagnóstica (10′ · 34 preguntas MIR citadas) · 3.3. Curvas ROC (3′ · 2 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2. Diagnóstico y cribado 2.5′ · 3.1. Diseño básico de evaluación de la validez 5.5′ · 4.3. Coeficiente de correlación intraclase 1.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Evaluación de pruebas diagnósticas",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc80f"
@@ -1831,6 +1833,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.2. Índices de validez diagnóstica",
@@ -2043,16 +2047,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (11 de Epidemiología tras los pre-tests) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1. Principios de bioética (2′ · 7 preguntas MIR citadas) · 2. Relación médico-paciente. Atención al paciente en situaciones especiales (1.5′ · 11 preguntas MIR citadas) · 3. Normativa en la investigación biomédica (2.5′ · 1 preguntas MIR citadas) · 4. Comités de ética asistencial (1.5′ · 1 preguntas MIR citadas) · 6. Transfusiones de hemoderivados en situaciones especiales. Consentimientos prestados con limitaciones (1.5′ · 1 preguntas MIR citadas) · 7. Rechazo de tratamiento o denegación de consentimiento (4′ · 1 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 1. Principios de bioética (2′ · 7 preguntas MIR citadas) · 2. Relación médico-paciente. Atención al paciente en situaciones especiales (1.5′ · 11 preguntas MIR citadas) · 3. Normativa en la investigación biomédica (2.5′ · 1 preguntas MIR citadas) · 4. Comités de ética asistencial (1.5′ · 1 preguntas MIR citadas) · 6. Transfusiones de hemoderivados en situaciones especiales. Consentimientos prestados con limitaciones (1.5′ · 1 preguntas MIR citadas) · 7. Rechazo de tratamiento o denegación de consentimiento (4′ · 1 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Principios de bioética y relación médico-paciente",
        "url": "https://promir.medicapanamericana.com/capitulo/64a3be863f62ec1dbb3e665b"
@@ -2287,6 +2291,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1. Principios de bioética",
@@ -2743,16 +2749,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (18 de Medicina Legal y Bioética tras los pre-tests) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.3. Shock (2.5′ · 6 preguntas MIR citadas) · 3.3. Auscultación cardíaca (11.5′ · 12 preguntas MIR citadas · clip 0:34)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4.1. Insuficiencia cardíaca 4.5′ · 2.2. Potencial de acción 16′ · 4.3. Trastornos del ritmo 5.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,4′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.3. Shock (2.5′ · 6 preguntas MIR citadas) · 3.3. Auscultación cardíaca (11.5′ · 12 preguntas MIR citadas · clip 0:34)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4.1. Insuficiencia cardíaca 4.5′ · 2.2. Potencial de acción 16′ · 4.3. Trastornos del ritmo 5.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,4′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cardiología básica",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7e9"
@@ -2987,6 +2993,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.4,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.3. Shock",
@@ -3492,16 +3500,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.2. Taquicardias de complejo QRS estrecho (PARCIAL 14′ de 35′: solo los párrafos con chip MIR ≥2015 · 20 preguntas MIR citadas · clip 0:10)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.3. Electrocardiograma normal 14.5′ · 5.2. Síndrome de intervalo QT 8′ · 2.6. Tipos de marcapasos 3′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,3′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.2. Taquicardias de complejo QRS estrecho (PARCIAL 14′ de 35′: solo los párrafos con chip MIR ≥2015 · 20 preguntas MIR citadas · clip 0:10)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.3. Electrocardiograma normal 14.5′ · 5.2. Síndrome de intervalo QT 8′ · 2.6. Tipos de marcapasos 3′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,3′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Trastornos del ritmo",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc78d"
@@ -3724,6 +3732,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.3,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.2. Taquicardias de complejo QRS estrecho",
@@ -4045,16 +4055,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.6. Complicaciones del infarto agudo de miocardio (PARCIAL 14′ de 16′: solo los párrafos con chip MIR ≥2015 · 15 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.5. Tratamiento del SCACEST 5.5′ · 3.3. Diagnóstico 14.5′ · 2.4. Tratamiento 10.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,5′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.6. Complicaciones del infarto agudo de miocardio (PARCIAL 14′ de 16′: solo los párrafos con chip MIR ≥2015 · 15 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.5. Tratamiento del SCACEST 5.5′ · 3.3. Diagnóstico 14.5′ · 2.4. Tratamiento 10.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cardiopatía isquémica",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc731"
@@ -4257,6 +4267,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.6. Complicaciones del infarto agudo de miocardio",
@@ -4724,14 +4736,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D7 Cardiopatía isquémica) + 1Q D-3 (D5 Cardiología básica) + 1Q D-7 (D1 Estudios experimentales: Ensayo clínico)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::cardiologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -4742,16 +4754,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 6.2. Insuficiencia cardíaca estabilizada (PARCIAL 14′ de 40′: solo los párrafos con chip MIR ≥2015 · 40 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6.1. Insuficiencia cardíaca aguda 30′ · 3.1. Historia clínica. Síntomas y signos de la insuficiencia cardíaca 22′ · 4.1. Clasificación de la insuficiencia cardíaca según la fracción de eyección del ventrículo izquierdo 5.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,4′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 6.2. Insuficiencia cardíaca estabilizada (PARCIAL 14′ de 40′: solo los párrafos con chip MIR ≥2015 · 40 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6.1. Insuficiencia cardíaca aguda 30′ · 3.1. Historia clínica. Síntomas y signos de la insuficiencia cardíaca 22′ · 4.1. Clasificación de la insuficiencia cardíaca según la fracción de eyección del ventrículo izquierdo 5.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,4′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Insuficiencia cardíaca",
        "url": "https://promir.medicapanamericana.com/capitulo/64588d5ef704295c924d9289"
@@ -4966,6 +4978,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.4,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "6.2. Insuficiencia cardíaca estabilizada",
@@ -5757,14 +5771,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D8 Insuficiencia cardíaca) + 1Q D-3 (D6 Trastornos del ritmo) + 1Q D-7 (D2 Clasificación de los estudios de investigación)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::cardiologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -5775,16 +5789,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.5. Tratamiento (11′ · 10 preguntas MIR citadas · clip 0:05) · 5.4. Enfoque diagnóstico (1.5′ · 3 preguntas MIR citadas) · 6.1. Definición, etiología y fisiopatogenia (0.5′ · 1 preguntas MIR citadas) · 8. Elección del tipo de prótesis (1′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2.4. Enfoque diagnóstico 3.5′ · 7.1. Insuficiencia tricúspide 2′ · 2.2. Definición, etiología y fisiopatogenia 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (18,1′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.5. Tratamiento (11′ · 10 preguntas MIR citadas · clip 0:05) · 5.4. Enfoque diagnóstico (1.5′ · 3 preguntas MIR citadas) · 6.1. Definición, etiología y fisiopatogenia (0.5′ · 1 preguntas MIR citadas) · 8. Elección del tipo de prótesis (1′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2.4. Enfoque diagnóstico 3.5′ · 7.1. Insuficiencia tricúspide 2′ · 2.2. Definición, etiología y fisiopatogenia 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 18,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Valvulopatías",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc65a"
@@ -6015,6 +6029,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 18.1,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.5. Tratamiento",
@@ -6521,14 +6537,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D9 Valvulopatías) + 1Q D-3 (D7 Cardiopatía isquémica) + 1Q D-7 (D3 Evaluación de pruebas diagnósticas)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::cardiologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -6539,16 +6555,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 4.1. Pacientes de muy alto riesgo cardiovascular (1′ · 5 preguntas MIR citadas) · 6.4. Prevención de la enfermedad cardiovascular en el diabético y prediabético (12′ · 12 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5.1. Abandono del tabaco 2′ · 7.7. Dislipemia en poblaciones especiales 13.5′ · 7.5. Fármacos para el tratamiento de las dislipemias 8.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,5′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 4.1. Pacientes de muy alto riesgo cardiovascular (1′ · 5 preguntas MIR citadas) · 6.4. Prevención de la enfermedad cardiovascular en el diabético y prediabético (12′ · 12 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5.1. Abandono del tabaco 2′ · 7.7. Dislipemia en poblaciones especiales 13.5′ · 7.5. Fármacos para el tratamiento de las dislipemias 8.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc658"
@@ -6759,6 +6775,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "4.1. Pacientes de muy alto riesgo cardiovascular",
@@ -7378,14 +7396,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D10 Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV) + 1Q D-3 (D8 Insuficiencia cardíaca) + 1Q D-7 (D4 Principios de bioética y relación médico-paciente)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::cardiologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -7396,16 +7414,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.3. Etiología y fisiopatogenia (3′ · 1 preguntas MIR citadas) · 3.5. Enfoque diagnóstico (4.5′ · 5 preguntas MIR citadas · clip 0:02 + 0:02 + 0:02 + 0:01 + 0:02 + 0:01 + 0:02 + 0:01) · 5.3. Etiología y fisiopatogenia (0.5′ · 5 preguntas MIR citadas) · 5.4. Manifestaciones clínicas y enfoque diagnóstico (2′ · 2 preguntas MIR citadas) · 7.2. Takotsubo (3.5′ · 3 preguntas MIR citadas · clip 0:07 + 0:05)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.6. Tratamiento 3′ · 4.3. Etiología y fisiopatogenia 1′ · 6.1. Definición 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 3.3. Etiología y fisiopatogenia (3′ · 1 preguntas MIR citadas) · 3.5. Enfoque diagnóstico (4.5′ · 5 preguntas MIR citadas · clip 0:02 + 0:02 + 0:02 + 0:01 + 0:02 + 0:01 + 0:02 + 0:01) · 5.3. Etiología y fisiopatogenia (0.5′ · 5 preguntas MIR citadas) · 5.4. Manifestaciones clínicas y enfoque diagnóstico (2′ · 2 preguntas MIR citadas) · 7.2. Takotsubo (3.5′ · 3 preguntas MIR citadas · clip 0:07 + 0:05)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.6. Tratamiento 3′ · 4.3. Etiología y fisiopatogenia 1′ · 6.1. Definición 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del miocardio",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6b6"
@@ -7616,6 +7634,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.3. Etiología y fisiopatogenia",
@@ -7928,16 +7948,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (29 de Cardiología tras los pre-tests) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2. Pruebas para el estudio de la función pulmonar (7′ · 16 preguntas MIR citadas) · 3. Circulación pulmonar (6.5′ · 7 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1. Ventilación 5′ · 6. Equilibrio ácido-básico 4′ · 5. Transporte de oxígeno a los tejidos 5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,7′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2. Pruebas para el estudio de la función pulmonar (7′ · 16 preguntas MIR citadas) · 3. Circulación pulmonar (6.5′ · 7 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1. Ventilación 5′ · 6. Equilibrio ácido-básico 4′ · 5. Transporte de oxígeno a los tejidos 5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,7′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fisiología y fisiopatología del aparato respiratorio",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc825"
@@ -8171,6 +8191,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.7,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2. Pruebas para el estudio de la función pulmonar",
@@ -8551,14 +8573,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D12 Fisiología y fisiopatología del aparato respiratorio) + 1Q D-3 (D10 Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV) + 1Q D-7 (D6 Trastornos del ritmo)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::neumologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -8569,16 +8591,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.4. Manifestaciones clínicas (6.5′ · 18 preguntas MIR citadas) · 2.7. Tratamiento (7′ · 13 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2.6. Clasificación en estadios del cáncer de pulmón 3′ · 2.5. Diagnóstico y estudio de extensión 5′ · 1. Nódulo pulmonar solitario 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,1′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2.4. Manifestaciones clínicas (6.5′ · 18 preguntas MIR citadas) · 2.7. Tratamiento (7′ · 13 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (2.6. Clasificación en estadios del cáncer de pulmón 3′ · 2.5. Diagnóstico y estudio de extensión 5′ · 1. Nódulo pulmonar solitario 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cáncer de pulmón",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc861"
@@ -8797,6 +8819,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.1,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.4. Manifestaciones clínicas",
@@ -9053,14 +9077,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D13 Cáncer de pulmón) + 1Q D-3 (D11 Enfermedades del miocardio) + 1Q D-7 (D7 Cardiopatía isquémica)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::neumologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -9071,16 +9095,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1.1. Derrame pleural (PARCIAL 14′ de 15.5′: solo los párrafos con chip MIR ≥2015 · 25 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.2. Neumotórax 5′ · 2.1. Masas mediastínicas 2.5′ · 1.3. Tumores pleurales 2′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,3′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 1.1. Derrame pleural (PARCIAL 14′ de 15.5′: solo los párrafos con chip MIR ≥2015 · 25 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.2. Neumotórax 5′ · 2.1. Masas mediastínicas 2.5′ · 1.3. Tumores pleurales 2′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,3′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades de la pleura, mediastino y diafragma",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc773"
@@ -9291,6 +9315,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.3,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1.1. Derrame pleural",
@@ -9785,14 +9811,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D14 Enfermedades de la pleura, mediastino y diafragma) + 1Q D-3 (D12 Fisiología y fisiopatología del aparato respiratorio) + 1Q D-7 (D8 Insuficiencia cardíaca)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::neumologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -9803,16 +9829,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 7. Enfoque diagnóstico (4′ · 12 preguntas MIR citadas) · 8. Tratamiento (PARCIAL 5.5′ de 6′: solo los párrafos con chip MIR ≥2015 · 7 preguntas MIR citadas) · 8.9. Tratamientos no farmacológicos (4.5′ · 14 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (8.6. Corticoides sistémicos 0.5′ · 8.8. Otros tratamientos 0.5′ · 3. Factores de riesgo 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,5′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 7. Enfoque diagnóstico (4′ · 12 preguntas MIR citadas) · 8. Tratamiento (PARCIAL 5.5′ de 6′: solo los párrafos con chip MIR ≥2015 · 7 preguntas MIR citadas) · 8.9. Tratamientos no farmacológicos (4.5′ · 14 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (8.6. Corticoides sistémicos 0.5′ · 8.8. Otros tratamientos 0.5′ · 3. Factores de riesgo 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · EPOC",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc883"
@@ -10027,6 +10053,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "7. Enfoque diagnóstico",
@@ -10375,14 +10403,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D15 EPOC) + 1Q D-3 (D13 Cáncer de pulmón) + 1Q D-7 (D9 Valvulopatías)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::neumologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -10393,16 +10421,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2. Fibrosis pulmonar idiopática (11.5′ · 15 preguntas MIR citadas) · 7. Proteinosis alveolar (2′ · 2 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6. Sarcoidosis 8.5′ · 4. Neumonía organizada criptogénica 1′ · 3. Neumonía intersticial aguda 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (15,9′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2. Fibrosis pulmonar idiopática (11.5′ · 15 preguntas MIR citadas) · 7. Proteinosis alveolar (2′ · 2 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6. Sarcoidosis 8.5′ · 4. Neumonía organizada criptogénica 1′ · 3. Neumonía intersticial aguda 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,9′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades intersticiales",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7cd"
@@ -10613,6 +10641,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 15.9,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2. Fibrosis pulmonar idiopática",
@@ -11073,16 +11103,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (20 de Neumología tras los pre-tests) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1.2. El glomérulo (11.5′ · 8 preguntas MIR citadas) · 3.1. Factores reguladores de la homeostasis del potasio (2′ · 1 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.3. Sistema tubular 20′ · 6.2. Trastornos primarios 20′ · 3.3. Hiperpotasemia 4.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,3′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 1.2. El glomérulo (11.5′ · 8 preguntas MIR citadas) · 3.1. Factores reguladores de la homeostasis del potasio (2′ · 1 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.3. Sistema tubular 20′ · 6.2. Trastornos primarios 20′ · 3.3. Hiperpotasemia 4.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,3′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc608"
@@ -11316,6 +11346,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.3,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1.2. El glomérulo",
@@ -11745,14 +11777,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D17 Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base) + 1Q D-3 (D15 EPOC) + 1Q D-7 (D11 Enfermedades del miocardio)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::nefrologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -11763,16 +11795,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 4. Diagnóstico (PARCIAL 5.5′ de 6′: solo los párrafos con chip MIR ≥2015 · 1 preguntas MIR citadas) · 4.2. Estudio de funcionalidad: índices urinarios (4.5′ · 6 preguntas MIR citadas) · 7.2. Tratamiento renal sustitutivo: indicaciones absolutas (4′ · 1 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (7.1. Tratamiento médico 1.5′ · 4.1. Análisis básico 0.5′ · 3.2. Causas parenquimatosas 1′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,1′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 4. Diagnóstico (PARCIAL 5.5′ de 6′: solo los párrafos con chip MIR ≥2015 · 1 preguntas MIR citadas) · 4.2. Estudio de funcionalidad: índices urinarios (4.5′ · 6 preguntas MIR citadas) · 7.2. Tratamiento renal sustitutivo: indicaciones absolutas (4′ · 1 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (7.1. Tratamiento médico 1.5′ · 4.1. Análisis básico 0.5′ · 3.2. Causas parenquimatosas 1′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fracaso renal agudo",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6b0"
@@ -11967,6 +11999,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.1,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "4. Diagnóstico",
@@ -12245,14 +12279,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D18 Fracaso renal agudo) + 1Q D-3 (D16 Enfermedades intersticiales) + 1Q D-7 (D12 Fisiología y fisiopatología del aparato respiratorio)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-1 (D18) solo trae 1 de 2: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-1 (D18) solo trae 1 de 2: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::nefrologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -12263,16 +12297,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1. Definiciones (2′ · contexto, sin preguntas citadas) · 2. Clasificación (0.5′ · contexto, sin preguntas citadas) · 4. Nefropatía por cambios mínimos (6′ · 5 preguntas MIR citadas) · 7. Nefropatía mesangial IgA (4.5′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (10. Glomerulonefritis extracapilares 10′ · 8. Glomerulonefritis endocapilar aguda 4′ · 6. Nefropatía membranosa 6′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (15,5′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 1. Definiciones (2′ · contexto, sin preguntas citadas) · 2. Clasificación (0.5′ · contexto, sin preguntas citadas) · 4. Nefropatía por cambios mínimos (6′ · 5 preguntas MIR citadas) · 7. Nefropatía mesangial IgA (4.5′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (10. Glomerulonefritis extracapilares 10′ · 8. Glomerulonefritis endocapilar aguda 4′ · 6. Nefropatía membranosa 6′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Glomerulonefritis primarias",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc789"
@@ -12482,6 +12516,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 15.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1. Definiciones",
@@ -12881,14 +12917,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D19 Glomerulonefritis primarias) + 1Q D-3 (D17 Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base) + 1Q D-7 (D13 Cáncer de pulmón)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::nefrologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -12899,16 +12935,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1.1. Vasculitis asociadas a ANCA (PARCIAL 9′ de 13.5′: solo los párrafos con chip MIR ≥2015 · 4 preguntas MIR citadas) · 1.2. Vasculitis asociadas a inmunocomplejos (2′ · 6 preguntas MIR citadas) · 2. Microangiopatías trombóticas: Síndrome hemolítico urémico y Púrpura trombótica trombocitopénica (3′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5. Riñón y discrasia sanguínea 2.5′ · 3. Amiloidosis 4.5′ · 6. Nefropatía lúpica 8′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,5′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 1.1. Vasculitis asociadas a ANCA (PARCIAL 9′ de 13.5′: solo los párrafos con chip MIR ≥2015 · 4 preguntas MIR citadas) · 1.2. Vasculitis asociadas a inmunocomplejos (2′ · 6 preguntas MIR citadas) · 2. Microangiopatías trombóticas: Síndrome hemolítico urémico y Púrpura trombótica trombocitopénica (3′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5. Riñón y discrasia sanguínea 2.5′ · 3. Amiloidosis 4.5′ · 6. Nefropatía lúpica 8′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Riñón y enfermedades sistémicas",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc60a"
@@ -13119,6 +13155,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1.1. Vasculitis asociadas a ANCA",
@@ -13366,14 +13404,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D20 Riñón y enfermedades sistémicas) + 1Q D-3 (D18 Fracaso renal agudo) + 1Q D-7 (D14 Enfermedades de la pleura, mediastino y diafragma)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-3 (D18) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-3 (D18) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::nefrologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -13384,16 +13422,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3. Clasificación (0.5′ · 2 preguntas MIR citadas) · 5.2. Tratamiento renal sustitutivo (12′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4. Síntomas y alteraciones metabólicas 2′ · 5.1. Tratamiento de soporte 8′ · 1. Definición 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3. Clasificación (0.5′ · 2 preguntas MIR citadas) · 5.2. Tratamiento renal sustitutivo (12′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4. Síntomas y alteraciones metabólicas 2′ · 5.1. Tratamiento de soporte 8′ · 1. Definición 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Insuficiencia renal crónica",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc72d"
@@ -13602,6 +13640,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2. Etiología",
@@ -13971,14 +14011,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D21 Insuficiencia renal crónica) + 1Q D-3 (D19 Glomerulonefritis primarias) + 1Q D-7 (D15 EPOC)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::nefrologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -13989,16 +14029,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (1 del pool oficial de la app + 4 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1. Introducción (0.5′ · contexto, sin preguntas citadas) · 1.1. Hematuria (1′ · contexto, sin preguntas citadas) · 1.2. Proteinuria (2.5′ · contexto, sin preguntas citadas) · 1.3. Sedimento urinario (2′ · contexto, sin preguntas citadas) · 1.4. Fracaso renal agudo (0.5′ · contexto, sin preguntas citadas) · 1.5. Insuficiencia renal crónica (0.5′ · contexto, sin preguntas citadas) · 2.3. Manifestaciones clínicas (0.5′ · 1 preguntas MIR citadas) · 3.2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3.3. Manifestaciones clínicas (4.5′ · 4 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (15,5′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 1. Introducción (0.5′ · contexto, sin preguntas citadas) · 1.1. Hematuria (1′ · contexto, sin preguntas citadas) · 1.2. Proteinuria (2.5′ · contexto, sin preguntas citadas) · 1.3. Sedimento urinario (2′ · contexto, sin preguntas citadas) · 1.4. Fracaso renal agudo (0.5′ · contexto, sin preguntas citadas) · 1.5. Insuficiencia renal crónica (0.5′ · contexto, sin preguntas citadas) · 2.3. Manifestaciones clínicas (0.5′ · 1 preguntas MIR citadas) · 3.2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3.3. Manifestaciones clínicas (4.5′ · 4 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (—). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Síndromes clínicos en nefrología",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc654"
@@ -14207,6 +14247,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 15.5,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1. Introducción",
@@ -15038,16 +15080,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (9 de Nefrología: sus capítulos del plan ya consumieron el resto) + 1 preguntas MIR citadas en los capítulos del bloque D17-D22 que no salieron en ningún paso (≥2015 primero) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 10.2. Complicaciones de la hipertensión portal (PARCIAL 14′ de 16′: solo los párrafos con chip MIR ≥2015 · 18 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (11.2. Hepatocarcinoma 10′ · 9.1. Enfermedad hepática grasa no alcohólica 3′ · 11.1. Tumores benignos hepáticos 7′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 10.2. Complicaciones de la hipertensión portal (PARCIAL 14′ de 16′: solo los párrafos con chip MIR ≥2015 · 18 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (11.2. Hepatocarcinoma 10′ · 9.1. Enfermedad hepática grasa no alcohólica 3′ · 11.1. Tumores benignos hepáticos 7′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del hígado",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc723"
@@ -15296,6 +15338,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "10.2. Complicaciones de la hipertensión portal",
@@ -15752,14 +15796,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D23 Enfermedades del hígado) + 1Q D-3 (D21 Insuficiencia renal crónica) + 1Q D-7 (D17 Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -15770,16 +15814,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.3. Cáncer colorrectal (12.5′ · 26 preguntas MIR citadas) · 4.3. Tratamiento (1.5′ · 5 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.1. Colitis ulcerosa 19.5′ · 3.2. Poliposis colónicas 22′ · 4.1. Clínica 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.3. Cáncer colorrectal (12.5′ · 26 preguntas MIR citadas) · 4.3. Tratamiento (1.5′ · 5 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.1. Colitis ulcerosa 19.5′ · 3.2. Poliposis colónicas 22′ · 4.1. Clínica 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del colon",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc64c"
@@ -15994,6 +16038,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.3. Cáncer colorrectal",
@@ -16504,14 +16550,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D24 Enfermedades del colon) + 1Q D-3 (D22 Síndromes clínicos en nefrología) + 1Q D-7 (D18 Fracaso renal agudo)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-3 (D22) no trae pregunta nueva · D-7 (D18) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-3 (D22) no trae pregunta nueva · D-7 (D18) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -16522,16 +16568,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.1. Enfermedad celíaca (PARCIAL 14′ de 18.5′: solo los párrafos con chip MIR ≥2015 · 18 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.1. Obstrucción intestinal mecánica 11.5′ · 7.1. Definición y diagnóstico 2.5′ · 6.2. Isquemia mesentérica aguda 3.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,7′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.1. Enfermedad celíaca (PARCIAL 14′ de 18.5′: solo los párrafos con chip MIR ≥2015 · 18 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.1. Obstrucción intestinal mecánica 11.5′ · 7.1. Definición y diagnóstico 2.5′ · 6.2. Isquemia mesentérica aguda 3.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,7′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del intestino delgado",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6a6"
@@ -16730,6 +16776,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.7,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.1. Enfermedad celíaca",
@@ -17255,14 +17303,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D25 Enfermedades del intestino delgado) + 1Q D-3 (D23 Enfermedades del hígado) + 1Q D-7 (D19 Glomerulonefritis primarias)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -17273,16 +17321,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 4.1. Gastroparesia (1.5′ · 3 preguntas MIR citadas) · 5.4. Tratamiento médico (3′ · 3 preguntas MIR citadas) · 5.6. Complicaciones de la úlcera péptica (1′ · 3 preguntas MIR citadas) · 6.3. Tratamiento endoscópico (2′ · 5 preguntas MIR citadas) · 7.1. Tumores benignos (6′ · 7 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6.2. Manejo clínico y pronóstico 4′ · 8. Vólvulo gástrico 3.5′ · 6.5. Hemorragia digestiva de origen oscuro 1′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 4.1. Gastroparesia (1.5′ · 3 preguntas MIR citadas) · 5.4. Tratamiento médico (3′ · 3 preguntas MIR citadas) · 5.6. Complicaciones de la úlcera péptica (1′ · 3 preguntas MIR citadas) · 6.3. Tratamiento endoscópico (2′ · 5 preguntas MIR citadas) · 7.1. Tumores benignos (6′ · 7 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (6.2. Manejo clínico y pronóstico 4′ · 8. Vólvulo gástrico 3.5′ · 6.5. Hemorragia digestiva de origen oscuro 1′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del estómago",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc64a"
@@ -17493,6 +17541,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "4.1. Gastroparesia",
@@ -17857,14 +17907,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D26 Enfermedades del estómago) + 1Q D-3 (D24 Enfermedades del colon) + 1Q D-7 (D20 Riñón y enfermedades sistémicas)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -17875,16 +17925,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.1. Hernias (12.5′ · 13 preguntas MIR citadas · clip 2:01) · 3. Complicaciones de la cirugía (1.5′ · 3 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4. Quemaduras 3.5′ · 6. Politraumatismo 4′ · 3.1. Infecciones 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,6′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.1. Hernias (12.5′ · 13 preguntas MIR citadas · clip 2:01) · 3. Complicaciones de la cirugía (1.5′ · 3 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (4. Quemaduras 3.5′ · 6. Politraumatismo 4′ · 3.1. Infecciones 2.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,6′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Miscelánea de temas quirúrgicos",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6a8"
@@ -18095,6 +18145,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.6,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.1. Hernias",
@@ -18434,14 +18486,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D27 Miscelánea de temas quirúrgicos) + 1Q D-3 (D25 Enfermedades del intestino delgado) + 1Q D-7 (D21 Insuficiencia renal crónica)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -18452,16 +18504,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2.1. Etiología (4′ · 3 preguntas MIR citadas) · 2.3. Diagnóstico (1′ · 3 preguntas MIR citadas) · 3.1. Tumores sólidos (9′ · 18 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.2. Diagnóstico 20.5′ · 4. Tumores del páncreas endocrino 12.5′ · 1.5. Complicaciones de la pancreatitis aguda 15.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,9′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.1. Etiología (4′ · 3 preguntas MIR citadas) · 2.3. Diagnóstico (1′ · 3 preguntas MIR citadas) · 3.1. Tumores sólidos (9′ · 18 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (1.2. Diagnóstico 20.5′ · 4. Tumores del páncreas endocrino 12.5′ · 1.5. Complicaciones de la pancreatitis aguda 15.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,9′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del páncreas",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc600"
@@ -18672,6 +18724,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.9,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "2.1. Etiología",
@@ -18973,14 +19027,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D28 Enfermedades del páncreas) + 1Q D-3 (D26 Enfermedades del estómago) + 1Q D-7 (D22 Síndromes clínicos en nefrología)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-7 (D22) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · D-7 (D22) no trae pregunta nueva: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -18991,16 +19045,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 3.1. Enfermedad por reflujo gastroesofágico (PARCIAL 14′ de 26′: solo los párrafos con chip MIR ≥2015 · 17 preguntas MIR citadas · clip 7:30 + 2:55)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.4. Esofagitis eosinofílica 4′ · 2.1. Acalasia esofágica 14′ · 2.2. Otros trastornos motores esofágicos 3.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (15,8′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.1. Enfermedad por reflujo gastroesofágico (PARCIAL 14′ de 26′: solo los párrafos con chip MIR ≥2015 · 17 preguntas MIR citadas · clip 7:30 + 2:55)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.4. Esofagitis eosinofílica 4′ · 2.1. Acalasia esofágica 14′ · 2.2. Otros trastornos motores esofágicos 3.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del esófago",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc5fe"
@@ -19205,6 +19259,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 15.8,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "3.1. Enfermedad por reflujo gastroesofágico",
@@ -19487,14 +19543,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D29 Enfermedades del esófago) + 1Q D-3 (D27 Miscelánea de temas quirúrgicos) + 1Q D-7 (D23 Enfermedades del hígado)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::digestivo",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -19505,16 +19561,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 4.3. Colecistitis aguda (PARCIAL 8.5′ de 11.5′: solo los párrafos con chip MIR ≥2015 · 4 preguntas MIR citadas) · 4.4. Coledocolitiasis (5.5′ · 6 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5.1. Benignos 0.5′ · 5.2. Malignos 14.5′ · 4.5. Colangitis aguda 3′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 4.3. Colecistitis aguda (PARCIAL 8.5′ de 11.5′: solo los párrafos con chip MIR ≥2015 · 4 preguntas MIR citadas) · 4.4. Coledocolitiasis (5.5′ · 6 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (5.1. Benignos 0.5′ · 5.2. Malignos 14.5′ · 4.5. Colangitis aguda 3′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades de la vía biliar",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc77f"
@@ -19725,6 +19781,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.2,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "4.3. Colecistitis aguda",
@@ -20250,16 +20308,16 @@
       "como": "Cronómetro 13 min (77 s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (0 de Gastroenterología: sus capítulos del plan ya consumieron el resto) + 10 preguntas MIR citadas en los capítulos del bloque D23-D30 que no salieron en ningún paso (≥2015 primero) · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre)."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 1. Metabolismo de los hidratos de carbono (5′ · 7 preguntas MIR citadas) · 3. Diagnóstico y cribado (2′ · 4 preguntas MIR citadas) · 7.2. Fármacos no insulínicos (7′ · 21 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (7.7. Objetivos del control glucémico 2.5′ · 7.3. Insulinoterapia 8′ · 7.4. Escalón terapéutico del manejo de la diabetes mellitus tipo 2 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (17,8′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 1. Metabolismo de los hidratos de carbono (5′ · 7 preguntas MIR citadas) · 3. Diagnóstico y cribado (2′ · 4 preguntas MIR citadas) · 7.2. Fármacos no insulínicos (7′ · 21 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (7.7. Objetivos del control glucémico 2.5′ · 7.3. Insulinoterapia 8′ · 7.4. Escalón terapéutico del manejo de la diabetes mellitus tipo 2 0.5′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Diabetes mellitus",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc737"
@@ -20518,6 +20576,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 17.8,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "1. Metabolismo de los hidratos de carbono",
@@ -21218,14 +21278,14 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 7,
-      "hora": "15:15–15:22",
+      "min": 6,
+      "hora": "15:15–15:21",
       "que": "EVAL ANCLADA 4Q · 2Q D-1 (D31 Diabetes mellitus) + 1Q D-3 (D29 Enfermedades del esófago) + 1Q D-7 (D25 Enfermedades del intestino delgado)",
-      "como": "Cronómetro 6′ (77 s/Q), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 6′ (77 s/Q: 4 × 77 s = 5,1′), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
-      "min": 5,
-      "hora": "15:22–15:27",
+      "min": 6,
+      "hora": "15:21–15:27",
       "que": "Anki APEX::MIR::endocrinologia",
       "como": "FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer."
      },
@@ -21236,16 +21296,16 @@
       "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana."
      },
      {
-      "min": 8,
-      "hora": "15:30–15:38",
+      "min": 7,
+      "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
      },
      {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 5.4. Enfermedad de Graves-Basedow (PARCIAL 9′ de 10.5′: solo los párrafos con chip MIR ≥2015 · 5 preguntas MIR citadas) · 6.1. Tiroiditis dolorosas (3′ · 6 preguntas MIR citadas) · 8.2. Carcinoma medular de tiroides (2′ · 7 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (8.1. Tumores del epitelio folicular 8.5′ · 5.3. Diagnóstico 2.5′ · 5.7. Otras causas de hipertiroidismo 4′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 16,
+      "hora": "15:37–15:53",
+      "que": "LECTURA DIRIGIDA 16′ (16,8′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 5.4. Enfermedad de Graves-Basedow (PARCIAL 9′ de 10.5′: solo los párrafos con chip MIR ≥2015 · 5 preguntas MIR citadas) · 6.1. Tiroiditis dolorosas (3′ · 6 preguntas MIR citadas) · 8.2. Carcinoma medular de tiroides (2′ · 7 preguntas MIR citadas)",
+      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (8.1. Tumores del epitelio folicular 8.5′ · 5.3. Diagnóstico 2.5′ · 5.7. Otras causas de hipertiroidismo 4′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Glándula tiroides",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc65e"
@@ -21468,6 +21528,8 @@
      "tablaPpm": 90,
      "figuraMin": 0.5
     },
+    "min150": 16.8,
+    "minPaso": 16,
     "secciones": [
      {
       "titulo": "5.4. Enfermedad de Graves-Basedow",

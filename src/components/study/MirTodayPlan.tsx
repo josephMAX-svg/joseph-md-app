@@ -475,6 +475,13 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
     return { anclada, cierre: cierreIds, pretest, quiz, miniMIR };
   }, [dia.d, dia.fecha, dia.capId, entries.length, poolOK, esTema, cierre, din]);
   const qIdsQuiz = pool.quiz;
+  // v6.09b · lote 1-ter: minutos del pre-test y de la lectura y hora de fin del pre-test = los de la guía del día (en F1, D2-D32: 7′ y 16′, fin 15:37;
+  //   desde el 4-ene-2027 siguen 8′ y 15′, fin 15:38)
+  const gDia = useMemo(() => mirGuiaPlan(dia), [dia.d, dia.fecha]);
+  const pasoDe = (re: RegExp) => gDia.pasos.find((p) => re.test(p.que.replace(/^\d{2}:\d{2}–\d{2}:\d{2} · /, '')));
+  const minPre = pasoDe(/^PRE-TEST/)?.min ?? 8;
+  const minLec = pasoDe(/^LECTURA DIRIGIDA/)?.min ?? 15;
+  const finPre = (dia.fecha <= '2027-01-03' ? /^\d{2}:\d{2}–(\d{2}:\d{2})/.exec(pasoDe(/^PRE-TEST/)?.que ?? '')?.[1] : undefined) ?? '15:38';
   return (
     <View>
       <FadeUp>
@@ -546,12 +553,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
       {esTema && (
         <>
           <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 15-17 Q/día</Text>
-          <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (pool oficial → test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={60}><ColaItem icon="❓" lbl={`PRE-TEST · 5Q ciegas (pool oficial → test del capítulo ProMIR) · ${minPre} min`} val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar pre-test 5Q (10 s · diagnóstico, no cuenta para readiness; sí para validar el tema)" color={GREEN}>
             {poolOK && <MirPoolLista qIds={pool.pretest} color={GREEN} titulo="Pool oficial · pre-test (ciego: no abras la clave antes de contestar)" pedidas={5} />}
-            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo="15:38 · Pre-test 5Q ciegas" qIds={pool.pretest} onSaved={bump} />
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo={`${finPre} · Pre-test 5Q ciegas`} qIds={pool.pretest} onSaved={bump} />
           </Plegable>
-          <FadeUp delay={90}><ColaItem icon="📖" lbl="LECTURA DIRIGIDA · solo los gaps del pre-test · 15 min" val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={90}><ColaItem icon="📖" lbl={`LECTURA DIRIGIDA · solo los gaps del pre-test · ${minLec} min`} val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
           <FadeUp delay={120}><ColaItem icon="🧪" lbl="6Q COMENTADAS (máx. 8) · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar quiz 6-8Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
             {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={8} />}
