@@ -1,5 +1,5 @@
 {
- "version": "v6.08",
+ "version": "v6.10",
  "escenario": {
   "encaps": "2027-03-14",
   "examen": "2027-12-06",
@@ -80,24 +80,18 @@
    11,
    12,
    13
-  ]
+  ],
+  "uwsa1Tramo2": {
+   "t": 82,
+   "fecha": "2027-06-29",
+   "ventana": [
+    "2027-06-28",
+    "2027-07-03"
+   ],
+   "hueco": "UWSA3 (opcional)"
+  }
  },
  "DIAS": [
-  {
-   "d": 1,
-   "fecha": "2026-11-17",
-   "system": "Assessment",
-   "tier": "CORE",
-   "sub": "🎯 UWSA1 — BASELINE (160Q, 09:00-13:00) + revisión completa por la tarde",
-   "bbCh": "Assessment",
-   "bbVid": "—",
-   "uw": "uWorld Self-Assessment 1",
-   "mat": "uWorld UWSA1",
-   "matType": "clin",
-   "palm": null,
-   "nivelUW": 5,
-   "qDia": 160
-  },
   {
    "d": 2,
    "fecha": "2026-11-19",
@@ -114,7 +108,7 @@
     "t": "The ONLY video: pass Step 1 in 2026"
    },
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 8
   },
   {
    "d": 3,
@@ -132,7 +126,7 @@
     "t": "5X Your Anki Efficiency (FSRS)"
    },
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 9
   },
   {
    "d": 4,
@@ -150,7 +144,7 @@
     "t": "High Yield Immunology"
    },
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 9
   },
   {
    "d": 5,
@@ -165,7 +159,7 @@
    "matType": "path",
    "palm": null,
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 15
   },
   {
    "d": 6,
@@ -183,7 +177,7 @@
     "t": "High Yield Cardiology"
    },
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 15
   },
   {
    "d": 7,
@@ -198,7 +192,7 @@
    "matType": "physio",
    "palm": null,
    "nivelUW": 1,
-   "qDia": 30
+   "qDia": 15
   },
   {
    "d": 8,
@@ -227,8 +221,8 @@
    "mat": "AMBOSS + First Aid",
    "matType": "physio",
    "palm": null,
-   "nivelUW": 2,
-   "qDia": 40
+   "nivelUW": 1,
+   "qDia": 10
   },
   {
    "d": 10,
@@ -242,8 +236,8 @@
    "mat": "AMBOSS + First Aid",
    "matType": "physio",
    "palm": null,
-   "nivelUW": 2,
-   "qDia": 40
+   "nivelUW": 1,
+   "qDia": 15
   },
   {
    "d": 11,
@@ -260,8 +254,8 @@
     "id": "nFfdaHLtxag",
     "t": "High Yield Cardiology Part 2"
    },
-   "nivelUW": 2,
-   "qDia": 40
+   "nivelUW": 1,
+   "qDia": 15
   },
   {
    "d": 12,
@@ -275,8 +269,8 @@
    "mat": "Sketchy Pharm + First Aid",
    "matType": "pharm",
    "palm": null,
-   "nivelUW": 2,
-   "qDia": 40
+   "nivelUW": 1,
+   "qDia": 15
   },
   {
    "d": 13,
@@ -290,8 +284,8 @@
    "mat": "Pathoma (Sattar) + First Aid",
    "matType": "path",
    "palm": null,
-   "nivelUW": 2,
-   "qDia": 40
+   "nivelUW": 1,
+   "qDia": 15
   }
  ],
  "DIAS_T2": [
@@ -2379,19 +2373,19 @@
    "fecha": "2027-06-29",
    "fase": "F4",
    "tipo": "hito",
-   "dOrig": null,
+   "dOrig": 1,
    "parte": null,
    "system": "Assessment",
    "tier": "CORE",
    "bbCh": "Assessment",
    "bbVid": "—",
-   "uw": "uWorld Self-Assessment 3",
-   "mat": "uWorld UWSA3",
+   "uw": "uWorld Self-Assessment 1",
+   "mat": "uWorld UWSA1",
    "matType": "clin",
    "palm": null,
-   "sub": "🎯 UWSA3 (opcional) (07:00-11:15) · día con turno TARDE o feriado sin turno · ventana lun 28-jun→sáb 3-jul",
-   "forma": "UWSA3",
-   "nombre": "UWSA3 (opcional)",
+   "sub": "🎯 UWSA1 — PRUEBA DE RESISTENCIA (07:00-11:15) · día con turno TARDE o feriado sin turno · ventana lun 28-jun→sáb 3-jul · DE F1 → TRAMO 2 (decisión de Joseph del 17-nov: no es la línea base —esa es el NBME 25 del D8, jue 10-dic—; va con ≥3 sistemas en nivel 3, en el hueco que tenía el UWSA3 opcional) · su Day-After va en la fila siguiente",
+   "forma": 1,
+   "nombre": "UWSA1 (prueba de resistencia)",
    "qDia": 160,
    "nivelUW": 5,
    "h": 4.25,
@@ -2399,7 +2393,8 @@
     "2027-06-28",
     "2027-07-03"
    ],
-   "faseUW": "A"
+   "faseUW": "A",
+   "subV520": "🎯 UWSA1 — BASELINE (160Q, 09:00-13:00) + revisión completa por la tarde"
   },
   {
    "t": 83,
@@ -2417,7 +2412,7 @@
    "mat": "Informe del hito + First Aid + Anki",
    "matType": "clin",
    "palm": null,
-   "sub": "DAY-AFTER del UWSA3 (opcional) (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B",
+   "sub": "DAY-AFTER del UWSA1 (prueba de resistencia) (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B",
    "qDia": 0,
    "nivelUW": 5,
    "h": 2.625,

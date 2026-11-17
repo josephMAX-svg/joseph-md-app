@@ -86,8 +86,8 @@ const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
+  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma · v6.10: dom 6-dic = Research (el forzado va ANTES que la regla del finde)
   if (dow === 0 || (dow === 6 && s < SERUMS_INICIO)) return 'descanso';
-  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma
   let cnt = 0; const cur = fromISO('2026-06-10');
   while (cur < d) { const wd = cur.getUTCDay(); if ((wd >= 1 && wd <= 5) || (wd === 6 && iso(cur) >= SERUMS_INICIO)) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
   return cnt % 2 === 0 ? 'research' : 'derma';

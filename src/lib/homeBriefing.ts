@@ -139,6 +139,9 @@ export function componerBriefing(inp: BriefingInput): string {
 // v6.09 (16-nov-2026): D1 de la fase = mar 17-nov (Joseph: «hoy no avancé, todo empieza a partir de mañana»; sáb 21 y dom 22 libres por viaje).
 //   El Step 1 NO cambia (el lunes no era día de Step): UWSA1 = D1 mar 17-nov, NBME 25 = D8 jue 10-dic, D13 mar 29-dic; STEP1_SEMANAS = 45 (S1 sigue
 //   siendo la semana del lun 16-nov) y DELOAD_SEMANAS igual. El jue 31-dic deja de ser SKIP (recupera el día perdido de ENCAPS y secundarios).
+// v6.10b (17-nov-2026): D1 de la fase = mié 18-nov (Joseph: «el 18 es el primer día; corre nomás un día»). Decisión 4 de Joseph (17-nov 17:05): el
+//   jue 19 es NIVEL 0 (D2) y el UWSA1 sale de F1 → tramo 2 (T82 mar 29-jun-2027); D2-D13 en sus fechas v6.09 (NBME 25 = D8 jue 10-dic, D13 mar 29-dic)
+//   → STEP1_SEMANAS = 45 y DELOAD_SEMANAS igual que en la v6.09 (lun 14-dic post-NBME 25 · lun 28-dic última semana de F1).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 

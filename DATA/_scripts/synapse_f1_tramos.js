@@ -33,6 +33,13 @@
 //  · (d) ENTRE SEMANA, el A medido que pide más que su franja (14, 17 y 31-dic: 16-16,7′ en 15′) lleva sus minutos reales y el C baja lo mismo, como el
 //    sábado: A + B + C = 30′ y no retrasa el Business de las 13:00; lo que el C no lee sigue con su fecha (F1 o cola post-Step 1).
 //  · (e) el C del sábado con menos minutos ya no dice «lo que no leas sigue en la cola de lectura» (sin fecha): remite a las fechas de «Lo que queda».
+// v6.10 (mar 17-nov-2026 · 1.ª sesión mié 18-nov; el mar 17 tampoco se estudió): (1) HECHO_17 pasa a PRIMER_MARTES = «piezas fijas del primer martes
+//  de F1» (Dwarkesh × Dario 0:00-10:00 a 1,0× + las primeras ≈500 palabras de «Prompt injection attacks…»), ahora aplicadas al MAR 24-NOV (la 1.ª
+//  sesión del carril del martes; ya no se dan por hechas); (2) ctx.rec = sesiones de RECUPERACIÓN a hora fija (gen_synapse_plan.js › REC_V610: sáb 28-nov
+//  07:15-07:45, A-unit del mar 17 + piezas B/C del carril del martes de la sem 2) → entran en el recorrido como un día más, ANTES de la sesión de las
+//  21:00 de ese día; la serie dario / pi1 sigue en ellas desde los 600 s / 500 palabras (10:00-25:00 a 1,5× · «Leaking your prompt» p. 10 → «Detect…»
+//  p. 3, lo que la v6.09 tenía el mar 24) y desde la sesión de las 21:00 todo queda igual. Su resultado va con la clave «fecha@hora|tag»; el resto de
+//  «Prompt injection…» conserva en la cola el ORIGEN de la sesión que recupera (mar 17, como en la v6.09), así el comodín de las 21:00 no cambia de orden.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -51,8 +58,15 @@ const RAT = [0.85, 1.15];
 const CORTE_QUE = 140, CORTE_COMO = 100;
 // curaduría del lote 1 que sigue mandando (rutinaGuia SYN_SERIES): el episodio de Greg Brockman (No Priors) del dom 22 al lun 30-nov
 const RESERVADO_B = new Set(['2026-11-22', '2026-11-23', '2026-11-28', '2026-11-30']);
-// ya hecho el mar 17-nov (en curso): Dwarkesh × Dario 0:00-10:00 a 1,0× · «Prompt injection attacks against GPT-3» las primeras ≈500
-const HECHO_17 = { dario: 600, pi1: 500 };
+// v6.10: PIEZAS FIJAS DEL PRIMER MARTES DE F1 (antes HECHO_17, «ya hecho el mar 17-nov, en curso»): Dwarkesh × Dario 0:00-10:00 a 1,0× · «Prompt injection
+//   attacks against GPT-3» las primeras ≈500 palabras → el mar 24-nov (la 1.ª sesión del carril del martes desde que el mar 17 quedó sin sesión)
+const PRIMER_MARTES = { fecha: '2026-11-24', dario: 600, velDario: 1, pi1: 500 };
+// v6.10 · tanda C (17-nov-2026 · CORRECCIÓN DE HECHO del chat SYNAPSE, leída en las páginas): CORTES LIMPIOS — un tramo de lectura nunca termina DENTRO
+//   de una lista o de un blockquote. [sección (índice de medidas_f1.json), párrafo inicial, párrafo final] (párrafos 1-based, como loc()); `txt` = cómo
+//   lo nombra el localizador cuando el corte cae al final del grupo. py1 §1: el párrafo 8 («…for several reasons:») abre la lista de 3 puntos (p. 9-11):
+//   el corte va al final de la lista (≈516 palabras; antes «hasta el párrafo 9», dentro de una viñeta). pi1 «Leaking your prompt»: los p. 9-10 caen
+//   dentro de blockquotes → la pieza fija del primer martes termina al final de la sección (≈516; antes en el p. 9).
+const SIN_CORTE = { py1: [{ si: 1, pa: 8, pb: 11, txt: 'la lista de 3 puntos' }], pi1: [{ si: 2, pa: 9, pb: 10, txt: null }] };
 
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
@@ -82,7 +96,15 @@ function crear(MED, ctx) {
   for (const [id, L] of Object.entries(MED.lectura)) {
     const flat = [];
     L.secciones.forEach((s, si) => s.p.forEach((w, pi) => flat.push({ si, pi, w })));
-    LEC[id] = { ...L, id, flat };
+    // v6.10 · tanda C: finales de tramo prohibidos (dentro de una lista / blockquote) y grupo que termina en cada índice (para el localizador)
+    const prohibido = new Set(), finGrupo = new Map();
+    for (const g of SIN_CORTE[id] || []) {
+      const ia = flat.findIndex((x) => x.si === g.si && x.pi === g.pa - 1), ib = flat.findIndex((x) => x.si === g.si && x.pi === g.pb - 1);
+      if (ia < 0 || ib < ia) throw new Error(`v6.10 · SIN_CORTE: el grupo ${id} §${g.si} p. ${g.pa}-${g.pb} no existe en medidas_f1.json`);
+      for (let k = ia + 1; k <= ib; k++) prohibido.add(k);
+      finGrupo.set(ib + 1, g);
+    }
+    LEC[id] = { ...L, id, flat, prohibido, finGrupo };
   }
   const tSec = (L, si) => L.secciones[si].t;
   const urlSec = (L, si) => L.secciones[si].url || L.url;
@@ -95,7 +117,8 @@ function crear(MED, ctx) {
       w += L.flat[i].w;
       const fin = i + 1, finSec = fin === L.flat.length || L.flat[fin].pi === 0;
       const d = Math.abs(w - obj);
-      if (w >= lo && w <= hi) { if (!best || d < best.d) best = { b: fin, w, d }; if (finSec && (!bestSec || d < bestSec.d)) bestSec = { b: fin, w, d }; }
+      const limpio = !L.prohibido.has(fin); // v6.10 · tanda C: nunca dentro de una lista / blockquote
+      if (w >= lo && w <= hi && limpio) { if (!best || d < best.d) best = { b: fin, w, d }; if (finSec && (!bestSec || d < bestSec.d)) bestSec = { b: fin, w, d }; }
       if (w > hi) { if (!best) { const wPrev = w - L.flat[i].w; best = i > a && Math.abs(wPrev - obj) < d ? { b: i, w: wPrev } : { b: fin, w }; } break; }
       if (fin === lim && !best) best = { b: fin, w };
     }
@@ -109,6 +132,8 @@ function crear(MED, ctx) {
     if (b >= L.flat.length) return `${d} hasta el final`;
     const fin = L.flat[b];
     if (fin.pi === 0) return fin.si - 1 === ini.si && ini.pi === 0 ? `«${tSec(L, ini.si)}» entera` : `${d} hasta el final de «${tSec(L, fin.si - 1)}»`;
+    const g = L.finGrupo && L.finGrupo.get(b); // v6.10 · tanda C: el corte cae al final de una lista nombrada
+    if (g && g.txt) return `${d} hasta el final de ${g.txt} de «${tSec(L, fin.si)}» (párrafo ${fin.pi}, incluido)`;
     return `${d} hasta el párrafo ${fin.pi} de «${tSec(L, fin.si)}» (incluido)`;
   }
 
@@ -160,7 +185,14 @@ function crear(MED, ctx) {
   const keyRes = (id) => `${id}#resto`;
   const res = { sesiones: new Map() }; // fecha|tag → {leccion, guia, med, min?}
   const extra2027 = new Map(); // v6.09b lote 1-quater: fecha|tag de EXTRA_2027 → {leccion, guia, med}
-  const out = (fecha, tag, o) => res.sesiones.set(`${fecha}|${tag}`, o);
+  // v6.10: sesión de recuperación en curso (ctx.rec) → su resultado va con la clave «fecha@hora|tag» (la de las 21:00 de ese día conserva «fecha|tag»)
+  let curRec = null;
+  const K = (f) => (curRec && f === curRec.fecha ? `${f}@${curRec.hora}` : f);
+  /** v6.10: «Sigue → …» con la hora si el destino es una sesión de recuperación (sáb 28-nov 07:15) */
+  const fS = (dia) => `${fC(dia.fecha)}${dia.rec ? ' ' + dia.hora : ''}`;
+  /** v6.10: «la dejaste el …» — si la sesión anterior del recurso fue la de recuperación de HOY (07:15), «hoy a las 07:15» */
+  const pvA = (id, origen, f) => { const x = prevSes[id] || origen; const r = (ctx.rec || []).find((y) => y.fecha === x); return x === f && r ? `hoy a las ${r.ini}` : `el ${fC(x)}`; };
+  const out = (fecha, tag, o) => res.sesiones.set(`${K(fecha)}|${tag}`, o);
   const audioIdDeCanal = (lec) => /AI prompt engineering: A deep dive/.test(lec) ? 'deepDivePE' : /Tips for building AI agents/.test(lec) ? 'tips' : /Building Anthropic/.test(lec) ? 'building' : /How difficult is AI alignment/.test(lec) ? 'alignment' : /Interpretability/.test(lec) ? 'interp' : null;
   const prevSes = {}; // id → fecha de la última sesión (para «retoma donde paraste el …»)
 
@@ -168,7 +200,13 @@ function crear(MED, ctx) {
   const pendTxt = []; // {fecha, tag, resto?, restoTxt?, piezas?, base}
 
   const enF1 = (f) => f >= DESDE && f <= HASTA;
-  const dias = ctx.dias;
+  // v6.10: las sesiones de recuperación (ctx.rec) entran en el recorrido como un día más, antes del día real de esa fecha (07:15 < 21:00)
+  const dias = [...ctx.dias];
+  for (const r of ctx.rec || []) {
+    const i = dias.findIndex((d) => d.fecha === r.fecha);
+    if (i < 0) throw new Error(`v6.10: la sesión de recuperación ${r.fecha} ${r.ini} no está dentro del plan`);
+    dias.splice(i, 0, { fecha: r.fecha, hora: r.ini, plan: r.plan, rec: true, bloques: r.bloques });
+  }
   const siguienteMismo = (desdeIdx, tag, re) => { for (let i = desdeIdx + 1; i < dias.length; i++) { const b = dias[i].bloques.find((x) => x.tag === tag && re.test(x.material)); if (b) return { dia: dias[i], b }; } return null; };
 
   // ── A · vídeos medidos ──
@@ -225,7 +263,7 @@ function crear(MED, ctx) {
   const lexCaps = ctx.lexCaps; // [{n, titulo, ini}] (seg)
   function bloqueB(idx, dia, b) {
     const f = dia.fecha, m = b.material;
-    if (RESERVADO_B.has(f)) return;
+    if (RESERVADO_B.has(f) && !dia.rec) return; // v6.10: la sesión de recuperación del sáb 28 07:15 no es la curaduría del comodín de las 21:00
     if (/^No Priors/.test(m)) {
       const que = 'No Priors (Sarah Guo + Elad Gil) · el episodio más reciente → min 0:00-15:00 a 1,5× (10′)';
       out(f, 'B', { leccion: 'Episodio más reciente → min 0:00-15:00 a 1,5× (10′). Sin episodio fijo: se acota a los 10′; el resto del episodio no es tarea (cada lunes, el último que haya salido)', guia: { que, como: 'Auriculares, 1,5×. Para a los 15:00 del episodio (10′ de reloj). No Priors es actualidad y no tiene episodio fijo en el plan: lo que quede del episodio NO es tarea (el lunes que viene, el más reciente).', url: b.url, t: 'B ↗' }, med: 10 });
@@ -257,8 +295,8 @@ function crear(MED, ctx) {
       const t = tomarB(600, f);
       if (!t.piezas.length) return;
       const que = 'Comodín de audio · ' + t.piezas.map((p) => `${p.it.titulo} → ${p.it.id === 'deepDivePE' ? 'minutos' : 'min'} ${ts(p.a)}-${ts(p.b)}${p.b >= AUD[p.it.id].seg - 1 ? ' (final)' : ''}`).join(' + ');
-      const como = t.piezas.map((p) => { const pv = fC(prevSes[p.it.id] || p.it.origen); const r = `${t.piezas.length > 1 ? `${p.it.titulo.replace(/^.*· /, '')}: ` : 'Auriculares, '}${velTxt(p.it.vel)}×${p.it.vel === 1 ? ' con subtítulos en inglés' : ''}, ${ts(p.b - p.a)} de audio = ${fmt1((p.b - p.a) / p.it.vel / 60)}′${t.piezas.length > 1 ? ` (la dejaste el ${pv}).` : `. Retoma donde paraste el ${pv}.`}`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de audio de F1 (lo que no cupo en su día).';
-      pendTxt.push({ fecha: f, tag: 'B', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de audio: ' + t.piezas.map((p) => `${p.it.titulo.replace(/^.*· /, '')} min ${ts(p.a)}-${ts(p.b)}`).join(' + '), guia: { que, como, url: t.piezas[0].it.url + (/youtube/.test(t.piezas[0].it.url) ? `&t=${t.piezas[0].a}s` : ''), t: 'B ↗' }, med: t.seg / 60 } });
+      const como = t.piezas.map((p) => { const pv = pvA(p.it.id, p.it.origen, f); const r = `${t.piezas.length > 1 ? `${p.it.titulo.replace(/^.*· /, '')}: ` : 'Auriculares, '}${velTxt(p.it.vel)}×${p.it.vel === 1 ? ' con subtítulos en inglés' : ''}, ${ts(p.b - p.a)} de audio = ${fmt1((p.b - p.a) / p.it.vel / 60)}′${t.piezas.length > 1 ? ` (la dejaste ${pv}).` : `. Retoma donde paraste ${pv}.`}`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de audio de F1 (lo que no cupo en su día).';
+      pendTxt.push({ fecha: f, key: K(f), tag: 'B', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de audio: ' + t.piezas.map((p) => `${p.it.titulo.replace(/^.*· /, '')} min ${ts(p.a)}-${ts(p.b)}`).join(' + '), guia: { que, como, url: t.piezas[0].it.url + (/youtube/.test(t.piezas[0].it.url) ? `&t=${t.piezas[0].a}s` : ''), t: 'B ↗' }, med: t.seg / 60 } });
       return;
     }
     let id = null, vel = VEL, plan = null, carril = 'vie';
@@ -267,9 +305,11 @@ function crear(MED, ctx) {
     else if (/^Dwarkesh — Sholto/.test(m)) { id = 'sholto'; carril = 'mar'; const k = (/Tramo (\d)\/(\d)/.exec(b.leccion) || []); plan = { k: +k[1], N: +k[2] }; }
     else if (/^Canal Anthropic/.test(m)) { id = audioIdDeCanal(b.leccion); if (id === 'deepDivePE') vel = 1; }
     if (!id) return;
-    if (id === 'dario' && posA.dario == null) posA.dario = HECHO_17.dario, prevSes.dario = '2026-11-17';
+    // v6.10: la 1.ª sesión del carril del martes (mar 24-nov) = la pieza fija: Dario 0:00-10:00 a 1,0× (antes «hecha el mar 17»); desde la siguiente, 1,5×
+    if (id === 'dario' && f === PRIMER_MARTES.fecha && posA.dario == null) vel = PRIMER_MARTES.velDario;
     const A = AUD[id];
     const { a, b: fin } = audioSesion(id, vel, 600);
+    if (id === 'dario' && f === PRIMER_MARTES.fecha && fin !== PRIMER_MARTES.dario) throw new Error(`v6.10: la pieza fija del ${f} debe acabar en ${PRIMER_MARTES.dario} s (acaba en ${fin})`);
     const prev = prevSes[id];
     prevSes[id] = f;
     // ¿sigue la serie en su carril? (siguiente aparición del mismo recurso en F1 o en 2027)
@@ -290,8 +330,8 @@ function crear(MED, ctx) {
     const comoBase = `Auriculares, ${velTxt(vel)}×${vel === 1 ? ' con subtítulos en inglés' : ''}: ${ts(fin - a)} de audio = ${fmt1((fin - a) / vel / 60)}′${capsTxt(id, a, fin) ? ` (capítulos: ${capsTxt(id, a, fin)})` : ''}. ${prev ? `Retoma donde paraste el ${fC(prev)}.` : 'Empieza en 0:00.'}`;
     const head = /^Canal Anthropic/.test(m) ? `${(/^"[^"]+"/.exec(b.leccion) || [''])[0]} — tramo ${Math.floor(a / (600 * vel)) + 1}` : tramoTxt ? `${tramoTxt[0].toUpperCase()}${tramoTxt.slice(1)}` : '';
     const base = { leccion: `${head ? `${head}: ` : ''}min ${ts(a)}-${ts(fin)} de ${ts(A.seg)} a ${velTxt(vel)}× (10′)`, guia: { que, como: comoBase, url: A.url + (/youtube/.test(A.url) && a ? `&t=${a}s` : ''), t: 'B ↗' }, med: (fin - a) / vel / 60 };
-    if (it) pendTxt.push({ fecha: f, tag: 'B', resto: it.k, restoTxt: `min ${ts(it.a)}-${ts(it.b)} = ${fmt1((it.b - it.a) / vel / 60)}′ a ${velTxt(vel)}×`, base, pre: pre2027 });
-    else if (sigMismo) { base.guia.como = `Sigue → ${fC(sig.dia.fecha)}. ${base.guia.como}`; out(f, 'B', base); }
+    if (it) pendTxt.push({ fecha: f, key: K(f), tag: 'B', resto: it.k, restoTxt: `min ${ts(it.a)}-${ts(it.b)} = ${fmt1((it.b - it.a) / vel / 60)}′ a ${velTxt(vel)}×`, base, pre: pre2027 });
+    else if (sigMismo) { base.guia.como = `Sigue → ${fS(sig.dia)}. ${base.guia.como}`; out(f, 'B', base); }
     else { base.guia.como = pre2027 + base.guia.como; out(f, 'B', base); }
   }
 
@@ -307,7 +347,14 @@ function crear(MED, ctx) {
     return null;
   };
   const SERIE_W = ['pi1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7'];
-  let serieW = { i: 0, a: HECHO_17.pi1 === 500 ? null : 0 };
+  let serieW = { i: 0, a: 0 }; // v6.10: la serie empieza en la palabra 0 (la pieza fija del primer martes ya no se da por hecha)
+  /** v6.10: fin (párrafo, exclusivo) de la pieza fija del primer martes = el mismo corte que HECHO_17 (≥ 500 palabras), así el resto de la serie no se mueve */
+  // v6.10 · tanda C (corrección de hecho): ≥ 500 palabras y nunca dentro de un blockquote → final de «Leaking your prompt» (≈516)
+  let FIN_PI1_PRIMER = LEC.pi1.flat.findIndex((_, k) => sumW(LEC.pi1, 0, k + 1) >= PRIMER_MARTES.pi1) + 1;
+  while (LEC.pi1.prohibido.has(FIN_PI1_PRIMER)) FIN_PI1_PRIMER++;
+  /** v6.10 · tanda C: fin (exclusivo) de la 2.ª pieza de «Prompt injection…» = el de la v6.09 (párrafo 3 de «Detect the attack with more AI?») */
+  const FIN_PI1_SEGUNDO = LEC.pi1.flat.findIndex((x) => LEC.pi1.secciones[x.si].t === 'Detect the attack with more AI?' && x.pi === 2) + 1;
+  if (FIN_PI1_SEGUNDO <= FIN_PI1_PRIMER) throw new Error('v6.10 · tanda C: no encuentro el párrafo 3 de «Detect the attack with more AI?» en medidas_f1.json');
   const recC = (b) => (/ · recupera el .+$/.exec(b.leccion) || [''])[0];
   /** Pro Git: «Pro Git › 2.2 «Recording Changes…» (cap. 2)» — la sección numerada (página del libro) donde empieza la ventana */
   const tituloDe = (L, a) => {
@@ -329,18 +376,26 @@ function crear(MED, ctx) {
     const minO = minC !== b.min ? { min: minC } : {};
     if (/^Simon Willison — serie Prompt injection/.test(m)) {
       // serie de Willison en orden (martes y el vie 18-dic): «Prompt injection attacks…» ya va por la palabra ≈500 (mar 17-nov)
-      if (serieW.a == null) { serieW = { i: 0, a: LEC.pi1.flat.findIndex((_, k) => sumW(LEC.pi1, 0, k + 1) >= HECHO_17.pi1) + 1 }; prevSes.pi1 = '2026-11-17'; }
       const piezas = []; let falta = minC * PPM;
+      // v6.10: la 1.ª sesión de la serie (mar 24-nov) = la pieza fija: «Prompt injection attacks…» desde el principio hasta la palabra ≈500 (corte de HECHO_17)
+      if (f === PRIMER_MARTES.fecha && serieW.i === 0 && serieW.a === 0) {
+        const v = { a: 0, b: FIN_PI1_PRIMER, w: sumW(LEC.pi1, 0, FIN_PI1_PRIMER) };
+        piezas.push({ id: 'pi1', v }); falta = 0; serieW.a = v.b;
+      }
       while (falta > 60 && serieW.i < SERIE_W.length) {
         const L = LEC[SERIE_W[serieW.i]];
         const quedan = sumW(L, serieW.a, L.flat.length);
-        const v = quedan <= falta * 1.15 ? { a: serieW.a, b: L.flat.length, w: quedan } : ventana(L, serieW.a, falta);
+        // v6.10 · tanda C: la 2.ª pieza de «Prompt injection…» (tras la fija del primer martes, que ya termina al final de «Leaking your prompt») acaba donde
+        //   acababa en la v6.09 (párrafo 3 de «Detect the attack with more AI?»): así lo que queda del artículo para el comodín (≈230 palabras) y toda la cola
+        //   de lectura siguen iguales (sin esto el corte limpio desplazaba los comodines hasta el 2-ene y el del sáb 19-dic quedaba en 0,80)
+        const v = L.id === 'pi1' && serieW.a === FIN_PI1_PRIMER && FIN_PI1_SEGUNDO > serieW.a ? { a: serieW.a, b: FIN_PI1_SEGUNDO, w: sumW(L, serieW.a, FIN_PI1_SEGUNDO) }
+          : quedan <= falta * 1.15 ? { a: serieW.a, b: L.flat.length, w: quedan } : ventana(L, serieW.a, falta);
         piezas.push({ id: L.id, v }); falta -= v.w; serieW.a = v.b;
         if (serieW.a >= L.flat.length) { serieW.i++; serieW.a = 0; }
         else {
           // el final de un artículo (≤ 300 palabras) que no cabe hoy: al comodín del sábado (lo prometido el mar 17-nov para «Prompt injection…») y la serie sigue con el siguiente
           const rest = sumW(L, serieW.a, L.flat.length);
-          if (rest <= 300 && L.id === 'pi1') { colaC.push({ k: `${L.id}#resto`, id: L.id, L, a: serieW.a, b: L.flat.length, origen: prevSes[L.id] || f, articulo: true, serie: true }); serieW.i++; serieW.a = 0; }
+          if (rest <= 300 && L.id === 'pi1') { colaC.push({ k: `${L.id}#resto`, id: L.id, L, a: serieW.a, b: L.flat.length, origen: dia.plan || prevSes[L.id] || f, articulo: true, serie: true }); serieW.i++; serieW.a = 0; }
           break;
         }
       }
@@ -352,12 +407,12 @@ function crear(MED, ctx) {
       const enCurso = serieW.i < SERIE_W.length && serieW.a > 0 ? LEC[SERIE_W[serieW.i]] : null;
       const tail = colaC.find((x) => x.serie && x.origen && x.id === piezas[piezas.length - 1].id);
       // v6.09b lote 1-ter (hallazgo 5): el destino, al principio del «cómo»
-      const sigF = sigW ? fC(sigW.dia.fecha) : 'el próximo martes';
+      const sigF = sigW ? fS(sigW.dia) : 'el próximo martes';
       const sigTxt = tail ? `Siguiente artículo de la serie → ${sigF}. `
         : enCurso ? `Sigue → ${sigF}, con el resto de este artículo${sigW && !enF1(sigW.dia.fecha) ? ' (antes de «el siguiente artículo de la serie»)' : ''}. ` : sigW ? `Siguiente artículo de la serie → ${sigF}. ` : '';
       const base = { leccion: piezas.map((p) => `${LEC[p.id].titulo.replace(/^Simon Willison · /, '')} ${loc(LEC[p.id], p.v.a, p.v.b)}`).join(' + ') + ` (≈${r10(w)} palabras)${recC(b)}`,
         guia: { que: `Simon Willison · serie Prompt injection: ${partes.map((x) => x.que.replace(/^Simon Willison · /, '')).join(' + ')}`, como: `${sigTxt}${minC}′ a 100 palabras/min (${w} palabras ≈ ${fmt1(w / PPM)}′).${prev ? ` Retoma donde quedaste el ${fC(prev)}.` : ''}`, url: partes[0].url, t: 'C ↗' }, med: w / PPM, ...minO };
-      if (tail) pendTxt.push({ fecha: f, tag: 'C', resto: tail.k, restoTxt: `≈${r10(sumW(tail.L, tail.a, tail.b))} palabras`, base, soloDest: true });
+      if (tail) pendTxt.push({ fecha: f, key: K(f), tag: 'C', resto: tail.k, restoTxt: `≈${r10(sumW(tail.L, tail.a, tail.b))} palabras`, base, soloDest: true });
       else out(f, 'C', base);
       return;
     }
@@ -368,8 +423,8 @@ function crear(MED, ctx) {
       // v6.09b lote 1-quater (QS · e): «lo que no leas sigue en la cola de lectura» no decía cuándo → remite a las fechas de «Lo que queda» (§QUEDA§ se
       //   resuelve al final, cuando ya se conocen los destinos; si no queda nada, la frase se va)
       const sabTxt = minC !== b.min ? ` Sábado: hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′)§QUEDA§.` : '';
-      const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = fC(prevSes[p.it.id] || p.it.origen); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste el ${pv}).` : `Retoma donde quedaste el ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
-      pendTxt.push({ fecha: f, tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM, ...minO } });
+      const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = pvA(p.it.id, p.it.origen, f); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste ${pv}).` : `Retoma donde quedaste ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
+      pendTxt.push({ fecha: f, key: K(f), tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM, ...minO } });
       return;
     }
     const id = CAP_DE(b);
@@ -395,18 +450,19 @@ function crear(MED, ctx) {
     const t = lecturaTxt(id, v, compC, prev, minC);
     const head = (/^Sección \d+: "[^"]+"/.exec(b.leccion) || [])[0] || ((/cap\. \d+: "[^"]+"/.exec(b.leccion) || [])[0]) || b.leccion.split(' — ')[0];
     const base = { leccion: `${head} → ${loc(L, v.a, v.b)} (≈${r10(v.w)} palabras de ${L.total})${recC(b)}`, guia: { ...t, t: 'C ↗' }, med: v.w / PPM, ...minO };
-    if (sigMismo && enF1(sig.dia.fecha)) { base.guia.como = `Sigue → ${fC(sig.dia.fecha)}. ${base.guia.como}`; out(f, 'C', base); return; }
+    if (sigMismo && enF1(sig.dia.fecha)) { base.guia.como = `Sigue → ${fS(sig.dia)}. ${base.guia.como}`; out(f, 'C', base); return; }
     base.guia.como = pre2027 + base.guia.como + post2027;
     if (posL[id] < L.flat.length) {
       const it = { k: `${id}#resto`, id, L, a: posL[id], b: L.flat.length, origen: f, articulo };
       colaC.push(it);
-      pendTxt.push({ fecha: f, tag: 'C', resto: it.k, restoTxt: `≈${r10(sumW(L, it.a, it.b))} palabras: ${loc(L, it.a, it.b)}`, base });
+      pendTxt.push({ fecha: f, key: K(f), tag: 'C', resto: it.k, restoTxt: `≈${r10(sumW(L, it.a, it.b))} palabras: ${loc(L, it.a, it.b)}`, base });
     } else out(f, 'C', base);
   }
 
   // ── recorrido de F1 ──
   dias.forEach((dia, idx) => {
     if (!enF1(dia.fecha)) return;
+    curRec = dia.rec ? dia : null; // v6.10
     const sab = dowOf(dia.fecha) === 6;
     let minC = 5;
     for (const b of dia.bloques) {
@@ -545,8 +601,9 @@ function crear(MED, ctx) {
   const cortoDe = (k) => { const id = k.replace(/#.*$/, ''); return CORTO[id] || (/^py(\d+)/.test(id) ? `Python §${id.slice(2)}` : /^atbs(\d+)/.test(id) ? `ATBS cap. ${id.slice(4)}` : /^progit(\d+)/.test(id) ? `Pro Git cap. ${id.slice(6)}` : NOMBRE[id] || id); };
   const una = (x, det) => `${fC(x.fecha)}${x.hora ? ' ' + x.hora : ''}${det && x.det ? ` (${x.det})` : ''}`;
   /** destinos de la clave `k` posteriores a `desde`, en ≤ `max` caracteres (con el detalle de cada tramo si cabe) */
-  function destTxt(k, desde, max) {
-    const ds = (destinos.get(k) || []).filter((x) => x.det !== 'x' && x.fecha > desde);
+  function destTxt(k, desde, max, desdeHora) {
+    // v6.10: desde una sesión de recuperación (sáb 28 07:15) cuentan también los destinos de ESE día a una hora posterior (el comodín de las 21:00)
+    const ds = (destinos.get(k) || []).filter((x) => x.det !== 'x' && (x.fecha > desde || (!!desdeHora && x.fecha === desde && (x.hora || '') > desdeHora)));
     const f1 = ds.filter((x) => x.fecha < COLA_DESDE), post = ds.filter((x) => x.fecha >= COLA_DESDE);
     const postTxt = post.length ? `cola post-Step 1 ${COLA_INI}: ${post.length === 1 ? fC(post[0].fecha) : `${fC(post[0].fecha)} → ${fC(post[post.length - 1].fecha)}`}` : '';
     const sinWd = (f) => fC(f).replace(/^\S+ /, '');
@@ -565,7 +622,8 @@ function crear(MED, ctx) {
     const o = JSON.parse(JSON.stringify(p.base));
     const pre0 = p.pre || '';
     if (p.resto) {
-      const pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10)}. `;
+      const pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10, p.key && p.key.includes('@') ? p.key.split('@')[1] : null)}. `;
+      if (/^Resto → \. /.test(pre)) throw new Error(`v6.10: ${p.key || p.fecha}|${p.tag}: resto sin destino`);
       o.guia.como = pre0 + pre + `${o.guia.como} Lo que queda: ${p.restoTxt}.`;
     } else if (pre0) o.guia.como = pre0 + o.guia.como;
     let fins = [];
@@ -580,13 +638,13 @@ function crear(MED, ctx) {
     // v6.09b lote 1-quater (QS · e): el C del sábado con menos minutos remite a las fechas de «Lo que queda» (antes: «sigue en la cola de lectura», sin fecha)
     o.guia.como = o.guia.como.replace('§QUEDA§', fins.length ? ': lo que no lees hoy va con las fechas de «Lo que queda»' : '');
     if (p.extra) extra2027.set(`${p.fecha}|${p.tag}`, o); // v6.09b lote 1-quater (QS · a): vie 8-ene-2027 (EXTRA_2027)
-    else res.sesiones.set(`${p.fecha}|${p.tag}`, o);
+    else res.sesiones.set(`${p.key || p.fecha}|${p.tag}`, o);
   }
   // control (hallazgo 5): ninguna fecha FUTURA después del corte del Calendar en los pasos de F1 (y del vie 8-ene, EXTRA_2027)
   for (const k of extra2027.keys()) if (!EXTRA_2027.includes(k.split('|')[0])) throw new Error(`v6.09b lote 1-quater: ${k}: bloque de 2027 fuera de EXTRA_2027`);
   for (const [k, o] of [...res.sesiones, ...extra2027]) {
     if (o.guia && /§QUEDA§/.test(o.guia.como)) throw new Error(`v6.09b lote 1-quater: ${k}: §QUEDA§ sin resolver`);
-    const f = k.split('|')[0];
+    const f = k.split('|')[0].split('@')[0];
     if (!o.guia) continue;
     for (const x of fechasEn(o.guia.que)) if (x.iso > f && x.fin > CORTE_QUE) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «qué» (> ${CORTE_QUE})`);
     for (const x of fechasEn(o.guia.como)) if (x.iso > f && x.fin > CORTE_COMO) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «cómo» (> ${CORTE_COMO}): ${o.guia.como.slice(0, 160)}`);

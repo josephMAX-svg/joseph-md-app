@@ -39,8 +39,11 @@ const obsUrl = (file) => 'obsidian://open?vault=' + encodeURIComponent(OBS_VAULT
 const CROSSREF = (q, desde, hasta) => 'https://api.crossref.org/works?filter=issn:0190-9622,issn:2666-3287,issn:0011-9059,issn:1473-2130,issn:1076-0512,from-pub-date:' + desde + ',until-pub-date:' + hasta + '&query.bibliographic=' + encodeURIComponent(q) + '&rows=30&select=DOI,title,container-title,issued,published-online,type';
 const MES_LARGO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtDM = (iso) => `${Number(iso.slice(8, 10))}-${MES_LARGO[Number(iso.slice(5, 7)) - 1]}`;
+/** v6.10 · tanda C: «18 de enero» (para el WhatsApp de M1: las fechas salen del plan) */
+const MES_NOMBRE = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fLargo = (iso) => `${Number(iso.slice(8, 10))} de ${MES_NOMBRE[Number(iso.slice(5, 7)) - 1]}`;
 /** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
-const VERSION = ((v) => (v === 'v6.09' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
+const VERSION = ((v) => (v === 'v6.09' || v === 'v6.10' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.10: sin cambio (VER_TXT) // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
 
 /**
  * Código TS que se emite en src/lib/researchGuia.ts: guía GENÉRICA (5 franjas del bloque) y F4 (30′, franja nominal), construida en tiempo de
@@ -79,8 +82,17 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
     recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
     hecho: x.entregable,
     ...(recs.length > 1 ? { planB: \`Si «\${r0.label}» no abre o no basta: «\${recs[1].label}».\` } : {}),
-    ...(chips.length ? { aviso: chips.join(' · ') } : {}),
+    ...(chips.length || rdFinde(x.fecha) ? { aviso: [rdFinde(x.fecha), ...chips].filter(Boolean).join(' · ') } : {}),
   };
+}
+/** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: dom 6-dic 05:00-05:45; el
+ *  mar 17-nov fue sin sesión y los átomos de F1 corrieron una ranura) → aviso con la hora real (la franja de la guía es la de PLAN, 13:30-14:15: el Home
+ *  la mueve) y qué hacer si el entregable necesita una oficina abierta. '' si no lo es. */
+function rdFinde(fecha: string): string {
+  const fx = (FECHAS_V6.corrida_s1.extra ?? {})[fecha]?.['research-derma'];
+  if (!fx) return '';
+  const w = new Date(fecha + 'T12:00:00Z').getUTCDay();
+  return 'Hoy ' + (w === 0 ? 'domingo' : 'sábado') + ', a hora fija (' + fx + '): el átomo que toca en orden (el mar 17-nov fue sin sesión). Lo que necesite una oficina abierta (mesa de partes, firma presencial) se deja LISTO hoy y se presenta el siguiente día hábil, antes de su átomo; el nº de cargo se archiva ese día.';
 }
 `;
 
@@ -96,7 +108,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   const Q2 = {
     R0: '«¿qué identificador pide PROSPERO a todo el equipo?» · «¿dónde NO se guarda una API key?»',
     R1: '«terapia → ¿qué diseño?» · «Taylor 2009: ¿diseño y quién está ciego?»',
-    M1: 'los 4 criterios ICMJE de autoría · 1 rol CRediT',
+    // v6.10 · tanda C (decidido con Joseph en el chat Research, 17-nov): M1 = SR-1 primero → su eval anclada (R0, lun 23) = 1Q de PRISMA-P / PRISMA 2020 /
+    //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
+    M1: '1Q: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene',
     'C-1': 'la regla de la ventana · por qué un dato verificable',
   };
   const evalAnclada = (prev, x) => {
@@ -107,7 +121,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const T = {
       R0: { que: `Eval anclada de R0: ¿checklist «Infra académica» en 7/10? + 2Q: ${Q2.R0}`, como: 'Responde de memoria; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
       R1: { que: `Eval anclada de R1: ¿existe 01_PICO.md con 3 PICO? + 2Q: ${Q2.R1}`, como: 'De memoria; si falta algo de R1, anótalo como deuda.' },
-      M1: { que: `Eval anclada de M1: ¿respondió el Dr. Ciro? (regístralo) + 2Q: ${Q2.M1}`, como: 'De memoria; la respuesta va a MENTORES.md §2.' },
+      M1: { que: `Eval anclada de M1: ¿respondió el asesor? (regístralo) + ${Q2.M1}`, como: 'De memoria; la respuesta del asesor va a MENTORES.md §2.' },
       'C-1': { que: `Eval anclada de C-1: ¿5 candidatos con DOI en candidatos.md? + 2Q: ${Q2['C-1']}`, como: 'De memoria.' },
     }[prev.code] || { que: `Eval anclada de ${prev.code}: 2Q de auto-test del método + ¿existe su artefacto?`, como: 'De memoria; lo que falte va como deuda a la Mesa editorial.' };
     return { min: 5, que: T.que + ciroPend, como: T.como };
@@ -119,8 +133,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const base = 'abre Estudio → Research → Desk → «Infra académica» (checklist 0/10) y tu gestor de contraseñas';
     const cuentas = 'Cada cuenta la creas TÚ (Claude no crea cuentas ni escribe contraseñas). Una contraseña distinta por cuenta, guardada en el gestor.';
     if (!prev) return { min: 2, que: `Arranque: ${base}`, como: cuentas };
+    // v6.10 · tanda C: tras M1 (SR-1 + WhatsApp), la express de R0 = 1Q de PRISMA-P / PRISMA 2020 / AMSTAR-2 + ¿respondió el asesor? (regístralo)
+    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (de memoria: ${Q2.M1}) + ¿respondió el asesor? + arranque: ${base}`,
+      como: `La 1Q a papel, sin mirar (lo que falle va como deuda a la Mesa editorial); si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
     return { min: 2, que: `Eval anclada express de ${prev.code} (2Q de memoria: ${Q2[prev.code] || 'las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
-      como: `Las 2Q a papel, 1 línea cada una y sin mirar; lo que falle va como deuda a la Mesa editorial${prev.code === 'M1' ? ' (la respuesta del Dr. Ciro se pregunta en la próxima eval anclada)' : ''}. ${cuentas}` };
+      como: `Las 2Q a papel, 1 línea cada una y sin mirar; lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };
 
   /** Guías paso a paso (45′). `prev` = átomo anterior (eval anclada). */
@@ -160,20 +177,23 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       planB: 'Si PubMed no abre: el mismo registro en Europe PMC (https://europepmc.org/article/MED/19807760). Abstract de reserva: Grimes PE, Thomas JA, Murphy DK. J Cosmet Dermatol 2009;8(3):162-8 (PMID 19735512).',
       recursos: [R('CIL1'), R('GREEN'), { t: 'PubMed · Taylor 2009 (PMID 19807760)', url: 'https://pubmed.ncbi.nlm.nih.gov/19807760/' }, { t: 'PubMed · Grimes 2009 (reserva, PMID 19735512)', url: 'https://pubmed.ncbi.nlm.nih.gov/19735512/' }, R('DELO')],
     }),
+    // v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat Research): Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del
+    //   M1 original solo queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1). 7 pasos = 45′. Las fechas del WhatsApp salen del plan
+    //   (C-6 · T-8 · CR-1: si el plan corre, el mensaje se corrige solo). Repo público: el texto dice «Doctor» / «el asesor» (sin nombres nuevos).
     M1: (x, prev) => ({
-      titulo: 'M1 · Dr. Ciro: WhatsApp con las 3 coautorías (tesis → research letter · carta · case report) + guion de 1 hoja',
+      titulo: 'M1 · SR-1 primero (protocolo del metaanálisis) + WhatsApp al asesor con las 3 coautorías',
       pasos: [
-        evalAnclada(prev, x),
-        { min: 5, que: 'Pre-test: de memoria, las 3 coautorías que le propones y qué le pides exactamente en cada una', como: 'Después compáralo con MENTORES.md §3 «Mensaje 1».' },
-        { min: 15, que: 'Personaliza el WhatsApp y la hoja-guion de MENTORES.md §3 «Mensaje 1 — Dr. Ciro» con las fechas del plan vigente (' + VERSION + ')', como: `Carta al editor: envío C-6 ${f('C-6')} · research letter: formateo T-7 ${f('T-7')} → envío T-8 ${f('T-8')} · case report: pide el caso EN este mensaje (⏸ el plazo interno del 31-oct venció; CR-1 ${f('CR-1')} · CR-2 ${f('CR-2')}). En el punto 1(a) del guion deja la pregunta de la vía CEI (expedita / retrospectiva / exención). Petición concreta y verificable, nunca «quiero experiencia».`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
-        { min: 5, que: 'ENVÍA el WhatsApp (lo envías tú)', como: 'Pide 20 minutos esta semana o la próxima, en persona o por llamada; adjunta nada todavía.' },
-        { min: 5, que: `Antes de T-1 (${f('T-1')}): lista de los 10 documentos de etica.md §1 (tengo / falta)`, como: 'Marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al Dr. Ciro en la reunión.', enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
-        { min: 5, que: 'Registro en MENTORES.md: fila 1 (fecha de contacto · estado 🟡 · siguiente paso = seguimiento a los 3-5 días) + 1 línea en §2', como: 'Si en 3 semanas no hay caso → fila 6 (fuente B del caso), como dice MENTORES.md.' },
-        { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mensaje a mentor = petición concreta + reparto de trabajo + fecha».' },
+        { min: 2, que: 'Arranque (1.ª sesión Research): el evento del Calendar + el chat Research + Anki abierto', como: 'Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del M1 original solo queda el WhatsApp al asesor.' },
+        { min: 5, que: 'Pre-test ciego de SR-1, a papel y con confianza (1-3): (1) la pregunta de SR-1 en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene cada una', como: 'Sin mirar nada, con tu confianza (1-3) en cada respuesta; la corrección la da el chat Research.' },
+        { min: 8, que: 'WhatsApp al asesor con las 3 coautorías (lo envías tú)', como: `Plan B: el mismo texto por correo o en persona. Texto: «Doctor, buenos días. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío: 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto: ${fLargo(fechaDe('T-8'))}. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor (unos 30 minutos de revisión); envío: ${fLargo(fechaDe('C-6'))}. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el caso antes del ${fLargo(fechaDe('CR-1'))}. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.» (Si prefieres 2 coautorías, borra el punto 2.)`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        { min: 5, que: 'Lista tengo / falta de los 10 documentos de etica.md §1, ANTES de la reunión con el asesor', como: `Para T-1 (ética de la tesis, ${f('T-1')}): marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al asesor en la reunión.`, enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
+        { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa · nº de estudios y de pacientes. La clave la da el chat Research.', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
+        { min: 5, que: 'PRISMA-P 2015 (GoodNotes › Documentos › RESEARCH › SR-1_complicaciones_rellenos › 01_PRISMA-P_2015_checklist, pág. 5): marca qué ítems ya tiene SR-1', como: 'Solo marcar (✓ / falta) sobre la lista; lo que falte es el trabajo del protocolo de las próximas sesiones.' },
+        { min: 5, que: 'Free recall + ≤2 APEX', como: 'El mazo APEX::RESEARCH::01_Protocolo_SR nace hoy, con estas tarjetas (nada de mazos ni carpetas vacíos por adelantado).' },
       ],
-      hecho: 'WhatsApp enviado al Dr. Ciro con las 3 coautorías + fila 1 de MENTORES.md con fecha y estado + lista de los 10 documentos de etica.md §1 (tengo / falta).',
-      planB: 'Sin WhatsApp: el mismo texto por correo o en persona en su consulta, el mismo día.',
-      recursos: [{ t: 'MENTORES.md (CRM + mensajes)', url: GH + 'DATA/RESEARCH/MENTORES.md' }, { t: 'TESIS_L0/etica.md', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' }, R('ICMJE'), R('CREDIT')],
+      hecho: 'Pre-test + WhatsApp enviado + lista de los 10 documentos + abstract extraído + PRISMA-P marcado + ≤2 APEX.',
+      planB: 'Sin WhatsApp: el mismo texto por correo o en persona, el mismo día.',
+      recursos: [{ t: 'PubMed · 41249530 (SR/MA de hialuronidasa en complicaciones vasculares por ácido hialurónico)', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' }, { t: 'MENTORES.md (CRM + mensajes)', url: GH + 'DATA/RESEARCH/MENTORES.md' }, { t: 'TESIS_L0/etica.md', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' }, R('ICMJE'), R('CREDIT')],
     }),
     'C-1': (x, prev) => ({
       titulo: 'C-1 · Discovery: 5 artículos candidatos de los últimos 60 días (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg) + correo a IJD',
@@ -240,7 +260,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     if (prev && Q2[prev.code] && x.fecha < SERUMS_INICIO && !out[x.d]) throw new Error(`research_guia: ${x.code} (d${x.d}) sigue a ${prev.code} sin guía paso a paso → la genérica perdería sus 2Q (${Q2[prev.code]})`);
   }
   const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
-  if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el Dr\. Ciro/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el Dr. Ciro');
+  if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el (Dr\. Ciro|asesor)/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el asesor');
+  // v6.10 · tanda C: el nº de ítems de PRISMA-P / PRISMA 2020 / AMSTAR-2 solo lo pide el pre-test de M1 (ningún otro paso de ese día lo da)
+  if (porCode.M1 && out[porCode.M1.d] && out[porCode.M1.d].pasos.filter((p) => /\b(17|27|16) ítems/.test(`${p.que} ${p.como}`)).length) throw new Error('research_guia: M1 da el número de ítems de una guía de reporte');
   const crAntes = !PAUSA || fechaDe('CR-8') < PAUSA.desde; // v6.06: el paquete del case report se congela antes de la pausa (v6.05) o tras ella (v6.06, nivel 2)
   // v6.08: último paso CR antes de la pausa y primero tras ella (el paso 3 deja de suponer que el borrador v1, CR-5, ya existe)
   const QUE_CR = { 'CR-1': 'caso decidido', 'CR-2': 'consentimiento firmado', 'CR-3': 'fotos y protocolo fotográfico', 'CR-4': 'CARE 13/13 + timeline', 'CR-5': 'borrador v1', 'CR-6': 'revisión del senior + inglés', 'CR-7': 'formateo', 'CR-8': 'paquete' };

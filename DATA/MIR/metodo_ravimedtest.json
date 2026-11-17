@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "v6.03b",
-    "generado": "2026-10-20",
+    "version": "v6.10c",
+    "generado": "2026-11-17",
     "doc": "DATA/MIR/METODO_RAVIMEDTEST.md",
     "que_es": "Datos del método RaviMedTest adaptado a la hora MIR (60′) que lee DATA/MIR/guia_lectura/gen_mir_guia.js y emite como MIR_METODO en src/lib/mirGuiaDatos.ts. La lógica que los mete en los pasos vive en src/lib/mirGuia.ts (metodoRavi). No cambia franjas, D#, fechas ni el total de 60′.",
     "fuentes": [
@@ -13,7 +13,11 @@
   },
   "anki": {
     "mazoPersonal": "APEX::MIR",
-    "mazoBase": "1ºVUELTA 2MIR21",
+    "mazoBase": "1º VUELTA",
+    "mazoBaseEstado": "v6.10 · tanda C (17-nov-2026, comprobado en el Anki de Joseph con el chat MIR): el mazo de Ravi YA está en Anki con el nombre «1º VUELTA» (851 tarjetas, todas suspendidas; «1ºVUELTA 2MIR21» existe pero vacío) → no se importa ningún .apkg.",
+    "reactivar": "POR SUBTEMA, al TERMINARLO (decidido con Joseph el 17-nov-2026): el último minuto de la hora MIR de cada día-tema reactiva las tarjetas de «1º VUELTA» de ESE subtema (no la asignatura entera al empezarla); desde el día siguiente entran en el repaso.",
+    "raviPorCap": { "570779c9f4d68bf008dbc7b1": { "n": 4, "tema": "ensayo clínico" }, "570779c9f4d68bf008dbc80d": { "n": 0, "tema": "clasificación de los estudios" }, "570779c9f4d68bf008dbc80f": { "n": 2, "tema": "pruebas diagnósticas", "nota": "sensibilidad/VPP y STARD" } },
+    "raviPorCapNota": "Conteo hecho por el chat MIR en el Anki de Joseph (17-nov-2026) para los 3 primeros subtemas de Epidemiología; el resto se cuenta el día del subtema (buscar por texto en «1º VUELTA»).",
     "mazoBaseBusca": "https://drive.google.com/drive/search?q=1%C2%BAVUELTA%202MIR21",
     "presetBase": "RAVI-1V (FSRS · retention 0,85 · orden de repaso aleatorio)",
     "nuevasBase1V": 3,

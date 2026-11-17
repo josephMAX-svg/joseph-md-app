@@ -42,6 +42,10 @@
  *    se sigue leyendo por tramos (checkpoint de fecha) en su fila real (F1 «D42 mié 30-dic» o tramo 2 «T<n> <fecha>»).
  *  · v6.08 (14-nov-2026): re-fecha real, D1 de todo = lun 16-nov: UWSA1 D1 mar 17-nov · NBME 25 = D8 jue 10-dic (la semana de plan de la regla
  *    del Day-After completo pasa a 2 filas con mar · jue) · protocolo Jay D1-D7. El D del NBME 25 sale de su fila (antes «D10» fijo).
+ *  · v6.10b (17-nov-2026, decisión 4 de Joseph — DATA/USMLE/PALMERTON_NIVEL0_ARRANQUE.md §8.2 A1/A2): el UWSA1 ya NO es la baseline del D1: sale de F1
+ *    y va al tramo 2 (fila del hueco del UWSA3 opcional, T82 mar 29-jun-2027) como PRUEBA DE RESISTENCIA con ≥3 sistemas en nivel 3 → formativo, sin
+ *    mínimo ni lectura por tramos (el «protocolo Jay» de un UWSA1 < 40 % era para una baseline del día 1; F1 ya va en nivel 0-1, Tutor y sin reloj).
+ *    La línea base es el NBME 25 (D8 jue 10-dic, sin mínimo, como estaba).
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
@@ -330,12 +334,12 @@ const NBME28_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /NBME 28/.test(x.sub));
 /** v6.07: último NBME que queda en F1 = línea base antes de la pausa (v6.00-v6.06: NBME 28 · v6.07: NBME 25). */
 const NBME_PAUSA = [...F1_FILAS].reverse().map((x) => (/NBME \d+/.exec(x.sub) || [''])[0]).find(Boolean) || 'NBME 28';
 const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : NBME28_T2 && esFilaT2(NBME28_T2) ? `T${NBME28_T2.t} ${fCorta(NBME28_T2.fecha)}, tramo 2` : 'último slot de F1';
+// v6.10b: el UWSA1 vive en el tramo 2 (la fila del hueco del UWSA3 opcional) → su fila real «T<n> <fecha>»
+const UWSA1_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /UWSA1/.test(x.sub));
+const UWSA1_TXT = UWSA1_T2 && esFilaT2(UWSA1_T2) ? `T${UWSA1_T2.t} ${fCorta(UWSA1_T2.fecha)}` : 'tramo 2';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `baseline (D1, ${fF1(1)}): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)`, tramos: [
-    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: `D1-D${D_NBME25 - 1} (${fF1(1)} → ${fF1(D_NBME25 - 1)}, hasta el NBME 25 = D${D_NBME25} ${fF1(D_NBME25)}) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo ${fF1(1)} con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.` },
-    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: `Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D${D_NBME25}, ${fF1(D_NBME25)}) decide si se aplica Jay.` },
-    { desde: 48, label: '≥48 % · ON-TRACK', accion: 'Trayectoria de GO (Parte V: ~48 % ya es trayectoria de GO); seguir el plan tal cual y no leer el UWSA como predicción (sobreestima 10-15 puntos).' },
-  ] },
+  // v6.10b (decisión 4 de Joseph, 17-nov): prueba de resistencia del tramo 2 (su fila real), formativa — ya no es la baseline del D1 ni se lee por tramos
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `prueba de resistencia del tramo 2 (${UWSA1_TXT}, con ≥3 sistemas en nivel 3): formativa, sin mínimo; el UWSA sobreestima 10-15 puntos (§9.1). Ya no es la baseline del D1 (v6.10b): la línea base es el NBME 25 (D${D_NBME25}, ${fF1(D_NBME25)})` },
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },

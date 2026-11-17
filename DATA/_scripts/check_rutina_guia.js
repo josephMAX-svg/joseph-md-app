@@ -178,7 +178,9 @@ const UWSA1 = (HITOS_F1.find((x) => /Self-Assessment 1|UWSA1/.test(x.uw)) || {})
 const NBMES = HITOS_F1.filter((x) => !/Self-Assessment|UWSA/.test(x.uw) && /NBME/.test(x.uw)).map((x) => x.fecha);
 const habilSig = (iso) => { let c = addDias(iso, 1); while (dow(c) === 0 || dow(c) === 6 || HITOS_F1.some((h) => h.fecha === c)) c = addDias(c, 1); return c; };
 const OUT1 = (B.BIZ_DIAS.find((x) => B.bizModo(x) === 'OUTPUT') || {}).fecha; // 1.er OUTPUT (v6.03: vie 23-oct)
-if (!UWSA1 || !NBMES.length || !OUT1) errores.push(`plan sin UWSA1 (${UWSA1}) / NBME (${NBMES.length}) / OUTPUT (${OUT1}): no se pueden derivar las expectativas`);
+// v6.10b (17-nov-2026, decisión 4 de Joseph): el UWSA1 salió de F1 (→ tramo 2, T82): sin él, el 1.er día de Step (D2 jue 19-nov) lleva el SYNAPSE a su hora
+//   normal (12:30) en vez de las 07:25 del día de hito
+if (!NBMES.length || !OUT1) errores.push(`plan sin NBME (${NBMES.length}) / OUTPUT (${OUT1}): no se pueden derivar las expectativas`);
 for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) {
   if (RG.sabadoLibre(iso)) { // v6.09 (20): sábado sin sesión → sin guías ese fin de semana; su revisión va con la del sábado siguiente
     for (const [n, f] of [['revision', RG.guiaRevisionDe], ['business', RG.guiaBusinessDe], ['synapse', RG.guiaSynapseDe]]) if (f(iso)) errores.push(`${iso} (20): sábado sin sesión con guía ${n} ${f(iso).franja}`);
@@ -203,7 +205,7 @@ for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) {
 const bizSab = (sab, entero) => (RG.sabadoTheomed(sab) ? (entero ? '07:45–08:25' : '14:30–14:45') : (entero ? '07:45–08:25' : '07:45–08:00')); // v6.09: entero con clase → 07:45 (antes 17:15, dentro del baile)
 const SAB_F2_ABC = (S.SYN_DIAS.find((d) => dow(d.fecha) === 6 && FV.faseV6(d.fecha) === 'F2' && d.bloques.some((b) => /^[ABC]$/.test(b.tag))) || {}).fecha;
 const esperado = [
-  [UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00'], ...NBMES.map((n) => [n, RG.guiaSynapseDe, '13:00–13:30']),
+  ...(UWSA1 ? [[UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00']] : [[U.DIAS[0].fecha, RG.guiaSynapseDe, '12:30–13:00']]), ...NBMES.map((n) => [n, RG.guiaSynapseDe, '13:00–13:30']),
   [D1, RG.guiaBusinessDe, '13:00–13:25'], [OUT1, RG.guiaBusinessDe, '13:00–13:25'],
   // v6.09 (rev. joseph 5): el cierre del 1.er OUTPUT va el sábado de SU semana (el OUTPUT S1 va el lun 23 → sáb 28); si el sábado anterior fue sin sesión y su
   //   semana no tuvo OUTPUT, ese sábado lleva además la fila del tracker de esa semana (10′ + 15′ = 25′ → 07:45-08:10, antes del gimnasio)
@@ -326,16 +328,20 @@ if (!/^Primera revisión/.test((RG.guiaRevisionDe(SAB1R) || {}).aviso || '')) er
 // ── v6.03: la curaduría de la semana 1 va con su PASO / PIEZA / FILA del plan (no con la fecha) → comprobar que aterriza ──
 const conTexto = (g, re) => !!g && g.pasos.some((p) => re.test(p.que) || re.test(p.como));
 const vibeS1 = V.VIBE_DIAS.filter((x) => x.semana === 1);
-const curVibe = [/test_parser_multilinea/, /Redeploy: pegar n8n_parser_v2_3/, /APEX::USMLE::<sistema>/, /_apex_e2e_prueba\.json/, /Commit \[S1\]/];
+const curVibe = [/test_parser_multilinea/, /Redeploy: node_parsear_tarjeta_v2_3/, /APEX::USMLE::Cardiology/, /_apex_e2e_prueba\.json/, /Commit \[S1\]/]; // v6.10: textos correctos del chat Vibe Coding (17-nov)
 vibeS1.forEach((x) => { if (!conTexto(RG.guiaVibeDe(x.fecha), curVibe[x.k - 1])) errores.push(`${x.fecha} guiaVibeDe: falta la curaduría del paso ${x.k} de S1`); });
 const primeraSyn = (re, tag) => (S.SYN_DIAS.find((d) => d.bloques.some((b) => b.tag === tag && re.test(b.material + ' ' + b.leccion))) || {}).fecha;
+// v6.10 (SECUNDARIOS): la A-unit de la auditoría F0 sale en la sesión de recuperación del sáb 28-nov 07:15 (SYN_REC_F1 · guiaSynapseRecDe) y la pieza
+//   fija del primer martes de F1 (mar 24) la escribe el troceado («min 0:00-10:00 (tramo 1/3 del plan)»)
+const primeraSynRec = (re, tag) => primeraSyn(re, tag) || ((S.SYN_REC_F1 || []).find((r) => r.bloques.some((b) => b.tag === tag && re.test(b.material + ' ' + b.leccion))) || {}).fecha;
 const curSyn = [
-  [primeraSyn(/^Anthropic Academy AUDITORÍA F0/, 'A'), /auditoría F0/], [primeraSyn(/^No Priors/, 'B'), /Greg Brockman/], [primeraSyn(/^Pro Git/, 'C'), /Pro Git › 1\.1/],
-  [primeraSyn(/^Dwarkesh — Dario Amodei Tramo 1\/3/, 'B'), /tramo 1\/3 = minutos 0:00-10:00/], [primeraSyn(/^Simon Willison — serie Prompt injection/, 'C'), /Prompt injection attacks against GPT-3/],
+  // v6.10 · tanda C (decidido con Joseph): la auditoría F0 abre la 1.ª sesión (mié 18, 3′, texto exacto «AUDITORÍA F0 (pendiente del mar 17)») → la busca en mayúsculas o minúsculas
+  [primeraSynRec(/^Anthropic Academy AUDITORÍA F0/, 'A'), /auditoría F0|AUDITORÍA F0 \(pendiente del mar 17\)/], [primeraSyn(/^No Priors/, 'B'), /Greg Brockman/], [primeraSyn(/^Pro Git/, 'C'), /Pro Git › 1\.1/],
+  [primeraSyn(/^Dwarkesh — Dario Amodei Tramo 1\/3/, 'B'), /tramo 1\/3 = minutos 0:00-10:00|min 0:00-10:00 \(tramo 1\/3 del plan\)/], [primeraSyn(/^Simon Willison — serie Prompt injection/, 'C'), /Prompt injection attacks against GPT-3/],
   [primeraSyn(/^The Python Tutorial.*Sección 1:/, 'C'), /Whetting Your Appetite/], [primeraSyn(/^The Batch/, 'B'), /carta de Ng/], [primeraSyn(/^Automate the Boring Stuff.*cap\. 0:/, 'C'), /cap\. 0 «Introduction»/],
   [primeraSyn(/^Canal Anthropic.*deep dive.*tramo 1\b/, 'B'), /minutos 0:00-10:00/], [primeraSyn(/^Simon Willison The lethal trifecta/i, 'C'), /lethal trifecta/],
 ];
-for (const [iso, re] of curSyn) { const g = iso && RG.guiaSynapseDe(iso); if (!conTexto(g, re)) errores.push(`${iso} SYNAPSE: falta la curaduría ${re}`); } // v6.07: el sábado también sale de guiaSynapseDe
+for (const [iso, re] of curSyn) { const gs = iso ? [RG.guiaSynapseDe(iso), RG.guiaSynapseRecDe ? RG.guiaSynapseRecDe(iso) : null] : []; if (!gs.some((g) => conTexto(g, re))) errores.push(`${iso} SYNAPSE: falta la curaduría ${re}`); } // v6.10: + la sesión de recuperación // v6.07: el sábado también sale de guiaSynapseDe
 // v6.05: comodines = el 1.er sábado tras su pieza, con prioridad para la curaduría original (No Priors + «Prompt injection…»); el deep dive y la
 //   trifecta del viernes solo si su sábado es OTRO (v6.03: sáb 24 = deep dive + trifecta y sáb 31 = No Priors + Willison · v6.05: sáb 31 = No Priors + Willison)
 const sabTras = (iso) => iso && sabConSesion(addDias(iso, ((6 - dow(iso) + 6) % 7) + 1)); // v6.09: el 1.er sábado CON sesión tras la pieza
@@ -369,7 +375,7 @@ if (SAB_DD0 === SAB_NP && conTexto(RG.guiaSynapseDe(SAB_NP), /deep dive.*minutos
       nOut21++;
       const g = RG.guiaBusinessDe(r.fecha); if (!g || !/en F1 no va el viernes/.test(g.aviso || '')) errores.push(`${r.fecha} (21): el OUTPUT D${r.d} va en ${WDl[dow(r.fecha)]} y su guía no lo explica`);
       const vie = [...B.BIZ_DIAS].reverse().find((x) => x.fecha < r.fecha && dow(x.fecha) === 5 && B.bizModo(x) !== 'DESCANSO');
-      const gv = vie && RG.guiaBusinessDe(vie.fecha); if (vie && ['L', 'CRITICA'].includes(B.bizModo(vie)) && (!gv || !/ÚLTIMA lectura del módulo, no el OUTPUT/.test(gv.aviso || ''))) errores.push(`${vie.fecha} (21): el viernes de la última lectura no avisa de que el OUTPUT va el ${r.fecha}`);
+      const gv = vie && RG.guiaBusinessDe(vie.fecha); if (vie && ['L', 'CRITICA'].includes(B.bizModo(vie)) && (!gv || !/ÚLTIMA lectura del módulo, no el OUTPUT|no va el OUTPUT: faltan lecturas del módulo/.test(gv.aviso || ''))) errores.push(`${vie.fecha} (21): el viernes de la última lectura no avisa de que el OUTPUT va el ${r.fecha}`);
     }
   }
   // (21) LIVIANO: caso k nunca antes de sus 4·k lecciones en F1 / transición; avisos del viernes y del lunes
@@ -442,8 +448,8 @@ const lect = B.BIZ_DIAS.filter((x) => B.bizModo(x) === 'L' || B.bizModo(x) === '
 // LIVIANO: la lectura medida (LIV_LECT) va con su TEMA / CASO, no con el D (v6.03: los casos caen D3/D8/D13 en vez de D5/D10/D15)
 const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
 [[/^La obesidad como enfermedad/, /Essential Points › Definition/], [/^Leptina:/, /Neurobiology of energy homeostasis › Background/],
- [/^Resistencia leptínica/, /leptin resistance/], [/^(VIERNES|LUNES) CASO 1\/16/, /Lessons learned from the weight-reduced state/],
- [/^Circuito arcuato II/, /2\.ª pasada: POMC/], [/^(VIERNES|LUNES) CASO 2\/16/, /Determinants of feeding behavior/], [/^El argumento del tratamiento crónico/, /Developmental determinants/]] // v6.09: en F1 los casos 1-5 van el LUNES, tras su lección
+ [/^Resistencia leptínica/, /leptin resistance/], [/^(VIERNES|LUNES|MARTES) CASO 1\/16/, /Lessons learned from the weight-reduced state/],
+ [/^Circuito arcuato II/, /2\.ª pasada: POMC/], [/^(VIERNES|LUNES|MARTES) CASO 2\/16/, /Determinants of feeding behavior/], [/^El argumento del tratamiento crónico/, /Developmental determinants/]] // v6.09: en F1 los casos 1-5 van el LUNES, tras su lección
   .forEach(([rt, re]) => { const x = livTema(rt); if (!x || !conTexto(RG.guiaLivianoDe(x.fecha), re)) errores.push(`${x ? x.fecha + ' D' + x.d : rt} guiaLivianoDe: falta la lectura medida ${re}`); });
 [/In Spark/, /In Spark/, /In Defense of Food/, /In Defense of Food/].forEach((re, i) => { const x = lect[i]; if (!x || !conTexto(RG.guiaBusinessDe(x.fecha), re)) errores.push(`${x ? x.fecha : '?'} guiaBusinessDe: falta el tramo curado ${re} (lectura ${i + 1})`); });
 
@@ -483,7 +489,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   const contenido = (b, iso) => {   // guías del bloque (null = SIN contenido) — mismas consultas que TodayMission.contenidoBloquePlan
     switch (b.plan) {
       case 'vibecoding': { const g = b.id === 'pc' ? RG2.guiaShipDe(iso) : b.id === 'feynman' ? RG2.guiaFeynmanDe(iso) : VB2.vibeDiaDe(iso) ? RG2.guiaVibeDe(iso) : null; return g ? [g] : null; }
-      case 'synapse': { const g = b.id === 'syn-cola' ? RG2.guiaSynapseColaDe(iso) /* v6.09b lote 1-ter */ : SY2.synDiaDe(iso) ? RG2.guiaSynapseDe(iso) : null; return g ? [g] : null; }
+      case 'synapse': { const g = b.id === 'syn-cola' ? RG2.guiaSynapseColaDe(iso) /* v6.09b lote 1-ter */ : b.id === 'syn-rec' ? RG2.guiaSynapseRecDe(iso) /* v6.10: recuperación a hora fija (sáb 28-nov 07:15), como TodayMission */ : SY2.synDiaDe(iso) ? RG2.guiaSynapseDe(iso) : null; return g ? [g] : null; }
       case 'business': { const g = RG2.guiaBusinessDe(iso); return g ? [g] : null; }
       case 'aurum': { const g = b.id === 'aurum-l' ? RG2.guiaAurumSabadoDe(iso) /* v6.09b lote 1-bis S2: sábado 04:15 de F1 */ : AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso, F62.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
       case 'liviano': { const g = LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null; return g ? [g] : null; }
@@ -564,7 +570,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
             if (t !== '12:00') errores.push(`${tag}: la mañana ENCAPS no cubre 07:15-12:00 (termina ${t})`);
           }
           if (!B_('encaps') || hora('encaps') !== '16:15–17:15') errores.push(`${tag}: falta el ENCAPS 16:15 de la rotación F1`);
-          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-17' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-18' ? !/mazos aún vacíos/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.09b: el D1 (mar 17) el bloque es la CONFIGURACIÓN de 45′ */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
+          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-19' ? !/vídeos de método/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.10: la CONFIGURACIÓN (45′) va el mié 18 · v6.10b (decisión 4 de Joseph): jue 19 = D2 en nivel 0, mazo USMLE vacío → vídeos de método (sin UWSA1 ni triaje) */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
         }
         if (w === 6 && RG2.sabadoTheomed(iso) && bs.length) {
           const viv = EM2.theomedSabadoDe(iso);
@@ -873,7 +879,8 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       if (p.corrida) continue;
       const b = p.bloques.find((y) => y.plan === 'liviano');
       if (!b) errores.push(`${x.fecha} ${WDC[dow(x.fecha)]} ${p.plantilla}: sesión LIVIANO D${x.d} sin bloque en la plantilla`);
-      else if (b.ini !== '17:15' || b.fin !== '18:00') errores.push(`${x.fecha} LIVIANO D${x.d}: bloque ${b.hora} (≠ 17:15–18:00)`);
+      // v6.10: el día extra de fin de semana (corrida_s1.extra › liviano: dom 6-dic 08:15-09:00) va a SU franja (bloqueCorrido); los demás, a las 17:15
+      else if (((x2) => (x2 ? b.ini !== x2.ini || b.fin !== x2.fin : b.ini !== '17:15' || b.fin !== '18:00'))(FV.extraCorridaDe(x.fecha).find((y) => y.frente === 'liviano'))) errores.push(`${x.fecha} LIVIANO D${x.d}: bloque ${b.hora} (≠ ${(FV.extraCorridaDe(x.fecha).find((y) => y.frente === 'liviano') || { ini: '17:15', fin: '18:00' }).ini}–${(FV.extraCorridaDe(x.fecha).find((y) => y.frente === 'liviano') || { ini: '17:15', fin: '18:00' }).fin})`);
       else if (F62.faseV6(x.fecha) === 'F3') nLiv++;
     }
     if (LV2.LIV_META.fin > F62.FECHAS_V6.step1.reinicio && !nLiv) errores.push(`LIVIANO llega a F3 (fin ${LV2.LIV_META.fin}) y ninguna sesión de F3 tiene bloque`);
@@ -1109,6 +1116,232 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     console.log(`v6.09b lote 1-ter · (26) cola del SYNAPSE de F1 con franja real: ${nCola} días (${SY2.SYN_COLA_F1.map((d) => `${d.fecha} ${d.ini}`).join(' · ')} + post-Step 1 ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].fecha : '—'} → ${ultimo ? ultimo.fecha : '—'} ${SY2.SYN_COLA_POST_STEP1[0] ? SY2.SYN_COLA_POST_STEP1[0].ini : ''}) · ${nPasosCola} pasos en [0,85; 1,15] · ${nCit} citas de la cola en F1 · ${nDest} pasos de F1 sin fecha de destino tras el corte del Calendar (+ vibecoding/SHIP/Feynman) · (26f) ${nSinF} pasos sin destino sin fecha · (26g) ${n26g} restos de F1 → 2027 con su tramo en el paso de destino · (26i) ${n26i} días con el A medido dentro de su paso y A + B + C = 30′`);
   }
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));
+}
+
+// ── v6.10 · secundarios (17-nov-2026 · D1 = mié 18-nov; el mar 17 tampoco se estudió) ──
+// Dueño de esta sección: SECUNDARIOS (vibecoding · SYNAPSE · Business · AURUM · MIR · LIVIANO · Research/Derma). Controles PERMANENTES (no comparan con
+//   un commit): (s0) el mar 17-nov no tiene sesión en ningún plan secundario · (s1) cada (fecha, frente) de corrida_s1.extra tiene su sesión en el plan
+//   del frente, con los minutos de su franja, y su guía (Σ pasos = franja; la franja de la guía es la L-V del frente —la mueve plantillasV6 ›
+//   bloqueCorrido + moverGuia— salvo la sesión de recuperación del SYNAPSE, que trae la suya) · (s2) anclas de identidad: desde el hueco de cada frente,
+//   las fechas de la v6.09 (vibecoding, Business, MIR: lun 30-nov · AURUM, LIVIANO, Research: lun 7-dic · SYNAPSE: sáb 28 21:00) · (s3) L de AURUM de los
+//   sábados de F1 ≤ 05:45 y el vibecoding del sáb 28 ≥ 39′ sin solaparse con ella · (s4) LIVIANO: casos diferidos de F1 tras sus 4 lecciones y el
+//   pre-test solo en lunes · (s5) SYNAPSE: A+B+C = 30′ en la sesión de recuperación y el aviso «Primera sesión» del mié 18 nombra los 2 días sin sesión.
+{
+  const secErr = [];
+  const MDp = cargarModuloTS(path.join('src', 'lib', 'mirDailyPlan.ts'), cache);
+  const RDp = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan.ts'), cache);
+  const RDd = cargarModuloTS(path.join('src', 'lib', 'researchData.ts'), cache);
+  const RGu = cargarModuloTS(path.join('src', 'lib', 'researchGuia.ts'), cache);
+  const MGu = cargarModuloTS(path.join('src', 'lib', 'mirGuia.ts'), cache);
+  const FVs = cargarModuloTS(path.join('src', 'lib', 'fechasV6.ts'), cache);
+  const hm = (h) => { const [a, b] = String(h).split(':').map(Number); return a * 60 + b; };
+  const minF = (fr) => { const [a, b] = String(fr).split(/[–-]/); return hm(b) - hm(a); };
+  const sumP = (g) => (g && g.pasos ? g.pasos.reduce((x, p) => x + p.min, 0) : -1);
+  const EX = FVs.FECHAS_V6.corrida_s1.extra || {};
+  const HOY0 = '2026-11-17';
+  const enExtra = Object.keys(EX).length > 0 && FVs.FECHAS_V6.corrida_s1.sin_sesion.includes(HOY0);
+  if (enExtra) {
+    // (s0) mar 17-nov: sin sesión en los planes secundarios
+    if (V.vibeDiaDe(HOY0)) secErr.push(`(v610-s0) vibecoding con fila el ${HOY0}`);
+    const s17 = S.synDiaDe(HOY0);
+    if (!s17 || s17.bloques.some((b) => b.tag !== 'R' || b.min !== 0)) secErr.push(`(v610-s0) SYNAPSE del ${HOY0} con bloques que no son R de 0′`);
+    const b17 = B.bizDiaDe(HOY0);
+    if (b17 && B.bizModo(b17) !== 'DESCANSO') secErr.push(`(v610-s0) Business con lectura/OUTPUT el ${HOY0}`);
+    if (A.aurumDiaDe(HOY0)) secErr.push(`(v610-s0) AURUM con lección el ${HOY0}`);
+    if (L.livDiaDe(HOY0)) secErr.push(`(v610-s0) LIVIANO con lección el ${HOY0}`);
+    if (MDp.mirDiaDe(HOY0)) secErr.push(`(v610-s0) MIR con sesión el ${HOY0}`);
+    if (RDp.DIAS.some((x) => x.fecha === HOY0)) secErr.push(`(v610-s0) Research con átomo el ${HOY0}`);
+    // (s1) cada día extra de un frente secundario tiene su sesión y su guía
+    const LV = { vibecoding: '04:15–05:00', business: '13:00–13:25', aurum: '14:15–15:15', mir: '15:15–16:15', liviano: '17:15–18:00', 'research-derma': '13:30–14:15' };
+    let nEx = 0;
+    for (const [f, fr] of Object.entries(EX)) for (const [frente, franja] of Object.entries(fr)) {
+      const m = minF(franja);
+      const dw = new Date(f + 'T12:00:00Z').getUTCDay();
+      if (dw !== 0 && dw !== 6) secErr.push(`(v610-s1) corrida_s1.extra ${f} no es fin de semana`);
+      const chkGuia = (g, nom) => {
+        if (!g) { secErr.push(`(v610-s1) ${f} ${frente}: sin guía (${nom})`); return; }
+        if (sumP(g) !== m) secErr.push(`(v610-s1) ${f} ${frente}: Σ pasos ${sumP(g)} ≠ ${m}′ de la franja ${franja}`);
+        if (frente !== 'synapse' && g.franja !== LV[frente]) secErr.push(`(v610-s1) ${f} ${frente}: la guía viene en ${g.franja} y debe venir en la franja L-V ${LV[frente]} (la mueve el Home)`);
+        if (!/a hora fija/.test(g.aviso || '')) secErr.push(`(v610-s1) ${f} ${frente}: la guía no avisa «a hora fija» con la hora real`);
+        else if (frente !== 'synapse' && !(g.aviso || '').includes(franja.split('-')[0]) && frente !== 'vibecoding') secErr.push(`(v610-s1) ${f} ${frente}: el aviso no nombra la hora real ${franja}`);
+      };
+      if (frente === 'vibecoding') { const d = V.vibeDiaDe(f); if (!d || d.min !== m) secErr.push(`(v610-s1) ${f} vibecoding: ${d ? `${d.min}′ ≠ ${m}′` : 'sin fila'}`); chkGuia(RG.guiaVibeDe(f), 'guiaVibeDe'); nEx++; }
+      else if (frente === 'synapse') {
+        const r = S.synRecDe(f);
+        if (!r || `${r.ini}-${r.fin}` !== franja) secErr.push(`(v610-s1) ${f} SYNAPSE: sin sesión de recuperación ${franja} (SYN_REC_F1)`);
+        else if (r.bloques.reduce((x, b) => x + b.min, 0) !== m || !['A', 'B', 'C'].every((t) => r.bloques.some((b) => b.tag === t))) secErr.push(`(v610-s5) ${f} SYNAPSE de recuperación: A+B+C ≠ ${m}′`);
+        const g = RG.guiaSynapseRecDe(f);
+        if (!g || g.franja !== franja.replace('-', '–')) secErr.push(`(v610-s1) ${f} SYNAPSE: guiaSynapseRecDe ${g ? g.franja : 'null'} ≠ ${franja}`);
+        chkGuia(g, 'guiaSynapseRecDe'); nEx++;
+      } else if (frente === 'business') { const r = B.bizDiaDe(f); if (!r || B.bizModo(r) === 'DESCANSO' || r.min !== m) secErr.push(`(v610-s1) ${f} Business: ${r ? `${B.bizModo(r)} ${r.min}′` : 'sin fila'} (esperado lectura de ${m}′)`); chkGuia(RG.guiaBusinessDe(f), 'guiaBusinessDe'); nEx++; }
+      else if (frente === 'aurum') { if (!A.aurumDiaDe(f)) secErr.push(`(v610-s1) ${f} AURUM: sin lección`); chkGuia(RG.guiaAurumDe(f), 'guiaAurumDe'); nEx++; }
+      else if (frente === 'liviano') { const r = L.livDiaDe(f); if (!r || r.min !== m || r.casoId != null) secErr.push(`(v610-s1) ${f} LIVIANO: ${r ? `${r.min}′${r.casoId != null ? ' CASO' : ''}` : 'sin lección'} (esperado lección de ${m}′)`); chkGuia(RG.guiaLivianoDe(f), 'guiaLivianoDe'); nEx++; }
+      else if (frente === 'mir') { if (!MDp.mirDiaDe(f)) secErr.push(`(v610-s1) ${f} MIR: sin sesión`); chkGuia(MGu.mirGuiaDe(f, '15:15'), 'mirGuiaDe'); nEx++; }
+      else if (frente === 'research-derma') {
+        const at = RDp.DIAS.find((x) => x.fecha === f);
+        if (!at) secErr.push(`(v610-s1) ${f} Research: sin átomo`);
+        if (RDd.diaEstudioTipo(new Date(Number(f.slice(0, 4)), Number(f.slice(5, 7)) - 1, Number(f.slice(8, 10)))) !== 'research') secErr.push(`(v610-s1) ${f} Research: diaEstudioTipo no lo da como día-Research (TIPO_RD_FORZADO antes que la regla del finde)`);
+        if (at) chkGuia(RGu.guiaResearchDe(at), 'guiaResearchDe');
+        nEx++;
+      }
+    }
+    // (s2) anclas de identidad desde el hueco de cada frente (las fechas de la v6.09)
+    const ancla = (cond, txt) => { if (!cond) secErr.push(`(v610-s2) ${txt}`); };
+    const vd = V.VIBE_DIAS.find((x) => x.d === 10); ancla(vd && vd.fecha === '2026-11-30', `vibecoding d10 = ${vd && vd.fecha} (esperado lun 30-nov)`);
+    ancla(V.VIBE_META.finTaper === '2027-04-06' && V.VIBE_DIAS.length === 95, `vibecoding: fin ${V.VIBE_META.finTaper} / ${V.VIBE_DIAS.length} días (esperado mar 6-abr / 95)`);
+    const b30 = B.bizDiaDe('2026-11-30'); ancla(b30 && B.bizModo(b30) === 'OUTPUT' && b30.d === 15, `Business lun 30-nov = ${b30 && `D${b30.d} ${B.bizModo(b30)}`} (esperado D15 OUTPUT S2)`);
+    ancla(B.BIZ_DIAS.filter((x) => B.bizModo(x) !== 'DESCANSO').length === 84 && B.BIZ_DIAS[B.BIZ_DIAS.length - 1].fecha === '2027-03-19', 'Business: 84 filas de trabajo y fin vie 19-mar');
+    const m10 = MDp.MIR_DIAS.find((x) => x.d === 10); ancla(m10 && m10.fecha === '2026-11-30', `MIR D10 = ${m10 && m10.fecha} (esperado lun 30-nov)`);
+    ancla(MDp.MIR_DIAS[MDp.MIR_DIAS.length - 1].fecha === '2027-03-08', 'MIR D78 = lun 8-mar');
+    const a15 = A.AURUM_DIAS.find((x) => x.d === 15); ancla(a15 && a15.fecha === '2026-12-07' && a15.pitch === 1, `AURUM D15 (PITCH v1) = ${a15 && a15.fecha} (esperado lun 7-dic)`);
+    ancla(A.AURUM_DIAS[A.AURUM_DIAS.length - 1].fecha === '2027-05-25', 'AURUM D130 = mar 25-may');
+    const l15 = L.LIV_DIAS.find((x) => x.d === 15); ancla(l15 && l15.fecha === '2026-12-07' && l15.casoId === 3, `LIVIANO d15 = ${l15 && l15.fecha} (esperado LUNES CASO 3 el lun 7-dic)`);
+    ancla(L.LIV_DIAS[L.LIV_DIAS.length - 1].fecha === '2027-04-02', 'LIVIANO fin = vie 2-abr');
+    const r9 = RDp.DIAS.find((x) => x.code === 'R9'); ancla(r9 && r9.fecha === '2026-12-07' && r9.d === 8, `Research R9 = ${r9 && r9.fecha} (esperado lun 7-dic, d8)`);
+    ancla(S.SYN_DIAS.length === 137 && S.SYN_PLAN_META.fin === '2027-04-01', `SYNAPSE: ${S.SYN_DIAS.length} días · fin ${S.SYN_PLAN_META.fin} (esperado 137 · jue 1-abr)`);
+    const s28 = S.synDiaDe('2026-11-28'); ancla(s28 && s28.d === 13 && s28.bloques.some((b) => b.tag === 'A'), 'SYNAPSE sáb 28-nov 21:00 = d13 con su A-unit');
+    // (s3) L de AURUM de los sábados de F1 ≤ 05:45; el vibecoding extra del sábado tras la L y ≥ 39′
+    let nSab = 0;
+    for (let s = '2026-11-21'; s <= FVs.FECHAS_V6.transicion.hasta; s = (() => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })()) {
+      const l = RG.aurumLSabadoDe(s); if (!l) continue; nSab++;
+      if (hm(l.fin) > hm('05:45')) secErr.push(`(v610-s3) ${s}: la L de AURUM termina a las ${l.fin} (> 05:45, rutina)`);
+      const vx = EX[s] && EX[s].vibecoding;
+      if (vx) { const [vi, vf] = vx.split('-'); if (hm(l.fin) > hm(vi)) secErr.push(`(v610-s3) ${s}: la L de AURUM (${l.ini}-${l.fin}) pisa el vibecoding ${vx}`); if (hm(vf) - Math.max(hm(vi), hm(l.fin)) < 39) secErr.push(`(v610-s3) ${s}: el vibecoding queda con < 39′`); }
+    }
+    // (s4) LIVIANO: caso diferido de F1 tras sus 4·k lecciones; pre-test solo en lunes
+    for (const r of L.LIV_DIAS) {
+      if (r.pretest && r.wd !== 'Lun') secErr.push(`(v610-s4) LIVIANO D${r.d} ${r.fecha}: pre-test fuera de lunes`);
+      if (r.casoId != null && r.fecha <= FVs.FECHAS_V6.transicion.hasta && L.LIV_DIAS.filter((x) => x.d < r.d && x.casoId == null).length < 4 * r.casoId) secErr.push(`(v610-s4) LIVIANO CASO ${r.casoId} (${r.fecha}) antes de sus ${4 * r.casoId} lecciones`);
+    }
+    // (s5) aviso «Primera sesión» del SYNAPSE: nombra los días sin sesión y la sesión de recuperación
+    const s1 = S.SYN_DIAS.find((x) => x.bloques.some((b) => b.tag === 'A'));
+    const av = (s1 && (RG.guiaSynapseDe(s1.fecha) || {}).aviso) || '';
+    if (s1 && s1.fecha === '2026-11-18' && !(/Primera sesión\. Sale como día 3/.test(av) && /mar 17-nov/.test(av) && /sáb 28-nov a las 07:15/.test(av))) secErr.push(`(v610-s5) SYNAPSE mié 18: el aviso «Primera sesión» no nombra el mar 17 ni la sesión del sáb 28 07:15: «${av.slice(0, 160)}»`);
+    console.log(`v6.10 · secundarios: mar 17 sin sesión · ${nEx} bloques extra de fin de semana con sesión y guía · anclas de identidad · ${nSab} L de AURUM de sábado ≤ 05:45 · LIVIANO casos/pre-test · SYNAPSE «Primera sesión»`);
+  }
+  for (const e of secErr) errores.push(e);
+}
+
+// ── v6.10 · núcleo (17-nov-2026 · D1 = mié 18-nov; el mar 17 tampoco se estudió) ──
+// Dueño: NÚCLEO (fechas · Step 1 · ENCAPS 16:15 y mañanas · plantillas). Controles PERMANENTES de la v6.10:
+//   (v610-a) mar 17-nov: CORRIDO, 0 bloques, sin guía USMLE, sin sesión ENCAPS 16:15 ni mañana ENCAPS · (v610-b) corrida_s1.extra: cada (fecha, frente,
+//   franja) tiene su bloque con hora en la plantilla y el domingo deja ≥ 40′ de almuerzo (Σ fijos + Σ flexibles ≤ ventana − 40′) · (v610-c) Step: D1 = UWSA1
+//   jue 19-nov con su SYNAPSE 07:25 · NBME 25 = mar 15-dic (07:00-12:30) · cada step1.f1_extra es un SÁBADO de Step (usmle 04:15-05:45 · usmle2 07:15-08:25 ·
+//   usmle3 14:30-16:05 · eval 16:05-16:50 · anki-sab 21:30-22:00, con sus guías dentro de las ventanas del sábado) · enPausaStep1 falso hasta la última mañana
+//   de F1 y verdadero desde el día siguiente al lunes libre · el jue 31-dic no es día de Step ni de pausa · DIAS_T2 = tramo2_vigente.json (= v6.09) ·
+//   (v610-d) Anki: mié 18 = CONFIGURACIÓN 45′ · jue 19 sin configuración · del 18 al 24-nov ningún bloque USMLE sin material salvo el descanso declarado del
+//   jue 19 y del mar 24 · ninguna «NUEVAS: … del <día>» cita un día sin Step · (v610-e) ENCAPS: dia del mantenimiento = orden por fecha · diaActual = dia
+//   (mié 18, vie 20, lun 23, vie 27, dom 29, lun 30, jue 31, lun 4-ene, vie 12-mar) · sim_n = dia en los 5 mini-sims de F1 · (v610-f) ENCAPS 16:15: filas
+//   dia ≥ 10 idénticas a la v6.09 (git show e34e1ad, si el commit existe).
+{
+  const nErr = [];
+  const cpx = require('child_process');
+  const fsx = require('fs');
+  const tsx = require(path.join(__dirname, '..', '..', 'node_modules', 'typescript'));
+  const stubN = () => new Proxy(function () {}, { get: (t, k) => (k === Symbol.toPrimitive ? () => '' : k === 'then' ? undefined : k === '__esModule' ? true : stubN()), apply: () => stubN(), construct: () => stubN() });
+  if (!global.localStorage) { const mem = new Map(); global.localStorage = { getItem: (k) => (mem.has(k) ? mem.get(k) : null), setItem: (k, v) => mem.set(k, String(v)), removeItem: (k) => mem.delete(k) }; }
+  const cacheN = new Map();
+  const cargarN = (file) => {
+    if (cacheN.has(file)) return cacheN.get(file).exports;
+    const m = { exports: {} }; cacheN.set(file, m);
+    const req = (spec) => {
+      if (!spec.startsWith('.')) return stubN();
+      let d = path.resolve(path.dirname(file), spec);
+      for (const e of ['', '.ts', '.tsx']) if (fsx.existsSync(d + e) && fsx.statSync(d + e).isFile()) { d += e; break; }
+      return d.endsWith('.json') ? JSON.parse(fsx.readFileSync(d, 'utf8')) : cargarN(d);
+    };
+    new Function('exports', 'module', 'require', tsx.transpileModule(fsx.readFileSync(file, 'utf8'), { compilerOptions: { module: tsx.ModuleKind.CommonJS, target: tsx.ScriptTarget.ES2020, jsx: tsx.JsxEmit.React, esModuleInterop: true } }).outputText)(m.exports, m, req);
+    return m.exports;
+  };
+  const LN = (n) => cargarN(path.join(__dirname, '..', '..', 'src', 'lib', n + '.ts'));
+  const PLn = LN('plantillasV6'), F6n = LN('fechasV6'), Un = LN('usmleStep1Daily'), UGn = LN('usmleGuia'), EGn = LN('encapsGuia'), EMn = LN('encapsManana'), EPn = LN('encapsPlan');
+  const hmN = (h) => { const [a, b] = String(h).split(':').map(Number); return a * 60 + b; };
+  const F6j = F6n.FECHAS_V6;
+  // (v610-a)
+  {
+    const iso = '2026-11-17';
+    if (F6j.corrida_s1.sin_sesion.includes(iso)) {
+      const p = PLn.plantillaDelDia(iso);
+      if (p.plantilla !== 'CORRIDO' || p.bloques.length) nErr.push(`(v610-a) ${iso}: plantilla ${p.plantilla} con ${p.bloques.length} bloque(s) (se espera CORRIDO, 0)`);
+      if (UGn.guiaUsmleDe(iso).length) nErr.push(`(v610-a) ${iso}: la guía USMLE tiene bloques un día sin sesión`);
+      if (EGn.sesionEncapsDe(iso) || EMn.encapsMananaDe(iso)) nErr.push(`(v610-a) ${iso}: ENCAPS (16:15 o mañana) con sesión un día sin sesión`);
+    }
+  }
+  // (v610-b)
+  let nX = 0;
+  for (const [iso] of Object.entries(F6j.corrida_s1.extra || {})) {
+    const p = PLn.plantillaDelDia(iso);
+    for (const x of F6n.extraCorridaDe(iso)) {
+      nX++;
+      if (!p.bloques.some((b) => b.ini === x.ini && b.fin === x.fin && (b.plan === x.frente || (x.frente === 'research-derma' && b.plan === 'research-derma')))) nErr.push(`(v610-b) ${iso}: sin bloque de ${x.frente} en ${x.ini}-${x.fin}`);
+    }
+    if (dow(iso) === 0) {
+      const fijos = p.bloques.filter((b) => b.ini && b.fin).reduce((a, b) => a + (hmN(b.fin) - hmN(b.ini)), 0);
+      const flex = p.bloques.filter((b) => !b.ini).reduce((a, b) => a + (b.min || 0), 0);
+      const ventana = (hmN('05:45') - hmN('05:00')) + (hmN('17:00') - hmN('07:15'));
+      if (fijos + flex > ventana - 40) nErr.push(`(v610-b) ${iso}: ${fijos}′ fijos + ${flex}′ flexibles > ${ventana - 40}′ (ventana del domingo − 40′ de almuerzo)`);
+    }
+  }
+  // (v610-c) · v6.10b (decisión 4 de Joseph, 17-nov 17:05): jue 19 = D2 en NIVEL 0 (lesión celular), sin UWSA1 en F1 (→ tramo 2, T82) y con su SYNAPSE a las
+  //   12:30 · NBME 25 = D8 jue 10-dic (07:00-12:30) · sin step1.f1_extra: el sáb 2-ene sin bloques de Step · la pausa del Step desde el jue 31-dic (como v6.09)
+  const D = Un.DIAS, T2 = Un.DIAS_T2;
+  const d1 = D[0];
+  if (!d1 || d1.d !== 2 || !/lesión celular/.test(d1.sub) || d1.fecha !== '2026-11-19' || D.some((x) => /UWSA1/.test(x.sub))) nErr.push(`(v610-c) 1.ª fila de F1 = ${d1 && 'D' + d1.d} ${d1 && d1.fecha} ${d1 && d1.sub.slice(0, 30)} (se espera el D2 lesión celular del jue 19-nov y ningún UWSA1 en F1)`);
+  else { const p = PLn.plantillaDelDia(d1.fecha); const s = p.bloques.find((b) => b.id === 'syn'); const u = p.bloques.find((b) => b.id === 'usmle'); if (!s || s.ini !== '12:30') nErr.push(`(v610-c) ${d1.fecha}: el SYNAPSE no va a las 12:30 (${s && s.hora})`); if (!u || u.ini !== '07:15' || u.fin !== '12:00') nErr.push(`(v610-c) ${d1.fecha}: el bloque USMLE no es el normal 07:15-12:00 (${u && u.hora})`); }
+  const uw1 = T2.find((x) => x.tipo === 'hito' && x.dOrig === 1);
+  if (!uw1 || uw1.t !== 82 || uw1.fecha !== '2027-06-29' || !T2.some((x) => x.t === 83 && x.tipo === 'day_after' && /UWSA1/.test(x.sub))) nErr.push(`(v610-c) el UWSA1 no está en el tramo 2 en T82 (mar 29-jun-2027) con su Day-After en T83 (${uw1 ? 'T' + uw1.t + ' ' + uw1.fecha : '—'})`);
+  const n25 = D.find((x) => /NBME 25/.test(x.sub));
+  if (!n25 || n25.fecha !== '2026-12-10' || n25.d !== 8) nErr.push(`(v610-c) NBME 25 = ${n25 && 'D' + n25.d + ' ' + n25.fecha} (se espera D8 jue 10-dic)`);
+  else { const b = PLn.plantillaDelDia(n25.fecha).bloques.find((y) => y.id === 'usmle'); if (!b || b.ini !== '07:00' || b.fin !== '12:30') nErr.push(`(v610-c) NBME 25: bloque ${b && b.hora} (≠ 07:00-12:30)`); }
+  if ('f1_extra' in F6j.step1) nErr.push('(v610-c) _fechas_v6.json › step1.f1_extra sigue ahí (retirado en la v6.10b)');
+  { const p2 = PLn.plantillaDelDia('2027-01-02'); const st = p2.bloques.filter((b) => ['usmle', 'usmle2', 'usmle3', 'eval', 'anki-sab'].includes(b.id)); if (st.length || UGn.guiaUsmleDe('2027-01-02').length) nErr.push(`(v610-c) sáb 2-ene: bloques o guía de Step (${st.map((b) => b.id).join(', ') || 'guía'}) — ya no es mañana de Step`); }
+  const ultS = F6n.DERIVADOS_V6.ultimoStepF1;
+  for (let x = addDias(ultS, 1); x < F6j.step1.reinicio; x = addDias(x, 1)) if (!F6n.enPausaStep1(x)) { nErr.push(`(v610-c) enPausaStep1(${x}) = false dentro de la pausa`); break; }
+  if (!F6n.enPausaStep1('2026-12-31') || F6n.esDiaPlan('2026-12-31', 'usmle')) nErr.push('(v610-c) 2026-12-31: se espera Step 1 en PAUSA (como en la v6.09)');
+  {
+    const t2 = JSON.parse(fsx.readFileSync(path.join(__dirname, 'usmle', 'tramo2_vigente.json'), 'utf8'));
+    if (JSON.stringify(t2) !== JSON.stringify(T2)) nErr.push('(v610-c) DIAS_T2 de usmleStep1Daily.ts ≠ tramo2_vigente.json');
+    try { const h = cpx.execFileSync('git', ['show', 'e34e1ad:DATA/_scripts/usmle/tramo2_vigente.json'], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8', maxBuffer: 64 << 20 }); const hJ = JSON.parse(h), nJ = JSON.parse(fsx.readFileSync(path.join(__dirname, 'usmle', 'tramo2_vigente.json'), 'utf8')); const difT = nJ.map((x, k) => (JSON.stringify(x) === JSON.stringify(hJ[k]) ? null : x.t)).filter((t) => t !== null); if (nJ.length !== hJ.length || difT.some((t) => t !== 82 && t !== 83)) nErr.push(`(v610-c) tramo2_vigente.json ≠ el de la v6.09 (e34e1ad) fuera de T82-T83 (el UWSA1 en el hueco del UWSA3 opcional, cambio declarado): ${difT.join(', ')}`); } catch (e) { /* sin el commit (clon superficial): no se compara */ }
+  }
+  // (v610-d)
+  {
+    const conf = UGn.guiaUsmleDe('2026-11-18').find((g) => g.franja.startsWith('05:'));
+    if (!conf || conf.franja !== '05:00–05:45' || !/CONFIGURACIÓN/.test(conf.titulo)) nErr.push('(v610-d) mié 18-nov: el Anki 05:00 no es la CONFIGURACIÓN de 45′');
+    const j19 = UGn.guiaUsmleDe('2026-11-19').find((g) => g.franja.startsWith('05:'));
+    if (!j19 || /CONFIGURACIÓN/.test(j19.titulo) || j19.franja !== '05:00–05:30') nErr.push('(v610-d) jue 19-nov: el Anki 05:00 debe ser 05:00-05:30 y sin configuración');
+    for (let iso = '2026-11-18'; iso <= '2026-11-24'; iso = addDias(iso, 1)) {
+      for (const g of UGn.guiaUsmleDe(iso).filter((x) => x.franja.startsWith('05:'))) for (const p of g.pasos) {
+        if (/^Libre\b/.test(p.que)) nErr.push(`(v610-d) ${iso} ${g.franja}: paso «Libre» (sin material)`);
+        if (/[Dd]escanso/.test(p.que)) nErr.push(`(v610-d) ${iso} ${g.franja}: descanso en el Anki 05:00 (v6.10b: sin UWSA1, cada franja lleva material)`);
+      }
+    }
+    const MESn = { ene: '01', feb: '02', mar: '03', abr: '04', may: '05', jun: '06', jul: '07', ago: '08', sep: '09', oct: '10', nov: '11', dic: '12' };
+    const stepF = new Set(D.map((x) => x.fecha));
+    for (let iso = F6j.f1.inicio; iso <= F6j.transicion.hasta; iso = addDias(iso, 1)) for (const g of UGn.guiaUsmleDe(iso)) for (const p of g.pasos) {
+      const m = /^NUEVAS:.*?(?:del?|creaste el) (?:lun|mar|mié|jue|vie|sáb|dom) (\d{1,2})-([a-z]{3})/.exec(p.que);
+      if (!m) continue;
+      const mm = MESn[m[2]]; const y = mm === '01' && iso.slice(5, 7) === '12' ? +iso.slice(0, 4) + 1 : mm === '12' && iso.slice(5, 7) === '01' ? +iso.slice(0, 4) - 1 : +iso.slice(0, 4);
+      const f = `${y}-${mm}-${String(m[1]).padStart(2, '0')}`;
+      if (!stepF.has(f)) nErr.push(`(v610-d) ${iso} ${g.franja}: «${p.que.slice(0, 60)}» cita el ${f}, que no es día de Step`);
+    }
+  }
+  // (v610-e) + (v610-f)
+  {
+    const leer = (txt) => txt.split(/\r?\n/).filter((l) => l.startsWith("('ENCAPS',")).map((l) => { const m = /^\('ENCAPS',(\d+),'([\d-]+)','[^']+','([^']+)'/.exec(l); const sn = /"sim_n":(\d+)/.exec(l); return { dia: +m[1], fecha: m[2], tipo: m[3], simN: sn ? +sn[1] : null, l: l.replace(/[,;]\s*$/, '') }; });
+    const M = leer(fsx.readFileSync(path.join(__dirname, '_encaps_mantenimiento_2027.sql'), 'utf8'));
+    const ord = [...M].sort((a, b) => (a.fecha < b.fecha ? -1 : 1));
+    ord.forEach((r, i) => { if (r.dia !== i + 1) nErr.push(`(v610-e) mantenimiento: ${r.fecha} es dia ${r.dia} y por fecha toca ${i + 1}`); });
+    for (const r of M.filter((x) => x.tipo === 'mini_sim')) if (r.simN !== r.dia) nErr.push(`(v610-e) mini-sim ${r.fecha}: sim_n ${r.simN} ≠ dia ${r.dia}`);
+    const ESPd = { '2026-11-18': 1, '2026-11-20': 3, '2026-11-23': 4, '2026-11-27': 8, '2026-11-29': 9, '2026-11-30': 10, '2026-12-31': 32, '2027-01-04': 33, '2027-03-12': 82 };
+    for (const [iso, d] of Object.entries(ESPd)) { const v = EPn.diaActual('ENCAPS', F6j.f1.inicio, 82, iso); if (v !== d) nErr.push(`(v610-e) diaActual(${iso}) = ${v} (se espera ${d})`); }
+    try {
+      const H = leer(cpx.execFileSync('git', ['show', 'e34e1ad:DATA/_scripts/_encaps_mantenimiento_2027.sql'], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8', maxBuffer: 64 << 20 }));
+      const a = H.filter((x) => x.dia >= 10).map((x) => x.l).join('\n'), b = M.filter((x) => x.dia >= 10).map((x) => x.l).join('\n');
+      if (a !== b) nErr.push('(v610-f) mantenimiento ENCAPS: las filas dia ≥ 10 cambiaron respecto a la v6.09 (e34e1ad)');
+    } catch (e) { /* sin el commit: no se compara */ }
+  }
+  console.log(`v6.10 · núcleo: mar 17 sin sesión · ${nX} bloques de corrida_s1.extra con su bloque · Step D2 jue 19 (nivel 0; UWSA1 → T82) · NBME 25 jue 10-dic · sin sábados de Step · pausa desde el ${addDias(ultS, 1)} · Anki 18-24 nov · ENCAPS dia por fecha + diaActual + sim_n · tramo 2 y filas dia ≥ 10 = v6.09`);
+  for (const e of nErr) errores.push(e);
 }
 
 // ── salida ──

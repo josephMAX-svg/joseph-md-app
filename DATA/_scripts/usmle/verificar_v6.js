@@ -103,6 +103,11 @@
  *   23-abr / jue 3-jun, gates lun 22-mar / mié 21-abr, «S n/46») ni de la corrida v6.07e (UWSA1 dom 15 · vie 13 · jue 12 · mié 11-nov).
  *   Fix revisión 14-nov (est2): un hito desplazado de F1 que cae en F4 lleva la ventana L-S de su semana (NBME 28 → lun 7 → sáb 12-jun) para
  *   que serumsTurnos.ordenSemana lo trate como a los NBME 30-33; la v6.07 (y v6.00-v6.06, sin efecto) se reproducen con --hito-f4-sin-ventana.
+ * v6.10b (mar 17-nov-2026, decisión 4 de Joseph — PALMERTON_NIVEL0_ARRANQUE §8.2 A1-A6): el UWSA1 (v5.20 D1) SALE DE F1 y toma el hueco del UWSA3
+ *   opcional en el tramo 2 (escenario.uwsa1Tramo2: T82 mar 29-jun-2027 + su Day-After T83). F1 = D2-D13 (12 mañanas mar · jue, jue 19-nov → mar 29-dic,
+ *   las fechas v6.09) con la colocación de 13 ranuras (la 1.ª, la del UWSA1, sin fecha: OFF = 1) y nivelUW/qDia por la regla del NIVEL 0-1. V2: el
+ *   tramo 2 = la referencia salvo T82/T83 (las claves del cambio declarado, comprobadas aparte) · V1 (v1_check.js): el UWSA1 del tramo 2 ya no es baseline.
+ *   Guía: el Anki de las 05:00 del D2 lleva los vídeos de MÉTODO (mazo vacío; regla del chat USMLE) y F1 ya no tiene la consolidación N1/N2 de la v6.09.
  */
 'use strict';
 const fs = require('fs');
@@ -140,7 +145,10 @@ const REFS_BASE = { '58|2027-09-27': 'tramo2_14mar_27sep.json', '57|2027-09-27':
 const REF_BASE = REFS_BASE[`${F1F}|${ESC.examen}`] || (fs.existsSync(path.join(REF, `tramo2_14mar_${ESC.examen}_${F.version.replace('.', '')}.json`)) ? `tramo2_14mar_${ESC.examen}_${F.version.replace('.', '')}.json` : null);
 const EX = ESC.examen; // v6.04: examen del escenario base vigente (25-oct; v6.00-v6.03: 27-sep)
 const REF_BASE_27SEP = REFS_BASE[`${F1F}|2027-09-27`] || null; // base 27-sep con las mismas filas de F1 (previo del NO-GO 27-sep → 25-oct)
-const COLOC = colocarF1(DIAS.length, byD); // v6.02: colocación de F1 (hitos anclados) = la que usó gen_usmle_v5.js
+// v6.10b: el UWSA1 (ranura 1) salió de F1 al tramo 2 → F1 = D2-D13 y la colocación es la de 13 ranuras (OFF = 1; NSLOT = d de la última fila)
+const UW1 = ESC.uwsa1Tramo2 || null, OFF = UW1 ? 1 : 0, NSLOT = DIAS.length + OFF;
+const filaF1 = (d) => DIAS.find((x) => x.d === d);
+const COLOC = colocarF1(NSLOT, byD); // v6.02: colocación de F1 (hitos anclados) = la que usó gen_usmle_v5.js
 console.log(`USMLE ${U.DAILY_META.version} · DIAS ${DIAS.length} · DIAS_T2 ${DIAS_T2.length} · escenario ENCAPS ${ESC.encaps} · examen ${ESC.examen} · SERUMS ${ESC.serums}${ESC.congelarHasta ? ' · congelado ≤ ' + ESC.congelarHasta : ''}`);
 ok(eq(DIAS, J.DIAS) && eq(DIAS_T2, J.DIAS_T2), 'el .ts contiene exactamente la salida de gen_usmle_v5.js (usmle_dias_v6.json)');
 
@@ -153,11 +161,14 @@ ok(eq(DIAS, J.DIAS) && eq(DIAS_T2, J.DIAS_T2), 'el .ts contiene exactamente la s
 }
 
 // ── V2 ──
-function difFilas(a, b) {
+// v6.10b: claves del cambio DECLARADO del tramo 2 (el UWSA1 en el hueco del UWSA3 opcional: su fila y la de su Day-After); el resto, byte a byte
+const EXC_T2 = UW1 ? { [UW1.t]: new Set(['dOrig', 'forma', 'nombre', 'sub', 'subV520', 'system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm']), [UW1.t + 1]: new Set(['sub']) } : {};
+function difFilas(a, b, exc = EXC_T2) {
   const d = [];
   if (a.length !== b.length) d.push(`nº de filas ${a.length} ≠ ${b.length}`);
   for (let i = 0; i < Math.min(a.length, b.length); i++) {
-    const ka = Object.keys(a[i]).sort(), kb = Object.keys(b[i]).sort();
+    const ex = exc[i + 1] || new Set();
+    const ka = Object.keys(a[i]).filter((k) => !ex.has(k)).sort(), kb = Object.keys(b[i]).filter((k) => !ex.has(k)).sort();
     if (!eq(ka, kb)) d.push(`T${i + 1} claves ${ka.filter((k) => !kb.includes(k)).join(',')} | ${kb.filter((k) => !ka.includes(k)).join(',')}`);
     for (const k of new Set([...ka, ...kb])) if (!eq(a[i][k], b[i][k])) d.push(`T${i + 1}.${k}`);
   }
@@ -192,6 +203,17 @@ function correr(script, args, tag) {
     const d2 = difFilas(DIAS_T2, JSON.parse(fs.readFileSync(path.join(REF, REF_BASE), 'utf8')));
     ok(d2.length === 0, `V2 · DIAS_T2 = ref_v6/${REF_BASE} (escenario base, --f1-filas ${F1F}, examen ${ESC.examen}) en todas las claves`, d2.length ? d2.slice(0, 8).join(' · ') : '0 diferencias');
   } else console.log('⚠ V2: escenario no base (congelado / recuperaciones F1 / protegidos extra): solo se compara con la regeneración de la referencia');
+  // v6.10b · el cambio declarado: el UWSA1 (v5.20 D1, prueba de resistencia) en la fila del UWSA3 opcional (misma fecha, ventana, hora, 160Q, h, nivel)
+  //   y su Day-After en la fila siguiente; ningún otro hito ni fila se mueve
+  if (UW1 && ref.out) {
+    const h = DIAS_T2[UW1.t - 1], r0 = ref.out[UW1.t - 1], da = DIAS_T2[UW1.t], da0 = ref.out[UW1.t], v = byD[1];
+    const mal = [];
+    if (!(r0 && r0.tipo === 'hito' && r0.forma === 'UWSA3')) mal.push(`la referencia no tiene el UWSA3 opcional en T${UW1.t}`);
+    if (!(h && h.tipo === 'hito' && h.dOrig === 1 && h.forma === 1 && h.fecha === UW1.fecha && eq(h.ventana, r0 && r0.ventana) && h.qDia === 160 && h.nivelUW === 5 && h.h === (r0 && r0.h))) mal.push(`T${UW1.t} no es el UWSA1 con la fecha, ventana, 160Q y horas del hueco`);
+    if (!(h && /^🎯 UWSA1 — PRUEBA DE RESISTENCIA \(07:00-11:15\)/.test(h.sub) && h.subV520 === v.sub && ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm'].every((k) => eq(h[k], v[k])))) mal.push(`T${UW1.t}: campos ≠ v5.20 D1 o sub sin «UWSA1 — PRUEBA DE RESISTENCIA (07:00-11:15)»`);
+    if (!(da && da0 && da.tipo === 'day_after' && da.sub === da0.sub.replace(`DAY-AFTER del ${r0.nombre}`, `DAY-AFTER del ${h.nombre}`))) mal.push(`T${UW1.t + 1}: no es el Day-After del UWSA1`);
+    ok(mal.length === 0, `V2 · cambio declarado (v6.10b): el UWSA1 (v5.20 D1) sale de F1 y toma el hueco del UWSA3 opcional en T${UW1.t} (${V6.f(UW1.fecha)}) con su Day-After en T${UW1.t + 1}`, mal.join(' · ') || `${h.sub.slice(0, 90)}… · ${da.sub.slice(0, 50)}…`);
+  }
 }
 
 // ── V2+ · matriz port vs referencia (§B3 «Otros escenarios» + pruebas de regen) ──
@@ -362,7 +384,7 @@ if (!argv.includes('--sin-matriz')) {
   const fechas = DIAS_TODOS.map((x) => x.fecha);
   const crec = fechas.every((s, i) => i === 0 || s > fechas[i - 1]);
   const dUnicos = new Set(DIAS_TODOS.map((x) => x.d)).size === DIAS_TODOS.length;
-  const contiguoT = DIAS_T2.every((x, i) => x.t === i + 1 && x.d === 101 + i) && DIAS.every((x, i) => x.d === i + 1);
+  const contiguoT = DIAS_T2.every((x, i) => x.t === i + 1 && x.d === 101 + i) && DIAS.every((x, i) => x.d === i + 1 + OFF); // v6.10b: F1 = D2-D13
   const esperadas = V6.rango(F.f1.inicio, F.step1.examen).filter((s) => FV.esDiaPlan(s, 'usmle'));
   const set = new Set(fechas);
   const faltan = esperadas.filter((s) => !set.has(s)), sobran = fechas.filter((s) => !esperadas.includes(s));
@@ -371,6 +393,7 @@ if (!argv.includes('--sin-matriz')) {
     'V3 · fechas USMLE', `${malas.length} en SKIP/protegidos/domingo/sábado pre-SERUMS${malas.length ? ' (' + malas.slice(0, 5).join(', ') + ')' : ''} · D1 ${DIAS[0].fecha} · ritual ${rit.fecha} (única fila en protegido) · ${fechas.length} fechas = esDiaPlan(iso,'usmle') (faltan ${faltan.length} · sobran ${sobran.length}) · sábados ${DIAS_TODOS.filter((x) => new Date(x.fecha + 'T12:00:00Z').getUTCDay() === 6).length} (todos ≥ ${F.serums.inicio})`);
 }
 
+const fS0 = (sl) => (filaF1(sl) || { fecha: 'sin fecha' }).fecha;
 // ── F1 = v5.20 (v6.01: contenido por posición en el orden de F1 · v6.02: por su origen en la colocación con hitos anclados ·
 //    fechas = hábiles de F1 · niveles por la regla) ──
 {
@@ -390,14 +413,16 @@ if (!argv.includes('--sin-matriz')) {
     if (/🎯/.test(x.sub)) return [5, /UWSA/.test(x.sub) ? 160 : /FREE 120/i.test(x.sub) ? 120 : 200, undefined];
     if (x.bbCh === 'Colchón') return [4, 40, undefined];
     const pos = (posSis[x.system] = (posSis[x.system] || 0) + 1), vie = new Date(x.fecha + 'T12:00:00Z').getUTCDay() === 5;
+    // v6.10b (decisión 4 · A3/A4): F1 en NIVEL 0-1 → N1 y qDia = nuevas del subtema de hoy (D2 3 + 5 · D3-D4 4 + 5 · tras un hito 5 + 5 · resto 10 + 5)
+    if (OFF) return [1, x.d === 2 ? 8 : x.d <= 4 ? 9 : DIAS.some((h) => /🎯/.test(h.sub) && h.d === x.d - 1) ? 10 : 15, undefined];
     if (pos <= 2) return [1, 30, undefined];
     if (vie && U.DAILY_META.viernesN4DesdeSemana > 0 && semanaDeF1(x.fecha) >= U.DAILY_META.viernesN4DesdeSemana) return [4, 40, 'franja'];
     return vie ? [3, 40, undefined] : [2, 40, undefined];
   };
   const cambian = [];
   DIAS.forEach((x, i) => {
-    const o = ORIGEN_F1[i];
-    if (x.d !== i + 1 || x.fecha !== habF1[i]) dif.push(`D${x.d}.d/fecha ${x.fecha} ≠ ${habF1[i]}`);
+    const o = ORIGEN_F1[i + OFF];
+    if (x.d !== i + 1 + OFF || x.fecha !== habF1[i]) dif.push(`D${x.d}.d/fecha ${x.fecha} ≠ ${habF1[i]}`);
     const [nv, q, fr] = esperadoNivel(x);
     if (x.nivelUW !== nv || x.qDia !== q || (fr ? !/^VIERNES NIVEL 4/.test(x.franjaNota || '') : x.franjaNota !== undefined)) dif.push(`D${x.d}.nivel N${x.nivelUW}·${x.qDia} ≠ regla N${nv}·${q}`);
     if (typeof o === 'string') { if (x.bbCh !== 'Colchón' || !x.sub.startsWith(o + ' · COLCHÓN F1')) dif.push(`D${x.d} ≠ ${o}`); return; }
@@ -410,19 +435,21 @@ if (!argv.includes('--sin-matriz')) {
     if (kx !== kv) dif.push(`D${x.d}.claves`);
     if (x.nivelUW !== v.nivelUW || x.qDia !== v.qDia) cambian.push(`D${x.d}`);
   });
-  const horas = [...HORA].filter((o) => ORIGEN_F1.includes(o)).map((o) => { const x = DIAS[ORIGEN_F1.indexOf(o)]; return x.sub.includes('(07:00-12:30)') && byD[o].sub.replace('(07:15-11:00)', '(07:00-12:30)') === x.sub; });
-  const uwsa1 = /UWSA1/.test(DIAS[0].sub) && DIAS[0].sub.includes('09:00-13:00');
+  const horas = [...HORA].filter((o) => ORIGEN_F1.includes(o)).map((o) => { const x = filaF1(ORIGEN_F1.indexOf(o) + 1); return x.sub.includes('(07:00-12:30)') && byD[o].sub.replace('(07:15-11:00)', '(07:00-12:30)') === x.sub; });
+  // v6.10b: el UWSA1 ya no está en F1: es la fila T del hueco (escenario.uwsa1Tramo2) · antes: D1 09:00-13:00
+  const uwsa1 = UW1 ? !DIAS.some((x) => /UWSA1/.test(x.sub)) && DIAS_T2.some((x) => x.t === UW1.t && x.dOrig === 1) : /UWSA1/.test(DIAS[0].sub) && DIAS[0].sub.includes('09:00-13:00');
   const noId = ORIGEN_F1.map((o, i) => (typeof o === 'number' && o !== i + 1 ? `D${i + 1} = v5.20 D${o}` : null)).filter(Boolean);
   ok(dif.length === 0 && horas.length === [...HORA].filter((o) => COLOC.hitosEnF1.includes(o)).length && horas.every(Boolean) && uwsa1, // v6.07: solo los NBME que quedan en F1
-    `F1 · D1-D${DIAS.length} = contenido v5.20 de su origen con fechas = hábiles de F1 (${habF1[0]} → ${habF1[habF1.length - 1]}) y niveles por la regla`,
-    dif.length ? dif.slice(0, 8).join(', ') : `${DIAS.length}/${DIAS.length}${noId.length ? ' (' + noId.join(' · ') + ')' : ''} · sub igual salvo (07:15-11:00) → (07:00-12:30) en los NBME 25-28 · UWSA1 D1 09:00-13:00 · nivelUW/qDia ≠ v5.20 por el día de la semana en ${cambian.length} filas (${cambian.join(' ')})`);
+    `F1 · D${DIAS[0].d}-D${DIAS[DIAS.length - 1].d} = contenido v5.20 de su origen con fechas = hábiles de F1 (${habF1[0]} → ${habF1[habF1.length - 1]}) y niveles por la regla`,
+    dif.length ? dif.slice(0, 8).join(', ') : `${DIAS.length}/${DIAS.length}${noId.length ? ' (' + noId.join(' · ') + ')' : ''} · sub igual salvo (07:15-11:00) → (07:00-12:30) en los NBME 25-28 · ${UW1 ? `UWSA1 fuera de F1 (T${UW1.t}) · nivelUW/qDia por la regla del nivel 0-1` : 'UWSA1 D1 09:00-13:00 · nivelUW/qDia ≠ v5.20 por el día de la semana'} en ${cambian.length} filas (${cambian.join(' ')})`);
   // hitos F1: TODOS en F1 (v6.02: un hito de F1 nunca sale de F1) · en su D# si cabe (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40) y el que no
   //   cabe en los últimos slots (v6.02: NBME 28 = v5.20 D55 → D52 mié 30-dic) · fechas del corrimiento vigente
   const hitosF1 = DIAS.filter((x) => /🎯/.test(x.sub)).map((x) => `D${x.d} ${x.fecha}`);
   // v6.06: NBME 27 adelantado al slot 35 (vie 18-dic) por la regla del Day-After completo (su slot base 40 = lun 28-dic chocaba con el NBME 28)
   // v6.07: solo UWSA1 (D1 mar 10-nov) y NBME 25 (D10 jue 10-dic, con su Day-After D11-D14); NBME 26-28 al tramo 2
   // v6.08: UWSA1 D1 mar 17-nov · NBME 25 D8 jue 10-dic (adelantado una semana de plan de 2 filas; Day-After D9-D12)
-  const HITOS_F1_ESP = F.version === 'v6.08' ? ['D1 2026-11-17', 'D8 2026-12-10'] : F.version === 'v6.07' ? ['D1 2026-11-10', 'D10 2026-12-10'] : F.version === 'v6.06' ? ['D1 2026-11-02', 'D10 2026-11-13', 'D25 2026-12-04', 'D35 2026-12-18', 'D42 2026-12-30']
+  // v6.10b: el UWSA1 salió de F1 (T82) → en F1 solo el NBME 25 (D8 jue 10-dic, la fecha de la v6.08-v6.09)
+  const HITOS_F1_ESP = UW1 && F.version === 'v6.10' ? ['D8 2026-12-10'] : F.version === 'v6.08' ? ['D1 2026-11-17', 'D8 2026-12-10'] : F.version === 'v6.07' ? ['D1 2026-11-10', 'D10 2026-12-10'] : F.version === 'v6.06' ? ['D1 2026-11-02', 'D10 2026-11-13', 'D25 2026-12-04', 'D35 2026-12-18', 'D42 2026-12-30']
     : F.version === 'v6.05' ? ['D1 2026-10-26', 'D10 2026-11-06', 'D25 2026-11-27', 'D40 2026-12-18', 'D47 2026-12-30']
     : F.version === 'v6.03' || F.version === 'v6.04' ? ['D1 2026-10-21', 'D10 2026-11-03', 'D25 2026-11-24', 'D40 2026-12-15', 'D50 2026-12-30']
     : F.version === 'v6.02' ? ['D1 2026-10-19', 'D10 2026-10-30', 'D25 2026-11-20', 'D40 2026-12-11', 'D52 2026-12-30']
@@ -431,16 +458,18 @@ if (!argv.includes('--sin-matriz')) {
   // v6.07: los hitos que quedan en F1 = un PREFIJO de UWSA1 · NBME 25 · 26 · 27 · 28 (los demás, al tramo 2 como fila 'hito' con su dOrig)
   const NOMBRES_H = ['UWSA1', 'NBME 25', 'NBME 26', 'NBME 27', 'NBME 28'];
   const hitosFueraT2 = COLOC.hitosFuera.map((o) => DIAS_T2.filter((x) => x.tipo === 'hito' && x.dOrig === o));
-  ok(eq(hitosF1, HITOS_F1_ESP) && eq(nombresF1, NOMBRES_H.slice(0, nombresF1.length)) && eq(COLOC.hitos.filter((o) => ORIGEN_F1.includes(o)), COLOC.hitosEnF1)
+  ok(eq(hitosF1, HITOS_F1_ESP) && eq(nombresF1, NOMBRES_H.slice(OFF, OFF + nombresF1.length)) && eq(COLOC.hitos.filter((o) => ORIGEN_F1.includes(o)), COLOC.hitosEnF1)
     && eq([...COLOC.hitosEnF1, ...COLOC.hitosFuera], COLOC.hitos) && hitosFueraT2.every((xs) => xs.length === 1),
-    `F1 · hitos de F1: ${COLOC.hitosFuera.length ? `el prefijo que cabe con su Day-After (${nombresF1.join(' · ')}) y ${NOMBRES_H.slice(nombresF1.length).join(' · ')} en el tramo 2 (v6.07)` : 'los 5 en F1 (en su D# o en los últimos slots): UWSA1 · NBME 25 · 26 · 27 · 28'}`,
-    hitosF1.map((h, i) => nombresF1[i] + ' ' + h).join(' · ') + (COLOC.hitosFuera.length ? ' · tramo 2: ' + hitosFueraT2.map((xs, k) => `${NOMBRES_H[nombresF1.length + k]} T${xs[0] ? xs[0].t + ' ' + xs[0].fecha + ' ' + xs[0].fase : '—'}`).join(' · ') : ''));
+    `F1 · hitos de F1: ${COLOC.hitosFuera.length ? `el prefijo que cabe con su Day-After (${nombresF1.join(' · ')}) y ${NOMBRES_H.slice(OFF + nombresF1.length).join(' · ')} en el tramo 2 (v6.07${UW1 ? `; el UWSA1, en el hueco del UWSA3 opcional: T${UW1.t}` : ''})` : 'los 5 en F1 (en su D# o en los últimos slots): UWSA1 · NBME 25 · 26 · 27 · 28'}`,
+    hitosF1.map((h, i) => nombresF1[i] + ' ' + h).join(' · ') + (COLOC.hitosFuera.length ? ' · tramo 2: ' + hitosFueraT2.map((xs, k) => `${NOMBRES_H[OFF + nombresF1.length + k]} T${xs[0] ? xs[0].t + ' ' + xs[0].fecha + ' ' + xs[0].fase : '—'}`).join(' · ') : ''));
   // v6.06 · DAY-AFTER COMPLETO (regla nueva de la colocación, re-derivada aquí sin usar slotsHitosF1): cada hito de F1 salvo el último está
   //   en su slot base min(D#, N − (H − 1 − k)) o adelantado un múltiplo de SEMANA_PLAN filas; sus DAY_AFTER_FILAS filas siguientes no tocan
   //   el hito siguiente; y si está adelantado, una semana de plan más tarde su Day-After SÍ pisaría el hito siguiente (adelanto mínimo).
   {
     // v6.07: H = hitos que QUEDAN en F1; el último va sin Day-After solo si es el NBME 28 (todos en F1); si no, su Day-After termina dentro de F1
-    const hs = DIAS.filter((x) => /🎯/.test(x.sub)), H = hs.length, N = DIAS.length, todos = H === COLOC.hitos.length;
+    // v6.10b: el UWSA1 conserva su ranura 1 (sin fecha) en la colocación → cuenta como hito de F1 en esta regla (N = 13 ranuras)
+    const hs = [...(OFF ? [{ d: 1, fecha: 'sin fecha', sub: '🎯 UWSA1 (ranura 1, fuera de F1)' }] : []), ...DIAS.filter((x) => /🎯/.test(x.sub))], H = hs.length, N = NSLOT, todos = H === COLOC.hitos.length;
+    const fS = (sl) => (filaF1(sl) || { fecha: 'sin fecha' }).fecha;
     const malDA = [], adelantos = [];
     hs.forEach((x, k) => {
       const o = COLOC.enF1[x.d - 1], base = Math.min(o, N - (H - 1 - k));
@@ -449,7 +478,7 @@ if (!argv.includes('--sin-matriz')) {
       if (x.d > base || (base - x.d) % SEMANA_PLAN) malDA.push(`D${x.d} (v5.20 D${o}) no es base ${base} − ${SEMANA_PLAN}·j`);
       if (x.d + DAY_AFTER_FILAS >= sig) malDA.push(`Day-After de D${x.d} (D${x.d + 1}-D${x.d + DAY_AFTER_FILAS}) pisa el hito D${sig}`);
       if (x.d < base && x.d + SEMANA_PLAN + DAY_AFTER_FILAS < sig) malDA.push(`D${x.d} adelantado de más (D${x.d + SEMANA_PLAN} ya cabía)`);
-      if (x.d < base) adelantos.push(`${(/NBME \d+|UWSA1/.exec(x.sub) || ['?'])[0]} v5.20 D${o}: slot ${base} (${DIAS[base - 1].fecha}) → D${x.d} ${x.fecha} · Day-After D${x.d + 1}-D${x.d + DAY_AFTER_FILAS} (${DIAS[x.d].fecha} → ${DIAS[x.d + DAY_AFTER_FILAS - 1].fecha}) antes del D${sig}`);
+      if (x.d < base) adelantos.push(`${(/NBME \d+|UWSA1/.exec(x.sub) || ['?'])[0]} v5.20 D${o}: slot ${base} (${fS(base)}) → D${x.d} ${x.fecha} · Day-After D${x.d + 1}-D${x.d + DAY_AFTER_FILAS} (${fS(x.d + 1)} → ${fS(x.d + DAY_AFTER_FILAS)}) antes del D${sig}`);
     });
     // v6.07: el PREFIJO es el más largo posible: con un hito más (el primero que salió), la misma regla no cabría (re-derivado sin slotsHitosF1)
     if (!todos) {
@@ -463,9 +492,9 @@ if (!argv.includes('--sin-matriz')) {
       malDA.length ? malDA.join(' · ') : adelantos.join(' · ') || 'ningún hito adelantado (todos en su slot base)');
   }
   // gates F1 (B1): D18 y D38 → fechas (informativo; los usan homeBriefing/usmleScores por D#)
-  const gates = [18, 38].filter((d) => d <= DIAS.length).map((d) => `D${d} ${DIAS[d - 1].fecha}`);
+  const gates = [18, 38].filter((d) => d <= NSLOT).map((d) => `D${d} ${fS0(d)}`);
   // v6.07: los gates de núcleo van con su contenido (v5.20 D18 / D38): si su fila salió al tramo 2, el gate va en esa fila T
-  const gatesT2 = [18, 38].filter((d) => d > DIAS.length).map((d) => { const x = DIAS_T2.find((y) => y.dOrig === d); return x ? `v5.20 D${d} → T${x.t} ${x.fecha}` : `v5.20 D${d} → —`; });
+  const gatesT2 = [18, 38].filter((d) => d > NSLOT).map((d) => { const x = DIAS_T2.find((y) => y.dOrig === d); return x ? `v5.20 D${d} → T${x.t} ${x.fecha}` : `v5.20 D${d} → —`; });
   console.log(`  · gates F1 de cumplimiento del núcleo: ${[...gates, ...gatesT2].join(' · ')}`);
   // lo que no cabe en F1: colchón consumido · temario desplazado al tramo 2 (con dOrig, una vez, antes del contenido de CONT)
   const enF1 = ORIGEN_F1, desplEsp = COLOC.desplazadas, consEsp = COLOC.consumido;
@@ -560,8 +589,8 @@ if (!argv.includes('--sin-matriz')) {
   const T = (t) => DIAS_T2[t - 1];
   // faseDe
   const fdMal = DIAS_TODOS.filter((x) => U.faseDe(x.d) !== (x.d <= 100 ? 'A' : x.faseUW));
-  const guarda = [DIAS.length + 1, 75, 100].every((d) => U.faseDe(d) === 'A');
-  ok(fdMal.length === 0 && guarda, `API · faseDe(d): F1 = A · tramo 2 = faseUW · ${DIAS.length + 1}-100 = A (guarda)`, `A ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'A').length} · B ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'B').length} · C ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'C').length}`);
+  const guarda = [NSLOT + 1, 75, 100].every((d) => U.faseDe(d) === 'A');
+  ok(fdMal.length === 0 && guarda, `API · faseDe(d): F1 = A · tramo 2 = faseUW · ${NSLOT + 1}-100 = A (guarda)`, `A ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'A').length} · B ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'B').length} · C ${DIAS_TODOS.filter((x) => U.faseDe(x.d) === 'C').length}`);
   // esViernesNivel4
   const vn4 = DIAS_TODOS.filter(U.esViernesNivel4);
   const vn4NoVie = vn4.filter((x) => new Date(x.fecha + 'T12:00:00Z').getUTCDay() !== 5);
@@ -577,13 +606,13 @@ if (!argv.includes('--sin-matriz')) {
   ok(smMal.length === 0, 'API · semanaDe(iso) = semanaStep1(iso).n (fechasV6)', `D1 S${U.semanaDe(DIAS[0].fecha)} · D${DIAS.length} S${U.semanaDe(DIAS[DIAS.length - 1].fecha)} · pausa ${U.semanaDe('2027-02-10')} · T1 S${U.semanaDe(T(1).fecha)} · ritual S${U.semanaDe(DIAS_T2[DIAS_T2.length - 1].fecha)}`);
   // navegación
   const diaDeOk = DIAS_TODOS.every((x) => U.diaDe(x.fecha) === x) && U.diaDe('2027-01-15') === undefined;
-  const ant = U.diaAnterior(T(1)), prev3 = U.diaPrevio(T(3)), prevT1 = U.diaPrevio(T(1)), prevD2 = U.diaPrevio(DIAS[1]);
-  const nF1 = DIAS.length, v7 = U.ventana7d(nF1 - 2).map((x) => x.d);
+  const ant = U.diaAnterior(T(1)), prev3 = U.diaPrevio(T(3)), prevT1 = U.diaPrevio(T(1)), prevD2 = U.diaPrevio(DIAS[1 - OFF]); // v6.10b: la 1.ª fila de F1 (D2) no tiene fila previa de contenido
+  const nF1 = NSLOT, v7 = U.ventana7d(nF1 - 2).map((x) => x.d);
   // v6.02: diaPrevio(T1) = la última fila de F1 que NO es hito (D52 = NBME 28 → D51); v6.01: D57
   const ultContF1 = [...DIAS].reverse().find((x) => !/🎯/.test(x.sub));
   ok(diaDeOk && ant && ant.d === nF1 && prev3 && prev3.d === 101 && prevT1 && prevT1.d === ultContF1.d && prevD2 === undefined && eq(v7, [nF1 - 2, nF1 - 1, nF1, 101, 102, 103, 104]),
     'API · diaDe / diaAnterior / diaPrevio / ventana7d por índice en DIAS_TODOS', `diaAnterior(T1)=D${ant && ant.d} · diaPrevio(T1)=D${prevT1 && prevT1.d} (salta el NBME 28 si es la última fila de F1) · diaPrevio(T3)=d${prev3 && prev3.d} (salta el NBME 29) · ventana7d(${nF1 - 2})=${v7.join(',')}`);
-  ok(U.etiquetaDiaUSMLE(DIAS[0]) === 'Día 1/' + nF1 && U.etiquetaDiaUSMLE(T(1)) === 'T1/' + DIAS_T2.length, 'API · etiquetaDiaUSMLE', `${U.etiquetaDiaUSMLE(DIAS[0])} · ${U.etiquetaDiaUSMLE(T(158) || T(1))}`);
+  ok(U.etiquetaDiaUSMLE(DIAS[0]) === `Día ${DIAS[0].d}/` + nF1 && U.etiquetaDiaUSMLE(T(1)) === 'T1/' + DIAS_T2.length, 'API · etiquetaDiaUSMLE', `${U.etiquetaDiaUSMLE(DIAS[0])} · ${U.etiquetaDiaUSMLE(T(158) || T(1))}`);
   // estado PAUSA (§B2 · §F): T1 nunca es «hoy» durante la pausa
   const est = (iso) => { const e = U.estadoUSMLE(iso); return e.estado + (e.dia ? ':' + (e.dia.t ? 'T' + e.dia.t : 'D' + e.dia.d) + (e.exacto ? '' : '~') : ''); };
   // v6.01: hoy sáb 10-oct → la siguiente fila es el D1 lun 12-oct (no exacta) · vie 25-dic (SKIP) → D55 lun 28-dic · mié 30-dic = D57
@@ -594,8 +623,10 @@ if (!argv.includes('--sin-matriz')) {
   // v6.06: del lun 26-oct al dom 1-nov (sin sesión) → D1 lun 2-nov (no exacta) · mié 30-dic = D42 (NBME 28)
   const sigF1 = (iso) => DIAS.find((x) => x.fecha > iso);
   const planF1 = (iso) => { const x = DIAS.find((y) => y.fecha >= iso); return 'PLAN:D' + x.d + (x.fecha === iso ? '' : '~'); }; // fila exacta o la siguiente
-  const casos = { '2026-10-06': 'PLAN:D1~', '2026-10-10': 'PLAN:D1~', '2026-10-12': DIAS[0].fecha === '2026-10-12' ? 'PLAN:D1' : 'PLAN:D1~', '2026-10-17': 'PLAN:D1~',
-    '2026-10-19': DIAS[0].fecha === '2026-10-19' ? 'PLAN:D1' : 'PLAN:D1~', '2026-10-20': DIAS[0].fecha === '2026-10-20' ? 'PLAN:D1' : DIAS[0].fecha < '2026-10-20' ? 'PLAN:D2' : 'PLAN:D1~', [DIAS[0].fecha]: 'PLAN:D1',
+  // v6.10b: la 1.ª fila de F1 es el D2 (el UWSA1 salió de F1): antes de ella, la siguiente fila es el D2 (no exacta)
+  const P0 = `PLAN:D${DIAS[0].d}`;
+  const casos = { '2026-10-06': P0 + '~', '2026-10-10': P0 + '~', '2026-10-12': DIAS[0].fecha === '2026-10-12' ? P0 : P0 + '~', '2026-10-17': P0 + '~',
+    '2026-10-19': DIAS[0].fecha === '2026-10-19' ? P0 : P0 + '~', '2026-10-20': DIAS[0].fecha === '2026-10-20' ? P0 : DIAS[0].fecha < '2026-10-20' ? 'PLAN:D2' : P0 + '~', [DIAS[0].fecha]: P0,
     ...Object.fromEntries(['2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31', '2026-11-01', '2026-11-03'].map((iso) => [iso, planF1(iso)])),
     // v6.07: el último día de F1 (mié 30-dic) ya no es día de Step → la siguiente fila es T1 (no exacta)
     '2026-12-25': `PLAN:D${sigF1('2026-12-25').d}~`, [F.f1.fin]: DIAS[DIAS.length - 1].fecha === F.f1.fin ? `PLAN:D${DIAS.length}` : 'PLAN:T1~',
@@ -607,7 +638,7 @@ if (!argv.includes('--sin-matriz')) {
   const pausaSinFila = V6.rango('2026-12-31', '2027-03-15').every((iso) => U.estadoUSMLE(iso).estado === 'PAUSA' && U.diaDe(iso) === undefined);
   ok(estMal.length === 0 && pausaSinFila && U.enPausaStep1('2027-01-04') === true, 'API · estadoUSMLE: PAUSA 31-dic → 15-mar sin fila «hoy» · PLAN (exacta o la siguiente) · FIN tras el ritual', estMal.length ? estMal.map(([i, e]) => `${i}: ${est(i)} ≠ ${e}`).join(' · ') : Object.entries(casos).map(([i]) => `${i.slice(5)} ${est(i)}`).join(' · '));
   const hitos = U.hitosDelPlan();
-  ok(hitos.length === DIAS.filter((x) => /🎯/.test(x.sub)).length + DIAS_T2.filter((x) => x.tipo === 'hito').length && hitos.length === 13, 'API · hitosDelPlan() sobre los 2 tramos', hitos.map((x) => (x.t ? 'T' + x.t : 'D' + x.d)).join(' '));
+  ok(hitos.length === DIAS.filter((x) => /🎯/.test(x.sub)).length + DIAS_T2.filter((x) => x.tipo === 'hito').length && hitos.length === 13 - (UW1 ? 1 : 0), 'API · hitosDelPlan() sobre los 2 tramos', hitos.map((x) => (x.t ? 'T' + x.t : 'D' + x.d)).join(' '));
   // DAILY_META (literal de §F para el escenario base)
   const M = U.DAILY_META;
   // v6.01 (10-oct-2026): D1 lun 12-oct · tramo 1 de 57 días · totalDias 57 + 158 = 215 (v6.00: 2026-10-07 · 60 · 218)
@@ -623,7 +654,10 @@ if (!argv.includes('--sin-matriz')) {
   //   4-dic-2027) · totalDias 13 + 218 = 231 · examen lun 6-dic-2027, GO/NO-GO lun 18-oct, viaje dom 5-dic (sin cambio desde la v6.07) — literales
   const ESP_V608 = { ...ESP_V607, version: 'v6.08', inicio: '2026-11-17', fin: '2027-12-04', totalDias: 231, tramos: [{ n: 1, inicio: '2026-11-17', fin: '2026-12-29', dias: 13 }, { n: 2, inicio: '2027-03-16', fin: '2027-12-04', dias: 218, provisional: true }], examenTarget: '2027-12-06', gonogo: '2027-10-18', descansoD1: '2027-12-05' };
   // v6.09 (16-nov-2026): la v6.09 NO cambia el Step 1 (el lun 16 no era día de Step: UWSA1 mar 17-nov, 13 filas mar · jue) → se espera el plan v6.08 tal cual
-  const ESPERADO = F.version === 'v6.08' || F.version === 'v6.09' ? ESP_V608 : F.version === 'v6.07' ? ESP_V607 : { step: 1, version: 'v6.06', inicio: '2026-11-02', fin: '2027-10-23', totalDias: 224, tramos: [{ n: 1, inicio: '2026-11-02', fin: '2026-12-30', dias: 42 }, { n: 2, inicio: '2027-03-16', fin: '2027-10-23', dias: 182, provisional: true }], pausa: { desde: '2026-12-31', hasta: '2027-03-15', motivo: 'ENCAPS intensiva + lunes libre' }, examenTarget: '2027-10-25', examenVentana: 'eligibility ago-sep-oct 2027 · examen 2027-10-25 en todos los escenarios ENCAPS (DJ-1 v6.04: sin adelanto; plan B = base → un NO-GO pasa a la extensión de la elegibilidad)', gonogo: '2027-09-06', descansoD1: '2027-10-24', serumsInicio: '2027-05-03', viernesN4DesdeSemana: 11 };
+  // v6.10b (17-nov-2026, decisión 4 de Joseph): el UWSA1 sale de F1 → 1.ª fila D2 jue 19-nov · tramo 1 de 12 mañanas (jue 19-nov → mar 29-dic) · totalDias
+  //   12 + 218 = 230 · la pausa, examen, GO/NO-GO, ritual y viaje como en la v6.08-v6.09 — literales
+  const ESP_V610 = { ...ESP_V608, version: 'v6.10', inicio: '2026-11-19', totalDias: 230, tramos: [{ n: 1, inicio: '2026-11-19', fin: '2026-12-29', dias: 12 }, { n: 2, inicio: '2027-03-16', fin: '2027-12-04', dias: 218, provisional: true }] };
+  const ESPERADO = F.version === 'v6.10' ? ESP_V610 : F.version === 'v6.08' || F.version === 'v6.09' ? ESP_V608 : F.version === 'v6.07' ? ESP_V607 : { step: 1, version: 'v6.06', inicio: '2026-11-02', fin: '2027-10-23', totalDias: 224, tramos: [{ n: 1, inicio: '2026-11-02', fin: '2026-12-30', dias: 42 }, { n: 2, inicio: '2027-03-16', fin: '2027-10-23', dias: 182, provisional: true }], pausa: { desde: '2026-12-31', hasta: '2027-03-15', motivo: 'ENCAPS intensiva + lunes libre' }, examenTarget: '2027-10-25', examenVentana: 'eligibility ago-sep-oct 2027 · examen 2027-10-25 en todos los escenarios ENCAPS (DJ-1 v6.04: sin adelanto; plan B = base → un NO-GO pasa a la extensión de la elegibilidad)', gonogo: '2027-09-06', descansoD1: '2027-10-24', serumsInicio: '2027-05-03', viernesN4DesdeSemana: 11 };
   const mMal = Object.keys(ESPERADO).filter((k) => !eq(M[k], ESPERADO[k]));
   ok(mMal.length === 0 && typeof M.bloque === 'string' && typeof M.metodo === 'string', `API · DAILY_META = literal de §F (escenario base, ${F.version})`, mMal.length ? 'distinto: ' + mMal.join(', ') : `version ${M.version} · inicio ${M.inicio} · tramo 1 ${M.tramos[0].dias} días · examenTarget ${M.examenTarget} · totalDias ${M.totalDias} (informativo)`);
   // USMLE_TAPER (§B6)
@@ -751,10 +785,14 @@ if (!argv.includes('--sin-matriz')) {
       const w = new Date(f + 'T12:00:00Z').getUTCDay(); if (w === 0 || w === 6) continue;
       const a = G.guiaUsmleDe(f).filter((g) => g.franja.startsWith('05:'));
       if (!a.length) continue; nA++;
-      const fin = f === d1 ? '05:45' : stepF.has(f) ? '05:30' : '05:20';
+      // v6.10b: la CONFIGURACIÓN (05:00-05:45) va el 1.er día de F1 si es anterior a la 1.ª fila de Step (mié 18-nov; el D2 = jue 19-nov, 05:00-05:30)
+      const conf = (() => { const s0 = F.f1.inicio, w0 = new Date(s0 + 'T12:00:00Z').getUTCDay(); return s0 < d1 && w0 >= 1 && w0 <= 5 && !F.skip.includes(s0) ? s0 : d1; })();
+      const fin = f === conf ? '05:45' : stepF.has(f) ? '05:30' : '05:20';
       for (const g of a) {
         if (g.franja !== `05:00–${fin}`) malA.push(`${f} ${g.franja} (esperado 05:00–${fin})`);
-        if (f !== d1 && g.pasos.some((p) => /^(B&B Step 1 ›|Palmerton ·)/.test(p.que))) malA.push(`${f}: vídeo en el Anki de las 05:00`);
+        // v6.10b: vídeo solo en la configuración (FSRS) y el D2 (mazo vacío → vídeos de MÉTODO de Palmerton, regla del chat USMLE del 17-nov)
+        if (f !== conf && f !== d1 && g.pasos.some((p) => /^(B&B Step 1 ›|Palmerton ·)/.test(p.que))) malA.push(`${f}: vídeo en el Anki de las 05:00`);
+        if (f === d1 && UW1 && g.pasos.some((p) => /^B&B Step 1 ›/.test(p.que))) malA.push(`${f}: B&B en el Anki de las 05:00 (solo método)`);
       }
     }
     for (const r of DIAS) {

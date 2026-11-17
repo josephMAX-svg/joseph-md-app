@@ -115,6 +115,15 @@
 //   atada a FECHAS (RECUPERA_V609: se aplica si corrida_s1.sin_sesion contiene el lun 16 y el sáb 21-nov y son los únicos días sin sesión dentro del
 //   plan), no a la versión del JSON: si corrida_s1 cambia y la regla deja de cuadrar, el generador ABORTA. Dentro de F1 las A-units corren un día de
 //   plan (la del lun 16 el mar 17…) y el jue 31-dic recupera el último.
+// v6.10 (mar 17-nov-2026 · 1.ª sesión mié 18-nov; Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»): node
+//   DATA/_scripts/gen_synapse_plan.js 2026-11-16 (DESPUÉS de gen_vibecoding_plan.js 2026-11-18). START sigue en el LUN 16 (el `d` de cada fecha y 2027
+//   iguales); el mar 17 pasa a SIN SESIÓN (R de 0′). «A DIRECTA»: la A-unit del mar 17 (auditoría F0 «My courses») se guarda aparte y sale en la
+//   SESIÓN DE RECUPERACIÓN del SÁB 28-NOV 07:15-07:45 (REC_V610 = _fechas_v6.json › corrida_s1.extra['2026-11-28'].synapse; se exporta en SYN_REC_F1, como
+//   SYN_COLA_F1); las A-units del mié 18 → sáb 28 21:00 NO se mueven y el dom 22 (llegada) queda intacto. Carril del martes: B/C INTERCAMBIADOS — el
+//   mar 24 lleva las piezas de la sem 1 (las del antiguo mar 17: Dwarkesh × Dario tramo 1/3 + Willison) y la sesión del sáb 28 07:15 las de la sem 2
+//   (las del antiguo mar 24), así cada serie avanza en orden de fecha (synapse_f1_tramos.js: piezas fijas del primer martes de F1 = mar 24). Balance:
+//   −lun 16 −mar 17 −sáb 21 +jue 31 +dom 22 +sáb 28 07:15 = 0 → FIN_PLAN y 2027 idénticos; desde el sáb 28 21:00 todo igual que la v6.09 (salvo la frase
+//   «retoma donde paraste el …» del mar 1, que ahora es el sáb 28). Si corrida_s1 deja de cuadrar con la regla, ABORTA.
 const fs = require('fs');
 const path = require('path');
 
@@ -157,8 +166,30 @@ const SIN_SESION_SYN = new Set(require('./gen_fechas_v6').cargarFechasV6().corri
 //   troceado (synapse_f1_tramos.EXTRA_2027; aborta con cualquier otra fecha) · (d) entre semana, el A medido de 16-17′ (14, 17 y 31-dic) lleva sus minutos y
 //   el C baja lo mismo (A + B + C = 30′) → la cola post-Step 1 recibe ≈400 palabras más: 38 días (lun 13-dic-2027 → mié 2-feb-2028, el último de 21′) ·
 //   (e) el C del sábado con menos minutos remite a las fechas de «Lo que queda» (antes «sigue en la cola de lectura», sin fecha).
-const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16', '2026-11-21'], wd: 'Lun', semana: 1, motivo: 'lun 16-nov (no se estudió) + sáb 21-nov (viaje)' };
+// v6.10 (17-nov-2026): la regla pasa a v6.10 (sigue CON FECHA): días Lun-Sáb sin sesión dentro del plan = EXACTAMENTE `pierde` (lun 16, mar 17 y sáb
+//   21-nov); el dom 22 (llegada) recupera el lun 16 + el sáb 21 con las piezas del lunes de la sem 1 (igual que la v6.09b; su texto no cambia) y el mar
+//   17 se recupera en REC_V610 (sáb 28-nov 07:15-07:45). Con cualquier otra lista, ABORTA.
+const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16', '2026-11-17', '2026-11-21'], recuperaDom: ['2026-11-16', '2026-11-21'], wd: 'Lun', semana: 1, motivo: 'lun 16-nov (no se estudió) + sáb 21-nov (viaje)', version: 'v6.10' };
+/** v6.10: SESIÓN DE RECUPERACIÓN del mar 17-nov a hora fija (sáb 28-nov 07:15-07:45, hueco real del sábado de F1 tras el viaje): la A-unit del mar 17
+ *  («A directa») + las piezas B/C del carril del martes de la sem 2 (las del mar 24 de la v6.09; el mar 24 lleva las de la sem 1 = `intercambia`). */
+const REC_V610 = { fecha: '2026-11-28', ini: '07:15', fin: '07:45', pierde: '2026-11-17', wd: 'Mar', semana: 1, intercambia: '2026-11-24', motivo: 'mar 17-nov (no se estudió)' };
+{ // la franja debe ser la de _fechas_v6.json › corrida_s1.extra (fuente única de fechas)
+  const ex = ((require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).extra || {})[REC_V610.fecha];
+  if (!ex || ex.synapse !== `${REC_V610.ini}-${REC_V610.fin}`) throw new Error(`v6.10 · REC_V610: la franja ${REC_V610.ini}-${REC_V610.fin} ≠ corrida_s1.extra[${REC_V610.fecha}].synapse (${ex && ex.synapse})`);
+}
+/** v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat SYNAPSE, ≈06:12: «Sí, añádela»): la AUDITORÍA F0 (la A-unit del mar 17, sin sesión) ya no
+ *  va a la sesión de recuperación del sáb 28 07:15: ABRE LA PRIMERA SESIÓN (mié 18, 12:30) con 3′ que salen de la A (la A del día queda en 12′ y para a
+ *  las 12:45). `como` = el texto exacto que Joseph aprobó. La A de la sesión del sáb 28 07:15 pasa a material real: 15′ de la siguiente lección de F0 sin
+ *  ✓ (caja de la Academy, que no publica duración; si esa sesión sigue o no, lo decide la tanda 2). La A-unit sigue consumiéndose el mar 17 (TOTAL,
+ *  FIN_PLAN y 2027 iguales). */
+const AUDIT_F0_V610 = {
+  fecha: '2026-11-18', ini: '12:30', min: 3, pendiente: '2026-11-17',
+  que: 'AUDITORÍA F0 (pendiente del mar 17)',
+  como: '1) SIN abrir nada, escribe en el journal qué certificados crees tener (AI Fluency · Claude 101 · Claude Code 101 · Platform 101). 2) Abre https://academy.claude.com → Sign in (cuenta Claude con el mismo correo que usaste en Skilljar) → «Your learning»; si sale «Import your Skilljar progress», púlsalo (sin eso no salen tus certificados viejos; si alguno aún no aparece, míralo en https://anthropic.skilljar.com, que cierra a principios de diciembre). 3) Marca cada curso ✓ o pendiente. A las 12:33 pasa a la A aunque no hayas terminado.',
+};
 let DOM_RECUPERA = new Map(); // se fija tras leer el START (abajo)
+let REC = null; // v6.10: REC_V610 si la regla aplica (abajo)
+let A_REC = null; // v6.10: la A-unit del mar 17 («A directa»), guardada aparte para la sesión del sáb 28 07:15
 // v5.20: último SÁBADO del plan (≤ FIN_PLAN). Si la sem 1 no tiene martes (START en miércoles o después), la pieza del carril del
 // martes que se cae (B Latent Space · C Willison) va a ese sábado; así el carril del martes conserva sus 19 piezas.
 // v6.07 (8-nov-2026): día del bloque PC (SHIP del vibecoding): 'Dom' desde la v6.07 (flexible; el sábado 15:00-17:00 es la clase EN VIVO de Theomed) ·
@@ -199,10 +230,15 @@ const lec = (id, n) => {
 // ─── URLs canónicas (todas verificadas: _extracted.json o synapseData 10-jun) ───
 const U = {
   academy: 'https://www.anthropic.com/learn',
-  aif: 'https://anthropic.skilljar.com/ai-fluency-framework-foundations',
-  c101: 'https://anthropic.skilljar.com/claude-101',
-  cc101: 'https://anthropic.skilljar.com/claude-code-101',
-  cp101: 'https://anthropic.skilljar.com/claude-platform-101',
+  // v6.10 · tanda C (17-nov-2026 · corrección de hecho del chat SYNAPSE, FAQ oficial academy.claude.com/help/faq): anthropic.skilljar.com cierra «in
+  //   early December» y lo que quede a medias allí no pasa a la Academy → los 4 cursos de F0 enlazan a academy.claude.com/courses/<slug>, VERIFICADOS con
+  //   WebFetch el 17-nov-2026 (página del curso con las mismas lecciones que las A-units de abajo). Los cursos de 2027 (Building with the Claude API, MCP,
+  //   Claude Code in Action, agent skills…) siguen en Skilljar: pendiente de re-curar (ver el informe de la tanda C).
+  aif: 'https://academy.claude.com/courses/ai-fluency-framework-foundations',
+  c101: 'https://academy.claude.com/courses/claude-101',
+  cc101: 'https://academy.claude.com/courses/claude-code-101',
+  cp101: 'https://academy.claude.com/courses/claude-platform-101',
+  academyClaude: 'https://academy.claude.com',
   ensayo: 'https://www.anthropic.com/engineering/building-effective-agents',
   kIntro: 'https://www.youtube.com/watch?v=zjkBMFhNj_g',
   kDeep: 'https://www.youtube.com/watch?v=7xTGNNLPyMI',
@@ -230,6 +266,7 @@ U.harnesses = 'https://www.anthropic.com/engineering/effective-harnesses-for-lon
 U.agentSkillsEssay = 'https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills';
 // URLs verificadas FUERA de _extracted.json (vienen de synapseData.ts, 10-jun-2026)
 const EXTRA_VERIFIED = [
+  U.aif, U.c101, U.cc101, U.cp101, U.academyClaude, // v6.10 · tanda C: Academy nueva (WebFetch 17-nov-2026)
   U.academy, U.dwDario, U.dwDemis, U.dwSholto, U.latent, U.noPriors, U.theBatch,
   U.antYt, U.willison, U.trifecta, U.manyShot, U.constClass, U.rsp, U.promptTut,
   U.contextEng, U.harnesses, U.agentSkillsEssay,
@@ -645,15 +682,21 @@ const OFF_WD = { Lun: SDOW === 0 || SDOW > 1 ? 1 : 0, Mar: SDOW === 0 || SDOW > 
   const ssPlan = [...SIN_SESION_SYN].filter((f) => f >= START_ISO && f <= FIN_PLAN && new Date(f + 'T12:00:00Z').getUTCDay() !== 0 && !SKIP_FIJOS.has(f)).sort();
   if (ssPlan.length) {
     if (JSON.stringify(ssPlan) !== JSON.stringify(RECUPERA_V609.pierde) || (SIN_SESION_SYN.has(RECUPERA_V609.dom) && !RECUPERA_V609.llegada) || RECUPERA_V609.dom < START_ISO) {
-      throw new Error(`v6.09 · DOM_RECUPERA: los días Lun-Sáb sin sesión de corrida_s1 dentro del plan (${ssPlan.join(', ')}) ya no son los de la regla (${RECUPERA_V609.pierde.join(', ')} → dom ${RECUPERA_V609.dom}): decidir dónde se recuperan antes de regenerar (si no, 2027 correría y el d dejaría de cuadrar)`);
+      throw new Error(`v6.10 · DOM_RECUPERA: los días Lun-Sáb sin sesión de corrida_s1 dentro del plan (${ssPlan.join(', ')}) ya no son los de la regla (${RECUPERA_V609.pierde.join(', ')} → dom ${RECUPERA_V609.dom}): decidir dónde se recuperan antes de regenerar (si no, 2027 correría y el d dejaría de cuadrar)`);
     }
     DOM_RECUPERA = new Map([[RECUPERA_V609.dom, { wd: RECUPERA_V609.wd, semana: RECUPERA_V609.semana, motivo: RECUPERA_V609.motivo }]]);
+    // v6.10: el mar 17 se recupera en la sesión del sáb 28 07:15 (debe ser posterior al día del intercambio y estar dentro del plan)
+    if (!(REC_V610.pierde > START_ISO && REC_V610.intercambia > REC_V610.pierde && REC_V610.fecha > REC_V610.intercambia && RECUPERA_V609.pierde.includes(REC_V610.pierde)
+      && new Date(REC_V610.intercambia + 'T12:00:00Z').getUTCDay() === new Date(REC_V610.pierde + 'T12:00:00Z').getUTCDay() && !SIN_SESION_SYN.has(REC_V610.fecha))) {
+      throw new Error('v6.10 · REC_V610 incoherente (pierde < intercambia < fecha, mismo día de la semana, sesión fuera de los días sin sesión)');
+    }
+    REC = REC_V610;
   }
 }
 
 const aUnits = buildAUnits();
 // v6: TOTAL = nº de días para colocar exactamente aUnits.length A-units (= días no-domingo y no-feriado); el último día cae en no-domingo.
-let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); const f = dt.toISOString().slice(0, 10); if ((dt.getDay() !== 0 || DOM_RECUPERA.has(f)) && !SKIP_FIJOS.has(f) && !PROTEGIDOS_SYN.has(f) && (!SIN_SESION_SYN.has(f) || DOM_RECUPERA.has(f))) ns++; } TOTAL = dd; } // v6.06: + PROTEGIDOS · v6.09: + SIN SESIÓN (corrida_s1) y DOMINGO DE RECUPERACIÓN (v6.09b: el dom 22 de llegada, aunque esté sin sesión)
+let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); const f = dt.toISOString().slice(0, 10); if ((dt.getDay() !== 0 || DOM_RECUPERA.has(f)) && !SKIP_FIJOS.has(f) && !PROTEGIDOS_SYN.has(f) && (!SIN_SESION_SYN.has(f) || DOM_RECUPERA.has(f) || (REC && f === REC.pierde))) ns++; } TOTAL = dd; } // v6.10: + el mar 17 (su A-unit sale en la sesión del sáb 28 07:15) // v6.06: + PROTEGIDOS · v6.09: + SIN SESIÓN (corrida_s1) y DOMINGO DE RECUPERACIÓN (v6.09b: el dom 22 de llegada, aunque esté sin sesión)
 let aIdx = 0;
 let pc12Emitido = false; // evita duplicar el PC de la sem 12 cuando esa semana SÍ tiene sábado
 const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.20: la última A-unit cae el lun 15-feb-2027, que sería la sem 20 y se CLAMPA a la 19 (deload; el carril del lunes repite el cap. 13 de Pro Git = MAP[19]) · v5.19: la última A-unit cae el sáb 13-feb-2027, día 131, dentro de la sem 19 = lun 8 → sáb 13-feb, sin clamp · v5.18: la última A-unit cae el vie 12-feb-2027, día 131, dentro de la sem 19 = lun 8 → vie 12-feb, sin clamp · v5.17: mar 9-feb-2027, día 132; lun 8 y mar 9-feb serían la sem 20 del calendario y el clamp de SEM_MAX los deja en la sem 19. v5.16: vie 5-feb-2027, día 131, dentro de la sem 19)
@@ -682,10 +725,15 @@ for (let d = 1; d <= TOTAL; d++) {
     const nota = (x) => (x ? { ...x, leccion: `${x.leccion} · recupera el ${rc.motivo}` } : x);
     const b = nota(bloqueB(rc.wd, rc.semana, fecha)); if (b) bloques.push(b);
     const c = nota(bloqueC(rc.wd, rc.semana, fecha)); if (c) bloques.push(c);
+  } else if (REC && fecha === REC.pierde && SIN_SESION_SYN.has(fecha) && !SKIP_FIJOS.has(fecha)) {
+    // v6.10 (17-nov-2026): el mar 17 SIN SESIÓN consume su A-unit APARTE («A directa»): sale en la sesión de recuperación del sáb 28 07:15 (SYN_REC_F1).
+    //   El `d` de este día se conserva (= v6.09) y las A-units del mié 18 en adelante no se mueven.
+    A_REC = aUnits[aIdx++];
+    bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `⏸ Sin sesión · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: `Sin SYNAPSE hoy (día sin sesión de _fechas_v6.json › corrida_s1): la auditoría F0 abre la sesión del mié ${Number(AUDIT_F0_V610.fecha.slice(8, 10))}-nov a las ${AUDIT_F0_V610.ini} (${AUDIT_F0_V610.min}′) y las piezas del martes van el sáb ${Number(REC.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(REC.fecha.slice(5, 7)) - 1]} a las ${REC.ini}, a hora fija. Nada que marcar.`, real: true });
   } else if (SIN_SESION_SYN.has(fecha) && !SKIP_FIJOS.has(fecha)) {
     // v6.09 (16-nov-2026): día SIN SESIÓN de corrida_s1 (lun 16-nov: no se estudió · sáb 21-nov: viaje) = como un feriado: sin A/B/C, no consume
     //   A-unit; la A-unit sigue el próximo día de plan y el dom 29-nov (DOM_RECUPERA) recupera el día. El `d` de ese día se conserva (= v6.08).
-    bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `${/viaje/i.test(((require('./gen_fechas_v6').cargarFechasV6().corrida_s1.notas || {})[fecha] || []).join(' ')) ? '✈ Día libre (viaje)' : '⏸ Sin sesión'} · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: `Sin SYNAPSE hoy (día sin sesión de _fechas_v6.json › corrida_s1${DOM_RECUPERA.has(RECUPERA_V609.dom) && RECUPERA_V609.pierde.includes(fecha) ? `; se recupera el dom ${Number(RECUPERA_V609.dom.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(RECUPERA_V609.dom.slice(5, 7)) - 1]}` : ''}): la A-unit sigue en el próximo día de plan. Nada que marcar.`, real: true });
+    bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `${/viaje/i.test(((require('./gen_fechas_v6').cargarFechasV6().corrida_s1.notas || {})[fecha] || []).join(' ')) ? '✈ Día libre (viaje)' : '⏸ Sin sesión'} · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: `Sin SYNAPSE hoy (día sin sesión de _fechas_v6.json › corrida_s1${DOM_RECUPERA.has(RECUPERA_V609.dom) && (RECUPERA_V609.recuperaDom || RECUPERA_V609.pierde).includes(fecha) ? `; se recupera el dom ${Number(RECUPERA_V609.dom.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(RECUPERA_V609.dom.slice(5, 7)) - 1]}` : ''}): la A-unit sigue en el próximo día de plan. Nada que marcar.`, real: true });
   } else if (SKIP_FIJOS.has(fecha)) {
     // v5.10-b: feriado libre (25-dic · 31-dic · 1-ene), como el domingo: sin A/B/C, no consume A-unit
     bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `🎄 Feriado libre · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: 'Sin misión. Marca ✓ para conservar la racha; el Anki sigue (due × 20 s).', real: true });
@@ -712,8 +760,11 @@ for (let d = 1; d <= TOTAL; d++) {
     // v6.06: tras los protegidos, el día de L-V con semana clampada (sem > SEM_MAX) lleva las piezas B/C del día protegido de la sem ≤ 19
     const q = wd !== 'Sáb' && semNat > SEM_MAX && protPend.length ? protPend.shift() : null;
     const nota = (x) => (x && q ? { ...x, leccion: `${x.leccion} · pieza del ${q.wd.toLowerCase()} ${Number(q.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(q.fecha.slice(5, 7)) - 1]} (día protegido)` } : x);
-    const b = nota(q ? bloqueB(q.wd, q.semana, fecha) : bloqueB(wd, semana, fecha)); if (b) bloques.push(b);
-    const c = nota(q ? bloqueC(q.wd, q.semana, fecha) : bloqueC(wd, semana, fecha)); if (c) bloques.push(c);
+    // v6.10: el día del INTERCAMBIO (mar 24-nov) lleva las piezas B/C de la sem del día perdido (sem 1, las del antiguo mar 17) y la sesión de
+    //   recuperación del sáb 28 07:15 las de este día (sem 2): cada serie del carril avanza en orden de fecha
+    const semBC = REC && fecha === REC.intercambia ? REC.semana : semana;
+    const b = nota(q ? bloqueB(q.wd, q.semana, fecha) : bloqueB(wd, semBC, fecha)); if (b) bloques.push(b);
+    const c = nota(q ? bloqueC(q.wd, q.semana, fecha) : bloqueC(wd, semBC, fecha)); if (c) bloques.push(c);
     if (wd === 'Sáb' && DIA_PC === 'Sáb') { // hasta v6.06: el PC iba el sábado 15:00-17:00
       for (const x of pcDesplazadosDe(fecha)) bloques.push(x); // v6.01: PC propio de una entrada del taper que cerró la semana anterior junto con otra (S16 → sáb 6-feb)
       bloques.push(bloquePC(semana, fecha)); if (semana === 12) pc12Emitido = true;
@@ -724,6 +775,39 @@ for (let d = 1; d <= TOTAL; d++) {
   dias.push({ d, fecha, wd, semana, faseId, fase, deload, bloques });
 }
 if (aIdx !== aUnits.length) throw new Error(`A-units sin asignar: usadas ${aIdx}/${aUnits.length}`);
+// v6.10 · tanda C (AUDIT_F0_V610): la auditoría F0 (A-unit del mar 17) abre la 1.ª sesión con sus 3′ y la A de ese día queda en 12′ (para a las 12:45)
+const aHHg = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const aMing = (h) => { const [x, y] = h.split(':').map(Number); return x * 60 + y; };
+if (REC) {
+  if (!A_REC || !A_REC.audit || !/^AUDITORÍA F0/.test(A_REC.leccion) || AUDIT_F0_V610.pendiente !== REC.pierde) throw new Error('v6.10 · tanda C: la A-unit del día sin sesión no es la auditoría F0');
+  const dA = dias.find((x) => x.fecha === AUDIT_F0_V610.fecha);
+  const iA = dA ? dA.bloques.findIndex((b) => b.tag === 'A') : -1;
+  if (iA < 0 || dA.bloques[iA].min !== 15 || dias.some((x) => x.fecha > REC.pierde && x.fecha < AUDIT_F0_V610.fecha && x.bloques.some((b) => b.tag === 'A'))) throw new Error('v6.10 · tanda C: el ' + AUDIT_F0_V610.fecha + ' no es la 1.ª sesión con A de 15′ tras el ' + REC.pierde);
+  const pasa = aHHg(aMing(AUDIT_F0_V610.ini) + AUDIT_F0_V610.min), finA = aHHg(aMing(AUDIT_F0_V610.ini) + 15);
+  if (!AUDIT_F0_V610.como.includes(`A las ${pasa} pasa a la A`)) throw new Error('v6.10 · tanda C: el texto de la auditoría no dice la hora real del paso a la A (' + pasa + ')');
+  const A0 = dA.bloques[iA];
+  dA.bloques[iA] = { ...A0, min: 15 - AUDIT_F0_V610.min, med: 15 - AUDIT_F0_V610.min,
+    guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}). Para a las ${finA} aunque la lección siga (la plataforma guarda el progreso); si la lección acaba antes, empieza la siguiente pendiente del curso y para a las ${finA}. Anota 1 idea en el journal. F0 = auditoría: si en la de las ${AUDIT_F0_V610.ini} ya la marcaste ✓, adelanta la siguiente pendiente.`, url: A0.url, t: 'A ↗' } };
+  dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que}: certificados de F0 en «Your learning» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
+    guia: { que: AUDIT_F0_V610.que, como: AUDIT_F0_V610.como, url: U.academyClaude, t: 'Academy' } });
+}
+// v6.10: SESIÓN DE RECUPERACIÓN del mar 17 (sáb 28-nov 07:15-07:45) = la A-unit guardada + las piezas B/C del carril del martes de la sem del intercambio
+let REC_SES = [];
+if (REC) {
+  if (!A_REC) throw new Error('v6.10 · REC_V610: el mar 17 no guardó su A-unit');
+  const di = dias.find((x) => x.fecha === REC.intercambia);
+  const dr = dias.find((x) => x.fecha === REC.fecha);
+  if (!di || !dr || di.wd !== REC.wd) throw new Error('v6.10 · REC_V610: el día del intercambio o el de la sesión no está en el plan');
+  const nota = (x) => (x ? { ...x, leccion: `${x.leccion} · recupera el ${REC.motivo}` } : x);
+  // v6.10 · tanda C: la auditoría F0 ya se hizo el mié 18 (AUDIT_F0_V610) → la A de esta sesión = 15′ de material real: la siguiente lección de F0 sin ✓
+  const bl = [{ tag: 'A', min: 15, formato: 'pantalla', material: 'Anthropic Academy', leccion: `F0 · la siguiente lección sin ✓ de tu auditoría del ${AUDIT_F0_V610.fecha.slice(8, 10)}-${AUDIT_F0_V610.fecha.slice(5, 7)} (caja de 15′: la Academy no publica duración)`, url: U.academyClaude, real: true, audit: true }];
+  const b = nota(bloqueB(REC.wd, di.semana, REC.intercambia)); if (b) bl.push(b);
+  const c = nota(bloqueC(REC.wd, di.semana, REC.intercambia)); if (c) bl.push(c);
+  const minT = bl.reduce((x, y) => x + y.min, 0);
+  const aM = (h) => { const [x, y] = h.split(':').map(Number); return x * 60 + y; };
+  if (minT !== 30 || aM(REC.fin) - aM(REC.ini) !== minT) throw new Error(`v6.10 (26i): la sesión de recuperación del ${REC.fecha} suma ${minT}′ y su franja ${REC.ini}-${REC.fin} (A+B+C debe ser 30′)`);
+  REC_SES = [{ fecha: REC.fecha, ini: REC.ini, fin: REC.fin, plan: REC.pierde, semana: di.semana, bloques: bl }];
+}
 if (protPend.length) throw new Error(`v6.06: piezas B/C de días protegidos sin colocar: ${protPend.map((x) => x.fecha).join(', ')}`);
 if (dias.some((x) => PROTEGIDOS_SYN.has(x.fecha) && x.bloques.some((b) => b.tag !== 'R'))) throw new Error('v6.06: hay A/B/C/PC en un día PROTEGIDO');
 if (dias.some((x) => SIN_SESION_SYN.has(x.fecha) && !DOM_RECUPERA.has(x.fecha) && x.bloques.some((b) => b.tag !== 'R'))) throw new Error('v6.09: hay A/B/C/PC en un día SIN SESIÓN (corrida_s1)');
@@ -768,7 +852,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     // URLs medidas (curl 200 el 17-nov-2026, medir_synapse_f1.js) → allowlist (regla «cero URLs inventadas»)
     for (const L of Object.values(MED.lectura)) { ALLOWED.add(L.url); for (const sx of L.secciones) if (sx.url) ALLOWED.add(sx.url); }
     for (const A of Object.values(MED.audio)) ALLOWED.add(A.url);
-    const T = require('./synapse_f1_tramos').crear(MED, { dias, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()), feriados: new Set(require('./gen_fechas_v6').cargarFechasV6().feriados) }); // v6.09b lote 1-ter: + feriados (fuera de la cola)
+    const T = require('./synapse_f1_tramos').crear(MED, { dias, rec: REC_SES, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()), feriados: new Set(require('./gen_fechas_v6').cargarFechasV6().feriados) }); // v6.09b lote 1-ter: + feriados (fuera de la cola)
     let n = 0;
     for (const x of dias) for (const b of x.bloques) {
       const o = T.sesiones.get(`${x.fecha}|${b.tag}`);
@@ -787,6 +871,19 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
       if (!b || !/termina los tramos pendientes/.test(b.leccion)) throw new Error('v6.09b lote 1-quater: ' + k + ' ya no es el B «termina los tramos pendientes»');
       b.leccion = o.leccion; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; n++;
       if (o.guia && o.guia.url) assertUrl(o.guia.url);
+    }
+    // v6.10: la sesión de recuperación del sáb 28 07:15 (clave «fecha@hora|tag»): B y C con su tramo; el A (auditoría F0, Academy sin duración
+    //   publicada) lleva su paso aquí: 5′ de auditoría + 10′ de la primera lección de F0 sin ✓ (la plataforma guarda el progreso) = 15′
+    for (const r of REC_SES) for (const b of r.bloques) {
+      const o = T.sesiones.get(`${r.fecha}@${r.ini}|${b.tag}`);
+      if (o) { b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; if (o.min) b.min = o.min; n++; if (o.guia && o.guia.url) assertUrl(o.guia.url); continue; }
+      if (b.tag === 'A' && b.audit && /^F0 · la siguiente lección sin ✓/.test(b.leccion)) {
+        // v6.10 · tanda C: la auditoría F0 se hizo el mié 18 a las 12:30 (AUDIT_F0_V610); aquí, 15′ de la siguiente lección de F0 sin ✓
+        const finA = aHHg(aMing(r.ini) + b.min);
+        b.guia = { que: `Anthropic Academy › «Your learning»: la siguiente lección de F0 que tu auditoría del mié ${Number(AUDIT_F0_V610.fecha.slice(8, 10))}-nov dejó sin ✓ (caja de ${b.min}′; la Academy no publica duración)`, como: `En el PC, 1,0× con subtítulos en inglés: academy.claude.com → «Your learning» → la primera lección de F0 sin ✓. Para a las ${finA} aunque la lección siga (la plataforma guarda el progreso; la marcas ✓ cuando el plan llegue a ella) y anota 1 idea en el journal.`, url: b.url, t: 'Academy' };
+        b.med = b.min; continue;
+      }
+      throw new Error(`v6.10: la sesión de recuperación ${r.fecha} ${r.ini} trae un bloque ${b.tag} sin tramo medido`);
     }
     COLA_POST = T.cola;
     COLA_F1 = T.colaF1;
@@ -817,6 +914,8 @@ const ts = `/**
  * (v6.00: taper por el ENCAPS —hasta v5.20, taper del Step 1—; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
 ${DOM_RECUPERA.size ? ` * v6.09: días SIN SESIÓN (corrida_s1) ${[...SIN_SESION_SYN].filter((f) => f >= START_ISO && f <= FIN_PLAN && !DOM_RECUPERA.has(f)).join(' · ')} = bloque R de 0′; el ${[...DOM_RECUPERA.keys()].join(' · ')} (domingo${RECUPERA_V609.llegada ? ' de llegada, v6.09b: 16:30-17:00, sin Feynman ni PC' : ''}) recupera
  * una A-unit + las piezas B/C del ${[...DOM_RECUPERA.values()].map((r) => r.wd.toLowerCase() + ' de la sem ' + r.semana).join(' · ')}. El \`d\` de cada fecha no cambia (START = lunes, como la v6.08).
+` : ''}${REC_SES.length ? ` * v6.10: el ${REC.pierde} (sin sesión): su A-unit (auditoría F0) abre la sesión del ${AUDIT_F0_V610.fecha} con ${AUDIT_F0_V610.min}′ (tanda C, decidido con Joseph) y sus piezas B/C
+ * del carril del martes de la sem ${REC_SES[0].semana} van a la sesión de recuperación del ${REC_SES.map((r) => r.fecha + ' ' + r.ini + '-' + r.fin).join(' · ')} (SYN_REC_F1; su A = 15′ de F0); el ${REC.intercambia} lleva las de la sem ${REC.semana}. Desde el ${REC.fecha} 21:00, como la v6.09.
 ` : ''} * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD
@@ -888,6 +987,13 @@ export const SYN_COLA_POST_STEP1: SynColaDia[] = ${JSON.stringify(COLA_POST)};
 export const SYN_COLA_F1: SynColaDia[] = ${JSON.stringify(COLA_F1)};
 /** v6.09b lote 1-ter: día de cola (hueco de F1 con hora o post-Step 1) de una fecha · undefined si no hay */
 export function synColaDe(fechaISO: string): SynColaDia | undefined { return SYN_COLA_F1.find((x) => x.fecha === fechaISO) ?? SYN_COLA_POST_STEP1.find((x) => x.fecha === fechaISO); }
+/** v6.10 (17-nov-2026): SESIONES DE RECUPERACIÓN a hora fija (gen_synapse_plan.js › REC_V610 = _fechas_v6.json › corrida_s1.extra[fecha].synapse): el sáb
+ *  28-nov 07:15-07:45 recupera el mar 17 (sin sesión): A = 15′ de la siguiente lección de F0 sin ✓ (tanda C: la auditoría F0 abre el mié 18) + las piezas B/C del carril del martes de
+ *  la sem ${REC_SES.length ? REC_SES[0].semana : '—'} (el mar 24 lleva las de la sem 1). \`plan\` = el día que recupera. Bloque «syn-rec» de plantillasV6 · rutinaGuia › guiaSynapseRecDe. */
+export interface SynRecSesion { fecha: string; ini: string; fin: string; plan: string; semana: number; bloques: SynBloque[] }
+export const SYN_REC_F1: SynRecSesion[] = [${REC_SES.map((r) => `{fecha:"${r.fecha}",ini:"${r.ini}",fin:"${r.fin}",plan:"${r.plan}",semana:${r.semana},bloques:[${r.bloques.map(blkTs).join(',')}]}`).join(',' + String.fromCharCode(10))}];
+/** v6.10: sesión de recuperación del SYNAPSE de una fecha (sáb 28-nov 07:15) · undefined si no hay */
+export function synRecDe(fechaISO: string): SynRecSesion | undefined { return SYN_REC_F1.find((x) => x.fecha === fechaISO); }
 export function syn7d(fromD: number): DiaSynapse[] { return SYN_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
 
 export const SYN_FORMATO_ICON: Record<SynFormato, string> = {

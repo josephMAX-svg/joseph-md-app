@@ -5,6 +5,11 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
+ * v6.10b (17-nov-2026, decisión 4 de Joseph — PALMERTON_NIVEL0_ARRANQUE §8.2 A1-A6): todo arranca el mié 18-nov; el jue 19 es NIVEL 0 (D2, lesión
+ *  celular), no UWSA1: el UWSA1 SALE DE F1 y va al tramo 2 (T82 mar 29-jun-2027, el hueco del UWSA3 opcional) como prueba de resistencia con ≥3
+ *  sistemas en nivel 3; la primera línea base es el NBME 25 (D8 jue 10-dic). D2-D13 en sus fechas v6.09 (D2 jue 19-nov · D6 Cardiovascular jue 3-dic
+ *  · NBME 25 D8 jue 10-dic con su Day-After en D9-D12 · D13 mar 29-dic) y en NIVEL 0-1 hasta el gate del 80 % (Tutor, sin reloj). Tramo 2 byte-idéntico
+ *  salvo T82-T83 (UWSA1 + su Day-After); examen lun 6-dic-2027 y GO/NO-GO sin cambio. La pausa del Step empieza el jue 31-dic.
  * v6.08 (14-nov-2026): re-fecha real, D1 de todo = lun 16-nov (Joseph: «todo inicia el lunes 16; alarga las fechas límite lo que amerite»).
  *  F1 del Step = D1-D13 (13 mañanas de martes y jueves, mar 17-nov → mar 29-dic-2026); la semana de plan de la regla del Day-After completo pasa
  *  a ser de 2 filas (mar · jue) → UWSA1 D1 mar 17-nov · NBME 25 D8 jue 10-dic (Day-After D9-D12) · NBME 26, 27 y 28 al tramo 2 con su
@@ -71,10 +76,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-11-17', // v6.08 (14-nov): D1 = mar 17-nov (UWSA1 baseline) · F1 = 13 mañanas de martes y jueves → mar 29-dic (D8 = NBME 25 jue 10-dic) · PAUSA → 15-mar · tramo 2 desde el mar 16-mar · examen lun 6-dic-2027 (v6.07: D1 = mar 10-nov, D1-D15 · v6.06: D1 = 2-nov, D1-D42 · v6.05: D1 = 26-oct, D1-D47 · v6.04: D1 = 21-oct, D1-D50 · v6.03: examen 27-sep, tramo 2 → sáb 25-sep · v6.02: D1 = 19-oct, D1-D52 · v6.01: D1 = 12-oct, D1-D57 · v6.00: D1 = 7-oct, D1-D60)
+  inicio: '2026-11-19', // v6.10b (17-nov): 1.ª fila de F1 = D2 jue 19-nov (nivel 0; el UWSA1 sale de F1 → T82 mar 29-jun-2027) · NBME 25 D8 jue 10-dic · D13 mar 29-dic · v6.08 (14-nov): D1 = mar 17-nov (UWSA1 baseline) · F1 = 13 mañanas de martes y jueves → mar 29-dic (D8 = NBME 25 jue 10-dic) · PAUSA → 15-mar · tramo 2 desde el mar 16-mar · examen lun 6-dic-2027 (v6.07: D1 = mar 10-nov, D1-D15 · v6.06: D1 = 2-nov, D1-D42 · v6.05: D1 = 26-oct, D1-D47 · v6.04: D1 = 21-oct, D1-D50 · v6.03: examen 27-sep, tramo 2 → sáb 25-sep · v6.02: D1 = 19-oct, D1-D52 · v6.01: D1 = 12-oct, D1-D57 · v6.00: D1 = 7-oct, D1-D60)
   bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA · F4 plantilla por turno del SERUMS)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1 (v6.08 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). En F1 el Step solo tiene las mañanas de martes y jueves (lunes, miércoles y viernes son de ENCAPS; el Anki USMLE de las 05:00 sigue todos los días). D1 = mar 17-nov = UWSA1 baseline · D2 jue 19-nov Fundamentos/Pathoma · D6 Cardiovascular (jue 3-dic) · D8 = NBME 25 (jue 10-dic) con su Day-After en D9-D12 · D13 mar 29-dic (último día de Step antes de la pausa; sin colchón F1: un día perdido pasa al tramo 2 el 31-dic) · lo que no cabe en F1 (las últimas filas de Cardio, Resp, Renal, GI, Endocrino, Neuro, Heme/Onco, la bioestadística y los NBME 26, 27 y 28 con su Day-After) va al tramo 2 desde el mar 16-mar, en su orden · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 desde el mar 16-mar hasta el ritual (Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + COLCHÓN + taper) · examen lun 6-dic-2027 (GO/NO-GO lun 18-oct; colchón 10 filas ≈ 26 h; ningún tema se quita ni se comprime).',
+  nota: 'Prioridad Step 1 (v6.10b · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). En F1 el Step solo tiene las mañanas de martes y jueves (lunes, miércoles y viernes son de ENCAPS; el Anki USMLE de las 05:00 sigue todos los días). F1 = D2-D13 en NIVEL 0-1 (Tutor, sin reloj, hasta el gate del 80 %): D2 jue 19-nov Fundamentos (lesión celular, nivel 0) · D6 Cardiovascular (jue 3-dic) · D8 = NBME 25 (jue 10-dic, la primera línea base) con su Day-After en D9-D12 · D13 mar 29-dic (último día de Step antes de la pausa; sin colchón F1: un día perdido pasa al tramo 2 el 31-dic) · el UWSA1 sale de F1 → tramo 2 T82 mar 29-jun-2027 (prueba de resistencia, ≥3 sistemas en nivel 3) · lo que no cabe en F1 (las últimas filas de Cardio, Resp, Renal, GI, Endocrino, Neuro, Heme/Onco, la bioestadística y los NBME 26, 27 y 28 con su Day-After) va al tramo 2 desde el mar 16-mar, en su orden · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 desde el mar 16-mar hasta el ritual (Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + COLCHÓN + taper) · examen lun 6-dic-2027 (GO/NO-GO lun 18-oct; colchón 10 filas ≈ 26 h; ningún tema se quita ni se comprime).',
 };
 
 export interface SistemaUSMLE {
@@ -82,7 +87,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // d de la 1.ª fila del sistema en DIAS_TODOS (v6.08: F1 1-13 · tramo 2 101-318; D1 = mar 17-nov-2026 = UWSA1; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
+  diaInicio: number; // d de la 1.ª fila del sistema en DIAS_TODOS (v6.10b: F1 2-13 · tramo 2 101-318; D2 = jue 19-nov-2026 = 1.ª fila; el UWSA1 está en el tramo 2, d 182; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */

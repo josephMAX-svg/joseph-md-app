@@ -41,6 +41,13 @@
  *   (f1.dias = sus hábiles); el Step 1 solo tiene fila los días de f1_dias_semana: diasStepF1De(F) / DERIVADOS_V6.diasStepF1 (v6.07: 15) y
  *   esDiaPlan(iso, 'usmle') es falso en F1 los demás días. Validación: lista no vacía de enteros 1-5, sin repetir y en orden. Con [1, 2, 3, 4, 5]
  *   todo queda como en la v6.06 (F1 L-V).
+ * v6.10 (mar 17-nov-2026): DERIVADOS ultimoStepF1 = última mañana de Step 1 de F1 (la pausa del Step empieza al día siguiente). v6.10b (mar 17-nov,
+ *   decisión 4 de Joseph: el UWSA1 sale de F1 y el Step vuelve a sus fechas v6.09): el campo `step1.f1_extra` (sáb 2-ene = D13) del diseño B se
+ *   RETIRA → diasStepF1De = mar · jue de F1 (12: jue 19-nov → mar 29-dic), ultimoStepF1 = f1.fin y la pausa empieza el jue 31-dic, como en la v6.09.
+ *   Además `corrida_s1.extra` (opcional) = { día de fin de semana:
+ *   { frente: 'HH:MM-HH:MM' } } — el día que cada plan recupera, a hora fija, el día perdido (v6.10: sáb 28-nov, dom 29-nov y dom 6-dic);
+ *   validación: sábado o domingo, sin SKIP, protegidos ni sin_sesion; frente de BLOQUES_POR_FRENTE; franja dentro de las ventanas fijas del
+ *   fin de semana (sáb 04:15-05:45 · 07:15-08:25 · 14:00-17:00 · 21:00-22:00; dom 05:00-05:45 · 07:15-17:00) y sin solapes en el día.
  */
 const fs = require('fs');
 const path = require('path');
@@ -191,7 +198,7 @@ const CLAVES = {
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
-  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios', 'f1_dias_semana'], // v6.04: + cambios (bitácora del examen) · v6.07: + f1_dias_semana
+  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios', 'f1_dias_semana'], // v6.04: + cambios (bitácora del examen) · v6.07: + f1_dias_semana · v6.10b: sin f1_extra (retirado)
   serums: ['inicio', 'supuesto', 'dias_plan', 'domingo', 'adaptacion_hasta'],
 };
 const FECHAS_SUELTAS = ['decidido', 'f1.inicio', 'f1.fin', 'transicion.desde', 'transicion.hasta', 'encaps.examen', 'encaps.intensiva_desde', 'encaps.pretest',
@@ -223,7 +230,7 @@ function comprobarForma(F) {
   // v6.07 (8-nov-2026): días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie), sin repetir y en orden
   const ds = F.step1.f1_dias_semana;
   if (!Array.isArray(ds) || !ds.length || !ds.every((x, i) => Number.isInteger(x) && x >= 1 && x <= 5 && (i === 0 || x > ds[i - 1]))) err.push('«step1.f1_dias_semana» debe ser una lista no vacía de días 1-5 (1 = lun … 5 = vie), sin repetir y en orden');
-  err.push(...comprobarCorridaS1(F.corrida_s1));
+  err.push(...comprobarCorridaS1(F.corrida_s1, F));
   return err;
 }
 /**
@@ -231,13 +238,14 @@ function comprobarForma(F) {
  * la app traduce el día real a la fecha de plan. `sin_sesion` = día perdido · `alias` real → plan (siempre hacia atrás) · `reparto` = un día
  * real que recibe bloques de la plantilla de otras fechas de plan con un desfase en minutos (id de bloque de plantillasV6 → desfase).
  */
-function comprobarCorridaS1(c) {
+function comprobarCorridaS1(c, F) {
   const err = [];
   if (!c || typeof c !== 'object') return ['falta «corrida_s1»'];
   const ks = ['decidido', 'version', 'motivo', 'sin_sesion', 'alias', 'reparto'];
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
-  // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos) · v6.10: + «extra»
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  if ('extra' in c) err.push(...comprobarExtra(c, F));
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
   // v6.07a: «reemplazos» opcional = { fechaPlan: [{ frente?, a, por }] } → textos de la guía de ese día de plan que no valen en el día real
   //   (p. ej. «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el sáb 14); los aplica corridaTexto.reemplazosCorrida en TodayMission
@@ -276,6 +284,38 @@ function comprobarCorridaS1(c) {
   }
   return err;
 }
+/** v6.10 · ventanas fijas de estudio del fin de semana: sáb (gimnasio 08:30-14:00 y baile 17:00-20:00) y dom (baile desde las 17:00; el día
+ *  empieza a las 05:00 porque el sábado acaba a las 22:00). La rutina personal 05:45-07:15 queda fuera de ambas. */
+const VENTANAS_FINDE = { 6: [['04:15', '05:45'], ['07:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']], 0: [['05:00', '05:45'], ['07:15', '17:00']] };
+const hm = (t) => { const m = /^(\d{2}):(\d{2})$/.exec(t); return m ? +m[1] * 60 + +m[2] : NaN; };
+/** v6.10 · `corrida_s1.extra` = { día de fin de semana: { frente: 'HH:MM-HH:MM' } }: el día que cada plan recupera, a hora fija, el día perdido. */
+function comprobarExtra(c, F) {
+  const err = [];
+  const x = c.extra;
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return ['«corrida_s1.extra» debe ser un objeto { día: { frente: «HH:MM-HH:MM» } }'];
+  const sin = new Set(c.sin_sesion || []), skip = new Set((F && F.skip) || []), prot = new Set(((F && F.protegidos) || []).map((p) => p.fecha));
+  for (const [d, fr] of Object.entries(x)) {
+    if (!esISO(d)) { err.push(`«corrida_s1.extra» ${d}: fecha inválida`); continue; }
+    const w = wd(d);
+    if (w !== 0 && w !== 6) err.push(`«corrida_s1.extra» ${d}: no es sábado ni domingo`);
+    if (skip.has(d) || prot.has(d)) err.push(`«corrida_s1.extra» ${d}: es SKIP o protegido`);
+    if (sin.has(d)) err.push(`«corrida_s1.extra» ${d}: es un día sin sesión`);
+    if (!fr || typeof fr !== 'object' || Array.isArray(fr) || !Object.keys(fr).length) { err.push(`«corrida_s1.extra» ${d}: { frente: franja } vacío o inválido`); continue; }
+    const tramos = [];
+    for (const [k, v] of Object.entries(fr)) {
+      if (!(k in BLOQUES_POR_FRENTE)) err.push(`«corrida_s1.extra» ${d}: frente «${k}» no está en BLOQUES_POR_FRENTE`);
+      const m = typeof v === 'string' ? /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(v) : null;
+      const a = m ? hm(m[1]) : NaN, b = m ? hm(m[2]) : NaN;
+      if (!m || !(a < b)) { err.push(`«corrida_s1.extra» ${d} ${k}: franja «${v}» inválida (HH:MM-HH:MM)`); continue; }
+      const ven = VENTANAS_FINDE[w] || [];
+      if (!ven.some(([i, f2]) => a >= hm(i) && b <= hm(f2))) err.push(`«corrida_s1.extra» ${d} ${k}: ${v} fuera de las ventanas fijas del ${w === 6 ? 'sábado' : 'domingo'} (${ven.map((y) => y.join('-')).join(' · ')})`);
+      tramos.push([a, b, k]);
+    }
+    tramos.sort((p, q) => p[0] - q[0]);
+    for (let i = 1; i < tramos.length; i++) if (tramos[i][0] < tramos[i - 1][1]) err.push(`«corrida_s1.extra» ${d}: ${tramos[i - 1][2]} y ${tramos[i][2]} se solapan`);
+  }
+  return err;
+}
 /** Semana corrida (gemelo node de corridaS1De del .ts): null fuera de ella. */
 function corridaS1De(s, F = fechasPorDefecto()) {
   const c = F.corrida_s1;
@@ -288,7 +328,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
-  liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). Mismo literal que el .ts. */
 const PRINCIPAL_POR_FRENTE = {
@@ -331,6 +371,8 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
 };
 /** v6.07 · días de Step 1 de F1 = hábiles de F1 cuyo día de la semana está en step1.f1_dias_semana (v6.07: mar · jue → 15; L-V = f1.dias). */
 const diasStepF1De = (F) => habLV(F.f1.inicio, F.f1.fin, new Set(F.skip)).filter((s) => F.step1.f1_dias_semana.includes(wd(s)));
+/** v6.10 · última mañana de Step 1 de F1 (la pausa empieza al día siguiente) · v6.10b: = f1.fin (sin mañanas de Step en la transición: f1_extra retirado). */
+const ultimoStepF1De = (F) => F.f1.fin;
 /** v6.07 · texto corto de step1.f1_dias_semana («mar · jue»; «L-V» si son los 5). */
 const diasSemanaTxt = (ds) => (ds.length === 5 ? 'L-V' : ds.map((w) => DN[w]).join(' · '));
 /** Contexto de derivación a partir del JSON. */
@@ -376,6 +418,7 @@ function derivar(F, opts = {}) {
     diasF1: diasF1.length, diasF2: diasF2.length, diasF3: diasF3.length, diasF4: diasF4.length,
     ultimoDiaF1: diasF1[diasF1.length - 1], ultimoDiaF3: diasF3[diasF3.length - 1],
     diasStepF1: diasStepF1De(F).length, // v6.07: filas del tramo 1 del Step (mañanas de step1.f1_dias_semana)
+    ultimoStepF1: ultimoStepF1De(F), // v6.10: última mañana de Step de F1 (la pausa empieza al día siguiente)
   };
 }
 /** Compara cada valor GUARDADO con su derivado. Devuelve la lista de diferencias (vacía = todo cuadra). */
@@ -577,6 +620,9 @@ export interface FechasV6 {
     reemplazos?: Record<string, { frente?: string; a: string; por: string }[]>;
     /** v6.07a ronda 4: notas del Home por día real (las pinta plantillaDelDia arriba de las demás) */
     notas?: Record<string, string[]>;
+    /** v6.10: día de fin de semana → { frente (clave de BLOQUES_POR_FRENTE): 'HH:MM-HH:MM' } = el bloque L-V de ese frente que recupera, a hora fija,
+     *  el día perdido (plantillasV6 lo pinta con bloqueCorrido; cada generador tiene su fila ese día) */
+    extra?: Record<string, Record<string, string>>;
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -607,6 +653,8 @@ export const DERIVADOS_V6 = {
   diasF1: ${d.diasF1}, diasF2: ${d.diasF2}, diasF3: ${d.diasF3}, diasF4: ${d.diasF4},
   /** v6.07: filas del tramo 1 del Step 1 = hábiles de F1 en step1.f1_dias_semana (${diasSemanaTxt(F.step1.f1_dias_semana)}) */
   diasStepF1: ${d.diasStepF1},
+  /** v6.10: última mañana de Step 1 de F1 (= f1.fin desde la v6.10b); la pausa del Step empieza al día siguiente */
+  ultimoStepF1: ${L(d.ultimoStepF1)},
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -834,7 +882,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
-  liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */
 export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
@@ -885,6 +933,12 @@ export function fechaRealDe(plan: string, frente?: string): string {
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 }
+/** v6.10 · bloques que un día de fin de semana recupera a hora fija (corrida_s1.extra): [{ frente, ini, fin }] por hora; [] si ninguno. */
+export function extraCorridaDe(iso: string): { frente: string; ini: string; fin: string }[] {
+  const x = FECHAS_V6.corrida_s1.extra?.[iso];
+  if (!x) return [];
+  return Object.entries(x).map(([frente, v]) => { const [ini, fin] = v.split('-') as [string, string]; return { frente, ini, fin }; }).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0));
+}
 `;
 }
 
@@ -913,7 +967,7 @@ function compararTS(T, F, d) {
   eq('reservaStep1()', T.reservaStep1(), d.reservaActual);
   for (const [k, v] of Object.entries({ d1HabilEncaps: d.d1HabilEncaps, lunesLibre: d.lunesLibre, reinicio: d.reinicio, f3Fin: d.f3Fin, adaptacionHasta: d.adaptacionHasta,
     ultimoDiaEstudio: d.ultimoDiaEstudio, ritual: d.ritual, viajeD1: d.viajeD1, gonogo: d.gonogo, convocatoriaTope: d.convocatoriaTope, reserva: d.reservaActual,
-    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4, diasStepF1: d.diasStepF1 })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
+    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4, diasStepF1: d.diasStepF1, ultimoStepF1: d.ultimoStepF1 })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
   // predicados, día a día
   const extras = { hitos: [{ fecha: '2026-12-22', nombre: 'NBME 28' }, { fecha: '2027-08-09', nombre: 'GO/NO-GO' }], deloads: [{ lunes: '2026-11-16', motivo: 'x' }] };
   for (const s of rango('2026-09-01', '2028-01-31')) {
@@ -924,6 +978,7 @@ function compararTS(T, F, d) {
     for (const p of [undefined, 'usmle', 'encaps', 'mir', 'research', 'derma', 'aurum']) eq(`esDiaPlan ${s} ${p}`, T.esDiaPlan(s, p), esDiaPlan(s, p, F));
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
+    eq('extraCorridaDe ' + s, T.extraCorridaDe(s), Object.entries((F.corrida_s1.extra || {})[s] || {}).map(([frente, v]) => ({ frente, ini: v.split('-')[0], fin: v.split('-')[1] })).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0))); // v6.10
     eq('fechaPlanDe ' + s, T.fechaPlanDe(s), fechaPlanDe(s, F));
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaPlanDe ${s} ${fr}`, T.fechaPlanDe(s, fr), fechaPlanDe(s, F, fr));
     eq('fechaRealDe ' + s, T.fechaRealDe(s), fechaRealDe(s, F));
@@ -980,7 +1035,8 @@ function main() {
     }
   }
   console.log('  fases: ' + fasesV6(F, d).map((x) => `${x.id} ${f(x.desde)}→${x.hasta ? f(x.hasta) : '…'}${x.diasPlan ? ' (' + x.diasPlan + ')' : ''}`).join(' · '));
-  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${diasSemanaTxt(F.step1.f1_dias_semana)} = ${d.diasStepF1} mañanas (v6.07)`);
+  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${diasSemanaTxt(F.step1.f1_dias_semana)} = ${d.diasStepF1} mañanas (v6.07; última ${f(d.ultimoStepF1)}, pausa desde el ${f(add(d.ultimoStepF1, 1))})`);
+  if (Object.keys(F.corrida_s1.extra || {}).length) console.log('  corrida_s1.extra (v6.10): ' + Object.entries(F.corrida_s1.extra).map(([dd, x]) => `${f(dd)} ${Object.entries(x).map(([k, v]) => `${k} ${v}`).join(', ')}`).join(' · '));
   const ts = emitirTS(F, d);
   const T = cargarTS(ts);
   if (!T) console.warn('⚠ typescript no disponible en node_modules: no se pudo comprobar el .ts contra node');
@@ -1003,7 +1059,7 @@ module.exports = {
   // rutas
   JSON_FILE, OUT,
   // calendario
-  add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase, diasStepF1De, diasSemanaTxt,
+  add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase, diasStepF1De, ultimoStepF1De, diasSemanaTxt, VENTANAS_FINDE, // v6.10: + ultimoStepF1De, VENTANAS_FINDE
   // derivaciones §A4
   reinicioDe, lunesLibreDe, ultimoHabilAntes, f3FinDe, adaptacionHastaDe, gonogoDe, convocatoriaTopeDe, viajeD1De, ritualDe, protegidosDe,
   DJ1, DJ1_V600, EXAMENES_PRUEBA, dj1Texto, reservaDJ1, reservaCalculo, colchonPiso, semanasF1De, step1SemanasDe, RX_ADJUDICACION,

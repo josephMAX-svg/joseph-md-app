@@ -17,6 +17,9 @@
 // v6.07 (8-nov-2026): F1 del Step = 15 mañanas (mar · jue) y regla nueva: un hito de F1 que no cabe con su Day-After completo va al tramo 2
 //   (fila 'hito' con su dOrig). Regla general: las filas de F1 en el tramo 2 = las ÚLTIMAS de temario no-hito + los ÚLTIMOS hitos de F1 (v6.07:
 //   D16-D24, D26-D39, D41-D54, D56, D57, D79 + NBME 26/27/28 = D25, D40, D55 → 80 dOrig). Con 42 slots (v6.06) no hay hitos en el tramo 2.
+// v6.10b (17-nov-2026, decisión 4 de Joseph): el UWSA1 (v5.20 D1) SALE DE F1 y va al tramo 2 en el hueco del UWSA3 opcional, como PRUEBA DE RESISTENCIA
+//   (ya no es la baseline): esa fila (dOrig 1, sub «🎯 UWSA1 — PRUEBA DE RESISTENCIA …») conserva el texto v5.20 en subV520 pero no en el sub visible, y no
+//   cuenta en la regla de «los últimos hitos de F1» (no sale por falta de sitio: la sacó Joseph). Sin esa fila, todo igual.
 // Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.06)
 const V = require('./dias_v520.json');
 const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_25oct_v606.json');
@@ -32,7 +35,8 @@ const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43 �
 // v6.02: las desplazadas = las ÚLTIMAS filas de temario no-hito del orden de F1 (en su orden); los hitos de F1 nunca están en el tramo 2
 const esHito = (d) => /^🎯/.test(V.find((y) => y.d === d).sub);
 const noHito = ORIGEN_F1_TEMARIO.filter((d) => !esHito(d));
-const despl = ORIGEN_F1_TEMARIO.filter((d) => enT2.has(d));
+const UWSA1_T2 = T2.some((r) => r.dOrig === 1 && r.tipo === 'hito' && /^🎯 UWSA1 — PRUEBA DE RESISTENCIA/.test(r.sub)); // v6.10b
+const despl = ORIGEN_F1_TEMARIO.filter((d) => enT2.has(d) && !(UWSA1_T2 && d === 1));
 // v6.07: + los hitos de F1 que salen al tramo 2 tienen que ser los ÚLTIMOS hitos de F1 (sufijo de D1, D10, D25, D40, D55)
 const hitosF1 = ORIGEN_F1_TEMARIO.filter(esHito), desplH = despl.filter(esHito), desplN = despl.filter((d) => !esHito(d));
 const prefijo = JSON.stringify(desplN) === JSON.stringify(noHito.slice(noHito.length - desplN.length)) && JSON.stringify(desplH) === JSON.stringify(hitosF1.slice(hitosF1.length - desplH.length));
@@ -41,10 +45,10 @@ const tramos = F1.reduce((a, d) => { const u = a[a.length - 1]; if (u && u[1] ==
 const seen = new Set(); let noIncluye = 0;
 for (const r of T2) {
   if (!r.dOrig) continue;
-  if (!normSub(r.sub).includes(normSub(r.subV520))) { noIncluye++; console.log('sub no contiene v5.20:', 'T' + r.t, 'D' + r.dOrig); }
+  if (!normSub(r.sub).includes(normSub(r.subV520)) && !(UWSA1_T2 && r.dOrig === 1)) { noIncluye++; console.log('sub no contiene v5.20:', 'T' + r.t, 'D' + r.dOrig); }
   if (seen.has(r.dOrig)) continue; seen.add(r.dOrig); inc(B, key(r, r.subV520));
 }
 let dif = 0; for (const k of new Set([...Object.keys(A), ...Object.keys(B)])) if ((A[k] || 0) !== (B[k] || 0)) { dif++; if (dif <= 8) console.log('DIF', A[k] || 0, 'vs', B[k] || 0, k.slice(0, 140)); }
 const faltanCampos = T2.filter((r) => ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType'].some((k) => r[k] == null) || !('palm' in r));
-console.log(`V1 · claves con diferencia ${dif} · temario F1 ${F1.length} (${tramos}) · desplazadas en el tramo 2 ${despl.length ? despl.map((d) => 'D' + d).join(', ') : '—'} · dOrig únicos ${seen.size}/${esperadoT} · sub sin texto v5.20 ${noIncluye} · filas T sin campos DiaUSMLE ${faltanCampos.length}`);
+console.log(`V1 · claves con diferencia ${dif} · temario F1 ${F1.length} (${tramos}) · desplazadas en el tramo 2 ${despl.length ? despl.map((d) => 'D' + d).join(', ') : '—'}${UWSA1_T2 ? ' · UWSA1 (D1) en el tramo 2 como prueba de resistencia (v6.10b)' : ''} · dOrig únicos ${seen.size}/${esperadoT} · sub sin texto v5.20 ${noIncluye} · filas T sin campos DiaUSMLE ${faltanCampos.length}`);
 process.exit(dif || noIncluye || faltanCampos.length || seen.size !== esperadoT || !prefijo ? 1 : 0);

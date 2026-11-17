@@ -6,7 +6,12 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **✅ v6.09 (lun 16-nov-2026) — D1 del régimen = MAR 17-NOV-2026 (Joseph: «hoy no avancé, todo empieza a partir de mañana; el sábado y el domingo viajo»).
+> **✅ v6.10 (mar 17-nov-2026, VIGENTE) — D1 del régimen = MIÉ 18-NOV-2026 (Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»).
+> El mar 17 (día-Research) tampoco se estudió → los átomos de F1 corren UNA ranura-Research y el T-1 recupera el día el DOM 6-DIC 05:00-05:45 (hábil extra,
+> researchData.TIPO_RD_FORZADO): **M1 jue 19-nov** · R0 lun 23-nov · R1 mié 25-nov · C-1 vie 27-nov · M2 mar 1-dic · C-2 jue 3-dic · **T-1 dom 6-dic (d7)** ·
+> desde el **R9 lun 7-dic (d8)** todo igual que abajo (pausa 21-ene → 10-feb, CR-9 lun 1-mar, ciclo 2). Derma, sin cambio.**
+>
+> **⏸ v6.09 (lun 16-nov-2026; sus fechas de M1 → T-1 quedan SIN EFECTO desde la v6.10) — D1 del régimen = MAR 17-NOV-2026 (Joseph: «hoy no avancé, todo empieza a partir de mañana; el sábado y el domingo viajo»).
 > Research NO cambia: el lun 16 era día-DERMA (M1 sigue el mar 17-nov y todos los átomos, la pausa 21-ene → 10-feb, CR-9 lun 1-mar y el ciclo 2 caen igual).
 > Derma corre una ranura dentro de F1 y el jue 31-dic —ya no es SKIP; por paridad sería día-Research— pasa a día-Derma (researchData.TIPO_RD_FORZADO).
 > El bloque v6.08 de abajo sigue valiendo para Research.**

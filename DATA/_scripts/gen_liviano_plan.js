@@ -100,7 +100,13 @@
 //   que falta y el caso va el LUNES siguiente («LUNES CASO k/16», con el pre-test del lunes): vie 20 Resistencia leptínica · lun 23 CASO 1 … vie 18-dic
 //   SELECT · lun 21-dic CASO 5 → los casos de F1 vuelven a D5, D10, D15, D20, D25 (= v6.08). Desde el 4-ene la regla no entra (2027 idéntico). Con un D1
 //   en lunes, nada cambia.
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-17   (v6.09; v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.10 (17-nov-2026 · D1 = mié 18-nov; el mar 17 tampoco se estudió; Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»):
+//   node DATA/_scripts/gen_liviano_plan.js 2026-11-18 → d1-d13 corren UN hábil (mié 18-nov … vie 4-dic) y el d14 va el DOM 6-DIC 08:15-09:00 (hábil EXTRA
+//   de _fechas_v6.json › corrida_s1.extra[fecha].liviano) → el d15 = LUNES CASO 3/16 sigue el lun 7-dic y desde ahí TODO idéntico a la v6.09 (fin vie
+//   2-abr). Con el D1 en miércoles, los CASOS 1 y 2 de F1 se difieren al MARTES (24-nov y 1-dic: «MARTES CASO k/16», tras sus 4 lecciones; la regla del
+//   caso diferido admite cualquier día L-V de F1) y el pre-test ciego 5Q sigue el LUNES (lun 23 y lun 30-nov, dentro de la lección). inicioDefault del JSON
+//   = 2026-11-18. Un día extra nunca es SKIP, protegido, D-2 del ENCAPS ni día sin sesión, y su franja tiene los minutos de la fila (ABORTA si no).
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-18   (v6.10; v6.09: 2026-11-17 · v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
@@ -136,7 +142,13 @@ const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + 
 const dow = (s) => fromISO(s).getUTCDay();
 const wdOf = (s) => WD[dow(s)];
 const isWeekend = (s) => { const w = dow(s); return w === 0 || w === 6; };
-function calNoWeekend(start, n) { const o = []; let c = start; while (o.length < n) { if (!isWeekend(c) && !SKIP.has(c)) o.push(c); c = addDays(c, 1); } return o; }
+// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].liviano = franja; dom 6-dic 08:15-09:00: recupera el mar 17) desde el START
+const EXTRA_LIV = new Map(Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.liviano && f >= START).map(([f, x]) => [f, x.liviano]));
+for (const f of EXTRA_LIV.keys()) {
+  if (!isWeekend(f)) throw new Error(`corrida_s1.extra ${f}: el hábil extra de LIVIANO debe ser sábado o domingo`);
+  if (SKIP.has(f) || F6.corrida_s1.sin_sesion.includes(f)) throw new Error(`corrida_s1.extra ${f}: cae en SKIP / protegido / D-2 / sin sesión`);
+}
+function calNoWeekend(start, n) { const o = []; let c = start; while (o.length < n) { if (EXTRA_LIV.has(c) || (!isWeekend(c) && !SKIP.has(c))) o.push(c); c = addDays(c, 1); } return o; } // v6.10: + extras
 
 const fechas = calNoWeekend(START, TOTAL);
 // v6.08 (14-nov-2026): si los TOTAL hábiles no traen un viernes por caso (con START = lun 16-nov acaban el mié 31-mar y solo hay 15 viernes:
@@ -149,7 +161,7 @@ const HUECOS = [];
 if (fechas.filter((f) => dow(f) === 5).length < nCasosCur) {
   let c = addDays(fechas[fechas.length - 1], 1);
   while (fechas.filter((f) => dow(f) === 5).length < nCasosCur) {
-    if (!isWeekend(c) && !SKIP.has(c)) fechas.push(c);
+    if (EXTRA_LIV.has(c) || (!isWeekend(c) && !SKIP.has(c))) fechas.push(c);
     c = addDays(c, 1);
     if (c > addDays(START, 400)) throw new Error('LIVIANO: no encuentro ' + nCasosCur + ' viernes');
   }
@@ -231,7 +243,8 @@ if (rows[rows.length - 1].fecha !== fechas[fechas.length - 1]) throw new Error('
 
 // ─── verificaciones duras ───
 for (const r of rows) {
-  if (isWeekend(r.fecha)) throw new Error('fin de semana: ' + r.fecha);
+  if (isWeekend(r.fecha) && !EXTRA_LIV.has(r.fecha)) throw new Error('fin de semana: ' + r.fecha);
+  if (EXTRA_LIV.has(r.fecha)) { const [a, b] = EXTRA_LIV.get(r.fecha).split('-').map((h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3))); if (r.casoId || b - a !== r.min) throw new Error(`v6.10: el día extra ${r.fecha} (${EXTRA_LIV.get(r.fecha)}) recibe ${r.casoId ? 'un CASO' : `una lección de ${r.min}′`}`); }
   if (SKIP.has(r.fecha)) throw new Error('feriado: ' + r.fecha);
   if (r.casoId && r.wd !== 'Vie' && !(casosDiferidos.has(r.d) && r.fecha <= TRANS_HASTA)) throw new Error('caso fuera de viernes: D' + r.d); // v6.09: salvo el diferido de F1 (lunes)
   if (r.pretest && r.wd !== 'Lun') throw new Error('pretest fuera de lunes: D' + r.d);

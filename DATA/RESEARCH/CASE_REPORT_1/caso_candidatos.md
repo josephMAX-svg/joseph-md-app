@@ -7,7 +7,11 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ v6.09 (lun 16-nov-2026 · D1 del régimen mar 17-nov; sáb 21 y dom 22-nov libres por viaje): Research NO cambia** — el lun 16 era día-Derma, así que
+> **✅ v6.10 (mar 17-nov-2026 · D1 del régimen mié 18-nov): el mar 17 (día-Research) no se estudió → M1 pasa al JUE 19-NOV** (la 1.ª sesión Research,
+> donde se pide el caso) y M1 → T-1 corren una ranura (T-1 dom 6-dic 05:00); desde el R9 (lun 7-dic) las fechas de abajo siguen vigentes (C-3 mié 9-dic ·
+> CR-1 lun 21-dic · CR-2 mié 23-dic · CR-9 lun 1-mar). El plazo de 3 semanas del Dr. Ciro cuenta desde el jue 19-nov.
+>
+> **⏸ v6.09 (lun 16-nov-2026 · D1 del régimen mar 17-nov; sáb 21 y dom 22-nov libres por viaje): Research NO cambia** — el lun 16 era día-Derma, así que
 > todas las fechas de abajo (M1 mar 17-nov · R9 lun 7-dic · C-3 mié 9-dic · CR-1 lun 21-dic · CR-2 mié 23-dic · CR-9 lun 1-mar) siguen vigentes.
 >
 > **✅ v6.08 (sáb 14-nov-2026 · D1 del régimen lun 16-nov; Research ciclo 1 mar 17-nov → lun 12-abr): el plazo interno del 31-oct sigue ⏸ VENCIDO** → **M1
@@ -93,12 +97,12 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
   Peruana de Dermatología — comprobar si es público antes de contar con él.
 - Regla: **un solo mensaje concreto** ("busco 1 caso de complicación de relleno con fotos para un case report
   CARE en Dermatology Online Journal; yo redacto, usted es senior author; tiempo suyo estimado: 2 h en 3 meses").
-- **Mensaje único listo (activar el mar 3-nov-2026 si el Dr. Ciro no dio caso — v5.20; para llegar al plazo del 31-oct habría que activarlo el vie 30-oct; v5.19 = v5.18: vie 30-oct; v5.17: mié 28-oct; WhatsApp o email, 6 líneas):**
+- **Mensaje único listo (v6.10: activar en C-3, mié 9-dic-2026, si el senior author local no dio caso; la fecha límite del mensaje = CR-1, lun 21-dic-2026, el día del caso elegido —las fechas las da src/lib/researchDailyPlan.ts—; WhatsApp o email, 6 líneas):** *(historial: v5.20 activar el mar 3-nov · plazo 31-oct ⏸ VENCIDO)*
   > Dr./Dra. [nombre], buenos días. Soy Joseph Soto, médico egresado de la UNCP (Huancayo); me lo recomendó el Dr. Ciro Rodríguez.
   > Estoy preparando un reporte de caso con formato CARE para Dermatology Online Journal (MEDLINE) y busco **un solo caso de
   > complicación de relleno o de láser/RF con fotos de evolución** de su consulta. Yo hago el 100 % del trabajo: consentimiento de
   > publicación (plantilla bilingüe lista), fotos según protocolo, redacción, citas verificadas y envío; usted sería **senior author**
-  > y validaría la clínica. Su tiempo estimado: unas 2 horas en 3 meses. Necesitaría elegir el caso antes del **31 de octubre**.
+  > y validaría la clínica. Su tiempo estimado: unas 2 horas en 3 meses. Necesitaría elegir el caso antes del **21 de diciembre**.
   > ¿Le interesa? Le envío el resumen del proceso en una página. Gracias.
 
 ### Fuente C (oportunista, no planificar sobre ella)

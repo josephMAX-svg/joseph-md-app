@@ -126,10 +126,18 @@
  * v6.09b (mar 17-nov · auditoría tiempo ↔ material): (1) dom 22 de llegada = revisión S01 14:30 + recuperación ENCAPS 15:00-16:30 + SYNAPSE de recuperación
  *  16:30-17:00, sin Anki (plantillaDelDiaCorrida); (2) el Anki 05:00 de F1 reparte por tamaño de mazo: lun · mié · vie USMLE 20′ + ENCAPS 25′, mar · jue
  *  USMLE 30′ + ENCAPS 15′ (ankiNombreF1; jue 31-dic como lun · mié · vie).
+ * v6.10 (mar 17-nov · Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»): (1) mar 17 = CORRIDO (sin sesión) · mié 18 = D1 de todo (mañana
+ *  ENCAPS 1/21; el Anki 05:00 es la CONFIGURACIÓN entera, 45′) · jue 19 = D2 del Step en NIVEL 0 (v6.10b: decisión 4 de Joseph, el UWSA1 sale de F1 → tramo 2;
+ *  D2-D13 en sus fechas v6.09; plantilla normal de Step); (2) MECANISMO GENÉRICO de corrida_s1.extra
+ *  (bloquesExtraDe): un día de fin de semana recupera, a hora fija, el bloque L-V de cada frente que lo trae (sáb 28-nov vibecoding 05:00 + SYNAPSE 07:15 ·
+ *  dom 29-nov Business 05:00 + ENCAPS 16:15 a las 07:15 + MIR 08:15 · dom 6-dic Research 05:00 + AURUM 07:15 + LIVIANO 08:15) con bloqueCorrido (fecha de plan
+ *  = ese día; desfase = hora real − hora L-V: las guías se piden a su hora L-V y moverGuia las lleva a la real) y una nota automática; el SYNAPSE es un
+ *  bloque propio (syn-rec, su guía trae la franja real). v6.10b: el sáb 2-ene ya no es mañana de Step (step1.f1_extra retirado: el D13 vuelve al mar
+ *  29-dic) y la pausa del Step empieza el jue 31-dic, como en la v6.09.
  */
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1 } from './fechasV6';
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
-import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2 } from './usmleStep1Daily'; // v6.09b: sin diaPorD (el domingo de llegada ya no lleva Anki)
+import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2, DIAS_TODOS } from './usmleStep1Daily'; // v6.09b: sin diaPorD (el domingo de llegada ya no lleva Anki) · v6.10b: + DIAS_TODOS (nombres de los bloques de Step del nivel 0-1)
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
 import { infoTurno, ordenSemanaDe, filaT2DelDia, filasEmpujadas, dowCorto } from './serumsTurnos';
 import type { HitoAsignado } from './serumsTurnos';
@@ -229,6 +237,23 @@ function bloqueRD(iso: string, ini: string, minutos: number): BloqueV6 {
 
 // ── F1 / F2 / F3 (L-V) ──
 const enRango = (iso: string, hasta: string): boolean => iso <= hasta;
+/** v6.10b (17-nov-2026, decisión 4 de Joseph — F1 del Step en NIVEL 0-1, Tutor y sin reloj, sin eval cronometrada a las 18:00): nombres de los bloques de
+ *  Step de un día de F1 según su fila (la guía de usmleGuia.ts trae el detalle por franja). Fuera del nivel 0-1 (hitos, tramo 2), los de siempre. */
+function nombresStepF1(u: DiaUSMLEPlan | null): { am: string; pm: string } {
+  const GEN = { am: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', pm: 'USMLE · Evaluación acumulativa (modo examen)' };
+  if (u && !esFilaT2(u) && esHito(u) && /NBME \d+/.test(u.sub)) return { am: GEN.am, pm: `USMLE · Day-After ${(/NBME \d+/.exec(u.sub) ?? ['NBME'])[0]} 1/6 (registro + trayectoria + auditoría)` };
+  if (!u || esFilaT2(u) || esHito(u) || u.nivelUW !== 1) return GEN;
+  const i = DIAS_TODOS.findIndex((x) => x.d === u.d);
+  const prev = DIAS_TODOS.slice(Math.max(0, i - 4), i), h = [...prev].reverse().find((x) => esHito(x));
+  const hNom = h ? (/NBME \d+|UWSA\d/.exec(h.sub) ?? ['hito'])[0] : '';
+  const tras1 = !!h && DIAS_TODOS[i - 1] === h;
+  const n0 = u.qDia <= 9; // nivel 0 (D2-D4: 3-4 preguntas a fondo + validación de 5)
+  return {
+    am: n0 ? `USMLE · NIVEL 0 · ${u.qDia === 8 ? '3 preguntas a fondo' : 'revalidación + 4 preguntas a fondo'} + página completa + validación (Tutor, sin reloj)`
+      : `USMLE · ${tras1 ? `Day-After ${hNom} 2/6 + ` : ''}NIVEL 1 · ${tras1 ? 'bloque de 5Q + deep prime + revalidación' : 'revalidación + 2 bloques de 5Q + deep prime'} + validación (Tutor, sin reloj)`,
+    pm: h ? (() => { const n = i - DIAS_TODOS.indexOf(h); return `USMLE · Day-After ${hNom} ${n + 2}/6 (drill de cronología${n === 4 ? ' + eval 10Q timed' : ''})`; })() : 'USMLE · 1.ª pasada de Anki + vocabulario + nota del día',
+  };
+}
 function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
   // v6.07: mañana del Step 1 solo en step1.f1_dias_semana (mar · jue); lun · mié · vie = MAÑANA ENCAPS (07:15-12:00) + ENCAPS 18:00
   const step = esDiaStepF1(iso);
@@ -240,7 +265,7 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
       ? (() => { // v6.07: NBME de F1 (jue 10-dic) = su franja 07:00-12:30, como en F3 (sustituye al bloque de la mañana)
         const r = usmle && esHito(usmle) && /NBME/.test(usmle.sub ?? '') ? /\((\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(usmle.sub ?? '') : null;
         return r ? bloque('usmle', r[1] as string, r[2] as string, 'USMLE · HITO (sustituye al bloque de la mañana)', 'usmle', 'usmle-principal')
-          : bloque('usmle', '07:15', '12:00', 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', 'usmle', 'usmle-principal');
+          : bloque('usmle', '07:15', '12:00', nombresStepF1(usmle).am, 'usmle', 'usmle-principal'); // v6.10b: nombre del nivel 0-1
       })()
       : bloque('encaps-am', '07:15', '12:00', `ENCAPS · MAÑANA${am ? ` ${am.n}/${am.de}` : ''} ${am?.fase === 'cierre' ? '· SIMULACRO DE CIERRE DE AÑO 100Q + corrección' : '(teoría Theomed → post-test → banqueo → corrección → tarjetas)'}`, 'encaps', 'encaps'),
     // v6.02c (E5): en días de hito el SYNAPSE va donde lo pone la guía USMLE (UWSA1 → 07:25: v6.05 lun 26-oct · v6.03 mié 21-oct · v6.02 lun 19-oct · NBME → 13:00, en v6.05 los viernes 6-nov / 27-nov / 18-dic y el mié 30-dic · v6.03: martes 3-nov / 24-nov / 15-dic); Calendar alineado el 18-oct (CAL_V6 §12, re-fechar a v6.05)
@@ -251,7 +276,7 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
     bloque('encaps', '16:15', '17:15', 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', 'encaps', 'encaps'),
     bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', 'liviano', 'liviano'),
     step
-      ? bloque('eval', '18:00', '18:45', 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval')
+      ? bloque('eval', '18:00', '18:45', nombresStepF1(usmle).pm, 'usmle', 'usmle-eval') // v6.10b: sin eval cronometrada en el nivel 0-1
       : bloque('encaps-pm', '18:00', '18:45', 'ENCAPS · cifras, normas y flashcards', 'encaps', 'encaps'),
   ];
   const biz = bloqueBiz(iso);
@@ -262,8 +287,11 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
  *  v6.09b (17-nov · auditoría a1-11, contrato con el lote USMLE): el reparto sigue el tamaño de los mazos → lun · mié · vie (mañana ENCAPS): USMLE 05:00-05:20 +
  *  ENCAPS 05:20-05:45 (Cifras 10′ + Flashcards 10′ + APEX::ENCAPS 5′) · mar · jue (Step): USMLE 05:00-05:30 + ENCAPS 05:30-05:45 (encapsManana.guiaEncapsAnkiDe). */
 function ankiNombreF1(iso: string): string {
-  if (iso === '2026-11-17') return 'ANKI · CONFIGURACIÓN (mazos + preset FSRS) 45′'; // v6.09b: el D1 su guía es la configuración de 45′
-  if (iso === '2026-11-18') return 'ANKI · mazos aún vacíos: comprobar + triaje UWSA1 15′ (USMLE nace el jue 19 · ENCAPS hoy 11:40)';
+  // v6.10 (17-nov): la CONFIGURACIÓN (45′) pasa al mié 18 (1.er día de F1, antes de que nazcan las tarjetas ENCAPS a las 11:40) · v6.10b (decisión 4 de
+  //   Joseph): jue 19 = D2 en NIVEL 0 (sin UWSA1): el mazo USMLE está vacío (las tarjetas nacen a las 07:15) → 05:00-05:30 = vídeos de MÉTODO (regla del
+  //   chat USMLE) · desde el vie 20, el Anki de siempre (ya hay tarjetas USMLE: las del jue 19; sin triaje)
+  if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN (mazos + preset FSRS) 45′';
+  if (iso === '2026-11-19') return 'ANKI · USMLE: mazo aún vacío → vídeos de método 28′ · repasos ENCAPS 15′';
   return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
 }
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
@@ -327,6 +355,46 @@ function bloqueSynCola(iso: string): BloqueV6[] {
   if (!c) return [];
   const post = SYN_COLA_POST_STEP1.some((x) => x.fecha === iso);
   return [bloque('syn-cola', c.ini, c.fin, post ? `SYNAPSE · cola post-Step 1 (${c.min}′: lo que no cupo en su día, nov-2026 → ene-2027)` : `SYNAPSE · audio que no cupo en los comodines del sábado (${c.min}′)`, 'synapse', 'synapse')];
+}
+/** v6.10 (17-nov-2026): hora L-V de cada frente en F1 (la de su guía; Business la da rutinaGuia.bizFranjaDe) para el desfase de corrida_s1.extra. */
+const EXTRA_INI_LV: Record<string, string> = { vibecoding: '04:15', 'research-derma': '13:30', aurum: '14:15', mir: '15:15', encaps: '16:15', liviano: '17:15' };
+/** v6.10 (17-nov-2026): BLOQUES QUE UN FIN DE SEMANA RECUPERA A HORA FIJA (_fechas_v6.json › corrida_s1.extra: sáb 28-nov vibecoding 05:00 + SYNAPSE 07:15 ·
+ *  dom 29-nov Business 05:00 + ENCAPS 16:15 a las 07:15 + MIR 08:15 · dom 6-dic Research 05:00 + AURUM 07:15 + LIVIANO 08:15). Cada uno = el bloque L-V de su
+ *  frente llevado a la franja real con bloqueCorrido (fecha de plan = ese mismo día, donde el plan del frente ya tiene su fila; desfase = hora real − hora
+ *  L-V): las guías se piden a su hora L-V y moverGuia las lleva a la real (v6.02d). El SYNAPSE es un bloque propio (syn-rec: rutinaGuia.guiaSynapseRecDe ya
+ *  trae la franja real). [] si el día no trae nada. */
+function bloquesExtraDe(iso: string): BloqueV6[] {
+  const out: BloqueV6[] = [];
+  const perd = (FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [])[0];
+  const rec = perd ? ` · recupera el ${fCorta(perd)}` : '';
+  for (const x of extraCorridaDe(iso)) {
+    const min = aMin(x.fin) - aMin(x.ini);
+    let iniLV = EXTRA_INI_LV[x.frente] ?? x.ini;
+    const finLV = (): string => aHHMM(aMin(iniLV) + min);
+    let b: BloqueV6 | null = null;
+    switch (x.frente) {
+      case 'synapse': out.push(bloque('syn-rec', x.ini, x.fin, `SYNAPSE · 30' de recuperación (A pantalla · B audio · C lectura)${rec}`, 'synapse', 'synapse')); continue;
+      case 'vibecoding': b = bloque('vibe', iniLV, finLV(), `IA · VIBECODING con Claude Code (1 proyecto real/semana)${rec}`, 'vibecoding', 'vibecoding'); break;
+      case 'business': iniLV = bizFranjaDe(iso)?.ini ?? '13:00'; b = bloque('biz', iniLV, finLV(), `BUSINESS · Estudio Pulso (1 tramo del libro + acción)${rec}`, 'business', 'business'); break;
+      case 'research-derma': { const r = bloqueRD(iso, iniLV, min); b = { ...r, nombre: `${r.nombre}${rec}` }; break; }
+      case 'aurum': b = bloque('aurum', iniLV, finLV(), `AURUM · closer de ventas (${min}')${rec}`, 'aurum', 'aurum'); break;
+      case 'mir': b = bloque('mir', iniLV, finLV(), `${mirNombreF1(iso)}${rec}`, 'mir', 'mir'); break;
+      case 'encaps': b = bloque('encaps', iniLV, finLV(), `ENCAPS · 1h banqueo (mantenimiento 2027-I)${rec}`, 'encaps', 'encaps'); break;
+      case 'liviano': b = bloque('liv', iniLV, finLV(), `LIVIANO · Academia (obesidad/GLP-1/nutrición)${rec}`, 'liviano', 'liviano'); break;
+      default: continue;
+    }
+    if (b) out.push(bloqueCorrido(b, iso, aMin(x.ini) - aMin(iniLV)));
+  }
+  return out;
+}
+/** v6.10: nota del día que recupera (la del Home, arriba): «Hoy, a hora fija, lo que recupera el mar 17-nov: 05:00 Business · 07:15 ENCAPS banqueo 1 h · 08:15 MIR.»
+ *  (el ENCAPS de las 16:15 se nombra «banqueo 1 h»: «ENCAPS 16:15 07:15» se leía como dos horas) */
+const ETQ_EXTRA: Record<string, string> = { vibecoding: 'vibecoding', synapse: 'SYNAPSE', business: 'Business', 'research-derma': 'Research ↔ Derma', aurum: 'AURUM', mir: 'MIR', encaps: 'ENCAPS banqueo 1 h', liviano: 'LIVIANO' };
+function notaExtraDe(iso: string): string | null {
+  const xs = extraCorridaDe(iso);
+  if (!xs.length) return null;
+  const perd = (FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [])[0];
+  return `Hoy, a hora fija, lo que recupera el ${perd ? fCorta(perd) : 'día perdido'}: ${xs.map((x) => `${x.ini}-${x.fin} ${ETQ_EXTRA[x.frente] ?? x.frente}`).join(' · ')} (el ${perd ? fCorta(perd) : 'día perdido'} fue sin sesión: cada plan corrió un día y lo recupera aquí; desde el lunes, las fechas de siempre).`;
 }
 /** v6.07: sábado con clase EN VIVO de Theomed: 14:45-15:00 preparar la clase + 15:00-17:00 en vivo (sin clase ese sábado → sin bloques).
  *  v6.08 (fix revisión 14-nov, est6): también los sábados de F2 (9-ene → 6-mar; encapsManana.theomedSabadoDe, títulos del calendario del campus).
@@ -763,7 +831,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         : `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', i === 0 ? amD.domingoPlan : undefined)),
       hD ? bloque('encaps-pm', hD.tarde[0], hD.tarde[1], 'ENCAPS · cifras, normas y flashcards (hora fija: al terminar la mañana)', 'encaps', 'encaps')
         : bloque('encaps-pm', null, null, 'ENCAPS · cifras, normas y flashcards (flexible: a las 17:00 está el baile)', 'encaps', 'encaps', undefined, 45, 'flexible · 45′'),
-    ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...extrasDomingo(iso)];
+    ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...bloquesExtraDe(iso) /* v6.10 */, ...extrasDomingo(iso)];
     const notasD = ["Anki ≤15' opcional (no se registra)."];
     const trTxt = trD.map(([a, z]) => `${a}-${z}`).join(' y ');
     // v6.09 (fix 2): la nota del domingo de plan va PRIMERA (empieza a las 04:15 como entre semana), antes de la de los bloques flexibles
@@ -782,7 +850,11 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
     if (!bsD.some((b) => b.id === 'pc')) for (const x of vibePCDomingo(iso)) if (x.taper) notasD.push(`Vibecoding S${x.taper.s} · ${x.taper.nombre} (deload total): PC de 0′ hoy — ${x.taper.shipTxt}`);
     const titD0 = amD ? `Domingo de plan · MAÑANA ENCAPS ${amD.n}/${amD.de} (${trTxt})${bsD.some((b) => b.id === 'pc') ? ' + SHIP del vibecoding' : ''}` : bsD.some((b) => b.id === 'encaps-dom') ? `Domingo · flexible (ENCAPS ${pptD ? '' : 'opcional '}${durD} de estudio${pptD ? ((encapsDomingoDe(iso)?.ppt?.length ?? 0) > 1 ? ', sus primeros pasos NO opcionales' : ', su primer paso NO opcional') : ''} + SHIP del vibecoding)` : bsD.some((b) => b.id === 'pc') ? 'Domingo · flexible (SHIP del vibecoding)' : 'DOMINGO · libre'; // v6.09b lote 1-bis: varios primeros pasos no opcionales (encapsManana.EncapsDomingo.ppt)
-    const titD = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
+    const titD1 = recD ? `Domingo · ENCAPS ${recD.ini} recuperación del viaje (fija) + ${titD0.replace(/^Domingo · /, '')}` : titD0;
+    // v6.10: domingo que recupera el día perdido a hora fija (corrida_s1.extra) → título y nota (los bloques flexibles, después de los fijos)
+    const xD = extraCorridaDe(iso), nxD = notaExtraDe(iso);
+    if (nxD) notasD.unshift(nxD);
+    const titD = xD.length ? `Domingo · a hora fija lo del ${fCorta((FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [iso])[0] as string)} (${xD.map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente} ${x.ini}`).join(' · ')}) + ${titD1.replace(/^Domingo · /, '')}` : titD1;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
 
@@ -825,8 +897,11 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         const viv = theomedSabadoDe(iso);
         // v6.09b (lote 1-bis S2): + AURUM · L de la semana 04:15 (la lectura L que no cupo a las 14:15; rutinaGuia.aurumLSabadoDe)
         const auL = aurumLSabadoDe(iso);
+        // v6.10: + los bloques que el sábado recupera a hora fija (corrida_s1.extra: sáb 28-nov vibecoding 05:00 + SYNAPSE 07:15) y su nota
+        const nxS = notaExtraDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',
-          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : [])]);
+          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : []), ...bloquesExtraDe(iso)],
+          nxS ? { notas: [nxS] } : {});
       }
       return out('F1', esDiaStepF1(iso) ? 'F1 · mañana Step 1 (mar · jue) + ENCAPS 16:15' : 'F1 · mañana ENCAPS (lun · mié · vie) + ENCAPS 16:15 y 18:00', bloquesF1(iso, usmleExacto));
     case 'F2': {

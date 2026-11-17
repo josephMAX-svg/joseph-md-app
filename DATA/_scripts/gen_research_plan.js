@@ -162,7 +162,9 @@ const PROTEGIDOS = new Set(F6.protegidos.map((p) => p.fecha));
 // v6.09 (16-nov-2026): la v6.09 NO mueve ninguna fecha de Research (el lun 16-nov era día-Derma; M1 sigue el mar 17-nov) → los textos con versión
 // siguen nombrando la v6.08, la que fijó estas fechas (así los overlays 🔬 del Calendar no se recrean solo por la etiqueta). Misma regla en
 // research_guia.js y gen_research_calendar.js. Con otra versión vuelve a ser F6.version.
-const VER_TXT = F6.version === 'v6.09' ? 'v6.08' : F6.version;
+// v6.10 (17-nov-2026): VER_TXT SIN CAMBIO («v6.08»): la v6.10 solo corre átomos de F1 (M1 jue 19 … T-1 dom 6-dic) y desde el R9 (lun 7-dic) todo cae
+//   igual; subir la etiqueta volvería a crear los 12 overlays 🔬 de 2027 (gen_research_calendar.js --check = 0).
+const VER_TXT = ['v6.09', 'v6.10'].includes(F6.version) ? 'v6.08' : F6.version;
 /** v6.00 (DJ-3): desde el inicio del SERUMS el SÁBADO es día de plan y cuenta en la paridad (Research mar · jue · sáb; Derma lun · mié · vie). */
 const SERUMS_INICIO = F6.serums.inicio;
 const PAUSA = { desde: '2027-01-21', hasta: '2027-02-10' }; // v6.08 (14-nov-2026): la pausa EMPIEZA el jue 21-ene (antes vie 15-ene; el fin, mié 10-feb, sin cambio) — re-fecha D1 = lun 16-nov: el ciclo corre 3 ranuras (lun 9, mié 11 y vie 13-nov perdidos; el lun 16-nov es día-Derma → d1 = mar 17-nov) y antes del 15-ene solo quedaban 20 días-Research para 22 átomos del núcleo, todos críticos o preparando un envío con fecha → la regla abortaba («22 átomos no caben en 20»); Joseph: «alarga las fechas límite lo que amerite» → +2 sesiones de 45′ dentro de la intensiva ENCAPS (lun 18-ene, T-8 SUBMIT de la tesis, y mié 20-ene, X-7) y el objetivo RUTA del case report pasa al lun 1-mar (DEADLINE_INTERNO) · v6.07: sin cambio (el ciclo corre 2 ranuras —mar 3 y jue 5-nov perdidos— → d1 = lun 9-nov; con 23 días-Research antes de la pausa CR-4 → CR-8 van tras ella, delante del SUBMIT CR-9) · v6.06: sin cambio (núcleo de la intensiva ENCAPS, fechas fijas; el ciclo corre 3 ranuras —lun 26, mié 28 y vie 30-oct perdidos— → d1 = mar 3-nov; con 25 días-Research antes de la pausa M3 sigue tras ella y la regla (nivel 2) lleva CR-6 → CR-8 tras ella, delante del SUBMIT CR-9) · v6.05: sin cambio (el ciclo corre 1 ranura —jue 22-oct perdido— → d1 = lun 26-oct; con 28 días-Research antes de la pausa R9 también se desplaza tras ella, delante de R6) · v6.03: sin cambio (el ciclo corre 1 ranura —mar 20-oct perdido— → d1 = jue 22-oct; con 29 días-Research antes de la pausa X-2 también se desplaza tras ella) · v6.02: sin cambio (el ciclo corre 3 ranuras —lun 12, mié 14 y vie 16-oct perdidos— → d1 = mar 20-oct; con 30 días-Research antes de la pausa R6, R7 y X-1 también se desplazan tras ella) · v6.01: sin cambio (núcleo de la intensiva ENCAPS, fechas fijas; el ciclo corre 1 ranura —el jue 8-oct perdido— → d1 = lun 12-oct; con 33 días-Research antes de la pausa R2 también se desplaza tras ella) · v6.00: sin cambio · v5.20: sin cambio (el ciclo 1 corre una ranura: el mar 6-oct perdido era día-Research → d1 = jue 8-oct; R3 ya no cabe antes de la pausa y se desplaza tras ella) · v5.19: sin cambio (Research no corre: el lun 5-oct perdido era día de Derma) · v5.18: +2 hábiles (v5.17: 13-ene → 8-feb) // Step 1 · 0 átomos · v5.17: la pausa corre con el plan (v5.16: 7-ene→3-feb · v5.15: 4→29-ene); el inicio va +4 hábiles (13-ene, no 12) porque con D1 en jueves la paridad Research↔Derma se invierte y con 12-ene cabían 34 átomos antes de la pausa en vez de los 35 de v5.16 (R3 se derramaba): con 13-ene el orden de los 42 átomos es IDÉNTICO al de v5.16; si no, los 34 átomos del núcleo no caben antes de ella
@@ -170,11 +172,18 @@ const enPausa = (s) => s >= PAUSA.desde && s <= PAUSA.hasta;
 // v6.09 (16-nov-2026): excepciones de paridad R↔D (jue 31-dic = día-DERMA: recupera la sesión Derma del lun 16-nov, que no se estudió).
 // FUENTE ÚNICA: src/lib/researchData.ts#TIPO_RD_FORZADO (misma lectura en gen_research_plan · gen_derma_ciclo2 · remap_inicio).
 const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/lib/researchData.ts'), 'utf8'); const m = t.match(/export const TIPO_RD_FORZADO[^=]*=\s*\{([^}]*)\}/); if (!m) throw new Error('researchData.ts: no encuentro TIPO_RD_FORZADO (v6.09)'); return Object.fromEntries([...m[1].matchAll(/'(20\d\d-\d\d-\d\d)':\s*'(research|derma)'/g)].map((x) => [x[1], x[2]])); })();
+// v6.10: un día FORZADO de fin de semana (TIPO_RD_FORZADO) debe ser el hábil extra de _fechas_v6.json › corrida_s1.extra[fecha]['research-derma'] (y al revés)
+{
+  const ex = (F6.corrida_s1 && F6.corrida_s1.extra) || {};
+  const finde = (s) => { const w = fromISO(s).getUTCDay(); return w === 0 || w === 6; };
+  for (const f of Object.keys(ex)) if (ex[f]['research-derma'] && !TIPO_RD_FORZADO[f]) throw new Error(`v6.10: corrida_s1.extra ${f} trae research-derma y researchData.ts › TIPO_RD_FORZADO no lo fuerza`);
+  for (const f of Object.keys(TIPO_RD_FORZADO)) if (finde(f) && f < SERUMS_INICIO && !(ex[f] && ex[f]['research-derma'])) throw new Error(`v6.10: TIPO_RD_FORZADO ${f} (fin de semana) sin franja en corrida_s1.extra`);
+}
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
+  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma · v6.10: dom 6-dic = Research (el forzado va ANTES que la regla del finde)
   if (dow === 0 || (dow === 6 && s < SERUMS_INICIO)) return 'descanso';
-  if (TIPO_RD_FORZADO[s]) return TIPO_RD_FORZADO[s]; // v6.09: jue 31-dic = Derma
   let cnt = 0; const cur = fromISO('2026-06-10');
   while (cur < d) { const wd = cur.getUTCDay(); if ((wd >= 1 && wd <= 5) || (wd === 6 && iso(cur) >= SERUMS_INICIO)) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
   return cnt % 2 === 0 ? 'research' : 'derma';
@@ -266,7 +275,8 @@ const C1 = [
     'Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo)',
     'DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)',
     'WhatsApp / presencial', ['ICMJE', 'CREDIT'], { apex: { id: 'mentor-ciro', t: 'Senior author local confirmado' }, hito: 'mentor',
-      chips: ['⏸ plazo interno del 31-oct-2026 (caso + consentimiento + senior author del case report) VENCIDO: la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct → v6.06 lo hace en la 1.ª sesión Research, sin plazo nuevo: pide el caso EN este mensaje'],
+      // v6.10 · tanda C (17-nov-2026 · decidido con Joseph en el chat Research): Research empieza por SR-1; de este M1 queda el WhatsApp (guía en research_guia.js)
+      chips: ['v6.10: Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; de este M1 queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1)', '⏸ plazo interno del 31-oct-2026 (caso + consentimiento + senior author del case report) VENCIDO: la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct → v6.06 lo hace en la 1.ª sesión Research, sin plazo nuevo: pide el caso EN este mensaje'],
       chipsDyn: ({ f, fmt }) => [`antes de T-1 (${fmt(f('T-1'))}): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)`] }),
   a('R0', 'R0', 'R', 'CRITICA', 'Infra académica: abrir las 10 cuentas que exige el circuito editorial (checklist marcable en Desk → Infra académica)',
     '10/10 cuentas: ORCID · Google Scholar · CTI Vitae/RENACYT · Editorial Manager · ScholarOne · eScholarship/DOJ · PROSPERO · Rayyan · Zotero · OpenAlex + NCBI keys',
@@ -929,8 +939,10 @@ for (const x of TODOS) {
   if (!x.recs.length) throw new Error('sin recs: ' + x.code);
   for (const r of x.recs) if (!REC_KEYS.has(r)) throw new Error(`rec ${r} no existe en REC (${x.code})`);
   const dow = fromISO(x.fecha).getUTCDay();
-  if (dow === 0 || (dow === 6 && x.fecha < SERUMS_INICIO)) throw new Error('fin de semana (domingo, o sábado antes del SERUMS): ' + x.fecha); // v6.00: sábado = día de plan desde el SERUMS
-  if (!V6.esDiaPlan(x.fecha, 'research', F6)) throw new Error('no es día de plan según gen_fechas_v6.esDiaPlan: ' + x.fecha);
+  // v6.10: salvo el hábil EXTRA de fin de semana (TIPO_RD_FORZADO = research + corrida_s1.extra[fecha]['research-derma']: dom 6-dic 05:00-05:45)
+  const extraRD = TIPO_RD_FORZADO[x.fecha] === 'research' && !!(((F6.corrida_s1 || {}).extra || {})[x.fecha] || {})['research-derma'];
+  if (!extraRD && (dow === 0 || (dow === 6 && x.fecha < SERUMS_INICIO))) throw new Error('fin de semana (domingo, o sábado antes del SERUMS): ' + x.fecha); // v6.00: sábado = día de plan desde el SERUMS
+  if (!extraRD && !V6.esDiaPlan(x.fecha, 'research', F6)) throw new Error('no es día de plan según gen_fechas_v6.esDiaPlan: ' + x.fecha);
   if (SKIP_FIJOS.has(x.fecha) || PROTEGIDOS.has(x.fecha) || enPausa(x.fecha)) throw new Error('feriado/pausa/día de examen: ' + x.fecha);
   if (tipoDia(x.fecha) !== 'research') throw new Error('no es día-Research: ' + x.fecha);
 }

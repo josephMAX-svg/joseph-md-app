@@ -627,9 +627,9 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 9,
-     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › 2.1. Lesiones primarias + 2.2. Lesiones secundarias (9,4′ medidos a 150 palabras/min · 586 palabras · 11 figuras)",
-     "como": "Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.",
+     "min": 10,
+     "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › 2.1. Lesiones primarias + 2.2. Lesiones secundarias (9,9′ medidos: 586 palabras a 150 palabras/min + 24 figuras × 0,25′)",
+     "como": "Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646"
@@ -638,16 +638,16 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 8,
      "que": "DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = 7,62′ medidos)",
-     "como": "Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).",
+     "como": "Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…) · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «02_d01_DermNet_Terminology».",
      "enlace": {
       "t": "DermNet · Terminology",
       "url": "https://dermnetnz.org/topics/terminology"
      }
     },
     {
-     "min": 11,
+     "min": 10,
      "que": "Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · DICTADO INVERSO de morfología",
-     "como": "Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ (las 6 en 11′) · cada fallo → tarjeta.",
+     "como": "Pídele: «Dame 5 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 5 rondas de ~2′ (las 5 en 10′) · cada fallo → tarjeta.",
      "enlace": {
       "t": "Proyecto AESTHETIC DERMATOLOGY",
       "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
@@ -668,7 +668,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "ProMIR · Dermatología cap. 1",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
-     "min": 9.4
+     "min": 9.9
     },
     {
      "t": "DermNet · Terminology",
@@ -679,7 +679,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "url": "https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f"
     }
    ],
-   "hecho": "5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.",
+   "hecho": "5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 5 rondas de dictado inverso + ≤3 tarjetas.",
    "planB": "Casos #192 (Surgical Dermatology. Case 22) y #43 (Medical Dermatology. Case 013), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
   }

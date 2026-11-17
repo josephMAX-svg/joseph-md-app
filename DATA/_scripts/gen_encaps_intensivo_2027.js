@@ -215,6 +215,12 @@
  *   transición) · DESFASE_CB = Σ perdidos − HAB_TRANS_N (29 − 1 = 28) · ULT_MANT (último día del mantenimiento) en vez de f1.fin en los textos de
  *   horarios y de corrimiento. Solo cambian la cabecera y el .metrics.sql (d1 2026-11-17 · régimen v6.27 + INTENSIVA v6.09 · corrimiento v6.09).
  *   Siembra v6.09: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx --bk-base study_schedule_bk_v609_20261116 --bk study_schedule_bk_v609_int_20261116
+ * v6.10 (17-nov-2026, «todo inicia mañana, el 18»; el mar 17 tampoco se estudió): D1 del mantenimiento = MIÉ 18-NOV (--base = f1.inicio) y la ENCAPS
+ *   16:15 recupera el día el DOM 29-NOV 07:15-08:15 (_fechas_v6.json corrida_s1.extra; _encaps_ciclo_v3.fechas() lo devuelve) → el mantenimiento sigue en
+ *   32 filas (dia 1-32: 30 hábiles de F1 + dom 29-nov + jue 31-dic) y la intensiva en el dia 33, IDÉNTICA. Código: offset = hábiles + los fines de semana de
+ *   corrida_s1.extra con ENCAPS (EXTRA_MANT) · DESFASE_CB = Σ perdidos − HAB_TRANS_N − EXTRA_MANT (30 − 1 − 1 = 28, como en la v6.09) · weekday[0] añade la
+ *   frase del domingo que recupera («El dom 29-nov (D9, recupera el mar 17) lleva la eval de I-4 (código del jue 26).»). NO SE EJECUTÓ en la v6.10: el
+ *   .metrics.sql se editó a mano con lo que este código produce (d1 2026-11-18 · régimen v6.28 · corrimiento v6.10 · weekday[0] desde el carácter 547).
  * v5.14 (19-sep): la app renderiza modo='INTENSIVO' (encapsPlan.ts: regimenDe() · itemsForDay · simDays con pretest/sim100/dress_rehearsal).
  */
 const fs = require('fs');
@@ -298,12 +304,14 @@ const fDia = (s) => fCorta(s).split(' ')[1]; // «4-ene»
 const plan = habiles(D1, addDays(EXAMEN, -1));
 if (plan.length < 10) throw new Error('la intensiva necesita ≥ 10 hábiles entre D1 y D-1 (S1 + cola)');
 const N = plan.length;
-const offset = habiles(BASE, addDays(D1, -1)).length; // días L-V ya numerados por el mantenimiento (v6.02: 52 = D1-D52 de F1 · v6.01: 57 · v6.00: 60 = D1-D60)
+// v6.10 (17-nov-2026): + los días de FIN DE SEMANA en que la ENCAPS 16:15 recupera un día perdido (corrida_s1.extra con encaps; v6.10: dom 29-nov = dia 9)
+const EXTRA_MANT = [...(ciclo.EXTRA_ENCAPS || [])].filter((f) => f >= BASE && f < D1).sort();
+const offset = habiles(BASE, addDays(D1, -1)).length + EXTRA_MANT.length; // días ya numerados por el mantenimiento (v6.02: 52 = D1-D52 de F1 · v6.01: 57 · v6.00: 60 = D1-D60 · v6.10: 30 + jue 31-dic + dom 29-nov = 32)
 // v6.09 (16-nov-2026): + los L-V HÁBILES de la transición (no SKIP; v6.09: jue 31-dic, que recupera el lun 16-nov) son también filas del mantenimiento
 //   (dia 32) → la intensiva empieza en el dia f1.dias + HAB_TRANS_N + 1 (= 33, como en la v6.08) y el desfase del carril B es Σ perdidos − HAB_TRANS_N
 const HAB_TRANS_N = habiles(F6.transicion.desde, F6.transicion.hasta).length;
 const ULT_MANT = habiles(BASE, addDays(D1, -1)).at(-1).fecha; // último día del mantenimiento (v6.09: jue 31-dic; hasta la v6.08 = f1.fin)
-if (ESCENARIO_JSON && offset !== F6.f1.dias + HAB_TRANS_N) throw new Error(`offset ${offset} ≠ f1.dias ${F6.f1.dias} + ${HAB_TRANS_N} hábil(es) de la transición: la intensiva debe empezar en el dia ${F6.f1.dias + HAB_TRANS_N + 1}`);
+if (ESCENARIO_JSON && offset !== F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length) throw new Error(`offset ${offset} ≠ f1.dias ${F6.f1.dias} + ${HAB_TRANS_N} hábil(es) de la transición + ${EXTRA_MANT.length} fin(es) de semana de corrida_s1.extra: la intensiva debe empezar en el dia ${F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length + 1}`);
 if (plan[N - 1].fecha !== V6.ultimoHabilAntes(EXAMEN, SKIP_INT)) throw new Error('el último hábil del plan no es el D-1 hábil del examen');
 {
   const pas = iso(pascua(fromISO(EXAMEN).getUTCFullYear())), dowEx = dowDe(EXAMEN);
@@ -405,7 +413,7 @@ const cbUltima = cbFilas.map((r) => r.fecha).sort().at(-1);
 let cbCodigoDe = (fecha) => { const r = cbPorFecha[fecha]; return r && r.tipo === 'banqueo1h' ? r.codigo : null; }; // v6.01: let (se amplía con los pendientes F1)
 // v6.01: desfase entre la etiqueta de origen (dia_mant 61-92 de v5.20) y el dia de la intensiva = Σ hábiles perdidos por corrimientos
 // (v6.00: 0 → dia_mant = dia · v6.01: 3 → dia_mant 61 = dia 58 · v6.02: 8 → dia_mant 61 = dia 53). La fila se casa por FECHA; el desfase solo se comprueba.
-const DESFASE_CB = ESCENARIO_JSON ? PERDIDOS - HAB_TRANS_N : null; // v6.09: − los hábiles de la transición que recuperan días perdidos (jue 31-dic)
+const DESFASE_CB = ESCENARIO_JSON ? PERDIDOS - HAB_TRANS_N - EXTRA_MANT.length : null; // v6.09: − los hábiles de la transición que recuperan días perdidos (jue 31-dic) · v6.10: − los fines de semana que recuperan (dom 29-nov)
 
 // ── v6.01: pendientes F1 (_pendientes_f1.json, lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de) ──
 // filas tipo 'banqueo1h' (instancia del ciclo) o 'mini_sim' (mini-sim 25Q con su receta en extra). NADA se descarta: ningún «absorbido».
@@ -895,7 +903,7 @@ function filasF1Sims() { // v6.06: dia de los mini-sims F1 (sim_n = dia) del SQL
   if (!fs.existsSync(f)) return [];
   return fs.readFileSync(f, 'utf8').split('\n').map((l) => l.match(/^\('ENCAPS',(\d+),'[\d-]+','[^']+','mini_sim',/)).filter(Boolean).map((m) => +m[1]);
 }
-if (ESCENARIO_JSON) ok(filas[0].dia === F6.f1.dias + HAB_TRANS_N + 1, `la intensiva empieza en el dia ${filas[0].dia} y debe ser f1.dias + hábiles de la transición + 1 = ${F6.f1.dias + HAB_TRANS_N + 1}`);
+if (ESCENARIO_JSON) ok(filas[0].dia === F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length + 1, `la intensiva empieza en el dia ${filas[0].dia} y debe ser f1.dias + hábiles de la transición + fines de semana de corrida_s1.extra + 1 = ${F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length + 1}`);
 if (fallos.length) { console.error('⛔ verificación:\n  · ' + fallos.join('\n  · ')); process.exit(1); }
 
 // ── SQL ──
@@ -929,7 +937,10 @@ const metricsExtra = {
   ...(ultCorr ? { corrimiento: {
     version: ultCorr.version, fecha: ultCorr.fecha, d1_previo: ultCorr.d1_previo, d1: ultCorr.d1, perdidos: ultCorr.perdidos, regla_fechas_v6: ultCorr.regla,
     regla_encaps: `F1 ENCAPS rígida por slots (dia 1-${offset}); ${pendF1.length} pendiente(s) F1 que no caben (${pendF1.filter((p) => p.tipo === 'banqueo1h').length} banqueo1h + ${pendF1.filter((p) => p.tipo === 'mini_sim').length} mini-sim${[...new Set(pendF1.map((p) => p.corrimiento))].length > 1 ? `; por corrimiento: ${[...new Set(pendF1.map((p) => p.corrimiento))].map((c) => `${c} ${pendF1.filter((p) => p.corrimiento === c).length}`).join(' + ')}` : ''}) → reposición EXPLÍCITA en el carril B 16:15 (lun-jue: ${nPendLJ})${nPendSab ? ` + carril SÁBADO ${SAB_INI}-${SAB_FIN} (${nPendSab}: los días de reposición lun-jue ya están ocupados)` : ''}${nPendVie ? ` + carril VIERNES 16:15 de la quincena final (${nPendVie})` : ''}; nada se descarta, se comprime ni se absorbe (0 mini-sims F1 absorbidos); intensiva renumerada con las mismas fechas`,
-    f1: `dia 1-${offset} (${BASE} → ${ULT_MANT}${ULT_MANT !== F6.f1.fin ? ` = F1 hasta el ${F6.f1.fin} + ${HAB_TRANS_N} hábil(es) de la transición` : ''}); la F1 no se alarga`, intensiva_renumerada: `dia ${offset + 1}-${offset + N} (mismas fechas ${plan[0].fecha} → ${plan[N - 1].fecha})`,
+    // v6.10: con fines de semana de corrida_s1.extra: «= F1 + dom 29-nov (recupera el mar 17) + jue 31-dic»
+    f1: EXTRA_MANT.length
+      ? `dia 1-${offset} (${BASE} → ${ULT_MANT} = F1${EXTRA_MANT.map((f) => ` + ${fCorta(f)} (recupera el ${fCorta(ultCorr && ultCorr.perdidos[0] ? ultCorr.perdidos[0] : f).replace(/-[a-z]+$/, '')})`).join('')}${habiles(F6.transicion.desde, F6.transicion.hasta).map((h) => ` + ${fCorta(h.fecha)}`).join('')}); la F1 no se alarga`
+      : `dia 1-${offset} (${BASE} → ${ULT_MANT}${ULT_MANT !== F6.f1.fin ? ` = F1 hasta el ${F6.f1.fin} + ${HAB_TRANS_N} hábil(es) de la transición` : ''}); la F1 no se alarga`, intensiva_renumerada: `dia ${offset + 1}-${offset + N} (mismas fechas ${plan[0].fecha} → ${plan[N - 1].fecha})`,
     carril_b_dia_mant: 'etiqueta de ORIGEN 61-92 (v5.20), sin cambio', historial: CORRIMIENTOS.map((c) => `${c.version} ${c.fecha}: D1 ${c.d1_previo} → ${c.d1}`),
     pendientes_f1: pendF1.map((p) => ({ corrimiento: p.corrimiento, tipo: p.tipo, dia_mant: p.dia_mant, fecha_original: p.fecha_original, codigo: p.codigo || null, // v6.02: + corrimiento (dia_mant es de la F1 de origen)
       ...(p.tipo === 'mini_sim' ? { cola_larga: p.extra.cola_larga, n: 25, seg_por_q: p.extra.seg_por_q } : { sub_eje: p.extra.sub_eje || null, instancia: p.extra.instancia }),
@@ -1020,6 +1031,14 @@ const horarioTextos = (() => {
     const d1 = new Date(ms.fecha + 'T12:00:00Z'); d1.setUTCDate(d1.getUTCDate() + 1);
     return `Excepción: el ${fCorta(r.fecha)} (D${r.dia}) la eval es la de ${j.codigo} (código del ${fCorta(sa.fecha)}, la sesión de banco anterior), no las 5Q rehechas del mini-sim del ${fCorta(ms.fecha)}${SIN_SES.has(d1.toISOString().slice(0, 10)) ? ': el fin de semana siguiente fue sin sesión (viaje) y no hubo hueco para generarlas' : ''}.`;
   }).filter(Boolean);
+  // v6.10 (17-nov-2026): un día de FIN DE SEMANA del mantenimiento (corrida_s1.extra: dom 29-nov = D9, recupera el mar 17) lleva la eval del código de la sesión
+  //   de banco anterior (I-4 del jue 26), como un martes-jueves
+  const excFinde = filasF1.filter((r) => r.tipo === 'banqueo1h' && [0, 6].includes(dowDe(r.fecha))).map((r) => {
+    const prev = filasF1.filter((x) => x.tipo === 'banqueo1h' && x.fecha < r.fecha).at(-1);
+    const perd = (CORRIMIENTOS.at(-1) || {}).perdidos || [];
+    return prev ? `El ${fCorta(r.fecha)} (D${r.dia}${perd.length ? `, recupera el ${sinMes(perd[0])}` : ''}) lleva la eval de ${prev.codigo} (código del ${sinMes(prev.fecha)}).` : null;
+  }).filter(Boolean);
+  excLunes.push(...excFinde);
   return { r1, r2, r3, vie1, cmdViernes, rutas: [
     { ruta: ['weekday', 0], hora: '16:15-16:30', titulo: 'EVAL ANCLADA', ini: `${HORARIO_EVAL_FIJO} `, fin: '',
       d: `${HORARIO_EVAL_FIJO} D1 (${fCorta(r1.fecha)}, sin sesión anterior en el SQL): SÍ lleva eval — eval_${r1.fecha} = 5Q de fallos previos del registro (críticos primero) antes de la parte 1 del pre-test; el ${fCorta(r2.fecha)} (D2) la eval es la del código de AYER (${r1.codigo}), antes de la parte 2; ${tramoD3}${excLunes.length ? ` ${excLunes.join(' ')}` : ''}` },

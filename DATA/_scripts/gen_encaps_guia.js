@@ -122,9 +122,11 @@ const FILAS = fs.readFileSync(SQL, 'utf8').split(/\r?\n/).filter((l) => l.starts
 const F6 = require('./gen_fechas_v6').cargarFechasV6();
 // v6.09 (16-nov-2026): + los L-V HÁBILES de la transición (no SKIP; v6.09: jue 31-dic, que recupera el lun 16-nov) = filas del mantenimiento (dia 32)
 const HAB_TRANS = []; for (let d = F6.transicion.desde; d <= F6.transicion.hasta; ) { const w = new Date(d + 'T12:00:00Z').getUTCDay(); if (w >= 1 && w <= 5 && !(F6.skip || []).includes(d)) HAB_TRANS.push(d); const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); d = x.toISOString().slice(0, 10); }
-const F1_DIAS = F6.f1.dias + HAB_TRANS.length; // v6.09: 31 + 1 = 32 · v6.08: 32 · v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
+// v6.10 (17-nov-2026): + los fines de semana de corrida_s1.extra con ENCAPS (dom 29-nov 07:15 = dia 9, recupera el mar 17): también son fila del mantenimiento
+const EXTRA_ENC = Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.encaps && f >= F6.f1.inicio && f <= F6.transicion.hasta).map(([f]) => f);
+const F1_DIAS = F6.f1.dias + HAB_TRANS.length + EXTRA_ENC.length; // v6.10: 30 + 1 + 1 = 32 · v6.09: 31 + 1 = 32 · v6.08: 32 · v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
 const CORR = (F6.corrimientos || []).at(-1) || null; // v6.05: versión y fecha del régimen vigente (META, cabecera del .ts)
-if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias ${F6.f1.dias} + ${HAB_TRANS.length} hábil(es) de la transición = ${F1_DIAS})`);
+if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias ${F6.f1.dias} + ${HAB_TRANS.length} hábil(es) de la transición + ${EXTRA_ENC.length} fin(es) de semana de corrida_s1.extra = ${F1_DIAS})`);
 const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^--\s*/, '');
 // v6.06: CARRIL SÁBADO de la intensiva (extra.carril_sabado de la fila del viernes host) → ENCAPS_SABADO_F2 (clave = el sábado)
 const SQL_INT = path.join(ROOT, 'DATA', '_scripts', '_encaps_intensivo_2027.sql');
@@ -307,7 +309,11 @@ const SES = {}; const GUIA = {}; const TABLA = [];
  * tipoCierre, nota } (misma receta de 60′; cambian la franja, el rótulo, la eval sin runner, el cierre, el aviso de runners y la nota de reposición).
  */
 function construirGuia(fila, sab = null) {
-  const prev = sab ? null : FILAS.find((r) => r.dia === fila.dia - 1) || null;
+  // v6.10 (17-nov-2026): la sesión «anterior» de la eval salta los días de FIN DE SEMANA que recuperan un día perdido (dom 29-nov = D9): el lun 30 sigue con
+  //   la regla de los lunes (5Q rehechas del mini-sim del vie 27, como en la v6.09) y el propio dom 29 lleva la eval de la última sesión de BANCO (I-4 del jue 26)
+  const finde = (r) => !!r && [0, 6].includes(new Date(r.fecha + 'T12:00:00Z').getUTCDay());
+  const prev = sab ? null : finde(fila) ? [...FILAS].reverse().find((r) => r.dia < fila.dia && r.tipo === 'banqueo1h') || null
+    : [...FILAS].reverse().find((r) => r.dia < fila.dia && !finde(r)) || null;
   const e = fila.extra || {};
   const sec = (fila.temas_secundarios || []).filter((s) => s.rol === 'cola_larga');
   const rEval = runner(`eval_${fila.fecha}`);
@@ -338,12 +344,12 @@ function construirGuia(fila, sab = null) {
         { min: rcM ? rcM.correccion : 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: rcM ? `${rcM.correccion}′ para las 25Q (≈0,8′ por pregunta: los aciertos «seguros» solo se leen; el tiempo va a fallos y dudosas). ${CAT.TECNICA_SIM.CORRECCION}` : CAT.TECNICA_SIM.CORRECCION },
         sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN})`, como: `Nota /25 en ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
           : { min: rcM ? rcM.registro : 5, que: `Registro: nota /25 + cierre semanal`, como: `${(() => {
-            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 7)) : [];
+            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
             const ll = pend.length ? DOM_LLEGADA.find((x) => x.fecha > fila.fecha && x.fecha <= addD(fila.fecha, 2)) : null;
             return ll ? `Runners del ${corta(pend[0])} al ${corta(pend.at(-1))} → ${corta(ll.fecha)} ${ll.rev} (revisión semanal, paso 5). ` : '';
           })()}Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}. ${CAT.TECNICA_SIM.COMPARA}${(() => {
             // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
-            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 7)) : [];
+            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
             const ll = pend.length ? DOM_LLEGADA.find((x) => x.fecha > fila.fecha && x.fecha <= addD(fila.fecha, 2)) : null;
             return !pend.length ? '' : ll ? ` Comandos de esos runners (los corre la revisión del ${corta(ll.fecha)}): ${cmdRunnersDias(pend)}.` : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}, ${cmdRunnersDias(pend)}.`;
           })()}` },
@@ -477,7 +483,7 @@ function construirGuia(fila, sab = null) {
           if (exc) av.push(`EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco; su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
           // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
           if (!pendiente && !sab) {
-            const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 4));
+            const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 6)); // v6.10: hasta el domingo (dom 29-nov = D9, recupera el mar 17)
             // v6.09b lote 1-quater FX1 (revisión V2): el plazo va al PRINCIPIO del aviso (el Calendar corta el aviso a 240: tras la excepción del lunes quedaba en la pos. 371)
             if (pendSem.length) av.unshift(`Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])} → ${cmdRunnersDias(pendSem)}.`);
           }

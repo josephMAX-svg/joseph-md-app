@@ -31,6 +31,9 @@
  *    regenerado; banqueo = 220 sesiones (61 mant. con los sáb 8, 15, 22 y 29-may + 159 ext. hasta el vie 3-dic-2027; sin repuestas).
  *  · v6.09 (16-nov-2026 · D1 = mar 17-nov; el jue 31-dic pasa a hábil): sin cambios de lógica; fechas de F1 de mirDailyPlan (D1 mar 17-nov → D32 jue
  *    31-dic; desde D33 lun 4-ene igual que la v6.08, D78 lun 8-mar) y del JSON regenerado; banqueo sin cambio (220 sesiones).
+ *  · v6.10 · tanda C (17-nov-2026 · decidido con Joseph en el chat MIR): MIR_METODO lleva el estado real del mazo de Ravi («1º VUELTA», ya en Anki, 851
+ *    tarjetas suspendidas) y las tarjetas por subtema contadas (raviPorCap); --check exige en D1-D76 las reglas A (la hora empieza con preguntas; Anki solo
+ *    repasa), B (sin importar nada; reactivación POR SUBTEMA al terminarlo, al final del día) y D (el pre-test no muestra la sección antes de contestar).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */
@@ -70,6 +73,7 @@ if (!(MJ.relacional.min >= 1 && MJ.relacional.min1dia >= 1 && MJ.relacional.min 
 const metodo = {
   version: MJ._meta.version, doc: MJ._meta.doc,
   mazoPersonal: MJ.anki.mazoPersonal, mazoBase: MJ.anki.mazoBase, mazoBaseBusca: MJ.anki.mazoBaseBusca, presetBase: MJ.anki.presetBase,
+  mazoBaseEstado: MJ.anki.mazoBaseEstado || '', raviPorCap: MJ.anki.raviPorCap || {}, // v6.10 · tanda C: el mazo «1º VUELTA» ya está en Anki · reactivación por subtema
   nuevasBase1V: MJ.anki.nuevasBase1V, nuevasBaseBanqueo: MJ.anki.nuevasBaseBanqueo, umbralVencidas: MJ.anki.umbralVencidas,
   relMin: MJ.relacional.min, relMin1dia: MJ.relacional.min1dia, raviCarpeta: MJ.relacional.raviCarpeta, raviBusca: MJ.relacional.raviBusca, seccionNota: MJ.relacional.seccionNota,
   videos: MJ.videos, asignaturas: metodoAsig,
@@ -176,6 +180,8 @@ export const MIR_POOL_POR_ASIG: Record<number, number> = ${JSON.stringify(porAsi
 export interface MirMetodoAsig { asignatura: string; dIni: number; dFin: number; nota: string; ravi: string[] }
 export interface MirMetodo {
   version: string; doc: string; mazoPersonal: string; mazoBase: string; mazoBaseBusca: string; presetBase: string;
+  /** v6.10 · tanda C: estado real del mazo de Ravi en Anki y tarjetas de «1º VUELTA» por capítulo (capId) contadas con Joseph (las que faltan se buscan por texto) */
+  mazoBaseEstado: string; raviPorCap: Record<string, { n: number; tema: string; nota?: string }>;
   nuevasBase1V: number; nuevasBaseBanqueo: number; umbralVencidas: number;
   relMin: number; relMin1dia: number; raviCarpeta: string; raviBusca: string; seccionNota: string;
   videos: Record<string, { t: string; url: string }>; asignaturas: Record<number, MirMetodoAsig>;
@@ -233,8 +239,23 @@ function validarTodo(tsDatos) {
     if (anki && !(anki.que.includes(metodo.mazoPersonal) && anki.que.includes(metodo.mazoBase))) errores.push(`D${d.d}: el paso Anki no lleva el mazo personal y el de Ravi`);
     if (!g.pasos.some((p) => /APEX en /.test(p.que) && /nivel 3-4\/5/.test(p.como))) errores.push(`D${d.d}: el paso APEX no lleva el criterio de tarjeta de Ravi`);
   }
+  // v6.10 · tanda C (decidido con Joseph en el chat MIR, 17-nov): (A) la hora MIR empieza SIEMPRE con preguntas (cierre · eval · pre-test) y Anki solo
+  //   repasa lo ya estudiado · (B) el mazo de Ravi ya está en Anki: nada de importar; se reactiva POR SUBTEMA al terminarlo (último paso del día-tema) ·
+  //   (D) el pre-test no muestra la sección de la pregunta antes de contestarla
   const g1 = MG.mirGuiaDe(MDD.mirDiaN(1).fecha);
-  if (!g1.pasos.some((p) => p.que.includes(metodo.mazoBase) && /SUSPENDIDO/.test(p.que))) errores.push('D1: el arranque no importa el mazo Ravi suspendido');
+  if (g1.pasos.some((p) => /import/i.test(p.que + ' ' + p.como) && p.que.includes(metodo.mazoBase))) errores.push('D1: el arranque todavía importa el mazo de Ravi (ya está en Anki)');
+  for (const d of MDD.MIR_DIAS) {
+    if (d.d > MDD.MIR_TEMAS_TOTAL) continue;
+    const g = MG.mirGuiaDe(d.fecha);
+    if (!/^(TEST DE CIERRE|EVAL ANCLADA|PRE-TEST)/.test(sinH(g.pasos[0].que))) errores.push(`D${d.d}: la hora MIR no empieza con preguntas (regla A): «${sinH(g.pasos[0].que).slice(0, 50)}…»`);
+    const iAnki = g.pasos.findIndex((p) => /^Anki /.test(sinH(p.que)));
+    if (iAnki === 0) errores.push(`D${d.d}: el Anki va antes de las preguntas (regla A)`);
+    const ult = g.pasos.slice(-2).map((p) => `${p.que} ${p.como}`).join(' ');
+    if (!new RegExp(`[Rr]eactiva[^.]*«${metodo.mazoBase}»|«${metodo.mazoBase}»[^.]*[Rr]eactiva`).test(ult)) errores.push(`D${d.d}: no reactiva al final las tarjetas de Ravi de su subtema (regla B)`);
+    if (g.pasos.some((p) => /reactivar el mazo Ravi de /.test(p.que))) errores.push(`D${d.d}: reactiva la asignatura entera al empezarla (regla B: por subtema, al terminarlo)`);
+    const pre = g.pasos.find((p) => /^PRE-TEST/.test(sinH(p.que)));
+    if (!pre || /la guía dice en qué sección/.test(pre.como) || !/DESPUÉS de contestar/.test(pre.como)) errores.push(`D${d.d}: el pre-test no avisa de que la sección se mira DESPUÉS de contestar (regla D)`);
+  }
   const g77 = MG.mirGuiaDe(MDD.mirDiaN(77).fecha); const g78 = MG.mirGuiaDe(MDD.mirDiaN(78).fecha);
   if (!tiene(g77, /REVISIÓN FORMAL/) || !g77.pasos.some((p) => /reloj/i.test(p.como))) errores.push('D77: falta la técnica de simulacro (reloj + revisión formal)');
   if (!tiene(g78, /EN BLANCO/) || !tiene(g78, /FALLADAS/)) errores.push('D78: falta el orden de corrección de Ravi');

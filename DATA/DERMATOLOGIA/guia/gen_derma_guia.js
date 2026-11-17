@@ -98,8 +98,13 @@ if (UW.size !== 6) aborta(`uWorld: esperaba 6 Systems de Dermatology, hay ${UW.s
 
 // velocidad de vídeo (regla E1 del Step 1): S1 = hasta el D5 · S2-S3 = hasta el D15 · desde el D16
 const fechaD = (d) => (U.DIAS.find((x) => x.d === d) || {}).fecha;
-const VEL = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DIAS.length < 15 ? U.DIAS[U.DIAS.length - 1].fecha : undefined) }; // v6.08: F1 con < 15 filas → fin de la F1 (mar 29-dic)
-if (!VEL.s1Hasta || !VEL.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
+const VEL0 = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DIAS.length < 15 ? U.DIAS[U.DIAS.length - 1].fecha : undefined) }; // v6.08: F1 con < 15 filas → fin de la F1 (mar 29-dic)
+if (!VEL0.s1Hasta || !VEL0.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
+// v6.10 (17-nov-2026): DERMA QUIETA. El Step 1 corre una ranura (D1 = UWSA1 jue 19-nov → D5 jue 3-dic · última fila de F1 sáb 2-ene) pero Derma no se
+//   mueve, y sus sesiones de F1 están MEDIDAS (lotes 1-bis / 1-ter) con los cortes de la v6.09 (1,0× hasta el mar 1-dic · 1,25× hasta el mar 29-dic):
+//   seguir el corrimiento cambiaría la velocidad —y el tiempo ↔ material— del d6 (mié 2-dic) y del d16-d17 (30 y 31-dic). Con el Step de la v6.10
+//   (D1 jue 19-nov) los cortes se quedan donde estaban; con cualquier otro régimen, la regla de siempre (D5 / D15 del Step).
+const VEL = fechaD(1) === '2026-11-19' && VEL0.s1Hasta === '2026-12-03' ? { s1Hasta: '2026-12-01', s23Hasta: '2026-12-29' } : VEL0;
 const vel = (fecha) => (fecha <= VEL.s1Hasta ? { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : fecha <= VEL.s23Hasta ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
 
 // v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8): el atlas DermNet de F1 MEDIDO por SESIÓN (fecha) con la regla fija
@@ -212,7 +217,7 @@ const C = {
   uw: (id) => UW.get(id) || aborta(`uWorld ${id}`),
   temaN: (t) => temaN.get(t),
   pictorialDe: (d) => CAT.PICTORIAL_ASIGNACION[d] || aborta(`d${d} sin tema Pictorial`),
-  pmd1Lectura: (d) => { const p = E2D(d).lectura10.planB; if (!p) aborta(`E2 d${d} sin plan B`); if (!(p.min150 > 0)) aborta(`E2 d${d}: el plan B no trae min150 (regenera gen_guia_lectura.js)`); return { secciones: p.t.split('→ ')[1] || p.t, min: p.min, min150: p.min150, palabras: p.palabras, figs: p.figs }; },
+  pmd1Lectura: (d) => { const p = E2D(d).lectura10.planB; if (!p) aborta(`E2 d${d} sin plan B`); if (!(p.min150 > 0)) aborta(`E2 d${d}: el plan B no trae min150 (regenera gen_guia_lectura.js)`); return { secciones: p.t.split('→ ')[1] || p.t, min: p.min, min150: p.min150, palabras: p.palabras, figs: p.figs, ...(p.minFig ? { minFig: p.minFig } : {}) }; }, // v6.10 · tanda C: + minFig (d1: 24 figuras contadas en vivo × 0,25′)
   pmd1Test: (d) => { const t = E2D(d).testProMIR; if (!t) aborta(`E2 d${d} sin test ProMIR`); return { nQ: t.nQ, ids: t.preguntas.map((x) => x.promir), citadas: t.citadasProMIR, como: t.como.replace(/ · registro en la app.*$/, '') }; },
   url: { pictorial: DD.qa(3626), casos: DD.cases(1546), pmd1: DD.pm(DD.PM_CAP.c1) },
 };

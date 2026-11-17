@@ -108,7 +108,9 @@ const DN_TXT = (x) => `${String(Math.round(x * 100) / 100).replace('.', ',')}′
 /** v6.09b · lote 1-quater (17-nov-2026): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (antes «~3′/Q»). */
 const TUTOR = (n) => `modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (${n}Q ≈ ${String(Math.round(n * 2.35 * 10) / 10).replace('.', ',')}′)`;
 /** Lectura de ProMIR a la regla fija en español (prosa a 150 palabras/min; tablas a 90 y 0,5′ por figura, como la medición E2). */
-const PMD_TXT = (p) => `${String(p.min150).replace('.', ',')}′ medidos a 150 palabras/min · ${p.palabras} palabras · ${p.figs} figuras`;
+const PMD_TXT = (p) => (p.minFig // v6.10 · tanda C: figuras contadas en vivo con su regla por figura (d1: 24 × 0,25′)
+  ? `${String(p.min150).replace('.', ',')}′ medidos: ${p.palabras} palabras a 150 palabras/min + ${p.figs} figuras × ${String(p.minFig).replace('.', ',')}′`
+  : `${String(p.min150).replace('.', ',')}′ medidos a 150 palabras/min · ${p.palabras} palabras · ${p.figs} figuras`);
 
 /** Pasos comunes. */
 const anki = (C, d) => (d === 1
@@ -184,16 +186,18 @@ function curadas(C) {
         anki(C, 1),
         // v6.09b · lote 1-quater: 4Q → 5Q en los mismos 12′ (regla del Tutor: 5 × 2,35′ = 11,75′); el total de F1 de este System no cambia (UW_TUTOR_F1)
         uworld(C, 1028, 5, 12, `en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ${TUTOR(5)}, en inglés`),
-        { min: 9, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
-        { min: DN_MIN(119 + 419 + 224), que: `DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = ${DN_TXT(DN_NEC(762))})`, como: 'Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
-        proyecto(0, 'DICTADO INVERSO de morfología', 'Pídele: «Dame 6 descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». 6 rondas de ~2′ (las 6 en 11′) · cada fallo → tarjeta.'),
+        // v6.10 · tanda C (corrección de hecho del chat Derma): §2.1-2.2 = 24 figuras (no 11) a 0,25′ → la lectura pasa de 9′ a 10′; la variable de ajuste es el
+        //   dictado (11′ → 10′ = 5 rondas de ~2′). Ubicación en GoodNotes aprobada por Joseph: DERMATOLOGIA › A_Fundamentos › 01_d01_… y 02_d01_…
+        { min: Math.round(pmd.min150), que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
+        { min: DN_MIN(119 + 419 + 224), que: `DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = ${DN_TXT(DN_NEC(762))})`, como: 'Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…) · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «02_d01_DermNet_Terminology».', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
+        (() => { const dict = 45 - (3 + 12 + Math.round(pmd.min150) + DN_MIN(119 + 419 + 224) + 2), k = Math.round(dict / 2); return proyecto(dict, 'DICTADO INVERSO de morfología', `Pídele: «Dame ${k} descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». ${k} rondas de ~2′ (las ${k} en ${dict}′) · cada fallo → tarjeta.`); })(),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
         { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '5Q' },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` },
         { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
-      ], '5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 6 rondas de dictado inverso + ≤3 tarjetas.',
+      ], `5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + ${Math.round((45 - (3 + 12 + Math.round(pmd.min150) + DN_MIN(119 + 419 + 224) + 2)) / 2)} rondas de dictado inverso + ≤3 tarjetas.`,
       pendientes(C, x.casoIds), AVISO_B),
     };
   }

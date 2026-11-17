@@ -14,8 +14,8 @@
 > contenido por delante. ⚠ Efecto colateral: con el D1 en **miércoles** **8 de los 12 hitos caen en MARTES** (NBME 25-28 y 30, UWSA2,
 > NBME 31, Free 120; UWSA1 y NBME 32 en miércoles; NBME 29 y 33 en viernes), así que de los 15 viernes de Fase A uno es hito (D65 NBME
 > 29) y 14 son de contenido: **5 N3 + 2 N4 + 7 N1** (v5.19: ningún hito en viernes y 7 N3 + 1 N4 + 7 N1).
-> El **UWSA1 vuelve a cambiar de fecha (mar 6-oct, no rendido → mié 7-oct) y sigue siendo el D1** (baseline en el primer día, como
-> prescribe Palmerton); el **contenido arranca el jue 8-oct (D2)**. Semanas de calendario (homeBriefing / revisión semanal, 20):
+> El **UWSA1 vuelve a cambiar de fecha (mar 6-oct, no rendido → mié 7-oct) y sigue siendo el D1** (baseline en el primer día; ninguna fuente de Palmerton lo pone en el día 1 —«NOT IN SOURCES»—:
+> desde la v6.10b, 17-nov-2026, el UWSA1 va al tramo 2 como prueba de resistencia); el **contenido arranca el jue 8-oct (D2)**. Semanas de calendario (homeBriefing / revisión semanal, 20):
 > S1 = lun 5 → vie 9-oct (sesiones mié 7 → vie 9 = D1-D3) · S2 = 12-16 oct (D4-D8) … S19 = 8-12 feb (D86-D90) · **S20 = 15-19 feb
 > (D91 lun 15 · D92 mar 16 · D93 mié 17 · D94 jue 18 · D95 vie 19) → finde libre → examen lun 22-feb**; el flag de viernes N4 de
 > `gen_usmle_v5.js` cuenta bloques de 7 días desde el D1 (mié → mar; S11 = mié 16 → mar 22-dic).

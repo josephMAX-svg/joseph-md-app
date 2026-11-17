@@ -185,6 +185,13 @@
  *   Pre-test de arranque = mar 17 (parte 1, fila dia 1 II-3, tras el UWSA1) + mié 18 (parte 2, fila dia 2 I-3); jue 19 = banco V-2; lun 23 = III-5.
  *   Siembra v6.09: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v609_mant_20261116
  *     --pendientes-de git:regimen-v6.08:DATA/_scripts/_encaps_mantenimiento_2027.sql --no-persistir   (_pendientes_f1.json sin cambio: 0 pendientes)
+ *
+ * v6.10 (17-nov-2026, orden de Joseph «todo inicia mañana, el 18 es el primer día; corre nomás un día»): el mar 17 tampoco se estudió → D1 = MIÉ
+ *   18-NOV. La ENCAPS 16:15 corre UN hábil y recupera el día el DOM 29-NOV 07:15-08:15 (_fechas_v6.json corrida_s1.extra; _encaps_ciclo_v3.fechas()
+ *   devuelve ese domingo como un slot de banco más): los mini-sims se quedan en sus viernes (vie 20 = dia 3, vie 27 = dia 8; sim_n = dia) y el `dia`
+ *   se renumera POR FECHA solo en las filas 1-9 (dom 29 = dia 9, IV-1); desde el dia 10 (lun 30-nov) todo es idéntico a la v6.09, extra.de incluido
+ *   (se pasa fijo: --de-hasta 2027-03-29). Uso v6.10: node gen_encaps_mantenimiento_2027.js 2026-11-18 --de-hasta 2027-03-29 --pendientes-de <SQL v6.09>
+ *   --no-persistir --out <scratchpad>/mant_v610.sql → comparar con el del repo (solo cambian las filas 1-9 y la cabecera) y copiar.
  */
 const fs = require('fs');
 const path = require('path');
@@ -460,7 +467,7 @@ const guardaBk = BK_REEMPLAZAR
 const verificacion = `select modo, tipo, count(*) from study_schedule where examen = 'ENCAPS' group by 1, 2 order by 1, 2;`;
 const esperado = `MANTENIMIENTO | banqueo1h | ${nBanco} · MANTENIMIENTO | mini_sim | ${nSim} (= ${rows.length} filas ${f0} → ${f1}); las filas INTENSIVO, si existen, deben seguir con su conteo anterior`;
 const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (${hoyLima()})
--- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas con sub-ejes + cola larga · vie = mini-sim 25Q (receta fija) · backup ${BK}
+-- ${rows.length} días L-V${filasObj.some((r) => r.weekday === 'Dom' || r.weekday === 'Sáb') ? ` (${filasObj.filter((r) => r.weekday === 'Dom' || r.weekday === 'Sáb').map((r) => `dia ${r.dia} = ${r.weekday.toLowerCase()} ${r.fecha}`).join(', ')}: fin de semana que recupera un día perdido, corrida_s1.extra)` : ''} · ${f0} → ${f1} · rotación v3 4 semanas con sub-ejes + cola larga · vie = mini-sim 25Q (receta fija) · backup ${BK}
 -- seguridad: (1) aborta si el backup ya existe${BK_REEMPLAZAR ? ' [DESACTIVADA con --bk-reemplazar]' : ''} · (2) DELETE filtrado por modo = 'MANTENIMIENTO' (no toca filas INTENSIVO) · (3) v6.00: aborta si hay filas INTENSIVO con dia ≤ ${dia}
 -- v6.00: extra.de contado sobre ${D1} → ${HASTA > DE_HASTA ? HASTA : DE_HASTA} (--de-hasta, rango v5.20 = ${slotsDe} slots lun-jue; overrides solo de semanas ≤ ${HASTA})${CORR && CORR.d1 === D1 ? `
 -- ${CORR.version} (${CORR.fecha}): corrimiento RÍGIDO D1 ${CORR.d1_previo} → ${CORR.d1} (perdidos ${CORR.perdidos.join(', ')}) · la F1 no se alarga (fin ${HASTA}${HASTA !== F6.f1.fin ? ` = f1.fin ${F6.f1.fin} + los hábiles de la transición` : ''}) · rotación por slots intacta${VIERNES_CHECKPOINT ? ` · CHECKPOINT DEL AÑO = mini-sim del ${VIERNES_CHECKPOINT}` : ''}` : ''}${pendientes ? `

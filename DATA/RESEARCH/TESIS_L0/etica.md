@@ -87,7 +87,11 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 
-> **✅ v6.08 (14-nov-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-11-16, Research d1 mar 17-nov):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **✅ v6.10 (17-nov-2026, vigente): M1 jue 19-nov = 1.ª sesión Research · T-1 DOM 6-DIC 05:00-05:45 (d7; hábil extra: el mar 17 no se estudió). Si no
+> hubo CEI formal, la solicitud se deja LISTA ese domingo y se presenta en la mesa de partes el lun 7-dic, antes del R9. Desde T-3 (mar 29-dic), las
+> fechas del bloque v6.08 de abajo siguen vigentes.**
+>
+> **v6.08 (14-nov-2026; M1 y T-1 corridos por la v6.10; `researchDailyPlan.ts` regenerado con START 2026-11-16, Research d1 mar 17-nov):** M1 (Dr. Ciro: vía CEI + 10 documentos)
 > **mar 17-nov = 1.ª sesión Research** · **T-1 jue 3-dic (d7)** · T-3 mar 29-dic · T-4 lun 4-ene · T-2 STROBE mié 6-ene · T-5 vie 8-ene (día del pre-test 2026-II
 > de la intensiva ENCAPS) · T-6 revisión Dr. Ciro mar 12-ene · T-7 formateo + gates jue 14-ene · **T-8 SUBMIT lun 18-ene-2027** (≤ 15-feb; solo con nº de
 > CEI/exención e inglés revisado; si no, cascada a feb-2027) · PAUSA jue 21-ene → mié 10-feb (v6.08: antes vie 15-ene) · M3 (permiso CADI) **vie 5-mar-2027**

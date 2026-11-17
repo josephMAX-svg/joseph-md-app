@@ -32,8 +32,8 @@
  "mir": [
   {
    "d": 1,
-   "fecha": "2026-11-17",
-   "dia": "mar 17-nov",
+   "fecha": "2026-11-18",
+   "dia": "mié 18-nov",
    "asignatura": "Epidemiología",
    "tema": "Estudios experimentales: Ensayo clínico",
    "capId": "570779c9f4d68bf008dbc7b1",
@@ -516,58 +516,48 @@
     "totalMin": 60,
     "pasos": [
      {
-      "min": 5,
-      "hora": "15:15–15:20",
-      "que": "ARRANQUE (D1 no tiene anclas) · Anki: crear el mazo APEX::MIR::epidemiologia",
-      "como": "Preset FSRS de APEX::MIR (retention 0,85; DATA/MIR/README.md §5). Sin tarjetas nuevas todavía: las crean los APEX de las 16:05."
+      "min": 8,
+      "hora": "15:15–15:23",
+      "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app) · línea base, no nota",
+      "como": "Contesta las 5 aunque adivines (si no sabes, marca A): es la línea base, no la nota; la regla del blanco empieza en el quiz · sin leer nada · 77 s/Q (5Q ≈ 6,4′) + registrar las 5 en la app (kind pretest, ≈1′) = 7,4′ · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 3,
-      "hora": "15:20–15:23",
-      "que": "Recuadro «Orientación MIR» del capítulo + mapa de secciones (sin leer el texto)",
-      "como": "Lee solo el recuadro y recorre los títulos: las secciones marcadas en «Lectura 15′» son las que concentran las preguntas MIR citadas.",
+      "hora": "15:23–15:26",
+      "que": "Orientación MIR + títulos de las 31 secciones (sin leer el texto)",
+      "como": "Lee el recuadro «Orientación MIR» (≈1′) y recorre en orden los 31 títulos del capítulo (≈4 s cada uno ≈ 2,1′): solo títulos, sin leer el texto.",
       "enlace": {
        "t": "Capítulo ProMIR",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b1"
       }
      },
      {
-      "min": 7,
-      "hora": "15:23–15:30",
-      "que": "5Q CIEGAS extra · preguntas MIR ≥2015 citadas en el capítulo (2021-045 · 2020-048 · 2019-053 · 2018-116 · 2017-228)",
-      "como": "Abre cada enlace (ProMIR → pregunta: el botón de este paso = la 1.ª; las 5 están en los recursos de la tarjeta), responde SIN leer, 77 s/Q, en blanco si no descartas 2 · apunta acierto/fallo: cada fallo marca la sección a leer en la lectura dirigida.",
-      "enlace": {
-       "t": "1.ª de 5 · MIR 2021-045",
-       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2021-045"
-      }
-     },
-     {
-      "min": 8,
-      "hora": "15:30–15:38",
-      "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
-     },
-     {
-      "min": 15,
-      "hora": "15:38–15:53",
-      "que": "LECTURA DIRIGIDA 15′ · Orientación MIR (1′) + 2. Definición de ensayo clínico (1.5′ · 8 preguntas MIR citadas) · 3.2. Fase II (1′ · 7 preguntas MIR citadas) · 3.4. Fase IV (1.5′ · 3 preguntas MIR citadas) · 4. Tipos de ensayos clínicos (1.5′ · 6 preguntas MIR citadas) · 6.1. Aleatorización (3.5′ · 15 preguntas MIR citadas) · 6.2. Análisis por intención de tratar. Análisis por protocolo (2.5′ · 4 preguntas MIR citadas) · 8.4. Ensayo de no inferioridad (2′ · 6 preguntas MIR citadas)",
-      "como": "Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (3.1. Fase I 0.5′ · 3.3. Fase III 1.5′ · 9.3. Selección de los sujetos 2′). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. Ritmo de referencia 180 palabras/min. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
+      "min": 26,
+      "hora": "15:26–15:52",
+      "que": "LECTURA DE BASE 26′, en orden y entera (25,5′ medidos a 150 palabras/min) · §2 → §3 (cabecera + 3.1-3.4) → §4 → §6.1 → §6.2 → §8.4; el §9 solo si sobra tiempo",
+      "como": "Desde cero, en el orden del capítulo y cada apartado entero (Whole Page Rule): 2. 1,7′ · 3. 1′ · 3.1. 0,6′ · 3.2. 1′ · 3.3. 1,5′ · 3.4. 1,7′ · 4. 2′ · 6.1. 4,1′ · 6.2. 2,7′ · 8.4. 2,6′ = 19′ a 150 palabras/min (la regla fija en español; tablas a 90, 0,5′ por figura) → sobran 7′ y entra el §9 en orden: 9. 3,2′ · 9.1. 3,3′ = 6,5′ (total 25,5′); 9.2-9.3 quedan para la 2.ª vuelta. Por cada duda o fallo del pre-test, la regla en el Shopping List.",
       "enlace": {
        "t": "ProMIR · Estudios experimentales: Ensayo clínico",
        "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b1"
       }
      },
      {
-      "min": 12,
-      "hora": "15:53–16:05",
-      "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 97 preguntas MIR citadas en el capítulo."
+      "min": 13,
+      "hora": "15:52–16:05",
+      "que": "6-8Q comentadas (máx. 10) — objetivo 7 — de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
+      "como": "Las 2 primeras que no entren abren la eval de mañana (jue 19-nov 15:15) · La regla del blanco empieza aquí: en blanco si no descartas 2 · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (107 s/Q: 7Q ≈ 12,5′; 6Q ≈ 10,7′ y 8Q ≈ 14,3′; la 9.ª y la 10.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista; a las 16:05 paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 97 preguntas MIR citadas en el capítulo."
      },
      {
-      "min": 10,
-      "hora": "16:05–16:15",
+      "min": 7,
+      "hora": "16:05–16:12",
       "que": "≤4 APEX en APEX::MIR::epidemiologia",
-      "como": "Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · 1 de cada 4 con imagen · creados directamente en Anki."
+      "como": "Solo de los fallos de hoy (pre-test y quiz), ≈2′ por tarjeta: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · creados directamente en Anki."
+     },
+     {
+      "min": 3,
+      "hora": "16:12–16:15",
+      "que": "REPASO EN BLANCO + reactivar las 4 tarjetas de Ravi del ensayo clínico («1º VUELTA»)",
+      "como": "2′ en blanco, sin mirar: lo que recuerdes del capítulo (fases · aleatorización · intención de tratar vs por protocolo · no inferioridad). 1′ en Anki: Navegador → mazo «1º VUELTA» → busca el ensayo clínico → sus 4 tarjetas → Reactivar (Ctrl+J); entran en el repaso desde mañana (Anki solo repasa lo ya estudiado)."
      }
     ],
     "recursos": [
@@ -588,66 +578,30 @@
       "cantidad": "5Q (2022-046 · 2023-052 · 2024-049 · 2024-050 · 2025-041)"
      },
      {
-      "t": "5Q ciegas extra 1/5 · MIR 2021-045",
+      "t": "Reserva opcional (fuera de la hora) · 5Q ciegas 1/5 · MIR 2021-045",
       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2021-045"
      },
      {
-      "t": "5Q ciegas extra 2/5 · MIR 2020-048",
+      "t": "Reserva opcional (fuera de la hora) · 5Q ciegas 2/5 · MIR 2020-048",
       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2020-048"
      },
      {
-      "t": "5Q ciegas extra 3/5 · MIR 2019-053",
+      "t": "Reserva opcional (fuera de la hora) · 5Q ciegas 3/5 · MIR 2019-053",
       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2019-053"
      },
      {
-      "t": "5Q ciegas extra 4/5 · MIR 2018-116",
+      "t": "Reserva opcional (fuera de la hora) · 5Q ciegas 4/5 · MIR 2018-116",
       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2018-116"
      },
      {
-      "t": "5Q ciegas extra 5/5 · MIR 2017-228",
+      "t": "Reserva opcional (fuera de la hora) · 5Q ciegas 5/5 · MIR 2017-228",
       "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-228"
-     },
-     {
-      "t": "Vídeo resumen de Epidemiología (asignatura entera) — NO entra en la franja (>12 min)",
-      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b1",
-      "min": 36
-     },
-     {
-      "t": "Opcional fuera de la franja: Vídeo 6-1 · Masterclass: Tipo de ensayos clínicos. (1:12:21)",
-      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b1"
      }
     ],
-    "hecho": "Mazo creado + 5Q ciegas extra + pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥6Q del quiz registradas + ≤4 APEX creados.",
-    "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 25 de Epidemiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′)."
+    "hecho": "Pre-test 5Q registrado (línea base) + lectura de base en orden (+ el §9 con lo que sobre) + 6-8Q del quiz registradas + ≤4 APEX de los fallos + repaso en blanco + las 4 tarjetas de Ravi del ensayo clínico reactivadas.",
+    "planB": "Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 25 de Epidemiología) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): pre-test 5Q + §2 y §3 de la lectura de base (15′)."
    },
    "preguntas": {
-    "extraD1": [
-     {
-      "promir": "2021-045",
-      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2021-045",
-      "seccion": "6.2. Análisis por intención de tratar. Análisis por protocolo"
-     },
-     {
-      "promir": "2020-048",
-      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2020-048",
-      "seccion": "3.2. Fase II"
-     },
-     {
-      "promir": "2019-053",
-      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2019-053",
-      "seccion": "9. Aspectos legales y éticos de los ensayos clínicos en España"
-     },
-     {
-      "promir": "2018-116",
-      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2018-116",
-      "seccion": "6.1. Aleatorización"
-     },
-     {
-      "promir": "2017-228",
-      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-228",
-      "seccion": "6.1. Aleatorización"
-     }
-    ],
     "pretest": [
      {
       "id": "2022-046",
@@ -766,14 +720,47 @@
       "seccion": "6.1. Aleatorización",
       "leida": true
      }
+    ],
+    "extraD1": [
+     {
+      "promir": "2021-045",
+      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2021-045",
+      "seccion": "6.2. Análisis por intención de tratar. Análisis por protocolo"
+     },
+     {
+      "promir": "2020-048",
+      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2020-048",
+      "seccion": "3.2. Fase II"
+     },
+     {
+      "promir": "2019-053",
+      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2019-053",
+      "seccion": "9. Aspectos legales y éticos de los ensayos clínicos en España"
+     },
+     {
+      "promir": "2018-116",
+      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2018-116",
+      "seccion": "6.1. Aleatorización"
+     },
+     {
+      "promir": "2017-228",
+      "url": "https://promir.medicapanamericana.com/pregunta/MIR/2017-228",
+      "seccion": "6.1. Aleatorización"
+     }
     ]
    },
    "lectura": {
-    "minUsados": 14.5,
+    "minUsados": 22,
     "ritmo": {
      "prosaPpm": 180,
      "tablaPpm": 90,
      "figuraMin": 0.5
+    },
+    "min150": 25.5,
+    "minPaso": 26,
+    "d1": {
+     "base": 19,
+     "sobra": 6.5
     },
     "secciones": [
      {
@@ -790,6 +777,32 @@
       "clips": []
      },
      {
+      "titulo": "3. Fases de los ensayos clínicos",
+      "min": 1,
+      "minLeer": 1,
+      "parcial": false,
+      "palabras": 23,
+      "palabrasTabla": 35,
+      "figs": 1,
+      "citasMIR": 1,
+      "citasDesde2015": 0,
+      "citasDesde2020": 0,
+      "clips": []
+     },
+     {
+      "titulo": "3.1. Fase I",
+      "min": 0.5,
+      "minLeer": 0.5,
+      "parcial": false,
+      "palabras": 95,
+      "palabrasTabla": 0,
+      "figs": 0,
+      "citasMIR": 5,
+      "citasDesde2015": 0,
+      "citasDesde2020": 0,
+      "clips": []
+     },
+     {
       "titulo": "3.2. Fase II",
       "min": 1,
       "minLeer": 1,
@@ -800,6 +813,19 @@
       "citasMIR": 7,
       "citasDesde2015": 2,
       "citasDesde2020": 2,
+      "clips": []
+     },
+     {
+      "titulo": "3.3. Fase III",
+      "min": 1.5,
+      "minLeer": 1.5,
+      "parcial": false,
+      "palabras": 226,
+      "palabrasTabla": 0,
+      "figs": 0,
+      "citasMIR": 5,
+      "citasDesde2015": 0,
+      "citasDesde2020": 0,
       "clips": []
      },
      {
@@ -866,18 +892,39 @@
       "citasDesde2015": 3,
       "citasDesde2020": 0,
       "clips": []
+     },
+     {
+      "titulo": "9. Aspectos legales y éticos de los ensayos clínicos en España",
+      "min": 2.5,
+      "minLeer": 2.5,
+      "parcial": false,
+      "palabras": 474,
+      "palabrasTabla": 0,
+      "figs": 0,
+      "citasMIR": 3,
+      "citasDesde2015": 1,
+      "citasDesde2020": 0,
+      "clips": []
+     },
+     {
+      "titulo": "9.1. Consentimiento informado",
+      "min": 3,
+      "minLeer": 3,
+      "parcial": false,
+      "palabras": 498,
+      "palabrasTabla": 0,
+      "figs": 0,
+      "citasMIR": 2,
+      "citasDesde2015": 1,
+      "citasDesde2020": 0,
+      "clips": []
      }
     ],
     "reserva": [
      {
-      "titulo": "3.1. Fase I",
-      "min": 0.5,
-      "citasMIR": 5
-     },
-     {
-      "titulo": "3.3. Fase III",
-      "min": 1.5,
-      "citasMIR": 5
+      "titulo": "9.2. Evaluación del riesgo/beneficio",
+      "min": 1,
+      "citasMIR": 1
      },
      {
       "titulo": "9.3. Selección de los sujetos",
@@ -886,13 +933,10 @@
      }
     ],
     "paraElRepaso": {
-     "min": 36,
+     "min": 27.5,
      "donde": "2.ª vuelta MIR (fase principal desde oct-2027) · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)",
      "secciones": [
       "1. Introducción 1.5′",
-      "3. Fases de los ensayos clínicos 1′",
-      "3.1. Fase I 0.5′",
-      "3.3. Fase III 1.5′",
       "5. Selección de los sujetos 0.5′",
       "5.1. Criterios de inclusión y exclusión 1.5′",
       "5.2. Tamaño muestral 0.5′",
@@ -909,8 +953,6 @@
       "8.6. Ensayos clínicos pragmáticos 0.5′",
       "8.7. Ensayo clínico secuencial 1′",
       "8.8. Ensayo clínico de un solo paciente 0.5′",
-      "9. Aspectos legales y éticos de los ensayos clínicos en España 2.5′",
-      "9.1. Consentimiento informado 3′",
       "9.2. Evaluación del riesgo/beneficio 1′",
       "9.3. Selección de los sujetos 2′"
      ]
@@ -919,8 +961,8 @@
   },
   {
    "d": 2,
-   "fecha": "2026-11-18",
-   "dia": "mié 18-nov",
+   "fecha": "2026-11-19",
+   "dia": "jue 19-nov",
    "asignatura": "Epidemiología",
    "tema": "Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)",
    "capId": "570779c9f4d68bf008dbc80d",
@@ -1098,7 +1140,7 @@
       "min": 7,
       "hora": "15:15–15:22",
       "que": "EVAL ANCLADA 2Q + 2Q de la cola del quiz del D1 · 4Q comentadas (4 × 107 s = 7,1′) · 2Q D-1 (D1 Estudios experimentales: Ensayo clínico) · cola del quiz del D1: la 7.ª-10.ª de su lista (2015-038 · 2015-029 · 2014-208 · 2014-196)",
-      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 2 ancladas (2 × 107 s ≈ 3,6′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después las 2 primeras de su lista que no hiciste ayer (2 × 107 s ≈ 3,6′; la 7.ª y la 8.ª si paraste en la 6.ª): hoy solo hay 2Q ancladas (no existen D-3/D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si la app te propone un tema 🔥 caliente (gate), manda la app."
+      "como": "Cronómetro 7′: 4Q a 77 s + 30 s de comentario (107 s/Q), en blanco si no descartas 2 · primero las 2 ancladas (2 × 107 s ≈ 3,6′; preguntas: las listadas, citadas ProMIR de lo que leíste ese día, no usadas) · después las 2 primeras de su lista que no hiciste ayer (2 × 107 s ≈ 3,6′; la 7.ª y la 8.ª si paraste en la 6.ª): hoy solo hay 2Q ancladas (no existen D-3/D-7 todavía) y el hueco lo llena material del plan, no el Anki · registra las 4 juntas en el log de las 15:27 (aciertos/4) · si ayer llegaste a la 9.ª o la 10.ª, completa con la reserva del D1 (5Q ciegas: 2021-045 · 2020-048 · 2019-053 · 2018-116 · 2017-228) · si la app te propone un tema 🔥 caliente (gate), manda la app."
      },
      {
       "min": 5,
@@ -1116,7 +1158,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -1132,7 +1174,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "Las 2 primeras que no entren abren la eval de mañana (jue 19-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
+      "como": "Las 2 primeras que no entren abren la eval de mañana (vie 20-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 5Q (todas en el pre-test) → el quiz sale de las 63 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -1450,8 +1492,8 @@
   },
   {
    "d": 3,
-   "fecha": "2026-11-19",
-   "dia": "jue 19-nov",
+   "fecha": "2026-11-20",
+   "dia": "vie 20-nov",
    "asignatura": "Epidemiología",
    "tema": "Evaluación de pruebas diagnósticas",
    "capId": "570779c9f4d68bf008dbc80f",
@@ -1669,7 +1711,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -1957,8 +1999,8 @@
   },
   {
    "d": 4,
-   "fecha": "2026-11-20",
-   "dia": "vie 20-nov",
+   "fecha": "2026-11-23",
+   "dia": "lun 23-nov",
    "asignatura": "Medicina Legal y Bioética",
    "tema": "Principios de bioética y relación médico-paciente",
    "capId": "64a3be863f62ec1dbb3e665b",
@@ -2108,7 +2150,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -2443,8 +2485,8 @@
   },
   {
    "d": 5,
-   "fecha": "2026-11-23",
-   "dia": "lun 23-nov",
+   "fecha": "2026-11-24",
+   "dia": "mar 24-nov",
    "asignatura": "Cardiología",
    "tema": "Cardiología básica",
    "capId": "570779c9f4d68bf008dbc7e9",
@@ -2810,7 +2852,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -2826,7 +2868,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "La primera que no entre abre la eval de mañana (mar 24-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
+      "como": "La primera que no entre abre la eval de mañana (mié 25-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 4Q (todas en el pre-test) → el quiz sale de las 68 preguntas MIR citadas en el capítulo."
      },
      {
       "min": 10,
@@ -3132,8 +3174,8 @@
   },
   {
    "d": 6,
-   "fecha": "2026-11-24",
-   "dia": "mar 24-nov",
+   "fecha": "2026-11-25",
+   "dia": "mié 25-nov",
    "asignatura": "Cardiología",
    "tema": "Trastornos del ritmo",
    "capId": "570779c9f4d68bf008dbc78d",
@@ -3561,7 +3603,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -3577,7 +3619,7 @@
       "min": 12,
       "hora": "15:53–16:05",
       "que": "6Q comentadas (máx. 8) de la lista de 10 · 7 del pool oficial que no entraron en el pre-test + preguntas MIR citadas en las secciones que acabas de leer",
-      "como": "La primera que no entre abre la eval de mañana (mié 25-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
+      "como": "La primera que no entre abre la eval de mañana (jue 26-nov 15:15) · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · 77 s/Q + 30 s de comentario (≈107 s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista (pool de la app primero, luego las citadas, más recientes primero); a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: 12Q → 5 en el pre-test y 7 abren el quiz (en la app); el resto, preguntas MIR citadas en el capítulo (45)."
      },
      {
       "min": 10,
@@ -3892,8 +3934,8 @@
   },
   {
    "d": 7,
-   "fecha": "2026-11-25",
-   "dia": "mié 25-nov",
+   "fecha": "2026-11-26",
+   "dia": "jue 26-nov",
    "asignatura": "Cardiología",
    "tema": "Cardiopatía isquémica",
    "capId": "570779c9f4d68bf008dbc731",
@@ -4145,7 +4187,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -4440,8 +4482,8 @@
   },
   {
    "d": 8,
-   "fecha": "2026-11-26",
-   "dia": "jue 26-nov",
+   "fecha": "2026-11-27",
+   "dia": "vie 27-nov",
    "asignatura": "Cardiología",
    "tema": "Insuficiencia cardíaca",
    "capId": "64588d5ef704295c924d9289",
@@ -4873,7 +4915,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -5160,8 +5202,8 @@
   },
   {
    "d": 9,
-   "fecha": "2026-11-27",
-   "dia": "vie 27-nov",
+   "fecha": "2026-11-29",
+   "dia": "dom 29-nov",
    "asignatura": "Cardiología",
    "tema": "Valvulopatías",
    "capId": "570779c8f4d68bf008dbc65a",
@@ -5908,7 +5950,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -6674,7 +6716,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -7533,7 +7575,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -8067,7 +8109,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -8710,7 +8752,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -9214,7 +9256,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -9948,7 +9990,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -10540,7 +10582,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -11222,7 +11264,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -11914,7 +11956,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -12416,7 +12458,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -13054,7 +13096,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -13541,7 +13583,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -14148,7 +14190,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (1 del pool oficial de la app + 4 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -15199,7 +15241,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -15933,7 +15975,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -16687,7 +16729,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -17440,7 +17482,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -18044,7 +18086,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -18623,7 +18665,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -19164,7 +19206,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -19680,7 +19722,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -20427,7 +20469,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -21415,7 +21457,7 @@
       "min": 7,
       "hora": "15:30–15:37",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 16,
@@ -22396,7 +22438,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -23410,7 +23452,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -24019,7 +24061,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -24666,7 +24708,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -25396,7 +25438,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -26270,7 +26312,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -26904,7 +26946,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -27445,7 +27487,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -28043,7 +28085,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -28666,7 +28708,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -29263,7 +29305,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -29872,7 +29914,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -30433,7 +30475,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -30967,7 +31009,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -31445,7 +31487,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -32107,7 +32149,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -32879,7 +32921,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -33651,7 +33693,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -34504,7 +34546,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -35288,7 +35330,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -35963,7 +36005,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -36686,7 +36728,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -37259,7 +37301,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -37845,7 +37887,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -38550,7 +38592,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (1 del pool oficial de la app + 4 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -39100,7 +39142,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -39831,7 +39873,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -40558,7 +40600,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (1 del pool oficial de la app + 4 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -41074,7 +41116,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -41617,7 +41659,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (2 del pool oficial de la app + 3 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -42180,7 +42222,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -42759,7 +42801,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -43254,7 +43296,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -43840,7 +43882,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (1 del pool oficial de la app + 4 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -44399,7 +44441,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -44939,7 +44981,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -45576,7 +45618,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -46841,7 +46883,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -47436,7 +47478,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -48094,7 +48136,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -48589,7 +48631,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (3 del pool oficial de la app + 2 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -49190,7 +49232,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -50025,7 +50067,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (4 del pool oficial de la app + 1 citadas en ProMIR)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -50707,7 +50749,7 @@
       "min": 8,
       "hora": "15:30–15:38",
       "que": "PRE-TEST 5Q ciegas del capítulo nuevo (5 del pool oficial de la app)",
-      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la guía dice en qué sección cae cada pregunta)."
+      "como": "Sin leer nada · 77 s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave)."
      },
      {
       "min": 15,
@@ -51086,11 +51128,14 @@
     "planB": {
      "t": "ProMIR Dermatología · cap. 1 «Introducción. Conceptos generales» → 2.1. Lesiones primarias + 2.2. Lesiones secundarias",
      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
-     "min": 8.5,
-     "min150": 9.4,
+     "min": 9.5,
+     "min150": 9.9,
      "palabras": 586,
-     "figs": 11,
-     "por": "lesiones primarias y secundarias = el tema del d1"
+     "figs": 24,
+     "por": "lesiones primarias y secundarias = el tema del d1",
+     "figsMedidas": 11,
+     "minFig": 0.25,
+     "figsFuente": "ProMIR en vivo (chat Derma, 17-nov-2026): Fig. 1-2 «Máculas» → Fig. 1-25 «Telangiectasias»"
     }
    }
   },

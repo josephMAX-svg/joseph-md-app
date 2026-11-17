@@ -23,6 +23,10 @@
  * v6.07 (8-nov-2026): D1 = lun 9-nov (+5 hábiles; mismos 76 capítulos medidos, misma guía: solo cambian las fechas, que salen de mirDailyPlan).
  * v6.06 (31-oct-2026): D1 = lun 2-nov (+5 hábiles; mismos 76 capítulos medidos, misma guía: solo cambian las fechas, que salen de mirDailyPlan).
  * v6.05 (24-oct-2026): D1 = lun 26-oct (+3 hábiles; mismos 76 capítulos medidos, misma guía: solo cambian las fechas, que salen de mirDailyPlan).
+ * v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat MIR): (A) la hora MIR empieza SIEMPRE con preguntas y Anki solo repasa lo ya estudiado
+ *   (desde el D+1) · (B) el mazo de Ravi YA está en Anki («1º VUELTA», 851 tarjetas suspendidas): nada se importa y se reactiva POR SUBTEMA al terminarlo
+ *   (último minuto del paso APEX; el D1 en su último paso) · (D) el pre-test no muestra la sección de una pregunta antes de contestarla · D1 = el reloj
+ *   decidido (sin ARRANQUE de Anki; las 5Q ciegas extra pasan a reserva opcional).
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,
@@ -37,6 +41,7 @@ import { MIR_DIAS, mirDiaDe, mirDiaN, mirAnclas, mirCierreDe, mirBloques, capUrl
 import { mirMantDiaDe, mirMantFranjas, MIR_MANT_META, type DiaMIRMant } from './mirMantenimiento';
 import { mirAnkiDeck } from './ankiLinks';
 import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO, type MirGuiaPreguntas, type MirMetodoAsig } from './mirGuiaDatos';
+import { extraCorridaDe } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir)
 
 export type { MirGuiaPreguntas, MirGuiaQ, MirGuiaEvalSlot, MirCapMedido, MirMetodo, MirMetodoAsig } from './mirGuiaDatos';
 export { MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO };
@@ -115,8 +120,9 @@ function pasoRelAntes(a: MirMetodoAsig, min: number): GuiaPaso {
   const segunda = a.dIni === a.dFin ? 'la 2.ª pasada es hoy, al final de la franja' : `la 2.ª pasada es el D${a.dFin}`;
   return {
     min,
-    que: `REPASO RELACIONAL · ANTES de empezar ${a.asignatura} (1.ª de las 2 pasadas de la vuelta) + reactivar el mazo Ravi de ${a.asignatura}`,
-    como: `${leer}. Es un vistazo, no estudio: solo deja listos los ganchos entre asignaturas (${segunda}). Último minuto en Anki: Navegador → tarjetas de ${a.asignatura} del mazo «${M.mazoBase}» → Reactivar (Ctrl+J); entran a ≤${M.nuevasBase1V} nuevas/día, mezcladas con lo ya reactivado (si el mazo no trae ${a.asignatura}, sigue).`,
+    // v6.10 · tanda C (decidido con Joseph, 17-nov): el mazo de Ravi ya NO se reactiva por asignatura al empezarla: cada subtema, al terminarlo (paso APEX)
+    que: `REPASO RELACIONAL · ANTES de empezar ${a.asignatura} (1.ª de las 2 pasadas de la vuelta)`,
+    como: `${leer}. Es un vistazo, no estudio: solo deja listos los ganchos entre asignaturas (${segunda}). Las tarjetas de Ravi de ${a.asignatura} se reactivan por subtema, al terminar cada día (no ahora).`,
     enlace: a.ravi.length ? { t: `Drive · ${M.raviCarpeta}`, url: M.raviBusca } : { t: `Nota madre · ${a.asignatura}`, url: a.nota },
   };
 }
@@ -130,7 +136,7 @@ function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
   };
 }
 const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
-  que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (solo lo ya reactivado)`,
+  que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (solo lo ya reactivado: subtemas terminados)`,
   como: `FSRS · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi: el examen no viene por bloques) · tu mazo de fallos primero y a cero; después el de Ravi hasta que acabe el paso: Anki nunca le quita tiempo a las preguntas · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: revisa las tarjetas de ayer.`,
 });
 const CRITERIO_APEX = 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
@@ -139,7 +145,7 @@ const ENVIO_APEX = (deck: string): string => `envío: ⚡ APEX 1-TAP (Ctrl+Shift
 /**
  * Mete el método RaviMedTest en la guía de un día del plan (D1-D76) sin cambiar la franja ni los 60′: reescribe los pasos Anki y APEX, exprime el
  * quiz, añade el repaso relacional ANTES (día de inicio de la asignatura, salvo D1: no hay nada que repasar todavía) y AL TERMINAR (último día;
- * Bioética dura 1 día → 2′ + 2′) quitando esos minutos del APEX, y en D1 importa el mazo de Ravi suspendido. Si la guía no tiene los pasos
+ * Bioética dura 1 día → 2′ + 2′) quitando esos minutos del APEX, (v6.10 · tanda C: ya no importa nada en D1; reactiva por subtema al final). Si la guía no tiene los pasos
  * esperados la devuelve tal cual (gen_mir_guia.js --check exige el método en todos los días).
  */
 export function metodoRavi(g: GuiaBloque, dia: DiaMIR): GuiaBloque {
@@ -157,33 +163,36 @@ export function metodoRavi(g: GuiaBloque, dia: DiaMIR): GuiaBloque {
   const esFin = dia.d === blq.dFin;
   const rel = esIni && esFin ? M.relMin1dia : M.relMin;
   const apexMin = apex.p.min - (esIni ? rel : 0) - (esFin ? rel : 0);
-  const nApex = Math.min(4, Math.floor(apexMin / 2));
+  // v6.10 · tanda C: el D1 (reloj decidido con Joseph: 16:05-16:12) lleva ≤4 APEX en 7′ (solo de los fallos)
+  const nApex = dia.d === 1 ? 4 : Math.min(4, Math.floor(apexMin / 2));
+  // v6.10 · tanda C (regla B, decidida con Joseph): las tarjetas de «1º VUELTA» se reactivan POR SUBTEMA al terminarlo; el D1 lo trae en su último paso
+  const yaReactiva = orig.some((x) => /[Rr]eactiva/.test(x.p.que) && x.p.que.includes(M.mazoBase));
+  const rv = M.raviPorCap[dia.capId];
+  const reactivaTxt = yaReactiva ? '' : rv && rv.n === 0
+    ? ` · Último minuto: el mazo «${M.mazoBase}» no tiene tarjetas de este subtema (contadas: 0): nada que reactivar`
+    : ` · Último minuto: reactiva en Anki las tarjetas de «${M.mazoBase}» de ESTE subtema (${rv ? `${rv.n}: ${rv.nota ?? rv.tema}` : `${dia.tema.split(' (')[0]}: búscalas por texto`}) — Navegador → «${M.mazoBase}» → Reactivar (Ctrl+J); entran en el repaso desde mañana, nunca antes de estudiarlo`;
   const deck = (sinHora(apex.p.que).split('APEX en ')[1] ?? M.mazoPersonal).trim();
   const out: PasoOrig[] = [];
   for (const x of orig) {
     let p: GuiaPaso = x.p;
     if (x.t === 'pretest' && esIni) out.push({ p: pasoRelAntes(a, rel), a: null, b: null });
     if (x.t === 'anki') p = { ...p, ...ANKI_DOS_MAZOS() };
-    if (x.t === 'arranqueD1') p = {
-      ...p,
-      que: `${sinHora(p.que)} + importar el mazo Ravi «${M.mazoBase}» TODO SUSPENDIDO y reactivar ${a.asignatura}`,
-      como: `Preset FSRS de ${M.mazoPersonal} (retention 0,85; README §5) con orden de repaso aleatorio · importa el .apkg (Drive → «${M.mazoBase}»; la descarga la haces tú en el PC) → Navegador → todo ese mazo → Suspender (Ctrl+J) → reactiva solo ${a.asignatura} · preset propio para él: ${M.presetBase}, ≤${M.nuevasBase1V} nuevas/día; cada asignatura se reactiva el día que empieza. La estructura del .apkg (subdecks o etiquetas por asignatura) se comprueba al importarlo: si no viene por asignatura, busca por texto. Sin tiempo hoy: impórtalo esta noche. Tarjetas propias todavía no: las crean los APEX del final.`,
-      enlace: { t: `Drive · ${M.mazoBase}`, url: M.mazoBaseBusca },
-    };
+    // v6.10 · tanda C: el D1 ya no tiene ARRANQUE de Anki (el mazo de Ravi ya está en Anki y la hora empieza con preguntas); ningún paso importa nada
     if (x.t === 'quiz') p = { ...p, como: `${p.como} · Exprime cada fallo: lee también por qué es falsa cada opción incorrecta (Ravi trata cada pregunta como otro manual) y apunta en el Shopping List solo los fallos tontos y los detalles de nivel 3-4/5 para los APEX.` };
     if (x.t === 'apex') p = {
       ...p, min: apexMin,
-      que: sinHora(p.que).replace(/≤\d+ APEX/, `≤${nApex} APEX`),
-      como: `${CRITERIO_APEX} · ${p.como.replace(/ · creados directamente en Anki\.?$/, '').replace(/\.$/, '')} · ${ENVIO_APEX(deck)}.`,
+      // v6.10 · tanda C: la reactivación del subtema también en el «qué» (el volcado del Calendar corta el «cómo» en 110 caracteres)
+      que: `${sinHora(p.que).replace(/≤\d+ APEX/, `≤${nApex} APEX`)}${yaReactiva ? '' : rv && rv.n === 0 ? ` · «${M.mazoBase}»: 0 tarjetas de este subtema` : ` + reactivar en «${M.mazoBase}» ${rv ? `las ${rv.n} tarjetas` : 'las tarjetas'} de este subtema`}`,
+      como: `${CRITERIO_APEX} · ${p.como.replace(/ · creados directamente en Anki\.?$/, '').replace(/\.$/, '')} · ${ENVIO_APEX(deck)}${reactivaTxt}.`,
     };
     out.push({ p, a: x.a, b: x.b });
   }
   if (esFin) out.push({ p: pasoRelFin(a, rel), a: null, b: null });
-  const relTxt = [esIni && 'repaso relacional ANTES + mazo Ravi reactivado', esFin && '≥2 flechas relacionales AL TERMINAR', dia.d === 1 && 'mazo Ravi importado y suspendido'].filter(Boolean).join(' + ');
+  const relTxt = [esIni && 'repaso relacional ANTES', esFin && '≥2 flechas relacionales AL TERMINAR', !yaReactiva && !(rv && rv.n === 0) && 'tarjetas de Ravi del subtema reactivadas'].filter(Boolean).join(' + ');
   const recursos: GuiaRecurso[] = [...g.recursos];
   if (esIni || esFin) recursos.push({ t: `◆ Obsidian · nota madre de ${a.asignatura} (sección «${M.seccionNota}»)`, url: a.nota });
   if ((esIni || esFin) && a.ravi.length) recursos.push({ t: `Drive · ${M.raviCarpeta} de Ravi › ${a.ravi.join(' + ')}`, url: M.raviBusca });
-  if (esIni || dia.d === 1) recursos.push({ t: `Drive · mazo Ravi «${M.mazoBase}» (.apkg, se importa una vez)`, url: M.mazoBaseBusca });
+  // v6.10 · tanda C: el mazo de Ravi ya está en Anki («1º VUELTA»): sin enlace de importación
   return {
     ...g,
     pasos: rehorar(out, fr.ini),
@@ -226,7 +235,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     {
       min: 8,
       que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre >= 5 ? '5 del pool oficial de la app' : pre > 0 ? `${pre} del pool oficial de la app + ${5 - pre} citadas ProMIR ≥2015` : '5 preguntas MIR citadas ≥2015 del capítulo (el pool de la app no tiene de este capítulo)'})`,
-      como: `Sin leer nada · ${MIR_SEG_POR_Q} s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap» (la sección donde está el chip MIR de esa pregunta).`,
+      como: `Sin leer nada · ${MIR_SEG_POR_Q} s/Q · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta (donde está su chip MIR) la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`,
       enlace: { t: 'Capítulo ProMIR', url },
     },
     {
@@ -355,6 +364,10 @@ export function mirGuiaDe(iso: string, ini?: string | null): GuiaBloque | null {
   if (p) g = mirGuiaPlan(p, i0);
   else { const m = mirMantDiaDe(iso); if (m) g = mirGuiaMant(m, i0); }
   if (g && ini === null) g = { ...g, aviso: [g.aviso, 'Guardia: sin hora fija → mismo reparto en minutos, en tiempo muerto (DJ-4).'].filter(Boolean).join(' · ') };
+  // v6.10 (17-nov-2026): hábil EXTRA de fin de semana (dom 29-nov 08:15-09:15, recupera el mar 17): la guía sigue en la hora de PLAN (15:15) y el Home la
+  //   mueve a la real (plantillasV6 › bloqueCorrido + moverGuia); el aviso nombra la hora real (fuera de la franja que se mueve)
+  const fx = g ? extraCorridaDe(iso).find((x) => x.frente === 'mir') : undefined;
+  if (g && fx) g = { ...g, aviso: [`Hoy ${new Date(iso + 'T12:00:00Z').getUTCDay() === 0 ? 'domingo' : 'sábado'}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (el mar 17-nov fue sin sesión y cada día MIR de F1 corrió uno; desde mañana, las fechas de siempre). Mismo reparto que entre semana.`, g.aviso].filter(Boolean).join(' · ') };
   return g;
 }
 /** Preguntas exactas de la guía medida (D1-D76 desde v6.03); undefined en los días por regla (las da la app desde el pool). */

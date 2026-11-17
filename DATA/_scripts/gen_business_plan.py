@@ -48,6 +48,12 @@
 #                                                                    viernes lleva esa lectura y el OUTPUT va el lunes siguiente (vie 20 IDoF p3 · lun 23 OUTPUT
 #                                                                    S1 … vie 18-dic HEAM 9-13 · lun 21-dic OUTPUT S5); el cierre del tracker, el sábado de esa
 #                                                                    semana (rutinaGuia.bizCierreDe). Desde el 4-ene la regla no entra (fechas y D = v6.08).
+#                                                                    v6.10 (17-nov-2026; Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un
+#                                                                    día») = 2026-11-16 IGUAL (D y 2027 sin cambio): el mar 17 también es SIN SESIÓN (DESCANSO)
+#                                                                    y el DOM 29-NOV 05:00-05:25 (corrida_s1.extra › business) es fila de TRABAJO: cada lectura
+#                                                                    corre un hábil (Spark 1-3 mié 18 … IDoF 3 lun 23), el OUTPUT S1 va el MARTES 24 (tras su
+#                                                                    última lectura; la regla del OUTPUT diferido admite martes) y la WWS p4 (D14) el dom 29;
+#                                                                    desde el lun 30 (OUTPUT S2) todo idéntico a la v6.09. `--check` compara sin escribir.
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
@@ -89,11 +95,11 @@ SKIP_FIJOS = set()  # v6.09 (16-nov-2026): antes {25-dic, 31-dic, 1-ene} a mano;
 def _fechas_v6_extra():
     import subprocess
     js = ("const V6=require('./gen_fechas_v6');const F=V6.cargarFechasV6();const D1=V6.derivar(F).d1HabilEncaps;"
-          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip),sin:F.corrida_s1.sin_sesion,th:F.transicion.hasta}))")
+          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip),sin:F.corrida_s1.sin_sesion,th:F.transicion.hasta,ex:F.corrida_s1.extra||{}}))")
     try:
         r = subprocess.run(['node', '-e', js], cwd=str(Path(__file__).resolve().parent), capture_output=True, text=True, encoding='utf-8', check=True)
         j = json.loads(r.stdout)
-        return set(j['skip']), {p['fecha']: p['motivo'] for p in j['prot']}, j['d2'], set(j['sin']), j['th']
+        return set(j['skip']), {p['fecha']: p['motivo'] for p in j['prot']}, j['d2'], set(j['sin']), j['th'], {f: x['business'] for f, x in j['ex'].items() if x.get('business')}
     except Exception:
         F = json.loads((Path(__file__).resolve().parent / '_fechas_v6.json').read_text(encoding='utf-8'))
         skip = set(F['skip'])
@@ -101,10 +107,12 @@ def _fechas_v6_extra():
             x = dt.date.fromisoformat(s) - dt.timedelta(days=1)
             while x.weekday() >= 5 or x.isoformat() in skip: x -= dt.timedelta(days=1)
             return x.isoformat()
-        return skip, {p['fecha']: p['motivo'] for p in F['protegidos']}, habil_antes(habil_antes(F['encaps']['examen'])), set(F['corrida_s1']['sin_sesion']), F['transicion']['hasta']
+        return skip, {p['fecha']: p['motivo'] for p in F['protegidos']}, habil_antes(habil_antes(F['encaps']['examen'])), set(F['corrida_s1']['sin_sesion']), F['transicion']['hasta'], {f: x['business'] for f, x in (F['corrida_s1'].get('extra') or {}).items() if x.get('business')}
 # v6.09 (16-nov-2026): SIN_SESION_V6 = días sin sesión de corrida_s1 (lun 16-nov; sáb 21 y dom 22, viaje) → filas DESCANSO con su motivo ·
 #   TRANS_HASTA = último día de la transición (dom 3-ene-2027): hasta ahí rige la regla «el OUTPUT nunca antes de su última lectura» (ver gen_v3)
-SKIP_V6, PROTEGIDOS_V6, D2_ENCAPS, SIN_SESION_V6, TRANS_HASTA = _fechas_v6_extra()
+# v6.10 (17-nov-2026): EXTRA_BIZ_V6 = días de FIN DE SEMANA con Business a hora fija (_fechas_v6.json › corrida_s1.extra[fecha].business = franja; dom
+#   29-nov 05:00-05:25: recupera el mar 17, que pasa a SIN SESIÓN) → fila de TRABAJO (no DESCANSO); la lectura de ese día es la que toca en orden.
+SKIP_V6, PROTEGIDOS_V6, D2_ENCAPS, SIN_SESION_V6, TRANS_HASTA, EXTRA_BIZ_V6 = _fechas_v6_extra()
 
 def ts_str(s): return json.dumps(s, ensure_ascii=False)
 
@@ -177,7 +185,7 @@ def gen_v3(start_iso):
     DESC_FINDE = 'DÍA LIBRE TOTAL (fin de semana). Sin actividad — descanso real; el sueño/descanso consolida lo estudiado (Walker). Las notas se re-leen el lunes en 10 min.'
     while lect or outs:
         iso = cur.isoformat(); wd = WD[cur.weekday()]
-        if cur.weekday() >= 5:
+        if cur.weekday() >= 5 and iso not in EXTRA_BIZ_V6:  # v6.10: salvo un día extra de fin de semana (corrida_s1.extra › business)
             rows.append(fila(d, iso, wd, 'DESCANSO', DESC_FINDE, '', 0, None, None, 'DESCANSO'))
         elif iso in SIN_SESION_V6:  # v6.09: día hábil SIN SESIÓN (lun 16-nov): DESCANSO; la lectura de ese día va al siguiente hábil
             rows.append(fila(d, iso, wd, 'DESCANSO', 'SIN SESIÓN (%s): hoy no hay Business (el plan arranca el siguiente día hábil). Sin lectura ni output.' % iso, '', 0, None, None, 'DESCANSO'))
@@ -200,6 +208,9 @@ def gen_v3(start_iso):
             yt = None
             if n is not None:
                 yt = YT_OVERRIDE.get(n) or audio.get(n) or yt_search('%s %s resumen español' % (r.get('libro', ''), r.get('autor', '')))
+            if iso in EXTRA_BIZ_V6:  # v6.10: el día extra de fin de semana lleva una fila con los minutos de su franja (lectura 25′; un OUTPUT no cabe ahí)
+                a, b = EXTRA_BIZ_V6[iso].split('-'); mfr = (int(b[:2]) * 60 + int(b[3:])) - (int(a[:2]) * 60 + int(a[3:]))
+                if r['modo'] == 'OUTPUT' or MIN[r['modo']] != mfr: raise SystemExit('v6.10: el día extra %s (%s, %d min) recibe %s de %d min' % (iso, EXTRA_BIZ_V6[iso], mfr, r['modo'], MIN[r['modo']]))
             rows.append(fila(d, iso, wd, r['materia'], r['lectura'], r['accion'], MIN[r['modo']], n, yt, r['modo']))
         d += 1; cur += dt.timedelta(days=1)
     total = len(rows); fin = rows[-1].split('fecha:"')[1].split('"')[0]
@@ -267,6 +278,10 @@ export const BIZ_MATERIA_COLOR: Record<string, string> = {
 };
 export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
 ''' % (total, total - 84, start_iso, fin, total, meta_comment, ','.join(rows))
+    if CHECK:  # v6.10: --check = compara con el .ts en disco sin escribir (CRLF/LF indiferente)
+        disco = OUT.read_text(encoding='utf-8').replace(chr(13) + chr(10), chr(10))
+        if disco != ts.replace(chr(13) + chr(10), chr(10)): raise SystemExit('✗ %s NO está al día: python DATA/_scripts/gen_business_plan.py %s' % (OUT.relative_to(ROOT), start_iso))
+        print('✓ %s al día · %d filas · fin %s' % (OUT.relative_to(ROOT), total, fin)); return
     OUT.write_text(ts, encoding='utf-8')
     mats = {}
     for r in work: mats[r['materia']] = mats.get(r['materia'], 0) + 1
@@ -374,6 +389,7 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
     OUT.write_text(ts, encoding='utf-8')
     print('OK v2 legado: 96 días')
 
+CHECK = '--check' in sys.argv[1:]
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()

@@ -43,7 +43,8 @@ const mObs = obsTs.match(/export const USMLE_OBS_DAY: Record<number, string> = (
 if (!mObs) { console.error('✗ no encuentro USMLE_OBS_DAY en obsidianMap.ts'); process.exit(1); }
 
 /** fila de F1 → D# v5.20 de su contenido (v6.02: colocación de F1 con hitos anclados; las filas 'Colchón' no tienen origen) */
-const COL = colocarF1(DIAS.length, byD).enF1;
+// v6.10b: el UWSA1 (ranura 1) sale de F1 → las filas son D2-D13 y la colocación sigue siendo la de 13 ranuras (ranuras = d de la última fila)
+const COL = colocarF1(DIAS[DIAS.length - 1].d, byD).enF1;
 const origenF1 = (x) => (typeof COL[x.d - 1] === 'number' ? COL[x.d - 1] : null);
 const mismo = (a, b) => ['system', 'sub', 'uw'].every((k) => a[k] === b[k]);
 const newMap = {};
@@ -65,9 +66,9 @@ const T2r = DIAS_T2.length ? `${DIAS_T2[0].d}-${DIAS_T2[DIAS_T2.length - 1].d}` 
 const desplObs = DIAS_T2.filter((x) => x.dOrig != null && ORIGEN_F1_TEMARIO.includes(x.dOrig)).map((x) => `D${x.dOrig} → d ${x.d}`);
 const COMENT = [
   [/ \*  · USMLE:  (?:día del plan \(1-70\)|d del plan \(v)[^\n]*(?:\n \*            regenera DATA\/_scripts\/usmle\/remap_obsidian_usmle\.js)?/,
-    ` *  · USMLE:  d del plan (${version}: D1-D${DIAS.length} + tramo 2 d ${T2r}) → nota del subtopic uWorld (árbol 02_UWORLD_SYSTEMS) · ese mapa lo\n *            regenera DATA/_scripts/usmle/remap_obsidian_usmle.js`],
+    ` *  · USMLE:  d del plan (${version}: D${DIAS[0].d}-D${DIAS[DIAS.length - 1].d} + tramo 2 d ${T2r}) → nota del subtopic uWorld (árbol 02_UWORLD_SYSTEMS) · ese mapa lo\n *            regenera DATA/_scripts/usmle/remap_obsidian_usmle.js`],
   [/\/\*\* USMLE — (?:día|d) del plan Step 1 → ruta de la nota del subtopic uWorld[^]*?\*\//,
-    `/** USMLE — d del plan Step 1 → ruta de la nota del subtopic uWorld · ${version}: claves = d de DIAS_TODOS (F1 1-${DIAS.length} · tramo 2 ${T2r};\n *  las filas del tramo 2 con dOrig heredan la nota de ese D de la v5.20${desplObs.length ? ', también las desplazadas de F1: ' + desplObs.join(', ') : ''}) · GENERADO por DATA/_scripts/usmle/remap_obsidian_usmle.js */`],
+    `/** USMLE — d del plan Step 1 → ruta de la nota del subtopic uWorld · ${version}: claves = d de DIAS_TODOS (F1 ${DIAS[0].d}-${DIAS[DIAS.length - 1].d} · tramo 2 ${T2r};\n *  las filas del tramo 2 con dOrig heredan la nota de ese D de la v5.20${desplObs.length ? ', también las desplazadas de F1: ' + desplObs.join(', ') : ''}) · GENERADO por DATA/_scripts/usmle/remap_obsidian_usmle.js */`],
 ];
 for (const [re, nuevo] of COMENT) {
   if (re.test(obsTs)) obsTs = obsTs.replace(re, nuevo);

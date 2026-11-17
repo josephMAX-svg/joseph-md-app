@@ -41,7 +41,7 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 // v6.02c (E5 · resto del día): guías «qué · cuánto · cómo» de vibecoding · SYNAPSE · Business · AURUM · LIVIANO · revisión · SHIP · Feynman
-import { guiaVibeDe, guiaSynapseDe, guiaSynapseColaDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
+import { guiaVibeDe, guiaSynapseDe, guiaSynapseColaDe, guiaSynapseRecDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
 import { aurumObsUrl } from '../../lib/aurumDailyPlan';
 import { bizDiaDe } from '../../lib/businessStudyPlan';
 /** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
@@ -484,7 +484,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
           ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d) as string }] : []),
           { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ },
         ],
-        guias: guiasEn('07:00', b.fin ?? '12:00'),
+        guias: guiasEn('07:00', b.fin ?? '12:00'), // v6.10b: sin mañanas de Step en sábado (step1.f1_extra retirado): desde las 07:00, como antes
       };
     }
     case 'mir': {
@@ -690,6 +690,12 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     }
     case 'synapse': {
       // v6.09b lote 1-ter: bloque «syn-cola» = la cola del SYNAPSE de F1 con franja real (sáb 26-dic 07:15 · F5 04:15 L-V) → su propia guía
+      // v6.10 (17-nov-2026): bloque «syn-rec» = la sesión del SYNAPSE que recupera el mar 17 a hora fija (sáb 28-nov 07:15; su guía trae la franja real)
+      if (b.id === 'syn-rec') {
+        const gR = guiaSynapseRecDe(iso);
+        const url = gR?.pasos.find((p) => p.enlace)?.enlace?.url;
+        return { tema: gR ? gR.titulo : 'SYNAPSE · recuperación', sub: "A 15' pantalla · B 10' audio · C 5' lectura (la sesión del día perdido)", acciones: url ? [{ lbl: '▶ abrir', color: OBS, url, fill: true }] : [], ...(gR ? { guias: [gR] } : {}) };
+      }
       if (b.id === 'syn-cola') {
         const gC = guiaSynapseColaDe(iso);
         const url = gC?.pasos.find((p) => p.enlace)?.enlace?.url;

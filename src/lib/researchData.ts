@@ -54,15 +54,19 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
 /** v6.09 (16-nov-2026): excepciones de paridad R↔D (fecha → tipo). El lun 16-nov (día-Derma) no se estudió y el jue 31-dic deja de ser SKIP: ese
  *  día recupera la sesión Derma perdida (por paridad sería día-Research). No mueve la paridad de ningún otro día. FUENTE ÚNICA: la leen por regex
  *  gen_research_plan.js · gen_derma_ciclo2.js · remap_inicio.js (bloque Derma) — no cambies el formato de la línea. */
-export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-31': 'derma' };
+/** v6.10 (17-nov-2026): + dom 6-dic = día-RESEARCH a hora fija (05:00-05:45; _fechas_v6.json › corrida_s1.extra['2026-12-06']['research-derma']): el mar
+ *  17-nov (día-Research) no se estudió → los átomos corren una ranura-Research (M1 jue 19 … C-2 jue 3-dic) y el T-1 va ese domingo; desde el R9 (lun
+ *  7-dic) todo igual. Un FORZADO se mira ANTES que la regla del domingo / sábado (diaEstudioTipo y los 4 generadores). */
+export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-06': 'research', '2026-12-31': 'derma' };
 const _isoLocal = (x: Date): string => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb
   const serums = FECHAS_V6.serums.inicio;
+  // v6.10: el FORZADO va antes que la regla del fin de semana (dom 6-dic = Research a hora fija) · v6.09: jue 31-dic = Derma
+  const forzado = TIPO_RD_FORZADO[_isoLocal(date)];
+  if (forzado) return forzado;
   if (dow === 0) return 'descanso';
   if (dow === 6 && _isoLocal(date) < serums) return 'descanso'; // sábado libre antes del SERUMS
-  const forzado = TIPO_RD_FORZADO[_isoLocal(date)]; // v6.09: jue 31-dic = Derma
-  if (forzado) return forzado;
   const start = new Date(2026, 5, 10); // 10 jun 2026 (mes 0-index)
   start.setHours(0, 0, 0, 0);
   const d = new Date(date); d.setHours(0, 0, 0, 0);

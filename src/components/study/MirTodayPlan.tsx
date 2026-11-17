@@ -589,13 +589,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
 function MirGuiaPreguntasView({ d }: { d: number }) {
   const p = mirGuiaPreguntas(d);
   if (!p) return null;
-  const fila = (titulo: string, qs: MirGuiaQ[], color: string) => (qs.length ? (
+  // v6.10 · tanda C (regla D, decidida con Joseph en el chat MIR): las del PRE-TEST no muestran su sección ni siquiera en la etiqueta accesible (junto con la
+  //   lista de lectura delataría la clave); el D1 lleva su reloj (pre-test 15:15 · quiz 6-8Q, máx. 10, 15:52) y sus 5Q ciegas extra pasan a reserva opcional
+  const fila = (titulo: string, qs: MirGuiaQ[], color: string, ocultaSeccion = false) => (qs.length ? (
     <View style={{ marginTop: 6 }}>
       <Text style={st.formHint}>{titulo}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 3 }}>
         {qs.map((q) => (
           <TouchableOpacity key={titulo + q.id} activeOpacity={0.8} onPress={() => openUrl(q.url)} style={[st.dChip, { borderColor: color + '77' }]}
-            accessibilityRole="link" accessibilityLabel={`Pregunta MIR ${q.id}${q.seccion ? ' · ' + q.seccion : ''}`}>
+            accessibilityRole="link" accessibilityLabel={`Pregunta MIR ${q.id}${q.seccion && !ocultaSeccion ? ' · ' + q.seccion : ''}`}>
             <Text style={[st.dChipTxt, { color }]}>{q.id}{q.pool ? ' · pool' : ''} ↗</Text>
           </TouchableOpacity>
         ))}
@@ -604,14 +606,14 @@ function MirGuiaPreguntasView({ d }: { d: number }) {
   ) : null);
   return (
     <View style={{ marginBottom: Spacing.sm }}>
-      {p.extra ? fila('15:23 · 5Q ciegas extra (D1: no hay anclas)', p.extra, BLUE) : null}
+      {p.extra ? fila('Reserva opcional (fuera de la hora) · 5Q ciegas del D1 — mañana completan la eval si la cola del quiz se agota', p.extra, BLUE) : null}
       {/* v6.09b · lote 1-quater: en F1, la eval de 2-3Q se completa a 4Q comentadas con la cola del quiz del D-1 (slot «cola D-1»: su 7.ª-10.ª) */}
       {p.eval ? p.eval.map((s) => <React.Fragment key={s.slot}>{fila(s.slot.startsWith('cola')
         ? `15:15 · tras las ancladas: ${Math.max(0, 4 - p.eval!.filter((x) => !x.slot.startsWith('cola')).reduce((a, x) => a + x.qs.length, 0))}Q de la cola del quiz del D${s.d} (${s.tema}) — las primeras de esta lista (7.ª-10.ª) que no hiciste ayer`
         : `15:15 · eval anclada ${s.slot} (D${s.d} ${s.tema})`, s.qs, BLUE)}</React.Fragment>) : null}
       {p.cierre ? fila('15:15 · test de cierre 10Q (pool de la app: manda su lista si difiere)', p.cierre, CORAL) : null}
-      {fila('15:30 · pre-test 5Q (ciego · «pool» = pool oficial de la app)', p.pretest, GREEN)}
-      {fila('15:53 · quiz: 6Q (máx. 8) de esta lista, en este orden; a las 16:05 paras y las que no entren siguen en la cola del capítulo', p.quiz, AMBER)}
+      {fila(`${d === 1 ? '15:15' : '15:30'} · pre-test 5Q (ciego · «pool» = pool oficial de la app · la sección se mira DESPUÉS de contestar)`, p.pretest, GREEN, true)}
+      {fila(d === 1 ? '15:52 · quiz: 6-8Q comentadas (máx. 10; objetivo 7) de esta lista, en este orden; a las 16:05 paras y las que no entren siguen en la cola del capítulo' : '15:53 · quiz: 6Q (máx. 8) de esta lista, en este orden; a las 16:05 paras y las que no entren siguen en la cola del capítulo', p.quiz, AMBER)}
       <Text style={st.formHint}>Ids de ProMIR (/pregunta/MIR/AAAA-NNN = «MIR AAAA-AAAA+1, Pnnn»). Las del pool también salen abajo en «Pool oficial» con su texto.</Text>
     </View>
   );

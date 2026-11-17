@@ -1,10 +1,10 @@
 {
- "version": "v6.09",
+ "version": "v6.10",
  "decidido": "2026-10-06",
  "f1": {
-  "inicio": "2026-11-17",
+  "inicio": "2026-11-18",
   "fin": "2026-12-30",
-  "dias": 31
+  "dias": 30
  },
  "transicion": {
   "desde": "2026-12-31",
@@ -232,12 +232,22 @@
     "2026-11-16"
    ],
    "regla": "Orden de Joseph (lun 16-nov): «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple, tal vez alargando días». D1 = mar 17-nov. El Step 1 NO cambia (el lunes no era día de Step: UWSA1 mar 17-nov, NBME 25 jue 10-dic, 13 filas mar · jue). ENCAPS y planes secundarios corren UN día hábil dentro de F1 y el jue 31-dic deja de ser SKIP: recupera el día perdido (mañana ENCAPS doble + 16:15 + secundarios + 18:00) → desde el lun 4-ene todo cae en la misma fecha que en la v6.08. Sáb 21 y dom 22-nov libres (viaje): lo de ese fin de semana va al siguiente o se recupera en los fines de semana de Navidad; la mañana ENCAPS que ya no cabe entre semana va el dom 27-dic. Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio."
+  },
+  {
+   "fecha": "2026-11-17",
+   "version": "v6.10",
+   "d1_previo": "2026-11-17",
+   "d1": "2026-11-18",
+   "perdidos": [
+    "2026-11-17"
+   ],
+   "regla": "Orden de Joseph (mar 17-nov): «todo inicia mañana, el 18 es el primer día; corre nomás un día para que no sea tanto trabajo; respeta el 21 y el 22». El mar 17 tampoco se estudió → D1 = mié 18-nov (mañana ENCAPS 1/21, quieta). Step 1 (v6.10b, decisión de Joseph del mar 17-nov 17:05): el jue 19 es NIVEL 0 (D2, lesión celular), no UWSA1; el UWSA1 sale de F1 y va al tramo 2 (T82 mar 29-jun-2027, el hueco del UWSA3 opcional) como prueba de resistencia; D2-D13 en sus fechas v6.09 (D2 jue 19-nov · NBME 25 = D8 jue 10-dic · D13 mar 29-dic), en nivel 0-1 hasta el gate del 80 %; la pausa del Step empieza el jue 31-dic, como en la v6.09. ENCAPS 16:15 y planes secundarios corren UN hábil y cada uno recupera el día en el primer hueco real de fin de semana tras el viaje (corrida_s1.extra: sáb 28-nov vibecoding 05:00 y SYNAPSE 07:15 · dom 29-nov Business 05:00, ENCAPS 16:15 07:15 y MIR 08:15 · dom 6-dic Research 05:00, AURUM 07:15 y LIVIANO 08:15); desde ese hueco, idénticos a la v6.09. Mañanas ENCAPS, sus 18:00, sábados Theomed, domingos ENCAPS, Derma, revisión semanal, sáb 21, dom 22 y jue 31-dic: quietos. Vie 1-ene sigue feriado. Desde el lun 4-ene todo idéntico (Supabase dia 10-82, Calendar de 2027). Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio."
   }
  ],
  "corrida_s1": {
-  "decidido": "2026-11-16",
-  "version": "v6.09",
-  "motivo": "v6.09 (lun 16-nov-2026): el lun 16 no se estudió y el sáb 21 y el dom 22-nov son libres (viaje). Esta capa solo marca los días sin sesión; los planes ya están re-fechados (D1 mar 17-nov; el jue 31-dic recupera el día perdido). v6.09 (mar 17-nov): el dom 22 es DOMINGO DE LLEGADA: sigue sin sesión para los planes, pero desde las 14:00 lleva la recuperación fija del viaje (ENCAPS 15:00-16:30) (encapsManana: domingos[].llegada). v6.09b (mar 17-nov, auditoría tiempo ↔ material): + la revisión semanal S01 a las 14:30 y el SYNAPSE de recuperación (el del lun 16 y el sáb 21) a las 16:30; sin Anki ese día.",
+  "decidido": "2026-11-17",
+  "version": "v6.10",
+  "motivo": "v6.09 (lun 16-nov-2026): el lun 16 no se estudió y el sáb 21 y el dom 22-nov son libres (viaje). Esta capa solo marca los días sin sesión; los planes ya están re-fechados (D1 mar 17-nov; el jue 31-dic recupera el día perdido). v6.09 (mar 17-nov): el dom 22 es DOMINGO DE LLEGADA: sigue sin sesión para los planes, pero desde las 14:00 lleva la recuperación fija del viaje (ENCAPS 15:00-16:30) (encapsManana: domingos[].llegada). v6.09b (mar 17-nov, auditoría tiempo ↔ material): + la revisión semanal S01 a las 14:30 y el SYNAPSE de recuperación (el del lun 16 y el sáb 21) a las 16:30; sin Anki ese día. v6.10 (mar 17-nov): el mar 17 tampoco se estudió; todo arranca el mié 18. Cada plan corre un hábil y recupera el día en un hueco de fin de semana (extra). v6.10b (decisión 4 de Joseph, 17:05): el Step 1 no corre: el jue 19 es su D2 en NIVEL 0, el UWSA1 pasa al tramo 2 (T82 mar 29-jun-2027) y D2-D13 siguen en sus fechas de la v6.09.",
   "sin_sesion": [
    "2026-10-19",
    "2026-10-20",
@@ -268,15 +278,22 @@
    "2026-11-14",
    "2026-11-15",
    "2026-11-16",
+   "2026-11-17",
    "2026-11-21",
    "2026-11-22"
   ],
   "alias": {},
   "reparto": {},
-  "resumen": "v6.09 (orden del lun 16-nov: «hoy no avancé, todo empieza mañana; sábado y domingo viajo, déjalos libres»): TODO ARRANCA EL MAR 17-NOV. El Step 1 no cambia (UWSA1 mar 17); ENCAPS y los planes secundarios corren un día hábil y el jue 31-dic recupera el día perdido, así que desde el lun 4-ene todo sigue igual. Sáb 21 libre y dom 22 libre hasta las 14:00 (viaje; esa tarde, 14:30 la revisión semanal S01, 15:00 la recuperación del viaje y 16:30 el SYNAPSE de recuperación). Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
+  "resumen": "v6.10 (orden del mar 17-nov: «todo inicia mañana, el 18»): TODO ARRANCA EL MIÉ 18-NOV. El Step 1 no corre: el jue 19 es su D2 en NIVEL 0 (el UWSA1 pasa al tramo 2) y sus mañanas siguen en las fechas de la v6.09 (NBME 25 jue 10-dic, D13 mar 29-dic); los demás planes corren un día y lo recuperan el sáb 28 / dom 29-nov o el dom 6-dic, a hora fija. Sáb 21 libre y dom 22 libre hasta las 14:30 (viaje; esa tarde, 14:30 la revisión S01, 15:00 la recuperación del viaje y 16:30 el SYNAPSE de recuperación). Desde el lun 4-ene, todo igual. Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
   "notas": {
    "2026-11-16": [
     "Hoy lunes, sin sesión: TODO ARRANCA MAÑANA, MAR 17-NOV, a las 04:15 (v6.09). Mañana es el UWSA1 (08:50-13:00): esta noche, cena ligera y a la cama a las 21:00. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: el PPT el domingo 22 a las 15:00 (al volver: bloque fijo de recuperación) y la grabación, 30′ de tramos útiles el vie 11-dic; el resto, en audio en tiempos muertos."
+   ],
+   "2026-11-17": [
+    "Hoy martes, sin sesión: TODO ARRANCA MAÑANA, MIÉ 18-NOV, a las 04:15 (v6.10). Mañana: 04:15 vibecoding S1 · 05:00 Anki, CONFIGURACIÓN de los mazos (45′) · 07:15 MAÑANA ENCAPS 1/21 · 16:15 pre-test de arranque ENCAPS 1/2. El jue 19 empieza el Step 1 en NIVEL 0 (D2, lesión celular; el UWSA1 pasa al tramo 2). Lo de hoy no se pierde: cada plan corre un día y lo recupera a hora fija en un hueco de fin de semana (sáb 28 y dom 29-nov, dom 6-dic); el Step 1 no corre (sus mañanas de mar · jue siguen en sus fechas). Desde el lun 4-ene, todo igual."
+   ],
+   "2026-11-18": [
+    "Mañana jue 19 empieza el Step 1 en NIVEL 0 (D2, lesión celular): 3 preguntas uWorld a fondo (07:15 · 08:15 · 09:15), sin reloj; a la cama a las 21:00."
    ],
    "2026-11-21": [
     "Hoy sábado, libre (viaje): ni plan ni revisión. La clase en vivo de Theomed de hoy (15:00, Ética e Interculturalidad 2/3) va en diferido: su PPT y su grabación (45′ de tramos útiles a 2×), el domingo 22 a las 15:00 (mañana, al volver: bloque fijo de recuperación del viaje). Si a esa hora su grabación aún no está publicada, ese día va la de la CI 2/8 y la de hoy pasa al vie 27-nov a las 18:00. La revisión S01 va mañana domingo a las 14:30 (sola), y el cierre del OUTPUT de Business, el sáb 28 a las 07:45. El SYNAPSE de hoy y del lun 16 se recupera mañana a las 16:30. El Anki se acumula: el lunes 23 a las 05:00, primero los repasos vencidos."
@@ -284,6 +301,22 @@
    "2026-11-22": [
     "Hoy domingo de llegada: la mañana, libre (viaje); desde las 14:00, de vuelta: 14:30 la revisión semanal S01, 15:00 la recuperación fija del viaje (ENCAPS) y 16:30 el SYNAPSE de recuperación (detalle abajo). Sin Anki hoy: el lunes 23 a las 05:00 empieza por los vencidos. El SHIP S1 del vibecoding va el dom 29 (cada SHIP corre un domingo hasta el dom 27-dic). El simulacro opcional de Theomed del vie 13-nov (sin ranking) queda para el dom 3-ene, si te apetece. Mañana lunes 23 a las 04:15 sigue el plan."
    ]
+  },
+  "extra": {
+   "2026-11-28": {
+    "vibecoding": "05:00-05:45",
+    "synapse": "07:15-07:45"
+   },
+   "2026-11-29": {
+    "business": "05:00-05:25",
+    "encaps": "07:15-08:15",
+    "mir": "08:15-09:15"
+   },
+   "2026-12-06": {
+    "research-derma": "05:00-05:45",
+    "aurum": "07:15-08:15",
+    "liviano": "08:15-09:00"
+   }
   }
  }
 }

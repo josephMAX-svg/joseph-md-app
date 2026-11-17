@@ -1,5 +1,13 @@
 # MIR · Método RaviMedTest adaptado a la hora MIR (v6.03b · 20-oct-2026)
 
+> **✅ v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat MIR) — manda sobre lo que diga abajo:** (A) la hora MIR empieza SIEMPRE con
+> preguntas; Anki solo repasa lo ya estudiado (desde el D+1), nunca es estudio de inicio · (B) el mazo de Ravi YA está en Anki: «1º VUELTA», 851
+> tarjetas, todas suspendidas («1ºVUELTA 2MIR21» existe pero vacío) → **no se importa nada**; se reactiva POR SUBTEMA, al TERMINARLO (último minuto
+> del día-tema), no la asignatura entera al empezarla (Epidemiología: ensayo clínico 4 · clasificación de estudios 0 · pruebas diagnósticas 2) ·
+> (C) D1 (mié 18-nov) desde cero con su reloj: pre-test 8′ · orientación 3′ · lectura de base 26′ · quiz 6-8Q (máx. 10) 13′ · ≤4 APEX 7′ · repaso en
+> blanco + las 4 de Ravi 3′ (sin ARRANQUE de Anki; las «5Q ciegas extra» pasan a reserva opcional) · (D) el pre-test no muestra la sección de una
+> pregunta antes de contestarla · (E) meta: MIR ene-2030. Datos: `metodo_ravimedtest.json` (anki.mazoBase · raviPorCap) · lógica: `src/lib/mirGuia.ts`.
+
 > Pedido de Joseph (20-oct-2026): estructurar el método de estudio del MIR con el referente **RaviMedTest** (Ravi: uno de sus vídeos
 > cuenta cómo acabó «entre los 100 primeros» del MIR 2020; canal de YouTube @ravimedtest y material compartido en el Drive de Joseph):
 > Anki, tarjetas, conceptos, cómo manejar el Anki, repasos relacionales, simulacros. Todo dentro de **nuestro** sistema: la hora MIR fija

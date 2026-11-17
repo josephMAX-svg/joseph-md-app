@@ -7,6 +7,9 @@
  * workflow de 13 agentes (6 frentes + verificación adversarial + crítico de
  * completitud). Fuente completa: DATA/SYNAPSE/_raw_findings.json (85 materiales)
  * y DATA/SYNAPSE/materiales-verificados.md. Cero URLs inventadas.
+ * v6.10 · tanda C (17-nov-2026): anthropic.skilljar.com cierra «in early December» (FAQ de academy.claude.com) → Claude 101 y AI Fluency
+ * enlazan a academy.claude.com/courses/<slug> (verificados con WebFetch el 17-nov: mismas lecciones). El resto de cursos sigue en Skilljar
+ * hasta re-curarlos (los de 2027; «claude-with-the-anthropic-api» da 404 en la Academy nueva).
  *
  * El motor día-a-día (misiones estilo ENCAPS/Business + Calendar 30 min) lo
  * construye el chat SYNAPSE: DATA/SYNAPSE/PROMPT_CHAT_SYNAPSE.md.
@@ -31,6 +34,9 @@
  * dom 29, que queda sin bloque fijo) recupera una A-unit + las piezas B/C del lunes de la sem 1; v6.09b lote 1-ter: lo que no cupo en F1 tiene franja propia (sáb 26-dic 07:15 y la
  * cola post-Step 1, 04:15-04:45 L-V del lun 13-dic-2027 al mié 2-feb-2028 —lote 1-quater: 38 días—: synapseDailyPlan.synColaDe), y el jue 31-dic ya es día
  * de plan → desde el lun 4-ene todo igual que en la v6.08, d incluido).
+ * v6.10 (17-nov-2026 · 1.ª sesión mié 18-nov): mismas fechas del motor (lun 16-nov → jue 1-abr-2027, 137 días, d igual); el mar 17 pasa a SIN SESIÓN y
+ * su A-unit (auditoría F0) sale en la sesión de recuperación del sáb 28-nov 07:15-07:45 (synapseDailyPlan.SYN_REC_F1 · synRecDe), con las piezas del
+ * martes de la sem 2; el mar 24 lleva las de la sem 1. Desde el sáb 28 21:00, como la v6.09.
  * v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov): lun 16-nov → jue 1-abr-2027 (137 días, mismas 110 A-units; sin SYNAPSE en los PROTEGIDOS
  * vie 12 → lun 15-mar ni en la Semana Santa jue 25 / vie 26-mar). La cabecera de SYNAPSE_META.nota sale ya de SYN_PLAN_META (inicio, fin,
  * totalDias, semanas) y de FECHAS_V6.version: antes se escribía a mano y quedaba vieja en cada corrimiento (decía «hasta el mar 23-mar»).
@@ -78,8 +84,8 @@ export type SynapseFase = {
 const M = {
   // F0 — La Escuela de Anthropic
   academy: { nombre: 'Anthropic Academy (portal oficial)', referente: 'Anthropic', credencial: 'La "escuela de Anthropic" — cursos oficiales con certificado', tipo: 'docs', url: 'https://www.anthropic.com/learn', gratis: 'gratis', duracion: '21 cursos en Skilljar', nivel: 'base', porQue: 'Punto de entrada único a la licenciatura de Anthropic; emite certificados (incl. "Introduction to Claude Cowork" y "AI Capabilities and Limitations") + prep directa del examen CCA-F', audio: true },
-  claude101: { nombre: 'Claude 101 (+ Claude Code 101 + Platform 101)', referente: 'Anthropic Academy', credencial: 'Cursos oficiales de Anthropic con certificado', tipo: 'curso', url: 'https://anthropic.skilljar.com/claude-101', gratis: 'gratis', duracion: '13 lecciones · 4 módulos', nivel: 'base', porQue: 'El arranque oficial: orientación a Claude, Claude Code y la plataforma', audio: true },
-  aiFluency: { nombre: 'AI Fluency: Framework & Foundations', referente: 'Anthropic Academy', credencial: 'Marco oficial 4D (Delegation·Description·Discernment·Diligence)', tipo: 'curso', url: 'https://anthropic.skilljar.com/ai-fluency-framework-foundations', gratis: 'gratis', duracion: 'módulos cortos + examen', nivel: 'base', porQue: 'Cómo Anthropic piensa la colaboración humano-IA; vocabulario interno', audio: true },
+  claude101: { nombre: 'Claude 101 (+ Claude Code 101 + Platform 101)', referente: 'Anthropic Academy', credencial: 'Cursos oficiales de Anthropic con certificado', tipo: 'curso', url: 'https://academy.claude.com/courses/claude-101', gratis: 'gratis', duracion: '13 lecciones · 4 módulos', nivel: 'base', porQue: 'El arranque oficial: orientación a Claude, Claude Code y la plataforma', audio: true },
+  aiFluency: { nombre: 'AI Fluency: Framework & Foundations', referente: 'Anthropic Academy', credencial: 'Marco oficial 4D (Delegation·Description·Discernment·Diligence)', tipo: 'curso', url: 'https://academy.claude.com/courses/ai-fluency-framework-foundations', gratis: 'gratis', duracion: 'módulos cortos + examen', nivel: 'base', porQue: 'Cómo Anthropic piensa la colaboración humano-IA; vocabulario interno', audio: true },
   effectiveAgents: { nombre: 'Building Effective AI Agents (ensayo)', referente: 'Schluntz & Zhang · Anthropic', credencial: 'El ensayo fundacional de agentes citado en toda la industria', tipo: 'docs', url: 'https://www.anthropic.com/engineering/building-effective-agents', gratis: 'gratis', duracion: '~25 min lectura', nivel: 'intermedio', porQue: 'Los 5 patrones de workflows vs agents — vocabulario obligatorio en entrevistas', audio: true },
   karpathyIntro: { nombre: '[1hr Talk] Intro to Large Language Models', referente: 'Andrej Karpathy', credencial: 'Stanford PhD · fundador de OpenAI · ex-director IA Tesla', tipo: 'video', url: 'https://www.youtube.com/watch?v=zjkBMFhNj_g', gratis: 'gratis', duracion: '1 h', nivel: 'base', porQue: 'La mejor panorámica de qué es un LLM, sin código ni matemática', audio: true },
   karpathyDeep: { nombre: 'Deep Dive into LLMs like ChatGPT', referente: 'Andrej Karpathy', credencial: 'Stanford PhD · fundador de OpenAI · ex-Tesla', tipo: 'video', url: 'https://www.youtube.com/watch?v=7xTGNNLPyMI', gratis: 'gratis', duracion: '3.5 h (≈14 huecos)', nivel: 'base', porQue: 'Pretraining, fine-tuning, RLHF y alucinaciones — cómo se construye un Claude', audio: true },
@@ -377,7 +383,7 @@ export const SYNAPSE_HORARIO: { min: string; bloque: string; que: string; format
 export const SYNAPSE_QUICKLINKS: { label: string; url: string; nota: string }[] = [
   { label: '◆ Obsidian — Mapa SYNAPSE', url: 'obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=05_SYNAPSE_IA%2F00_Mapa_SYNAPSE', nota: 'tu segundo cerebro: 7 fases · 82 subtemas con temario real' },
   { label: '🏛 Anthropic Academy', url: 'https://www.anthropic.com/learn', nota: 'La escuela oficial — F0 empieza aquí' },
-  { label: '🎓 Claude 101', url: 'https://anthropic.skilljar.com/claude-101', nota: 'Primer curso con certificado' },
+  { label: '🎓 Claude 101', url: 'https://academy.claude.com/courses/claude-101', nota: 'Primer curso con certificado' },
   { label: '📜 Building Effective Agents', url: 'https://www.anthropic.com/engineering/building-effective-agents', nota: 'El ensayo fundacional (25 min)' },
   { label: '🎙 Karpathy: Intro to LLMs', url: 'https://www.youtube.com/watch?v=zjkBMFhNj_g', nota: '1 h en audio — hoy mismo' },
   { label: '🌐 Traductor EN→ES (páginas)', url: 'https://translate.google.com/?op=websites', nota: 'Pega cualquier URL en inglés y léela en español; o en Chrome clic derecho → Traducir. YouTube: subtítulos → traducir automáticamente.' },

@@ -111,11 +111,15 @@
 //   S7 mié 30-dic → mié 6-ene) y desde el lun 4-ene caen igual que en la v6.08. SHIP los domingos 29-nov · 6, 13, 20 y 27-dic · 3-ene (S1-S6; nada el dom
 //   22) y desde S7 (dom 10-ene) los mismos de la v6.08. VIBE_SIN_SESION (corrida_s1): sin PC «avance» el dom 22. Revisiones de la víspera del SHIP en el
 //   catálogo: S4 → S05_2026-12-19 · S5 → S06_2026-12-26 (verificación de verify_vibecoding.js).
+// v6.10 (17-nov-2026 · D1 = mié 18-nov; el mar 17 tampoco se estudió; orden de Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un
+//   día»): node DATA/_scripts/gen_vibecoding_plan.js 2026-11-18 → S1 mié 18 → mar 24-nov · S2 mié 25 → lun 30-nov con su k4 el SÁB 28-NOV 05:00-05:45
+//   (hábil EXTRA de _fechas_v6.json › corrida_s1.extra[fecha].vibecoding: el sábado de F1 tras el viaje recupera el mar 17) → desde el lun 30-nov
+//   (S2 k5) TODO idéntico a la v6.09 (mismo 95.º hábil, mismos SHIP: S1 dom 29-nov, S2 dom 6-dic …). isHabil acepta esas fechas.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-11-17'; // v6.09 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-11-18'; // v6.10 (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 28-nov → desde el lun 30-nov igual que la v6.09) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -153,7 +157,19 @@ const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); //
 //   ENCAPS: vie 12-mar = D-1 hábil y lun 15-mar = libre post-ENCAPS → lo que no cabe antes va al mar 16-mar y siguientes; antes no hacía falta: el
 //   95.º hábil caía antes del vie 12-mar con cualquier START ≤ 26-oct, así que las fechas de v6.00-v6.05 se reproducen igual).
 const PROT_HAB = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
-const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s) && !PROT_HAB.has(s);
+// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha].vibecoding = franja; sáb 28-nov 05:00-05:45: recupera
+//   el mar 17). Solo cuentan desde el START; nunca un SKIP, un protegido ni un día sin sesión (se comprueba).
+const EXTRA_VIBE = (() => {
+  const F6 = require('./gen_fechas_v6').cargarFechasV6();
+  const ex = (F6.corrida_s1 && F6.corrida_s1.extra) || {};
+  const out = new Set(Object.keys(ex).filter((f) => ex[f] && ex[f].vibecoding && f >= START));
+  for (const f of out) {
+    if (dow(f) !== 0 && dow(f) !== 6) throw new Error(`corrida_s1.extra ${f}: el hábil extra del vibecoding debe ser sábado o domingo`);
+    if (SKIP_FIJOS.has(f) || PROT_HAB.has(f) || (F6.corrida_s1.sin_sesion || []).includes(f)) throw new Error(`corrida_s1.extra ${f}: cae en SKIP / protegido / sin sesión`);
+  }
+  return out;
+})();
+const isHabil = (s) => EXTRA_VIBE.has(s) || (dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s) && !PROT_HAB.has(s));
 // v6.09 (16-nov-2026): días SIN SESIÓN de corrida_s1 desde el START (sáb 21 y dom 22-nov, viaje) → sin PC del domingo (VIBE_SIN_SESION en el .ts);
 //   ningún SHIP puede caer en uno (se comprueba abajo). Los L-V sin sesión anteriores al START no cuentan.
 const SIN_SESION_VIBE = require('./gen_fechas_v6').cargarFechasV6().corrida_s1.sin_sesion.filter((f) => f >= START).sort();

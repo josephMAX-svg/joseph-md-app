@@ -270,13 +270,17 @@ const AVISO_CODIGO = {
 };
 
 /**
+ * v6.10 (17-nov): los 4 bancos siguientes sin runner son el mié 25 II-5 · jue 26 I-4 · DOM 29 IV-1 (07:15, recupera el mar 17) · lun 30-nov II-4 — las
+ *  MISMAS 4 sesiones de la v6.09, re-fechadas POR SESIÓN (la semana 1 armada: pre-test mié 18 y jue 19, mini-sim vie 20, eval + banco lun 23 (V-2; su eval
+ *  es la de I-3, sesión del jue 19) y mar 24 (III-5; eval V-2)). Las cifras de la simulación no cambian (mismo pool, mismo orden de generación);
+ *  las evals: mié 25 = III-5 (código de ayer) · jue 26 = II-5 · dom 29 = I-4 · lun 30 = regla del lunes (5Q de fallos previos).
  * Los 4 bancos siguientes sin runner (v6.09: mar 24 II-5 · mié 25 I-4 · jue 26 IV-1 · lun 30-nov II-4). La semana 1 sí está armada (re-fechada POR
  * SESIÓN, −1 slot lun-jue): pre-test mar 17 y mié 18, eval + banco jue 19 (V-2), mini-sim vie 20 (sin cambio) y eval + banco lun 23 (III-5; la eval
  * de ese lunes es la de V-2, re-fechada con su sesión). Composición simulada el 16-nov en una copia aislada, en el orden en que la guía lo manda:
  * `--eval 2026-11-24` → `--banco 2026-11-24` → (25) → (26) (la semana del 23 ya tiene runners: --semana los re-sortearía) y `--semana 2026-11-30` +
  * `--eval 2026-11-30` (lunes: la eval de fallos previos va aparte). El pool es el del 31-oct (434 · 249 libres) y el registro no tiene rondas.
  * Es solo un informe: la guía lo usa mientras el runner del día no exista; con runner manda su _meta.
- * P1: 3 ítems de los mini-sims (BP-0022, BP-0010 y BP-0005, de minisim_2026-11-20) reaparecen en eval_2026-11-24 / -25 / -26. Es el fallback de
+ * P1: 3 ítems de los mini-sims (BP-0022, BP-0010 y BP-0005, de minisim_2026-11-20) reaparecen en eval_2026-11-25 / -26 / -29 (v6.10; v6.09: -24 / -25 / -26). Es el fallback de
  * re-test, que reutiliza a propósito reales ya usados; el mini-sim del 20 va ANTES.
  * v6.09 (16-nov): re-simulado con la F1 corrida al mar 17-nov. Los BANCOS traen las mismas cifras que en la v6.08 (mismo pool, sin rondas; la F1 es
  * rígida por slots: mismos códigos, sub-ejes y secundarios). Cambian las EVAL: con el lun 16 perdido, la del II-5 (mar 24) es la del código de ayer
@@ -290,11 +294,11 @@ const AVISO_CODIGO = {
  * Historial de cifras: v6.08 = lun 23 → jue 26-nov, mismos bancos (evals: lun 23 fallos previos · mar 24 II-5 · mié 25 I-4 · jue 26 IV-1) · v6.07 = lun 16 → jue 19-nov, mismas cifras · v6.06 = lun 9 → jue 12-nov, mismas cifras · v6.05 = lun 2 → jue 5-nov,
  * mismas cifras · v6.03 = mié 28 II-5 20 + II-10 2 · jue 29 I-4 16 + I-5+I-6 4, con el lun 26 y el mar 27 ya armados.
  */
-const PREVISTO_ORIGEN = 'simulación del 16-nov, v6.09';
+const PREVISTO_ORIGEN = 'simulación del 16-nov, v6.09'; // v6.10: sin cambio (las 4 sesiones se re-fecharon por sesión; las cifras son las mismas)
 const PREVISTO_SEMANA2 = {
-  '2026-11-24': { codigo: 'II-5', secundario: 'II-10', principal: 20, secundario_n: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval (III-5, código de ayer) sale 5/5 re-test: el banco del lun 23 consume todo el pool libre de III-5', eval: 'código de ayer III-5: 3 cifras + 2 viñetas (5Q re-test)' },
-  '2026-11-25': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mar 24 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
-  '2026-11-26': { codigo: 'IV-1', secundario: 'II-EMG', principal: 18, secundario_n: 2, nota: 'secundario II-EMG: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de IV-1+IV-2 · la eval (I-4, código de ayer) sale 5/5 re-test', eval: 'código de ayer I-4: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 20, secundario_n: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval (III-5, código de ayer) sale 5/5 re-test: el banco del mar 24 consume todo el pool libre de III-5', eval: 'código de ayer III-5: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mié 25 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-29': { codigo: 'IV-1', secundario: 'II-EMG', principal: 18, secundario_n: 2, nota: 'secundario II-EMG: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de IV-1+IV-2 · la eval (I-4, código del jue 26: dom 29 a las 07:15, recupera el mar 17) sale 5/5 re-test', eval: 'código de la sesión anterior (jue 26) I-4: 3 cifras + 2 viñetas (5Q re-test)' },
   '2026-11-30': { codigo: 'II-4', secundario: 'I-OCC', principal: 16, secundario_n: 3, nota: 'principal: 15Q libres de II-4 + 1Q re-test (fallback paso 1) · secundario I-OCC: solo 3Q en el pool (receta 4-5) · la eval del lunes (5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-30 después de --semana 2026-11-30', eval: 'lunes: 5Q de fallos previos del registro (otro enfoque, P2), críticos primero' },
 };
 
