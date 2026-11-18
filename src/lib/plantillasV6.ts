@@ -301,9 +301,9 @@ function ankiNombreF1(iso: string): string {
   // v6.10 (17-nov): la CONFIGURACIÓN (45′) pasa al mié 18 (1.er día de F1, antes de que nazcan las tarjetas ENCAPS a las 11:40) · v6.10b (decisión 4 de
   //   Joseph): jue 19 = D2 en NIVEL 0 (sin UWSA1): el mazo USMLE está vacío (las tarjetas nacen a las 07:15) → 05:00-05:30 = vídeos de MÉTODO (regla del
   //   chat USMLE) · desde el vie 20, el Anki de siempre (ya hay tarjetas USMLE: las del jue 19; sin triaje)
-  // v6.10f (regla de Joseph del 17-nov: ninguna estructura vacía por adelantado): solo el mazo raíz APEX::USMLE; cada submazo nace con su primera tarjeta
-  if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN (mazo raíz + preset FSRS) 45′';
-  if (iso === '2026-11-19') return 'ANKI · USMLE: mazo aún vacío → vídeos de método 28′ · repasos ENCAPS 15′';
+  // v6.10f/g (regla de Joseph del 17-nov: ninguna estructura vacía por adelantado): el jue 19 solo se guarda el preset FSRS (sin asignar); APEX::USMLE y cada submazo nacen con su primera tarjeta
+  if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN (preset FSRS, sin mazos) 45′';
+  if (iso === '2026-11-19') return 'ANKI · USMLE: aún sin mazo → vídeos de método 28′ · repasos ENCAPS 15′';
   return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
 }
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
