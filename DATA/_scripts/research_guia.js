@@ -34,6 +34,12 @@
  *   clave del átomo previo, contrastados con su fuente real (recurso 1 del átomo); el pre-test de M1 es un recall en blanco y su corrección (y la «clave» del
  *   abstract) sale de las fuentes reales (checklists oficiales, el propio abstract), no de un chat. + FASES (base cero): FASES_RESEARCH / faseResearchAviso →
  *   cada guía abre su aviso con la fase, qué se hace y el criterio para pasar a la siguiente. Síntesis con fuentes: DATA/RESEARCH/METODO_BASE_CERO.md.
+ * v6.10 · fix 18-nov (revisión de los frentes): (1) el recall en blanco de la eval anclada genérica se corregía contra recs[0] del átomo previo, que a veces es
+ *   un portal o una herramienta (Rising Scholars, PubMed, Crossref, Editorial Manager): no hay clave que leer. Ahora fuenteContraste(prev): la fuente propia
+ *   del átomo si su método vive en su artefacto (CONTRASTE_DE: M2 → MENTORES.md §3 · C-2 → diana.md + las 5 letters modelo · C-4 → refs_verified.json + la
+ *   cabecera de citation_verifier.py · C-5 → Author Guidelines de la revista + cover_letter.md), si no el primer recurso que es DOCUMENTO o GUÍA (REC_DOC) y,
+ *   si no hay ninguno, el artefacto y el objetivo del átomo previo. CONTROL: ninguna eval anclada contrasta con un recurso que no esté en REC_DOC.
+ *   (2) CONTROL: la UI de Research (src/components/study/Research*.tsx) tampoco puede pedir «2Q de auto-test» (la tarjeta «Eval anclada» las seguía pidiendo).
  */
 'use strict';
 
@@ -65,6 +71,17 @@ const fLargo = (iso) => `${Number(iso.slice(8, 10))} de ${MES_NOMBRE[Number(iso.
 /** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
 const VERSION = ((v) => (v === 'v6.09' || v === 'v6.10' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.10: sin cambio (VER_TXT) // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
 
+/** v6.10 · fix 18-nov: claves de REC que son documento o guía (se puede leer el método en ellas). Las que no están (PM, ZOT, PROS, RAY, OPENALEX, UNPAY,
+ *  CROSSREF, METAFOR, EQ, ORCID, SCHOLAR, CTI, NCBIACC, RISING, revistas y Editorial Manager) son portales, registros o herramientas. */
+const REC_DOC = ['GREEN', 'STAT', 'STEPSR', 'CIL1', 'COCHB', 'PRISMA', 'AMSTAR', 'DMAR', 'DELO', 'BBR', 'GTS', 'ICMJE', 'COPE', 'CREDIT', 'SCIWRITE', 'REBUTTAL', 'PHRASE', 'CARE', 'STROBE'];
+/** v6.10 · fix 18-nov: fuente de contraste propia (el método del átomo está en su artefacto o en un documento que no es de REC). */
+const CONTRASTE_DE = {
+  M2: 'MENTORES.md §3 (mensaje 2, Rising Scholars) y su fila de la tabla CRM',
+  'C-2': 'CARTA_1/diana.md (deadline, límites y esqueleto) y las 5 letters modelo que leíste',
+  'C-4': 'CARTA_1/refs_verified.json (status de cada cita) y la cabecera de DATA/RESEARCH/agentic/citation_verifier.py (reglas de verificación)',
+  'C-5': 'las Author Guidelines de la revista diana y CARTA_1/cover_letter.md',
+};
+
 /**
  * Código TS que se emite en src/lib/researchGuia.ts: guía GENÉRICA (5 franjas del bloque) y F4 (30′, franja nominal), construida en tiempo de
  * ejecución desde DIAS + REC (todo el texto ya está en el bundle: no se duplica). Σ pasos = 45 / 30 (fijo).
@@ -78,6 +95,18 @@ export function faseResearchAviso(code: string): string {
   return \`FASE \${f.n}/\${FASES_RESEARCH.length} (base cero) · \${f.nombre}: \${f.que} · \${sig ? \`pasa a la fase \${sig.n} cuando: \${f.criterio}\` : \`cierre: \${f.criterio}\`}\`;
 }
 const corto = (s: string, n: number): string => (s.length > n ? s.slice(0, Math.max(s.lastIndexOf(' ', n - 3), 20)) + '…' : s);
+/** v6.10 · fix 18-nov: recursos de REC que son DOCUMENTO o GUÍA (texto con el método: un recall en blanco se corrige contra ellos); el resto de REC son
+ *  portales, registros o herramientas (PubMed, Crossref, Rising Scholars, Editorial Manager, ORCID…) — fuente: DATA/_scripts/research_guia.js. */
+export const REC_DOC: ReadonlySet<string> = new Set(${JSON.stringify(REC_DOC)});
+/** v6.10 · fix 18-nov: fuente de contraste propia del átomo cuyo método está en su artefacto o en un documento que no es de REC. */
+export const CONTRASTE_DE: Readonly<Record<string, string>> = ${JSON.stringify(CONTRASTE_DE)};
+/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA · su artefacto y su objetivo. */
+export function fuenteContraste(prev: DiaResearch): string {
+  if (CONTRASTE_DE[prev.code]) return CONTRASTE_DE[prev.code]!;
+  const k = prev.recs.find((r) => REC_DOC.has(r));
+  if (k && REC[k]) return \`«\${REC[k]!.label}»\`;
+  return \`su artefacto («\${corto(prev.artefacto, 100)}») y su objetivo\`;
+}
 function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   const recs = x.recs.map((k) => ({ k, ...(REC[k] || { label: k, url: 'https://pubmed.ncbi.nlm.nih.gov/' }) }));
   const obs = researchObsUrlDay(x.d);
@@ -100,7 +129,7 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   return {
     franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${corto(x.objetivo, 110)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con «\${(REC[prev.recs[0] as string] || { label: prev.recs[0] }).label}») + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
+      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con \${fuenteContraste(prev)}) + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
       { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
@@ -289,6 +318,18 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   }
   // v6.10e (base cero · preguntas reales) · CONTROL: ninguna guía paso a paso pide «2Q de auto-test» ni deja la corrección o la clave a un chat (la da la fuente real)
   for (const g of Object.values(out)) for (const p of g.pasos) if (/2Q de auto-test|(corrección|clave) la da el chat/.test(`${p.que} ${p.como}`)) throw new Error(`research_guia: «${p.que.slice(0, 70)}…» pide preguntas inventadas o deja la clave a un chat`);
+  // v6.10 · fix 18-nov · CONTROL: tampoco la UI de Research (la tarjeta «Eval anclada» de ResearchTodayPlan.tsx seguía pidiendo «2Q de auto-test del método»)
+  {
+    const fs = require('fs'); const path = require('path'); const dir = path.join(__dirname, '..', '..', 'src', 'components', 'study');
+    for (const f of fs.readdirSync(dir).filter((n) => /^Research.*\.tsx$/.test(n))) {
+      const t = fs.readFileSync(path.join(dir, f), 'utf8');
+      if (/2Q de auto-test|auto-test del método/.test(t)) throw new Error(`research_guia: src/components/study/${f} sigue pidiendo «2Q de auto-test» (preguntas escritas por la IA): usa el recall en blanco contrastado con su fuente`);
+    }
+  }
+  // v6.10 · fix 18-nov · CONTROL: el recall en blanco de cada eval anclada genérica se corrige contra un documento o guía (REC_DOC) o una fuente propia
+  //   (CONTRASTE_DE), nunca contra un portal o una herramienta (Rising Scholars, PubMed, Crossref, Editorial Manager…)
+  for (const k of REC_DOC) if (!rec(k)) throw new Error(`research_guia: REC_DOC ${k} no existe en REC`);
+  //   (la comprobación sobre el texto ya generado de cada guía genérica la hace gen_research_plan.js tras escribir src/lib/researchGuia.ts)
   const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
   if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el (Dr\. Ciro|asesor)/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el asesor');
   // v6.10 · tanda C: el nº de ítems de PRISMA-P / PRISMA 2020 / AMSTAR-2 solo lo pide el pre-test de M1 (ningún otro paso de ese día lo da)
@@ -317,4 +358,4 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   return { porD: out, minimo, conDetalle };
 }
 
-module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso };
+module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso, REC_DOC, CONTRASTE_DE };

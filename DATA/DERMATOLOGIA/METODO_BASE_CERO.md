@@ -66,7 +66,7 @@ Cada guía, tanto del plan A como del B, abre su aviso con la fase en curso, lo 
 
 | Fase | Sesiones (fecha de plan) | Qué se hace | Criterio para pasar |
 |---|---|---|---|
-| **1 · Lenguaje y estructura** | d1-d6 (mié 18-nov → mié 2-dic) | Describir antes de diagnosticar: lesión elemental, color, configuración y distribución; estructura de la piel; fototipos; anatomía facial; dermatoscopia de triaje (lista de 3 puntos). Preguntas en Tutor y sin reloj | ≥ 80 % de lesiones elementales bien nombradas en 10 casos DermNet seguidos (ledger) |
+| **1 · Lenguaje y estructura** | d1-d6 (mié 18-nov → mié 2-dic) | Describir antes de diagnosticar: lesión elemental, color, configuración y distribución; estructura de la piel; fototipos; anatomía facial; dermatoscopia de triaje (lista de 3 puntos). Preguntas en Tutor o en modo estudio, sin cronómetro: los s/Q de cada paso (77 s ProMIR, ~60 s Pictorial) son el presupuesto de la franja, no un reloj (fix del 18-nov: los TEST ProMIR del d3 y el d6 lo dicen en su paso) | ≥ 80 % de lesiones elementales bien nombradas en 10 casos DermNet seguidos (ledger) |
 | **2 · Patrones inflamatorios** | d7-d13 (vie 4 → mar 22-dic) | Psoriasis, eccemas, acné, ampollosas, urticaria, farmacodermias y conectivopatías: uWorld en Tutor, casos DermNet del tema y test ProMIR del capítulo | ≥ 80 % en 10 casos o preguntas seguidos de la fase |
 | **3 · Infecciosas y parasitosis** | d14-d18 (jue 24-dic → mar 5-ene) | Bacterianas, sífilis e ITS, virales, micosis y parasitosis: de la lesión elemental al agente | ≥ 80 % en 10 seguidos + test ProMIR del cap. 2 corregido |
 | 4 · Seguridad de rellenos | d19-d20 (ene-2027) | Oclusión vascular y ceguera, antes que cualquier técnica | Protocolo HDPH y kit de emergencia recitados de memoria sin error |
@@ -105,6 +105,10 @@ DermNet y cierre) **no cambian**.
 
 En F1 hay 64 casos reales de DermNet en 11 pasos, sin repetir ningún caso (validado) + 4Q de ProMIR. **La fase de cada sesión ya figura en el
 aviso de su guía** (d1-d6: fase 1 · d7-d13: fase 2 · d14-d17: fase 3).
+
+**Fix del 18-nov (revisión de los frentes):** el aviso de la fase 1 decía «preguntas en Tutor, sin reloj» y el TEST 8Q ProMIR del d3 (plan 24-nov →
+real 25-nov) y del d6 (plan 2-dic → real 3-dic), planes A y B, decía «77 s/Q» a secas. Ahora esos pasos empiezan por «En modo estudio, SIN cronómetro
+(fase 1)» y el aviso aclara que los s/Q son el presupuesto de la franja. Mismas preguntas y minutos.
 
 ## 6. 2027: fase por tramo y cambios (sin medir, como antes)
 

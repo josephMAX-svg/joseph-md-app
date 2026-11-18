@@ -38,6 +38,9 @@
  *    F1 BASE nivel 1 D1-D32 · F2 CONSOLIDACIÓN niveles 1-2 D33-D76 · F3 DISCRIMINATIVA nivel 3 D77-D78 + banqueo; puerta de avance medida en el log). --check
  *    exige en cada día su FASE (aviso), el quiz al nivel de su fase, el criterio APEX de su fase, en F1 la LECTURA DE BASE en orden y el pre-test como línea
  *    base, ninguna sección saltada por acertar el pre-test (1.ª vuelta) y ningún paso —plan ni banqueo— con preguntas que no sean MIR oficiales.
+ *  · v6.10 · base cero · fix 18-nov (revisión de los frentes): --check exige además en F1 (D1-D32) la LECTURA DE BASE sin ninguna sección PARCIAL, secciones y
+ *    reserva en el orden del capítulo, y al principio del «cómo» la cobertura del día (minutos leídos / lectura completa medida) con el destino del resto
+ *    (2.ª vuelta con fecha). Antes solo buscaba /se saltan/ y el prefijo «LECTURA DE BASE».
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */
@@ -269,7 +272,7 @@ function validarTodo(tsDatos) {
   //   el quiz comenta al NIVEL de su fase, F1 (D1-D32) lee la base en orden sin saltar nada y su pre-test es línea base; en ningún día de la 1.ª vuelta se
   //   salta una sección por acertar el pre-test; ningún paso (plan + banqueo) pide preguntas que no sean MIR oficiales con su año-número
   const RX_INVENTADAS = /genera\w*\s+\d+\s*(preguntas|Q\b)|preguntas (propias|inventadas|generadas|de Claude)|proyecto claude|viñetas? (propias|de Claude|espejo)/i;
-  let nFase = 0;
+  let nFase = 0; let nCob = 0;
   for (const d of MDD.MIR_DIAS) {
     const g = MG.mirGuiaDe(d.fecha);
     const fz = metodo.fases.find((f) => d.d >= f.dDesde && d.d <= f.dHasta);
@@ -286,6 +289,18 @@ function validarTodo(tsDatos) {
       if (!/^LECTURA DE BASE/.test(sinH(lec ? lec.que : ''))) errores.push(`D${d.d}: en la fase 1 la lectura es «LECTURA DE BASE» (en orden, entera)`);
       const pre = g.pasos.find((p) => /^PRE-TEST/.test(sinH(p.que)));
       if (!pre || !/línea base/.test(pre.que + ' ' + pre.como) || !/aunque adivines/.test(pre.como)) errores.push(`D${d.d}: el pre-test de la fase 1 no es línea base («contesta las 5 aunque adivines»)`);
+      // v6.10 · base cero (fix 18-nov, revisión de los frentes): la LECTURA DE BASE de F1 no lee nada PARCIAL, va en el orden del capítulo (también la
+      //   reserva) y declara al principio del «cómo» su cobertura (minutos leídos / lectura completa medida) y el destino del resto (2.ª vuelta con fecha)
+      const jm = J.mir.find((m) => m.d === d.d);
+      if (lec && jm) {
+        const cob = jm.lectura.cobertura; const idx = (t) => jm.capitulo.secciones.findIndex((u) => u.titulo === t);
+        const enOrden = (arr) => (arr || []).every((u, i) => i === 0 || idx(arr[i - 1].titulo) < idx(u.titulo));
+        if (/PARCIAL/.test(`${lec.que} ${lec.como}`) || jm.lectura.secciones.some((u) => u.parcial)) errores.push(`D${d.d}: la lectura de base de la fase 1 lee una sección PARCIAL`);
+        if (!enOrden(jm.lectura.secciones) || !enOrden(jm.lectura.reserva)) errores.push(`D${d.d}: secciones o reserva de la lectura de base fuera del orden del capítulo`);
+        const dec = (n) => String(n).replace('.', ',');
+        if (!cob || cob.minCapitulo !== jm.capitulo.minLecturaCompleta || !lec.como.startsWith(`Hoy lees ${dec(cob.minLeidos)}′ de los ${dec(cob.minCapitulo)}′ del capítulo (${cob.pct} %`) || !/→ 2\.ª vuelta MIR \(fase principal, tras el handoff del [^ ]+ \d+-[a-z]+-\d{4}\)/.test(lec.como.slice(0, 260))) errores.push(`D${d.d}: la lectura de base no empieza declarando su cobertura (min leídos / lectura completa) y el destino del resto con fecha`);
+        else nCob++;
+      }
     }
   }
   for (const m of MM.MIR_MANT_DIAS) {
@@ -315,7 +330,7 @@ function validarTodo(tsDatos) {
   if (!tiene(g77, /REVISIÓN FORMAL/) || !g77.pasos.some((p) => /reloj/i.test(p.como))) errores.push('D77: falta la técnica de simulacro (reloj + revisión formal)');
   if (!tiene(g78, /EN BLANCO/) || !tiene(g78, /FALLADAS/)) errores.push('D78: falta el orden de corrección de Ravi');
   void prev;
-  return { errores, n, nRel, nFase };
+  return { errores, n, nRel, nFase, nCob };
 }
 
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
@@ -323,7 +338,7 @@ const v = validarTodo(out);
 if (v.errores.length) { console.error(v.errores.slice(0, 30).join('\n')); aborta(`${v.errores.length} bloque(s) no cuadran`); }
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/mirGuiaDatos.ts NO está al día → node DATA/MIR/guia_lectura/gen_mir_guia.js'); process.exit(1); }
-  console.log(`✓ mirGuiaDatos.ts al día · ${v.n} bloques validados (D1-D78 + banqueo × 4 inicios) · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía · base cero: ${v.nFase} días con su fase (${metodo.fases.map((f) => `F${f.n} D${f.dDesde}-D${f.dHasta}`).join(' · ')}), 0 preguntas no oficiales`);
+  console.log(`✓ mirGuiaDatos.ts al día · ${v.n} bloques validados (D1-D78 + banqueo × 4 inicios) · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía · base cero: ${v.nFase} días con su fase (${metodo.fases.map((f) => `F${f.n} D${f.dDesde}-D${f.dHasta}`).join(' · ')}), 0 preguntas no oficiales · lectura de base de F1 sin PARCIAL, en orden y con su cobertura declarada en ${v.nCob} días`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/mirGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía · base cero: ${v.nFase} días con su fase`);

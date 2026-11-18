@@ -12,8 +12,8 @@
 1. **Se aprende haciendo un producto real y pequeño**: primero los fundamentos (qué es una revisión sistemática, PICO, diseño del estudio),
    después **una carta al editor**, luego un **reporte de caso** según CARE y, en 2027, la **revisión sistemática SR-1** completa.
 2. **Research no tiene banco de preguntas real propio**, así que **no hay preguntas**. Las «2Q de auto-test» de las evaluaciones ancladas las
-   escribía la IA; ahora son un **recall en blanco** de los 2 puntos clave del átomo anterior, que se **contrastan con su fuente real** (el recurso
-   1 de ese átomo: checklist oficial, abstract, guía de la revista).
+   escribía la IA; ahora son un **recall en blanco** de los 2 puntos clave del átomo anterior, que se **contrastan con su fuente real**: un
+   documento o guía con el método (checklist oficial, abstract, guía de autores), nunca un portal o una herramienta (fix del 18-nov, §5b).
 3. **La corrección nunca la hace un chat.** El pre-test de M1 se corrige con las checklists oficiales de PRISMA-P, PRISMA 2020 y AMSTAR-2 en la
    evaluación anclada de R0. La «clave» del abstract de M1 es el propio abstract: lo que no dice se apunta como «no consta».
 4. **Seis fases con un criterio verificable para pasar de una a otra**, que figuran en el aviso de cada guía (`faseResearchAviso`).
@@ -72,6 +72,25 @@ Ninguna fecha, átomo, entregable ni minuto cambia.
 
 Controles nuevos (el generador aborta si fallan): ninguna guía paso a paso pide «2Q de auto-test» ni deja la corrección o la clave a un chat.
 Siguen los de antes: cada guía abre con la evaluación anclada de su átomo previo, y M1 no revela el número de ítems.
+
+### 5b. Contra qué se corrige el recall en blanco (fix del 18-nov, revisión de los frentes)
+
+La guía genérica contrastaba el recall con el **recurso 1** del átomo previo, y en 4 evaluaciones de F1 ese recurso era un portal o una
+herramienta: no hay texto con el método contra el que corregir. Ahora la fuente es, por este orden: (1) la **fuente propia** del átomo si su
+método vive en su artefacto; (2) el primer recurso que es **documento o guía** (`REC_DOC` en `research_guia.js`); (3) si no hay ninguno, el
+**artefacto y el objetivo** del átomo previo.
+
+| Evaluación de… | Fecha de plan → real | Antes (portal o herramienta) | Después |
+|---|---|---|---|
+| M2 | jue 3-dic → vie 4-dic | «Rising Scholars · mentoría gratuita» | MENTORES.md §3 (mensaje 2) y su fila de la tabla CRM |
+| C-2 | lun 7-dic → mar 8-dic | «PubMed (búsqueda + alertas)» | CARTA_1/diana.md y las 5 letters modelo |
+| C-4 | jue 17-dic → vie 18-dic | «Crossref · verificar DOI» | CARTA_1/refs_verified.json y la cabecera de `agentic/citation_verifier.py` |
+| C-5 | lun 21-dic → mar 22-dic | «Editorial Manager (Aries)» | las Author Guidelines de la revista diana y CARTA_1/cover_letter.md |
+
+En 2027 cambian 10 evaluaciones más por la misma regla (T-6, T-8, X-7, CR-7, CR-8, X-8, X-2, X-3, X-4, X-6). La tarjeta «Eval anclada» de la
+pantalla de Research (`ResearchTodayPlan.tsx`) decía todavía «2Q de auto-test del método»: ahora dice «Recall en blanco de los 2 puntos clave de su
+método (a papel, contrastado con su fuente)». Controles: `research_guia.js` aborta si un `src/components/study/Research*.tsx` pide «2Q de auto-test»;
+`gen_research_plan.js` comprueba en el texto generado que ninguna evaluación anclada contrasta con un portal o una herramienta (44 evaluaciones).
 
 ## 6. Fuentes
 

@@ -308,10 +308,10 @@ for (const r of rows.filter((x) => x.pretest)) {
   recallDe[r.d] = rows.filter((x) => x.d >= r.d - 5 && x.d < r.d).map((x) => {
     if (x.casoId) {
       const c = casos.find((k) => k.id === x.casoId);
-      return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · CASO ${c.id}/${casos.length} «${c.titulo}»: mecanismo · metáfora · plan del caso, en 3 líneas y sin mirar`, a: `${(c.decisiones || []).join(' · ')} — corrige con el caso y su fuente: ${c.fuente}` };
+      return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · CASO ${c.id}/${casos.length} «${c.titulo}»: mecanismo · metáfora · plan del caso, en 3 líneas y sin mirar`, a: `${(c.decisiones || []).join(' · ')} — corrige PRIMERO con el caso y su fuente (${c.fuente}); estas decisiones, solo como resumen` };
     }
     const cs = cards.filter((k) => k.d === x.d);
-    return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · «${x.tema}»: el mecanismo (causa → efecto) en 1 línea, sin mirar`, a: `${cs.length ? cs.map((k) => k.a).join(' · ') : x.estudio} — corrige con la fuente del día: ${x.fuente}` };
+    return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · «${x.tema}»: el mecanismo (causa → efecto) en 1 línea, sin mirar`, a: `Corrige PRIMERO con la fuente del día (la sección que leíste): ${x.fuente} · la tarjeta, solo como resumen (la escribió el generador del plan): ${cs.length ? cs.map((k) => k.a).join(' · ') : x.estudio}` };
   });
 }
 

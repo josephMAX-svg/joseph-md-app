@@ -47,6 +47,8 @@ import { mirMantDiaDe, mirMantFranjas, MIR_MANT_META, type DiaMIRMant } from './
 import { mirAnkiDeck } from './ankiLinks';
 import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO, type MirGuiaPreguntas, type MirMetodoAsig, type MirFase } from './mirGuiaDatos';
 import { extraCorridaDe } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir)
+/** v6.10 · base cero (fix 18-nov): «vie 3-dic-2027» = handoff del banqueo → fase principal MIR (antes «oct-2027» escrito, de la v6.00). */
+const _HANDOFF_MIR = MIR_MANT_META.handoff.split(' (')[0];
 
 export type { MirGuiaPreguntas, MirGuiaQ, MirGuiaEvalSlot, MirCapMedido, MirMetodo, MirMetodoAsig, MirFase } from './mirGuiaDatos';
 export { MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO };
@@ -266,7 +268,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     {
       min: 15,
       que: `${f1 ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} 15′ · Orientación MIR (1′) + secciones con más preguntas MIR citadas, en orden (14′) — ${dia.tema} · SIN MEDIR: secciones y minutos se eligen en el momento`,
-      como: 'En el orden del capítulo, las secciones con más chips «MIR ≥2015», cada una entera (Whole Page Rule) y sin saltar ninguna por acertar el pre-test (1.ª vuelta: no se recorta el temario); las de las preguntas FALLADAS, con más atención · ritmo de referencia 180 palabras/min (una sección de ~500 palabras ≈ 3′) · a las 15:53 paras: lo que no entra queda para la 2.ª vuelta (oct-2027) · vídeos largos (Masterclass/Videoclase/Imperdible) NO entran; solo clips ≤12 min.',
+      como: 'En el orden del capítulo, las secciones con más chips «MIR ≥2015», cada una entera (Whole Page Rule) y sin saltar ninguna por acertar el pre-test (1.ª vuelta: no se recorta el temario); las de las preguntas FALLADAS, con más atención · ritmo de referencia 180 palabras/min (una sección de ~500 palabras ≈ 3′) · a las 15:53 paras: lo que no entra queda para la 2.ª vuelta (fase principal MIR, tras el handoff del ' + _HANDOFF_MIR + ') · vídeos largos (Masterclass/Videoclase/Imperdible) NO entran; solo clips ≤12 min.',
       enlace: { t: `ProMIR · ${dia.tema}`, url },
     },
     {
@@ -352,7 +354,7 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     const [a, b] = f.hora.split('–');
     const min = aMinutos(b ?? '') - aMinutos(a ?? '');
     const t0 = tPaso; tPaso += min;
-    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (las 14 asignaturas del plan ya reactivadas)`, como: `FSRS · solo Good/Again · retention 0,85 hasta el Step 1 (→ 0,90 en la fase principal, oct-2027) · orden aleatorio, nunca por asignatura (Ravi) · tu mazo de fallos primero y a cero; el de Ravi después, ≤${M.nuevasBaseBanqueo} nuevas/día en el banqueo, hasta que acabe el paso (Anki no le quita tiempo a las preguntas) · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana.` };
+    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (las 14 asignaturas del plan ya reactivadas)`, como: `FSRS · solo Good/Again · retention 0,85 hasta el Step 1 (→ 0,90 en la fase principal MIR, tras el handoff del ${_HANDOFF_MIR}) · orden aleatorio, nunca por asignatura (Ravi) · tu mazo de fallos primero y a cero; el de Ravi después, ≤${M.nuevasBaseBanqueo} nuevas/día en el banqueo, hasta que acabe el paso (Anki no le quita tiempo a las preguntas) · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana.` };
     if (f.tipo === 'quiz') {
       // ≥20Q: pasada a ≈72 s/Q con el reloj cada 10 preguntas y los últimos minutos para la revisión FORMAL (Ravi); <20Q: sin cambios
       const pasada = dia.nQ >= 20 ? Math.min(min - 2, Math.round(dia.nQ * 1.2)) : 0;

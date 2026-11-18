@@ -163,7 +163,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           <View style={st.anchor}>
             <Text style={st.anchorLbl}>{f4 ? "Inicio de los 30' (tiempo muerto) · Eval anclada (sesión anterior) — opcional en F4" : '13:30 · Eval anclada (sesión anterior)'}</Text>
             <Text style={st.anchorVal}>{prev.code} · {prev.objetivo}</Text>
-            <Text style={st.anchorSub}>2Q de auto-test del método + ¿existe el artefacto de la sesión anterior? ({prev.artefacto}) · APEX-método AGAIN/GOOD</Text>
+            <Text style={st.anchorSub}>Recall en blanco de los 2 puntos clave de su método (a papel, contrastado con su fuente) + ¿existe el artefacto de la sesión anterior? ({prev.artefacto}) · APEX-método AGAIN/GOOD</Text>
           </View>
         </FadeUp>
       )}

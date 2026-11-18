@@ -192,7 +192,7 @@ export interface DermaFase { n: number; nombre: string; desde: number; hasta: nu
 /** Fases (sesiones d1-d103). Criterio = mastery gate de Palmerton (80 % en 10 consecutivas, Tutor y sin reloj al principio) aplicado a lo que entrena cada
  *  fase; donde no hay banco real abierto (dermpath, cirugía, estética), el criterio es un recall en blanco sin error. Fuentes: METODO_BASE_CERO.md. */
 export const DERMA_FASES: DermaFase[] = [
-  { n: 1, nombre: 'Lenguaje y estructura', desde: 1, hasta: 6, que: 'describir ANTES de diagnosticar (lesión elemental, color, configuración, distribución), estructura de la piel, fototipos, anatomía facial y dermatoscopia de triaje (lista de 3 puntos); preguntas en Tutor, sin reloj', criterio: '≥ 80 % de lesiones elementales bien nombradas en 10 casos DermNet seguidos (ledger)' },
+  { n: 1, nombre: 'Lenguaje y estructura', desde: 1, hasta: 6, que: 'describir ANTES de diagnosticar (lesión elemental, color, configuración, distribución), estructura de la piel, fototipos, anatomía facial y dermatoscopia de triaje (lista de 3 puntos); preguntas en Tutor o en modo estudio, sin cronómetro (los s/Q de cada paso son el presupuesto de la franja, no un reloj)', criterio: '≥ 80 % de lesiones elementales bien nombradas en 10 casos DermNet seguidos (ledger)' },
   { n: 2, nombre: 'Patrones inflamatorios', desde: 7, hasta: 13, que: 'psoriasis, eccemas, acné, ampollosas, urticaria, farmacodermias y conectivopatías: uWorld en Tutor + casos DermNet del tema + test ProMIR del capítulo', criterio: '≥ 80 % en 10 casos/preguntas seguidos de la fase (DermNet + uWorld Tutor, ledger)' },
   { n: 3, nombre: 'Infecciosas y parasitosis', desde: 14, hasta: 18, que: 'bacterianas, sífilis/ITS, virales, micosis y parasitosis: de la lesión elemental al agente', criterio: '≥ 80 % en 10 casos/preguntas seguidos de la fase + el test ProMIR del cap. 2 corregido' },
   { n: 4, nombre: 'Seguridad de rellenos', desde: 19, hasta: 20, que: 'oclusión vascular y ceguera ANTES que cualquier técnica (regla de seguridad del PLAN_ELITE §4)', criterio: 'protocolo HDPH y kit de emergencia recitados de memoria sin error (recall en blanco)' },
@@ -207,6 +207,11 @@ export const DERMA_FASES: DermaFase[] = [
 /** Fase de una sesión (por su nº d). */
 export function dermaFaseDe(dia: DiaDerma): DermaFase {
   return DERMA_FASES.find((f) => dia.d >= f.desde && dia.d <= f.hasta) ?? (DERMA_FASES[DERMA_FASES.length - 1] as DermaFase);
+}
+/** v6.10 · fix 18-nov (revisión de los frentes): en la FASE 1 el aviso dice «preguntas en Tutor, sin reloj» → los TEST ProMIR de esa fase (d3, d6) van en
+ *  modo estudio y el 77 s/Q es solo el presupuesto de la franja (antes el paso decía «77 s/Q» a secas y parecía cronometrado). '' fuera de la fase 1. */
+function sinRelojF1(dia: DiaDerma): string {
+  return dermaFaseDe(dia).n === 1 ? 'En modo estudio, SIN cronómetro (fase 1): ' : '';
 }
 /** Aviso de fase que encabeza cada guía (plan A y B). */
 export function dermaFaseAviso(dia: DiaDerma): string {
@@ -445,7 +450,7 @@ function planAPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     const nQ = Math.max(2, Math.floor((reviewMin * 60) / SEG_Q));
     const t = testPMDDe(dia, total);
     if (taper && dia.qbankly) pasos.push({ min: reviewMin, que: 'REVIEW · TAPER: repaso FSRS de fallos del ledger (0 preguntas nuevas)', como: 'Re-registra cada caso/pregunta fallado; el cursor de cada banco no se mueve hoy.', enlace: { t: dia.qbankly.t.slice(0, 60), url: dia.qbankly.url } });
-    else if (dia.promir && cap && t) pasos.push({ min: t.min, que: `ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · TEST ${t.nQ}Q`, como: `77 s/Q (el mismo test de ${t.nQ}Q que el plan B) · preguntas: la lista «Pool oficial» de la app (capítulo → asignatura); si no hay, el test del capítulo ProMIR · registra el neto (kind derma10Q, asignatura Dermatología) · secciones del capítulo SIN MEDIR.`, enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
+    else if (dia.promir && cap && t) pasos.push({ min: t.min, que: `ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · TEST ${t.nQ}Q`, como: `${sinRelojF1(dia)}77 s/Q (el mismo test de ${t.nQ}Q que el plan B) · preguntas: la lista «Pool oficial» de la app (capítulo → asignatura); si no hay, el test del capítulo ProMIR · registra el neto (kind derma10Q, asignatura Dermatología) · secciones del capítulo SIN MEDIR.`, enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
     else if (dia.qbankly && dia.qbankly.url.startsWith(qa(3626)) && PICTORIAL_ASIGNACION[dia.d]) {
       const asig = PICTORIAL_ASIGNACION[dia.d]!;
       const tot = (t: string) => PICTORIAL_TEMAS.find((x) => x.t === t)?.n ?? 0;
@@ -491,7 +496,7 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     if (taper) pasos.push({ min: corto ? 8 : 11, que: `TAPER · ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · 0 preguntas nuevas: repaso de tus fallos ProMIR de Dermatología del ledger`, como: 'Re-responde (sin mirar) cada pregunta ProMIR de Dermatología fallada en sesiones anteriores · 77 s/Q · la semana de examen se consolida lo fallado (como el plan A).', enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
     else {
       const m = t ? t.min : corto ? 8 : 11; const q = t ? t.nQ : corto ? 6 : 8;
-      pasos.push({ min: m, que: `ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · TEST ${q}Q (ciego, primero)`, como: `77 s/Q · ${t ? `el mismo test de ${q}Q que el plan A` : 'el plan A de hoy (30′ con casos) no tiene hueco para el test'} · lista «Pool oficial» de la app o test del capítulo ProMIR · registra el neto (kind derma10Q) · no depende de AccessDerma.`, enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
+      pasos.push({ min: m, que: `ProMIR Dermatología › cap. ${cap.n} «${cap.t}» · TEST ${q}Q (ciego, primero)`, como: `${sinRelojF1(dia)}77 s/Q · ${t ? `el mismo test de ${q}Q que el plan A` : 'el plan A de hoy (30′ con casos) no tiene hueco para el test'} · lista «Pool oficial» de la app o test del capítulo ProMIR · registra el neto (kind derma10Q) · no depende de AccessDerma.`, enlace: { t: `ProMIR · Derma cap. ${cap.n}`, url: pm(cap.capId) } });
     }
   } else if (a.uw && UW_DERM[a.uw]) {
     // v6.09b · lote 1-quater: en F1 la regla del Tutor (2,35′/Q) y el reparto UW_TUTOR_F1; 2027 (y el SERUMS, 30′) sin cambio

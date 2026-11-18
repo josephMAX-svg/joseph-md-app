@@ -24,6 +24,18 @@ export function faseResearchAviso(code: string): string {
   return `FASE ${f.n}/${FASES_RESEARCH.length} (base cero) · ${f.nombre}: ${f.que} · ${sig ? `pasa a la fase ${sig.n} cuando: ${f.criterio}` : `cierre: ${f.criterio}`}`;
 }
 const corto = (s: string, n: number): string => (s.length > n ? s.slice(0, Math.max(s.lastIndexOf(' ', n - 3), 20)) + '…' : s);
+/** v6.10 · fix 18-nov: recursos de REC que son DOCUMENTO o GUÍA (texto con el método: un recall en blanco se corrige contra ellos); el resto de REC son
+ *  portales, registros o herramientas (PubMed, Crossref, Rising Scholars, Editorial Manager, ORCID…) — fuente: DATA/_scripts/research_guia.js. */
+export const REC_DOC: ReadonlySet<string> = new Set(["GREEN","STAT","STEPSR","CIL1","COCHB","PRISMA","AMSTAR","DMAR","DELO","BBR","GTS","ICMJE","COPE","CREDIT","SCIWRITE","REBUTTAL","PHRASE","CARE","STROBE"]);
+/** v6.10 · fix 18-nov: fuente de contraste propia del átomo cuyo método está en su artefacto o en un documento que no es de REC. */
+export const CONTRASTE_DE: Readonly<Record<string, string>> = {"M2":"MENTORES.md §3 (mensaje 2, Rising Scholars) y su fila de la tabla CRM","C-2":"CARTA_1/diana.md (deadline, límites y esqueleto) y las 5 letters modelo que leíste","C-4":"CARTA_1/refs_verified.json (status de cada cita) y la cabecera de DATA/RESEARCH/agentic/citation_verifier.py (reglas de verificación)","C-5":"las Author Guidelines de la revista diana y CARTA_1/cover_letter.md"};
+/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA · su artefacto y su objetivo. */
+export function fuenteContraste(prev: DiaResearch): string {
+  if (CONTRASTE_DE[prev.code]) return CONTRASTE_DE[prev.code]!;
+  const k = prev.recs.find((r) => REC_DOC.has(r));
+  if (k && REC[k]) return `«${REC[k]!.label}»`;
+  return `su artefacto («${corto(prev.artefacto, 100)}») y su objetivo`;
+}
 function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   const recs = x.recs.map((k) => ({ k, ...(REC[k] || { label: k, url: 'https://pubmed.ncbi.nlm.nih.gov/' }) }));
   const obs = researchObsUrlDay(x.d);
@@ -46,7 +58,7 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   return {
     franja: '13:30–14:15', plan: 'research-derma', titulo: `${x.code} · ${corto(x.objetivo, 110)}`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? `Eval anclada de ${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con «${(REC[prev.recs[0] as string] || { label: prev.recs[0] }).label}») + ¿existe el artefacto «${corto(prev.artefacto, 120)}»?` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: `${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}` },
+      { min: 5, que: prev ? `Eval anclada de ${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con ${fuenteContraste(prev)}) + ¿existe el artefacto «${corto(prev.artefacto, 120)}»?` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: `${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}` },
       { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: `DEEP WORK: ${x.objetivo}`, como: `Trabaja con «${r0.label}» MIENTRAS produces el artefacto: ${x.artefacto}${recs.length > 1 ? ` (apoyo: ${recs.slice(1).map((r) => r.label).join(' · ')})` : ''}.${x.tool && x.tool !== '—' ? ` Herramienta: ${x.tool}.` : ''}`, enlace: { t: `${r0.k}`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },

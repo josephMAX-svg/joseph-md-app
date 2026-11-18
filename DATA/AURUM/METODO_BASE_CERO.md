@@ -43,7 +43,13 @@ La secuencia del currículo (mentalidad → tono/escucha → preguntas → ofert
 
 - D1-D15 = etapa A1 (plan mié 18-nov → mar 8-dic; real jue 19-nov → mié 9-dic). PITCH v1 = D15.
 - D16-D32 = etapa A2 (plan mié 9-dic → sáb 2-ene; real jue 10-dic → sáb 2-ene). Su PITCH v2 es el D35 (mié 6-ene-2027).
-- Cada sesión de F1 lleva al final del aviso: «BASE CERO · etapa … : qué se entrena. Pasas … con …». No cambia ni una hora ni un minuto.
+- Cada sesión de F1 lleva al final del aviso: «BASE CERO · fase AURUM n/7 (etapa, D…-D…): qué se entrena. Pasas a la fase AURUM n+1 con … Si no llegas,
+  las fechas no se mueven: lo que falte es la corrección única de tus próximos DRILL y se vuelve a puntuar en el PITCH siguiente; anota el gap en la nota ◆».
+  No cambia ni una hora ni un minuto.
+- **Fix del 18-nov (revisión de los frentes):** (1) el aviso decía «(F2, D16-D35) … Pasas a la F3», y F1/F2/F3 son las fases del RÉGIMEN (F2 = intensiva
+  ENCAPS desde el 4-ene): ahora «fase AURUM n/7»; (2) el D15 (PITCH v1; plan mar 8-dic → real mié 9-dic) daba dos criterios distintos: el del aviso y el
+  del drill («certeza sin presión y tono que baja al final»; el tono que baja es la voz de DJ de la fase AURUM 2) → el drill pide ahora el mismo que el
+  aviso; (3) cada aviso de F1 dice qué pasa si no se llega al criterio.
 - Plan B de F1: «Sin un lead real hoy: el "lead" del role-play dice una frase REAL —de tus chats guardados o literal del vídeo de hoy—; nunca un cliente inventado».
 
 ## 5. Evaluación sin preguntas inventadas

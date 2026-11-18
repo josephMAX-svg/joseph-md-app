@@ -1091,7 +1091,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 11,
      "que": "ProMIR Dermatología › cap. 1 · TEST 8Q (preguntas MIR citadas en el capítulo: 2024-051 · 2023-057 · 2022-061 · 2020-004 · 2017-041 · 2011-225 · 2010-019 · 2009-016)",
-     "como": "11′ = 8Q a 77 s/Q (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; 30 de Dermatología en total) → se usan las 11 preguntas MIR citadas en el capítulo (más recientes primero) · si te sobra tiempo: 2008-144 · 2005-144. La lista «Pool oficial» de la app trae preguntas de OTROS capítulos de Dermatología (el cap. 1 no tiene en el pool): déjalas para el banqueo y registra el neto con «Registrar 10Q MIR-Derma» (total 8).",
+     "como": "En modo estudio, SIN cronómetro (fase 1 de Derma): 11′ = 8Q a 77 s/Q, solo el presupuesto de la franja (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; 30 de Dermatología en total) → se usan las 11 preguntas MIR citadas en el capítulo (más recientes primero) · si te sobra tiempo: 2008-144 · 2005-144. La lista «Pool oficial» de la app trae preguntas de OTROS capítulos de Dermatología (el cap. 1 no tiene en el pool): déjalas para el banqueo y registra el neto con «Registrar 10Q MIR-Derma» (total 8).",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646"
@@ -1157,7 +1157,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 11,
      "que": "PRIMERO, ciego · ProMIR Dermatología › cap. 1 · TEST 8Q (preguntas MIR citadas en el capítulo: 2024-051 · 2023-057 · 2022-061 · 2020-004 · 2017-041 · 2011-225 · 2010-019 · 2009-016)",
-     "como": "11′ = 8Q a 77 s/Q (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; 30 de Dermatología en total) → se usan las 11 preguntas MIR citadas en el capítulo (más recientes primero) · si te sobra tiempo: 2008-144 · 2005-144. La lista «Pool oficial» de la app trae preguntas de OTROS capítulos de Dermatología (el cap. 1 no tiene en el pool): déjalas para el banqueo y registra el neto con «Registrar 10Q MIR-Derma» (total 8).",
+     "como": "En modo estudio, SIN cronómetro (fase 1 de Derma): 11′ = 8Q a 77 s/Q, solo el presupuesto de la franja (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; 30 de Dermatología en total) → se usan las 11 preguntas MIR citadas en el capítulo (más recientes primero) · si te sobra tiempo: 2008-144 · 2005-144. La lista «Pool oficial» de la app trae preguntas de OTROS capítulos de Dermatología (el cap. 1 no tiene en el pool): déjalas para el banqueo y registra el neto con «Registrar 10Q MIR-Derma» (total 8).",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646"

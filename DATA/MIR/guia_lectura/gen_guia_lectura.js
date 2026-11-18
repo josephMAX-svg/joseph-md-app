@@ -61,6 +61,16 @@
  *    quiz) y la lectura = LECTURA DE BASE «en orden y entera»; (2) en toda la 1.ª vuelta (D2-D76) ninguna sección se salta por acertar el pre-test (antes
  *    «las secciones cuyas preguntas acertaste se saltan y entra la reserva»; la reserva solo si sobra tiempo); (3) fase 2 (D33-D76): el pre-test ya lleva
  *    la regla del blanco. El nivel del comentario del quiz y el criterio APEX por fase los mete mirGuia.metodoRavi.
+ *  · v6.10 · base cero · fix 18-nov (revisión de los frentes: 12 de 32 días de F1 leían «PARCIAL: solo los párrafos con chip MIR ≥2015» bajo un paso que
+ *    prometía «cada apartado entero» y la reserva iba por peso bajo «sigue en orden»): (1) F1 D2-D32 = elegirLecturaBase: solo secciones ENTERAS (la que no
+ *    cabe se salta y entra la siguiente entera que quepa), mismo presupuesto de 14′ a 180 palabras/min y el paso de 16′ en 0,85-1,15 a 150; (2) reserva en el
+ *    orden del capítulo en los 76 días (mismas 3 secciones); (3) el «cómo» de la lectura de base EMPIEZA con la cobertura del día («Hoy lees X′ de los Y′
+ *    del capítulo (P %)») y el destino del resto con fecha (2.ª vuelta, tras el handoff del vie 3-dic-2027 = MIR_MANT_META.fin; antes «oct-2027», que ya
+ *    no era), y dice que la lista es una selección por preguntas citadas (tensión con Ravi declarada); (4) el mismo conjunto de preguntas del capítulo se
+ *    reparte con lo leído hoy primero, y para que 2027 no cambie en cascada hay un PASE 1 (--pase1, reparto de siempre) cuyo consumo veta: F1 no toma lo
+ *    que usa 2027 y 2027 no toma lo que usaba F1 → en 2027 solo cambian las anclas D-1/D-3/D-7 que vienen de días de F1 (evals de D33, D35, D36 y D39);
+ *    (5) --check exige 0 PARCIAL en F1, secciones y reserva en orden, la cobertura declarada y el quiz de F1 con lo leído hoy delante. El D1 conserva su
+ *    lista (decidida con Joseph) y gana la cobertura al principio del «cómo». Fase 2: el «cómo» ya no dice «cada apartado entero» cuando hay un PARCIAL.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -94,6 +104,10 @@ const faseDe = (d) => { const f = (METODO.fases || []).find((z) => d >= z.dDesde
 const POOL = load('src/lib/mirPreguntasOficiales.ts');
 const DERMA = load('src/lib/dermaDailyPlan.ts');
 const ANKI = load('src/lib/ankiLinks.ts');
+// v6.10 · base cero (fix 18-nov): destino con fecha de lo que no se lee en la 1.ª vuelta = 2.ª vuelta en la fase principal MIR, que empieza tras el handoff
+//   del banqueo (MIR_MANT_META.fin = último día con estudio antes del Step 1). Antes «oct-2027» escrito (handoff de la v6.00; desde la v6.07, dic-2027).
+const MANT = load('src/lib/mirMantenimiento.ts');
+const HANDOFF = MANT.MIR_MANT_META.fin;
 
 // ── método (declarado) ──
 const RITMO = { prosaPpm: 180, tablaPpm: 90, figuraMin: 0.5 };
@@ -140,6 +154,13 @@ const min150 = (sel) => ORIENT_MIN + sel.reduce((s, u) => {
   const r180 = u.palabras / RITMO.prosaPpm + u.palabrasTabla / RITMO.tablaPpm + u.figs * RITMO.figuraMin + clip;
   return s + (u.parcial ? (u.minLeer * r150) / Math.max(r180, 0.01) : r150);
 }, 0);
+/** v6.10 · base cero (fix 18-nov): minutos de UNA sección entera a 150 palabras/min (tablas a 90, 0,5′ por figura, clips ≤12′ por su duración). */
+const m150de = (u) => u.palabras / PPM_REGLA + u.palabrasTabla / RITMO.tablaPpm + u.figs * RITMO.figuraMin + u.clips.reduce((a, v) => a + v.seg, 0) / 60;
+/** v6.10 · base cero (fix 18-nov): paso de lectura de F1 (D2-D32) = 15′ + el minuto que cede el pre-test (lote 1-ter) = 16′. */
+const LEC_F1 = LECTURA_MIN + 1;
+/** v6.10 · base cero (fix 18-nov): LECTURA DE BASE sin PARCIAL en la fase 1 (D2-D32; el D1 tiene su lista decidida con Joseph). */
+const PASE1 = process.argv.includes('--pase1'); // reparto original (sin la lectura de base) → consumo por día, para aislar 2027 (ver VETO)
+const baseF1 = (x) => !PASE1 && !!x && x.d >= 2 && faseDe(x.d).n === 1;
 const PROMIR = 'https://promir.medicapanamericana.com';
 const capUrl = (id) => `${PROMIR}/capitulo/${id}`;
 const preguntaUrl = (pid) => `${PROMIR}/pregunta/MIR/${pid}`;
@@ -152,6 +173,8 @@ const fmtSeg = (s) => (s >= 3600 ? `${Math.floor(s / 3600)}:${String(Math.floor(
 const WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtF = (iso) => `${WD[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${+iso.slice(8)}-${MES[+iso.slice(5, 7) - 1]}`;
+/** v6.10 · base cero (fix 18-nov): «2.ª vuelta MIR (fase principal, tras el handoff del vie 3-dic-2027)» (derivado de MIR_MANT_META.fin). */
+const VUELTA2 = `2.ª vuelta MIR (fase principal, tras el handoff del ${fmtF(HANDOFF)}-${HANDOFF.slice(0, 4)})`;
 
 /** Resumen PROPIO (no copia) del recuadro «Orientación MIR» de cada capítulo: qué pide ProMIR priorizar. */
 const ENFASIS = { // 11 resúmenes propios (v6.02c); el resto lo deriva enfasisMedido() de la medición (v6.03)
@@ -218,7 +241,29 @@ function elegirLectura(us, pretestSecs) {
     }
   }
   const elegidos = new Set(sel.map((x) => x.i));
-  const reserva = cand.filter((u) => !elegidos.has(u.i) && u.s > 0).slice(0, 3);
+  // v6.10 · base cero (fix 18-nov): la reserva se lee «en orden» → va en el orden del capítulo (antes, por peso: D5 «4.1 · 2.2 · 4.3»); mismas 3 secciones
+  const reserva = cand.filter((u) => !elegidos.has(u.i) && u.s > 0).slice(0, 3).sort((a, b) => a.i - b.i);
+  return { sel: sel.sort((a, b) => a.i - b.i), reserva, minUsados: r05(LECTURA_MIN - resto) };
+}
+
+/** v6.10 · base cero (fix 18-nov-2026, revisión de los frentes: 12 de 32 días de F1 leían una sección «PARCIAL: solo los párrafos con chip MIR ≥2015»
+ *  bajo un paso que prometía «cada apartado entero»): LECTURA DE BASE de la fase 1 (D2-D32) = las secciones que pregunta el MIR (más citadas primero, +5 si
+ *  cae una pregunta del pre-test), CADA UNA ENTERA y con el mismo presupuesto que elegirLectura (14′ a 180 palabras/min + 1′ de recuadro): la que no cabe
+ *  no se recorta, se salta y entra la siguiente entera que quepa; con ≥ 3′ libres (como elegirLectura), secciones de contexto (sin citas) enteras en el orden del capítulo. Se
+ *  leen en el orden del capítulo; reserva = las 3 siguientes por peso, también en el orden del capítulo. Nunca PARCIAL. El paso (16′) se comprueba a 150
+ *  palabras/min con la regla fija 0,85-1,15 (abajo, en las comprobaciones). */
+function elegirLecturaBase(us, pretestSecs) {
+  const cand = us.filter((u) => u.nivel !== 'H2' && (u.palabras > 0 || u.palabrasTabla > 0)).map((u) => ({ ...u, s: u.score + (pretestSecs.has(u.i) ? 5 : 0) }))
+    .sort((a, b) => b.s - a.s || a.min - b.min || a.i - b.i);
+  let resto = LECTURA_MIN - ORIENT_MIN; const sel = [];
+  for (const u of cand) {
+    if (resto < 1) break;
+    if (u.s <= 0) break; // sin preguntas MIR citadas → solo como contexto (abajo)
+    if (u.min <= resto) { sel.push({ ...u, minLeer: u.min, parcial: false }); resto -= u.min; }
+  }
+  if (resto >= 3) for (const u of cand.filter((y) => y.s <= 0).sort((a, b) => a.i - b.i)) { if (resto < 1) break; if (u.min <= resto) { sel.push({ ...u, minLeer: u.min, parcial: false, contexto: true }); resto -= u.min; } }
+  const elegidos = new Set(sel.map((y) => y.i));
+  const reserva = cand.filter((u) => !elegidos.has(u.i) && u.s > 0).slice(0, 3).sort((a, b) => a.i - b.i);
   return { sel: sel.sort((a, b) => a.i - b.i), reserva, minUsados: r05(LECTURA_MIN - resto) };
 }
 
@@ -228,31 +273,54 @@ const usadosPool = new Set();      // ids del pool de la app ya asignados (pre-t
 const usadosProMIR = new Set();    // ids ProMIR ya asignados
 const ANCLAS = {};                 // d → { d1: [2 ids], d3: [1], d7: [1] } (para las evals de los días siguientes)
 const CAP = {};                    // d → datos del capítulo
+// v6.10 · base cero (fix 18-nov): la lectura de base de F1 cambia qué preguntas citadas van al quiz y a las anclas de 13 días de F1. Para que el reparto de
+//   2027 (D33-D78 + sus cierres) no se mueva en cascada, se hace un PASE 1 con la selección de siempre (proceso hijo, --pase1) que dice qué día consumió cada
+//   pregunta; en el pase real, las decisiones de F1 (D ≤ F1_FIN, también sus cierres) no pueden tomar las que consumió 2027 y las de 2027 no pueden tomar
+//   las que consumió F1 en el pase 1 → 2027 ve el mismo conjunto libre y repite su reparto (solo cambian sus evals ancladas a días de F1: anclas de lo leído).
+const F1_FIN = METODO.fases[0].dHasta; // D32 (sáb 2-ene)
+const CONSUMO = new Map(); let D_ACTUAL = 0; // pid → día cuya decisión lo consumió (0 = reserva inicial del pool)
+const usar = (pid) => { usadosProMIR.add(pid); if (!CONSUMO.has(pid)) CONSUMO.set(pid, D_ACTUAL); };
+const VETO = (() => {
+  if (PASE1 || !DIAS_BASE_F1()) return null;
+  const r = require('child_process').spawnSync(process.execPath, [__filename, '--pase1'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (r.status !== 0) throw new Error('pase 1 (reparto original) falló: ' + (r.stderr || '').slice(0, 400));
+  const c = JSON.parse(r.stdout).consumo; const f1 = new Set(), tarde = new Set();
+  for (const [pid, d] of c) if (d >= 1 && d <= F1_FIN) f1.add(pid); else if (d > F1_FIN) tarde.add(pid);
+  return { f1, tarde };
+})();
+function DIAS_BASE_F1() { return DIAS.some((x) => baseF1(x)); }
+/** ¿pregunta vetada para la decisión del día en curso? (F1 no toma lo de 2027 · 2027 no toma lo que F1 consumía en el pase 1) */
+const vetada = (pid) => !!VETO && (D_ACTUAL <= F1_FIN ? VETO.tarde.has(pid) : VETO.f1.has(pid));
 // TODO el pool de la app de los 10 capítulos (pre-test + resto, que va al quiz) se reserva ANTES de repartir quiz/anclas: así ningún quiz usa la versión ProMIR
 // de una pregunta que otro día va a salir en su pre-test (p. ej. pool 2022-122 = ProMIR 2021-122)
-for (const x of DIAS) for (const id of POOL.preguntasDeCapitulo(x.capId).map((q) => q.id)) { usadosPool.add(id); usadosProMIR.add(poolAProMIR(id)); }
+for (const x of DIAS) for (const id of POOL.preguntasDeCapitulo(x.capId).map((q) => q.id)) { usadosPool.add(id); usar(poolAProMIR(id)); }
 for (const x of DIAS) {
+  D_ACTUAL = x.d;
   const med = cargarMedicion(x.capId);
   const us = unidades(med);
   const pool = POOL.preguntasDeCapitulo(x.capId).map((q) => q.id).sort();
   const secDeProMIR = (pid) => us.find((u) => u.citas.includes(pid));
   // pre-test: las del pool de la app (hasta 5); si faltan, se completa con citadas ≥2015 de las secciones de más peso
   const pre = pool.slice(0, 5).map((id) => { const pid = poolAProMIR(id); const u = secDeProMIR(pid); return { id, fuente: 'pool app', promir: pid, url: preguntaUrl(pid), seccion: u ? u.titulo : null }; });
-  pre.forEach((p) => { usadosPool.add(p.id); usadosProMIR.add(p.promir); });
+  pre.forEach((p) => { usadosPool.add(p.id); usar(p.promir); });
   const pretestSecs = new Set(pre.map((p) => us.findIndex((u) => u.titulo === p.seccion)).filter((i) => i >= 0));
-  const { sel, reserva, minUsados } = elegirLectura(us, pretestSecs);
+  // v6.10 · base cero (fix 18-nov): la selección por peso de siempre (lecQ) fija el CONJUNTO de preguntas del capítulo (quiz + anclas) → el reparto de los
+  //   demás días (pre-tests, cierres, repasos, 2027) no se mueve; en F1 (D2-D32) se LEE la lectura de base sin PARCIAL y ese mismo conjunto se reparte
+  //   poniendo primero en el quiz las preguntas de lo que se lee hoy (abajo, «reparto»)
+  const lecQ = elegirLectura(us, pretestSecs);
+  const { sel, reserva, minUsados } = baseF1(x) ? elegirLecturaBase(us, pretestSecs) : lecQ;
   const porPeso = us.slice().sort((a, b) => b.score - a.score || a.i - b.i);
   const ordenCitas = (secs) => secs.flatMap((u) => u.citas.map((pid) => ({ pid, u }))).sort((a, b) => b.pid.localeCompare(a.pid));
   if (pre.length < 5) {
     for (const { pid, u } of ordenCitas(porPeso.filter((u) => u.citasDesde2015 > 0)).filter((c) => +c.pid.slice(0, 4) >= 2015)) {
-      if (pre.length >= 5) break; if (usadosProMIR.has(pid)) continue;
-      pre.push({ id: null, fuente: 'citada ProMIR', promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usadosProMIR.add(pid);
+      if (pre.length >= 5) break; if (usadosProMIR.has(pid) || vetada(pid)) continue;
+      pre.push({ id: null, fuente: 'citada ProMIR', promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usar(pid);
     }
   }
   if (pre.length < 5) { // v6.03: capítulo con pocas citadas ≥2015 libres (D22 · D48 · D60) → se completa con las anteriores del MISMO capítulo, más recientes primero
     for (const { pid, u } of ordenCitas(porPeso)) {
-      if (pre.length >= 5) break; if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid)) || pre.some((p) => p.promir === pid)) continue;
-      pre.push({ id: null, fuente: 'citada ProMIR', promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usadosProMIR.add(pid);
+      if (pre.length >= 5) break; if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid)) || vetada(pid) || pre.some((p) => p.promir === pid)) continue;
+      pre.push({ id: null, fuente: 'citada ProMIR', promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usar(pid);
     }
   }
   // D1 (sin anclas ni cierre): 5Q ciegas EXTRA = citadas ≥2015 de las secciones de más peso, reservadas ANTES del quiz
@@ -260,13 +328,13 @@ for (const x of DIAS) {
   const extra = [];
   if (sinEval) {
     for (const { pid, u } of ordenCitas(porPeso).filter((c) => +c.pid.slice(0, 4) >= 2015)) {
-      if (extra.length >= 5) break; if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid))) continue;
-      extra.push({ promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usadosProMIR.add(pid);
+      if (extra.length >= 5) break; if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid)) || vetada(pid)) continue;
+      extra.push({ promir: pid, url: preguntaUrl(pid), seccion: u.titulo }); usar(pid);
     }
   }
   // quiz 8-10Q + anclas futuras: citadas de las secciones LEÍDAS (más recientes primero); si no llegan, del resto por peso
   const fuenteQuiz = ordenCitas(sel).concat(ordenCitas(porPeso.filter((u) => !sel.some((s) => s.i === u.i))));
-  const libres = fuenteQuiz.filter((c) => !usadosProMIR.has(c.pid) && !usadosPool.has(proMIRAPool(c.pid)));
+  const libres = fuenteQuiz.filter((c) => !usadosProMIR.has(c.pid) && !usadosPool.has(proMIRAPool(c.pid)) && !vetada(c.pid));
   const vistos = new Set(); const dedup = libres.filter((c) => !vistos.has(c.pid) && vistos.add(c.pid));
   // el pool de la app que no cabe en el pre-test (capítulos con >5) abre el quiz: se responde en la app, con clave oficial y qIds
   const quizPool = pool.slice(5).slice(0, QUIZ_MAX).map((id) => { const pid = poolAProMIR(id); const u = secDeProMIR(pid); return { id, fuente: 'pool app', promir: pid, url: preguntaUrl(pid), seccion: u ? u.titulo : null, leida: !!u && sel.some((s) => s.i === u.i) }; });
@@ -274,8 +342,17 @@ for (const x of DIAS) {
   // citadas a las anclas futuras (2Q D-1 + 1Q D-3 + 1Q D-7) sin bajar de QUIZ_N (8); con ≥14 libres sigue siendo de 10.
   const ANCLAS_N = 4;
   const nCit = Math.max(0, Math.min(QUIZ_MAX - quizPool.length, Math.max(QUIZ_N - quizPool.length, dedup.length - ANCLAS_N)));
-  const quiz = quizPool.concat(dedup.slice(0, nCit).map((c) => ({ id: null, fuente: 'citada ProMIR', promir: c.pid, url: preguntaUrl(c.pid), seccion: c.u.titulo, leida: sel.some((s) => s.i === c.u.i) })));
-  quiz.forEach((q) => usadosProMIR.add(q.promir));
+  // v6.10 · base cero (fix 18-nov): en F1 el mismo conjunto U (las nCit del quiz + las 4 anclas) se reparte con lo que se LEE hoy primero (más recientes
+  //   primero) y después el resto de U en su orden; cada pregunta lleva la sección leída que la cita (si la hay). Fuera de F1, reparto = dedup (sin cambio).
+  let reparto = dedup;
+  if (sel !== lecQ.sel) {
+    const leidaDe = (pid) => sel.find((s) => s.citas.includes(pid));
+    const U = dedup.slice(0, nCit + ANCLAS_N).map((c) => ({ pid: c.pid, u: leidaDe(c.pid) || c.u }));
+    const enSel = (c) => !!leidaDe(c.pid);
+    reparto = U.filter(enSel).sort((a, b) => b.pid.localeCompare(a.pid)).concat(U.filter((c) => !enSel(c)), dedup.slice(nCit + ANCLAS_N));
+  }
+  const quiz = quizPool.concat(reparto.slice(0, nCit).map((c) => ({ id: null, fuente: 'citada ProMIR', promir: c.pid, url: preguntaUrl(c.pid), seccion: c.u.titulo, leida: sel.some((s) => s.i === c.u.i) })));
+  quiz.forEach((q) => usar(q.promir));
   // v6.03: capítulo con pocas preguntas citadas → el quiz se completa hasta QUIZ_N con citadas no usadas de capítulos YA leídos (misma
   // asignatura primero —interleaving del bloque—, luego el resto de días previos), más recientes primero; quedan marcadas `deDia`.
   if (quiz.length < QUIZ_N) {
@@ -283,16 +360,16 @@ for (const x of DIAS) {
     for (const c of previos) {
       for (const { pid, u } of c.us.flatMap((u) => u.citas.map((pid) => ({ pid, u }))).sort((a, b) => b.pid.localeCompare(a.pid))) {
         if (quiz.length >= QUIZ_N) break;
-        if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid))) continue;
+        if (usadosProMIR.has(pid) || usadosPool.has(proMIRAPool(pid)) || vetada(pid)) continue;
         quiz.push({ id: null, fuente: 'citada ProMIR · repaso', promir: pid, url: preguntaUrl(pid), seccion: u.titulo, leida: true, deDia: c.x.d, tema: c.x.tema });
-        usadosProMIR.add(pid);
+        usar(pid);
       }
       if (quiz.length >= QUIZ_N) break;
     }
   }
-  const sigue = dedup.slice(nCit);
+  const sigue = reparto.slice(nCit);
   ANCLAS[x.d] = { d1: sigue.slice(0, 2), d3: sigue.slice(2, 3), d7: sigue.slice(3, 4) };
-  for (const a of [].concat(ANCLAS[x.d].d1, ANCLAS[x.d].d3, ANCLAS[x.d].d7)) usadosProMIR.add(a.pid);
+  for (const a of [].concat(ANCLAS[x.d].d1, ANCLAS[x.d].d3, ANCLAS[x.d].d7)) usar(a.pid);
   const minCompleta = r05(us.reduce((s, u) => s + u.min, 0));
   CAP[x.d] = { x, med, us, pool, pre, sel, reserva, minUsados, quiz, minCompleta, extra };
 }
@@ -320,13 +397,16 @@ function pasosD1(d) {
   const aMan = colaMan && colaMan.dC === d ? `${colaMan.n === 1 ? 'La primera que no entre abre' : `Las ${colaMan.n} primeras que no entren abren`} la eval de mañana (${fmtF(colaMan.fecha)} 15:15) · ` : '';
   const qS = (n) => dec1((n * (SEG_POR_Q + SEG_COMENTARIO)) / 60);
   const lst = (xs) => xs.map((u) => `${u.titulo.split(' ')[0]} ${dec1(m150u(u))}′`).join(' · ');
+  // v6.10 · base cero (fix 18-nov): la cobertura del día y el destino del resto, al principio del «cómo» (como en D2-D32); la lista no cambia
+  const leidoD1 = [...base, ...sobra].reduce((a, u) => a + u.min, 0), restoD1 = us.filter((u) => u.nivel !== 'H2' && ![...base, ...sobra].some((b) => b.i === u.i));
+  const cobD1 = `Hoy lees ${dec1(leidoD1)}′ de los ${dec1(minCompleta)}′ del capítulo (${Math.round((100 * leidoD1) / minCompleta)} %, a ${RITMO.prosaPpm} palabras/min; el §9 entra si sobra tiempo); el resto (${dec1(r05(minCompleta - leidoD1))}′, ${restoD1.length} secciones) → ${VUELTA2}: ${restoD1.map((u) => u.titulo.split(' ')[0]).join(' ')}`;
   const pasos = [
     { min: mins[0], hora: H(0), que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial de la app) · línea base, no nota`,
       como: `Contesta las 5 aunque adivines (si no sabes, marca A): es la línea base, no la nota; la regla del blanco empieza en el quiz · sin leer nada · ${SEG_POR_Q} s/Q (5Q ≈ ${dec1((5 * SEG_POR_Q) / 60)}′) + registrar las 5 en la app (kind pretest, ≈${D1_MIN_REGISTRO}′) = ${dec1((5 * SEG_POR_Q) / 60 + D1_MIN_REGISTRO)}′ · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).` },
     { min: mins[1], hora: H(1), que: `Orientación MIR + títulos de las ${nSec} secciones (sin leer el texto)`,
       como: `Lee el recuadro «Orientación MIR» (≈${ORIENT_MIN}′) y recorre en orden los ${nSec} títulos del capítulo (≈${D1_SEG_TITULO} s cada uno ≈ ${dec1((nSec * D1_SEG_TITULO) / 60)}′): solo títulos, sin leer el texto.`, enlace: { t: 'Capítulo ProMIR', url: capUrl(x.capId) } },
-    { min: mins[2], hora: H(2), que: `LECTURA DE BASE ${mins[2]}′, en orden y entera (${dec1(mLect)}′ medidos a ${PPM_REGLA} palabras/min) · §2 → §3 (cabecera + 3.1-3.4) → §4 → §6.1 → §6.2 → §8.4; el §9 solo si sobra tiempo`,
-      como: `Desde cero, en el orden del capítulo y cada apartado entero (Whole Page Rule): ${lst(base)} = ${dec1(mBase)}′ a ${PPM_REGLA} palabras/min (la regla fija en español; tablas a ${RITMO.tablaPpm}, ${String(RITMO.figuraMin).replace('.', ',')}′ por figura) → sobran ${dec1(mins[2] - mBase)}′ y entra el §9 en orden: ${lst(sobra)} = ${dec1(mSobra)}′ (total ${dec1(mLect)}′); 9.2-9.3 quedan para la 2.ª vuelta. Por cada duda o fallo del pre-test, la regla en el Shopping List.`, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } },
+    { min: mins[2], hora: H(2), que: `LECTURA DE BASE ${mins[2]}′, en orden y cada apartado entero (${dec1(mLect)}′ medidos a ${PPM_REGLA} palabras/min) · §2 → §3 (cabecera + 3.1-3.4) → §4 → §6.1 → §6.2 → §8.4; el §9 solo si sobra tiempo`,
+      como: `${cobD1} · Desde cero, en el orden del capítulo y cada apartado entero (Whole Page Rule): ${lst(base)} = ${dec1(mBase)}′ a ${PPM_REGLA} palabras/min (la regla fija en español; tablas a ${RITMO.tablaPpm}, ${String(RITMO.figuraMin).replace('.', ',')}′ por figura) → sobran ${dec1(mins[2] - mBase)}′ y entra el §9 en orden: ${lst(sobra)} = ${dec1(mSobra)}′ (total ${dec1(mLect)}′); 9.2-9.3 quedan para la 2.ª vuelta. Por cada duda o fallo del pre-test, la regla en el Shopping List.`, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } },
     { min: mins[3], hora: H(3), que: `${D1_QUIZ.min}-${D1_QUIZ.max}Q comentadas (máx. ${D1_QUIZ.tope}) — objetivo ${D1_QUIZ.obj} — de la lista de ${quiz.length} · preguntas MIR citadas en las secciones que acabas de leer`,
       como: `${aMan}La regla del blanco empieza aquí: en blanco si no descartas 2 · Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario (${SEG_POR_Q + SEG_COMENTARIO} s/Q: ${D1_QUIZ.obj}Q ≈ ${qS(D1_QUIZ.obj)}′; ${D1_QUIZ.min}Q ≈ ${qS(D1_QUIZ.min)}′ y ${D1_QUIZ.max}Q ≈ ${qS(D1_QUIZ.max)}′; la ${D1_QUIZ.max + 1}.ª y la ${D1_QUIZ.tope}.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · orden: el de la lista; a las ${D1_RELOJ[4]} paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo.` },
     { min: mins[4], hora: H(4), que: `≤4 APEX en ${deck}`, como: 'Solo de los fallos de hoy (pre-test y quiz), ≈2′ por tarjeta: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · creados directamente en Anki.' },
@@ -350,9 +430,10 @@ function pasosD1(d) {
     preguntas,
     lectura: {
       minUsados: r05([...base, ...sobra].reduce((a, u) => a + u.min, 0)), ritmo: RITMO, min150: Math.round(mLect * 10) / 10, minPaso: mins[2], d1: { base: Math.round(mBase * 10) / 10, sobra: Math.round(mSobra * 10) / 10 },
+      cobertura: { minLeidos: leidoD1, minCapitulo: minCompleta, pct: Math.round((100 * leidoD1) / minCompleta) }, // v6.10 · base cero (fix 18-nov)
       secciones: [...base, ...sobra].map((u) => ({ titulo: u.titulo, min: u.min, minLeer: u.min, parcial: false, palabras: u.palabras, palabrasTabla: u.palabrasTabla, figs: u.figs, citasMIR: u.citasMIR, citasDesde2015: u.citasDesde2015, citasDesde2020: u.citasDesde2020, clips: u.clips })),
       reserva: us.filter((u) => u.titulo.startsWith('9.2. ') || u.titulo.startsWith('9.3. ')).map((u) => ({ titulo: u.titulo, min: u.min, citasMIR: u.citasMIR })),
-      paraElRepaso: { min: r05(minCompleta - [...base, ...sobra].reduce((a, u) => a + u.min, 0)), donde: '2.ª vuelta MIR (fase principal desde oct-2027) · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)', secciones: us.filter((u) => u.nivel !== 'H2' && ![...base, ...sobra].some((b) => b.i === u.i)).map((u) => `${u.titulo} ${u.min}′`) },
+      paraElRepaso: { min: r05(minCompleta - [...base, ...sobra].reduce((a, u) => a + u.min, 0)), donde: `${VUELTA2} · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)`, secciones: us.filter((u) => u.nivel !== 'H2' && ![...base, ...sobra].some((b) => b.i === u.i)).map((u) => `${u.titulo} ${u.min}′`) },
     },
   };
 }
@@ -366,22 +447,23 @@ function pasosDia(d) {
   const cierre = MD.mirCierreDe(d);
   const anc = MD.mirAnclas(d);
   const pasos = []; const preguntas = {};
+  D_ACTUAL = d; // v6.10 · base cero (fix 18-nov): el cierre es una decisión de este día (VETO)
   if (cierre) {
     const num = cierre.num;
-    const sinUsar = POOL.preguntasDeAsignatura(num).map((q) => q.id).filter((id) => !usadosPool.has(id) && !usadosProMIR.has(poolAProMIR(id))).sort().reverse();
-    const ids = sinUsar.slice(0, 10); ids.forEach((id) => { usadosPool.add(id); usadosProMIR.add(poolAProMIR(id)); });
+    const sinUsar = POOL.preguntasDeAsignatura(num).map((q) => q.id).filter((id) => !usadosPool.has(id) && !usadosProMIR.has(poolAProMIR(id)) && !vetada(poolAProMIR(id))).sort().reverse();
+    const ids = sinUsar.slice(0, 10); ids.forEach((id) => { usadosPool.add(id); usar(poolAProMIR(id)); });
     preguntas.cierre = ids.map((id) => ({ id, fuente: 'pool app', promir: poolAProMIR(id), url: preguntaUrl(poolAProMIR(id)) }));
     // v6.03: si el pool de la asignatura no llega a 10 (sus capítulos del plan ya lo consumieron), se completa con preguntas MIR citadas en los
     // capítulos del bloque recién cerrado que no salieron en ningún paso (≥2015 primero; dentro, más recientes primero)
     const citBloque = Object.values(CAP).filter((c) => c.x.d >= cierre.dIni && c.x.d <= cierre.dFin).flatMap((c) => c.us.flatMap((u) => u.citas.map((pid) => ({ pid, u, c }))))
-      .filter((y) => !usadosProMIR.has(y.pid) && !usadosPool.has(proMIRAPool(y.pid)))
+      .filter((y) => !usadosProMIR.has(y.pid) && !usadosPool.has(proMIRAPool(y.pid)) && !vetada(y.pid))
       .sort((a, b) => (+b.pid.slice(0, 4) >= 2015) - (+a.pid.slice(0, 4) >= 2015) || b.pid.localeCompare(a.pid));
     const vistosCierre = new Set();
     for (const y of citBloque) {
       if (preguntas.cierre.length >= 10) break;
       if (vistosCierre.has(y.pid)) continue; vistosCierre.add(y.pid);
       preguntas.cierre.push({ id: null, fuente: 'citada ProMIR', promir: y.pid, url: preguntaUrl(y.pid), seccion: y.u.titulo, deDia: y.c.x.d });
-      usadosProMIR.add(y.pid);
+      usar(y.pid);
     }
     const nCitCierre = preguntas.cierre.length - ids.length;
     const fuenteCierre = nCitCierre ? `pool oficial de la app sin usar (${ids.length} de ${cierre.asignatura}: sus capítulos del plan ya consumieron el resto) + ${nCitCierre} preguntas MIR citadas en los capítulos del bloque D${cierre.dIni}-D${cierre.dFin} que no salieron en ningún paso (≥2015 primero)` : `pool oficial de la app sin usar (${sinUsar.length} de ${cierre.asignatura} tras los pre-tests)`;
@@ -446,10 +528,21 @@ function pasosDia(d) {
   // si sobra tiempo: la reserva en orden; sin reserva (la lista ya cubre todas las secciones citadas), repaso en blanco de lo leído
   const sobraTxt = reserva.length ? `sigue en orden con la reserva (${reserva.map((u) => `${u.titulo} ${u.min}′`).join(' · ')})` : 'repasa en blanco lo leído (la lista ya cubre todas las secciones con preguntas citadas)';
   const minTxt = LP ? `Minutos de cada sección a ${RITMO.prosaPpm} palabras/min (ritmo de referencia del método); a ${PPM_REGLA} —la regla de lectura en español— la lista suma ${dec1(m150)}′ con el recuadro: por eso el paso es de ${lecMin}′` : `Ritmo de referencia ${RITMO.prosaPpm} palabras/min`;
-  const lecComo = fz.n === 1
-    ? `Base cero: en el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte; Ravi: en 1.ª vuelta no se recorta el temario por las preguntas) · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`
-    : `En el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno por acertar el pre-test (1.ª vuelta: no se recorta el temario); los de las preguntas FALLADAS, con más atención y su regla al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`;
-  pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `${fz.n === 1 ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} ${lecMin}′${LP ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''}${fz.n === 1 ? ', en orden y cada apartado entero' : ''} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: lecComo, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
+  // v6.10 · base cero (fix 18-nov, revisión de los frentes): en F1 (D2-D32) la lectura de base dice la verdad: es la selección de las secciones que pregunta
+  //   el MIR (ninguna PARCIAL, cada una entera, en el orden del capítulo) y declara al principio del «cómo» cuánto del capítulo se lee hoy y adónde va el resto
+  const base = baseF1(x);
+  if (base && (sel.some((u) => u.parcial) || lecMin !== LEC_F1)) throw new Error(`D${d}: la lectura de base de F1 no puede llevar secciones PARCIAL y dura ${LEC_F1}′`);
+  const nCitSel = sel.filter((u) => !u.contexto).length, nCtxSel = sel.length - nCitSel;
+  const leidoMin = sel.reduce((a, u) => a + u.minLeer, 0), restoMin = r05(minCompleta - leidoMin);
+  const nRestoSecs = us.filter((u) => u.nivel !== 'H2' && !sel.some((y) => y.i === u.i)).length;
+  const destinoBase = `Hoy lees ${dec1(leidoMin)}′ de los ${dec1(minCompleta)}′ del capítulo (${Math.round((100 * leidoMin) / minCompleta)} %, a ${RITMO.prosaPpm} palabras/min); el resto (${dec1(restoMin)}′, ${nRestoSecs} secciones) → ${VUELTA2}`;
+  const lecComo = base
+    ? `${destinoBase} · Base cero: estas ${sel.length} secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones con más preguntas MIR citadas (criterio de la academia para la 1.ª vuelta: lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`
+    : fz.n === 1
+      ? `Base cero: en el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte; Ravi: en 1.ª vuelta no se recorta el temario por las preguntas) · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`
+      : `En el orden del capítulo, cada apartado de la lista entero (Whole Page Rule)${sel.some((u) => u.parcial) ? ', salvo el marcado PARCIAL (solo sus párrafos con chip MIR ≥2015; el resto de esa sección, a la 2.ª vuelta)' : ''} y sin saltar ninguno por acertar el pre-test (1.ª vuelta: el pre-test no recorta la lista); los de las preguntas FALLADAS, con más atención y su regla al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`;
+  const lecQueBase = base ? ` · las ${nCitSel} secciones que pregunta el MIR${nCtxSel ? ` (+ ${nCtxSel} de contexto, sin preguntas citadas)` : ''}, en el orden del capítulo y cada una entera` : fz.n === 1 ? ', en orden y cada apartado entero' : '';
+  pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `${fz.n === 1 ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} ${lecMin}′${LP ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''}${lecQueBase} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: lecComo, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
   // quiz
   preguntas.quiz = quiz;
   const nRepaso = quiz.filter((q) => q.deDia).length; // v6.03: complemento con capítulos ya leídos
@@ -479,9 +572,10 @@ function pasosDia(d) {
     preguntas,
     lectura: {
       minUsados, ritmo: RITMO, ...(lectF1(x) ? { min150: Math.round(min150(sel) * 10) / 10, minPaso: pasos.find((p) => /^LECTURA (DIRIGIDA|DE BASE)/.test(p.que)).min } : {}),
+      ...(base ? { cobertura: { minLeidos: leidoMin, minCapitulo: minCompleta, pct: Math.round((100 * leidoMin) / minCompleta) } } : {}), // v6.10 · base cero (fix 18-nov)
       secciones: sel.map((u) => ({ titulo: u.titulo, min: u.min, minLeer: u.minLeer, parcial: u.parcial, palabras: u.palabras, palabrasTabla: u.palabrasTabla, figs: u.figs, citasMIR: u.citasMIR, citasDesde2015: u.citasDesde2015, citasDesde2020: u.citasDesde2020, clips: u.clips, ...(u.contexto ? { contexto: true } : {}) })),
       reserva: reserva.map((u) => ({ titulo: u.titulo, min: u.min, citasMIR: u.citasMIR })),
-      paraElRepaso: { min: r05(minCompleta - sel.reduce((s, u) => s + u.minLeer, 0)), donde: '2.ª vuelta MIR (fase principal desde oct-2027) · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)', secciones: us.filter((u) => u.nivel !== 'H2' && !sel.some((s) => s.i === u.i && !s.parcial)).map((u) => `${u.titulo} ${u.min}′`) },
+      paraElRepaso: { min: r05(minCompleta - sel.reduce((s, u) => s + u.minLeer, 0)), donde: `${VUELTA2} · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)`, secciones: us.filter((u) => u.nivel !== 'H2' && !sel.some((s) => s.i === u.i && !s.parcial)).map((u) => `${u.titulo} ${u.min}′`) },
     },
   };
 }
@@ -502,6 +596,9 @@ for (const x of DIAS) {
     ...p,
   });
 }
+
+// v6.10 · base cero (fix 18-nov): el pase 1 solo devuelve qué día consumió cada pregunta (ver VETO) y termina
+if (PASE1) { process.stdout.write(JSON.stringify({ consumo: [...CONSUMO] })); process.exit(0); }
 
 // ── Derma (bloque R↔D 13:30–14:15): slot ProMIR del d3 + plan B de lectura d1-d3 desde ProMIR Derma cap 1 ──
 const D1CAP = DERMA.PROMIR_DERMA_CAPS[0];
@@ -547,7 +644,7 @@ const derma = DERMA_DIAS.map((x) => {
       poolApp: { capitulo: POOL.preguntasDeCapitulo(cap.capId).length, asignatura: POOL.preguntasDeAsignatura(5).length },
       citadasProMIR: citasD.length, nQ: n,
       preguntas: citasD.slice(0, 11).map((c) => ({ promir: c.pid, url: preguntaUrl(c.pid), seccion: c.u.titulo })),
-      como: `11′ = ${n}Q a 77 s/Q (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; ${POOL.preguntasDeAsignatura(5).length} de Dermatología en total) → se usan las ${citasD.length} preguntas MIR citadas en el capítulo (más recientes primero) · registro en la app: kind derma10Q, asignatura «Dermatología» (neto A − F/3).`,
+      como: `En modo estudio, SIN cronómetro (fase 1 de Derma): 11′ = ${n}Q a 77 s/Q, solo el presupuesto de la franja (2Q más solo si te sobra tiempo) · el pool de la app no tiene preguntas de este capítulo (0; ${POOL.preguntasDeAsignatura(5).length} de Dermatología en total) → se usan las ${citasD.length} preguntas MIR citadas en el capítulo (más recientes primero) · registro en la app: kind derma10Q, asignatura «Dermatología» (neto A − F/3).`,
     };
   }
   return out;
@@ -561,7 +658,7 @@ const json = {
       palabras: 'Texto propio de cada sección (bloques p · li · div.ul-item · figcaption), sin guiones blandos (U+00AD) y DEDUPLICADO: la maquetación en columnas de ProMIR repite el párrafo entero cuando cruza de columna (medido en el cap. 6 Epidemiología: 10.134 palabras con duplicados y texto de las figuras SVG → 7.411 reales + 343 en tablas). Por eso las cifras son menores que un conteo bruto del innerText (≈9.950).',
       ritmo: `${RITMO.prosaPpm} palabras/min el texto (lectura de estudio en español, comprensiva) · ${RITMO.tablaPpm} palabras/min las tablas · ${RITMO.figuraMin}′ por figura · clips ≤12 min por su duración. A 150 palabras/min multiplica los minutos por 1,2.`,
       pesoSeccion: 'Preguntas MIR que el propio capítulo cita en cada sección (chips «MIR AAAA-AAAA, Pnnn» = /pregunta/MIR/AAAA-nnn), ponderadas por recencia: ≥2020 ×3 · 2015-2019 ×2 · <2015 ×1; +5 si una pregunta del pre-test cae en esa sección.',
-      lectura15: `Franja 15:38–15:53: ${ORIENT_MIN}′ de recuadro «Orientación MIR» + secciones por peso hasta llenar ${LECTURA_MIN - ORIENT_MIN}′ (enteras; si la de más peso no cabe, se lee PARCIAL: solo los párrafos con chip MIR ≥2015). Las secciones de las preguntas FALLADAS en el pre-test van primero; las de las acertadas se saltan y entra la reserva. Lo que no entra queda para la 2.ª vuelta (fase principal, oct-2027).`,
+      lectura15: `Franja 15:38–15:53: ${ORIENT_MIN}′ de recuadro «Orientación MIR» + secciones por peso hasta llenar ${LECTURA_MIN - ORIENT_MIN}′ a ${RITMO.prosaPpm} palabras/min. Fase 1 (D2-D32, v6.10 · base cero, fix 18-nov): LECTURA DE BASE de ${LEC_F1}′ = solo secciones ENTERAS (la que no cabe se salta y entra la siguiente entera que quepa; nunca PARCIAL), leídas en el orden del capítulo, con la cobertura del día declarada (minutos leídos / lectura completa). Fase 2 (D33-D76): si la de más peso no cabe, se lee PARCIAL (solo los párrafos con chip MIR ≥2015). En toda la 1.ª vuelta ninguna sección de la lista se salta por acertar el pre-test (v6.10); la reserva (3 siguientes por peso) va en el orden del capítulo. Lo que no entra queda para la ${VUELTA2}. El reparto de preguntas de 2027 no depende de la lectura de base (pase 1 + VETO).`,
       preguntas: 'Pre-test = pool oficial de la app (mirPreguntasOficiales, MIR 2022-2026, ids = año del EXAMEN); si hay menos de 5, se completa con citadas ProMIR ≥2015. Quiz = lista de 8-10Q (se hacen 6, máx. 8, a 77 s + 30 s de comentario; v6.09 lote 1), evals ancladas de los días siguientes = preguntas citadas en las secciones LEÍDAS (más recientes primero), sin repetir ninguna. Equivalencia de ids: pool 2024-050 = ProMIR /pregunta/MIR/2023-050 («MIR 2023-2024, P050»), verificada el 18-oct en 3 preguntas. Cierres de asignatura = pool de la app sin usar.',
       videos: 'Los vídeos de cada capítulo se midieron (duración real del <video>). Regla MIR_FRANJAS: solo entran en la franja los clips ≤12 min (auscultación, ecografía…); Masterclass/Videoclase/Imperdible y el vídeo resumen de la asignatura (resumenVid de mirDailyPlan) quedan como opcionales fuera de la franja.',
       anclas: 'mirDailyPlan.mirAnclas(d) (sin log): D-1 2Q + D-3 1Q + D-7 1Q; D2 solo tiene D-1 (2Q), D3 tiene D-1 + D-3=—; los días de cierre (D4 Epidemiología, D5 Bioética) no hay eval. La app puede cambiar un slot por un tema 🔥 caliente (mirAnclasDinamicas): manda la app.',
@@ -591,6 +688,8 @@ for (const x of salida) {
     if (!/^LECTURA DE BASE/.test(le.que) || !ok(x.lectura.min150, le.min)) errs.push(`D${x.d}: lectura de base ${x.lectura.min150}′ en ${le.min}′`);
     if (!/Q comentadas \(máx\./.test(qz.que) || !ok((D1_QUIZ.obj * (SEG_POR_Q + SEG_COMENTARIO)) / 60, qz.min)) errs.push(`D${x.d}: quiz del D1 fuera de 0,85-1,15`);
     if (!/[Rr]eactivar/.test(x.bloque.pasos[x.bloque.pasos.length - 1].que)) errs.push(`D${x.d}: no termina reactivando las tarjetas de Ravi del subtema`);
+    const cob = x.lectura.cobertura; // v6.10 · base cero (fix 18-nov): cobertura y destino del resto al principio del «cómo»
+    if (!cob || !le.como.startsWith(`Hoy lees ${dec1(cob.minLeidos)}′ de los ${dec1(cob.minCapitulo)}′ del capítulo (${cob.pct} %`) || !le.como.includes(`→ ${VUELTA2}`) || x.lectura.secciones.some((u) => u.parcial)) errs.push(`D${x.d}: la lectura de base del D1 no declara su cobertura y el destino del resto`);
     if (x.bloque.pasos.some((p) => /ARRANQUE|importa/i.test(p.que))) errs.push(`D${x.d}: el D1 conserva el ARRANQUE de Anki o importa el mazo`);
   }
   // v6.09b · lote 1-ter: en F1 (D2-D32) cada paso medible cuadra a la regla fija (razón necesario/asignado 0,85-1,15): eval 4Q × 77 s · pre-test 5Q × 77 s ·
@@ -617,6 +716,20 @@ for (const x of salida) {
     if (x.bloque.pasos.some((p) => /adelanta el Anki|que sobran/.test(`${p.que} ${p.como}`))) errs.push(`D${x.d}: en F1 un paso deja minutos «que sobran» sin material`);
     if (!pr || !ok((5 * SEG_POR_Q) / 60, pr.min)) errs.push(`D${x.d}: pre-test 5Q en ${pr ? pr.min : '—'}′`);
     if (!le || !ok(x.lectura.min150, le.min) || !le.que.includes(`(${dec1(x.lectura.min150)}′ medidos`)) errs.push(`D${x.d}: lectura ${x.lectura.min150}′ (a 150) en ${le ? le.min : '—'}′`);
+    // v6.10 · base cero (fix 18-nov): la lectura de base de F1 (D2-D32) = 0 PARCIAL, secciones y reserva en el orden del capítulo, cobertura declarada al
+    //   principio del «cómo» (minutos leídos / lectura completa) con el destino del resto (2.ª vuelta con fecha) y el quiz abre con lo leído hoy
+    if (baseF1(x)) {
+      const idx = (t) => x.capitulo.secciones.findIndex((u) => u.titulo === t);
+      const enOrden = (arr) => arr.every((u, i) => i === 0 || idx(arr[i - 1].titulo) < idx(u.titulo));
+      const cob = x.lectura.cobertura;
+      if (x.lectura.secciones.some((u) => u.parcial) || /PARCIAL/.test(`${le ? le.que : ''} ${le ? le.como : ''}`)) errs.push(`D${x.d}: lectura de base con una sección PARCIAL`);
+      if (!enOrden(x.lectura.secciones) || !enOrden(x.lectura.reserva)) errs.push(`D${x.d}: secciones o reserva fuera del orden del capítulo`);
+      const leidos = x.lectura.secciones.reduce((a, u) => a + u.minLeer, 0);
+      if (!cob || cob.minLeidos !== leidos || cob.minCapitulo !== x.capitulo.minLecturaCompleta) errs.push(`D${x.d}: cobertura de la lectura de base sin declarar o distinta de la medición`);
+      else if (!le || !le.como.startsWith(`Hoy lees ${dec1(cob.minLeidos)}′ de los ${dec1(cob.minCapitulo)}′ del capítulo (${cob.pct} %`) || !le.como.slice(0, 220).includes(`→ ${VUELTA2}`)) errs.push(`D${x.d}: el «cómo» de la lectura de base no empieza con la cobertura y el destino del resto (${VUELTA2})`);
+      const citQ = x.preguntas.quiz.filter((q) => q.fuente === 'citada ProMIR');
+      const nL = citQ.findIndex((q) => !q.leida); if (nL >= 0 && citQ.slice(nL).some((q) => q.leida)) errs.push(`D${x.d}: en el quiz, una citada de lo leído hoy va detrás de una que no se ha leído`);
+    }
   } else if (x.lectura.min150 != null && !x.lectura.d1) errs.push(`D${x.d}: fuera de F1 con la lectura del lote 1-ter`);
 }
 const todas = salida.flatMap((x) => [].concat(x.preguntas.pretest.map((p) => p.promir), (x.preguntas.extraD1 || []).map((p) => p.promir), x.preguntas.quiz.map((p) => p.promir), (x.preguntas.cierre || []).map((p) => p.promir)));

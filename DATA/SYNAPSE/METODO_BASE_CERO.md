@@ -119,6 +119,16 @@ AI-assisted programming is vibe coding*; el resumen PRIMM de la Raspberry Pi Fou
 ## 6. Correcciones de hecho (18-nov-2026)
 
 - Los 4 cursos de F0 dan *completion badge* (insignia), no certificado, y cada uno cierra con su quiz oficial (páginas de academy.claude.com).
+- **2027 (fix del 18-nov, verificado con WebFetch en academy.claude.com):** Claude Code in Action («Course quiz»), Introduction to MCP («Final assessment
+  on MCP»), Building with the Claude API («Final Assessment»), MCP Advanced Topics («Assessment on MCP concepts»), AI Capabilities and Limitations
+  («Course Quiz») y Introduction to Claude Cowork («Quiz on Claude Cowork») dan *completion badge*; Introduction to Agent Skills e Introduction to
+  Subagents dicen «No completion badge» y no traen quiz (se cierran con recall en blanco). Los textos de 2027 (6-feb, 11-feb, 1-mar, 6-mar, 9-mar,
+  17-mar, 23-mar y 24-mar) decían «CERTIFICADO»: ahora «INSIGNIA» con el nombre de su quiz.
+- S3 (vibecoding): el texto de la fila del plan del d11 (plan mié 2-dic → real jue 3-dic) ya no dice «aplicar la migración CON Joseph» (está aplicada
+  desde el 12-sep: comprobarla en solo lectura) y el del d14 (plan lun 7-dic → real mar 8-dic) ya no pide «botón Exportar/Importar si aún no está
+  expuesto» (existe: probarlo en 2 navegadores). S7 k2 (sáb 2-ene 04:15): «1 pregunta REAL del banco (su id)» en vez de «1 viñeta».
+- El SHIP del domingo siguiente a un GATE con quiz oficial (dom 29-nov, 6-dic y 13-dic) empieza su paso de cerrar lo rojo por la repetición del quiz
+  suspendido (solo lo fallado, a cuenta de sus minutos flexibles): el aviso del gate lo mandaba allí y la guía del SHIP no lo nombraba.
 - `plan_checks` ya está aplicada (12-sep-2026, cabecera de `DATA/_scripts/_migrations/plan_checks.sql`): el paso 1 de S3 ya no «aplica la migración»,
   la comprueba en solo lectura.
 - El panel «Exportar / Importar progreso» ya existe en `CockpitStatusBar.tsx` y `anki_telemetria.js` ya es la v2 (sync + 1.ª review): S2 y S3 son

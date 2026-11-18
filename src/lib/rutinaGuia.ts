@@ -909,6 +909,16 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     ? 'Sin PC el domingo: el proyecto queda escrito como no shipped en el journal, con lo que falte (el lun 4-ene ya es el vibecoding del proyecto siguiente y no se toca). Nunca se arrastra al proyecto siguiente.'
     : `Sin PC el domingo: ${textosQSDe(iso) ? `el ${fCorta(addDias(iso, 1))} a las 04:15` : 'el lunes 04:15'} empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
+  // v6.10 · fix 18-nov (revisión de los frentes): el aviso del GATE del SYNAPSE (synFaseAvisoDe) manda el quiz oficial suspendido «al PC del domingo»; en F1
+  //   este SHIP lo recoge: el domingo siguiente al día REAL de un gate con quiz oficial, el paso de cerrar/avanzar empieza por repetirlo (solo lo fallado), a
+  //   cuenta de sus minutos (flexibles). Fechas de PLAN en el texto (corridaTexto las pasa al día real).
+  const gatesQuiz = textosQSDe(iso)
+    ? SYN_FASES_BC.flatMap((f) => (/^«/.test(f.gate) ? f.gateFechas.map((g) => ({ f, g, real: fechaRealDe(g, 'synapse') })) : []))
+      .filter((x) => x.real < iso && x.real >= addDias(iso, -6) && (synDiaDe(x.g)?.bloques ?? []).some((b) => /quiz/i.test(b.leccion ?? '') && !/no trae quiz/i.test(b.leccion ?? ''))) // solo los gates cuyo día trae el quiz
+    : [];
+  const gateTxt = (min: number): string => (gatesQuiz.length
+    ? `0) SI el quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id} (${fCorta(x.g)})`).join(' o el ')} quedó suspendido: repítelo solo con las lecciones falladas (≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
+    : '');
   if (main && (main.tipo === 'ship' || main.tipo === 'avance') && main.proyecto) {
     const p = main.proyecto;
     // v6.09: el domingo es flexible → el A/B/C del SYNAPSE (dom 29-nov, domingo de recuperación) va APARTE, sin restarle minutos al SHIP (hasta la v6.06 el
@@ -921,7 +931,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       pasos.push(
         P(5, 'ABRIR el journal de la semana + leer los criterios de aceptación', `\`${JOURNAL_CMD}\` → cabecera «Criterios de aceptación» (${p.aceptacion.length}).`, journal),
         P(10, `VERIFY en seco: node DATA/_scripts/verify_vibecoding.js ${p.s} --dry`, 'Desde D:\\joseph-md-app. Lista los criterios ✓/✗ sin escribir nada.'),
-        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `${textosQSDe(iso) ? `Primero, si esta semana hubo días sin PC, lo que su plan B mandó aquí, a cuenta de estos ${shipMin - 40}′: los A del SYNAPSE (15′ c/u) y los pasos de vibecoding (35′ c/u). Después, e` : 'E'}n el orden de los criterios: ${p.aceptacion.map((a, i) => `(${i + 1}) ${a.split('→')[0].slice(0, 70).trim()}`).join(' · ')}. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
+        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `${gateTxt(shipMin - 40)}${textosQSDe(iso) ? `Primero, si esta semana hubo días sin PC, lo que su plan B mandó aquí, a cuenta de estos ${shipMin - 40}′: los A del SYNAPSE (15′ c/u) y los pasos de vibecoding (35′ c/u). Después, e` : 'E'}n el orden de los criterios: ${p.aceptacion.map((a, i) => `(${i + 1}) ${a.split('→')[0].slice(0, 70).trim()}`).join(' · ')}. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
         P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
           manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
             : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
@@ -943,7 +953,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     } else {
       pasos.push(
         P(5, 'ABRIR el journal y ver qué paso del proyecto falta', `\`${JOURNAL_CMD}\`; el proyecto termina el ${p.fin} y su SHIP es el ${p.ship}.`, journal),
-        P(shipMin - 15, `AVANZAR S${p.s}: los pasos que faltan`, `${VIBE_COMO_TIPO.construir} Hoy no hay verify (aún no termina).`),
+        P(shipMin - 15, `AVANZAR S${p.s}: los pasos que faltan`, `${gateTxt(shipMin - 15)}${VIBE_COMO_TIPO.construir} Hoy no hay verify (aún no termina).`),
         P(10, 'JOURNAL · qué avanzó + qué falta', '3 líneas.', journal),
       );
       hecho = `avance del proyecto escrito en el journal${masABC}`;
@@ -1257,12 +1267,14 @@ function kwDe(leccion: string): string {
  *  cierre (los ítems de etapas posteriores salen 0 por diseño: el total /12 solo manda desde el PITCH v6). Cuaderno NotebookLM «AURUM · ventas desde cero»
  *  (18-nov: Rackham/Huthwaite · Voss · Hormozi CLOSER · Gong · Tracy). Síntesis y fuentes: DATA/AURUM/METODO_BASE_CERO.md. En la guía: aviso de F1 + PITCH. */
 const AURUM_BASE_CERO: Record<string, { etapa: string; que: string; pasa: string; items: string }> = {
-  f1: { etapa: 'A1 · juego interno', que: 'aún no se cierra nada: tolerar el «no», contar contactos y transferir certeza (Tracy, Pink, Bettger)', pasa: 'a la F2 con el Manifiesto escrito, el PITCH v1 grabado con 3 mejoras anotadas frente a tu 1.ª toma y ≥ 5 días reales en el tablero de actividad', items: 'certeza sin presión y tono que baja al final; los 6 ítems de la rúbrica son de etapas siguientes y salen 0 por diseño' },
-  f2: { etapa: 'A2 · escucha', que: 'escuchar antes de hablar: tono de DJ, mirror, label y resumen hasta el «así es» (Voss)', pasa: 'a la F3 cuando el PITCH v2 saca 2 en «Empatía táctica» y ≥ 1 en «Hablaste < 40 %»', items: '«Empatía táctica» = 2 y «Hablaste < 40 %» ≥ 1; el resto de ítems aún no cuenta' },
-  f3: { etapa: 'A3 · preguntas', que: 'SPIN y preguntas calibradas: que el prospecto diga su problema y su implicación antes de oír tu solución (Rackham, Hormozi)', pasa: 'a la F4 con 2 en «Hablaste < 40 %» y 2 en «SPIN en orden» en el PITCH v3', items: '«Hablaste < 40 %» = 2 y «SPIN en orden» = 2' },
-  f4: { etapa: 'B1 · oferta', que: 'ecuación de valor, stack, garantía y ancla (Hormozi, Cialdini)', pasa: 'a la F5 con 2 en «Oferta» en el PITCH v4', items: '«Oferta» = 2 sin bajar de 1 en los ítems de la etapa A' },
-  f5: { etapa: 'B2 · objeciones', que: 'label + prueba + pregunta calibrada, nunca discutir (Voss, Hormozi)', pasa: 'a la F6 con 2 en «Objeciones sin discutir» en el PITCH v5', items: '«Objeciones sin discutir» = 2' },
-  f6: { etapa: 'C1 · cierre', que: 'pedir un compromiso concreto con fecha y callar (Hormozi, Huthwaite)', pasa: 'a la F7 con 2 en «Cierre / compromiso» y ≥ 10/12 en el PITCH v6', items: '«Cierre / compromiso» = 2 y total ≥ 10/12' },
+  // v6.10 · fix 18-nov (revisión de los frentes): las etapas se nombran «fase AURUM n/7» (antes «F1/F2/F3», las siglas de las fases del RÉGIMEN: F2 = intensiva
+  //   ENCAPS) y el criterio de la fase 1 es uno solo (items = pasa; antes el drill pedía además «tono que baja al final», la voz de DJ que se enseña en la fase 2)
+  f1: { etapa: 'A1 · juego interno', que: 'aún no se cierra nada: tolerar el «no», contar contactos y transferir certeza (Tracy, Pink, Bettger)', pasa: 'a la fase AURUM 2 con el Manifiesto escrito, el PITCH v1 grabado con 3 mejoras anotadas frente a tu 1.ª toma y ≥ 5 días reales en el tablero de actividad', items: 'Manifiesto escrito + PITCH v1 grabado con 3 mejoras anotadas frente a tu 1.ª toma + ≥ 5 días reales en el tablero de actividad; los 6 ítems de la rúbrica son de etapas siguientes y salen 0 por diseño' },
+  f2: { etapa: 'A2 · escucha', que: 'escuchar antes de hablar: tono de DJ, mirror, label y resumen hasta el «así es» (Voss)', pasa: 'a la fase AURUM 3 cuando el PITCH v2 saca 2 en «Empatía táctica» y ≥ 1 en «Hablaste < 40 %»', items: '«Empatía táctica» = 2 y «Hablaste < 40 %» ≥ 1; el resto de ítems aún no cuenta' },
+  f3: { etapa: 'A3 · preguntas', que: 'SPIN y preguntas calibradas: que el prospecto diga su problema y su implicación antes de oír tu solución (Rackham, Hormozi)', pasa: 'a la fase AURUM 4 con 2 en «Hablaste < 40 %» y 2 en «SPIN en orden» en el PITCH v3', items: '«Hablaste < 40 %» = 2 y «SPIN en orden» = 2' },
+  f4: { etapa: 'B1 · oferta', que: 'ecuación de valor, stack, garantía y ancla (Hormozi, Cialdini)', pasa: 'a la fase AURUM 5 con 2 en «Oferta» en el PITCH v4', items: '«Oferta» = 2 sin bajar de 1 en los ítems de la etapa A' },
+  f5: { etapa: 'B2 · objeciones', que: 'label + prueba + pregunta calibrada, nunca discutir (Voss, Hormozi)', pasa: 'a la fase AURUM 6 con 2 en «Objeciones sin discutir» en el PITCH v5', items: '«Objeciones sin discutir» = 2' },
+  f6: { etapa: 'C1 · cierre', que: 'pedir un compromiso concreto con fecha y callar (Hormozi, Huthwaite)', pasa: 'a la fase AURUM 7 con 2 en «Cierre / compromiso» y ≥ 10/12 en el PITCH v6', items: '«Cierre / compromiso» = 2 y total ≥ 10/12' },
   f7: { etapa: 'C2 · integración', que: 'cierre por DM y presentación maestra', pasa: 'al final del programa con el PITCH v7 ≥ 10/12', items: 'total ≥ 10/12' },
 };
 /** `ini` (solo F4): inicio de la ventana de AURUM del bloque del día (plantillasV6 · ventanaAurumF4); sin él, el del turno M (PISO). */
@@ -1464,7 +1476,8 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
   const f1Bc = iso <= FECHAS_V6.transicion.hasta;
   if (f1Bc) {
     const bc = AURUM_BASE_CERO[a.faseId], fx = AURUM_DIAS.filter((x) => x.faseId === a.faseId);
-    if (bc && fx.length) avisos.push(`BASE CERO · etapa ${bc.etapa} (F${a.faseId.slice(1)}, D${fx[0]!.d}-D${fx[fx.length - 1]!.d}; orden: escucha y preguntas → objeciones → cierre): ${bc.que}. Pasas ${bc.pasa}.`);
+    // v6.10 · fix 18-nov: «fase AURUM n/7 (An)» (antes «(F2, D16-D35)»: se confundía con la F2 del régimen) + qué pasa si no se llega al criterio
+    if (bc && fx.length) avisos.push(`BASE CERO · fase AURUM ${a.faseId.slice(1)}/${Object.keys(AURUM_BASE_CERO).length} (${bc.etapa}, D${fx[0]!.d}-D${fx[fx.length - 1]!.d}; orden: escucha y preguntas → objeciones → cierre): ${bc.que}. Pasas ${bc.pasa}. Si no llegas, las fechas no se mueven: lo que falte es la corrección única de tus próximos DRILL y se vuelve a puntuar en el PITCH siguiente; anota el gap en la nota ◆.`);
   }
   return bloque(franja, 'aurum', `AURUM D${a.d} · ${a.titulo}`, pasos, recursos,
     a.pitch ? `PITCH v${a.pitch} grabado y puntuado con la rúbrica (/12) + nota ◆ del día` : 'vídeo visto con sus notas + drill hecho y guardado en la nota ◆ del día + ✓',
@@ -1579,7 +1592,7 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   //   (anti-repetición); los bancos de obesidad (OMA, StatPearls, Rosh Review) son de pago → decisión de Joseph. Mismos 6′. El drill de cifras ancla pasa a
   //   TABLA EN BLANCO con la fuente de cada cifra en su respuesta (no son preguntas inventadas: son cifras de ensayos reales).
   const nRec = pre ? LIV_DIAS.filter((x) => x.d >= l.d - 5 && x.d < l.d).length : 0;
-  if (pre) pasos.push(P(6, `RECALL EN BLANCO de la semana anterior (1 línea por lección, ${nRec} × ${Math.round(360 / Math.max(1, nRec))} s = 6′; sustituye al «pre-test 5Q»)`, `Empresa › LIVIANO › Academia › HOY › recall: con solo el TÍTULO de cada lección de D${Math.max(1, l.d - 5)}-D${l.d - 1} a la vista, escribe sin mirar el mecanismo en 1 línea (causa → efecto); después destapa la tarjeta y su fuente y registra x/${nRec} (meta ≥ 80 %). Lo fallado → tarjeta de hoy. No es un test: LIVIANO no tiene banco real de preguntas propio (las del MIR oficial son del plan MIR y los bancos de obesidad son de pago).`));
+  if (pre) pasos.push(P(6, `RECALL EN BLANCO de la semana anterior (1 línea por lección, ${nRec} × ${Math.round(360 / Math.max(1, nRec))} s = 6′; sustituye al «pre-test 5Q»)`, `Empresa › LIVIANO › Academia › HOY › recall: con solo el TÍTULO de cada lección de D${Math.max(1, l.d - 5)}-D${l.d - 1} a la vista, escribe sin mirar el mecanismo en 1 línea (causa → efecto); después corrige PRIMERO contra la fuente de cada lección (la sección que leíste: Schwartz 2017, PMC/PubMed del tema; viene en el recall) y usa la tarjeta solo como resumen (la escribió el generador del plan); registra x/${nRec} (meta ≥ 80 %). Lo fallado → tarjeta de hoy. No es un test: LIVIANO no tiene banco real de preguntas propio (las del MIR oficial son del plan MIR y los bancos de obesidad son de pago).`));
   if (drill) pasos.push(P(6, `TABLA EN BLANCO de cifras ancla (${drill.qs.length} cifras de ensayos y guías reales)`, 'Empresa › LIVIANO › HOY › drill: escribe cada cifra sin mirar y corrige contra la fuente que trae su respuesta (PubMed / PMC / ficha FDA); registra el %. Una cifra marcada «A VERIFICAR» se comprueba en su fuente antes de darla por buena.'));
   const sinLectura = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de metáforas|Síntesis módulo|REVISIÓN TRIMESTRAL/i.test(l.tema);
   if (caso) {
@@ -1658,11 +1671,14 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
     const fis = cont('FISIOLOGÍA'), glp = cont('GLP-1'), drG = glp.find((x) => x.drill), c5 = LIV_DIAS.find((x) => x.modulo === 'GLP-1' && x.casoId != null);
     const casosFis = LIV_DIAS.filter((x) => x.modulo === 'FISIOLOGÍA' && x.casoId != null).map((x) => x.casoId);
     const fisT = LIV_DIAS.filter((x) => x.modulo === 'FISIOLOGÍA'); // con sus casos (el caso 4 cierra la fase)
-    if (l.modulo === 'FISIOLOGÍA' && fis.length && glp.length) avisos.push(`BASE CERO · fase 1/3 FISIOLOGÍA (D${fisT[0]!.d}-D${fisT[fisT.length - 1]!.d}): primero el porqué del peso (homeostasis, leptina, arcuato, adaptación), sin fármacos. Pasas a la fase 2 (GLP-1, D${glp[0]!.d}) con el recall de los lunes ≥ 80 % y los casos ${casosFis.join('-').replace(/^(\d+)-.*-(\d+)$/, '$1-$2')} con ≥ 6/8 en la rúbrica (≥ 1 en «mecanismo»).`);
-    else if (l.modulo === 'GLP-1' && glp.length) avisos.push(`BASE CERO · fase 2/3 FARMACOLOGÍA GLP-1 (D${glp[0]!.d}-D${glp[glp.length - 1]!.d}): qué hace cada fármaco y con qué cifra de ensayo real. Pasas a la fase 3 (acceso, nutrición, ejercicio, conducta y casos integrados) con la tabla de cifras${drG ? ` del D${drG.d}` : ''} ≥ 80 %${c5 ? ` y el caso ${c5.casoId} ≥ 6/8` : ''}.`);
+    if (l.modulo === 'FISIOLOGÍA' && fis.length && glp.length) avisos.push(`BASE CERO · fase 1/3 FISIOLOGÍA (D${fisT[0]!.d}-D${fisT[fisT.length - 1]!.d}): primero el porqué del peso (homeostasis, leptina, arcuato, adaptación), sin fármacos. Pasas a la fase 2 (GLP-1, D${glp[0]!.d}) con el recall de los lunes ≥ 80 % y los casos ${casosFis.join('-').replace(/^(\d+)-.*-(\d+)$/, '$1-$2')} con ≥ 6/8 en la rúbrica (≥ 1 en «mecanismo»). Si no llegas, las fechas no se mueven: lo fallado del recall entra como tarjeta del día, el ítem más flojo de la rúbrica es el foco de la 1.ª toma del caso siguiente y el gap va a la nota ◆.`);
+    else if (l.modulo === 'GLP-1' && glp.length) avisos.push(`BASE CERO · fase 2/3 FARMACOLOGÍA GLP-1 (D${glp[0]!.d}-D${glp[glp.length - 1]!.d}): qué hace cada fármaco y con qué cifra de ensayo real. Pasas a la fase 3 (acceso, nutrición, ejercicio, conducta y casos integrados) con la tabla de cifras${drG ? ` del D${drG.d}` : ''} ≥ 80 %${c5 ? ` y el caso ${c5.casoId} ≥ 6/8` : ''}. Si no llegas, las fechas no se mueven: la cifra o el ítem fallado entra como tarjeta del día y es el foco de la 1.ª toma del caso siguiente; el gap va a la nota ◆.`);
   }
   recursos.push(R('◆ LIVIANO · concepto madre (Obsidian)', LIV_OBS));
-  return bloque('17:15–18:00', 'liviano', `LIVIANO D${l.d} · ${l.modulo} — ${l.tema}`, pasos, recursos,
+  // v6.10 · fix 18-nov (revisión de los frentes): en F1 el caso diferido no lleva el día de la semana de PLAN en el título («MARTES CASO 1/16»): con el alias de
+  //   corrida_s1 se hace el miércoles real y el aviso dice «va hoy miércoles» (el tema de LIV_DIAS no cambia: check_rutina_guia lo busca por ese nombre)
+  const temaTit = f1Liv ? l.tema.replace(/^(LUNES|MARTES|MIÉRCOLES|JUEVES) (CASO \d+\/\d+)/, '$2') : l.tema;
+  return bloque('17:15–18:00', 'liviano', `LIVIANO D${l.d} · ${l.modulo} — ${temaTit}`, pasos, recursos,
     caso ? `role-play grabado + rúbrica /8 guardada en el caso ${caso.id}` : `lectura hecha + ${cards.length || 'las'} tarjetas en ${deck} + 3 tomas de la aplicación grabadas${pre ? ` + recall en blanco x/${nRec} registrado` : ''}`,
     { aviso: avisos.join(' ') || undefined, flex: Math.max(0, pasos.length - 3),
       planB: 'Fuente caída o sin tiempo: 25′ de tarjetas del módulo (Empresa › LIVIANO › Anki) + la aplicación de 20′ completa; la lectura pasa a mañana.' });

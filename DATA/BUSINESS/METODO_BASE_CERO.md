@@ -22,7 +22,13 @@ Fisiología → farmacología → casos. Primero el *porqué* del peso (sistema 
 | **2/3 FARMACOLOGÍA GLP-1** | D21-D36 (caso 5) | jue 17-dic → jue 7-ene | incretinas, STEP 1, suspensión, SELECT, SURMOUNT-1/-5, efectos adversos, seguridad, masa magra, vía oral | tabla de cifras del D35 (mié 6-ene) ≥ 80 % y caso 5 ≥ 6/8 |
 | **3/3 CASOS INTEGRADOS** | D37-D90 (2027) | ene → vie 2-abr-2027 | acceso en Perú, nutrición, ejercicio, fármacos no GLP-1 y cirugía, conducta, síntesis, capstone | casos 6-16 ≥ 6/8 de media ≥ 80 % (meta Palmerton del plan, sin cambio) |
 
-En F1 cada sesión lleva al final del aviso «BASE CERO · fase n/3 …: qué. Pasas a … con …».
+En F1 cada sesión lleva al final del aviso «BASE CERO · fase n/3 …: qué. Pasas a … con … Si no llegas, las fechas no se mueven: lo fallado del recall
+entra como tarjeta del día, el ítem más flojo de la rúbrica es el foco de la 1.ª toma del caso siguiente y el gap va a la nota ◆».
+
+**Fix del 18-nov (revisión de los frentes):** (1) faltaba la regla para cuando no se llega al criterio (MIR, Derma y SYNAPSE ya la tenían); (2) el recall
+del lunes se corregía «contra la tarjeta del día y su fuente», y esas tarjetas las escribió el generador (LIV_ANKI_CARDS): ahora se corrige **primero
+contra la fuente** de cada lección (la sección que leíste) y la tarjeta es solo un resumen (paso de la guía y respuesta de `LIV_RECALL`, F1 y los 12 lunes
+de 2027); (3) el título de los 5 casos de F1 decía «MARTES CASO k/16» y, con el alias, se hacen en miércoles: ahora «CASO k/16» (el aviso dice el día real).
 
 ### A.3 Preguntas reales: qué había y qué hay ahora
 

@@ -7,7 +7,8 @@
 >
 > **Qué cambia:** el CONTENIDO de los pasos de la hora MIR (15:15-16:15): nivel del comentario de cada pregunta por **fases**, pre-test como
 > línea base en F1, lectura en el orden del capítulo **sin saltar secciones** por acertar el pre-test, criterio de APEX por fase y respaldo de
-> preguntas **solo MIR oficial**. **Qué NO cambia:** franjas, minutos de cada paso, fechas, D#, capítulos, preguntas asignadas, Calendar y Supabase.
+> preguntas **solo MIR oficial**. **Qué NO cambia:** franjas, minutos de cada paso, fechas, D#, capítulos, Calendar y Supabase; las preguntas asignadas
+> tampoco, salvo el reparto de F1 que sigue a la lectura de base sin PARCIAL (fix del 18-nov, §4b).
 >
 > **Dónde vive:** datos en [`metodo_ravimedtest.json`](metodo_ravimedtest.json) › `fases` → `gen_mir_guia.js` → `MIR_METODO.fases`
 > (`src/lib/mirGuiaDatos.ts`) → `src/lib/mirGuia.ts` (`mirFaseDe`, `metodoRavi`, D77/D78, banqueo) · pre-test y lectura en
@@ -90,13 +91,50 @@ que el manual no deja claro → en el plan es el **Shopping List** del día + el
 
 | Fase | Días · fechas | Pre-test | Lectura | Comentario del quiz (y de la eval) | APEX | Puerta para pasar |
 |---|---|---|---|---|---|---|
-| **1 · BASE · nivel 1** | D1-D32 · **jue 19-nov → sáb 2-ene** (fechas de plan mié 18-nov → sáb 2-ene; alias de corrida_s1) | **línea base**: contesta las 5 aunque adivines; la regla del blanco va en la eval y el quiz | **LECTURA DE BASE**: en el orden del capítulo, cada apartado entero, sin saltar ninguno aunque aciertes su pregunta | nivel 1 + proceso de respuesta de §3 | solo fallos de hoy (conceptos de nivel 1) | el **lun 4-ene (D33)** por calendario, si la media del neto de los 6 cierres de F1 (D4 Epidemiología · D5 Bioética · D12 Cardiología · D17 Neumología · D23 Nefrología · D31 Gastroenterología) es **≥ 55 %**; si no, el quiz sigue en nivel 1 hasta 2 cierres seguidos ≥ 55 % |
+| **1 · BASE · nivel 1** | D1-D32 · **jue 19-nov → sáb 2-ene** (fechas de plan mié 18-nov → sáb 2-ene; alias de corrida_s1) | **línea base**: contesta las 5 aunque adivines; la regla del blanco va en la eval y el quiz | **LECTURA DE BASE** (§4b): las secciones que pregunta el MIR, **cada una entera** (nunca PARCIAL), en el orden del capítulo; ninguna de la lista se salta aunque aciertes su pregunta; el «cómo» declara la cobertura del día y manda el resto a la 2.ª vuelta | nivel 1 + proceso de respuesta de §3 | solo fallos de hoy (conceptos de nivel 1) | el **lun 4-ene (D33)** por calendario, si la media del neto de los 6 cierres de F1 (D4 Epidemiología · D5 Bioética · D12 Cardiología · D17 Neumología · D23 Nefrología · D31 Gastroenterología) es **≥ 55 %**; si no, el quiz sigue en nivel 1 hasta 2 cierres seguidos ≥ 55 % |
 | **2 · CONSOLIDACIÓN · niveles 1-2** | D33-D76 · lun 4-ene → jue 4-mar-2027 (Endocrinología → Psiquiatría) | con la **regla del blanco** | LECTURA DIRIGIDA a las secciones más citadas, en orden y sin saltar ninguna | + 1 línea de permutación · en los fallos, por qué es falsa cada opción | fallos + fallos tontos | el **vie 5-mar-2027 (D77)**: neto del mini-MIR **≥ 50 %** (mínimo on-track del hito); si no, el banqueo sigue en niveles 1-2 hasta 2 semanas seguidas ≥ 50 % |
 | **3 · DISCRIMINATIVA · nivel 3** | D77-D78 (vie 5 y lun 8-mar-2027) + banqueo (mar 9-mar-2027 → Step 1) | — | corrección Whole-Page del apartado | cara B: cada opción incorrecta, también en las acertadas con duda | + conceptos discriminativos de nivel 3-4/5 | 2.ª vuelta (fase principal, oct-2027) por calendario |
 
 Por qué así: el paso es **por calendario** (Ravi, §2.4) y la **puerta** se mide con instrumentos que el plan ya registra (cierres y mini-MIR, mismos
 umbrales del log: ≥ 70 % consolidada · 55-69 % intermedia · < 55 % a las anclas D-7; 50 % = hito on-track). Una puerta no cumplida **no mueve
 fechas ni minutos**: solo mantiene el nivel del comentario.
+
+### 4b. Lectura de base de F1: qué es y qué no (fix del 18-nov, revisión de los frentes)
+
+**Qué es:** en 16′ (14′ de secciones a 180 palabras/min + 1′ de recuadro; 14,4-18,1′ a 150, regla fija 0,85-1,15) no cabe un capítulo ProMIR de F1
+(**63′ de media**; Cardiología básica 96,5′, Hígado 215,5′). La lectura de base es una **selección**: las secciones con más preguntas MIR citadas
+(MED), **cada una entera**, leídas en el orden del capítulo. Es el criterio de la academia para la 1.ª vuelta (AST: lo que ha caído 2 o más veces) y
+**no** es «sin saltar ninguno» del capítulo: se leen de media **13,7′ de 63′ (≈ 22 %)** al día; el resto queda medido para la 2.ª vuelta (fase principal
+MIR, tras el handoff del vie 3-dic-2027).
+
+**Qué cambió (antes → después):** la versión anterior leía en 12 días una sección «PARCIAL: solo los párrafos con chip MIR ≥2015» bajo un paso que
+prometía «cada apartado entero», y la reserva iba por peso bajo «sigue en orden». Ahora: (1) **ninguna sección PARCIAL en F1**: la que no cabe se salta
+y entra la siguiente entera que quepa; (2) la **reserva** va en el orden del capítulo (los 76 días); (3) el «cómo» **empieza** con la cobertura del día y
+el destino del resto («Hoy lees X′ de los Y′ del capítulo (P %) … el resto → 2.ª vuelta (tras el handoff del vie 3-dic-2027)»; antes «oct-2027», que
+ya no era la fecha); (4) el quiz de esos días se reparte con lo leído hoy delante (mismo conjunto de preguntas del capítulo; 2027 aislado con el
+pase 1 + veto de `gen_guia_lectura.js`); (5) `--check` (`gen_guia_lectura.js` y `gen_mir_guia.js`) exige 0 PARCIAL, el orden y la cobertura.
+
+| D | Fecha de plan → real | Antes | Después (enteras, en orden) | Cobertura |
+|---|---|---|---|---|
+| D6 | mié 25-nov → jue 26-nov | 3.2 (PARCIAL 14′ de 35′) | 2.1 · 2.5 · 2.6 · 5.1 · 5.2 | 13,5′ de 103′ (13 %) |
+| D7 | jue 26-nov → vie 27-nov | 3.6 (PARCIAL 14′ de 16′) | 1 · 2.1 · 3 · 3.1 · 3.2 · 3.4 · 3.5 | 14′ de 69′ (20 %) |
+| D8 | vie 27-nov → lun 30-nov | 6.2 (PARCIAL 14′ de 40′) | 2 · 4.1 · 5 · 6 | 12,5′ de 164,5′ (8 %) |
+| D14 | lun 7-dic → mar 8-dic | 1.1 (PARCIAL 14′ de 15,5′) | 1 · 1.2 · 1.3 · 2 · 2.1 · 2.2 · 3 · 3.1 | 13′ de 32,5′ (40 %) |
+| D15 | mar 8-dic → mié 9-dic | 7 · 8 (PARCIAL 5,5′ de 6′) · 8.9 | 3 · 4 · 7 · 8.5 · 8.6 · 8.8 · 8.9 · 9 | 13′ de 41,5′ (31 %) |
+| D18 | vie 11-dic → lun 14-dic | 4 (PARCIAL 5,5′ de 6′) · 4.2 · 7.2 | 1 · 3.2 · 4.1 · 4.2 · 7.1 · 7.2 | 12′ de 34′ (35 %) |
+| D20 | mar 15-dic → mié 16-dic | 1.1 (PARCIAL 9′ de 13,5′) · 1.2 · 2 | 1.2 · 2 · 3 · 5 | 12′ de 47,5′ (25 %) |
+| D23 | vie 18-dic → lun 21-dic | 10.2 (PARCIAL 14′ de 16′) | 9.1 · 9.8 · 11.2 | 14′ de 215,5′ (6 %) |
+| D25 | mar 22-dic → mié 23-dic | 2.1 (PARCIAL 14′ de 18,5′) | 3.1 · 7.1 | 14′ de 97,5′ (14 %) |
+| D29 | mar 29-dic → mié 30-dic | 3.1 (PARCIAL 14′ de 26′) | 2.2 · 3.2 · 3.4 · 5 | 13′ de 68,5′ (19 %) |
+| D30 | mié 30-dic → jue 31-dic | 4.3 (PARCIAL 8,5′ de 11,5′) · 4.4 | 2 · 3 · 4.4 · 4.5 · 5.1 | 13,5′ de 48′ (28 %) |
+| D32 | sáb 2-ene (07:15) | 5.4 (PARCIAL 9′ de 10,5′) · 6.1 · 8.2 | 6.1 · 8.1 · 8.2 (5.4 Graves-Basedow pasa a la reserva) | 13,5′ de 67,5′ (20 %) |
+
+Los otros 20 días de F1 leen las mismas secciones (cambia el orden de la reserva y la cobertura al principio del «cómo»). El D1 conserva su lista
+(decidida con Joseph el 17-nov) y gana la cobertura: 22′ de 49,5′ (44 %).
+
+**Tensión que queda (decide Joseph, §10):** Ravi (NLM-1 §2.1) desaconseja recortar el temario por los desgloses; la lectura de base recorta por las
+preguntas citadas porque la hora es fija. Alternativa: priorizar en F1 los **fundamentos** (anatomía y fisiología de cada capítulo cimiento) aunque
+bajen las citas cubiertas.
 
 ---
 
@@ -217,15 +255,17 @@ Nefrología (3,8 %).
 
 | Tramo | Fase | Ajuste (solo texto; minutos y preguntas iguales) |
 |---|---|---|
-| D33-D76 · lun 4-ene → jue 4-mar | 2 · CONSOLIDACIÓN | aviso de fase · pre-test con la regla del blanco · lectura sin saltar secciones (antes: «las secciones cuyas preguntas acertaste se saltan») · comentario de niveles 1-2 (antes, en los 76 días: «por qué es falsa cada incorrecta + detalles de nivel 3-4/5») · APEX sin nivel 3-4/5 |
+| D33-D76 · lun 4-ene → jue 4-mar | 2 · CONSOLIDACIÓN | aviso de fase · pre-test con la regla del blanco · lectura sin saltar secciones (antes: «las secciones cuyas preguntas acertaste se saltan») · comentario de niveles 1-2 (antes, en los 76 días: «por qué es falsa cada incorrecta + detalles de nivel 3-4/5») · APEX sin nivel 3-4/5 · **fix 18-nov:** reserva en el orden del capítulo; «cada apartado de la lista entero, salvo el marcado PARCIAL» cuando lo hay (antes «cada apartado entero»); evals de **D33, D35, D36 y D39**: las anclas D-1/D-3/D-7 que vienen de D29, D30 y D32 son ahora de lo que se lee ese día (6 preguntas MIR citadas cambian; el resto de 2027, idéntico) |
 | D77 · vie 5-mar (mini-MIR) | puerta 2 → 3 | aviso de fase (el neto ≥ 50 % abre la fase 3) |
 | D78 · lun 8-mar (corrección) | 3 | aviso de fase |
-| banqueo · mar 9-mar → Step 1 (220 sesiones) | 3 · DISCRIMINATIVA | aviso de fase · respaldo de preguntas solo MIR oficial con año-número (antes «test por asignatura ProMIR») |
+| banqueo · mar 9-mar → Step 1 (220 sesiones) | 3 · DISCRIMINATIVA | aviso de fase · respaldo de preguntas solo MIR oficial con año-número (antes «test por asignatura ProMIR») · **fix 18-nov:** Anki «0,90 en la fase principal MIR, tras el handoff del vie 3-dic-2027» (antes «oct-2027») |
 
 ---
 
 ## 10. Pendientes y decisiones de Joseph
 
+- [ ] **Lectura de base de F1 (§4b):** seguir con la selección por preguntas citadas (≈ 22 % del capítulo al día, cada sección entera) o priorizar los
+      **fundamentos** (anatomía y fisiología del capítulo cimiento) aunque bajen las citas cubiertas. Sin su decisión no se cambia.
 - [ ] **Puerta F1 → F2** (lun 4-ene): mirar la media del neto de los 6 cierres de F1 en el log; si < 55 %, avisar para que el quiz siga en nivel 1.
 - [ ] **Traumatología y Geriatría fuera de la 1.ª vuelta** (8,7 % del MIR reciente juntas): ¿entran como Tier C del banqueo o en la 2.ª vuelta? (no se
       tocan fechas sin su decisión).
@@ -236,5 +276,5 @@ Nefrología (3,8 %).
 ## 11. Verificación (18-nov-2026)
 
 `node STUDY_HUB/_scrape/gen_mir_daily.js --check` · `node DATA/MIR/guia_lectura/gen_guia_lectura.js --check` ·
-`node DATA/MIR/guia_lectura/gen_mir_guia.js --check` (958 bloques; 78 días con su fase; 0 preguntas no oficiales) · comparación antes → después de
-los 81 bloques: 0 minutos cambiados.
+`node DATA/MIR/guia_lectura/gen_mir_guia.js --check` (958 bloques; 78 días con su fase; 0 preguntas no oficiales; fix 18-nov: lectura de base de F1
+sin PARCIAL, en orden y con su cobertura declarada en los 32 días) · comparación antes → después de los 81 bloques: 0 minutos cambiados.

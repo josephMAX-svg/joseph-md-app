@@ -1421,6 +1421,24 @@ export const GUIA_RESEARCH_DETALLE: string[] = ${JSON.stringify(GR.conDetalle)};
 export const GUIA_RESEARCH_MINIMO: GuiaBloque = ${JSON.stringify(GR.minimo)};
 `;
   w('src/lib/researchGuia.ts', GUIA_TS);
+  // v6.10 · fix 18-nov (revisión de los frentes) · CONTROL sobre el TEXTO generado: el recall en blanco de cada eval anclada (paso a paso o genérica, F1 y
+  //   2027) se contrasta con un documento o guía (research_guia.REC_DOC) o con la fuente propia del átomo (CONTRASTE_DE), nunca con un portal o una herramienta
+  if (!(CHECK && desactualizados.includes('src/lib/researchGuia.ts'))) {
+    const { REC_DOC, CONTRASTE_DE } = require('./research_guia');
+    const { cargarModuloTS } = require('./usmle/cargar_ts');
+    const cache = new Map(); const RG = cargarModuloTS(path.join('src', 'lib', 'researchGuia.ts'), cache); const RD = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan.ts'), cache); const R27 = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan2027.ts'), cache);
+    const noDoc = new Set(Object.entries(RD.REC).filter(([k]) => !REC_DOC.includes(k)).map(([, r]) => r.label));
+    const propias = new Set(Object.values(CONTRASTE_DE));
+    const malos = []; let nEval = 0;
+    for (const x of [...RD.DIAS, ...R27.DIAS_2027]) {
+      for (const p of RG.guiaResearchDe(x).pasos) {
+        const m = /los contrastas con (?:«([^»]+)»|(.+?)\)(?: \+|$))/.exec(p.que); if (!m) continue; nEval++;
+        if (m[1] ? noDoc.has(m[1]) : !(propias.has(m[2]) || /^su artefacto/.test(m[2]))) malos.push(`${x.fecha} ${x.code}: «${(m[1] || m[2]).slice(0, 60)}»`);
+      }
+    }
+    if (malos.length) { console.error(`✗ research: ${malos.length} eval(s) ancladas contrastan el recall con un portal o una herramienta (sin clave que leer): ${malos.slice(0, 6).join(' · ')}`); process.exit(1); }
+    console.log(`✓ research: ${nEval} evals ancladas con recall en blanco contrastado con un documento o guía (REC_DOC) o con la fuente propia del átomo; 0 portales ni herramientas`);
+  }
 } else console.warn('⚠ --ciclo ' + SOLO_CICLO + ': src/lib/researchGuia.ts NO se regenera (necesita los dos ciclos en la misma corrida)');
 if (CHECK && desactualizados.length) { console.error(`✗ --check: ${desactualizados.length} fichero(s) desactualizado(s): ${desactualizados.join(' · ')}`); process.exit(1); }
 if (CHECK) console.log('✓ --check: todas las salidas al día (nada escrito)');

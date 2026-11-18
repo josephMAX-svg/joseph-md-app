@@ -122,7 +122,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el lun 4-ene igual que la v6.09; v6.10: sáb 28-nov) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+// v6.10 · fix 18-nov (revisión de los frentes): --check = genera en memoria y compara con src/lib/vibecodingPlan.ts y DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md
+//   sin escribir (exit 1 si alguno no está al día; mismo contrato que gen_aurum_plan.js --check). Antes «--check» se leía como START y abortaba.
+const ARGS = process.argv.slice(2);
+const CHECK = ARGS.includes('--check');
+const START = ARGS.find((a) => !a.startsWith('--')) || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el lun 4-ene igual que la v6.09; v6.10: sáb 28-nov) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -536,8 +540,15 @@ function addDiasISO(fechaISO: string, n: number): string {
 /** 0 = domingo … 6 = sábado (UTC a mediodía, igual que addDiasISO); NaN si la fecha no es válida. */
 function diaSemanaISO(fechaISO: string): number { return new Date(fechaISO + 'T12:00:00Z').getUTCDay(); }
 `;
-fs.writeFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), ts, 'utf8');
-console.log('OK src/lib/vibecodingPlan.ts ·', dias.length, 'días ·', dias[0].fecha, '→', finS12, '(S1-S12) + taper', dias[nP].fecha, '→', dias[dias.length - 1].fecha, '· ship log', SHIP_LOG.length, 'entradas');
+const desactualizados = [];
+/** v6.10 · fix 18-nov: escribe, o con --check compara (sin CR) y apunta el fichero si no está al día. */
+function salida(rel, txt) {
+  const f = path.join(ROOT, rel); const sinCR = (x) => x.split('\r\n').join('\n');
+  if (!CHECK) { fs.writeFileSync(f, txt, 'utf8'); return; }
+  if (!fs.existsSync(f) || sinCR(fs.readFileSync(f, 'utf8')) !== sinCR(txt)) desactualizados.push(rel);
+}
+salida('src/lib/vibecodingPlan.ts', ts);
+console.log((CHECK ? '(check) ' : 'OK ') + 'src/lib/vibecodingPlan.ts ·', dias.length, 'días ·', dias[0].fecha, '→', finS12, '(S1-S12) + taper', dias[nP].fecha, '→', dias[dias.length - 1].fecha, '· ship log', SHIP_LOG.length, 'entradas');
 
 // ─── emitir DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md ───
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -614,5 +625,9 @@ for (const p of P) {
   md.push(`| S${p.s} | ${u ? (u.shipped ? '✅' : '❌') + ' ' + u.fecha : '☐'} | ${u ? `${u.criterios_ok}/${u.total}` : ''} | | |`);
 }
 md.push('');
-fs.writeFileSync(path.join(ROOT, 'DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md'), md.join('\n'), 'utf8');
-console.log('OK DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md · SHIP domingos:', semanas.map((w) => w.ship).join(', '), '· taper:', taperSemanas.map((w) => `S${w.s} ${w.ini}→${w.fin}`).join(' · '));
+salida('DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md', md.join('\n'));
+console.log((CHECK ? '(check) ' : 'OK ') + 'DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md · SHIP domingos:', semanas.map((w) => w.ship).join(', '), '· taper:', taperSemanas.map((w) => `S${w.s} ${w.ini}→${w.fin}`).join(' · '));
+if (CHECK) {
+  if (desactualizados.length) { console.error(`✗ gen_vibecoding_plan --check: ${desactualizados.join(' · ')} NO está(n) al día → node DATA/_scripts/gen_vibecoding_plan.js ${START}`); process.exit(1); }
+  console.log(`✓ gen_vibecoding_plan --check: src/lib/vibecodingPlan.ts y DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md al día (START ${START})`);
+}

@@ -344,7 +344,9 @@ function buildAUnits() {
   push('AI Fluency: Framework & Foundations', '"A closer look at Diligence" — la D que separa uso casual de uso profesional', U.aif);
   // v6.10 · BASE CERO (18-nov-2026, orden de Joseph: «todos partimos de cero»; DATA/SYNAPSE/METODO_BASE_CERO.md): los 4 cursos de F0 cierran con su
   //   «Course quiz» OFICIAL de la Academy (preguntas reales; verificado en academy.claude.com el 18-nov) = GATE de su fase; la Academy da una «completion
-  //   badge» (insignia), no un certificado. Sin quiz oficial (Building Effective Agents, Karpathy, 3Blue1Brown) no se inventan preguntas: recall en blanco
+  //   badge» (insignia), no un certificado. v6.10 · fix 18-nov: 2027 igual — verificado con WebFetch en academy.claude.com el 18-nov-2026: Claude Code in Action,
+  //   Introduction to MCP, Building with the Claude API, MCP Advanced Topics, AI Capabilities and Limitations y Claude Cowork dan «Completion badge» (insignia)
+  //   con su quiz final; Introduction to Agent Skills e Introduction to Subagents dicen «No completion badge» y no traen quiz (antes, «CERTIFICADO» en 2027). Sin quiz oficial (Building Effective Agents, Karpathy, 3Blue1Brown) no se inventan preguntas: recall en blanco
   //   y Feynman (SYN_FASES_BC). Mismos minutos y fechas.
   push('AI Fluency: Framework & Foundations', '"Conclusion" + «Course quiz» oficial de la Academy (preguntas reales) → insignia = GATE de la fase 1 (1.er entregable de F0)', U.aif);
   push('Claude 101', 'Módulo "Meet Claude": What is Claude? · Your first conversation · Getting better results · Desktop app (Chat, Cowork, Code)', U.c101);
@@ -423,7 +425,7 @@ function buildAUnits() {
   push('n8n docs — ' + n8nDoc(2).modulo, 'Node parameters: Webhook URLs · HTTP Method · Path · Supported authentication methods · Respond · Response Code · Response Data · Common issues. Es la puerta del bot WhatsApp (S10).', n8nDoc(2).url);
   push('n8n docs — ' + n8nDoc(3).modulo, 'AI Agent node: parámetros del nodo en la página + Templates and examples + Common issues. Compara con los 5 patrones de "Building Effective Agents" (F0).', n8nDoc(3).url);
   push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 1).titulo}" · "${acad('academy-cc-in-action', 2).titulo}" · "${acad('academy-cc-in-action', 3).titulo}" · "${acad('academy-cc-in-action', 4).titulo}"`, cur('academy-cc-in-action').url);
-  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 7).titulo}" · "${acad('academy-cc-in-action', 8).titulo}" · "${acad('academy-cc-in-action', 9).titulo}" · "${acad('academy-cc-in-action', 12).titulo}" → quiz final (certificado)`, cur('academy-cc-in-action').url);
+  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 7).titulo}" · "${acad('academy-cc-in-action', 8).titulo}" · "${acad('academy-cc-in-action', 9).titulo}" · "${acad('academy-cc-in-action', 12).titulo}" → quiz final: «Course quiz» oficial (insignia de finalización)`, cur('academy-cc-in-action').url);
   push('Claude Code docs — ' + ccDoc(13).modulo, 'Give Claude a way to verify its work · Explore first, then plan, then code · Add an adversarial review step · Avoid common failure patterns → CIERRE F1: relee tu synapse-journal de 12 semanas y anota los 3 hábitos que faltan.', ccDoc(13).url);
   if (A.length !== 70) throw new Error('Total A-units F0+F1 debe ser 70, hay ' + A.length);
 
@@ -447,7 +449,7 @@ function buildAUnits() {
   const cow = (n) => lec('academy-cowork', n);
   const t = (l) => `"${l.titulo}"`;
   // sem 13 (6) · API I: modelos · acceso · prompt engineering · evals
-  push(apiN, `Módulo 1 "${api(1).modulo}": ${api(1).titulo}. Arranca el certificado que falta (prep directa del CCA-F).`, apiU);
+  push(apiN, `Módulo 1 "${api(1).modulo}": ${api(1).titulo}. Arranca el curso que falta (insignia de finalización al aprobar su «Final Assessment»; prep directa del CCA-F).`, apiU);
   push(apiN, `Módulo 2 "${api(2).modulo}" (I): Accessing the API · Getting an API key · Making a request · Multi-Turn conversations · System prompts`, apiU);
   push(apiN, `Módulo 2 "${api(2).modulo}" (II): Temperature · Response streaming · Structured data · Quiz. Es lo que usa gen_contenido.js (S11).`, apiU);
   push(apiN, `Módulo 4 "${api(4).modulo}": ${api(4).titulo} — dominio Prompt Engineering (20%) del CCA-F.`, apiU);
@@ -464,27 +466,27 @@ function buildAUnits() {
   push(apiN, `Módulo 7 "${api(7).modulo}" (II): Prompt caching · Rules of prompt caching · Code execution and the Files API · Quiz — dominio Context Management (15%).`, apiU);
   push('Academy — ' + cur('academy-mcp').nombre, `Módulo Connecting with MCP clients: ${t(acad('academy-mcp', 7))} · ${t(acad('academy-mcp', 8))} · ${t(acad('academy-mcp', 9))}`, cur('academy-mcp').url);
   push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 10))} · ${t(acad('academy-mcp', 11))}`, cur('academy-mcp').url);
-  push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 12))} · ${t(acad('academy-mcp', 13))} → CERTIFICADO Introduction to MCP`, cur('academy-mcp').url);
+  push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 12))} · ${t(acad('academy-mcp', 13))} → INSIGNIA Introduction to MCP («Final assessment on MCP»)`, cur('academy-mcp').url);
   push(mcpAN, `${t(mcpA(1))} · ${t(mcpA(2))} · ${t(mcpA(3))} · ${t(mcpA(4))} · ${t(mcpA(5))} (sampling: el servidor pide al cliente que llame al modelo)`, mcpAU);
   // sem 16 (4; v5.18-v5.20: el 31-dic y el 1-ene caen en la sem 13, no aquí) · API IV: apps · agentes y workflows · certificado
   push(apiN, `Módulo 9 "${api(9).modulo}": ${api(9).titulo}`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (I): Agents and workflows · Parallelization workflows · Chaining workflows · Routing workflows`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (II): Agents and tools · Environment inspection · Workflows vs agents · Quiz — dominio Agentic Architecture (27%), el de mayor peso.`, apiU);
-  push(apiN, `Módulos 11-12: "${api(11).modulo}" + "${api(12).modulo}" → CERTIFICADO Building with the Claude API (cierre de año).`, apiU);
+  push(apiN, `Módulos 11-12: "${api(11).modulo}" + "${api(12).modulo}" → INSIGNIA Building with the Claude API («Final Assessment»; cierre de año).`, apiU);
   // sem 17 (6 · Fase B · deload) · Academy restante: skills · subagentes · Claude Code in Action · MCP Advanced II-III
   push('Academy — ' + cur('academy-agent-skills').nombre, `${t(acad('academy-agent-skills', 3))} · ${t(acad('academy-agent-skills', 4))}`, cur('academy-agent-skills').url);
-  push('Academy — ' + cur('academy-agent-skills').nombre + ' + ' + cur('academy-subagents').nombre, `${t(acad('academy-agent-skills', 5))} · ${t(acad('academy-agent-skills', 6))} + ${t(acad('academy-subagents', 4))} → certificados agent skills + subagents`, cur('academy-agent-skills').url);
+  push('Academy — ' + cur('academy-agent-skills').nombre + ' + ' + cur('academy-subagents').nombre, `${t(acad('academy-agent-skills', 5))} · ${t(acad('academy-agent-skills', 6))} + ${t(acad('academy-subagents', 4))} → fin de Agent Skills + Subagents (estos 2 cursos no dan insignia ni traen quiz: recall en blanco de lo visto)`, cur('academy-agent-skills').url);
   push('Academy — ' + cur('academy-cc-in-action').nombre, `${t(acad('academy-cc-in-action', 10))} · ${t(acad('academy-cc-in-action', 11))}`, cur('academy-cc-in-action').url);
   push('Academy — ' + cur('academy-cc-in-action').nombre + ' + Claude Code docs — ' + ccDoc(11).modulo, `${t(acad('academy-cc-in-action', 13))} + repaso de la doc de plugins (dominio Claude Code, 20%): ¿qué de YoCPMD ya es plugin?`, cur('academy-cc-in-action').url);
   push(mcpAN, `${t(mcpA(6))} · ${t(mcpA(7))} · ${t(mcpA(8))} · ${t(mcpA(9))} · ${t(mcpA(11))} · ${t(mcpA(12))}`, mcpAU);
-  push(mcpAN, `${t(mcpA(13))} · ${t(mcpA(14))} · ${t(mcpA(15))} · ${t(mcpA(16))} · ${t(mcpA(17))} · ${t(mcpA(18))} · ${t(mcpA(19))} → CERTIFICADO MCP Advanced Topics`, mcpAU);
+  push(mcpAN, `${t(mcpA(13))} · ${t(mcpA(14))} · ${t(mcpA(15))} · ${t(mcpA(16))} · ${t(mcpA(17))} · ${t(mcpA(18))} · ${t(mcpA(19))} → INSIGNIA MCP Advanced Topics («Assessment on MCP concepts»)`, mcpAU);
   // sem 18 (6 · Fase B · deload) · los 3 ensayos + Academy nueva (AI Capabilities · Cowork)
   push('Anthropic Engineering — ensayo', 'Effective context engineering for AI agents: context rot · compaction · structured note-taking · just-in-time retrieval — dominio Context Management (15%) del CCA-F.', U.contextEng);
   push('Anthropic Engineering — ensayo', 'Effective harnesses for long-running agents: cómo se mantiene un agente horas sin perder el hilo (compáralo con tus workflows de agentes).', U.harnesses);
   push('Anthropic Engineering — ensayo', 'Equipping agents for the real world with Agent Skills: por qué las skills son ficheros y no prompts (tus .claude/skills a la luz del ensayo).', U.agentSkillsEssay);
   push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(3))} · ${t(cap(4))} · ${t(cap(5))} · ${t(cap(7))} · ${t(cap(9))} (con los "Try it out")`, cur('academy-ai-capabilities').url);
-  push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(11))} · ${t(cap(13))} · ${t(cap(14))} · ${t(cap(15))} → CERTIFICADO AI Capabilities and Limitations`, cur('academy-ai-capabilities').url);
-  push('Academy — ' + cur('academy-cowork').nombre, `${t(cow(1))} · ${t(cow(4))} · ${t(cow(6))} · ${t(cow(7))} · ${t(cow(9))} · ${t(cow(11))} · ${t(cow(15))} → CERTIFICADO Introduction to Claude Cowork`, cur('academy-cowork').url);
+  push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(11))} · ${t(cap(13))} · ${t(cap(14))} · ${t(cap(15))} → INSIGNIA AI Capabilities and Limitations («Course Quiz»)`, cur('academy-ai-capabilities').url);
+  push('Academy — ' + cur('academy-cowork').nombre, `${t(cow(1))} · ${t(cow(4))} · ${t(cow(6))} · ${t(cow(7))} · ${t(cow(9))} · ${t(cow(11))} · ${t(cow(15))} → INSIGNIA Introduction to Claude Cowork`, cur('academy-cowork').url);
   // sem 19 (5 · Fase C · deload · última semana con SYNAPSE) · repaso por dominio del CCA-F · simulacro · cierre
   push('Prep CCA-F · dominios 1-2 (repaso)', 'Agentic Architecture (27%) = relee "Building Effective Agents" (5 workflows, cuándo NO usar agentes) · Claude Code (20%) = relee "Best practices". Sin apuntes: recall en blanco por dominio (los 5 workflows con su cuándo-usar · 5 best practices) y compáralo con los textos; preguntas, solo reales: las del simulacro de esta semana (quizzes oficiales de la Academy).', U.ensayo); // v6.10 · base cero: antes «10 preguntas propias por dominio» (inventadas → fuera)
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);

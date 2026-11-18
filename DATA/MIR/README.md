@@ -96,6 +96,10 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > repaso de capítulos ya leídos · lectura con ≥3′ libres → secciones de contexto sin citas. Las anclas de capítulos con muy pocas citadas (17 slots) dicen
 > «repite la que FALLASTE ese día». D77/D78 (mini-MIR y corrección) no leen capítulo: guía propia en `src/lib/mirGuia.ts`.
 >
+> **v6.10 · base cero (fix 18-nov-2026):** en F1 ninguna sección es PARCIAL: los días marcados «(parcial)» abajo leen ahora otras secciones enteras y
+> el resto va a la 2.ª vuelta tras el handoff del vie 3-dic-2027 (tabla antes → después en [`METODO_BASE_CERO.md`](METODO_BASE_CERO.md) §4b). Las fechas de
+> esta tabla son las de la v6.03 (históricas).
+>
 > | Día | Capítulo | Texto medido | Citas MIR | Lectura 15′ (secciones) | Para la 2.ª vuelta | Preguntas |
 > |---|---|---|---|---|---|---|
 > | D1 mié 21-oct | Epidemiología · Estudios experimentales: Ensayo clínico | 7411 + 343 tabla · ≈49,5′ | 97 | 2 · 3.2 · 3.4 · 4 · 6.1 · 6.2 · 8.4 (14,5′) | ≈36′ | pre 5 pool · quiz 10 |
