@@ -35,6 +35,7 @@ import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 import { dermaGuiaPar, accessDermaOK, guardarAccessDermaOK, dermaCasoUrl, dermaCasoTitulo, DERMA_TEST_PROMIR_D3, moduloCMEDe } from '../../lib/dermaGuia';
 /** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
 const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
@@ -227,7 +228,7 @@ function DermaGuiaSeccion({ dia, accent }: { dia: DiaDerma; accent: string }) {
           </TouchableOpacity>
         </View>
       )}
-      <GuiaBloqueCard g={activa} color={accent} />
+      <GuiaBloqueCard g={reemplazosCorrida(activa, dia.fecha)} color={accent} />
       {dia.d === 3 && dia.fecha === DERMA_GUIA_D3_FECHA && (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 }}>
           {DERMA_TEST_PROMIR_D3.preguntas.map((q, i) => (
@@ -240,7 +241,7 @@ function DermaGuiaSeccion({ dia, accent }: { dia: DiaDerma; accent: string }) {
       <TouchableOpacity activeOpacity={0.8} onPress={() => setVerOtro((v) => !v)} style={{ marginTop: 4 }}>
         <Text style={[st.infoTxt, { color: Colors.muted }]}>{verOtro ? '▾' : '▸'} ver {ok ? 'el PLAN B (sin AccessDerma)' : 'el plan A (con AccessDerma)'}</Text>
       </TouchableOpacity>
-      {verOtro && <GuiaBloqueCard g={otra} color={Colors.muted} compacto />}
+      {verOtro && <GuiaBloqueCard g={reemplazosCorrida(otra, dia.fecha)} color={Colors.muted} compacto />}
     </View>
   );
 }

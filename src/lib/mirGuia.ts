@@ -156,7 +156,7 @@ function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
 }
 const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
   que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (solo lo ya reactivado: subtemas terminados)`,
-  como: `FSRS · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi: el examen no viene por bloques) · tu mazo de fallos primero y a cero; después el de Ravi hasta que acabe el paso: Anki nunca le quita tiempo a las preguntas · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: revisa las tarjetas de ayer.`,
+  como: `FSRS · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi: el examen no viene por bloques) · tu mazo de fallos primero y a cero; después el de Ravi hasta que acabe el paso: Anki nunca le quita tiempo a las preguntas · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: revisa las tarjetas de tu última sesión MIR.`,
 });
 /** v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles discriminativos de nivel 3-4/5 son de la fase 3). */
 const criterioApex = (f: MirFase | undefined): string => f?.apex ?? 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
@@ -190,7 +190,7 @@ export function metodoRavi(g: GuiaBloque, dia: DiaMIR): GuiaBloque {
   const rv = M.raviPorCap[dia.capId];
   const reactivaTxt = yaReactiva ? '' : rv && rv.n === 0
     ? ` · Último minuto: el mazo «${M.mazoBase}» no tiene tarjetas de este subtema (contadas: 0): nada que reactivar`
-    : ` · Último minuto: reactiva en Anki las tarjetas de «${M.mazoBase}» de ESTE subtema (${rv ? `${rv.n}: ${rv.nota ?? rv.tema}` : `${dia.tema.split(' (')[0]}: búscalas por texto`}) — Navegador → «${M.mazoBase}» → Reactivar (Ctrl+J); entran en el repaso desde mañana, nunca antes de estudiarlo`;
+    : ` · Último minuto: reactiva en Anki las tarjetas de «${M.mazoBase}» de ESTE subtema (${rv ? `${rv.n}: ${rv.nota ?? rv.tema}` : `${dia.tema.split(' (')[0]}: búscalas por texto`}) — Navegador → «${M.mazoBase}» → Reactivar (Ctrl+J); entran en el repaso desde la próxima sesión, nunca antes de estudiarlo`;
   const deck = (sinHora(apex.p.que).split('APEX en ')[1] ?? M.mazoPersonal).trim();
   const fase = mirFaseDe(dia.d); // v6.10 · base cero
   const out: PasoOrig[] = [];
@@ -253,8 +253,8 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
         que: `EVAL ANCLADA ${nQ}Q · ${slots.join(' + ') || 'sin temas previos'}`,
         como: `Cronómetro ${mirMinutos(nQ)} min (${MIR_SEG_POR_Q} s/Q), en blanco si no descartas 2 · preguntas: el pool oficial de la app (lista «Pool oficial · anclada» abajo); si el capítulo ya no tiene preguntas sin usar, las MIR citadas en las secciones que leíste ese día (chips «MIR AAAA-AAAA, Pnnn» del capítulo ProMIR) · si la app te propone un tema 🔥 caliente (gate), manda la app.`,
       },
-      { min: 5, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de ayer.' },
-      { min: 3, que: 'Log de la eval en la app', como: `aciertos/${nQ || 4} · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente mañana.` },
+      { min: 5, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de tu última sesión MIR.' },
+      { min: 3, que: 'Log de la eval en la app', como: `aciertos/${nQ || 4} · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión.` },
     );
   }
   const f1 = mirFaseDe(dia.d)?.n === 1; // v6.10 · base cero: fase 1 = pre-test de línea base + LECTURA DE BASE
@@ -274,7 +274,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     {
       min: 12,
       que: `6Q comentadas (máx. 8) · ${quizPool > 0 ? `${quizPool} del pool oficial que no entraron en el pre-test + ` : ''}preguntas MIR citadas en las secciones que acabas de leer`,
-      como: `Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario (≈${MIR_SEG_POR_Q + 30} s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente mañana · a las 16:05 paras donde estés: las que no entren siguen en la cola del capítulo para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: ${pool}Q.`,
+      como: `Rule-In → Rule-Out · tapa las opciones y contesta antes de verlas · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario (≈${MIR_SEG_POR_Q + 30} s/Q: 6Q ≈ 10,7′; la 7.ª y la 8.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · a las 16:05 paras donde estés: las que no entren siguen en la cola del capítulo para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. Pool oficial de la app para este capítulo: ${pool}Q.`,
     },
     { min: 10, que: `≤4 APEX en ${deck}`, como: `Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE (${dia.usmleSystem}) · 1 de cada 4 con imagen · creados directamente en Anki.` },
   );

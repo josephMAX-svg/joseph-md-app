@@ -6,7 +6,7 @@
  * menciones «<día> <n>-oct» de 2026 entre el 19 y el 25 por su día REAL (fechasV6.fechaRealDe, según el frente de la guía). Nombres de
  * fichero e ISO (eval_2026-10-19, 2026-10-23) no se tocan. No es idempotente: aplicar UNA sola vez, al pintar (GuiaBloqueCard).
  */
-import { FECHAS_V6, fechaRealDe } from './fechasV6';
+import { FECHAS_V6, fechaRealDe, extraCorridaDe } from './fechasV6';
 import type { GuiaBloque } from './guia';
 
 const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
@@ -49,9 +49,25 @@ const EXTERNA_VERSION = /\bv6\.0\d[a-z]?(?: lote [\w-]+)?(?::\s*| \(\s*)$/i;
 const EXTERNA_DESPUES = /^,\s?(grabad|grabaci)|^.{0,3}en diferido/i; // v6.07d: también «(vie 27, grabación)» · v6.10d: «(vie 20-nov, en diferido)»
 // v6.10d: una fecha justo detrás de «→» es un DESTINO del plan («Banqueo 5/19 (hoy 19:00) → mié 2-dic (mañana 7/21)», «INV 4/4 (hoy 19:30, en vivo), en
 //   diferido → vie 11-dic»): se traduce aunque antes se nombre una clase en vivo (antes, «en vivo» o «Banqueo n/m» a ≤ 60 caracteres la dejaban con la fecha de plan)
-const externa = (s: string, i: number, n = 0, pre = ''): boolean => !/→\s*$/.test(s.slice(Math.max(0, i - 4), i) + pre)
+// v6.10g (revisión 18-nov · Research CR-1): el HISTORIAL de versiones es la fecha de ENTONCES y no se traduce (la misma regla que
+//   gen_research_calendar.js#enHistorial, así el Home y el overlay del Calendar dicen las mismas fechas): la fecha está dentro de un paréntesis abierto con
+//   «⏸», o su cláusula (desde el último « · », «; » o salto de línea, sin los paréntesis ya cerrados) lleva «⏸», o la última etiqueta de versión de la
+//   cláusula es anterior a la base vigente (v6.08 = base de la v6.09/v6.10; ≤ v6.07e quedaron SIN EFECTO). Antes solo la fecha PEGADA a «vX.YY: » quedaba
+//   igual y la 2.ª de cada par se traducía como si fuera de plan («⏸ v6.07: vie 11 / mar 15-dic» → «… / mié 16-dic»). Vale también contra «→».
+const VIGENTE_MIN = 6008; // v6.08
+const verN = (v: string): number => { const m = /^v(\d+)\.(\d+)/.exec(v); return m ? Number(m[1]) * 1000 + Number(m[2]) : 0; };
+const enHistorial = (prev: string): boolean => {
+  let s = prev, t: string;
+  while ((t = s.replace(/\([^()]*\)/g, '')) !== s) s = t; // fuera los paréntesis ya cerrados
+  if (/\(\s*⏸/.test(s)) return true;
+  const clausula = s.slice(Math.max(s.lastIndexOf(' · '), s.lastIndexOf('; '), s.lastIndexOf('\n')) + 1);
+  if (clausula.includes('⏸')) return true;
+  const vs = clausula.match(/\bv\d\.\d+[a-z]?(?!\d)/g);
+  return !!vs && verN(vs[vs.length - 1] as string) < VIGENTE_MIN;
+};
+const externa = (s: string, i: number, n = 0, pre = ''): boolean => enHistorial(s.slice(0, i) + pre) || (!/→\s*$/.test(s.slice(Math.max(0, i - 4), i) + pre)
   && (EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_BANQUEO.test(s.slice(Math.max(0, i - 20), i) + pre) || EXTERNA_VERSION.test(s.slice(Math.max(0, i - 30), i) + pre)
-    || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40)));
+    || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40))));
 // v6.07d (mié 11-nov): se prueban TODOS los meses de DESDE a HASTA, no solo los dos de los extremos. Con los repartos del 6, 13 y 20-dic el rango
 //   va del 19-oct al 20-dic y noviembre quedaba fuera, así que «mar 10 18:00» ya no se traducía. Si dos meses cuadran (día del mes y día de la
 //   semana), la fecha es ambigua y no se toca.
@@ -103,7 +119,7 @@ export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque 
   // v6.10d: + «ayer» / «mañana a las HH:MM» / «el lunes a las HH:MM» del día de PLAN → el día que de verdad nombran (relativosReales)
   const real = fechaRealDe(fechaPlan);
   if (!xs.length && real === fechaPlan) return g;
-  const f = (t: string): string => relativosReales(xs.reduce((acc, x) => acc.split(x.a).join(x.por), t), fechaPlan, real);
+  const f = (t: string): string => relativosReales(xs.reduce((acc, x) => acc.split(x.a).join(x.por), t), fechaPlan, real, g.plan);
   return {
     ...g,
     // v6.07e: también la franja (el UWSA1 del dom 15 va 07:40-11:50, no a la hora del plan del mar 10; un desfase único no la cuadra)
@@ -120,13 +136,26 @@ export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque 
 const _add = (iso: string, n: number): string => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 const _corta = (iso: string): string => `${DOW[dowDe(iso)]} ${Number(iso.slice(8))}-${MES[Number(iso.slice(5, 7)) - 1]}`;
 const _cap = (t: string, como: string): string => (como[0] !== undefined && como[0] !== como[0].toLowerCase() ? t.charAt(0).toUpperCase() + t.slice(1) : t);
+const _SKIP = new Set(FECHAS_V6.skip);
+// v6.10f: «(de )mañana» + « (» o « » + una fecha «<día> <n>[-<mes>]» (abreviado o completo); detrás del número no puede venir dígito, letra, «/» ni «:» (hora)
+const RX_MANANA_FECHA = /(^|[^\p{L}])(de )?(mañana)( \(| )((?:lunes|martes|miércoles|jueves|viernes|sábado|domingo|lun|mar|mié|jue|vie|sáb|dom)(?![\p{L}]))(\.? (\d{1,2})(?:-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic))?)(?![\p{L}\d\/:])/giu;
+/** v6.10f: la fecha (de PLAN) que nombra «<día> <n>[-<mes>]» en un texto del día de plan `plan`: la primera ≥ plan + 1 (≤ 60 días) con ese día del mes, ese
+ *  mes (si lo trae) y ese día de la semana; null si no cuadra (no es una fecha) */
+const fechaCitada = (plan: string, dow: string, dd: number, mes?: string): string | null => {
+  const w = abrev(dow);
+  for (let k = 1; k <= 60; k++) {
+    const x = _add(plan, k);
+    if (Number(x.slice(8)) === dd && DOW[dowDe(x)] === w && (!mes || MES[Number(x.slice(5, 7)) - 1] === mes.toLowerCase())) return x;
+  }
+  return null;
+};
 /**
  * v6.10d (mié 18-nov-2026): palabras RELATIVAS de un texto escrito para el día de PLAN `plan` y pintado el día REAL `real` (alias de corrida_s1: el
  * plan del vie 20 se hace el lun 23). «ayer» (= plan − 1), «mañana a las HH:MM» (= plan + 1) y «el lunes a las HH:MM» (= el lunes siguiente al plan)
  * siguen igual si su día real sigue siendo ayer / mañana; si no, pasan a la FECHA DE PLAN del día que nombran («el jue 19-nov», «el vie 20-nov a las
  * 05:00»), que fechasRealesEnTexto (después) pinta con su día real («el vie 20-nov» / «el lun 23-nov»). Sin alias (real = plan) = el texto tal cual.
  */
-export function relativosReales(t: string, plan: string, real: string): string {
+export function relativosReales(t: string, plan: string, real: string, frente?: string): string {
   if (!t || plan === real) return t;
   const ayerR = _add(real, -1), mananaR = _add(real, 1);
   const sinSes = new Set(_C.sin_sesion);
@@ -137,8 +166,30 @@ export function relativosReales(t: string, plan: string, real: string): string {
     return de ? `${pre}${_cap('del ' + _corta(ref), de)}` : `${pre}${_cap('el ' + _corta(ref), w)}`;
   });
   o = o.replace(/(^|[^\p{L}])(mañana)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
-    const ref = _add(plan, 1);
+    // v6.10f (revisión 18-nov · Anki del lun 28-dic): si el día siguiente al plan es SKIP (sin plan para nadie: vie 25-dic), «mañana» quería decir la próxima
+    //   sesión = el siguiente L-V hábil del plan (lun 28-dic → mar 29-dic real), no el SKIP («o el vie 25-dic a las 05:00» en el lun 28-dic real)
+    let ref = _add(plan, 1);
+    // v6.10g (revisión 18-nov · riesgo latente): un bloque EXTRA de corrida_s1 del mismo frente que empieza a esa hora el día real siguiente (sáb 2-ene: lo que
+    //   recupera la transición) ES la sesión de «mañana a las HH:MM»: no se salta el sábado (antes iba al «lun 4-ene»)
+    if (frente && extraCorridaDe(mananaR).some((x) => x.frente === frente && x.ini === h.slice(-5))) return m;
+    if (_SKIP.has(ref)) while (_SKIP.has(ref) || dowDe(ref) === 0 || dowDe(ref) === 6) ref = _add(ref, 1);
     return fechaRealDe(ref) === mananaR ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
+  });
+  // v6.10f (revisión 18-nov · relativos): «mañana (<día> <n>[-<mes>] …)» y «mañana <día> <n>[-<mes>]» llevan la FECHA DE PLAN del día que nombran: si su día
+  //   real no es el siguiente al real, «mañana» es falso («la eval de mañana (vie 20-nov 15:15)» del plan del jue 19 pintado el vie 20 real = lun 23 real) →
+  //   «de la próxima sesión (<fecha> …)» / «en la próxima sesión (<fecha> …)» / «el <fecha>» / «del <fecha>»; la fecha la pinta después fechasRealesEnTexto
+  //   con su día real. «la mañana (…)» (= por la mañana) no se toca.
+  o = o.replace(RX_MANANA_FECHA, (m, pre: string, de: string | undefined, w: string, sep: string, dow: string, resto: string, dd: string, mes: string | undefined, i: number, s: string) => {
+    // v6.10g (revisión 18-nov): + los posesivos («su mañana (…)» = la mañana de alguien, no se toca) · detrás de una preposición («para / desde / hasta / a …
+    //   mañana (vie 20-nov …)») va «la próxima sesión (…», sin «en» (antes «pasa para en la próxima sesión (…»)
+    const antes = s.slice(Math.max(0, i + pre.length - 12), i + pre.length);
+    if (/(?:^|[^\p{L}])(?:la|las|una|esa|cada|esta|toda|su|sus|tu|tus|mi|mis|nuestra|nuestras)\s$/iu.test(antes)) return m;
+    const trasPrep = /(?:^|[^\p{L}])(?:a|al|para|desde|hasta|por|en|hacia|tras|sin|con|sobre|entre|antes de|después de)\s$/iu.test(antes);
+    const ref = fechaCitada(plan, dow, Number(dd), mes);
+    if (!ref || fechaRealDe(ref) === mananaR) return m;
+    const fecha = `${dow}${resto}`;
+    if (sep === ' ') return `${pre}${de ? _cap('del', de) : _cap('el', w)} ${fecha}`;
+    return `${pre}${de ? de + 'la próxima sesión' : _cap(trasPrep ? 'la próxima sesión' : 'en la próxima sesión', w)} (${fecha}`;
   });
   o = o.replace(/(^|[^\p{L}])(el lunes)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
     let ref = _add(plan, 1); while (dowDe(ref) !== 1) ref = _add(ref, 1);

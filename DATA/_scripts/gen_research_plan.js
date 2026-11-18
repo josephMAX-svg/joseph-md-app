@@ -268,7 +268,12 @@ const CD = { chips: [CHIP_DERMA] };
 //   pausa, lo lleva el último átomo del ciclo 1 entre M1 y C-3 (el que ocupa su ranura) — ver «chip itinerante» tras el fechado.
 /** v6.06: marcadores en objetivo/entregable/artefacto/chips que se resuelven DESPUÉS del fechado (no se pudren en cada corrimiento):
  *  {{F:code}} = «lun 15-feb-2027» del átomo · {{D:code}} = su d · {{CR_PAUSA}} = estado del case report al cerrar la pausa · {{COLA}} = arranque de la cola. */
-const chipSeguimiento = ({ f, fmt }) => `seguimiento del caso con el Dr. Ciro (M1 ${fmt(f('M1'))}); si el ${fmt(f('C-3'))} (~${String(Math.round((Date.parse(f('C-3')) - Date.parse(f('M1'))) / 864e5 / 3.5) / 2).replace('.', ',')} semanas desde M1; v6.05: calculado) no hay caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2`;
+// v6.10g (revisión 18-nov · semanas M1 → C-3): la cuenta va entre los días REALES (fechaRealDe de fechasV6.ts, frente research-derma), la misma regla que el
+//   overlay del Calendar (gen_research_calendar.js#DEADLINE cr-caso): con el alias, 19-nov → 11-dic de plan (22 d, «~3») son 20-nov → 14-dic reales (24 d,
+//   «~3,5»). Sin «v6.05: calculado» (bitácora): la cifra la calcula siempre el generador.
+const _F6TS = require('./usmle/cargar_ts').cargarModuloTS(path.join('src', 'lib', 'fechasV6.ts'), new Map());
+const semanasM1C3 = (f) => String(Math.round((Date.parse(_F6TS.fechaRealDe(f('C-3'), 'research-derma')) - Date.parse(_F6TS.fechaRealDe(f('M1'), 'research-derma'))) / 864e5 / 3.5) / 2).replace('.', ',');
+const chipSeguimiento = ({ f, fmt }) => `seguimiento del caso con el Dr. Ciro (M1 ${fmt(f('M1'))}); si el ${fmt(f('C-3'))} (~${semanasM1C3(f)} semanas desde M1) no hay caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2`;
 const C1 = [
   // v6.06 (31-oct-2026): M1 pasa a la 1.ª sesión Research (antes d3, tras R0 y R1): su plazo interno —caso + consentimiento + senior author antes del
   //   31-oct— VENCIÓ sin día-Research (la semana lun 26 → vie 30-oct no se estudió; v6.05: M1 vie 30-oct) → la petición al Dr. Ciro es la acción
@@ -329,7 +334,7 @@ const C1 = [
     'Borrador v1 completo (400-600 palabras) con marcadores [CIT:id] en lugar de referencias escritas',
     'CARTA_1/borrador_v1.md',
     'Obsidian · Phrasebank', ['PHRASE', 'SCIWRITE'], { apex: { id: 'carta-v1', t: 'Borrador de la carta' },
-      chipsDyn: ({ f, fmt }) => [`HOY ${fmt(f('C-3'))} vence el plazo del Dr. Ciro (~${String(Math.round((Date.parse(f('C-3')) - Date.parse(f('M1'))) / 864e5 / 3.5) / 2).replace('.', ',')} semanas desde M1 ${fmt(f('M1'))}; v6.05: calculado): sin caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2 (MENTORES fila 6)`] }),
+      chipsDyn: ({ f, fmt }) => [`HOY ${fmt(f('C-3'))} vence el plazo del Dr. Ciro (~${semanasM1C3(f)} semanas desde M1 ${fmt(f('M1'))}): sin caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2 (MENTORES fila 6)`] }),
   a('C-4', 'C', 'C', 'CRITICA', 'Citas verificadas: cada [CIT:id] resuelto a DOI/PMID real con citation_verifier.py (Crossref/PubMed + CSL-JSON → Vancouver); cero referencias de memoria',
     '≤5 referencias con status verified + lista Vancouver generada; ninguna needs_review / rejected',
     'CARTA_1/refs_verified.json (salida de citation_verifier.py) + borrador v2 con [n]',
@@ -871,7 +876,7 @@ for (const x of TODOS) if (x.chipsDyn) { x.chips = [...(x.chips || []), ...x.chi
 if (fechaDe('M3') > fechaDe('C-3')) {
   const host = D1.filter((x) => x.code !== 'M3' && x.fecha > fechaDe('M1') && x.fecha < fechaDe('C-3')).pop();
   if (!host) throw new Error('chip de seguimiento del caso: no hay átomo entre M1 y C-3 que lo lleve');
-  host.chips = [...(host.chips || []), `${chipSeguimiento({ f: fechaDe, fmt: fmtCorto })} (${VER_TXT}: lo llevaba M3, que va tras la pausa el ${fmtCorto(fechaDe('M3'))})`];
+  host.chips = [...(host.chips || []), `${chipSeguimiento({ f: fechaDe, fmt: fmtCorto })} (lo llevaba M3, que va tras la pausa el ${fmtCorto(fechaDe('M3'))})`]; // v6.10g: sin «${VER_TXT}:» (bitácora)
 }
 // v6.05 (fix): texto de X-7 con los desplazados por la regla de prioridad (calculado, no escrito a mano)
 {

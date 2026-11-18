@@ -295,7 +295,9 @@ const AVISO_CODIGO = {
  * Historial de cifras: v6.08 = lun 23 → jue 26-nov, mismos bancos (evals: lun 23 fallos previos · mar 24 II-5 · mié 25 I-4 · jue 26 IV-1) · v6.07 = lun 16 → jue 19-nov, mismas cifras · v6.06 = lun 9 → jue 12-nov, mismas cifras · v6.05 = lun 2 → jue 5-nov,
  * mismas cifras · v6.03 = mié 28 II-5 20 + II-10 2 · jue 29 I-4 16 + I-5+I-6 4, con el lun 26 y el mar 27 ya armados.
  */
-const PREVISTO_ORIGEN = 'simulación del 16-nov, v6.09'; // v6.10: sin cambio (las 4 sesiones se re-fecharon por sesión; las cifras son las mismas)
+// v6.10: sin cambio (las 4 sesiones se re-fecharon por sesión; las cifras son las mismas) · v6.10g (18-nov): sin la etiqueta de versión en el texto
+//   visible (antes «simulación del 16-nov, v6.09»: la simulación sigue valiendo con el alias de la v6.10d)
+const PREVISTO_ORIGEN = 'simulación del 16-nov';
 const PREVISTO_SEMANA2 = {
   '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 20, secundario_n: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval (III-5, código de ayer) sale 5/5 re-test: el banco del mar 24 consume todo el pool libre de III-5', eval: 'código de ayer III-5: 3 cifras + 2 viñetas (5Q re-test)' },
   '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mié 25 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },

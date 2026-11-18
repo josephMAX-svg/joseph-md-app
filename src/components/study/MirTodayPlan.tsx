@@ -27,6 +27,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10f: la guía de un día de plan pintada en su día real («mañana», «ayer»…), como el Home
 import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, mirFaseDe, type MirGuiaQ } from '../../lib/mirGuia'; // v6.10 · base cero: + mirFaseDe
 import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
 
@@ -523,7 +524,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
       {/* v6.02c · 🧭 Guía del día (qué · cuánto · cómo): D1-D10 medidos por E2 · D11+ por regla */}
       <FadeUp delay={20}>
         <Text style={st.secLbl}>🧭 Guía del día · qué · cuánto · cómo · 15:15–16:15</Text>
-        <GuiaBloqueCard g={mirGuiaPlan(dia)} color={AMBER} ahora={dia.fecha === hoyISO} />
+        <GuiaBloqueCard g={reemplazosCorrida(mirGuiaPlan(dia), dia.fecha)} color={AMBER} ahora={dia.fecha === hoyISO} />
         <MirGuiaPreguntasView d={dia.d} />
       </FadeUp>
 
@@ -877,7 +878,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       <BridgeChip fecha={dia.fecha} />
       {/* v6.02c · 🧭 guía qué · cuánto · cómo a la hora del turno (SERUMS) o 15:15 */}
       <Text style={st.secLbl}>🧭 Guía de la sesión · qué · cuánto · cómo</Text>
-      <GuiaBloqueCard g={guiaM} color={color} />
+      <GuiaBloqueCard g={reemplazosCorrida(guiaM, dia.fecha)} color={color} />
       {/* v6.02d: fecha real visible (semana corrida) */}
       <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(fechaRealDe(dia.fecha, 'mir'))}{turno ? ` · ${turno.turno === 'G' ? 'guardia: 1 h en tiempo muerto (lo que no se termine se suma al día de plan siguiente)' : `según el turno ${turno.turno}${turno.marcado ? '' : ' (sin marcar)'}`}` : ''}</Text>
       {franjas.map((f, i) => (

@@ -17,6 +17,7 @@ import {
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, AurumRise, useAurumHover, AurumRubricaPitch } from './aurumVisuals';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 import { guiaAurumDe } from '../../lib/rutinaGuia'; // v6.02c (E5): vídeo CONCRETO + drill + lectura L en los minutos libres, con minutos
 
 /**
@@ -207,7 +208,7 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRub
       </AurumRise>
 
       {/* v6.02c (E5) · guía de la hora: qué ver (vídeo concreto) · cuánto (minutos) · cómo (drill, lectura, cierre) */}
-      {(() => { const g = guiaAurumDe(dia.fecha); return g ? <AurumRise delay={20}><View style={{ marginTop: S.lg }}><GuiaBloqueCard g={g} color={C.gold} /></View></AurumRise> : null; })()}
+      {(() => { const g = guiaAurumDe(dia.fecha); return g ? <AurumRise delay={20}><View style={{ marginTop: S.lg }}><GuiaBloqueCard g={reemplazosCorrida(g, dia.fecha)} color={C.gold} /></View></AurumRise> : null; })()}
 
       {/* NÚCLEO */}
       <AurumLabel style={{ marginTop: S.lg }}>Núcleo de hoy · {aurumMinTxt(dia)} en {aurumVentanaDe(dia)} (ver + practicar tu pitch){dia.min30 ? ' · lo que exceda los 30\' es opcional (DJ-4)' : ''}</AurumLabel>

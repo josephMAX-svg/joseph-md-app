@@ -79,6 +79,16 @@
  *   T-1 jue 3-dic · C-6 jue 17-dic · CR-1 lun 21-dic · T-8 lun 18-ene · CR-8 jue 25-feb · CR-9 lun 1-mar · X-1 mié 17-mar · X-9 mar 20-abr · R10 lun 26-abr ·
  *   R43 sáb 14-ago (todo el día, F4). Las fechas de la pausa salen ahora de DAILY_META.pausa del .ts (PAUSA_R; antes «15-ene» escrito en cr-paquete y en
  *   crTrasPausa); lo de v6.07 pasa a historial ⏸. Solo --print / --check en este lote: los 12 overlays los recrea el orquestador (update_event + --set).
+ * v6.10g (mié 18-nov-2026 · alias v6.10d: cada hábil del jue 19-nov al vie 1-ene hace el plan del hábil anterior): el overlay ya iba en su día REAL (v6.06a),
+ *   pero su TEXTO citaba fechas de PLAN, un día antes: T-1 (real mar 8-dic) decía «≤ lun 07-dic-2026 (HOY)», M1 (real vie 20-nov) «antes de T-1 (lun
+ *   07-dic-2026)» y «M1 (jue 19-nov-2026)», C-6 «C-2 (jue 3-dic-2026) … C-6 (lun 21-dic-2026)», CR-1 «cae el mié 23-dic … C-3 vie 11-dic». Ahora TODA
+ *   fecha del texto sale en fecha REAL (fechaRealDe, frente research-derma): (1) los DEADLINE / OBJETIVO RUTA calculados reciben HITOS_R (hitos con su
+ *   fecha real) y pasan por fR las fechas de átomo que citan (C-3, CR-2, R18), así que los días de retraso y las semanas M1 → C-3 se cuentan entre días
+ *   reales; (2) objetivo / entregable / artefacto / chips del átomo (texto de gen_research_plan.js en fecha de PLAN) pasan por fechasRealesTxt: «lun
+ *   07-dic-2026», «jueves 31-dic», «21 de diciembre» (con o sin día de la semana; sin él, solo si es fecha de un átomo Research) y «vie 11» (sin mes),
+ *   conservando el estilo (cero delante, año, mayúsculas). NO se traduce el HISTORIAL (cláusula con «⏸» o con una etiqueta de versión anterior a la
+ *   vigente, «⏸ v6.07: vie 11 / mar 15-dic», «v6.05: mar 29-dic»): son las fechas de entonces. Aserción: todo «<fecha> (HOY)» cae el día del overlay.
+ *   Fuera del alias (2027) fecha real = fecha de plan → T-8 … R43 no cambian (hash igual); cambian los textos de M1, C-2 (solo la fecha), T-1, C-6 y CR-1.
  */
 const fs = require('fs');
 const path = require('path');
@@ -100,6 +110,7 @@ const VERSION = ((v) => (v === 'v6.09' || v === 'v6.10' ? 'v6.08' : v))(require(
 /** v6.06a: día REAL en que se hace un átomo con fecha de plan `f` (alias de la semana corrida; fuera de ella = f) — gemelo node de fechasV6.fechaRealDe */
 const { fechaRealDe } = require('./gen_fechas_v6');
 const fechaReal = (f) => fechaRealDe(f, undefined, 'research-derma');
+const fR = fechaReal; // v6.10g: alias corto para las fechas de átomo que citan los DEADLINE
 const sigDia = (f) => { const d = new Date(f + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
 
 const argv = process.argv.slice(2);
@@ -135,12 +146,98 @@ const atomoDe = (ciclo, code) => {
   return a;
 };
 
+// ─── v6.10g: fechas REALES en el texto del átomo (gen_research_plan.js lo escribe en fecha de PLAN; la app lo traduce al pintar, el Calendar no) ───
+const DOW_L = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+const MES_L = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const wdDe = (f) => new Date(f + 'T12:00:00Z').getUTCDay();
+const pad2 = (n) => String(n).padStart(2, '0');
+const esIsoValida = (s) => { const d = new Date(s + 'T12:00:00Z'); return !isNaN(d) && d.toISOString().slice(0, 10) === s; };
+/** «jueves» / «jue» → índice del día de la semana (0 = dom) */
+const dowIdx = (w) => { const x = w.toLowerCase(); const i = DOW_L.indexOf(x); return i >= 0 ? i : DOW_ES.indexOf(x); };
+/** `nuevo` con la capitalización de `como` («MIÉ», «Mié», «mié») */
+const comoCaso = (nuevo, como) => (como === como.toUpperCase() && como !== como.toLowerCase() ? nuevo.toUpperCase()
+  : como[0] !== como[0].toLowerCase() ? nuevo.charAt(0).toUpperCase() + nuevo.slice(1) : nuevo);
+/** «v6.08» → 6008 (para ordenar etiquetas de versión; v5.x < v6.x) */
+const verN = (v) => { const m = /^v(\d+)\.(\d+)/.exec(v); return m ? Number(m[1]) * 1000 + Number(m[2]) : 0; };
+/**
+ * ¿La fecha que empieza tras `prev` es HISTORIAL (fecha de entonces, no se traduce)? Sí si está dentro de un paréntesis abierto con «⏸», si su cláusula
+ * (desde el último « · », «; » o salto de línea, sin contar los paréntesis ya cerrados) lleva «⏸», o si la última etiqueta de versión de la cláusula es
+ * anterior a la vigente (VERSION: «⏸ v6.07: vie 11 / mar 15-dic», «v6.05: mar 29-dic», «v6.00 = v5.20: mar 3-nov»). Sin etiqueta = vigente.
+ */
+function enHistorial(prev) {
+  let s = prev, t;
+  while ((t = s.replace(/\([^()]*\)/g, '')) !== s) s = t; // fuera los paréntesis ya cerrados
+  if (/\(\s*⏸/.test(s)) return true;
+  const corte = Math.max(s.lastIndexOf(' · '), s.lastIndexOf('; '), s.lastIndexOf('\n'));
+  const clausula = s.slice(corte + 1);
+  if (clausula.includes('⏸')) return true;
+  const vs = clausula.match(/\bv\d\.\d+[a-z]?(?!\d)/g);
+  return !!vs && verN(vs[vs.length - 1]) < verN(VERSION);
+}
+const DOWS_RX = [...DOW_L, ...DOW_ES].join('|');
+// A «lun 07-dic-2026» / «jueves 31-dic» · B «21 de diciembre» / «lunes 7 de diciembre de 2026» · C «vie 11» (sin mes; no «vie 13:00», «11-mar», «3/4»)
+const RX_FECHA_TXT = new RegExp(
+  '(?<pre>^|[^\\p{L}\\d\\-])(?:'
+  + `(?<dA>${DOWS_RX})(?<pA>\\.?) (?<nA>\\d{1,2})-(?<mA>${MES_ES.join('|')})(?:-(?<yA>20\\d\\d))?(?![\\p{L}\\d])`
+  + `|(?:(?<dB>${DOW_L.join('|')}) )?(?<nB>\\d{1,2}) de (?<mB>${MES_L.join('|')})(?: de (?<yB>20\\d\\d))?(?![\\p{L}])`
+  + `|(?<dC>${DOW_ES.join('|')})(?<pC>\\.?) (?<nC>\\d{1,2})(?![\\d\\p{L}\\-\\/]|:\\d)`
+  + ')', 'giu');
+/** fechas de PLAN que el alias hace otro día (para resolver «vie 11» sin mes: el único mes del alias en que el día y el día de la semana cuadran) */
+let _planesAlias = null;
+const planesConAlias = () => _planesAlias || (_planesAlias = ((c) => (c ? Object.values(c.alias).sort() : []))(require('./gen_fechas_v6').cargarFechasV6().corrida_s1));
+/**
+ * El texto de un átomo (fecha de PLAN) con sus fechas pasadas a su día REAL (fR). Solo cambian las fechas que el alias mueve (fuera de él, real = plan)
+ * cuyo día de la semana cuadra con la fecha de plan; el historial (enHistorial) se deja tal cual. Aplicar UNA vez (no es idempotente).
+ */
+function fechasRealesTxt(t) {
+  if (!t) return t;
+  const alias = planesConAlias();
+  if (!alias.length) return t;
+  const anios = [...new Set(alias.map((x) => x.slice(0, 4)))];
+  const diasR = new Set(DIAS.map((x) => x.fecha));
+  return t.replace(RX_FECHA_TXT, (...args) => {
+    const m = args[0], i = args[args.length - 3], s = args[args.length - 2], g = args[args.length - 1];
+    const pre = g.pre;
+    const mueve = (iso) => esIsoValida(iso) && fR(iso) !== iso;
+    let plan = null;
+    if (g.nA) {
+      const mm = pad2(MES_ES.indexOf(g.mA.toLowerCase()) + 1);
+      const ok = (g.yA ? [g.yA] : anios).map((y) => `${y}-${mm}-${pad2(g.nA)}`).filter((x) => esIsoValida(x) && wdDe(x) === dowIdx(g.dA));
+      plan = ok.length === 1 ? ok[0] : null;
+    } else if (g.nB) {
+      const mm = pad2(MES_L.indexOf(g.mB.toLowerCase()) + 1);
+      const ok = (g.yB ? [g.yB] : anios).map((y) => `${y}-${mm}-${pad2(g.nB)}`)
+        .filter((x) => esIsoValida(x) && (g.dB ? wdDe(x) === dowIdx(g.dB) : diasR.has(x))); // sin día de la semana: solo si es fecha de un átomo
+      plan = ok.filter(mueve).length === 1 ? ok.filter(mueve)[0] : null;
+    } else if (g.nC && !g.nC.startsWith('0')) {
+      const ok = alias.filter((x) => Number(x.slice(8)) === Number(g.nC) && wdDe(x) === dowIdx(g.dC));
+      plan = ok.length === 1 ? ok[0] : null;
+    }
+    if (!plan || !mueve(plan) || enHistorial(s.slice(0, i + pre.length))) return m;
+    const real = fR(plan), dReal = Number(real.slice(8)), mReal = Number(real.slice(5, 7)) - 1, wReal = wdDe(real);
+    if (g.nA) {
+      const dow = comoCaso(DOW_L.includes(g.dA.toLowerCase()) ? DOW_L[wReal] : DOW_ES[wReal], g.dA);
+      return `${pre}${dow}${g.pA} ${g.nA.length === 2 && g.nA.startsWith('0') ? pad2(dReal) : dReal}-${comoCaso(MES_ES[mReal], g.mA)}${g.yA ? '-' + real.slice(0, 4) : ''}`;
+    }
+    if (g.nB) return `${pre}${g.dB ? comoCaso(DOW_L[wReal], g.dB) + ' ' : ''}${dReal} de ${comoCaso(MES_L[mReal], g.mB)}${g.yB ? ' de ' + real.slice(0, 4) : ''}`;
+    return `${pre}${comoCaso(DOW_ES[wReal], g.dC)}${g.pC} ${dReal}`;
+  });
+}
+/** v6.10g · aserción: todo «<día> <n>-<mes>[-<año>] (HOY)» del overlay cae el día del overlay (antes T-1, el mar 8-dic real, decía «≤ lun 07-dic-2026 (HOY)») */
+function comprobarHoy(ev) {
+  for (const m of ev.description.matchAll(new RegExp(`(?:${DOWS_RX})\\.? (\\d{1,2})-(${MES_ES.join('|')})(?:-(20\\d\\d))? \\(HOY\\)`, 'giu'))) {
+    const iso = `${m[3] || ev.fecha.slice(0, 4)}-${pad2(MES_ES.indexOf(m[2].toLowerCase()) + 1)}-${pad2(m[1])}`;
+    if (iso !== ev.fecha) throw new Error(`overlay ${ev.code} (${ev.fecha}): «${m[0]}» no es el día del overlay`);
+  }
+}
+
 /** v6.08: pausa de átomos del plan vigente (DAILY_META.pausa de researchDailyPlan.ts: «AAAA-MM-DD → AAAA-MM-DD · …»; antes «15-ene» escrito). */
 const PAUSA_R = (() => { const m = /pausa: '(20\d\d-\d\d-\d\d) → (20\d\d-\d\d-\d\d)/.exec(leer(TS1)); if (!m) throw new Error('DAILY_META.pausa no encontrado en researchDailyPlan.ts'); return { desde: m[1], hasta: m[2] }; })();
 /** v6.07: «CR-4 → CR-8» = los pasos del case report que la regla de desplazamiento llevó tras la pausa (calculado del plan; antes «CR-6 → CR-8» escrito). v6.08: con PAUSA_R. */
 const crTrasPausa = () => { const xs = ['CR-1', 'CR-2', 'CR-3', 'CR-4', 'CR-5', 'CR-6', 'CR-7', 'CR-8'].filter((c) => atomoDe(1, c).fecha >= PAUSA_R.desde); return xs.length ? `${xs[0]} → ${xs[xs.length - 1]}` : 'ningún paso'; };
 // ─── Fecha límite EXTERNA por hito (tal como consta en RUTA_PUBLICACION_2027.md §9 / §9.1 · v5.10) ───
 // Un valor función recibe HITOS (fechas del plan) y devuelve el texto: así la fecha que cita sale del .ts, no de un literal.
+// v6.10g: recibe HITOS_R (la fecha REAL de cada hito, alias de corrida_s1) y las fechas de átomo que cita pasan por fR → el texto nombra el día en que se hace.
 // v6.01b (10-oct-2026): carta-1 y tesis-etica dejaban como límite vigente un ≤ interno ya VENCIDO (15-oct / 30-sep) que contradecía su propio
 // átomo (C-6 vie 13-nov / T-1 mié 28-oct); equipo citaba el R10 de v6.00 (vie 19-mar) → los tres derivan ahora sus fechas del plan.
 const DEADLINE = {
@@ -149,8 +246,8 @@ const DEADLINE = {
   'tesis-etica': (H) => `oct-2026 (solicitud CEI expedita PRESENTADA a más tardar en T-1, ${fmtF(H['tesis-etica'].fecha)} · sin nº de CEI NO se envía T-8, ${fmtF(H['tesis-L0'].fecha)} · ⏸ límite interno ≤ 30-sep según gap 1 de Palmerton v3b VENCIDO: T-1 cae ${diasEntre('2026-09-30', H['tesis-etica'].fecha)} días después)`,
   // v6.02b: el disparador (C-3), M1 y CR-1/CR-2 salen del plan (antes era un literal con las fechas de v6.01 como vigentes).
   'cr-caso': (H) => {
-    const c3 = atomoDe(1, 'C-3'); const cr2 = atomoDe(1, 'CR-2'); const cr1 = H['cr-caso'].fecha;
-    return `⏸ 31-oct-2026 VENCIDO (caso + consentimiento + senior author; v6.06: la semana lun 26 → vie 30-oct no se estudió y no quedó ningún día-Research antes del plazo → sin plazo nuevo: M1, d${H['mentor'].d}, pide el caso el ${fmtC(H['mentor'].fecha)}) · si el ${fmtC(c3.fecha)} (C-3 = d${c3.d} en ${VERSION}, ~${String(Math.round(diasEntre(H['mentor'].fecha, c3.fecha) / 3.5) / 2).replace('.', ',')} semanas desde M1 ${fmtC(H['mentor'].fecha)}; ⏸ v6.07: mar 1-dic / M1 lun 9-nov · v6.06: mié 25-nov / M1 mar 3-nov · v6.05: mar 17-nov / M1 vie 30-oct · v6.03: mar 17-nov / M1 mié 28-oct · v6.02: vie 13-nov / M1 lun 26-oct · v6.01: jue 5-nov / M1 vie 16-oct · v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ ${VERSION}: CR-1 cae el ${fmtC(cr1)} y CR-2 el ${fmtC(cr2.fecha)}, ya después del 31-oct (+${diasEntre('2026-10-31', cr1)} / +${diasEntre('2026-10-31', cr2.fecha)} días) · ⏸ v6.07: CR-1 vie 11-dic / CR-2 mar 15-dic · v6.06: CR-1 lun 7-dic / CR-2 mié 9-dic · v6.05: CR-1 vie 27-nov / CR-2 mar 1-dic · v6.03: CR-1 vie 27-nov / CR-2 mar 1-dic · v6.02: CR-1 mié 25-nov / CR-2 vie 27-nov · v6.01: CR-1 jue 19-nov / CR-2 lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)`;
+    const c3 = atomoDe(1, 'C-3'); const cr2 = atomoDe(1, 'CR-2'); const cr1 = H['cr-caso'].fecha; const c3R = fR(c3.fecha), cr2R = fR(cr2.fecha); // v6.10g: días REALES
+    return `⏸ 31-oct-2026 VENCIDO (caso + consentimiento + senior author; v6.06: la semana lun 26 → vie 30-oct no se estudió y no quedó ningún día-Research antes del plazo → sin plazo nuevo: M1, d${H['mentor'].d}, pide el caso el ${fmtC(H['mentor'].fecha)}) · si el ${fmtC(c3R)} (C-3 = d${c3.d} en ${VERSION}, ~${String(Math.round(diasEntre(H['mentor'].fecha, c3R) / 3.5) / 2).replace('.', ',')} semanas desde M1 ${fmtC(H['mentor'].fecha)}; ⏸ v6.07: mar 1-dic / M1 lun 9-nov · v6.06: mié 25-nov / M1 mar 3-nov · v6.05: mar 17-nov / M1 vie 30-oct · v6.03: mar 17-nov / M1 mié 28-oct · v6.02: vie 13-nov / M1 lun 26-oct · v6.01: jue 5-nov / M1 vie 16-oct · v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ ${VERSION}: CR-1 cae el ${fmtC(cr1)} y CR-2 el ${fmtC(cr2R)}, ya después del 31-oct (+${diasEntre('2026-10-31', cr1)} / +${diasEntre('2026-10-31', cr2R)} días) · ⏸ v6.07: CR-1 vie 11-dic / CR-2 mar 15-dic · v6.06: CR-1 lun 7-dic / CR-2 mié 9-dic · v6.05: CR-1 vie 27-nov / CR-2 mar 1-dic · v6.03: CR-1 vie 27-nov / CR-2 mar 1-dic · v6.02: CR-1 mié 25-nov / CR-2 vie 27-nov · v6.01: CR-1 jue 19-nov / CR-2 lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)`;
   },
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
@@ -171,7 +268,7 @@ const OBJETIVO_RUTA = {
   'PROSPERO-SR1': (H) => {
     const f = H['PROSPERO-SR1'].fecha; const dd = diasEntre('2027-03-31', f); const cribado = atomoDe(2, 'R18');
     const estado = dd > 0 ? `${VERSION}: el átomo cae ${fmtC(f)} (+${dd} d; decisión (iii) de Joseph en PENDIENTES · ⏸ v6.07: jue 22-abr, +22 d · v6.06: vie 16-abr, +16 d · v6.05: jue 8-abr, +8 d · v6.03: mar 6-abr, +6 d · v6.02: vie 2-abr, +2 d)` : `R10 = ${fmtC(f)}, dentro del objetivo`;
-    return `OBJETIVO RUTA ≤ 31-mar-2027 · ${estado} · no es plazo externo: PROSPERO solo exige registrar ANTES del cribado (R18, ${fmtF(cribado.fecha)})`;
+    return `OBJETIVO RUTA ≤ 31-mar-2027 · ${estado} · no es plazo externo: PROSPERO solo exige registrar ANTES del cribado (R18, ${fmtF(fR(cribado.fecha))})`;
   },
 };
 
@@ -206,26 +303,29 @@ function parseDias(src) {
 const src1 = leer(TS1);
 if (!src1) throw new Error('falta ' + TS1);
 const HITOS = parseHitos(src1);
+/** v6.10g: los hitos con su fecha REAL (alias de corrida_s1) para los textos calculados (DEADLINE / OBJETIVO RUTA); la de plan queda en fechaPlan */
+const HITOS_R = Object.fromEntries(Object.entries(HITOS).map(([k, h]) => [k, { ...h, fecha: fR(h.fecha), fechaPlan: h.fecha }]));
 const DIAS = [...parseDias(src1), ...parseDias(leer(TS2))];
 const porCodigo = (ciclo, code, fecha) => DIAS.find((x) => x.ciclo === ciclo && x.code === code && x.fecha === fecha)
   || DIAS.find((x) => x.code === code && x.fecha === fecha) || DIAS.find((x) => x.code === code);
 
 function payload(hito, h) {
   const atomo = porCodigo(h.ciclo, h.code, h.fecha) || {};
-  const label = LABEL[hito] || String(atomo.entregable || hito).slice(0, 60);
+  const label = LABEL[hito] || fechasRealesTxt(String(atomo.entregable || hito)).slice(0, 60);
   const fecha = fechaReal(h.fecha); // v6.06a: fecha REAL del overlay (alias de la semana corrida)
   const f4 = fecha >= SERUMS_INICIO; // v6.00: F4 (SERUMS) → overlay de todo el día
   const lineas = [
     f4 ? `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · F4 (SERUMS): 30' en tiempo muerto de la posta — la hora la pone el turno del día (día-Research: mar · jue · sáb)`
       : `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · bloque 13:30-14:15 (día-Research; alterna con Derma)`,
     '',
-    `OBJETIVO: ${atomo.objetivo || '(ver researchDailyPlan.ts)'}`,
-    `ENTREGABLE: ${atomo.entregable || '—'}`,
-    `ARTEFACTO: ${atomo.artefacto || '—'}`,
+    // v6.10g: el texto del átomo está en fecha de PLAN (gen_research_plan.js) → fechasRealesTxt lo pasa a la fecha REAL (el historial ⏸ no se toca)
+    `OBJETIVO: ${fechasRealesTxt(atomo.objetivo) || '(ver researchDailyPlan.ts)'}`,
+    `ENTREGABLE: ${fechasRealesTxt(atomo.entregable) || '—'}`,
+    `ARTEFACTO: ${fechasRealesTxt(atomo.artefacto) || '—'}`,
   ];
-  if (atomo.chips && atomo.chips.length) lineas.push(`AVISOS: ${atomo.chips.join(' · ')}`);
-  if (DEADLINE[hito]) lineas.push(`FECHA LÍMITE EXTERNA: ${typeof DEADLINE[hito] === 'function' ? DEADLINE[hito](HITOS) : DEADLINE[hito]}`);
-  if (OBJETIVO_RUTA[hito]) lineas.push(OBJETIVO_RUTA[hito](HITOS)); // v6.02b
+  if (atomo.chips && atomo.chips.length) lineas.push(`AVISOS: ${atomo.chips.map(fechasRealesTxt).join(' · ')}`);
+  if (DEADLINE[hito]) lineas.push(`FECHA LÍMITE EXTERNA: ${typeof DEADLINE[hito] === 'function' ? DEADLINE[hito](HITOS_R) : DEADLINE[hito]}`);
+  if (OBJETIVO_RUTA[hito]) lineas.push(OBJETIVO_RUTA[hito](HITOS_R)); // v6.02b · v6.10g: HITOS_R (fechas reales)
   lineas.push('', 'Overlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se',
     'regenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel',
     '→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.');
@@ -242,6 +342,7 @@ function payload(hito, h) {
     availability: 'AVAILABILITY_FREE',   // = transparency 'transparent' (no bloquea el bloque)
     description: lineas.join('\n'),
   };
+  comprobarHoy(ev); // v6.10g
   ev.hash = hashDe(ev);
   return ev;
 }

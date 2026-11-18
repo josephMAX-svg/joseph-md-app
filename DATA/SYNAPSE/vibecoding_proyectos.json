@@ -472,7 +472,7 @@
         }
       ],
       "pasos": [
-        "(45') Escribir SKILL.md: lee PRONOSTICO v3 + rotación del día + PERFIL_CONOCIMIENTO → sirve 5 preguntas REALES del subtema del día (exámenes ENCAPS con clave oficial: BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json etiquetado en _etiquetas_examenes_reales_v3.json; nunca ítems espejo ni generados, nunca el examen reservado como pre-test) en formato pregunta→solución interactiva, sin clave hasta que Joseph responda; sin stock real del subtema → lo dice y sirve del más cercano con stock (v6.10 · base cero: antes «genera nuevas»).",
+        "(45') Escribir SKILL.md: lee PRONOSTICO v3 + rotación del día + PERFIL_CONOCIMIENTO → sirve 5 preguntas REALES del subtema del día (exámenes ENCAPS con clave oficial: BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json etiquetado en _etiquetas_examenes_reales_v3.json; nunca ítems espejo ni generados, nunca el examen reservado como pre-test) en formato pregunta→solución interactiva, sin clave hasta que Joseph responda; sin stock real del subtema → lo dice y sirve del más cercano con stock.",
         "(15' deload) Revisar el formato de salida con 1 pregunta REAL del banco (su id de BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json); nada más.",
         "(45') Registro: la skill apenda la ronda a _registro_resoluciones.json (esquema README), vuelca RONDAS/<codigo>_<fecha>.json y anota los ids servidos en _stock_usado.json.",
         "(15' deload) Descanso activo: leer 1 ronda anterior y anotar 1 mejora.",

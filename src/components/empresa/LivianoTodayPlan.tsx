@@ -12,6 +12,7 @@ import {
 import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 import { guiaLivianoDe } from '../../lib/rutinaGuia'; // v6.02c (E5): qué · cuánto · cómo de la sesión (lectura con sección y palabras, enlaces)
 import {
   LivianoScoreStore as ScoreStore, ScoreEntry, RubricaEntry, EntradaLiviano, LIVIANO_SCORE_KEY,
@@ -333,7 +334,7 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
           </View>
         </FadeUp>
         {/* v6.02c (E5) · guía de la sesión: qué leer (sección + nº de palabras + enlace), cuánto (minutos), cómo (aplicación / caso + rúbrica) */}
-        {(() => { const g = guiaLivianoDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={g} color={c} /></FadeUp> : null; })()}
+        {(() => { const g = guiaLivianoDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={reemplazosCorrida(g, dia.fecha)} color={c} /></FadeUp> : null; })()}
 
         {/* Pre-test del lunes */}
         {dia.pretest ? (

@@ -36,7 +36,7 @@ function subConGuia(sub: string, fecha: string): string {
   return sub.replace(/\d{2}:\d{2}-\d{2}:\d{2}/, `${hito.franja.replace('–', '-')} · la guía manda`);
 }
 import GuiaBloqueCard from '../GuiaBloqueCard';
-import { fechasRealesEnTexto } from '../../lib/corridaTexto';
+import { fechasRealesEnTexto, reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -199,7 +199,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
         <FadeUp>
           {/* v6.02d: fecha real visible (semana corrida) */}
           <Text style={st.secLbl}>🧭 Hoy {fmtFecha(fechaRealDe(hoy, 'usmle'))} · sin fila del plan · qué · cuánto · cómo</Text>
-          {guiaHoyFuera.map((g, i) => <GuiaBloqueCard key={`h${i}`} g={g} color={GREEN} ahora={enCurso(g.franja)} />)}
+          {guiaHoyFuera.map((g, i) => <GuiaBloqueCard key={`h${i}`} g={reemplazosCorrida(g, hoy)} color={GREEN} ahora={enCurso(g.franja)} />)}
         </FadeUp>
       )}
       {/* Tema del día — el badge de sistema lleva al Temario */}
@@ -249,7 +249,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
       {guia.length > 0 && (
         <FadeUp delay={6}>
           <Text style={st.secLbl}>🧭 Guía del día · qué · cuánto · cómo · {guia.length} franjas · {guia.reduce((a, g) => a + g.totalMin, 0)}′ (toca una franja para ver sus pasos)</Text>
-          {guia.map((g, i) => <GuiaBloqueCard key={`${dia.fecha}-${g.franja}-${i}`} g={g} color={GREEN} compacto={!(dia.fecha === hoy && enCurso(g.franja))} ahora={dia.fecha === hoy && enCurso(g.franja)} />)}
+          {guia.map((g, i) => <GuiaBloqueCard key={`${dia.fecha}-${g.franja}-${i}`} g={reemplazosCorrida(g, dia.fecha)} color={GREEN} compacto={!(dia.fecha === hoy && enCurso(g.franja))} ahora={dia.fecha === hoy && enCurso(g.franja)} />)}
           <Text style={st.note}>Velocidad: {GUIA_USMLE_META.velocidad}. {GUIA_USMLE_META.reglaVideo}</Text>
         </FadeUp>
       )}

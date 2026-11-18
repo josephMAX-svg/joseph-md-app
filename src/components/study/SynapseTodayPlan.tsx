@@ -17,6 +17,7 @@ import {
   VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
 } from '../../lib/vibecodingPlan';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 // v6.02c (E5): guías «qué · cuánto · cómo» del 04:15 (vibecoding), del SYNAPSE de L-V, del sábado PC (SHIP + A/B/C) y del Feynman del domingo
 import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe } from '../../lib/rutinaGuia';
 
@@ -267,7 +268,7 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
         return gs.length ? (
           <View>
             <Text style={st.secLbl}>🧭 guía del día · qué · cuánto · cómo</Text>
-            {gs.map((g, i) => <FadeUp key={i} delay={35 + i * 20}><GuiaBloqueCard g={g} color={g.plan === 'synapse' ? INDIGO : OBS} /></FadeUp>)}
+            {gs.map((g, i) => <FadeUp key={i} delay={35 + i * 20}><GuiaBloqueCard g={reemplazosCorrida(g, dia.fecha)} color={g.plan === 'synapse' ? INDIGO : OBS} /></FadeUp>)}
           </View>
         ) : null;
       })()}

@@ -64,6 +64,11 @@ Palmerton quiere evitar no aparece; Pharm conserva su propio límite. El check �
 ## 3. Ajustes exactos de Anki (D1 · mié 21-oct · 05:00)
 
 Un único preset, **«APEX USMLE»**, en el padre y en **todos** los submazos (Deck Options del padre → `Save ▾` → **Save to All Subdecks**).
+**v6.10g (18-nov · regla de Joseph del 17-nov, sin excepción: nada vacío por adelantado):** el día de la configuración **no se crea ningún mazo
+USMLE**, tampoco el padre. El preset se crea **sin asignar** desde las Deck Options de un mazo que ya existe (p. ej. uno de MIR): `Save ▾` →
+**Add Preset** «APEX USMLE» → ajustes de la tabla → en el desplegable, **vuelve a elegir el preset que tenía ese mazo** → **Save** (Anki guarda
+los presets nuevos aunque no sean el elegido). `APEX::USMLE` nace con la **1.ª tarjeta** del D2 (07:15, junto con `::Pathology`); al cerrar ese
+bloque: Deck Options de `APEX::USMLE` → preset «APEX USMLE» → `Save ▾` → **Save to All Subdecks**.
 
 | Ajuste | Valor | Por qué / origen |
 |---|---|---|
@@ -78,10 +83,11 @@ Un único preset, **«APEX USMLE»**, en el padre y en **todos** los submazos (D
 | **Note type** | el motor APEX crea **Basic** (una cara: Front = FRENTE; Back = REVERSO + CCSN + imagen) | [APEX] `node_anki_obsidian_v2_3.js`. Palmerton usa *Basic (optional reversed)*: aquí la pregunta inversa se hace como **2.º bloque APEX** (§4.4) |
 | **Sync** | AnkiWeb **al empezar y al terminar** cada sesión | [R §4.2] |
 | **Bury siblings** | sin ajuste (no está en las fuentes) | [R §4.2] |
-| **Submazos nuevos** | el motor los crea con el preset **Default** → cada sábado, `Save to All Subdecks` en el padre | [APEX] `createDeck` · [PLAN] |
+| **Submazos nuevos** | **no se crean por adelantado** (v6.10f, regla de Joseph del 17-nov: mazos, carpetas y notas nacen el día que aprendes algo que va ahí; v6.10g: la configuración tampoco crea el padre `APEX::USMLE`, que nace con la 1.ª tarjeta del D2). El motor los crea con su primera tarjeta, con el preset **Default** → ese día, al terminar el bloque, `Save to All Subdecks` en el padre (la guía lo dice en el paso de la 1.ª tarjeta de cada submazo del plan) y, como red, cada sábado | [APEX] `createDeck` · [PLAN] |
 
-Telemetría tras configurar: `node DATA/_scripts/anki_telemetria.js` (con Anki abierto) debe leer retención 0,90 y no avisar de
-`rev.perDay < 9999`. Desde el 20-oct-2026 el script espera **20** nuevas/día (antes 10, el valor de la v5.7), acepta 0 dentro del
+Telemetría (desde v6.10g, con el mazo ya creado: el «Sync final + telemetría» del primer Anki AM tras la 1.ª tarjeta; el día de la configuración no
+hay `APEX::USMLE` que leer y el preset se comprueba a mano en Deck Options): `node DATA/_scripts/anki_telemetria.js` (con Anki abierto) debe leer
+retención 0,90 y no avisar de `rev.perDay < 9999`. Desde el 20-oct-2026 el script espera **20** nuevas/día (antes 10, el valor de la v5.7), acepta 0 dentro del
 protocolo de backlog (§7) y avisa de los submazos que no tengan el preset «APEX USMLE».
 
 ---

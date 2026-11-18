@@ -273,8 +273,25 @@ const daEnF4Txt = (h) => { const xs = daEnF4(h); return xs.length ? `⚠ ${xs.ma
 const etqD = (d) => (d > 100 ? `T${d - 100}` : `D${d}`);
 const etq = (r) => etqD(r.d);
 /** v6.05: texto del subtema sin el prefijo «DE F1 → TRAMO 2 (…) · » de las desplazadas (subV520 = texto v5.20 exacto) */
-const txtSub = (r) => r.subV520 || r.sub;
-const corto = (s, n = 70) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
+// v6.10g (revisión 18-nov): sin la pieza «· setup Anki FSRS» del D3 (dato de usmleStep1Daily.ts): ese vídeo (Te5RnxeG_Gg) va con la CONFIGURACIÓN de Anki del
+//   1.er día de F1 y el final, con el D2; el bloque del D3 no trata de Anki (antes el título de PÁGINA COMPLETA del D3 lo anunciaba entero, ya sin cortar)
+const txtSub = (r) => (r.subV520 || r.sub).replace(/ · setup Anki FSRS$/, '');
+/** v6.10g (18-nov · títulos sin palabras partidas): `n` es el largo OBJETIVO del subtema, con CORTO_MARGEN caracteres de margen para no partir una pieza.
+ *  Si no cabe, se corta en la última PIEZA entera («a + b + c», «a · b», «a, b», «a / b», «a — b») o, si la pieza deja menos del 60 % de lo que cabe, en la
+ *  última PALABRA entera; un paréntesis que quedaría abierto sale entero («neoplasia (principios + carcinogé…» → «neoplasia…»). Antes cortaba a n − 1
+ *  caracteres en medio de una palabra («NIVEL 0 · PREGUNTA 1/3 a fondo · Pathoma 1-2: lesión celular + muerte celular + in…»). */
+const CORTO_MARGEN = 10;
+// v6.10g (revisión 18-nov): `margen` opcional (0 en el «qué» doble del free recall D-3 / D-7: con +10 por subtema pasaba de los 150 del corte del Calendar)
+const corto = (s, n = 70, margen = CORTO_MARGEN) => {
+  if (s.length <= n + margen) return s;
+  const lim = n + margen - 1; // sitio para «…»
+  const abierto = (t) => { let k = 0; for (const ch of t) k += ch === '(' ? 1 : ch === ')' ? -1 : 0; return k > 0; };
+  const COLA = /(?:[\s+·,;:/—–(-]+|\s(?:de|del|la|las|el|los|y|e|o|u|en|con|a|al|por|para|sin|tras|vs))+$/iu; // sin conectores colgando («… de…»)
+  const limpio = (i) => { let t = s.slice(0, i); while (abierto(t) && t.includes('(')) t = t.slice(0, t.lastIndexOf('(')); return t.replace(COLA, ''); };
+  const corte = (re) => { let best = ''; for (const m of s.matchAll(re)) { if (m.index > lim) break; const t = limpio(m.index); if (t.length > best.length) best = t; } return best; };
+  const pieza = corte(/ \+ | · |, | \/ | — | – /g), palabra = corte(/\s/g);
+  return (pieza && pieza.length >= 0.6 * palabra.length ? pieza : palabra || s.slice(0, lim)) + '…';
+};
 const S1 = (d) => d <= 5;
 // v6.03 (20-oct): fechas DERIVADAS de las filas (D# → fecha) para los textos de la semana 1 y los avisos
 const DD = (d) => filaD(d).fecha;
@@ -287,6 +304,15 @@ const despuesTxt = (a, b) => (diasEntre(a, b) === 1 ? 'mañana' : `el ${fd(b)}`)
 const mayus = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 /** v6.07: «mañana» si la siguiente fila del plan (F1 → tramo 2) es el día natural siguiente; si no, «el jue 12-nov» (F1 con Step solo mar · jue) */
 const proxTxt = (r) => { const sig = U.DIAS_TODOS.find((x) => x.fecha > r.fecha); return sig ? despuesTxt(r.fecha, sig.fecha) : 'el próximo día de Step'; };
+/** v6.10f (revisión 18-nov · relativos): el próximo ANKI AM de las 05:00 tras `f` = el siguiente L-V hábil (sin SKIP; sábado y domingo no tienen Anki a
+ *  las 05:00) → «mañana a las 05:00» solo si es el día natural siguiente; si no, «el lun 28-dic a las 05:00» (antes «mañana» también el jue 24-dic, con el vie
+ *  25 SKIP, y los viernes del tramo 2). Si cae en el SERUMS (F4: el Anki va con el turno, no a las 05:00), «el Anki USMLE del lun 3-may (con el turno)». */
+const ankiAmSigTxt = (f) => {
+  let t = new Date(f + 'T12:00:00Z');
+  do { t = new Date(t.getTime() + 864e5); } while (t.getUTCDay() === 0 || t.getUTCDay() === 6 || FV6.skip.includes(t.toISOString().slice(0, 10)));
+  const n = t.toISOString().slice(0, 10);
+  return n >= FV6.serums.inicio ? `el Anki USMLE del ${fd(n)} (con el turno del SERUMS)` : `${despuesTxt(f, n)} a las 05:00`;
+};
 /** v6.07: «de ayer» / «del jue 12-nov» según la distancia real a la sesión anterior de contenido */
 const delPrevTxt = (prev, f) => (antesTxt(prev.fecha, f) === 'ayer' ? 'de ayer' : `del ${fd(prev.fecha)}`);
 const sabadoTras = (iso) => { let t = new Date(iso + 'T12:00:00Z'); do { t = new Date(t.getTime() + 864e5); } while (t.getUTCDay() !== 6); return t.toISOString().slice(0, 10); };
@@ -417,9 +443,10 @@ const colaBB = []; const colaPalm = []; // ítems: { tipo, id, ini, fin, dOrig }
  *  1.er día de F1) y lo que falta de él + «The ONLY video» van al Anki del D2 (jue 19, 05:00-05:30: el mazo aún está vacío; regla del chat USMLE «Anki y
  *  vídeos de método»); lo que no cabe va a la cabeza de la cola (delante de los B&B: es lo pendiente más antiguo). */
 const colaMetodo = [];
+// v6.10g (18-nov): sin la bitácora en el texto visible («(era el vídeo del D3, «setup Anki FSRS»)» · «(era del D2)»: el D2 de hoy ya ES el día de ese vídeo)
 const METODO = {
-  Te5RnxeG_Gg: { dPlan: 3, como: 'va con la configuración porque FSRS se ajusta ANTES de la primera tarjeta (era el vídeo del D3, «setup Anki FSRS»): pausa y anota los 8 cambios' },
-  BOtQJeFE_rc: { dPlan: 2, como: 'el vídeo de MÉTODO del arranque (era del D2): cómo plantea Palmerton el Step 1 · pausa y anota 5 ideas' },
+  Te5RnxeG_Gg: { dPlan: 3, como: 'va con la configuración porque FSRS se ajusta ANTES de la primera tarjeta: pausa y anota los 8 cambios' },
+  BOtQJeFE_rc: { dPlan: 2, como: 'el vídeo de MÉTODO del arranque: cómo plantea Palmerton el Step 1 · pausa y anota 5 ideas' },
 };
 const REP = {}; // d → { s0500: [], s0715: [], s0900: [], desborde: [] }
 const item = (tipo, id, dOrig) => ({ tipo, id, ini: 0, fin: tipo === 'bb' ? BB.get(id).s : PALM[id].s, dOrig });
@@ -732,7 +759,7 @@ function anki0500(r) {
     P(f1 ? 20 : 33, 'VENCIDAS primero (reviews first) · sin tope (Maximum reviews/day 9999)', 'Lee el frente, responde EN VOZ ALTA y gira: Good si recordaste la lógica central (≈90 %, no palabra por palabra) · Again solo si la olvidaste (≈10 %) · nunca Hard/Easy · lee primero la línea «Summary:» (20-30 s por tarjeta).'),
     P(f1 ? 6 : 8, `NUEVAS: las APEX que creaste ${creadas} (preset ${AK.nuevasDia}/día)`, hito
       ? 'Solo si las vencidas llegaron a 0; si no, nuevas = 0 hoy (esperan en la cola). Hoy NO se crean tarjetas: el NBME se corrige desde las 18:00 (Day-After).'
-      : `Solo si las vencidas llegaron a 0. Si a las ${f1 ? '05:22' : '05:37'} aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van al primer «Anki restante» (07:15) o mañana a las 05:00, siempre antes que nuevas.${f1 ? ' A las 05:30 pasas a los repasos ENCAPS (15′): no los recortes por el USMLE.' : ''}`),
+      : `Solo si las vencidas llegaron a 0. Si a las ${f1 ? '05:22' : '05:37'} aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van al primer «Anki restante» (07:15) o ${ankiAmSigTxt(f)}, siempre antes que nuevas.${f1 ? ' A las 05:30 pasas a los repasos ENCAPS (15′): no los recortes por el USMLE.' : ''}`),
     P(2, 'Sync final + telemetría', 'Sync · node DATA/_scripts/anki_telemetria.js → due · backlog · retención 30 d · % Again (sano ≈10 %; > 20 % = tarjetas largas o perfeccionismo → divídelas; ≈0 % = no te estás examinando).'),
   ], [R_ANKI], '0 vencidas en APEX::USMLE (las nuevas solo después) y la telemetría registrada', { planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo (borra el historial del algoritmo).' });
 }
@@ -760,8 +787,17 @@ function repaso0715(r) {
   const resto = 60 - val - sh - (v5 ? 11 : 0) - V;
   const dd = [d3 && ['D-3', d3], d7 && ['D-7', d7]].filter(Boolean);
   // v6.09 · lote 1: con ≤ 5′ (días con las 5Q de la víspera) el paso es solo el free recall; las vencidas que quedaran a las 05:00 → mañana 05:00
-  if (resto > 0 && v5 && resto <= 5) pasos.push(P(resto, `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x) => `«${corto(txtSub(x[1]), 50)}» (${etq(x[1])})`).join(' y ')}`, 'Sin mirar: 3 ideas de cada uno (≈1′ por subtema); lo que salga < 60 % → busca sus tarjetas y márcalas Again. Hoy no hay «Anki restante»: si quedaron vencidas a las 05:00, van primero en el próximo Anki AM (antes que las nuevas).'));
-  else if (resto > 0) pasos.push(P(resto, `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x) => `«${corto(txtSub(x[1]), 50)}» (${etq(x[1])})`).join(' y ')} + Anki restante`, 'Sin mirar: 3 ideas de cada uno; lo que salga < 60 % → busca sus tarjetas y márcalas Again. Si quedaron vencidas a las 05:00, termínalas aquí.'));
+  // v6.10g (revisión 18-nov · corte del Calendar a 150): el «qué» con los dos subtemas cabe entero (etiquetas T# y «+ Anki restante» visibles): si se pasa, se
+  //   acorta el subtema más largo (de 5 en 5, mínimo 25); antes cada subtema llevaba +10 de margen y el corte se comía la etiqueta del 2.º
+  const recallQue = (cola) => {
+    const n = dd.map(() => 50);
+    const sub = (x, k) => corto(txtSub(x[1]), n[k], 0);
+    const txt = () => `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x, k) => `«${sub(x, k)}» (${etq(x[1])})`).join(' y ')}${cola}`;
+    for (let t = txt(); t.length > 150 && Math.max(...n) > 25; t = txt()) { const L = dd.map((x, k) => sub(x, k).length); n[L.indexOf(Math.max(...L))] -= 5; }
+    return txt();
+  };
+  if (resto > 0 && v5 && resto <= 5) pasos.push(P(resto, recallQue(''), 'Sin mirar: 3 ideas de cada uno (≈1′ por subtema); lo que salga < 60 % → busca sus tarjetas y márcalas Again. Hoy no hay «Anki restante»: si quedaron vencidas a las 05:00, van primero en el próximo Anki AM (antes que las nuevas).'));
+  else if (resto > 0) pasos.push(P(resto, recallQue(' + Anki restante'), 'Sin mirar: 3 ideas de cada uno; lo que salga < 60 % → busca sus tarjetas y márcalas Again. Si quedaron vencidas a las 05:00, termínalas aquí.'));
   return B(f, '07:15–08:15', `REPASO ANCLADO · validación del ${etq(prev)}${v5 ? ` + 5Q de la consolidación del ${etq(v5)}` : ''}${V ? ' + vídeo pendiente' : ''}`, pasos, [R_UW, ...recVideo(rep.s0715)], `${v5 ? '5Q de validación + las 5Q de la consolidación hechas' : '5Q hechas'} (≥4/5 → subtema ${delPrevTxt(prev, f)} validado; <4/5 → 5Q más de ese System en la consolidación) y el free recall escrito`, { planB: respaldo(prev.d, 5) });
 }
 
@@ -1024,13 +1060,23 @@ function bloqueConfigAnki(f) {
   const v05 = pasosVideo(D2.d, CONF_REP); const V05 = v05.reduce((a, p) => a + p.min, 0);
   const resto05 = CONF_REP.some((it) => it.id === 'Te5RnxeG_Gg' && it.fin < PALM.Te5RnxeG_Gg.s);
   const recPalm = (id) => ({ t: `Palmerton · ${id === 'Te5RnxeG_Gg' ? 'Anki + FSRS' : 'The ONLY video (Step 1 2026)'} (YouTube)`, url: yt(id), min: Math.round(PALM[id].s / 60) });
-  const finVideo = ` El final del vídeo se ve ${despuesTxt(f, D2.fecha)} a las 05:00 (D2, ${fd(D2.fecha)}: el mazo sigue vacío hasta las preguntas de las 07:15): si cambia algo de esto, ajústalo ahí.`;
-  return B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN (el mazo está vacío): mazos + preset «APEX USMLE» (FSRS)', [
-    P(4, `Mazos: confirma APEX::USMLE (padre) y los ${F1_DECKS.length} submazos del F1: ${F1_DECKS.map((t) => `::${t}`).join(' · ')}`, 'Anki escritorio › Create Deck con el nombre EXACTO de los que falten (el motor APEX también los crea al vuelo, pero sin tu preset). Lo de patología general va a ::Pathology: el motor no acepta «General». Pharm = submazo propio (::Pharmacology) con su propio tope diario, como pide Palmerton. Sync.'),
+  const finVideo = ` El final del vídeo se ve ${despuesTxt(f, D2.fecha)} a las 05:00 (D2, ${fd(D2.fecha)}: aún sin mazo USMLE hasta las preguntas de las 07:15): si cambia algo de esto, ajústalo ahí.`;
+  // v6.10f (revisión 18-nov · regla de Joseph del 17-nov: «los mazos, carpetas y notas se crean el día que aprende algo que va ahí; nunca estructura vacía por
+  //   adelantado»): hoy solo el mazo RAÍZ APEX::USMLE y su preset; ningún submazo vacío (antes «confirma los 4 submazos del F1» 4′). Cada submazo lo crea el motor
+  //   APEX con su primera tarjeta (::Pathology, el D2) y ese día recibe el preset (el bucle tras findes()). Mismos minutos: raíz 1′ + manual de Anki (FSRS) 3′.
+  // v6.10g (revisión 18-nov · la misma regla, sin excepción): tampoco el mazo RAÍZ se crea vacío → hoy NINGÚN mazo USMLE; el preset «APEX USMLE» se guarda SIN
+  //   asignar (desde las Deck Options de un mazo que ya existe: Add Preset → ajustes → vuelve al preset de ese mazo → Save; Anki guarda los presets nuevos aunque no
+  //   sean el elegido) y APEX::USMLE nace con la 1.ª tarjeta del D2 (07:15, junto con ::Pathology), que al cerrar ese bloque recibe el preset (Save to All
+  //   Subdecks: el bucle de F1_DECKS lo dice al principio del «cómo», dentro del corte del Calendar). La comprobación de hoy es a mano (la telemetría lee el preset
+  //   de APEX::USMLE: con el mazo, en el «Sync final + telemetría» del Anki siguiente). Mismos pasos y minutos (1 + vídeo + 3 + preset + 2).
+  const DOC_FSRS = { t: 'Manual de Anki › Deck Options (FSRS)', url: 'https://docs.ankiweb.net/deck-options.html' };
+  return B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN sin mazo USMLE (nace con la 1.ª tarjeta): preset «APEX USMLE» (FSRS)', [
+    P(1, `Ningún mazo USMLE hoy: APEX::USMLE nace con la 1.ª tarjeta (${fd(D2.fecha)} 07:15) y ese día recibe el preset (Save to All Subdecks)`, `Nada vacío por adelantado: el motor APEX crea APEX::USMLE y ::Pathology con la primera tarjeta de las 07:15 del ${fd(D2.fecha)}; al cerrar ese bloque, Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks». Cada submazo nace igual, el día de su primera tarjeta. Lo de patología general irá a ::Pathology (el motor no acepta «General») y Pharm, a su propio ::Pharmacology con su tope diario, como pide Palmerton.`),
     ...v05,
-    P(45 - 4 - V05 - 2, 'Preset «APEX USMLE» en Deck Options del PADRE → Save ▾ «Save to All Subdecks»', `FSRS: si ya está activado (vale para toda la colección), déjalo; si no, actívalo y pulsa «Optimize all presets» (ya tienes historial en tus mazos MIR/ENCAPS; Palmerton solo hace esperar ~1 mes con SM-2 a quien es nuevo en Anki) · Desired retention ${AK.ret} · New cards/day ${AK.nuevasDia} · Maximum reviews/day ${AK.maxRev} (nunca 200: oculta vencidas) · learning y relearning steps por defecto (no tocar) · Display order › New/review order: «Show after reviews» · Preferences › Review › Next day starts at 4. El «Optimize» propio de este preset va el ${fd(SAB_OPT)} (4 semanas de repasos).${resto05 ? finVideo : ''}`),
-    P(2, 'Telemetría con 0 tarjetas', 'node DATA/_scripts/anki_telemetria.js con Anki abierto: debe leer retención 0,90 y ningún aviso «rev.perDay < 9999». El aviso «nuevas/día = 20 (esperado 10)» viene del script anterior a este método (pendiente de actualizar): ignóralo.'),
-  ], [recPalm('Te5RnxeG_Gg'), { t: 'AnkiWeb', url: 'https://ankiweb.net/decks' }], `preset «APEX USMLE» (FSRS ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día · repasos antes que nuevas) guardado en el padre y en todos los submazos, y la telemetría con 0 tarjetas registrada`, { planB: `Si Anki escritorio no abre: crea los mazos en AnkiWeb hoy y aplica el preset ${despuesTxt(f, D2.fecha)} a las 05:00 (el mazo sigue vacío).`, aviso: `${VER}: la configuración va hoy, 1.er día de F1, antes de que nazcan las primeras tarjetas ENCAPS (11:40): hoy no hay repasos ENCAPS a las 05:20 y el bloque entero (05:00-05:45) es la configuración. ${mayus(despuesTxt(f, D2.fecha))} (D2, ${fd(D2.fecha)}) empieza el Step 1 en NIVEL 0 (sin simulacro: el UWSA1 pasó al tramo 2) y cada tarjeta nace por APEX con la cabecera del día (ESPECIALIDAD · SUBTEMA · FUENTE · MODO) y un tope de ${AK.topeDia} tarjetas nuevas/día. Método completo (ajustes, tipos de tarjeta, cuotas, backlog, telemetría): ${METODO_MD}.` });
+    P(3, 'Manual de Anki › Deck Options › FSRS: «Desired retention» y «Optimize» (acotado a 3′)', 'Antes de tocar el preset, lee en el manual oficial qué hacen los dos ajustes FSRS que vas a fijar (la retención deseada y la optimización de parámetros con tu historial); marca dónde paras. Lo que no entre, el día del «Optimize» del preset.', DOC_FSRS),
+    P(45 - 4 - V05 - 2, 'Preset «APEX USMLE» desde las Deck Options de otro mazo, SIN asignarlo (antes de Save, vuelve al preset de ese mazo)', `Deck Options de un mazo que ya tengas (p. ej. uno de MIR) › Save ▾ «Add Preset» → «APEX USMLE» · FSRS: si ya está activado (vale para toda la colección), déjalo; si no, actívalo y pulsa «Optimize all presets» (ya tienes historial en tus mazos MIR/ENCAPS; Palmerton solo hace esperar ~1 mes con SM-2 a quien es nuevo en Anki) · Desired retention ${AK.ret} · New cards/day ${AK.nuevasDia} · Maximum reviews/day ${AK.maxRev} (nunca 200: oculta vencidas) · learning y relearning steps por defecto (no tocar) · Display order › New/review order: «Show after reviews» · Preferences › Review › Next day starts at 4 · antes de Save, vuelve a elegir en el desplegable el preset que tenía ese mazo: Save guarda «APEX USMLE» sin asignárselo. El «Optimize» propio de este preset va el ${fd(SAB_OPT)} (4 semanas de repasos).${resto05 ? finVideo : ''}`),
+    P(2, 'Comprobación del preset, a mano (aún no hay mazo que medir)', `Reabre esas Deck Options: «APEX USMLE» está en el desplegable con ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día, y ese mazo sigue con su preset de antes. La telemetría (node DATA/_scripts/anki_telemetria.js) lee el preset de APEX::USMLE: hoy diría «ningún deck»; la primera, con el mazo ya creado, en el «Sync final + telemetría» del próximo Anki AM.`),
+  ], [recPalm('Te5RnxeG_Gg'), DOC_FSRS, { t: 'AnkiWeb', url: 'https://ankiweb.net/decks' }], `preset «APEX USMLE» guardado sin asignar (FSRS ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día · repasos antes que nuevas) y ningún mazo USMLE creado`, { planB: `Si Anki escritorio no abre: el preset va ${despuesTxt(f, D2.fecha)} a las 05:00, antes de las preguntas de las 07:15 (AnkiWeb no edita presets; el mazo USMLE nace con la 1.ª tarjeta).`, aviso: `${VER}: la configuración va hoy, 1.er día de F1, antes de que nazcan las primeras tarjetas ENCAPS (11:40): hoy no hay repasos ENCAPS a las 05:20 y el bloque entero (05:00-05:45) es la configuración. ${mayus(despuesTxt(f, D2.fecha))} (D2, ${fd(D2.fecha)}) empieza el Step 1 en NIVEL 0 (sin simulacro: el UWSA1 pasó al tramo 2) y cada tarjeta nace por APEX con la cabecera del día (ESPECIALIDAD · SUBTEMA · FUENTE · MODO) y un tope de ${AK.topeDia} tarjetas nuevas/día. Método completo (ajustes, tipos de tarjeta, cuotas, backlog, telemetría): ${METODO_MD}.` });
 }
 /** v6.10b · D2 (jue 19-nov) 05:00-05:30 = «Anki y vídeos de método» (regla exacta del chat USMLE): el mazo USMLE está vacío (las tarjetas nacen a las 07:15)
  *  → sync + lo que falta del vídeo FSRS + «The ONLY video» (lo que no cabe, a la cabeza de la cola). 05:30-05:45 = repasos ENCAPS (su guía). */
@@ -1039,11 +1085,11 @@ function anki0500D2(r) {
   const vids = pasosVideo(r.d, rep.s0500).map((p) => ({ ...p, como: p.como.replace('(lo empezaste antes, hoy)', `(lo empezaste ${antesTxt(CONF_DIA, f)}, en la configuración de las 05:00)`) }));
   const V = vids.reduce((a, p) => a + p.min, 0); const resto = 30 - 2 - V;
   const pend = [...colaPendienteTras(r.d, 's0500')].map((it) => `«${PALM[it.id] ? PALM[it.id].t.split(' (en la app')[0].split(' You Need')[0] : bbRuta(it.id)}…» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
-  return B(f, '05:00–05:30', 'ANKI (mazo aún vacío: las primeras tarjetas nacen hoy) + VÍDEOS DE MÉTODO', [
-    P(2, 'Sync + APEX::USMLE: 0 vencidas y 0 nuevas', `Anki escritorio · el mazo se configuró ${antesTxt(CONF_DIA, f)} (${fd(CONF_DIA)} 05:00: mazos + preset «APEX USMLE») y sigue vacío: las primeras tarjetas nacen hoy con las preguntas de las 07:15. Si a la configuración le faltó algo, complétalo aquí.`),
+  return B(f, '05:00–05:30', 'ANKI (aún sin mazo USMLE: nace hoy con las primeras tarjetas) + VÍDEOS DE MÉTODO', [
+    P(2, `Sync · APEX::USMLE aún no existe: nace hoy con la 1.ª tarjeta de las 07:15 (y con él ::${espApex(r)})`, `Anki escritorio · el preset «APEX USMLE» quedó guardado ${antesTxt(CONF_DIA, f)} (${fd(CONF_DIA)} 05:00), sin mazo: al cerrar el bloque de las 07:15, Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks». Si a la configuración le faltó algo, complétalo aquí.`),
     ...vids,
     ...(resto > 0 ? [P(resto, 'Free recall del vídeo (sin mirar)', '3 ideas de cada vídeo en 1 línea; lo que no salga, a la shopping list.')] : []),
-  ], [R_ANKI, ...recVideo(rep.s0500)], 'mazo comprobado (vacío) y los vídeos de método vistos con sus notas', { aviso: `${pend.length ? `Lo que no cabe (no se recorta): ${pend.join(' · ')}. ` : ''}Regla del ${fd(f)} (chat USMLE, decisión de Joseph del 17-nov): 05:00-05:30 Anki y vídeos de método — hoy no hay tarjetas USMLE que repasar (nacen hoy), así que esos minutos van al método de Palmerton (minutos = duración × 1,2 a 1,0×). A las 05:30, los 15′ de repasos ENCAPS (su guía).` });
+  ], [R_ANKI, ...recVideo(rep.s0500)], 'sync hecho (aún sin mazo USMLE) y los vídeos de método vistos con sus notas', { aviso: `${pend.length ? `Lo que no cabe (no se recorta): ${pend.join(' · ')}. ` : ''}Regla del ${fd(f)} (chat USMLE, decisión de Joseph del 17-nov): 05:00-05:30 Anki y vídeos de método — hoy no hay tarjetas USMLE que repasar (nacen hoy), así que esos minutos van al método de Palmerton (minutos = duración × 1,2 a 1,0×). A las 05:30, los 15′ de repasos ENCAPS (su guía).` });
 }
 /** v6.10b: los tramos de la cola que siguen pendientes tras la franja `slot` del día d (para el aviso «lo que no cabe → …») */
 function colaPendienteTras(d, slot) {
@@ -1228,8 +1274,12 @@ function ankiDiaSinStep(iso) {
     P(15, 'VENCIDAS primero, sin tope', 'Responde en voz alta y gira · Good ≈90 % / Again solo si la olvidaste · nunca Hard/Easy · lee primero la línea «Summary:» · el mazo de F1 tiene ≤ 210 tarjetas (≤ 20 nuevas por día de Step): las vencidas de un día sin Step caben en 15′.'),
     P(2, `NUEVAS: solo las del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que queden en la cola y solo con las vencidas a 0`, 'Hoy no se crean tarjetas USMLE: la mañana es de ENCAPS.'),
     P(1, 'Sync final', 'Sync y cierra: a las 05:20 siguen los 25′ de repasos ENCAPS (su guía).'),
-  ], [R_ANKI], '0 vencidas en APEX::USMLE', { aviso: `${finF1 ? `Nuevas del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que no entren hoy → reinicio del ${fd(FV6.step1.reinicio)}. Último Anki AM de F1; pausa: ${[...diasHabTransicion().filter((x) => x > iso).map((x) => `${fd(x)} solo vencidas`), ...FV6.skip.filter((x) => x > iso && x < FV6.encaps.intensiva_desde).map((x) => `${fd(x)} SKIP`), 'finde opcional', `mantenimiento desde el ${fd(FV6.encaps.intensiva_desde)}`].join(' · ')}. ` : ''}${VER}: en F1 el Step 1 tiene mañana solo los ${DSEM}; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El Anki USMLE sigue TODOS los días (Palmerton: repasos a cero cada día): 20′ los días sin Step y 30′ los de Step; el resto del Anki 05:00-05:45 es de ENCAPS.` });
+  ], [R_ANKI], '0 vencidas en APEX::USMLE', { aviso: `${finF1 ? `Nuevas del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que no entren hoy → reinicio del ${fd(FV6.step1.reinicio)}. Último Anki AM de F1 con nuevas. Pausa del Step 1: ${[...diasHabTransicion().filter((x) => x > iso).map((x) => `${fd(x)} día de plan (Anki USMLE solo vencidas)`), ...skipReal().filter((x) => x > iso && x < FV6.encaps.intensiva_desde).map((x) => `${fd(x)} SKIP`), 'finde opcional', `mantenimiento desde el ${fd(FV6.encaps.intensiva_desde)}`].join(' · ')}. ` : ''}${VER}: en F1 el Step 1 tiene mañana solo los ${DSEM}; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El Anki USMLE sigue TODOS los días (Palmerton: repasos a cero cada día): 20′ los días sin Step y 30′ los de Step; el resto del Anki 05:00-05:45 es de ENCAPS.` });
 }
+/** v6.10f (revisión 18-nov · Anki de la transición): los SKIP que de verdad no tienen sesión. Con el alias de corrida_s1 (v6.10d) un SKIP puede ser el día REAL
+ *  de un día de plan (vie 1-ene = el plan del jue 31-dic: día de plan completo, Anki USMLE en pausa): ese no se anuncia como «SKIP» (antes «vie 1-ene solo
+ *  vencidas · vie 1-ene SKIP», contradictorio, y corrida_s1.reemplazos lo tapaba a mano solo en el 31-dic). */
+const skipReal = () => FV6.skip.filter((x) => !((FV6.corrida_s1 && FV6.corrida_s1.alias) || {})[x]);
 /** v6.09 · lote 1: L-V hábiles (sin SKIP) de la transición F1 → intensiva ENCAPS (v6.09: jue 31-dic). */
 function diasHabTransicion() {
   const out = [];
@@ -1244,7 +1294,7 @@ function diasHabTransicion() {
  *  vie 1-ene SKIP · fin de semana, Anki opcional · mantenimiento USMLE en el Anki 05:00 desde el lun 4-ene». */
 function transicionTxt(iso) {
   const hab = diasHabTransicion().filter((x) => x > iso);
-  const sk = FV6.skip.filter((x) => x > iso && x < FV6.encaps.intensiva_desde);
+  const sk = skipReal().filter((x) => x > iso && x < FV6.encaps.intensiva_desde);
   return [hab.length ? `${hab.map(fd).join(' y ')}: Anki AM USMLE 05:00-05:20, solo vencidas` : '', sk.length ? `${sk.map(fd).join(' y ')} SKIP` : '', 'el fin de semana, Anki opcional', `mantenimiento USMLE en el Anki 05:00 desde el ${fd(FV6.encaps.intensiva_desde)}`].filter(Boolean).join(' · ');
 }
 
@@ -1252,6 +1302,22 @@ function transicionTxt(iso) {
 const GUIA = {};
 for (const r of F1) GUIA[r.fecha] = esHito(r) ? hitoNBME(r) : diaF1(r); // v6.10b: F1 en nivel 0-1 (diaF1) · el NBME 25 con su Day-After, como estaba
 Object.assign(GUIA, findes());
+// v6.10f (revisión 18-nov · regla de Joseph del 17-nov: la estructura nace el día que aprende algo que va ahí): la CONFIGURACIÓN ya no crea submazos vacíos →
+//   el PRIMER paso del F1 que manda tarjetas a cada submazo del plan (::Pathology el D2…) dice que ese submazo puede nacer ahí (el motor APEX lo crea con el
+//   preset Default) y que, si es nuevo, recibe el preset del padre al terminar el bloque. Solo texto: franjas, pasos y minutos intactos. Condicional («si es
+//   nuevo»): otro plan pudo crearlo antes (la [TEST S1] del vibecoding va a ::Cardiology) y el Day-After de un NBME crea los de cada sistema (el sábado los repasa).
+const PRIMER_DIA_TARJETA = F1.filter((r) => !esHito(r)).map((r) => r.fecha).sort().find((x) => (GUIA[x] || []).some((g) => g.pasos.some((p) => /ESPECIALIDAD \w/.test(p.que))));
+for (const deck of F1_DECKS) {
+  const rx = new RegExp(`ESPECIALIDAD ${deck}\\b`);
+  const fe = F1.filter((r) => !esHito(r)).map((r) => r.fecha).sort().find((x) => (GUIA[x] || []).some((g) => g.pasos.some((p) => rx.test(p.que))));
+  if (!fe) aborta(`submazo ::${deck}: ningún paso del F1 le manda tarjetas (F1_DECKS sin día)`);
+  const g = GUIA[fe].find((x) => x.pasos.some((p) => rx.test(p.que))); const p = g.pasos.find((y) => rx.test(y.que));
+  // v6.10g (revisión 18-nov · corte del Calendar): la nota va al PRINCIPIO del «cómo» (el Calendar corta el «cómo» a 110 caracteres: al final no se veía
+  //   nunca) · el 1.er submazo del plan (el del D2) nace con el propio APEX::USMLE, que aún no tiene el preset → «preset «APEX USMLE» › Save to All Subdecks»
+  const nota = fe === PRIMER_DIA_TARJETA ? `1.ª tarjeta: nacen APEX::USMLE y ::${deck} → al cerrar, preset «APEX USMLE» › Save to All Subdecks · `
+    : `1.ª tarjeta en ::${deck} (si es nuevo: al cerrar, Deck Options de APEX::USMLE › Save to All Subdecks) · `;
+  p.como = nota + p.como;
+}
 // v6.05 (24-oct): TRAMO 2 — las desplazadas con el guion de F1 por D# (07:15 · 08:15 · 09:00 · 11:00 · 16:15 REENTRADA · 18:00) + el hito cuyo
 //   Day-After cae en ellas (NBME 29: 05:00 · hito 07:00-12:30 · 18:00 Day-After 1/6) + los días de cola de vídeo (07:15-07:45); todo dentro
 //   de las franjas USMLE de la plantilla F3

@@ -832,7 +832,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
   if (post < 0) {
     return bloque(franja, 'synapse', 'SYNAPSE · audio que no cupo en los comodines del sábado (cola de F1)', pasos, recursos,
       `tramo escuchado entero, con el minuto anotado en el journal + ✓ en Estudio › SYNAPSE. ${SYN_REGLA_NOTAS}`,
-      { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00 (antes iba a la cola post-Step 1).`,
+      { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
         planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
           const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
           // (synapse_f1_tramos.F1_EXTRA solo usa sábados SIN clase en vivo: sáb 26-dic)
@@ -1680,10 +1680,10 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   if (iso <= FECHAS_V6.transicion.hasta) {
     if (caso && l.wd !== 'Vie') {
       const prevL = LIV_DIAS.filter((x) => x.d < l.d && x.casoId == null).pop();
-      avisos.unshift(`El CASO ${caso.id}/16 va hoy ${diaRealNom(iso, 'liviano')} y no el viernes: el ${prevL ? `${fCorta(prevL.fecha)} tocó la lección que lo prepara (${prevL.tema.split(':')[0]})` : 'viernes tocó la lección que lo prepara'}, que corrió un hábil (v6.09). ${l.pretest ? 'Primero el recall en blanco del lunes; después, el caso.' : ''}`.trim());
+      avisos.unshift(`El CASO ${caso.id}/16 va hoy ${diaRealNom(iso, 'liviano')} y no el viernes: el ${prevL ? `${fCorta(prevL.fecha)} tocó la lección que lo prepara (${prevL.tema.split(':')[0]})` : 'viernes tocó la lección que lo prepara'}; las lecciones de F1 corrieron por los días sin sesión de noviembre. ${l.pretest ? 'Primero el recall en blanco del lunes; después, el caso.' : ''}`.trim());
     } else if (!caso && l.wd === 'Vie') {
       const sigC = LIV_DIAS.find((x) => x.d > l.d);
-      if (sigC?.casoId != null) avisos.unshift(`Hoy ${diaRealNom(iso, 'liviano')} no hay caso: toca la lección que lo prepara (corrió un hábil, v6.09); el CASO ${sigC.casoId}/16 va el ${fCorta(sigC.fecha)}.`);
+      if (sigC?.casoId != null) avisos.unshift(`Hoy ${diaRealNom(iso, 'liviano')} no hay caso: toca la lección que lo prepara (las lecciones de F1 corrieron por los días sin sesión de noviembre); el CASO ${sigC.casoId}/16 va el ${fCorta(sigC.fecha)}.`);
       // v6.10: con el D1 en miércoles el viernes de F1 llega con 3 de sus 4 lecciones: el caso va tras la 4.ª (martes siguiente) → el viernes lo dice
       else { const cS = LIV_DIAS.find((x) => x.d > l.d && x.casoId != null); if (cS && cS.wd !== 'Vie' && cS.fecha <= addDias(iso, 7)) avisos.unshift(`Hoy ${diaRealNom(iso, 'liviano')} no hay caso: faltan lecciones que lo preparan (el D1 fue el ${fCorta(LIV_DIAS[0]!.fecha)}); el CASO ${cS.casoId}/16 va el ${fCorta(cS.fecha)}, tras su última lección.`); }
     }
@@ -1708,7 +1708,7 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   return bloque('17:15–18:00', 'liviano', `LIVIANO D${l.d} · ${l.modulo} — ${temaTit}`, pasos, recursos,
     caso ? `role-play grabado + rúbrica /8 guardada en el caso ${caso.id}` : `lectura hecha + ${cards.length || 'las'} tarjetas en ${deck} + 3 tomas de la aplicación grabadas${pre ? ` + recall en blanco x/${nRec} registrado` : ''}`,
     { aviso: avisos.join(' ') || undefined, flex: Math.max(0, pasos.length - 3),
-      planB: 'Fuente caída o sin tiempo: 25′ de tarjetas del módulo (Empresa › LIVIANO › Anki) + la aplicación de 20′ completa; la lectura pasa a mañana.' });
+      planB: 'Fuente caída o sin tiempo: 25′ de tarjetas del módulo (Empresa › LIVIANO › Anki) + la aplicación de 20′ completa; la lectura pasa a la próxima sesión de LIVIANO.' }); // v6.10g: no «mañana» (vie → lun, sáb 2-ene, jue 24-dic → lun 28)
 }
 
 // ════════════════════════════════════════ 13:00 · BUSINESS (Estudio Pulso) ════════════════════════════════════════
@@ -1775,7 +1775,7 @@ const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: n
   '10#1': { piezas: [ytF1('H1T5uMeYv9Q', 'TEDxReno · «Feeling good | David Burns» (17:57)', 0, 1077)], nota: 'La charla del propio Burns, entera.' },
   '10#2': { piezas: [ytF1('-Id7lQkfuqo', 'Feeling Good Podcast (Burns) · «507: Mastering the Daily Mood Log» (1:02:09)', 0, 1200)], nota: 'El podcast del propio Burns sobre el registro diario de pensamientos (Daily Mood Log: la triple columna está dentro): sus primeros 20 minutos, sin marcas de capítulo.' },
   '10#3': { piezas: [ytF1('bBO0Rs1iUBE', 'Feeling Good Podcast (Burns) · «461: Ask David: Perfectionism, Procrastination, and More!» (1:05:17)', 0, 1200)], nota: 'Burns responde sobre perfeccionismo y procrastinación: los primeros 20 minutos del episodio, sin marcas de capítulo.' },
-  '11#1': { piezas: [ytF1('MB5IX-np5fE', 'TED · «This could be why you’re depressed or anxious | Johann Hari» (20:32)', 0, 1232)], nota: 'La charla TED del propio Hari, entera (antes «20′ desde donde quedaste»: la 2.ª lectura se quedaba con 0,5′).' },
+  '11#1': { piezas: [ytF1('MB5IX-np5fE', 'TED · «This could be why you’re depressed or anxious | Johann Hari» (20:32)', 0, 1232)], nota: 'La charla TED del propio Hari, entera.' }, // v6.10g: sin la bitácora visible (antes «20′ desde donde quedaste»: la 2.ª lectura se quedaba con 0,5′)
   '11#2': { piezas: [ytF1('647AxVPpIGU', 'Politics and Prose · «Johann Hari, “Lost Connections” (w/ Andrew Sullivan)» (1:08:11)', 0, 1200)], nota: 'La presentación del libro por el propio Hari, con Andrew Sullivan: sus primeros 20 minutos (sin marcas de capítulo). Escucha con la pregunta de la acción: dónde exagera.' },
   '12#1': { piezas: [ytF1('0gks6ceq4eQ', 'TED · «You aren’t at the mercy of your emotions — your brain creates them | Lisa Feldman Barrett» (18:29)', 0, 1109)], nota: 'La charla TED de la propia Barrett, entera.' },
   '12#2': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 0, 1200)], nota: 'La conferencia del libro, por la propia Barrett: tramo 1 (min 0:00-20:00), sin marcas de capítulo.' },
@@ -2003,7 +2003,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   const nomOut = (x: DiaBiz): string => x.lectura.split(':')[0].split(' · ')[0] as string;
   if (iso <= FECHAS_V6.transicion.hasta && modo === 'OUTPUT' && dow(iso) !== 5) {
     const ult = BIZ_DIAS.filter((x) => x.fecha < iso && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).pop();
-    if (ult) avisos.push(`Hoy ${diaRealNom(iso, 'business')}, ${nomOut(r)} (en F1 no va el viernes): su última lectura (${ult.lectura.split(':')[0]}) fue el ${fCorta(ult.fecha)} y el OUTPUT va siempre DESPUÉS de ella (v6.09: cada lectura de F1 corrió un hábil).`);
+    if (ult) avisos.push(`Hoy ${diaRealNom(iso, 'business')}, ${nomOut(r)} (en F1 no va el viernes): su última lectura (${ult.lectura.split(':')[0]}) fue el ${fCorta(ult.fecha)} y el OUTPUT va siempre DESPUÉS de ella.`); // v6.10g: sin paréntesis (el Calendar corta el aviso a 240: «OUTPUT = 40′: 25′ hoy + 15′ el sábado HH:MM» va detrás)
   }
   if (iso <= FECHAS_V6.transicion.hasta && dow(iso) === 5 && (modo === 'L' || modo === 'CRITICA')) {
     const sig = BIZ_DIAS.find((x) => x.fecha > iso && bizModo(x) !== 'DESCANSO');
@@ -2012,11 +2012,11 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     const ultL = sigO ? BIZ_DIAS.filter((x) => x.fecha < sigO.fecha && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).pop() : undefined;
     if (sig && bizModo(sig) !== 'OUTPUT' && sigO && ultL && ultL.fecha > iso && sigO.fecha <= addDias(iso, 7)) {
       const fx = franjaExtraDe(ultL.fecha, 'business');
-      avisos.push(`Hoy ${diaRealNom(iso, 'business')} no va el OUTPUT: faltan lecturas del módulo (la última, ${ultL.lectura.split(':')[0]}, el ${fCorta(ultL.fecha)}${fx ? ` ${fx.ini}` : ''}); el ${nomOut(sigO)} va el ${fCorta(sigO.fecha)}, después de ella (v6.10: cada lectura de F1 corrió).`);
+      avisos.push(`Hoy ${diaRealNom(iso, 'business')} no va el OUTPUT: faltan lecturas del módulo (la última, ${ultL.lectura.split(':')[0]}, el ${fCorta(ultL.fecha)}${fx ? ` ${fx.ini}` : ''}); el ${nomOut(sigO)} va el ${fCorta(sigO.fecha)}, después de ella (F1 corrió por los días sin sesión).`);
     }
     if (sig && bizModo(sig) === 'OUTPUT') {
       const sabO = addDias(sig.fecha, 6 - dow(sig.fecha)), cO = bizCierreDe(sabO);
-      avisos.push(`Hoy ${diaRealNom(iso, 'business')} va la ÚLTIMA lectura del módulo, no el OUTPUT: el ${nomOut(sig)} va el ${fCorta(sig.fecha)}, después de esta lectura (v6.09: cada lectura de F1 corrió un hábil)${cO ? `, y su cierre (tracker + releer) el ${fCorta(cO.fecha)} ${cO.ini}` : ''}.`);
+      avisos.push(`Hoy ${diaRealNom(iso, 'business')} va la ÚLTIMA lectura del módulo, no el OUTPUT: el ${nomOut(sig)} va el ${fCorta(sig.fecha)}, después de esta lectura (F1 corrió por los días sin sesión)${cO ? `, y su cierre (tracker + releer) el ${fCorta(cO.fecha)} ${cO.ini}` : ''}.`);
     }
   }
   if (modo === 'OUTPUT') {
@@ -2065,7 +2065,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   pasos.push(P(25 - sumMin(pasos), `ACCIÓN + NOTA · ${r.accion}`, 'Nota de 3 líneas en Obsidian (01_PULSO) o 1 tarjeta de mecanismo (¿por qué?), no datos sueltos.', { t: '◆ 01_PULSO', url: PULSO_OBS }));
   return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.materia} — ${r.lectura.split(':')[0]}`, pasos, recursos, `tramo escuchado/leído + «${r.accion.replace(/\.$/, '')}» hecho`, // v6.10e (revisión del 18-nov · dias-1920-17): la acción entera (≤ 113 car.; antes slice(0, 80) la cortaba a media frase)
     { aviso: [...avisos, minutosFranja(franja) === 25 && !h && !once && !fx ? 'Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.' : '', bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') || undefined,
-      planB: 'Sin datos/YouTube: el libro en papel o PDF, 20′ del capítulo indicado. Sin tiempo hoy: el tramo pasa al de mañana (Business es 1 tramo por día, en orden).' });
+      planB: 'Sin datos/YouTube: el libro en papel o PDF, 20′ del capítulo indicado. Sin tiempo hoy: el tramo pasa a la próxima sesión de Business (1 tramo por sesión, en orden).' }); // v6.10g: no «mañana» (vie 20-nov → lun 23, sáb 2-ene)
 }
 
 // ════════════════════════════════════════ sábado 07:15 · REVISIÓN SEMANAL ════════════════════════════════════════

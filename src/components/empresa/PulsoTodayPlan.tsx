@@ -9,6 +9,7 @@ import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 import { guiaBusinessDe } from '../../lib/rutinaGuia'; // v6.02c (E5): franja propia (13:00-13:25) + tramo exacto + acción
 
 /**
@@ -74,7 +75,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
         </View>
       </FadeUp>
       {/* v6.02c (E5) · guía del día: dónde va (13:00-13:25 · NBME 12:30 · sábado = tracker del OUTPUT), qué escuchar/leer y cuánto, acción */}
-      {(() => { const g = guiaBusinessDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={g} color={c} /></FadeUp> : null; })()}
+      {(() => { const g = guiaBusinessDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={reemplazosCorrida(g, dia.fecha)} color={c} /></FadeUp> : null; })()}
 
       {descanso ? (
         <FadeUp delay={40}>

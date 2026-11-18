@@ -637,7 +637,16 @@ function prevMananaTxt(prev, hoy) {
  *  intensiva (L-V de F2: «ANKI · ENCAPS::Cifras (15′) + USMLE mantenimiento»): «el Anki del lun 4-ene 05:00 (ENCAPS::Cifras 15′)». Antes: «la
  *  transición» (sin Anki ENCAPS hasta el lun 4-ene) y «la próxima sesión de Anki». */
 const PROTEG = new Set((F6.protegidos || []).map((x) => x.fecha));
+// v6.10g (revisión 18-nov · dom 27-dic): un día FUERA del alias dentro de su ventana (el domingo de plan: se pinta tal cual, sin relativosReales) cuenta en
+//   orden REAL: «mañana» es el día real siguiente, que hace el plan de SU alias (lun 28-dic real = plan jue 24, día de Step → 05:30; antes las 05:20 del lun
+//   28 de plan, que se hace el mar 29). Los días de plan del alias siguen en orden de plan (la app pasa «mañana a las HH:MM» a su día real).
+const _A1_VAL = Object.values(_A1).sort(), _A1_KEY = Object.keys(_A1).sort();
+const fueraDelAlias = (iso) => _A1_VAL.length > 0 && iso >= _A1_VAL[0] && iso <= _A1_KEY[_A1_KEY.length - 1] && realDe(iso) === iso && !(iso in _A1);
 const proxAnkiTxt = (iso, gaFechas) => {
+  if (fueraDelAlias(iso)) {
+    const nP = [...gaFechas].filter((d) => realDe(d) > iso).sort((a, b) => (realDe(a) < realDe(b) ? -1 : 1))[0];
+    if (nP) { const r = realDe(nP); return r === addDias(iso, 1) ? `mañana a las ${gaIni(nP)}` : `el ${corta(r)} a las ${gaIni(nP)}`; }
+  }
   const n = gaFechas.find((d) => d > iso);
   if (n) return n === addDias(iso, 1) ? `mañana a las ${gaIni(n)}` : dow(iso) === 5 && n === addDias(iso, 3) ? `el lunes a las ${gaIni(n)}` : `el ${corta(n)} a las ${gaIni(n)}`;
   let f2 = iso < F6.encaps.intensiva_desde ? F6.encaps.intensiva_desde : addDias(iso, 1);
@@ -1013,10 +1022,15 @@ for (const d of DIAS_GA) {
   }
   // v6.07 (fix): las ★ de las cifras de las 18:00 (lun · mié · vie) se repasan en el PRIMER Anki 05:30 que sigue: «de ayer» solo el día
   //   siguiente a una tarde ENCAPS, «del viernes» el lunes; si ya hubo otro Anki 05:30 en medio (mié, vie, lun 28-dic), no hay ★ pendientes
-  const ultT = [...GT_FECHAS].reverse().find((x) => x < d);
-  const pend = ultT && !GA_FECHAS.some((x) => x > ultT && x < d);
+  // v6.10g (revisión 18-nov · dom 27-dic): la cadena va en orden REAL (= el de plan salvo un día fuera del alias, el domingo de plan): las ★ pendientes son las
+  //   de las tardes ENCAPS cuyo día real cae entre el Anki 05:xx anterior (incluido: su tarde va después) y el de hoy. Antes, en orden de plan, las ★ del dom
+  //   27-dic iban al plan del lun 28 (mar 29 real) y el lun 28 real (plan jue 24), el primer Anki después de ese domingo, no las nombraba
+  const dR = realDe(d), prevGA = GA_FECHAS.map(realDe).filter((r) => r < dR).sort().pop();
+  const pendT = GT_FECHAS.filter((x) => realDe(x) < dR && (!prevGA || realDe(x) >= prevGA)).sort((a, b) => (realDe(a) < realDe(b) ? -1 : 1));
+  const ultT = pendT[pendT.length - 1];
   // v6.10d (fix revisión 18-nov): «del viernes» solo sin alias (con alias el lunes de plan es un martes real y el viernes, un lunes): si no, la fecha de plan
-  const deT = !pend ? null : ultT === addDias(d, -1) ? 'de ayer' : w === 1 && ultT === addDias(d, -3) && realDe(d) === d ? 'del viernes' : `del ${corta(ultT)}`;
+  const deT = !pendT.length ? null : pendT.length > 1 ? `del ${pendT.map(corta).join(' y del ')}`
+    : ultT === addDias(d, -1) ? 'de ayer' : w === 1 && ultT === addDias(d, -3) && realDe(d) === d ? 'del viernes' : `del ${corta(ultT)}`;
   const cif = P(10, deT ? `ENCAPS::Cifras · vencidas (y las ★ ${deT})` : 'ENCAPS::Cifras · vencidas', 'Responde en voz alta antes de girar. FSRS: Good / Again, nunca Hard ni Easy.');
   // v6.09b lote 1-ter (hallazgo 2): las vencidas de una tarde que no hizo flashcards (vie 27-nov) llegan a ESTE Anki (el primero de después): el texto lo dice
   const vencX = DESPL.filter((x) => x.tipo === 'flash' && !x.paso && GA_FECHAS.find((y) => y > x.de && y < x.dest) === d);

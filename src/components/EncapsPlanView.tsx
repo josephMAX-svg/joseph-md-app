@@ -44,7 +44,7 @@ import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe } from '../lib/encapsPlan';
 import { fechaPlanDe, fechaRealDe, extraCorridaDe } from '../lib/fechasV6';
-import { fechasRealesEnTexto } from '../lib/corridaTexto'; // v6.10d: los textos del Horario (study_metrics.extra.horarios) citan fechas de PLAN → día real
+import { fechasRealesEnTexto, reemplazosCorrida } from '../lib/corridaTexto'; // v6.10d: los textos del Horario (study_metrics.extra.horarios) citan fechas de PLAN → día real
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from '../lib/encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de TODO simulacro + cierre semanal = Home (plantillasV6.bloqueCorrSim / bloqueCierreSemanal) = ítems
 
 // v6.02d: fecha real visible (semana corrida) — día de la semana a MOSTRAR de una fila: el guardado (weekday) si su fecha real es la de
@@ -541,7 +541,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {!!guia && (
         <View style={{ marginBottom: Spacing.section }}>
           <Text style={styles.groupHdr}>🧭 GUÍA DE LA HORA · {guia.franja}</Text>
-          <GuiaBloqueCard g={guia} color={Colors.teal} ahora={esHoyLima && ahoraMin >= 16 * 60 + 15 && ahoraMin < 17 * 60 + 15} />
+          <GuiaBloqueCard g={reemplazosCorrida(guia, fPlanHoy)} color={Colors.teal} ahora={esHoyLima && ahoraMin >= 16 * 60 + 15 && ahoraMin < 17 * 60 + 15} />
           {ses?.tipo === 'pretest' && (
             <Text style={styles.groupHint}>Hoy el registro del pre-test es «Generar JSON» en el runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append. El formulario CIERRE DE SESIÓN de abajo lo guardaría como una ronda MIX: no lo uses hoy.</Text>
           )}
@@ -653,7 +653,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {!!guiaSab && (
             <View style={{ marginBottom: Spacing.sm }}>
               <Text style={styles.groupHint}>🧭 GUÍA DEL CARRIL SÁBADO · {guiaSab.franja}</Text>
-              <GuiaBloqueCard g={guiaSab} color={Colors.teal} ahora={sabEsHoy && ahoraMin >= hhmmMin(carrilSab.ini) && ahoraMin < hhmmMin(carrilSab.fin)} />
+              <GuiaBloqueCard g={reemplazosCorrida(guiaSab, carrilSab.fecha)} color={Colors.teal} ahora={sabEsHoy && ahoraMin >= hhmmMin(carrilSab.ini) && ahoraMin < hhmmMin(carrilSab.fin)} />
             </View>
           )}
           {todayItems.filter(i => esClaveSabado(i.key)).map(it => (

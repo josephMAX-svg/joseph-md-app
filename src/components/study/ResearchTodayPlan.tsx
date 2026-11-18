@@ -14,7 +14,7 @@ import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
-import { fechasRealesEnTexto } from '../../lib/corridaTexto';
+import { fechasRealesEnTexto, reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de cada átomo (GENERADA por gen_research_plan.js → researchGuia.ts) en el formato común
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
@@ -154,7 +154,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           queda como referencia del átomo) */}
       <FadeUp delay={20}>
         <Text style={st.secLbl}>🧭 Guía del bloque · {f4 ? "30' en tiempo muerto (posta)" : '13:30–14:15'} · paso a paso</Text>
-        <GuiaBloqueCard g={guiaResearchDe(dia)} color={TEAL} />
+        <GuiaBloqueCard g={reemplazosCorrida(guiaResearchDe(dia), dia.fecha)} color={TEAL} />
       </FadeUp>
 
       {/* Eval anclada (átomo previo) */}
