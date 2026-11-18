@@ -40,6 +40,10 @@
  *   cabecera de citation_verifier.py · C-5 → Author Guidelines de la revista + cover_letter.md), si no el primer recurso que es DOCUMENTO o GUÍA (REC_DOC) y,
  *   si no hay ninguno, el artefacto y el objetivo del átomo previo. CONTROL: ninguna eval anclada contrasta con un recurso que no esté en REC_DOC.
  *   (2) CONTROL: la UI de Research (src/components/study/Research*.tsx) tampoco puede pedir «2Q de auto-test» (la tarjeta «Eval anclada» las seguía pidiendo).
+ * v6.10g (revisión 18-nov · c10/c11, cortes del Calendar: «qué» ≤ 150, «cómo» ≤ 110): (1) la ventana Crossref de C-1 va hasta el día REAL de la sesión
+ *   (fechaReal: plan vie 27-nov → lun 30-nov · 1-oct → 30-nov, texto y URLs) · (2) la eval anclada genérica nombra PRIMERO el artefacto a comprobar
+ *   («¿existe «…»? + recall en blanco …»; antes quedaba fuera del corte) · (3) Research mínimo (DJ-4): las fechas de CR-3 → CR-8 y del SUBMIT CR-9 al principio
+ *   del «qué» y del «cómo» · (4) CONTRASTE_DE['X-5'] = «MENTORES.md §Campaña de cold emails» (la sección ya no lleva «feb-2027»).
  */
 'use strict';
 
@@ -69,7 +73,7 @@ const fmtDM = (iso) => `${Number(iso.slice(8, 10))}-${MES_LARGO[Number(iso.slice
 const MES_NOMBRE = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 const fLargo = (iso) => `${Number(iso.slice(8, 10))} de ${MES_NOMBRE[Number(iso.slice(5, 7)) - 1]}`;
 /** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
-const VERSION = ((v) => (v === 'v6.09' || v === 'v6.10' ? 'v6.08' : v))(require('./gen_fechas_v6').cargarFechasV6().version); // v6.10: sin cambio (VER_TXT) // v6.09 no mueve ninguna fecha de Research (el lun 16-nov era día-Derma): sus textos siguen nombrando la v6.08 (= gen_research_plan.js#VER_TXT)
+// v6.10g (revisión 18-nov): VERSION ya no se pinta en ningún texto (M2 decía «las fechas del plan vigente (v6.08)»); se quita la constante
 
 /** v6.10 · fix 18-nov: claves de REC que son documento o guía (se puede leer el método en ellas). Las que no están (PM, ZOT, PROS, RAY, OPENALEX, UNPAY,
  *  CROSSREF, METAFOR, EQ, ORCID, SCHOLAR, CTI, NCBIACC, RISING, revistas y Editorial Manager) son portales, registros o herramientas. */
@@ -81,7 +85,8 @@ const CONTRASTE_DE = {
   'C-4': 'CARTA_1/refs_verified.json (status de cada cita) y la cabecera de DATA/RESEARCH/agentic/citation_verifier.py (reglas de verificación)',
   'C-5': 'las Author Guidelines de la revista diana y CARTA_1/cover_letter.md',
   // v6.10e (revisión del 18-nov · regresiones-7): el método de X-5 (campaña de cold emails) vive en su artefacto (regla 1), no en la Academic Phrasebank
-  'X-5': 'MENTORES.md §Campaña feb-2027 —la tabla y la plantilla que escribiste en X-5— y su objetivo: una oferta concreta, nunca «quiero experiencia»',
+  //   v6.10g (revisión 18-nov · c11): la sección es «§Campaña de cold emails» (antes «§Campaña feb-2027», un mes que la campaña ya no tiene: va en abr-may 2027)
+  'X-5': 'MENTORES.md §Campaña de cold emails —la tabla y la plantilla que escribiste en X-5— y su objetivo: una oferta concreta, nunca «quiero experiencia»',
 };
 
 /**
@@ -131,7 +136,7 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   return {
     franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${corto(x.objetivo, 110)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con \${fuenteContraste(prev)}) + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
+      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: ¿existe «\${prev.artefacto}»? + recall en blanco de 2 puntos clave de su método (sin preguntas inventadas: los contrastas con \${fuenteContraste(prev)})\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como:\`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
       { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
@@ -159,7 +164,10 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   const f = (code) => fmt(fechaDe(code));
   const porCode = Object.fromEntries(TODOS.map((x) => [x.code, x]));
   const M2 = porCode.M2;
-  const C1H = fechaDe('C-1'); const C1D = addDays(C1H, -60); // v6.03: ventana Crossref de C-1 = 60 días previos (v6.02: 2026-08-29 → 2026-10-28)
+  // v6.03: ventana Crossref de C-1 = 60 días previos (v6.02: 2026-08-29 → 2026-10-28) · v6.10g (revisión 18-nov · c10): hasta el día REAL de la sesión
+  //   (fechaReal = alias de corrida_s1, frente research-derma: C-1 de plan vie 27-nov se hace el lun 30-nov → 1-oct → 30-nov; antes 28-sep → 27-nov dejaba fuera
+  //   los artículos del 28 al 30-nov); el texto, las dos URLs y la sección de candidatos.md salen de la misma fecha
+  const C1H = fechaReal(fechaDe('C-1')); const C1D = addDays(C1H, -60);
   /** v6.06: eval anclada (5′) según el átomo ANTERIOR real — el orden de las semanas 1-2 puede cambiar con un corrimiento (v6.06: M1 · R0 · R1 · C-1 · M2). */
   let ciroYa = false;
   /** v6.06 (fix): las 2Q de auto-test de cada átomo paso a paso (fuente única: la eval anclada de 5′ y la «express» de 2′ de R0 las citan igual). */
@@ -283,7 +291,8 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
         { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · disciplina dermatología / salud pública · nivel early-career · idiomas ES/EN.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
-        { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente (' + VERSION + ')', como: `Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
+        // v6.10g (revisión 18-nov): sin «(v6.08)» (bitácora, y la versión vigente es otra): las fechas que cambiar las da el «cómo»
+        { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente', como:`Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
         { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))}» + 1 línea en §2`, como: `Si a las 4 semanas no hay mentor asignado → plan B (editor profesional, RUTA §3.1).${M2.fechaPlanB && M2.fechaPlanB !== addDays(M2.fecha, 28) ? ` (4 semanas tras M2 = ${fmt(addDays(M2.fecha, 28))}, día sin sesión: la decisión va al siguiente día-Research.)` : ''}`, enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'Plan B de inglés listo: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mentor de escritura: qué pedir · cuánto tiempo · con qué fecha».' },
@@ -361,7 +370,8 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         ? { min: 5, que: 'Repaso del paquete congelado del case report (CR-8)', como: 'Solo comprobar que manuscrito + fotos + consentimiento + CARE + cover siguen completos para CR-9.' }
         : crBorrador
           ? { min: 5, que: `Case report: relee el borrador v1 (CR-5) y apunta las dudas para la revisión de ${crSig} (${f(crSig)})`, como: `Solo lectura + lista de dudas para el senior author y el mentor de inglés; el paquete (CR-8) se congela tras la pausa (${f('CR-8')}) y el SUBMIT CR-9 va el ${f('CR-9')}.` }
-          : { min: 5, que: `Case report: repasa lo cerrado antes de la pausa (${crUlt ? `${crUlt} · ${QUE_CR[crUlt]}` : 'nada aún'}) y apunta lo que falta para ${crSig} (${QUE_CR[crSig]}, ${f(crSig)})`, como: `Solo lista de pendientes para el senior author (fotos, datos, firmas); ${crSig} → CR-8 van tras la pausa (${f(crSig)} → ${f('CR-8')}) y el SUBMIT CR-9 el ${f('CR-9')}.` },
+          // v6.10g (revisión 18-nov · c11): las fechas al principio (el Calendar corta el «qué» a 150 y el «cómo» a 110: «jue …» tapaba el 11-feb, el 25-feb y el 1-mar)
+          : { min: 5, que: `Case report: apunta lo que falta para ${crSig} (${f(crSig)}: ${QUE_CR[crSig]}) y repasa lo cerrado antes de la pausa (${crUlt ? `${crUlt} · ${QUE_CR[crUlt]}` : 'nada aún'})`, como: `${crSig} → CR-8: ${f(crSig)} → ${f('CR-8')} · SUBMIT CR-9: ${f('CR-9')}. Solo lista de pendientes para el senior author (fotos, datos, firmas).` },
     ],
     recursos: [{ t: '◆ Obsidian · Dashboard Research', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/00_DASHBOARD_RESEARCH/Dashboard_Research') }],
     hecho: crAntes ? 'Inbox al día + 1 lectura con free recall + paquete del case report comprobado.' : crBorrador ? `Inbox al día + 1 lectura con free recall + dudas del borrador del case report apuntadas para ${crSig}.` : `Inbox al día + 1 lectura con free recall + pendientes del case report apuntados para ${crSig}.`,

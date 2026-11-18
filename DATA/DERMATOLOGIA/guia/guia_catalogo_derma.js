@@ -48,6 +48,12 @@ const DERMNET_QUIZZES = {
   'cutaneous-adverse-reactions-10-cases': { t: 'Cutaneous adverse reactions – 10 cases', n: 10, min: 2 },
   'dermoscopy-local-features-quiz': { t: 'Dermoscopy local features quiz', n: 16, min: 2 },
   'dermoscopy-pattern-analysis-quiz': { t: 'Dermoscopy pattern analysis quiz', n: 12, min: 2 },
+  // v6.10g (revisión 18-nov-2026 · c11): relevo de la dermatoscopia en 2027 (la lista afín pedía 48 casos y «local features» + «pattern analysis» dejan 24):
+  //   los 3 «Dermoscopy quiz» de dermnetnz.org/quizzes, 20 casos cada uno (páginas /case/1-20 existen, /case/21 da 404; contado el 18-nov-2026 sin abrir el quiz).
+  //   No declaran tiempo por caso (sinTiempo) → ~2′, el de los otros quizzes de dermatoscopia.
+  'dermoscopy-quiz-1-of-3': { t: 'Dermoscopy quiz (1 of 3)', n: 20, min: 2, sinTiempo: true },
+  'dermoscopy-quiz-2-of-3': { t: 'Dermoscopy quiz (2 of 3)', n: 20, min: 2, sinTiempo: true },
+  'dermoscopy-quiz-3-of-3': { t: 'Dermoscopy quiz (3 of 3)', n: 20, min: 2, sinTiempo: true },
   'different-causes-of-purpura-10-cases': { t: 'Different causes of purpura – 10 cases', n: 10, min: 2 },
   'eczema-14-cases': { t: 'Eczema – 14 cases', n: 14, min: 2 },
   'fungal-infection-12-cases': { t: 'Fungal infections – 12 cases', n: 12, min: 2 },
@@ -86,15 +92,17 @@ const DERMNET_QUIZZES = {
  *  medida) · d15 (5′ no cuadra con casos de 2′) → ProMIR cap. 2, 4Q a 77 s/Q. `foco` = qué se entrena (base cero: describir ANTES de diagnosticar). */
 const DERMA_QUIZ_F1 = {
   // k = nº de casos (minutos del hueco / ~2′ por caso; el generador comprueba que cuadra con los minutos del paso en 0,85-1,15)
+  // v6.10g (revisión 18-nov · c11): k = floor(min/2) para que la aritmética del paso cuadre (d4 15′ → 7 · d9 9′ → 4 · d10 y d11 15′ → 7 · d14 11′ → 5, antes
+  //   8 · 5 · 8 · 8 · 6: «8 casos × ~2′ = 16′» en un paso de 15′); el minuto que sobra es para el ledger (lo dice el paso)
   1: { quiz: 'acne-16-cases', desde: 1, k: 5, foco: 'casos 1-5 = lesiones PRIMARIAS (comedón, pápula, pústula, nódulo): nombra la lesión elemental y descríbela con los 8 ejes ANTES de «Show Answers»' },
-  4: { quiz: 'brown-skin-lesions-12-cases', desde: 4, k: 8, foco: 'pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene' },
+  4: { quiz: 'brown-skin-lesions-12-cases', desde: 4, k: 7, foco: 'pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene' },
   6: { quiz: 'dermoscopy-local-features-quiz', desde: 1, k: 4, lectura: 'tresPuntos', foco: 'aplica la lista de 3 puntos que acabas de leer (asimetría · red atípica · estructuras blanco-azuladas) y nombra la estructura local antes de «Show Answers»' },
-  9: { quiz: 'acne-16-cases', desde: 12, k: 5, foco: 'formas clínicas de acné: lesión elemental + gravedad antes de «Show Answers»' },
-  10: { quiz: 'blistering-conditions-affecting-the-feet-12-cases', desde: 1, k: 8, foco: 'nivel de la ampolla (tensa = subepidérmica · flácida/erosión = intraepidérmica) antes de «Show Answers»' },
-  11: { quiz: 'solitary-red-patches-17-cases', desde: 6, k: 8, foco: 'repaso INTERCALADO de la fase 2 (placas rojas: eccemas, psoriasis… ya vistos): 8 ejes + diferencial de 3 antes de «Show Answers»' },
+  9: { quiz: 'acne-16-cases', desde: 12, k: 4, foco: 'formas clínicas de acné: lesión elemental + gravedad antes de «Show Answers»' },
+  10: { quiz: 'blistering-conditions-affecting-the-feet-12-cases', desde: 1, k: 7, foco: 'nivel de la ampolla (tensa = subepidérmica · flácida/erosión = intraepidérmica) antes de «Show Answers»' },
+  11: { quiz: 'solitary-red-patches-17-cases', desde: 6, k: 7, foco: 'repaso INTERCALADO de la fase 2 (placas rojas: eccemas, psoriasis… ya vistos): 8 ejes + diferencial de 3 antes de «Show Answers»' },
   12: { quiz: 'cutaneous-adverse-reactions-10-cases', desde: 1, k: 5, foco: 'reacción a fármacos: morfología + latencia + signos de alarma (mucosas, despegamiento) antes de «Show Answers»' },
   13: { quiz: 'different-causes-of-purpura-10-cases', desde: 1, k: 5, foco: 'púrpura palpable (vasculitis) vs no palpable: describe y da 3 causas antes de «Show Answers»' },
-  14: { quiz: 'led-rashes-and-unwell-10-cases', desde: 1, k: 6, foco: '¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»' },
+  14: { quiz: 'led-rashes-and-unwell-10-cases', desde: 1, k: 5, foco: '¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»' },
   15: { promir: 4, foco: '4 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test y a las 2 de la 2.ª pasada)' },
   16: { quiz: 'skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases', desde: 1, k: 5, foco: '¿virus, bacteria u hongo?: lesión elemental + agrupación (herpetiforme, umbilicada…) antes de «Show Answers»' },
   17: { quiz: 'fungal-infection-12-cases', desde: 1, k: 5, foco: 'tiña vs candida vs versicolor: borde activo, satélites, escama antes de «Show Answers»' },
@@ -194,8 +202,11 @@ const PMD_TXT = (p) => (p.minFig // v6.10 · tanda C: figuras contadas en vivo c
   : `${String(p.min150).replace('.', ',')}′ medidos a 150 palabras/min · ${p.palabras} palabras · ${p.figs} figuras`);
 
 /** Pasos comunes. */
+// v6.10g (revisión 18-nov · c10, regla de Joseph: nada vacío por adelantado): el d1 ya no CREA el mazo antes de tener tarjetas (antes «crear el mazo
+//   APEX::DERMA::A (preset FSRS)» a las 13:30, con 0 tarjetas); el mazo nace con la 1.ª tarjeta del cierre y ahí se le asigna el preset (mismos 3′), como
+//   APEX::USMLE el jue 19 (bf439a9)
 const anki = (C, d) => (d === 1
-  ? { min: 3, que: `Anki · crear el mazo ${C.deck('A')} (preset FSRS) — 1.ª sesión: aún no hay repasos`, como: 'Preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1 · las tarjetas de hoy se crean al cerrar cada caso.' }
+  ? { min: 3, que: `Anki · 1.ª sesión: sin repasos ni mazo todavía — ${C.deck('A')} nace con la 1.ª tarjeta del cierre`, como: `Ahora: Sync · al crear la 1.ª tarjeta del cierre nace ${C.deck('A')} → Options → preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1.` }
   : { min: 3, que: `Anki ${C.deck('A')} · repaso FSRS de las tarjetas de MECANISMO de las sesiones anteriores + fallos del ledger`, como: 'Solo Good/Again · deuda a cero; si no hay repasos, recita en voz alta la tarjeta de la sesión anterior.' });
 const caso = (C, pos, k, n, min, foco) => {
   const c = C.caso(pos);
@@ -239,7 +250,7 @@ const quizPaso = (slug, desde, k, minPaso, foco) => {
   const q = DERMNET_QUIZZES[slug];
   return {
     min: minPaso,
-    que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`,
+    que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′${minPaso > k * q.min ? ` + ${minPaso - k * q.min}′ para el ledger` : ''}, el tiempo por caso que declara el quiz)`, // v6.10g: + el minuto de ledger
     como: `dermnetnz.org/quizzes (gratis, sin cuenta) → «${q.t}» → caso ${desde}: ${foco} · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).`,
     enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: `${DN_QUIZ_URL(slug)}/case/${desde}` },
   };
@@ -247,7 +258,9 @@ const quizPaso = (slug, desde, k, minPaso, foco) => {
 /** Palabras, figuras y minutos medidos (palabras/100 + 0,25′/figura) de una LECTURA_REAL. */
 const medLectura = (L) => { const pal = L.secciones.reduce((a, s) => a + s[1], 0), fig = L.secciones.reduce((a, s) => a + s[2], 0); return { pal, fig, nec: DN_NEC(pal, fig) }; };
 
-const AVISO_B = 'AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma).';
+// v6.10g (revisión 18-nov · c11): más corto y empezando por «AccessDerma caducado» → dermaGuia.dermaGuiaPar lo pone ANTES de la fase (el Calendar corta el aviso
+//   a 240 caracteres y al final del aviso de FASE no se veía)
+const AVISO_B = 'AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma).';
 const pendientes = (C, ids) => `Casos ${ids.map((p) => `#${p} (${C.caso(p).titulo})`).join(' y ')}, la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.`;
 
 /** Sesiones curadas (d1-d5). Devuelve { d: { planA, planB } } con GuiaBloque completos (franja 13:30–14:15, 45′). */
@@ -390,7 +403,7 @@ function curadas(C) {
     const x = dia(4); const [c1, c2] = x.casoIds;
     const tk1 = C.cap(3609, '301535746');
     // v6.10e: el hueco que ocupaba el proyecto Claude (45 − el resto del plan B) → k casos DermNet de ~2′
-    const mD4 = 45 - (3 + C.bbMin(73, x.fecha).min + DN_MIN(227, 6) + DN_MIN(438, 8) + 5 + 2 + 2), kD4 = DERMA_QUIZ_F1[4].k; // 15′ ≈ 8 casos × ~2′ (16′ · 1,07)
+    const mD4 = 45 - (3 + C.bbMin(73, x.fecha).min + DN_MIN(227, 6) + DN_MIN(438, 8) + 5 + 2 + 2), kD4 = DERMA_QUIZ_F1[4].k; // 15′ = 7 casos × ~2′ + 1′ de ledger (v6.10g; antes 8 casos = 16′)
     out[4] = {
       planA: B(4, `DERMA d4 · Fototipos I-VI + piel de color — plan A (AccessDerma)`, [
         anki(C, 4),

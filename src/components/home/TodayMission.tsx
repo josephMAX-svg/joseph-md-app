@@ -568,7 +568,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
           return {
             tema: sab.tipo === 'mini_sim' ? `🔁 REPOSICIÓN F1 · 🔥 MINI-SIM 25Q · cola larga ${sab.colaLarga.join(' + ')} · sim_n ${sab.simN ?? sab.host.dia}`
               : `🔁 REPOSICIÓN F1 · 🎯 BANCO ${sab.codigo ?? ''} · ${sab.subEje ?? ''}${sab.secundarios.length ? ` + ${sab.secundarios.join(' + ')}` : ''}`,
-            sub: `carril SÁBADO · fila mant. ${sab.diaMant} de la ${sab.origen} · ${sab.tipo === 'mini_sim' ? '72 s/Q → corrección → nota /25 (cierre mini_sim del sábado)' : `eval 5Q → banco ${sS?.principal ? `${sS.principal.n}Q` : '(runner por generar)'} → registro (cierre «Carril B» del sábado)`} · ítems D${sab.host.dia}:s_*`,
+            sub: `carril SÁBADO · sesión de F1 que no cupo · ${sab.tipo === 'mini_sim' ? '72 s/Q → corrección → nota /25 (cierre mini_sim del sábado)' : `eval 5Q → banco ${sS?.principal ? `${sS.principal.n}Q` : '(runner por generar)'} → registro (cierre «Carril B» del sábado)`} · ítems D${sab.host.dia}:s_*`,
             acciones: [
               ...(pri ? [{ lbl: sab.tipo === 'mini_sim' ? 'Mini-sim ↗' : 'Banco ↗', color: TEAL, url: pri, fill: true }] : []),
               ...(ev ? [{ lbl: 'Eval ↗', color: TEAL, url: ev }] : []),

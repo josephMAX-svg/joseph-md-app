@@ -52,7 +52,7 @@ const PALM = {
 /** Mapeo por D# v5.20 (filas de contenido de F1 y, v6.05, las desplazadas al tramo 2; los hitos D1/D10/D25/D40/D55 no llevan mapeo). */
 const MAPA = {
   2: { bb: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], uw: [1110, 1111], mh: [48, 204], lib: [[3, 275], [3, 988], [3, 32], [3, 309]], fa: 'Pathology › Cellular injury', pathoma: [1, 2],
-    nota: '«Cell Injury + Inflammation» = Pathology › General Topics 01-10 (es un grupo, no un título). uWorld solo tiene 8Q de este subtema (Cellular pathology 6 + Inflammation and repair 2) → v6.10b (nivel 0, A5): 3 a fondo de uWorld el {D2}, la validación con Mehlman y la revalidación con las 5 de uWorld que quedan.' },
+    nota: '«Cell Injury + Inflammation» = Pathology › General Topics 01-10 (es un grupo, no un título). uWorld solo tiene 8Q de este subtema (Cellular pathology 6 + Inflammation and repair 2) → en el nivel 0 (A5): 3 a fondo de uWorld el {D2}, la validación con Mehlman y la revalidación con las 5 de uWorld que quedan.' },
   3: { bb: [90], uw: [1112, 1072], mh: [204, 46, 79], lib: [[3, 32], [3, 936], [3, 1352], [3, 309], [3, 766], [3, 1015], [3, 258], [3, 1350]], fa: 'Pathology › Inflammation + Pathology › Neoplasia', pathoma: [2, 3],
     nota: '«Neoplasia 01-04» NO existe en B&B Step 1 (Qbankly): solo hay 1 vídeo, Pathology › General Topics › 11 - Neoplasia (24:01). El resto del vídeo del día son los de Pathology › General Topics que vienen del {D2} (cola).' },
   4: { bb: [269, 270, 271, 272, 273], uw: [1004], mh: [60, 65, 66, 63], lib: [[1, 11], [3, 705], [3, 704], [3, 707], [3, 354], [3, 658]], fa: 'Immunology › Lymphoid structures · Cellular components · Immune responses' },

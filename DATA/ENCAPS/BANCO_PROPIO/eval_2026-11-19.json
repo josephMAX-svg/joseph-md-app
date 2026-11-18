@@ -5,14 +5,14 @@
  "fecha": "2026-11-19",
  "codigo": "II-3",
  "sub_eje": "esquema_intervalos",
- "tema": "eval anclada · pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test, rehechas en otro orden (no quedan reales de II-3 sin usar)",
+ "tema": "eval anclada · pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de II-3 sin usar)",
  "fuente_preguntas": "BANCO_PROPIO (set_II-3_1.json)",
  "n": 5,
  "seg_por_q": 72,
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas del tema de AYER (pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test, rehechas en otro orden (no quedan reales de II-3 sin usar)), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas · pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de II-3 sin usar), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-11-18",
   "sesion_anterior": {
@@ -26,8 +26,19 @@
    "codigo": "II-3",
    "sub_eje": "esquema_intervalos"
   },
-  "modo": "pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test, rehechas en otro orden (no quedan reales de II-3 sin usar)",
-  "lista_negra_pretest": "VIGENTE"
+  "modo": "pre-test de arranque de ayer (pretest_arranque_2026-11-18; sustituyó al banco II-3): 5Q de II-3 del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de II-3 sin usar)",
+  "lista_negra_pretest": "VIGENTE",
+  "refrescado": [
+   {
+    "el": "2026-11-18",
+    "cambios": [
+     "_meta.modo",
+     "tema",
+     "instrucciones"
+    ],
+    "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
+   }
+  ]
  },
  "items": [
   {

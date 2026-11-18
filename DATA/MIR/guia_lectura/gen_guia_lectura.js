@@ -567,7 +567,8 @@ function pasosDia(d) {
       });
     } else pasos.push({ min: evalMin, hora: `15:15–${hEval}`, que: `EVAL ANCLADA ${nQ}Q · ${slots.map((y) => `${y.n}Q ${y.k} (D${y.d} ${CAP[y.d].x.tema.split(' (')[0]})`).join(' + ')}`, como: `Cronómetro ${minQ}′ (77 s/Q${evalMin !== 7 ? `: ${nQ} × 77 s = ${dec1((nQ * SEG_POR_Q) / 60)}′` : ''}), en blanco si no descartas 2 · preguntas: las listadas (citadas ProMIR de lo que leíste ese día, no usadas)${nQ < 4 ? ` · hoy solo hay ${nQ}Q (no existen D-3/D-7 todavía): los ${7 - minQ}′ que sobran, adelanta el Anki` : ''}${cortos.length ? ` · ${cortos.map((y) => `${y.k} (D${y.d}) ${y.ids.length ? `solo trae ${y.ids.length} de ${y.n}` : 'no trae pregunta nueva'}`).join(' · ')}: su capítulo ya no tiene preguntas citadas sin usar → repite la que FALLASTE ese día (pre-test o quiz; si acertaste todo, la más difícil)` : ''} · si la app te propone un tema 🔥 caliente (gate), manda la app. Ancladas: ${idsEval} (${DONDE_IDS}).` });
     pasos.push({ min: 12 - evalMin, hora: `${hEval}–15:27`, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de tu última sesión MIR.' });
-    pasos.push({ min: 3, hora: '15:27–15:30', que: 'Log de la eval en la app', como: 'aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión.' });
+    // v6.10h · c12 (auditoría c10): «aciertos/4» pasa al «qué» para que el destino del slot fallado quepa en los 110 caracteres del «cómo» (Calendar)
+    pasos.push({ min: 3, hora: '15:27–15:30', que: 'Log de la eval en la app · aciertos/4', como: 'brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión.' });
   }
   // pre-test (v6.09b · lote 1-ter: en F1, 7′ = 5 × 77 s ≈ 6,4′; el minuto pasa a la lectura)
   const preMin = LP ? 7 : 8; const hPre = `15:${30 + preMin}`;
@@ -614,8 +615,10 @@ function pasosDia(d) {
       ? `Base cero: en el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte; Ravi: en 1.ª vuelta no se recorta el temario por las preguntas) · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`
       : `En el orden del capítulo, cada apartado de la lista entero (Whole Page Rule)${sel.some((u) => u.parcial) ? ', salvo el marcado PARCIAL (solo sus párrafos con chip MIR ≥2015; el resto de esa sección, a la 2.ª vuelta)' : ''} y sin saltar ninguno por acertar el pre-test (1.ª vuelta: el pre-test no recorta la lista); los de las preguntas FALLADAS, con más atención y su regla al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`;
   // v6.10e (regresiones-3): en F1 la descripción de la lista va DETRÁS de la lista (el Calendar corta el «qué» a 150: antes la empujaba fuera del corte)
-  const lecQueBase = base ? '' : fz.n === 1 ? ', en orden y cada apartado entero' : '';
-  const lecQueFin = base ? ` · ${nCitSel} secciones que pregunta el MIR${nCtxSel ? ` (+ ${nCtxSel} de contexto, sin preguntas citadas)` : ''}, enteras y en el orden del capítulo` : '';
+  // v6.10h · c12 (auditoría c10): la regla de método vuelve justo detrás de los minutos medidos (el Calendar corta el «qué» a 150 y al final no se veía);
+  //   la descripción de la lista, al final, sin repetirla
+  const lecQueBase = fz.n === 1 ? ', en orden y cada apartado entero (Whole Page Rule)' : '';
+  const lecQueFin = base ? ` · ${nCitSel} secciones que pregunta el MIR${nCtxSel ? ` (+ ${nCtxSel} de contexto, sin preguntas citadas)` : ''}` : '';
   pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `${fz.n === 1 ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} ${lecMin}′${LP ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''}${lecQueBase} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}${lecQueFin}`, como: lecComo, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
   // quiz
   preguntas.quiz = quiz;

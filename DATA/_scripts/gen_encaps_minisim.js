@@ -16,7 +16,7 @@
  * de BANCO_PROPIO quedan excluidos de los sets nuevos (sin importar la fecha: los sets se pre-generan por adelantado).
  *
  * Receta del mini-sim (_encaps_ciclo_v3.js RECETA_MINISIM): 8 II · 7 I · 5 V · 3 III · 2 IV = 25 · 50/50 viñeta-directa
- * (tolerancia ±2) · ≥10Q de los 8 críticos v3 · ≥5Q de fallos previos del registro (re-testeados con OTRO enfoque)
+ * (tolerancia ±2) · ≥10Q de los 8 críticos v3 · ≥5Q de fallos previos del registro (re-test de las mismas preguntas reales; v6.10i)
  * · 5-6Q de los 2 códigos de cola larga del viernes (fila mini_sim de _encaps_mantenimiento_2027.sql; si no está,
  * rota COLA_LARGA por índice de viernes).
  *
@@ -53,7 +53,7 @@
  *                                                                        Hasta v5.20: generarlo el jue 18-feb-2027 (D94, última sesión de banco del Step 1) o antes (v5.19: mié 17-feb · v5.18: mar 16-feb · v5.17: vie 12-feb); se rinde el vie 26-feb (v5.20: default de fecha 2027-02-26 = primer viernes de la intensiva —día 100—, que arranca el mar 23-feb, día siguiente al examen Step 1 del lun 22-feb → ALINEADO con gen_encaps_intensivo_2027.js · v5.19: mismo vie 26-feb, con la intensiva desde el lun 22-feb tras el examen del vie 19-feb · v5.18: default vie 19-feb, día siguiente al examen del jue 18-feb).
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
  *                                                                        (2024-2A · 2025-1A · 2025-2; 2026-1 no tiene clave → se rechaza)
- *   node DATA/_scripts/gen_encaps_minisim.js --sim100 propio <fecha>   → 100Q desde el banco propio (vector v3 ×4)
+ *   (v6.10i: el modo «--sim100 propio» —100Q del banco propio— se RETIRÓ: base cero, solo preguntas reales)
  *   node DATA/_scripts/gen_encaps_minisim.js --pretest-arranque [D1 del SQL; v5.11: cualquier día hábil, ocupa D1 + D2]
  *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
  *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
@@ -71,6 +71,9 @@
  *   node DATA/_scripts/gen_encaps_minisim.js --sesion-pretest [--dry]  → (v6.10e) en las evals ancladas YA ARMADAS cuya sesión anterior fue el pre-test de
  *        arranque, corrige _meta.sesion_anterior (tipo «pretest_arranque» + el fichero + el banco que sustituyó) y su texto (modo, tema, instrucciones) SIN
  *        re-seleccionar (ids, orden y claves intactos) y re-emite su HTML. Después: sync_encaps_bp_web.js + gen_encaps_guia.js.
+ *   node DATA/_scripts/gen_encaps_minisim.js --textos-reales [--dry]   → (v6.10i) en las salidas YA ARMADAS reescribe la redacción vieja del re-test («rehechas en
+ *        otro orden», «re-test con otro enfoque», «del tema de AYER» en el D1, «el banco … que SUSTITUYÓ el pre-test») sin re-seleccionar y re-emite el HTML
+ *        (rótulo «re-test (misma pregunta real)» y día REAL en la cabecera). --check vigila esa redacción. Después: sync_encaps_bp_web.js + gen_encaps_guia.js.
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -78,7 +81,7 @@
  *  FALLBACK (v5.14, 19-sep): una EVAL nunca sale con 0Q (ni un BANCO con <16Q principal). Cuando el pool LIBRE del código está a 0
  *  (o bajo el mínimo) se completa en cadena, con aviso en consola y constancia en `_meta.fallback` (motivo · cadena · n_fallback);
  *  los ítems repetidos llevan `retest: true` y `fallback: <paso>` (el runner los marca «re-test»):
- *    1) reales del MISMO código ya usados en salidas previas (re-test con otro enfoque) → 2) otros ítems del código ya usados (otros
+ *    1) reales del MISMO código ya usados en salidas previas (re-test de las mismas preguntas reales) → 2) otros ítems del código ya usados (otros
  *    sub-ejes primero) → 3) banco_items_v1 del ÁREA (libres, luego usados) → 4) cola larga del ÁREA: set_cola_larga / set_reales_otros
  *    (libres, luego usados) → 5) último recurso: cualquier ítem del área, luego del pool. Las salidas ya completas NO cambian (la
  *    cadena solo corre por debajo del mínimo) y la regla «un ítem se usa una sola vez» sigue vigente para los sets nuevos: el re-test
@@ -244,6 +247,24 @@ const BASE_CERO_DESDE = '2026-11-18';
 const esPreguntaReal = (it) => it.origen === 'examen_real' && /^R-/.test(String(it.id || ''));
 const poolBaseCero = (pool, fecha) => (fecha >= BASE_CERO_DESDE ? pool.filter(esPreguntaReal) : pool);
 const OVERRIDE_TXT = 'el override que propone el próximo mini-sim (gen_encaps_semana.js)'; // v6.10e (dias-1920-9): sin día fijo (con el alias de corrida_s1 el mini-sim del viernes de plan se hace el lunes)
+// v6.10i (remate de la revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): un ítem repetido es un RE-TEST de la MISMA pregunta
+//   real (nunca «rehecha con otro enfoque» / «rehechas en otro orden»); los textos que ve Joseph en el runner lo dicen así. TEXTO_VETADO lo vigila --check.
+const RETEST_TXT = 're-test de las mismas preguntas reales, sin la clave';
+const TEXTO_VETADO = /otro enfoque|rehech|rehaz|del tema de AYER \((?:D1|lunes)|que SUSTITUYÓ el pre-test|\bpropio #|sim100 propio/i;
+// día REAL en que se hace una sesión con fecha de PLAN (alias de corrida_s1; gemelo node de fechasV6.fechaRealDe): el runner muestra el día real en su
+//   cabecera (el fichero, el id y la fecha del export siguen en fecha de PLAN: el registro y gen_encaps_semana.js trabajan con ella)
+const realDeEncaps = (plan) => { try { return require('./gen_fechas_v6').fechaRealDe(plan, undefined, 'encaps') || plan; } catch (e) { return plan; } };
+const MESES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fechaVis = (plan) => { const r = realDeEncaps(plan); return `${WD[dowDe(r)].toLowerCase()} ${Number(r.slice(8))}-${MESES_C[Number(r.slice(5, 7)) - 1]}`; };
+// instrucciones de la eval anclada: «del tema de AYER» solo cuando hay un código de la sesión anterior (no en el D1 ni tras el mini-sim)
+const instrEval = (modo, paAyer) => (/fallos previos/i.test(modo) ? `5 preguntas ${modo.replace(/^[^:]*:\s*5Q /, '')} · ${modo.split(':')[0]}`
+  : paAyer ? `5 preguntas · ${modo}` : `5 preguntas del código de la sesión anterior (${modo})`);
+const WD_LARGO = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+const tituloVis = (doc) => {
+  const f = doc.fecha; const r = f ? realDeEncaps(f) : f; const t = String(doc.titulo || '');
+  if (!r || r === f) return t;
+  return t.replace(`${WD[dowDe(f)]} ${f}`, `${WD[dowDe(r)]} ${r}`).replace(`${WD_LARGO[dowDe(f)]} ${f}`, `${WD_LARGO[dowDe(r)]} ${r}`);
+};
 
 // ── pool del banco propio ──
 function cargarPool(pretestHecho) {
@@ -408,7 +429,7 @@ function html(doc) {
   const data = JSON.stringify(doc).replace(/<\/script/gi, '<\\/script');
   return `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${doc.titulo}</title>
+<title>${tituloVis(doc)}</title>
 <style>
 :root{color-scheme:light dark;--bg:#f6f4ee;--fg:#1a1d29;--card:#fff;--line:#d9d4c7;--acc:#0b2a4a;--gold:#b8860b;--ok:#1b7f3b;--bad:#b3261e;--mut:#6b6f7b}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1420;--fg:#e8e6df;--card:#182033;--line:#2a3450;--acc:#8fb6ff;--gold:#e0b64a;--ok:#5ad27a;--bad:#ff7b72;--mut:#9aa0b3}}
@@ -427,7 +448,7 @@ textarea{width:100%;min-height:180px;font:12px/1.4 ui-monospace,Consolas,monospa
 .rev{margin-top:8px;display:grid;gap:6px;grid-template-columns:1fr 2fr 1fr}select,input[type=text]{width:100%;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg)}
 .hidden{display:none!important}.wrap{overflow-x:auto}.note{font-size:12px;color:var(--mut)}.q.locked .opts label{cursor:default;opacity:.85}.q.locked .opts label.right{outline:2px solid var(--ok)}.q.locked .opts label.wrong{outline:2px solid var(--bad)}
 </style></head><body>
-<header><h1>${doc.titulo}</h1><span class="pill">${doc.n} preguntas · ${doc.seg_por_q} s/Q · ${Math.round(doc.n * doc.seg_por_q / 60)} min</span><span class="pill">${doc.correccion_inmediata ? 'corrección inmediata (Palmerton)' : 'vector v3 · modo examen: solución al final'}</span>
+<header><h1>${tituloVis(doc)}</h1><span class="pill">${doc.n} preguntas · ${doc.seg_por_q} s/Q · ${Math.round(doc.n * doc.seg_por_q / 60)} min</span><span class="pill">${doc.correccion_inmediata ? 'corrección inmediata (Palmerton)' : 'vector v3 · modo examen: solución al final'}</span>
 <span id="timer">--:--</span><span id="prog" class="pill">0/${doc.n}</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>Terminar y corregir</button><button id="reset" class="sec">Reiniciar</button></header>
 <main>
 ${estaSustituida(doc) ? `<div class="q" style="border:2px solid var(--bad)"><p><b class="bad">⛔ SESIÓN SUSTITUIDA — NO RESOLVER ESTE BANCO.</b> El ${doc.fecha} se resuelve <b>${doc._meta.sustituido_por}.html</b> (${doc._meta.sustituido_motivo || 'pre-test de arranque'}). Este fichero se conserva solo como registro; sus ítems no cuentan como usados.</p></div>` : ''}
@@ -446,7 +467,7 @@ function revela(it,d){if(!DOC.correccion_inmediata||!state.ans[it.n]||!state.con
  d.querySelectorAll('.opts label').forEach((l)=>{const v=l.querySelector('input').value;if(v===it.clave)l.classList.add('right');else if(v===state.ans[it.n])l.classList.add('wrong');});
  if(!d.querySelector('.exp')){const ok=state.ans[it.n]===it.clave;const e=document.createElement('div');e.className='exp';e.innerHTML=(ok?'<span class=ok>CORRECTO</span>':'<span class=bad>FALLO</span>')+' · <b>'+it.clave+') '+esc(it.respuesta||it.opciones[it.clave])+'</b>'+(it.explicacion?'<br>'+esc(it.explicacion):'')+(it.fuente?'<br><span class=note>Fuente: '+esc(it.fuente)+'</span>':'')+(it.verificado_contra?'<br><span class=note>Verificado contra: '+esc(it.verificado_contra)+'</span>':'');d.appendChild(e);}}
 function render(){const box=$('#qs');box.innerHTML='';DOC.items.forEach((it)=>{const d=document.createElement('div');d.className='q';d.dataset.n=it.n;
- d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+(it.retest?' · <span style="opacity:.7;font-weight:normal">re-test (otro enfoque)</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
+ d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+(it.retest?' · <span style="opacity:.7;font-weight:normal">re-test (misma pregunta real)</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
  Object.entries(it.opciones).map(([k,v])=>'<label><input type="radio" name="a'+it.n+'" value="'+k+'"'+(state.ans[it.n]===k?' checked':'')+'> <b>'+k+')</b> '+esc(v)+'</label>').join('')+'</div>'+
  '<div class="conf">Confianza: '+[1,2,3].map((c)=>'<label><input type="radio" name="c'+it.n+'" value="'+c+'"'+(state.conf[it.n]==c?' checked':'')+'> '+({1:'adivinada',2:'dudosa',3:'segura'})[c]+'</label>').join('')+'</div>';
  d.addEventListener('mouseenter',()=>state.active=it.n);d.addEventListener('focusin',()=>state.active=it.n);
@@ -542,7 +563,7 @@ function completarConFallback(items, objetivo, { pool, usados, codigoPool, area,
     cadena.push({ paso, fuente, n: l.length });
   };
   const delCod = codigoPool ? pool.filter((x) => poolCode(x.codigo) === codigoPool) : [];
-  toma(1, `reales de ${codigoPool} ya usados (re-test con otro enfoque)`, otroSub(delCod.filter((x) => usado(x) && esReal(x))));
+  toma(1, `reales de ${codigoPool} ya usados (${RETEST_TXT})`,otroSub(delCod.filter((x) => usado(x) && esReal(x))));
   toma(2, `otros sub-ejes de ${codigoPool} ya usados (re-test)`, otroSub(delCod.filter((x) => usado(x) && !esReal(x))));
   const delArea = area ? pool.filter((x) => x.area === area && poolCode(x.codigo) !== codigoPool) : [];
   const esV1 = (x) => x._file === 'banco_items_v1.json', esCL = (x) => /^set_(cola_larga|reales_otros)/.test(x._file || '');
@@ -634,11 +655,13 @@ function modoEval(fecha, ignorar) {
   const esFalloPrevio = (it) => !!it.fallo_previo && (fallos.has(norm(it.fallo_previo)) || debiles.has(it.codigo));
   let items = []; let modo;
   if (filaAyer.tipo === 'mini_sim' || !filaAyer.codigo) {
+    // v6.10i: «REALES (examen oficial con clave)» y sin «otro enfoque»; «tras el mini-sim» en vez de «lunes» (con el alias de corrida_s1 esa sesión no
+    //   siempre cae en lunes). gen_encaps_guia.js reconoce el modo por «fallos previos»: no quitarlo.
     modo = filaAyer.tipo === 'inicio_regimen'
-      ? 'D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero'
+      ? 'D1 del régimen (sin sesión anterior): 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero'
       : filaAyer.tipo === 'mini_sim' || filaAyer.tipo === 'mini_sim_absorbido' || filaAyer.tipo === 'sin_carril_b'
-        ? 'lunes: 5Q de fallos previos del registro (otro enfoque), críticos primero'
-        : `sin código fijo ayer (${filaAyer.tipo}): 5Q de fallos previos del registro (otro enfoque), críticos primero`; // v6.01: reposición genérica del carril B
+        ? 'tras el mini-sim: 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero'
+        : `sin código fijo en la sesión anterior (${filaAyer.tipo}): 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero`; // v6.01: reposición genérica del carril B
     const fp = cand.filter(esFalloPrevio).sort((a, b) => (CRITICOS_V3.includes(b.codigo) - CRITICOS_V3.includes(a.codigo)));
     items = fp.slice(0, 5);
     // P2: después de los etiquetados, ítems libres del MISMO código + sub-eje que los fallos recientes, luego del mismo código
@@ -668,7 +691,7 @@ function modoEval(fecha, ignorar) {
       const n0 = items.length;
       if (n0 < 5 && delPA.length) {
         items = items.concat(delPA.slice(0, 5 - n0).map((x) => { const { n, ...it } = pool.find((y) => y.id === x.id) || x; void n; return { ...it, retest: true, fallback: 'pre-test de ayer' }; }));
-        modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): ${n0 ? `${n0}Q reales nuevas de ${filaAyer.codigo} + ` : ''}${items.length - n0}Q de ${filaAyer.codigo} del pre-test, rehechas en otro orden (no quedan reales de ${filaAyer.codigo} sin usar)`;
+        modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): ${n0 ? `${n0}Q reales nuevas de ${filaAyer.codigo} + ` : ''}${items.length - n0}Q de ${filaAyer.codigo} del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de ${filaAyer.codigo} sin usar)`;
       } else modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): 5Q reales de ${filaAyer.codigo}`;
     }
   }
@@ -686,7 +709,7 @@ function modoEval(fecha, ignorar) {
     id: `EVAL_${fecha}`, titulo: `Eval anclada ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${filaAyer.codigo || 'fallos previos'}`, tipoRonda: 'eval_anclada', fecha, codigo: filaAyer.codigo || 'MIX', sub_eje: filaAyer.extra.sub_eje || null,
     tema: `eval anclada · ${modo}`, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 72, umbral: 60, alerta: 60, mostrar_codigo: false,
-    instrucciones: `5 preguntas del tema de AYER (${modo}), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para ${OVERRIDE_TXT}.`,
+    instrucciones: `${instrEval(modo, paAyer)}, de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para ${OVERRIDE_TXT}.`,
     _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: paAyer ? 'pretest_arranque' : filaAyer.tipo, ...(paAyer ? { archivo: paAyer, sustituyo: { tipo: filaAyer.tipo, codigo: filaAyer.codigo } } : {}), codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
@@ -707,12 +730,16 @@ function modoSemana(lunes) {
   const pendientes = new Set();
   // v6.06: + el SÁBADO (i = 5) solo si trae fila del carril SÁBADO (pendiente F1 de la intensiva); un sábado sin ella no se lista
   const diasSemana = [0, 1, 2, 3, 4, ...(filaSQL(addDays(lunes, 5)) ? [5] : [])];
-  for (const i of diasSemana) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0) pendientes.add(`eval_${f}.json`); } }
+  for (const i of diasSemana) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0 && i < 5) pendientes.add(`eval_${f}.json`); } }
   for (const i of diasSemana) {
     const f = addDays(lunes, i); const fila = filaSQL(f);
     if (!fila) { console.log(`— ${f}: sin sesión (${motivoSinSesion(f)})`); continue; }
     if (fila.tipo === 'banqueo1h') { // eval anclada mar-jue (el lunes la pide el protocolo pero hoy NO hay stock del código: ver README); el viernes (mini_sim) no lleva: el mini-sim ocupa las 16:15
-      if (i > 0) { try { modoEval(f, pendientes); } catch (e) { console.warn('⚠ eval', f, e.message); } pendientes.delete(`eval_${f}.json`); }
+      // v6.10i: el SÁBADO (carril SÁBADO, tras el SIM / pre-test del viernes) no lleva runner de eval: su eval es el re-test de 5 preguntas que falló en
+      //   ese simulacro, en su runner o en su plataforma (= ENCAPS → Plan D{dia}:s_eval y la guía del sábado); un eval_<sábado> anclado al banco del
+      //   CARRIL VIERNES decía otra cosa
+      if (i === 5) console.log(`— ${f}: sin eval_ (sábado: re-test de los fallos del simulacro del viernes, sin runner propio)`);
+      else if (i > 0) { try { modoEval(f, pendientes); } catch (e) { console.warn('⚠ eval', f, e.message); } pendientes.delete(`eval_${f}.json`); }
       const pa = pretestArranqueDe(f);
       if (pa) console.log(`— ${f}: banco sustituido por ${pa} (pre-test de arranque): no se regenera`);
       else { try { modoBanco(f, pendientes); } catch (e) { console.warn('⚠ banco', f, e.message); } }
@@ -783,21 +810,13 @@ function modoPretest() {
 function modoSim100(proceso) {
   const fecha = fechaArg || new Date().toISOString().slice(0, 10);
   let items, fuente;
-  if (proceso === 'propio') {
-    const { pretestHecho } = leerRegistro();
-    const { pool } = cargarPool(pretestHecho);
-    const usados = usadosPrevios(`sim100_propio_${fecha}`);
-    const r = rng(fecha + 'sim100');
-    const cuota = Object.fromEntries(Object.entries(VECTOR_V3).map(([a, v]) => [a, v.pct]));
-    items = [];
-    for (const it of shuffle(pool.filter((x) => !usados.has(x.id)), r)) if (cuota[it.area] > 0) { items.push(it); cuota[it.area]--; }
-    if (items.length < 100) console.warn(`⚠ banco propio insuficiente para 100Q: ${items.length} (faltan ${JSON.stringify(cuota)})`);
-    items = items.map((it, i) => ({ n: i + 1, ...it }));
-    fuente = 'BANCO_PROPIO (vector v3 ×4, ítems no usados en minisim_/banco_/eval_)';
-  } else {
+  // v6.10i (regla de Joseph del 18-nov: toda pregunta de evaluación es REAL): el modo «propio» (100Q del banco propio: espejos y redacción propia)
+  //   se RETIRA. Un SIM 100Q sale de un examen oficial con clave (este modo) o de un simulacro de plataforma (QX / Theomed / DR LOPEZ, fila del SQL).
+  if (proceso === 'propio') throw new Error('--sim100 propio está retirado (base cero: solo preguntas reales). Usa un examen oficial con clave (2024-2A · 2025-1A · 2025-2) o el simulacro de plataforma que nombra la fila del SQL');
+  {
     const j = readJSON(path.join(BANCO, '_examenes_reales_2024-2A_2026-1.json'));
     const ex = j.examenes[proceso];
-    if (!ex) throw new Error('proceso desconocido: ' + proceso + ' (usar 2024-2A · 2025-1A · 2025-2 · propio)');
+    if (!ex) throw new Error('proceso desconocido: ' + proceso + ' (usar 2024-2A · 2025-1A · 2025-2)');
     if (!ex.con_clave) throw new Error(`${proceso} no tiene clave oficial en disco: no se puede corregir (usar solo como molde)`);
     let etq = null; try { etq = readJSON(path.join(BANCO, '_etiquetas_examenes_reales_v3.json')).items[proceso] || null; } catch (e) { /* sin etiquetas */ }
     items = ex.items.map((it) => { const e = etq && etq[it.numero]; return { n: it.numero, id: `${proceso}-Q${it.numero}`, codigo: e ? e.codigo : 'sin clasificar', area: e ? areaDe(e.codigo) : '—', formato: e ? e.formato : '—', sub_eje: e ? e.sub_eje : null, enunciado: it.enunciado, opciones: it.opciones, clave: it.clave, respuesta: it.respuesta, fuente: `ENCAPS/SERUMS ${proceso} (clave oficial)`, verificado_contra: it.clave_verificacion }; });
@@ -1060,6 +1079,9 @@ function erroresBaseCero() {
     const doc = readJSON(path.join(OUT_DIR, f)); if (estaSustituida(doc)) continue;
     const malos = (doc.items || []).filter((it) => !/^R-/.test(String(it.id || '')));
     if (malos.length) errs.push(`${f}: ${malos.length} ítem(s) que no son de examen real (${malos.slice(0, 6).map((x) => x.id).join(', ')}${malos.length > 6 ? '…' : ''})`);
+    // v6.10i: ningún texto que ve Joseph (título, tema, instrucciones, avisos, cadena de fallback) con redacción vetada («otro enfoque», «rehechas», …)
+    const vis = JSON.stringify([doc.titulo, doc.tema, doc.instrucciones, (doc._meta || {}).modo, (doc._meta || {}).avisos, ((doc._meta || {}).fallback || {}).cadena]);
+    const vet = vis.match(TEXTO_VETADO); if (vet) errs.push(`${f}: texto vetado «${vet[0]}» (correr gen_encaps_minisim.js --textos-reales)`);
     const sa = (doc._meta || {}).sesion_anterior;
     if (sa && sa.fecha && pretestArranqueDe(sa.fecha) && sa.tipo !== 'pretest_arranque') errs.push(`${f}: su sesión anterior (${sa.fecha}) fue el pre-test de arranque y _meta.sesion_anterior dice «${sa.tipo}»`);
   }
@@ -1081,7 +1103,8 @@ function modoSesionPretest() {
     const viejo = { tipo: sa.tipo, codigo: sa.codigo };
     m.sesion_anterior = { fecha: sa.fecha, tipo: 'pretest_arranque', archivo: pa, sustituyo: viejo, codigo: sa.codigo, sub_eje: sa.sub_eje ?? null };
     const pre = readJSON(path.join(OUT_DIR, `${pa}.json`)); const cods = ((pre._meta || {}).codigos || []).join(' · ');
-    const nota = `${sa.codigo} = el código del banco del ${sa.fecha}, que SUSTITUYÓ el pre-test de arranque (${pa}: ${cods}); ningún ítem de esta eval salió en ese pre-test`;
+    // v6.10i: el pre-test SUSTITUYÓ al banco (no al revés) y la fecha es la REAL (la que ve Joseph en el runner)
+    const nota = `${sa.codigo} = el código del banco que el pre-test de arranque del ${fechaVis(sa.fecha)} sustituyó (${pa}: ${cods}); ningún ítem de esta eval salió en ese pre-test`;
     m.modo = String(m.modo || '').replace(/^código de la sesión anterior \([^)]*\) [^:]+:/, `${nota}:`);
     doc.tema = `eval anclada · ${m.modo}`;
     doc.instrucciones = String(doc.instrucciones || '').replace(/del tema de la sesión anterior, [^(]*\(código [^)]*\)/, `de ${sa.codigo} (${nota})`).replace(/para el override del viernes \(gen_encaps_semana\.js\)/, `para ${OVERRIDE_TXT}`);
@@ -1092,6 +1115,52 @@ function modoSesionPretest() {
   if (DRY) { console.log(`[dry] ${plan.length} eval(s); nada escrito`); return; }
   for (const p of plan) escribir(p.base, p.doc);
   console.log(`OK — ${plan.length} eval(s). Siguiente: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js`);
+}
+// v6.10i (remate de la revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): las salidas YA ARMADAS conservaban la redacción
+//   vieja del re-test («rehechas en otro orden», «re-test con otro enfoque», «5 preguntas del tema de AYER» en el D1, «el banco … que SUSTITUYÓ el
+//   pre-test», «lunes tras el mini-sim … rehaz esos primero»). Este modo reescribe SOLO esos textos (tema · _meta.modo · instrucciones · _meta.avisos ·
+//   _meta.fallback.cadena[].fuente) sin re-seleccionar nada (ids, orden y claves intactos), deja _meta.refrescado y re-emite el HTML (escribir()).
+//   Las salidas cuyo texto ya está al día solo se re-emiten si su HTML quedó desfasado (p. ej. el rótulo «re-test (misma pregunta real)» del render).
+//   Después: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js
+function textoReal(t) {
+  let x = String(t);
+  x = x.replace(/re-test con otro enfoque/g, RETEST_TXT);
+  x = x.replace(/para el override del viernes \(gen_encaps_semana\.js\)/g, `para ${OVERRIDE_TXT}`);
+  x = x.replace(/(\d+Q de \S+ del pre-test), rehechas en otro orden \(/g, '$1 en RE-TEST: las mismas preguntas reales, en otro orden (');
+  x = x.replace(/(\S+) = el código del banco del (\d{4}-\d\d-\d\d), que SUSTITUYÓ el pre-test de arranque \(/g, (m0, c, f) => `${c} = el código del banco que el pre-test de arranque del ${fechaVis(f)} sustituyó (`);
+  x = x.replace(/ · lunes tras el mini-sim: si ya registraste sus fallos, rehaz esos primero/g, ' · tras el mini-sim: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave');
+  x = x.replace(/^D1 del régimen \(sin sesión anterior\): 5Q de fallos previos del registro, críticos primero/, 'D1 del régimen (sin sesión anterior): 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero');
+  x = x.replace(/^lunes: 5Q de fallos previos del registro \(otro enfoque\), críticos primero/, 'tras el mini-sim: 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero');
+  return x;
+}
+function modoTextosReales() {
+  const hoy = new Date().toISOString().slice(0, 10); const plan = [];
+  for (const f of fs.readdirSync(OUT_DIR).filter((x) => USADOS_RE.test(x)).sort()) {
+    const base = f.replace(/\.json$/, ''); const doc = readJSON(path.join(OUT_DIR, f)); const m = doc._meta || {}; const cambios = [];
+    const set = (obj, k, etq) => { if (obj && typeof obj[k] === 'string') { const v = textoReal(obj[k]); if (v !== obj[k]) { obj[k] = v; cambios.push(etq); } } };
+    set(m, 'modo', '_meta.modo');
+    if (/^eval_/.test(base) && typeof m.modo === 'string') {
+      const tema = `eval anclada · ${m.modo}`; if (doc.tema !== tema) { doc.tema = tema; cambios.push('tema'); }
+      const sa = m.sesion_anterior || {}; const paAyer = sa.tipo === 'pretest_arranque' ? sa.archivo || null : null;
+      // instrucciones: la cola (CALIENTE / override) se conserva; la cabeza se rehace con instrEval (sin «del tema de AYER» en el D1 ni tras el mini-sim)
+      const ins = String(doc.instrucciones || ''); const cola = ins.slice(ins.indexOf(', de memoria, sin material'));
+      if (/^5 preguntas del tema de AYER \(/.test(ins) && cola.startsWith(', de memoria')) { const v = textoReal(`${instrEval(m.modo, paAyer)}${cola}`); if (v !== ins) { doc.instrucciones = v; cambios.push('instrucciones'); } }
+      else set(doc, 'instrucciones', 'instrucciones');
+    } else set(doc, 'tema', 'tema');
+    if (Array.isArray(m.avisos)) m.avisos = m.avisos.map((a) => { const v = textoReal(a); if (v !== a) cambios.push('_meta.avisos'); return v; });
+    if (m.fallback && Array.isArray(m.fallback.cadena)) for (const c of m.fallback.cadena) set(c, 'fuente', '_meta.fallback.cadena');
+    const h = html(doc); const hDisco = fs.existsSync(path.join(OUT_DIR, base + '.html')) ? fs.readFileSync(path.join(OUT_DIR, base + '.html'), 'utf8') : null;
+    if (!cambios.length && hDisco === h) { console.log(`— ${base}: al día`); continue; }
+    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [...new Set(cambios)], motivo: 'v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos' }];
+    else cambios.push('html re-emitido (render del runner: rótulo del re-test y fecha real en la cabecera)');
+    doc._meta = m; plan.push({ base, doc, cambios });
+  }
+  for (const p of plan) console.log(`${DRY ? '[dry] ' : ''}${p.base}: ${[...new Set(p.cambios)].join(' · ')}`);
+  const malos = plan.filter((p) => JSON.stringify([p.doc.titulo, p.doc.tema, p.doc.instrucciones, p.doc._meta.modo, p.doc._meta.avisos, (p.doc._meta.fallback || {}).cadena]).match(TEXTO_VETADO));
+  if (malos.length) throw new Error(`--textos-reales: sigue habiendo texto vetado en ${malos.map((p) => p.base).join(', ')}; no se escribió nada`);
+  if (DRY) { console.log(`[dry] ${plan.length} salida(s); nada escrito`); return; }
+  for (const p of plan) escribir(p.base, p.doc);
+  console.log(`OK — ${plan.length} salida(s). Siguiente: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js`);
 }
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -1105,6 +1174,7 @@ function escribir(base, doc) {
 try {
   if (has('--check')) modoCheck();
   else if (has('--sesion-pretest')) modoSesionPretest();
+  else if (has('--textos-reales')) modoTextosReales();
   else if (has('--registrar')) modoRegistrar(opt('--registrar'), has('--append'));
   else if (has('--pretest-arranque')) modoPretestArranque(opt('--pretest-arranque', null) && /^20\d\d-\d\d-\d\d$/.test(opt('--pretest-arranque')) ? opt('--pretest-arranque') : null);
   else if (has('--pretest')) modoPretest();
@@ -1116,5 +1186,5 @@ try {
   else if (has('--eval')) modoEval(opt('--eval'));
   else if (has('--semana')) modoSemana(opt('--semana'));
   else if (fechaArg) modoMinisim(fechaArg);
-  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> [--forzar] | --eval <fecha> | --semana <lunes> | --pretest-arranque [lunes] [--dry] | --realinear [--dry] | --refrescar [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
+  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> [--forzar] | --eval <fecha> | --semana <lunes> | --pretest-arranque [lunes] [--dry] | --realinear [--dry] | --refrescar [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2> [fecha] | --textos-reales [--dry] | --registrar <export.json> [--append]'); process.exit(1); }
 } catch (e) { console.error('✗', e.message); process.exit(1); }

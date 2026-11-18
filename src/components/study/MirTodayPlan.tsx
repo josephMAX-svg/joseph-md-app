@@ -28,7 +28,7 @@ import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10f: la guía de un día de plan pintada en su día real («mañana», «ayer»…), como el Home
-import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, mirFaseDe, type MirGuiaQ } from '../../lib/mirGuia'; // v6.10 · base cero: + mirFaseDe
+import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, mirFaseDe, fechaCorta, type MirGuiaQ } from '../../lib/mirGuia'; // v6.10 · base cero: + mirFaseDe · v6.10h: + fechaCorta (D77 → día de la corrección)
 import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
 
 /**
@@ -532,7 +532,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
         <FadeUp delay={30}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🏁 mini-MIR 40Q mixto · {mirMinutos(40)} min cronometrados · en blanco permitido</Text>
-            <Text style={st.temaSub}>40Q oficiales sin usar de las 14 asignaturas del plan (preguntasMixtasSinUsar, mezcla determinista por fecha); si el pool no llega a 40, el resto con cuadernillos examenesmir.com. Solo plantilla + neto hoy; la corrección es mañana (D78). Mínimo on-track del hito: 50 % neto.</Text>
+            <Text style={st.temaSub}>40Q oficiales sin usar de las 14 asignaturas del plan (preguntasMixtasSinUsar, mezcla determinista por fecha); si el pool no llega a 40, el resto con cuadernillos examenesmir.com. Solo plantilla + neto hoy; la corrección es el {(() => { const d78 = mirDiaN(dia.d + 1); return d78 ? `${fechaCorta(fechaRealDe(d78.fecha, 'mir'))} (D${d78.d})` : 'día siguiente de plan (D78)'; })()}. Mínimo on-track del hito: 50 % neto.</Text>
             <TimerQ color={CORAL} presets={[40, 25, 10]} />
             {poolOK && <MirPoolLista qIds={pool.miniMIR} color={CORAL} titulo="Pool oficial · mini-MIR mixto" pedidas={40} fallback="cuadernillos examenesmir.com" />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha }} kind="miniMIR" total={40} asignatura="Repaso integral" tema="mini-MIR 40Q" color={CORAL} titulo="Registrar mini-MIR (40Q)" tactica qIds={pool.miniMIR} onSaved={bump} />
@@ -889,7 +889,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
           </View>
         </FadeUp>
       ))}
-      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta el Step 1 (→ 0,90 en la fase principal, oct-2027) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta el Step 1 (→ 0,90 tras el handoff del ${MIR_MANT_META.handoff.split(' (')[0]}, fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas (mini-simulacro)' : `${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (
@@ -979,7 +979,7 @@ export default function MirTodayPlan() {
           {/* v6.02d: fecha real visible (semana corrida) */}
           <Text style={st.ctxSub}>{fechaRealDe(MIR_MANT_META.inicio, 'mir').slice(5)}→{fechaRealDe(MIR_MANT_META.fin, 'mir').slice(5)} 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
         </TouchableOpacity>
-        <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>oct-2027 (fase principal)</Text></View>
+        <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>dic-2027 (fase principal)</Text></View>
       </View>
       {protegidoHoy && (
         <View style={[st.temaCard, { borderColor: CORAL + '88' }]}>

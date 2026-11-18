@@ -61,19 +61,21 @@ Palmerton quiere evitar no aparece; Pharm conserva su propio límite. El check �
 
 ---
 
-## 3. Ajustes exactos de Anki (D1 · mié 21-oct · 05:00)
+## 3. Ajustes exactos de Anki (configuración: 1.er día de F1, 05:00)
 
 Un único preset, **«APEX USMLE»**, en el padre y en **todos** los submazos (Deck Options del padre → `Save ▾` → **Save to All Subdecks**).
 **v6.10g (18-nov · regla de Joseph del 17-nov, sin excepción: nada vacío por adelantado):** el día de la configuración **no se crea ningún mazo
 USMLE**, tampoco el padre. El preset se crea **sin asignar** desde las Deck Options de un mazo que ya existe (p. ej. uno de MIR): `Save ▾` →
 **Add Preset** «APEX USMLE» → ajustes de la tabla → en el desplegable, **vuelve a elegir el preset que tenía ese mazo** → **Save** (Anki guarda
-los presets nuevos aunque no sean el elegido). `APEX::USMLE` nace con la **1.ª tarjeta** del D2 (07:15, junto con `::Pathology`); al cerrar ese
-bloque: Deck Options de `APEX::USMLE` → preset «APEX USMLE» → `Save ▾` → **Save to All Subdecks**.
+los presets nuevos aunque no sean el elegido). `APEX::USMLE` nace con la **primera tarjeta que le llega** el día del D2: la **[TEST S1]** del
+vibecoding (04:15, APEX de prueba de USMLE con `ESPECIALIDAD Cardiology` → crea también `::Cardiology`, con la tarjeta suspendida) o, si no se envía,
+la 1.ª del plan a las 07:15 (con `::Pathology`). **Al cerrar el bloque de las 07:15:** Deck Options de `APEX::USMLE` → preset «APEX USMLE» →
+`Save ▾` → **Save to All Subdecks** (incluye `::Cardiology` si la prueba lo creó).
 
 | Ajuste | Valor | Por qué / origen |
 |---|---|---|
 | **FSRS** | **Activado**. Si ya lo está (el interruptor vale para toda la colección), déjalo; si no, actívalo y pulsa **Optimize all presets** | [P «Give Me 30 Minutes…»]: con historial previo se activa y se optimiza; **solo quien es nuevo en Anki** usa el algoritmo por defecto ~1 mes antes de activarlo. Joseph ya tiene historial (mazos MIR/ENCAPS) → se activa desde el D1 |
-| **Optimize del preset «APEX USMLE»** | **sáb 21-nov** (1.er sábado ≥ 28 días tras el D1), en la franja del sábado 19:00 | [P] FSRS necesita datos tuyos (~1 mes); el preset nuevo empieza sin repasos propios · [R] `SYNC_ANKI_OBSIDIAN_APP.md` («Optimize» cuando haya datos) |
+| **Optimize del preset «APEX USMLE»** | **sáb 19-dic** (1.er sábado ≥ 28 días tras el D2, con 4 semanas de repasos), en el Anki del sábado | [P] FSRS necesita datos tuyos (~1 mes); el preset nuevo empieza sin repasos propios · [R] `SYNC_ANKI_OBSIDIAN_APP.md` («Optimize» cuando haya datos) |
 | **Desired retention** | **0,90** | [P] pasar de 90 a 100 % cuesta ~5 veces más tiempo; rango sano 85-90 % |
 | **New cards/day** | **20** | [P] techo 50, 30-40 al empezar · [PLAN] 20 = el tope de creación diario (§5): todo lo creado un día se estudia al siguiente sin cola |
 | **Maximum reviews/day** | **9999** | [P] «You never want to cap» (las vencidas): un tope bajo esconde vencidas y crea backlog invisible. **Nunca 200** salvo en el protocolo de backlog (§7) |
@@ -83,7 +85,7 @@ bloque: Deck Options de `APEX::USMLE` → preset «APEX USMLE» → `Save ▾` �
 | **Note type** | el motor APEX crea **Basic** (una cara: Front = FRENTE; Back = REVERSO + CCSN + imagen) | [APEX] `node_anki_obsidian_v2_3.js`. Palmerton usa *Basic (optional reversed)*: aquí la pregunta inversa se hace como **2.º bloque APEX** (§4.4) |
 | **Sync** | AnkiWeb **al empezar y al terminar** cada sesión | [R §4.2] |
 | **Bury siblings** | sin ajuste (no está en las fuentes) | [R §4.2] |
-| **Submazos nuevos** | **no se crean por adelantado** (v6.10f, regla de Joseph del 17-nov: mazos, carpetas y notas nacen el día que aprendes algo que va ahí; v6.10g: la configuración tampoco crea el padre `APEX::USMLE`, que nace con la 1.ª tarjeta del D2). El motor los crea con su primera tarjeta, con el preset **Default** → ese día, al terminar el bloque, `Save to All Subdecks` en el padre (la guía lo dice en el paso de la 1.ª tarjeta de cada submazo del plan) y, como red, cada sábado | [APEX] `createDeck` · [PLAN] |
+| **Submazos nuevos** | **no se crean por adelantado** (v6.10f, regla de Joseph del 17-nov: mazos, carpetas y notas nacen el día que aprendes algo que va ahí; v6.10g: la configuración tampoco crea el padre `APEX::USMLE`, que nace con la 1.ª tarjeta del D2 —la [TEST S1] del vibecoding o la de las 07:15—). El motor los crea con su primera tarjeta, con el preset **Default** → ese día, al terminar el bloque, `Save to All Subdecks` en el padre (la guía lo dice al final del paso de la 1.ª tarjeta de cada submazo del plan; el D2, también en el «Hecho» del bloque) y, como red, cada sábado | [APEX] `createDeck` · [PLAN] |
 
 Telemetría (desde v6.10g, con el mazo ya creado: el «Sync final + telemetría» del primer Anki AM tras la 1.ª tarjeta; el día de la configuración no
 hay `APEX::USMLE` que leer y el preset se comprueba a mano en Deck Options): `node DATA/_scripts/anki_telemetria.js` (con Anki abierto) debe leer
@@ -241,7 +243,7 @@ para principiantes) y el preset a 30/día.
 | **18:00 Eval acumulativa** | sí | **≤ 5** (comprimida ≤ 3; reducida del D4 ≤ 3), misma ruta del error | `ESPECIALIDAD` de la pregunta · `SUBTEMA <D#>_eval` · `FUENTE UWorld` · `MODO estudio` |
 | **18:00 Day-After 3/6-6/6** | sí | **1 PC card por pregunta del drill** (3 · 3 · 3 · 1): el caso reescrito a mano en orden cronológico y en presente | como la fila del Day-After 2/6 |
 | **Hito (UWSA1/NBME)** | no | 05:00 = repasos antes del hito (Palmerton los hacía incluso los días de examen) [R §4.8]; el hito no se corrige en caliente | — |
-| **Sábado 19:00** | no | solo vencidas (nuevas = 0, como dice la plantilla del sábado) · `Save to All Subdecks` · telemetría + Stats · el **sáb 21-nov**: FSRS › Optimize | — |
+| **Sábado 19:00** | no | solo vencidas (nuevas = 0, como dice la plantilla del sábado) · `Save to All Subdecks` · telemetría + Stats · el **sáb 19-dic**: FSRS › Optimize | — |
 | **Domingo 17:00** | no | opcional (≤ 15′): solo vencidas | — |
 
 La ruta del error sale de Palmerton: *Educational Objective* como filtro y fuente de la tarjeta; PC card cuando el fallo fue no
@@ -273,7 +275,7 @@ Las franjas no cambian: el backlog se limpia dentro de las 05:00, el «Anki rest
 | Momento | Qué | Origen |
 |---|---|---|
 | **L-V 05:00-05:45** | Anki AM: vencidas (33′) → nuevas de ayer (8′) → sync + telemetría (2′); sync al empezar (2′). Primer repaso ≤ 05:10 = verde en la telemetría | [P] repasos a primera hora, con la mente fresca · [R §4.13] |
-| **D1 mié 21-oct 05:00** | configuración (§3) + vídeo de Palmerton de Anki/FSRS (0:00-25:00; el final, a las 07:55) | guía D1 |
+| **1.er día de F1, 05:00-05:45** | configuración (§3: preset sin asignar, ningún mazo) + vídeo de Palmerton de Anki/FSRS (0:00-25:00; el final, el D2 a las 05:00) | guía del Anki de ese día |
 | **Sábado 19:00-19:30** | solo vencidas (22′) · preset en submazos nuevos (3′) · telemetría + Stats (5′) | plan (Calendar) · [PLAN] |
 | **Domingo 17:00-17:15** | **opcional**: solo vencidas | plan (domingo libre). Palmerton haría los repasos también hoy («regla del 100 %»: le dolió saltarse 1-2 días) [R §4.8]; la guía lo dice |
 | **Día de hito** | Anki AM normal antes del hito; 0 tarjetas nuevas creadas | [R §4.8] |
@@ -353,7 +355,7 @@ de simulacros. **Lo que no:** First Aid solo al final y 80 preguntas/día en F1 
 | 5 | Palmerton: repasos todos los días | domingo opcional | decisión del calendario (domingo libre); la guía recomienda hacerlos |
 | 6 | `SYNC_ANKI_OBSIDIAN_APP.md` y `anki_telemetria.js`: nuevas/día = 10 | 20/día | 10 dejaba sin estudiar parte de lo creado (deep prime ≤ 10 + errores + PC) |
 | 7 | guía v6.02c (D1): Maximum reviews/day 200; «si > 200 vencidas, nuevas = 0» | 9999; el tope de 200 solo dentro del protocolo §7, con disparador ALARMA G | Palmerton: nunca capar vencidas |
-| 8 | `PALMERTON_METODO_COMPLETO.md` §4.2: no activar FSRS el primer mes «si eres nuevo» | FSRS desde el D1 + Optimize del preset el sáb 21-nov | Joseph no es nuevo en Anki (historial MIR/ENCAPS); el mes de datos se respeta para el preset nuevo |
+| 8 | `PALMERTON_METODO_COMPLETO.md` §4.2: no activar FSRS el primer mes «si eres nuevo» | FSRS desde la configuración + Optimize del preset el sáb 19-dic | Joseph no es nuevo en Anki (historial MIR/ENCAPS); el mes de datos se respeta para el preset nuevo |
 | 9 | `ankiLinks.usmleAnkiDeck`: Fundamentos/Assessment → `APEX::USMLE::General` | `Pathology` / especialidad de la pregunta | el parser rechaza `General` |
 | 10 | sábado en la plantilla: «nuevas = 0» | se respeta (las del viernes esperan al lunes) | — |
 

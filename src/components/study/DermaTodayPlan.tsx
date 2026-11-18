@@ -316,7 +316,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
             {dia.nitida && <ChipBtn label="Nítida · protocolo" color={DermaAtlas.champagne} on={showNitida} onPress={() => setShowNitida((s) => !s)} />}
             {dia.promir && <Chip label="MIR 10Q hoy" color={MIR_AMBER} small />}
             {/* v6.00: la ventana d44-d49 (modo 'step1') es el ALIVIO de la intensiva ENCAPS, ya no la semana del examen Step 1 */}
-            {taper && <ChipBtn label={taper.modo === 'step1' ? 'ALIVIO F2 (antes taper Step 1) · solo FSRS + 1 caso' : 'TAPER ENCAPS · semana de examen: solo FSRS + 1 caso'} color={DermaAtlas.crit} on={showTaper} onPress={() => setShowTaper((s) => !s)} />}
+            {taper && <ChipBtn label={taper.modo === 'step1' ? 'ALIVIO F2 · carga reducida: repaso FSRS de fallos + casos DermNet del día' : 'TAPER ENCAPS · semana de examen: solo FSRS + 1 caso'} color={DermaAtlas.crit} on={showTaper} onPress={() => setShowTaper((s) => !s)} />}
             {dia.step1 && (dia.anclajeStep1
               ? <ChipBtn label="cuenta doble Step 1" color={DermaAtlas.periwinkle} on={showStep1} onPress={() => setShowStep1((s) => !s)} />
               : <Chip label="cuenta doble Step 1" color={DermaAtlas.periwinkle} small />)}
@@ -777,7 +777,7 @@ export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?:
         </View>
       )}
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>PLAN ÉLITE v3: casos CIEGOS fijos por sesión (permutación de los 200 Board Review: 2 · 1 en el ALIVIO F2 d44-d49 (antes taper Step 1) · 3 desde d50) + imagen dermatoscópica ciega + ~10Q review retomando en el Q# del cursor (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE, cura CCSN → DD Challenge) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · ciclo 2 (d74-d103): 36 casos restantes + 2ª pasada FSRS + módulos G+ · {DERMA_DAILY_META.bloque}</Text>
+        <Text style={st.artefactoTxt}>PLAN ÉLITE v3: casos CIEGOS fijos por sesión (permutación de los 200 Board Review: 2 · 1 en el ALIVIO F2 d44-d49 · 3 desde d50) + imagen dermatoscópica ciega + ~10Q review retomando en el Q# del cursor (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE, cura CCSN → DD Challenge) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · ciclo 2 (d74-d103): 36 casos restantes + 2ª pasada FSRS + módulos G+ · {DERMA_DAILY_META.bloque}</Text>
       </View>
 
       {/* Anillos de progreso REAL (global · críticos · board · estética · % ciego del ledger) */}

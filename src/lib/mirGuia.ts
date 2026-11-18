@@ -69,6 +69,11 @@ const PROMIR = 'https://promir.medicapanamericana.com';
 const EXAMENESMIR = 'https://www.examenesmir.com/examenes-mir';
 const FRANJA_BASE = '15:15';
 const hhmm = (m: number): string => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+/** 'AAAA-MM-DD' → «lun 8-mar» (v6.10h · c12: el D77 nombra el día de su corrección; «mañana» de un viernes era el sábado). */
+export const fechaCorta = (iso: string): string => {
+  const d = new Date(`${iso}T12:00:00Z`);
+  return `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][d.getUTCDay()]} ${d.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][d.getUTCMonth()]}`;
+};
 /** Franja 'HH:MM–HH:MM' de `min` minutos desde `ini`. */
 const franjaDe = (ini: string, min: number): string => `${ini}–${hhmm(aMinutos(ini) + min)}`;
 /** Prefija la hora real de cada paso («15:15–15:22 · …») a partir del inicio de la franja. */
@@ -154,9 +159,11 @@ function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
     enlace: { t: `Nota madre · ${a.asignatura}`, url: a.nota },
   };
 }
+// v6.10h · c12 (18-nov, auditoría c10): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el orden de los mazos y la salida «sin repasos» van en el
+//   «qué» y la regla de saturación del mazo de Ravi abre el «cómo» (antes iba al final y no se veía en ningún evento MIR del Calendar)
 const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
-  que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (solo lo ya reactivado: subtemas terminados)`,
-  como: `FSRS · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi: el examen no viene por bloques) · tu mazo de fallos primero y a cero; después el de Ravi hasta que acabe el paso: Anki nunca le quita tiempo a las preguntas · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: revisa las tarjetas de tu última sesión MIR.`,
+  que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» hasta el final del paso · sin repasos: las tarjetas de tu última sesión MIR`,
+  como: `si el mazo de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · FSRS · solo Good/Again · orden aleatorio, nunca por asignatura: tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques) · del de Ravi solo salen los subtemas ya reactivados (los terminados) · Anki nunca le quita tiempo a las preguntas.`,
 });
 /** v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles discriminativos de nivel 3-4/5 son de la fase 3). */
 const criterioApex = (f: MirFase | undefined): string => f?.apex ?? 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
@@ -254,7 +261,8 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
         como: `Cronómetro ${mirMinutos(nQ)} min (${MIR_SEG_POR_Q} s/Q), en blanco si no descartas 2 · preguntas: el pool oficial de la app (lista «Pool oficial · anclada» abajo); si el capítulo ya no tiene preguntas sin usar, las MIR citadas en las secciones que leíste ese día (chips «MIR AAAA-AAAA, Pnnn» del capítulo ProMIR) · si la app te propone un tema 🔥 caliente (gate), manda la app.`,
       },
       { min: 5, que: `Anki ${deck}`, como: 'FSRS · solo Good/Again · deuda a cero; si no hay repasos, revisa las tarjetas de tu última sesión MIR.' },
-      { min: 3, que: 'Log de la eval en la app', como: `aciertos/${nQ || 4} · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión.` },
+      // v6.10h · c12: «aciertos/N» al «qué» para que el destino del slot fallado quepa en los 110 caracteres del «cómo» que copia el Calendar
+      { min: 3, que: `Log de la eval en la app · aciertos/${nQ || 4}`, como: 'brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión.' },
     );
   }
   const f1 = mirFaseDe(dia.d)?.n === 1; // v6.10 · base cero: fase 1 = pre-test de línea base + LECTURA DE BASE
@@ -303,17 +311,21 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
 function guiaMiniMIR(dia: DiaMIR, ini: string): GuiaBloque {
   const PASADA = 47; const FORMAL = 4; const t0 = aMinutos(ini);
   const hito = (q: number): string => `Q${q} ≤ ${hhmm(t0 + Math.round((PASADA * q) / 40))}`;
+  // v6.10h · c12 (auditoría c11): la corrección es el D78 (el lunes siguiente al viernes del mini-MIR, no «mañana») y la serie de controles del reloj abre el
+  //   «cómo» (el Calendar lo corta a 110 y antes se quedaba en «Q30 …»)
+  const d78 = mirDiaN(dia.d + 1);
+  const correccion = d78 ? `el ${fechaCorta(d78.fecha)} (D${d78.d})` : `en la sesión siguiente (D${dia.d + 1})`;
   return {
     franja: franjaDe(ini, 60), plan: 'mir', titulo: `MIR D${dia.d} · mini-MIR 40Q mixto (hito) · técnica de simulacro`, totalMin: 60,
     pasos: conHoras([
       {
         min: PASADA,
         que: `mini-MIR 40Q mixtas cronometradas de las 14 asignaturas del plan · pasada única (objetivo ≈70 s/Q; tope ${PASADA + FORMAL}′ con la revisión ≈ 40 × ${MIR_SEG_POR_Q} s)`,
-        como: `Técnica de simulacro de Ravi adaptada a 40Q: mira el reloj cada 10 preguntas (${[10, 20, 30, 40].map(hito).join(' · ')}); si vas tarde, recupera en las siguientes, no al final · las 10 primeras con atención extra: los nervios del arranque dan los fallos tontos · preguntas con imagen: resuélvelas por el texto y usa la imagen solo para confirmar; si una te atasca, pásala al final de la pasada · una sola decisión por pregunta: con 2 opciones descartadas, marca (con −1/3, arriesgar entre 2 tiene esperanza positiva); si no descartas 2, en blanco · preguntas: lista «Pool oficial · mini-MIR mixto» de la app (mezcla determinista por fecha); si no llega a 40, cuadernillos examenesmir · sin corregir todavía.`,
+        como: `Reloj cada 10Q: ${[10, 20, 30, 40].map(hito).join(' · ')} · si vas tarde, recupera en las siguientes, no al final (técnica de simulacro de Ravi adaptada a 40Q) · las 10 primeras con atención extra: los nervios del arranque dan los fallos tontos · preguntas con imagen: resuélvelas por el texto y usa la imagen solo para confirmar; si una te atasca, pásala al final de la pasada · una sola decisión por pregunta: con 2 opciones descartadas, marca (con −1/3, arriesgar entre 2 tiene esperanza positiva); si no descartas 2, en blanco · preguntas: lista «Pool oficial · mini-MIR mixto» de la app (mezcla determinista por fecha); si no llega a 40, cuadernillos examenesmir · sin corregir todavía.`,
         enlace: { t: 'Cuadernillos MIR (respaldo)', url: EXAMENESMIR },
       },
       { min: FORMAL, que: 'REVISIÓN FORMAL de la plantilla, de la 1 a la 40', como: '¿Cada respuesta que pasaste a la app es la que elegiste? ¿Leíste bien los enunciados en negativo (FALSA · EXCEPTO · INCORRECTA)? Ravi cuenta que el día del MIR falló 4 preguntas por forma (marcó la verdadera cuando pedían la falsa) y que en simulacro la mayoría de fallos son de forma: aquí NUNCA cambias una respuesta por dudar del contenido, solo corriges la forma (si cambias algo, anótalo en «cambiadas»).' },
-      { min: 9, que: 'Plantilla + neto (A − F/3) al log (kind miniMIR)', como: 'Solo la plantilla, el neto y la táctica −1/3 (blancos acertables · fallos entre dos · cambiadas): la corrección es mañana (D78). Mínimo on-track del hito: 50 % neto. Este neto se compara solo con tus propios cierres y mini-MIR (mismo instrumento): Ravi no compara netas entre academias ni entre simulacros distintos.' },
+      { min: 9, que: 'Plantilla + neto (A − F/3) al log (kind miniMIR)', como: `La corrección es ${correccion}: hoy solo la plantilla, el neto y la táctica −1/3 (blancos acertables · fallos entre dos · cambiadas). Mínimo on-track del hito: 50 % neto. Este neto se compara solo con tus propios cierres y mini-MIR (mismo instrumento): Ravi no compara netas entre academias ni entre simulacros distintos.` },
     ], ini),
     recursos: [{ t: 'Cuadernillos oficiales MIR (examenesmir)', url: EXAMENESMIR }, ...vid('simulacro')],
     hecho: `40Q respondidas en ≤${PASADA + FORMAL}′ con la revisión formal hecha + neto y táctica −1/3 registrados en la app (kind miniMIR).`,
@@ -354,7 +366,8 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     const [a, b] = f.hora.split('–');
     const min = aMinutos(b ?? '') - aMinutos(a ?? '');
     const t0 = tPaso; tPaso += min;
-    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (las 14 asignaturas del plan ya reactivadas)`, como: `FSRS · solo Good/Again · retention 0,85 hasta el Step 1 (→ 0,90 en la fase principal MIR, tras el handoff del ${_HANDOFF_MIR}) · orden aleatorio, nunca por asignatura (Ravi) · tu mazo de fallos primero y a cero; el de Ravi después, ≤${M.nuevasBaseBanqueo} nuevas/día en el banqueo, hasta que acabe el paso (Anki no le quita tiempo a las preguntas) · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana.` };
+    // v6.10h · c12 (auditoría c11): la retention y la fecha del handoff, dentro de los 110 caracteres del «cómo» que copia el Calendar
+    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (las 14 asignaturas del plan ya reactivadas)`, como: `FSRS · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi) · tu mazo de fallos primero y a cero; el de Ravi después, ≤${M.nuevasBaseBanqueo} nuevas/día en el banqueo, hasta que acabe el paso (Anki no le quita tiempo a las preguntas) · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana.` };
     if (f.tipo === 'quiz') {
       // ≥20Q: pasada a ≈72 s/Q con el reloj cada 10 preguntas y los últimos minutos para la revisión FORMAL (Ravi); <20Q: sin cambios
       const pasada = dia.nQ >= 20 ? Math.min(min - 2, Math.round(dia.nQ * 1.2)) : 0;

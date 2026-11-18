@@ -1235,6 +1235,31 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       const vx = EX[s] && EX[s].vibecoding;
       if (vx) { const [vi, vf] = vx.split('-'); if (hm(l.fin) > hm(vi)) secErr.push(`(v610-s3) ${s}: la L de AURUM (${l.ini}-${l.fin}) pisa el vibecoding ${vx}`); if (hm(vf) - Math.max(hm(vi), hm(l.fin)) < 39) secErr.push(`(v610-s3) ${s}: el vibecoding queda con < 39′`); }
     }
+    // (s3b) v6.10 (c12, 18-nov): el audiolibro de Tracy de AURUM (F1) es UN hilo continuo en orden de día REAL (alias: el lunes real hace el plan del
+    //   viernes) y el «Sigue → <fecha de plan>, desde H:MM:SS» de cada sábado nombra el siguiente tramo REAL (antes saltaba el lunes: «Sigue → mar 15-dic»)
+    const TR = /tramo (\d:\d\d:\d\d)–(\d:\d\d:\d\d)/;
+    const hilo = [];
+    for (const x of A.AURUM_DIAS.filter((y) => !y.min30 && y.fecha <= FVs.FECHAS_V6.transicion.hasta)) {
+      const g = RG.guiaAurumDe(x.fecha); if (!g) continue;
+      for (const p of g.pasos) { const m = TR.exec(p.que); if (m && /Psychology Of Selling/.test(p.que)) hilo.push({ real: FVs.fechaRealDe(x.fecha, 'aurum'), plan: x.fecha, a: m[1], b: m[2], sab: false }); }
+    }
+    for (let s = '2026-11-21'; s <= FVs.FECHAS_V6.transicion.hasta; s = (() => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })()) {
+      const g = RG.guiaAurumSabadoDe(s); if (!g) continue;
+      for (const p of g.pasos) { const m = TR.exec(p.que); if (m && /Psychology Of Selling/.test(p.que)) hilo.push({ real: s, plan: s, a: m[1], b: m[2], sab: true, como: p.como }); }
+    }
+    const sgs = (t) => { const [h, mi, se] = t.split(':').map(Number); return h * 3600 + mi * 60 + se; };
+    hilo.sort((p, q) => (p.real < q.real ? -1 : p.real > q.real ? 1 : sgs(p.a) - sgs(q.a)));
+    const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    hilo.forEach((t, i) => {
+      if (i && t.a !== hilo[i - 1].b) secErr.push(`(v610-s3b) AURUM Tracy: el tramo del ${t.real} empieza en ${t.a} y el anterior en orden real (${hilo[i - 1].real}) acaba en ${hilo[i - 1].b}`);
+      if (!t.sab) return;
+      const sig = hilo[i + 1], m = /Sigue → \S+ (\d{1,2})-([a-z]{3}), desde (\d:\d\d:\d\d)/.exec(t.como || '');
+      if (!sig) { if (m) secErr.push(`(v610-s3b) AURUM sáb ${t.real}: «Sigue →» sin tramo siguiente`); return; }
+      if (!m) { secErr.push(`(v610-s3b) AURUM sáb ${t.real}: sin «Sigue → …, desde …»`); return; }
+      const nombra = `${Number(sig.plan.slice(8))}-${MESES[Number(sig.plan.slice(5, 7)) - 1]}`;
+      if (`${Number(m[1])}-${m[2]}` !== nombra || m[3] !== sig.a) secErr.push(`(v610-s3b) AURUM sáb ${t.real}: «Sigue → ${m[1]}-${m[2]}, desde ${m[3]}» ≠ siguiente tramo real ${sig.real} (plan ${nombra}) desde ${sig.a}`);
+    });
+    if (hilo.length < 10) secErr.push(`(v610-s3b) AURUM Tracy: solo ${hilo.length} tramos (¿cambió el texto «tramo H:MM:SS–H:MM:SS»?)`);
     // (s4) LIVIANO: caso diferido de F1 tras sus 4·k lecciones; pre-test solo en lunes
     for (const r of L.LIV_DIAS) {
       if (r.pretest && r.wd !== 'Lun') secErr.push(`(v610-s4) LIVIANO D${r.d} ${r.fecha}: pre-test fuera de lunes`);

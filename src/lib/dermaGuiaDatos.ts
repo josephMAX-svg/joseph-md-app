@@ -510,7 +510,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
 
 /** v6.10e (18-nov-2026 · PREGUNTAS REALES): DermNet Quizzes (https://dermnetnz.org/quizzes — públicos, escritos por DermNet: imagen real + respuesta tras
  *  «Show Answers») leídos el 18-nov-2026: slug → título · nº de casos · minutos por caso que declara el propio quiz. Sustituyen al proyecto Claude. */
-export const DERMNET_QUIZZES: Record<string, { t: string; n: number; min: number }> = {"acne-16-cases":{"t":"Acne – 16 cases","n":16,"min":2},"acneiform-eruptions-12-cases":{"t":"Acneiform eruptions – 12 cases","n":12,"min":2},"annular-plaque-12-cases":{"t":"Annular plaque – 12 cases","n":12,"min":2},"benign-melanocytic-naevi-11-cases":{"t":"Benign melanocytic naevi – 11 cases","n":11,"min":2},"blistering-conditions-affecting-the-feet-12-cases":{"t":"Blistering conditions affecting the feet – 12 cases","n":12,"min":2},"brown-skin-lesions-12-cases":{"t":"Brown skin lesions – 12 cases","n":12,"min":2},"cause-of-contact-allergic-dermatitis-10-cases":{"t":"Causes of contact allergic dermatitis – 10 cases","n":10,"min":2},"cutaneous-adverse-reactions-10-cases":{"t":"Cutaneous adverse reactions – 10 cases","n":10,"min":2},"dermoscopy-local-features-quiz":{"t":"Dermoscopy local features quiz","n":16,"min":2},"dermoscopy-pattern-analysis-quiz":{"t":"Dermoscopy pattern analysis quiz","n":12,"min":2},"different-causes-of-purpura-10-cases":{"t":"Different causes of purpura – 10 cases","n":10,"min":2},"eczema-14-cases":{"t":"Eczema – 14 cases","n":14,"min":2},"fungal-infection-12-cases":{"t":"Fungal infections – 12 cases","n":12,"min":2},"hair-loss-14-cases":{"t":"Hair loss – 14 cases","n":14,"min":2},"irritant-contact-dermatitis-12-cases":{"t":"Irritant contact dermatitis – 12 cases","n":12,"min":2},"led-rashes-and-unwell-10-cases":{"t":"Leg rashes and unwell – 10 cases","n":10,"min":2},"lichen-12-cases":{"t":"Lichen – 12 cases","n":12,"min":2},"malignant-skin-lesions-10-cases":{"t":"Malignant skin lesions – 10 cases","n":10,"min":2},"melanoma-terminology-10-cases":{"t":"Melanoma terminology – 10 cases","n":10,"min":2},"mixed-diagnoses-10-cases-1-of-11":{"t":"Mixed diagnoses – 10 cases (1 of 11)","n":10,"min":2},"mixed-diagnoses-10-cases-2-of-11":{"t":"Mixed diagnoses – 10 cases (2 of 11)","n":10,"min":2},"mixed-diagnoses-10-cases-3-of-11":{"t":"Mixed diagnoses – 10 cases (3 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-4-of-11":{"t":"Mixed diagnoses – 10 cases (4 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-5-of-11":{"t":"Mixed diagnoses – 10 cases (5 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-6-of-11":{"t":"Mixed diagnoses – 10 cases (6 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-7-of-11":{"t":"Mixed diagnoses – 10 cases (7 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-8-of-11":{"t":"Mixed diagnoses – 10 cases (8 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-9-of-11":{"t":"Mixed diagnoses – 10 cases (9 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-10-of-11":{"t":"Mixed diagnoses – 10 cases (10 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-11-of-11":{"t":"Mixed diagnoses – 10 cases (11 of 11)","n":10,"min":5},"nail-abnormalities-10-cases":{"t":"Nail abnormalities – 10 cases","n":10,"min":2},"nonmelanoma-skin-cancers-10-cases":{"t":"Nonmelanoma skin cancers – 10 cases","n":10,"min":2},"pigmented-lesions-10-cases":{"t":"Pigmented lesions – 10 cases","n":10,"min":2},"psoriasis-16-cases":{"t":"Psoriasis – 16 cases","n":16,"min":2},"pustules-15-cases":{"t":"Pustules – 15 cases","n":15,"min":2},"skin-coloured-lumps-and-bumps-12-cases":{"t":"Skin coloured lumps and bumps – 12 cases","n":12,"min":2},"skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases":{"t":"Skin conditions due to fungi, bacteria and viruses – 10 cases","n":10,"min":2},"solitary-red-patches-17-cases":{"t":"Solitary red patches – 17 cases","n":17,"min":2},"telangiectasia-10-cases":{"t":"Telangiectasia – 10 cases","n":10,"min":2},"vascular-naevi-10-cases":{"t":"Vascular naevi – 10 cases","n":10,"min":2},"white-skin-lesions-12-cases":{"t":"White skin lesions – 12 cases","n":12,"min":2}};
+export const DERMNET_QUIZZES: Record<string, { t: string; n: number; min: number; sinTiempo?: boolean }> = {"acne-16-cases":{"t":"Acne – 16 cases","n":16,"min":2},"acneiform-eruptions-12-cases":{"t":"Acneiform eruptions – 12 cases","n":12,"min":2},"annular-plaque-12-cases":{"t":"Annular plaque – 12 cases","n":12,"min":2},"benign-melanocytic-naevi-11-cases":{"t":"Benign melanocytic naevi – 11 cases","n":11,"min":2},"blistering-conditions-affecting-the-feet-12-cases":{"t":"Blistering conditions affecting the feet – 12 cases","n":12,"min":2},"brown-skin-lesions-12-cases":{"t":"Brown skin lesions – 12 cases","n":12,"min":2},"cause-of-contact-allergic-dermatitis-10-cases":{"t":"Causes of contact allergic dermatitis – 10 cases","n":10,"min":2},"cutaneous-adverse-reactions-10-cases":{"t":"Cutaneous adverse reactions – 10 cases","n":10,"min":2},"dermoscopy-local-features-quiz":{"t":"Dermoscopy local features quiz","n":16,"min":2},"dermoscopy-pattern-analysis-quiz":{"t":"Dermoscopy pattern analysis quiz","n":12,"min":2},"dermoscopy-quiz-1-of-3":{"t":"Dermoscopy quiz (1 of 3)","n":20,"min":2,"sinTiempo":true},"dermoscopy-quiz-2-of-3":{"t":"Dermoscopy quiz (2 of 3)","n":20,"min":2,"sinTiempo":true},"dermoscopy-quiz-3-of-3":{"t":"Dermoscopy quiz (3 of 3)","n":20,"min":2,"sinTiempo":true},"different-causes-of-purpura-10-cases":{"t":"Different causes of purpura – 10 cases","n":10,"min":2},"eczema-14-cases":{"t":"Eczema – 14 cases","n":14,"min":2},"fungal-infection-12-cases":{"t":"Fungal infections – 12 cases","n":12,"min":2},"hair-loss-14-cases":{"t":"Hair loss – 14 cases","n":14,"min":2},"irritant-contact-dermatitis-12-cases":{"t":"Irritant contact dermatitis – 12 cases","n":12,"min":2},"led-rashes-and-unwell-10-cases":{"t":"Leg rashes and unwell – 10 cases","n":10,"min":2},"lichen-12-cases":{"t":"Lichen – 12 cases","n":12,"min":2},"malignant-skin-lesions-10-cases":{"t":"Malignant skin lesions – 10 cases","n":10,"min":2},"melanoma-terminology-10-cases":{"t":"Melanoma terminology – 10 cases","n":10,"min":2},"mixed-diagnoses-10-cases-1-of-11":{"t":"Mixed diagnoses – 10 cases (1 of 11)","n":10,"min":2},"mixed-diagnoses-10-cases-2-of-11":{"t":"Mixed diagnoses – 10 cases (2 of 11)","n":10,"min":2},"mixed-diagnoses-10-cases-3-of-11":{"t":"Mixed diagnoses – 10 cases (3 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-4-of-11":{"t":"Mixed diagnoses – 10 cases (4 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-5-of-11":{"t":"Mixed diagnoses – 10 cases (5 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-6-of-11":{"t":"Mixed diagnoses – 10 cases (6 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-7-of-11":{"t":"Mixed diagnoses – 10 cases (7 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-8-of-11":{"t":"Mixed diagnoses – 10 cases (8 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-9-of-11":{"t":"Mixed diagnoses – 10 cases (9 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-10-of-11":{"t":"Mixed diagnoses – 10 cases (10 of 11)","n":10,"min":5},"mixed-diagnoses-10-cases-11-of-11":{"t":"Mixed diagnoses – 10 cases (11 of 11)","n":10,"min":5},"nail-abnormalities-10-cases":{"t":"Nail abnormalities – 10 cases","n":10,"min":2},"nonmelanoma-skin-cancers-10-cases":{"t":"Nonmelanoma skin cancers – 10 cases","n":10,"min":2},"pigmented-lesions-10-cases":{"t":"Pigmented lesions – 10 cases","n":10,"min":2},"psoriasis-16-cases":{"t":"Psoriasis – 16 cases","n":16,"min":2},"pustules-15-cases":{"t":"Pustules – 15 cases","n":15,"min":2},"skin-coloured-lumps-and-bumps-12-cases":{"t":"Skin coloured lumps and bumps – 12 cases","n":12,"min":2},"skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases":{"t":"Skin conditions due to fungi, bacteria and viruses – 10 cases","n":10,"min":2},"solitary-red-patches-17-cases":{"t":"Solitary red patches – 17 cases","n":17,"min":2},"telangiectasia-10-cases":{"t":"Telangiectasia – 10 cases","n":10,"min":2},"vascular-naevi-10-cases":{"t":"Vascular naevi – 10 cases","n":10,"min":2},"white-skin-lesions-12-cases":{"t":"White skin lesions – 12 cases","n":12,"min":2}};
 /** v6.10e: F1 — rango de casos REALES por sesión (clave = d; k = minutos del hueco / min por caso) o ProMIR (nº de preguntas MIR oficiales) y qué se entrena. */
 export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: number; lectura?: string; promir?: number; foco: string }> = {
  "1": {
@@ -522,7 +522,7 @@ export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: 
  "4": {
   "quiz": "brown-skin-lesions-12-cases",
   "desde": 4,
-  "k": 8,
+  "k": 7,
   "foco": "pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene"
  },
  "6": {
@@ -535,19 +535,19 @@ export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: 
  "9": {
   "quiz": "acne-16-cases",
   "desde": 12,
-  "k": 5,
+  "k": 4,
   "foco": "formas clínicas de acné: lesión elemental + gravedad antes de «Show Answers»"
  },
  "10": {
   "quiz": "blistering-conditions-affecting-the-feet-12-cases",
   "desde": 1,
-  "k": 8,
+  "k": 7,
   "foco": "nivel de la ampolla (tensa = subepidérmica · flácida/erosión = intraepidérmica) antes de «Show Answers»"
  },
  "11": {
   "quiz": "solitary-red-patches-17-cases",
   "desde": 6,
-  "k": 8,
+  "k": 7,
   "foco": "repaso INTERCALADO de la fase 2 (placas rojas: eccemas, psoriasis… ya vistos): 8 ejes + diferencial de 3 antes de «Show Answers»"
  },
  "12": {
@@ -565,7 +565,7 @@ export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: 
  "14": {
   "quiz": "led-rashes-and-unwell-10-cases",
   "desde": 1,
-  "k": 6,
+  "k": 5,
   "foco": "¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»"
  },
  "15": {
@@ -674,8 +674,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    "pasos": [
     {
      "min": 3,
-     "que": "Anki · crear el mazo APEX::DERMA::A (preset FSRS) — 1.ª sesión: aún no hay repasos",
-     "como": "Preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1 · las tarjetas de hoy se crean al cerrar cada caso."
+     "que": "Anki · 1.ª sesión: sin repasos ni mazo todavía — APEX::DERMA::A nace con la 1.ª tarjeta del cierre",
+     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
     },
     {
      "min": 9,
@@ -763,8 +763,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    "pasos": [
     {
      "min": 3,
-     "que": "Anki · crear el mazo APEX::DERMA::A (preset FSRS) — 1.ª sesión: aún no hay repasos",
-     "como": "Preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1 · las tarjetas de hoy se crean al cerrar cada caso."
+     "que": "Anki · 1.ª sesión: sin repasos ni mazo todavía — APEX::DERMA::A nace con la 1.ª tarjeta del cierre",
+     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
     },
     {
      "min": 12,
@@ -831,7 +831,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "hecho": "5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 5 casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.",
    "planB": "Casos #192 (Surgical Dermatology. Case 22) y #43 (Medical Dermatology. Case 013), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
-   "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
+   "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
  },
  "2": {
@@ -1040,7 +1040,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "hecho": "4Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.",
    "planB": "Casos #112 (Medical Dermatology. Case 082) y #166 (Pediatric Dermatology. Case 26), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
-   "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
+   "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
  },
  "3": {
@@ -1218,7 +1218,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "hecho": "8Q ProMIR registradas + §1 y §3 leídas + vídeo B&B con free recall + dibujo de capas de memoria + ≤3 tarjetas.",
    "planB": "Casos #25 (Dermatopathology. Case 25) y #165 (Pediatric Dermatology. Case 25), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
-   "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
+   "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
  },
  "4": {
@@ -1366,7 +1366,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 15,
-     "que": "DermNet Quizzes › «Brown skin lesions – 12 cases» · casos 4-11 (8 casos REALES × ~2′ = 16′, el tiempo por caso que declara el quiz)",
+     "que": "DermNet Quizzes › «Brown skin lesions – 12 cases» · casos 4-10 (7 casos REALES × ~2′ = 14′ + 1′ para el ledger, el tiempo por caso que declara el quiz)",
      "como": "dermnetnz.org/quizzes (gratis, sin cuenta) → «Brown skin lesions – 12 cases» → caso 4: pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene · puente con SR-2 (L5) · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).",
      "enlace": {
       "t": "DermNet Quiz · Brown skin lesions – 12 cases",
@@ -1408,12 +1408,12 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "DermNet Quiz · Brown skin lesions – 12 cases",
      "url": "https://dermnetnz.org/quizzes/brown-skin-lesions-12-cases",
-     "cantidad": "8 casos"
+     "cantidad": "7 casos"
     }
    ],
-   "hecho": "Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 8 casos DermNet reales corregidos + ≤3 tarjetas.",
+   "hecho": "Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 7 casos DermNet reales corregidos + ≤3 tarjetas.",
    "planB": "Casos #21 (Dermatopathology. Case 21) y #194 (Surgical Dermatology. Case 24), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
-   "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
+   "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
  },
  "5": {
@@ -1575,7 +1575,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "hecho": "StatPearls leído + tabla de las 6 arterias hecha por ti + mapa de memoria corregido contra las figuras reales + ≤3 tarjetas.",
    "planB": "Casos #36 (Medical Dermatology. Case 006) y #84 (Medical Dermatology. Case 054), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
-   "aviso": "AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma)."
+   "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
  }
 };

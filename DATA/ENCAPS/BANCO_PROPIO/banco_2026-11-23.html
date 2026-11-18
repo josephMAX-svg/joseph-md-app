@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Banco del día ENCAPS · Lun 2026-11-23 · V-2 · planeamiento</title>
+<title>Banco del día ENCAPS · Mar 2026-11-24 · V-2 · planeamiento</title>
 <style>
 :root{color-scheme:light dark;--bg:#f6f4ee;--fg:#1a1d29;--card:#fff;--line:#d9d4c7;--acc:#0b2a4a;--gold:#b8860b;--ok:#1b7f3b;--bad:#b3261e;--mut:#6b6f7b}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1420;--fg:#e8e6df;--card:#182033;--line:#2a3450;--acc:#8fb6ff;--gold:#e0b64a;--ok:#5ad27a;--bad:#ff7b72;--mut:#9aa0b3}}
@@ -19,7 +19,7 @@ textarea{width:100%;min-height:180px;font:12px/1.4 ui-monospace,Consolas,monospa
 .rev{margin-top:8px;display:grid;gap:6px;grid-template-columns:1fr 2fr 1fr}select,input[type=text]{width:100%;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg)}
 .hidden{display:none!important}.wrap{overflow-x:auto}.note{font-size:12px;color:var(--mut)}.q.locked .opts label{cursor:default;opacity:.85}.q.locked .opts label.right{outline:2px solid var(--ok)}.q.locked .opts label.wrong{outline:2px solid var(--bad)}
 </style></head><body>
-<header><h1>Banco del día ENCAPS · Lun 2026-11-23 · V-2 · planeamiento</h1><span class="pill">21 preguntas · 90 s/Q · 32 min</span><span class="pill">corrección inmediata (Palmerton)</span>
+<header><h1>Banco del día ENCAPS · Mar 2026-11-24 · V-2 · planeamiento</h1><span class="pill">21 preguntas · 90 s/Q · 32 min</span><span class="pill">corrección inmediata (Palmerton)</span>
 <span id="timer">--:--</span><span id="prog" class="pill">0/21</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>Terminar y corregir</button><button id="reset" class="sec">Reiniciar</button></header>
 <main>
 
@@ -38,7 +38,7 @@ function revela(it,d){if(!DOC.correccion_inmediata||!state.ans[it.n]||!state.con
  d.querySelectorAll('.opts label').forEach((l)=>{const v=l.querySelector('input').value;if(v===it.clave)l.classList.add('right');else if(v===state.ans[it.n])l.classList.add('wrong');});
  if(!d.querySelector('.exp')){const ok=state.ans[it.n]===it.clave;const e=document.createElement('div');e.className='exp';e.innerHTML=(ok?'<span class=ok>CORRECTO</span>':'<span class=bad>FALLO</span>')+' · <b>'+it.clave+') '+esc(it.respuesta||it.opciones[it.clave])+'</b>'+(it.explicacion?'<br>'+esc(it.explicacion):'')+(it.fuente?'<br><span class=note>Fuente: '+esc(it.fuente)+'</span>':'')+(it.verificado_contra?'<br><span class=note>Verificado contra: '+esc(it.verificado_contra)+'</span>':'');d.appendChild(e);}}
 function render(){const box=$('#qs');box.innerHTML='';DOC.items.forEach((it)=>{const d=document.createElement('div');d.className='q';d.dataset.n=it.n;
- d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+(it.retest?' · <span style="opacity:.7;font-weight:normal">re-test (otro enfoque)</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
+ d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+(it.retest?' · <span style="opacity:.7;font-weight:normal">re-test (misma pregunta real)</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
  Object.entries(it.opciones).map(([k,v])=>'<label><input type="radio" name="a'+it.n+'" value="'+k+'"'+(state.ans[it.n]===k?' checked':'')+'> <b>'+k+')</b> '+esc(v)+'</label>').join('')+'</div>'+
  '<div class="conf">Confianza: '+[1,2,3].map((c)=>'<label><input type="radio" name="c'+it.n+'" value="'+c+'"'+(state.conf[it.n]==c?' checked':'')+'> '+({1:'adivinada',2:'dudosa',3:'segura'})[c]+'</label>').join('')+'</div>';
  d.addEventListener('mouseenter',()=>state.active=it.n);d.addEventListener('focusin',()=>state.active=it.n);

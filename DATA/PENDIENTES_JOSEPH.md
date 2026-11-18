@@ -1,4 +1,32 @@
-# PENDIENTES DE JOSEPH · régimen v6.09 (16-nov-2026: TODO ARRANCA EL MAR 17-NOV-2026; sáb 21 y dom 22 libres; el jue 31-dic recupera el lun 16) sobre la v6.08 (14-nov-2026: re-fecha real, cada plan corre una semana y sus plazos se alargan) sobre la v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
+# PENDIENTES DE JOSEPH · régimen v6.10d (18-nov-2026: el mar 17 y el mié 18 sin sesión; TODO ARRANCA EL JUE 19-NOV y cada hábil hasta el vie 1-ene hace el plan del hábil anterior; base cero en todos los frentes) sobre la v6.09 (16-nov-2026: TODO ARRANCA EL MAR 17-NOV-2026; sáb 21 y dom 22 libres; el jue 31-dic recupera el lun 16) sobre la v6.08 (14-nov-2026: re-fecha real, cada plan corre una semana y sus plazos se alargan) sobre la v6.07 (8-nov-2026: ENCAPS PRIMER PUESTO · mañanas ENCAPS lun · mié · vie y Step 1 mar · jue · EXAMEN STEP 1 LUN 6-DIC-2027) sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.06a-e: semanas corridas (sin efecto) · ⏸ v6.06: lun 2-nov · ⏸ v6.05: lun 26-oct · ⏸ v6.04: examen 25-oct · ⏸ v6.03: mié 21-oct
+
+**⚡ v6.10d (mié 18-nov ≈17:00, VIGENTE) — TODO ARRANCA EL JUE 19-NOV · base cero en todos los frentes · solo preguntas reales.** Orden de Joseph: «todo restablece a partir del jueves 19; corre un día todo, los hitos» + «todos partimos de cero; preguntas reales». El mar 17 y el mié 18 quedan sin sesión; cada día hábil del jue 19-nov al vie 1-ene hace el plan del hábil anterior (alias). La app, Supabase y el Calendar ya están así (app: commits 9294884 → 3bc2773 → 81ad44d → 811b006 → bf439a9; Calendar: CAL_V6 §29).
+
+| Frente | Cómo queda |
+|---|---|
+| **Jue 19** | 04:15 vibecoding S1 1/5 · 05:00 Anki CONFIGURACIÓN (solo el preset FSRS «APEX USMLE», **sin crear mazos**: APEX::USMLE nace con la 1.ª tarjeta del vie 20) · 07:15-12:00 mañana ENCAPS 1/21 · 12:30 SYNAPSE · 13:00 Business · 13:30 Derma d1 · 14:15 AURUM D1 · 15:15 MIR D1 · 16:15 ENCAPS pre-test 1/2 · 17:15 LIVIANO · 18:00 ENCAPS cifras. |
+| **Step 1** | Vie 20 = D2 en **NIVEL 0** (3 preguntas a fondo en Tutor, sin reloj). F1 en nivel 0-1 hasta el 80 %; el UWSA1 pasa al tramo 2. **NBME 25 = vie 11-dic** (1.ª línea base). |
+| **ENCAPS** | Mañanas 1/21 → 21/21 (la 21 el mar 5-ene); mini-sims los lunes 23 y 30-nov, 7, 14 y 21-dic; **CHECKPOINT lun 21-dic**; D13 mié 30-dic; simulacro de cierre jue 31-dic. Intensiva igual desde el lun 4-ene. |
+| **Secundarios** | Corren un hábil dentro de F1; la sesión que no cabe va el **sáb 2-ene** (recupera el mar 17); dom 3-ene SYNAPSE 05:00. **Desde el lun 4-ene, todo igual.** |
+| **Fin de semana** | Sáb 21 libre (viaje); dom 22 solo desde las 14:30 (revisión, recuperación ENCAPS 15:00-16:30, SYNAPSE 16:30-17:00). |
+
+Decisiones tuyas (nada de esto bloquea el jue 19; hasta que digas otra cosa, manda lo que está en la app):
+- [ ] **Anki del jue 19 sin mazo**: por tu regla «nada vacío por adelantado» el preset se guarda sin asignar (desde las Deck Options de un mazo que ya tengas: Add Preset → ajustes → vuelve a elegir el preset de ese mazo → Save). Si prefieres crear ya APEX::USMLE (excepción documentada), se cambia en un minuto.
+- [ ] **Carga del jue 19 en ENCAPS**: ≈ 60 preguntas de ENCAPS en modo examen (30Q banqueo + post-test de la mañana + 20Q de pre-test a las 16:15). El Step 1 ya está en nivel 0; ENCAPS no, porque ya lo preparaste. Si lo quieres más suave, dímelo y lo bajo.
+- [ ] **First Aid 2026**: ¿lo tienes? Las guías de F1 lo citan para las lecturas de validación.
+- [ ] **Orden de F1 (Palmerton)**: él empieza por cardio con la cardiopatía coronaria (CAD) como primer subtema y deja inmunología para después; F1 hace patología general → inmunología → cardio, con la CAD el último día de cardio. ¿Lo dejamos así o adelantamos la CAD?
+- [ ] **MIR**: la regla de leer apartados enteros deja fuera, en 7 días de F1, el apartado más preguntado del capítulo (se puede alargar la lectura, partir el capítulo en dos días, leer primero ese apartado o aceptarlo) · dónde van Traumatología y Geriatría · Psiquiatría o Nefrología en sus días.
+- [ ] **LIVIANO**: importar el CSV del mazo o escribir tú el anverso · banco de preguntas de obesidad de pago (sí/no) · 7 cifras marcadas «A VERIFICAR».
+- [ ] **ENCAPS**: el stock de preguntas REALES de II-3 y III-5 se agota antes de F2 (¿se repiten las falladas o se busca otro banco real?) · umbral del 75 % por código · versión vigente de cada norma · una fuente de NotebookLM que no cargó.
+- [ ] **Qbankly**: la pestaña se quedó en blanco al conectarle DevTools (protección anti-bot). Recárgala; para leer tu Performance › Systems, ábrela en una ventana de Claude in Chrome o cópiame la tabla.
+- [ ] **NotebookLM**: el cuaderno de STEP 1 está en 299/300 fuentes (¿abrimos uno nuevo por sistema?).
+- [ ] **SYNAPSE**: «certificados» de F0 → «insignias» (ya cambiado: confírmalo) · qué pasa si falla el quiz · orden de los carriles B/C.
+- [ ] **AURUM**: Archive.org no presta «To Sell Is Human»; para esos capítulos, ¿compras el libro o vamos con material público?
+- [ ] **Derma**: renovar AccessDerma (mientras, plan B con casos reales de DermNet) · Cochrane opcional.
+- [ ] **Calendar**: el Anki opcional del dom 3-ene, ¿se queda o se borra? · solapes conocidos que no toqué: NBME 25 07:00 con el desayuno, IBKR 09:30 del jue 19, ALISTARSE 18:30 (6 días), DORMIR de los sábados 21:00.
+- [ ] **Repo público**: en los textos de Research aparece el nombre del asesor y de su hospital (ya estaba antes). ¿Lo dejamos o lo cambio por «el asesor»?
+- [ ] **UWSA3**: opcional y sin fecha en el tramo 2.
+
 
 **⚡ v6.09 (lun 16-nov ≈16:00, VIGENTE, encima de la v6.08) — TODO ARRANCA EL MAR 17-NOV; SÁB 21 Y DOM 22 LIBRES (viaje).** Orden de Joseph: «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple, tal vez alargando días».
 

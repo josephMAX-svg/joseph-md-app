@@ -1,13 +1,36 @@
 # 🔥 FASE INTENSIVA ENCAPS 2027-I — diseño completo (v6.07: lun 4-ene-2027 → D-1 del examen, `dia` 38-87, contenido cerrado el vie 26-feb + quincena final de simulacros · ⏸ v6.06: `dia` 43-92 + carril SÁBADO · ⏸ v6.05: `dia` 48-97 · ⏸ v6.03 (= v6.04): `dia` 51-100 · ⏸ v6.02: `dia` 53-102 · ⏸ v6.01: mismas fechas, `dia` 58-107 · ⏸ v6.00: `dia` 61-110 · antes: feb → D-1)
 
+> ## ✅ v6.10h (mié 18-nov-2026) — SOLO SIMULACROS REALES CON CLAVE (regla de Joseph del 18-nov: toda pregunta de evaluación es real, con su fuente)
+> Los SIM 100Q «propio #1/#2/#3» y el fallback «--sim100 propio» (SIM 2, 5, 9, 10, dress y SIM de reserva) quedan sustituidos por simulacros REALES con clave;
+> el fallback es siempre otro simulacro real o, si no queda ninguno, un examen oficial ya hecho en RE-TEST (runner --sim100 <proceso>). Mismas fechas y horas.
+>
+> | SIM | Fecha (hora) | Simulacro | Respaldo |
+> |---|---|---|---|
+> | 1 | vie 15-ene (07:15) | examen oficial 2025-II | — |
+> | 2 | vie 22-ene (07:15) | Theomed curso 37 · Examen TIPO A (quiz 7934) | QX · Simulacro Virtual N°01 |
+> | 3 | vie 29-ene (07:15) | QX · Simulacro Virtual (el primero no hecho) | Theomed curso 37 · Simulacro 15/05 (quiz 20244) |
+> | 4 | vie 5-feb (07:15) | examen oficial 2024-II (forma A) | — |
+> | 5 | vie 12-feb (07:15) | Theomed curso 37 · Examen TIPO A(2) (quiz 7937) | el siguiente QX · Simulacro Virtual no hecho |
+> | 6 | vie 19-feb (11:00) | Theomed curso 105: el simulacro con ranking más reciente no hecho | Theomed curso 37 · Simulacro 29-MAY (quiz 4242) |
+> | 7 | vie 26-feb (11:00) | examen oficial 2025-I (forma A) · ancla tardía | — |
+> | 8 | lun 1-mar (11:00) | QX · Simulacro Virtual (el siguiente no hecho) | Theomed curso 37 · Simulacro 12-JUN (quiz 4442) |
+> | 9 | mié 3-mar (11:00) | DR LOPEZ · 📝 Simulacros (Drive), uno con clave no visto | Villamedic (Drive) o un QX · Simulacro Virtual no hecho |
+> | 10 | vie 5-mar (11:00) | Theomed curso 105: el último publicado (o uno antiguo no hecho) | examen oficial 2025-II en re-test |
+> | dress | jue 11-mar (11:00) | examen oficial 2026-I si hay clave por consenso QX + Theomed + norma | Theomed curso 105 más reciente no hecho → 2025-I en re-test |
+>
+> Las formas B de 2024-II y 2025-I son el mismo examen barajado (no cuentan como simulacro nuevo); 2026-II = pre-test del vie 8-ene. Aplicado en Supabase
+> (solo textos de las filas dia 34 · 47 · 52 · 62 · 67 · 73 · 75 · 77 · 81; respaldo `study_schedule_bk_v610h_20261118`). La fila del mar 5-ene (dia 34) lleva la
+> mañana 21/21 tal como la pinta la app: hoja de reglas + 10Q + banqueo 50Q (antes «banqueo 60Q»). Las evaluaciones diarias de F2 (`encapsPlan.ts`) nombran su
+> fuente real (QX · App Banqueo / runner de examen oficial / PosTest DR LOPEZ) y la eval tras un simulacro es re-test de las MISMAS preguntas falladas.
+
 > ## ✅ v6.07 VIGENTE (dom 8-nov-2026, D1 = LUN 9-NOV-2026) — renumera, CIERRA EL CONTENIDO EL VIE 26-FEB y convierte el 1-12 de marzo en simulacros y repaso
 > Orden de Joseph (dom 8-nov): «empezamos mañana 9; 2/3 del tiempo hasta fin de año al ENCAPS; meta primer puesto». Plan: `PLAN_PRIMER_PUESTO_2027-I.md`.
 > - **F1** `dia` 1-37 (lun 9-nov → mié 30-dic) · **intensiva** `dia` 38-87 con las MISMAS fechas (lun 4-ene → vie 12-mar; pre-test 2026-II vie 8-ene = `dia` 42).
 > - **Núcleo hasta el vie 26-feb** (`_fechas_v6.json` `encaps.nucleo_hasta`; «listo» el dom 28-feb): 28 slots de barrido (antes 32) + 7 SIM 100Q de viernes
 >   (vie 19 y vie 26-feb a las 11:00). Recorte de los códigos más repetidos: I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3 (IV 4 · III-5 3 · II-4 3 · II-5 2; ninguno
 >   sin slot). Orden = r2 de S2-S8; solo cambia el lun 22-feb (I-3 → IV-1+IV-2).
-> - **Quincena final (lun 1 → vie 12-mar, sin material nuevo):** SIM 100Q a las 11:00 el **lun 1, mié 3 y vie 5-mar** (#8 propio #3 · #9 academia con clave ·
->   #10 Theomed) y **repaso** el mar 2 y el jue 4; después la cola de siempre (lun 8 pasada profunda · mar 9 / mié 10 repaso final · **jue 11 DRESS 2026-I**
+> - **Quincena final (lun 1 → vie 12-mar, sin material nuevo):** SIM 100Q a las 11:00 el **lun 1, mié 3 y vie 5-mar** (#8 QX Simulacro Virtual · #9 academia con clave ·
+>   #10 Theomed; v6.10h: ningún «propio») y **repaso** el mar 2 y el jue 4; después la cola de siempre (lun 8 pasada profunda · mar 9 / mié 10 repaso final · **jue 11 DRESS 2026-I**
 >   11:00 · vie 12 medio día). = 4 simulacros de 100Q en la última quincena + 2 mini-sims de 25Q.
 > - **Carril B 16:15:** los 13 pendientes F1 conservan sus fechas (mié 17-feb → mié 10-mar); los SIM lun / mié de la quincena conservan su 16:15.
 > - **5 pendientes nuevos** (los que no caben en la F1 de 37): sáb 13-feb II-8 · sáb 20-feb II-3 · sáb 27-feb I-3 (09:30) · **vie 5-mar 16:15 V-2** (CARRIL
@@ -467,7 +490,7 @@ Notas: (a) el segmento 17:15 coincide con la serie de LIVIANO en el calendario: 
 | 4 | Theomed curso 37 "SIMULACROS MEDICINA": Examen 2025-II (quiz 7940), Examen TIPO A/B (7934/7935) y TIPO A(2)/B(2) (7937/7938), Simulacros 15/05 · 29-MAY · 12-JUN (20244 · 4242 · 4442) = 8 quizzes listados en `encapsFuentes.ts` (`ENCAPS_THEOMED_SIMULACROS`; el scan del 19-jul contó 11) | campus.academiatheomed.com, curso 37 | plataforma | **A VERIFICAR (05-sep)**: acceso vigente en 2027 y si el ciclo 2027-I los renueva |
 | 5 | QX "Simulacros Virtuales" (3 reales, semanal al scan 20-jul) y "Evaluación Virtual Avanzada" (12) | `encapsResumenes.ts` `ENCAPS_BANCOS` (`/evaluaciones/tipo/…`) | plataforma | **A VERIFICAR (05-sep)**: acceso QX 2027-I |
 | 6 | Simulacros Drive DR LOPEZ y Villamedic (carpetas "📝 Simulacros") | `encapsPracticaExtra.ts` `ENCAPS_DRIVE_SIMULACROS` · `encapsFuentes.ts` (Villamedic) | PDF con clave según material | material 2026; útil como sim en papel si no hay acceso a plataformas |
-| 7 | **Propio #1 / #2**: `--sim100 propio <fecha>` (100Q = vector v3 ×4 desde `BANCO_PROPIO`, sin repetir ítems ya usados) | `gen_encaps_minisim.js` | verificada por ítem | requiere ≥100 ítems NO consumidos con mezcla II 30/I 27/V 21/III 13/IV 9: en febrero exige **sets nuevos** (el inventario ya marca déficit, `BANCO_PROPIO/_inventario_banco_por_codigo.json`); desde que se rinda el pre-test (v5.20: vie 26-feb; v5.19: igual) el 2026-II se libera como cantera de espejos. ⚠ **v5.20: el D-2 dress rehearsal del lun 8-mar está sembrado como `--sim100 propio`** → hacen falta ≥100 ítems no consumidos con la mezcla del vector antes del 8-mar (sets nuevos en enero-febrero) |
+| 7 | ~~**Propio #1 / #2**~~ (v6.10h: RETIRADO — solo simulacros reales; ver la tabla v6.10h de arriba): `--sim100 propio <fecha>` (100Q = vector v3 ×4 desde `BANCO_PROPIO`, sin repetir ítems ya usados) | `gen_encaps_minisim.js` | verificada por ítem | requiere ≥100 ítems NO consumidos con mezcla II 30/I 27/V 21/III 13/IV 9: en febrero exige **sets nuevos** (el inventario ya marca déficit, `BANCO_PROPIO/_inventario_banco_por_codigo.json`); desde que se rinda el pre-test (v5.20: vie 26-feb; v5.19: igual) el 2026-II se libera como cantera de espejos. ⚠ **v5.20: el D-2 dress rehearsal del lun 8-mar está sembrado como `--sim100 propio`** → hacen falta ≥100 ítems no consumidos con la mezcla del vector antes del 8-mar (sets nuevos en enero-febrero) |
 
 Lista sembrada por default en el script (`SIMS`, en este orden de viernes): 2025-II → 2025-I A → 2024-II A → QX/Theomed (si hay acceso; si no, Theomed quiz 7940) → propio #1 → Theomed TIPO A/B o QX 2027-I (si hay acceso; si no, propio #2) → propio #2. **v5.20: solo cabe el primero** (2025-II, vie 5-mar); el dress rehearsal (lun 8-mar) va con `propio`. Se puede sustituir con `--sims ruta.json` (`[{label, fuente, clave}]`).
 

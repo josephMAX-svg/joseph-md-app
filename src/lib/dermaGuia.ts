@@ -66,7 +66,8 @@ import {
 export { DERMA_GUIA_DATOS_META, DERMA_TEST_PROMIR_D3, DERMNET_DERMOSCOPY, DERMNET_QUIZZES };
 
 // v6.10e (18-nov-2026 · PREGUNTAS REALES): fuera el proyecto Claude «AESTHETIC DERMATOLOGY» (viñetas y preguntas generadas por IA) → practicaReal().
-export const ACCESSDERMA_AVISO = 'AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o «Sign in via OpenAthens/Shibboleth»). Mientras tanto manda el PLAN B.';
+// v6.10g (revisión 18-nov · c11): empieza por «AccessDerma caducado» y dermaGuiaPar lo pone ANTES del aviso de FASE (al final, el corte de 240 del Calendar lo tapaba)
+export const ACCESSDERMA_AVISO = 'AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B.';
 const QBANKS = 'https://qbankly.app/qbanks';
 const VIDEOS = 'https://qbankly.app/videos';
 const DERMNET = 'https://dermnetnz.org';
@@ -222,17 +223,11 @@ export function dermaFaseAviso(dia: DiaDerma): string {
 }
 const DN_Q = (slug: string) => `${DERMNET}/quizzes/${slug}`;
 const en0 = (r: number) => r >= 0.85 && r <= 1.15;
-/** Primer caso de un quiz DermNet que el mapa de F1 deja libre (2027 empieza ahí). */
-function primerLibreF1(slug: string): number {
-  let m = 0;
-  for (const q of Object.values(DERMA_QUIZ_F1)) if (q.quiz === slug && q.desde && q.k) m = Math.max(m, q.desde + q.k - 1);
-  return m + 1;
-}
 /** k casos REALES de un DermNet Quiz con rango fijo (el mismo formato que el catálogo de las curadas: el generador lo valida). */
 function quizPasoF1(slug: string, desde: number, k: number, min: number, foco: string): GuiaPaso {
   const q = DERMNET_QUIZZES[slug]!;
   return {
-    min, que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`,
+    min, que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′${min > k * q.min ? ` + ${min - k * q.min}′ para el ledger` : ''}, el tiempo por caso que declara el quiz)`, // v6.10g: + el minuto de ledger (k = floor(min/2))
     como: `dermnetnz.org/quizzes (gratis, sin cuenta) → «${q.t}» → caso ${desde}: ${foco} · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).`,
     enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: `${DN_Q(slug)}/case/${desde}` },
   };
@@ -256,15 +251,11 @@ function practicaReal(dia: DiaDerma, min: number, a: Afin, corto: boolean): Guia
     const c = capDe(dia) ?? PROMIR_DERMA_CAPS[(a.pmd ?? 1) - 1]!;
     return [{ min, que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${f1.promir}Q REALES más a 77 s/Q (preguntas MIR oficiales: ${dec1((f1.promir * SEG_Q) / 60)}′)`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${f1.foco} · si una ya la hiciste, sáltala y toma la siguiente · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }];
   }
+  // v6.10g (revisión 18-nov · c11): el quiz y el RANGO DE CASOS REAL de cada sesión salen del cursor de todo el plan (dermnetAsignacion: sin repetir casos,
+  //   pasando al siguiente quiz real cuando uno se acaba); antes cada sesión pedía «desde el caso 1 (o 5)» del primer quiz de la lista y la suma se pasaba
+  //   del quiz («Malignant skin lesions», 10 casos, recibía 23). Casos = floor(min / min por caso): la aritmética cuadra con los minutos del paso (+1′ de ledger).
   const lista = quizzesDe(dia).filter((s) => DERMNET_QUIZZES[s]);
-  if (lista.length && min >= 4) {
-    const s0 = lista[0]!; const q = DERMNET_QUIZZES[s0]!; const k = Math.round(min / q.min);
-    if (k >= 1 && en0((k * q.min) / min)) {
-      const mixto = lista === MIXTOS || lista.every((s) => s.startsWith('mixed-'));
-      const sig = mixto ? '«Mixed diagnoses» 2 → 11 (los sets 3-11 declaran ~5′/caso: allí, 2 casos por cada 5′)' : lista.slice(1).map((s) => `«${DERMNET_QUIZZES[s]!.t}»`).join(' → ');
-      return [{ min, que: `DermNet Quizzes › «${q.t}»${mixto ? ' y siguientes (práctica MEZCLADA)' : ''} · ${k} casos REALES (× ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`, como: `dermnetnz.org/quizzes (gratis) → «${q.t}» desde el caso ${primerLibreF1(s0)}${primerLibreF1(s0) > 1 ? ' (el primero que F1 no usó)' : ''} o el siguiente que no hayas hecho (anota «DermNet · quiz · caso N» en el ledger); si el quiz se acaba, sigue en ${sig || 'otro quiz del tema en dermnetnz.org/quizzes'} · en cada caso, 8 ejes + diferencial de 3 ANTES de «Show Answers» · cada fallo → tarjeta de MECANISMO.`, enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: DN_Q(s0) } }];
-    }
-  }
+  if (lista.length && usaDermnet(min)) return [pasoDermnet(dermnetAsignacionDe(dia, lista, min), min)];
   const pmdN = a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined); const nQ = Math.round((min * 60) / SEG_Q);
   if (pmdN && min <= 6 && nQ >= 1 && en0((nQ * SEG_Q) / 60 / min)) {
     const c = PROMIR_DERMA_CAPS[pmdN - 1]!;
@@ -328,6 +319,102 @@ function quizzesDe(dia: DiaDerma): string[] {
   for (const [re, l] of DN_SUB) if (re.test(dia.sub)) return l;
   return DN_BLOQUE[dia.bKey] ?? [];
 }
+// ── v6.10g (revisión 18-nov-2026 · c11): CURSOR de casos REALES de DermNet Quizzes en todo el plan ───────────────────────────────────────────────
+/** Relevo de una lista afín cuando se agota (antes de la reserva): la dermatoscopia sigue en los 3 «Dermoscopy quiz» (20 casos cada uno, contados en
+ *  dermnetnz.org el 18-nov-2026; no declaran tiempo por caso → ~2′, como los otros quizzes de dermatoscopia). */
+const DN_RELEVO: Record<string, string[]> = { 'dermoscopy-local-features-quiz': ['dermoscopy-quiz-1-of-3', 'dermoscopy-quiz-2-of-3', 'dermoscopy-quiz-3-of-3'] };
+/** Un tramo de casos REALES de un quiz (números de caso 1-based, en orden) · mezcla = viene de la reserva (la lista del tema se agotó). */
+export interface DermnetTramo { slug: string; casos: number[]; mezcla: boolean }
+/** Lo que toca a una sesión: sus tramos, los minutos sin caso (1′ = ledger; 2-4′ = ledger + nota docente de los fallos, cuando el quiz va a ~5′/caso) y si
+ *  TODO el catálogo se agotó (el resto = 2.ª pasada de los casos fallados, que también son reales). */
+export interface DermnetAsig { tramos: DermnetTramo[]; resto: number; agotado: boolean }
+type Usados = Map<string, Set<number>>;
+const clonUsados = (u: Usados): Usados => new Map([...u].map(([k, v]) => [k, new Set(v)]));
+/** ¿El hueco de `min` minutos va a casos DermNet? (casos de ~2′: floor(min/2) × 2 / min en 0,85-1,15 → todos salvo 5′; con < 4′, ProMIR o recall) */
+const usaDermnet = (min: number): boolean => min >= 4 && en0((Math.floor(min / 2) * 2) / min);
+/** Casos ya usados por el mapa fijo de F1 (DERMA_QUIZ_F1: d1 y d4 curadas + las sesiones por regla de F1). */
+function usadosF1(): Usados {
+  const u: Usados = new Map();
+  for (const q of Object.values(DERMA_QUIZ_F1)) if (q.quiz && q.desde && q.k) { const s = u.get(q.quiz) ?? new Set<number>(); for (let c = q.desde; c < q.desde + q.k; c++) s.add(c); u.set(q.quiz, s); }
+  return u;
+}
+const libresDe = (slug: string, usados: Usados): number => { const q = DERMNET_QUIZZES[slug]; return q ? q.n - (usados.get(slug)?.size ?? 0) : 0; };
+/** Reparte `min` minutos en casos libres: la lista afín y su relevo; solo si se agotan (o si ninguno de sus casos cabe), la RESERVA (práctica MEZCLADA:
+ *  «Mixed diagnoses» y después el resto del catálogo). Lo que no llena un caso de ~5′ queda como minutos de ledger y nota docente (no se salta de quiz). */
+function asignarDN(lista: string[], min: number, usados: Usados): DermnetAsig {
+  const propios = [...new Set([...lista, ...lista.flatMap((s) => DN_RELEVO[s] ?? [])])];
+  const reserva = [...new Set([...MIXTOS, ...Object.keys(DERMNET_QUIZZES)])].filter((s) => !propios.includes(s));
+  const tramos: DermnetTramo[] = []; let R = min;
+  const tomar = (slug: string, mezcla: boolean): void => {
+    const q = DERMNET_QUIZZES[slug]; if (!q || R < q.min) return;
+    const u = usados.get(slug) ?? new Set<number>();
+    const libres: number[] = []; for (let c = 1; c <= q.n && libres.length < Math.floor(R / q.min); c++) if (!u.has(c)) libres.push(c);
+    if (!libres.length) return;
+    for (const c of libres) u.add(c);
+    usados.set(slug, u); tramos.push({ slug, casos: libres, mezcla }); R -= libres.length * q.min;
+  };
+  for (const s of propios) { if (R < 2) break; tomar(s, false); }
+  const quedanPropios = propios.some((s) => libresDe(s, usados) > 0);
+  if (R >= 2 && (!quedanPropios || !tramos.length)) for (const s of reserva) { if (R < 2) break; tomar(s, true); }
+  const agotado = R >= 2 && [...propios, ...reserva].every((s) => libresDe(s, usados) === 0);
+  return { tramos, resto: R, agotado };
+}
+interface DnPlanFila { fecha: string; antes: Usados; min: number; asig: DermnetAsig | null }
+let DN_PLAN: DnPlanFila[] | null = null;
+/** El cursor de todo el plan, en orden de fecha y con la franja de cada día (45′; 30′ en el SERUMS): para cada sesión, lo usado ANTES y lo que le toca. Las
+ *  sesiones curadas y las del mapa de F1 llevan su rango fijo (usadosF1); el resto, la lista afín de quizzesDe. */
+export function dermnetAsignacion(): DnPlanFila[] {
+  if (DN_PLAN) return DN_PLAN;
+  const usados = usadosF1(); const out: DnPlanFila[] = [];
+  for (const dia of [...DERMA_DIAS_TODOS].sort((x, y) => (x.fecha < y.fecha ? -1 : x.fecha > y.fecha ? 1 : 0))) {
+    const total = faseV6(dia.fecha) === 'F4' ? 30 : 45;
+    const c = DERMA_GUIA_CURADA[dia.d];
+    if (c && c.fecha === dia.fecha && total === 45) continue;
+    if (total === 45 && dia.fecha <= LOTE1_HASTA && DERMA_QUIZ_F1[dia.d]) continue;
+    const antes = clonUsados(usados);
+    const h = planBBase(dia, total).p2.find((p) => p.que === HUECO);
+    const lista = quizzesDe(dia).filter((s) => DERMNET_QUIZZES[s]);
+    const asig = h && lista.length && usaDermnet(h.min) ? asignarDN(lista, h.min, usados) : null;
+    out.push({ fecha: dia.fecha, antes, min: h ? h.min : 0, asig });
+  }
+  DN_PLAN = out;
+  return out;
+}
+/** Lo que toca a la sesión con `min` minutos de hueco: el del cursor si es su franja canónica; si no (otra duración), desde lo usado antes de esa fecha. */
+function dermnetAsignacionDe(dia: DiaDerma, lista: string[], min: number): DermnetAsig {
+  const plan = dermnetAsignacion();
+  const x = plan.find((y) => y.fecha === dia.fecha);
+  if (x && x.asig && x.min === min) return x.asig;
+  const prev = [...plan].reverse().find((y) => y.fecha <= dia.fecha);
+  return asignarDN(lista, min, clonUsados(prev ? prev.antes : usadosF1()));
+}
+/** «1-4», «7», «1-3 y 12» */
+const rangoCasos = (cs: number[]): string => {
+  const g: string[] = []; let i = 0;
+  while (i < cs.length) { let j = i; while (j + 1 < cs.length && cs[j + 1] === (cs[j] as number) + 1) j++; g.push(i === j ? `${cs[i]}` : `${cs[i]}-${cs[j]}`); i = j + 1; }
+  return g.length > 1 ? `${g.slice(0, -1).join(', ')} y ${g[g.length - 1]}` : (g[0] ?? '');
+};
+/** El paso «DermNet Quizzes» de una sesión con su quiz y su rango de casos REALES (los tramos en el orden en que se hacen). */
+function pasoDermnet(asig: DermnetAsig, min: number): GuiaPaso {
+  const T = (s: string) => DERMNET_QUIZZES[s]!;
+  const segunda = asig.agotado; // todo el catálogo agotado: el resto, 2.ª pasada de los casos fallados (reales, ya hechos)
+  if (!asig.tramos.length) return { min, que: `DermNet Quizzes · 2.ª pasada de tus fallos (${min}′): los casos REALES marcados ✗ en el ledger, del más antiguo al más reciente (los quizzes del plan ya están todos hechos)`, como: 'dermnetnz.org/quizzes → abre cada caso fallado desde su quiz y su nº (ledger «DermNet · quiz · caso N») · 8 ejes + diferencial de 3 ANTES de «Show Answers» · si lo aciertas, sácalo de la lista.', enlace: { t: 'DermNet Quizzes', url: `${DERMNET}/quizzes` } };
+  const n = asig.tramos.reduce((s, t) => s + t.casos.length, 0);
+  const porMin = new Map<number, number>(); for (const t of asig.tramos) porMin.set(T(t.slug).min, (porMin.get(T(t.slug).min) ?? 0) + t.casos.length);
+  const tot = [...porMin].reduce((s, [m, k]) => s + m * k, 0);
+  const arit = porMin.size === 1 ? `${n} ${n === 1 ? 'caso REAL' : 'casos REALES'} × ~${[...porMin.keys()][0]}′ = ${tot}′` : `${n} casos REALES: ${[...porMin].map(([m, k]) => `${k} × ~${m}′`).join(' + ')} = ${tot}′`;
+  const extra = segunda ? ` + ${asig.resto}′ de 2.ª pasada de tus fallos` : asig.resto >= 2 ? ` + ${asig.resto}′ para el ledger y la nota docente de tus fallos` : asig.resto ? ` + ${asig.resto}′ para el ledger` : '';
+  const partes = asig.tramos.map((t) => `«${T(t.slug).t}» · ${t.casos.length === 1 ? 'caso' : 'casos'} ${rangoCasos(t.casos)}`);
+  const [t0, ...ts] = asig.tramos as [DermnetTramo, ...DermnetTramo[]];
+  const mezcla = asig.tramos.some((t) => t.mezcla) || asig.tramos.every((t) => t.slug.startsWith('mixed-'));
+  const sinT = asig.tramos.filter((t) => T(t.slug).sinTiempo).map((t) => `«${T(t.slug).t}»`);
+  return {
+    min, que: `DermNet Quizzes › ${partes.join(' + ')} (${arit}${extra})`,
+    como: `dermnetnz.org/quizzes (gratis, sin cuenta) → «${T(t0.slug).t}» → caso ${t0.casos[0]}${ts.length ? ` · después ${ts.map((t) => `«${T(t.slug).t}» desde el caso ${t.casos[0]}`).join(' y ')}` : ''}${mezcla ? ' (práctica MEZCLADA)' : ''} · en cada caso, 8 ejes + diferencial de 3 ANTES de «Show Answers» · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · quiz · caso N»).${sinT.length ? ` ${sinT.join(' y ')} no declara${sinT.length > 1 ? 'n' : ''} tiempo por caso: ~2′, como los otros quizzes de dermatoscopia.` : ''}${segunda ? ' Los quizzes del plan están todos hechos: el resto del paso, tus casos fallados del ledger.' : ''}`,
+    enlace: { t: `DermNet Quiz · ${T(t0.slug).t}`.slice(0, 70), url: `${DN_Q(t0.slug)}/case/${t0.casos[0]}` },
+  };
+}
+
 function afinDe(dia: DiaDerma): Afin {
   for (const [re, a] of AFIN_SUB) if (re.test(dia.sub)) return a;
   return AFIN_BLOQUE[dia.bKey] ?? {};
@@ -336,6 +423,16 @@ function afinDe(dia: DiaDerma): Afin {
 /** Capítulo ProMIR del test de la sesión (rotación del ciclo 1 o, en el ciclo 2, el capId del enlace de la fila). */
 const capDe = (dia: DiaDerma) => promirDermaCapDe(dia.d) ?? (dia.promir ? PROMIR_DERMA_CAPS.find((c) => dia.promir!.url.endsWith(c.capId)) : undefined);
 const franjaDe = (ini: string, min: number) => { const f = aMinutos(ini) + min; return `${ini}–${String(Math.floor(f / 60)).padStart(2, '0')}:${String(f % 60).padStart(2, '0')}`; };
+/** v6.10g (revisión 18-nov · c11): el `sub` del título de la guía, ≤ n caracteres SIN cortar a media palabra ni dejar un paréntesis abierto (antes
+ *  `sub.slice(0, 80)`: «… (3 de los 4 módulos CORE la preguntan t», «… (p — PLAN B») → «…» tras la última palabra entera. */
+export function subTitulo(sub: string, n = 80): string {
+  if (sub.length <= n) return sub;
+  let t = sub.slice(0, n);
+  const sp = t.lastIndexOf(' ');
+  if (sp > n * 0.5) t = t.slice(0, sp);
+  const ab = t.lastIndexOf('('); if (ab > t.lastIndexOf(')') && ab > n * 0.4) t = t.slice(0, ab); // paréntesis sin cerrar → fuera
+  return t.replace(/[\s,;:·—+(-]+$/u, '') + '…';
+}
 /** Reparte el sobrante en el paso «relleno» (min 0) para que Σ pasos = total. */
 function cuadrar(pasos: GuiaPaso[], total: number): GuiaPaso[] {
   const fijo = pasos.reduce((s, p) => s + p.min, 0);
@@ -476,15 +573,17 @@ function planAPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   if (dia.atlasUrl) recursos.push({ t: 'Atlas del átomo', url: dia.atlasUrl });
   if (dia.dermatoscopiaImg && !dia.dermatoscopiaImg.includes('bookid=2929')) recursos.push({ t: 'DermNet · Dermoscopy (respaldo de Dermoscopedia)', url: DERMNET_DERMOSCOPY });
   return {
-    franja: franjaDe(ini, total), plan: 'research-derma', titulo: `DERMA d${dia.d} · ${dia.sub.slice(0, 80)} — plan A (AccessDerma)`, totalMin: total, pasos: p2, recursos,
+    franja: franjaDe(ini, total), plan: 'research-derma', titulo: `DERMA d${dia.d} · ${subTitulo(dia.sub)} — plan A (AccessDerma)`, totalMin: total, pasos: p2, recursos,
     hecho: `${n ? `${n} caso${n === 1 ? '' : 's'} registrado${n === 1 ? '' : 's'} en el ledger` : 'fallos del ledger re-registrados'}${dia.dermatoscopiaImg ? ' + 1 imagen dermatoscópica' : ''}${reviewMin >= 3 ? ' + review terminado con sus fallos registrados' : ''}${lecturaMin ? ' + lectura hecha' : ''} + ≤3 tarjetas de MECANISMO.`,
     planB: 'Sin acceso a AccessDerma → PLAN B de esta sesión (toca «AccessDerma caducado»).',
     aviso: corto ? 'SERUMS: 30′ en tiempo muerto → núcleo = casos ciegos + imagen; review y lectura solo si sobra.' : 'Guía por regla (sesión no curada): casos, banco y lectura salen de la fila del plan; el tema del Pictorial sale de la asignación por afinidad.',
   };
 }
 
-/** Plan B por regla (acceso remoto caducado). */
-function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
+/** v6.10g: pasos del plan B por regla con el HUECO de práctica real todavía sin llenar (lo usa también el cursor de DermNet, dermnetAsignacion). */
+const HUECO = '§hueco de práctica real§';
+interface PlanBBase { p2: GuiaPaso[]; a: Afin; corto: boolean; ap: { n: number; primera: string } | null; dn: DermnetMedido | undefined }
+function planBBase(dia: DiaDerma, total: number): PlanBBase {
   const a = afinDe(dia);
   const corto = total < 45;
   const taper = !!dermaTaperEfectivo(dia);
@@ -547,7 +646,6 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   else if (!corto && a.pmd && a.pmd !== cap?.n) { const c = PROMIR_DERMA_CAPS[a.pmd - 1]!; pasos.push({ min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. ${c.n} «${c.t}» — la sección del átomo de hoy (sin medir)`, como: 'Solo el apartado del átomo · Whole Page Rule · ritmo de referencia 180 palabras/min.', enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }); }
   // v6.10e (18-nov-2026 · PREGUNTAS REALES): la variable de ajuste ya no es el proyecto Claude (viñetas generadas por IA) sino un HUECO que llena practicaReal()
   //   con casos REALES (DermNet Quizzes), preguntas MIR oficiales (ProMIR) o práctica sin preguntas; si el atlas medido se lleva toda la franja (4 y 8-dic), no hay hueco
-  const HUECO = '§hueco de práctica real§';
   const conHueco = !dn || pasos.reduce((s, p) => s + p.min, 0) + 2 < total;
   if (conHueco) pasos.push({ min: 0, que: HUECO, como: HUECO });
   pasos.push(cierrePaso(2));
@@ -555,15 +653,22 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   // si el hueco quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar (no con el atlas medido de F1: ahí cuadra por medida)
   const rell = p2.find((p) => p.que === HUECO);
   if (!dn && rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
-  p2 = p2.flatMap((p) => (p.que === HUECO ? practicaReal(dia, p.min, a, corto) : [p]));
+  return { p2, a, corto, ap, dn };
+}
+
+/** Plan B por regla (acceso remoto caducado). */
+function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
+  const { p2: p0, a, corto, ap, dn } = planBBase(dia, total);
+  const p2 = p0.flatMap((p) => (p.que === HUECO ? practicaReal(dia, p.min, a, corto) : [p]));
   const recursos: GuiaRecurso[] = [{ t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
-  for (const p of p2) if (p.enlace && /^(DermNet Quizzes|LECTURA REAL)/.test(p.que)) recursos.unshift({ t: p.enlace.t, url: p.enlace.url, ...(/casos (\d+)-(\d+)/.test(p.que) ? { cantidad: `${Number(/casos (\d+)-(\d+)/.exec(p.que)![2]) - Number(/casos (\d+)-(\d+)/.exec(p.que)![1]) + 1} casos` } : {}) });
+  // v6.10g: la cantidad sale del «(N casos REALES» del paso (un paso DermNet puede juntar dos quizzes)
+  for (const p of p2) if (p.enlace && /^(DermNet Quizzes|LECTURA REAL)/.test(p.que)) { const k = /\((\d+) casos? REAL/.exec(p.que); recursos.unshift({ t: p.enlace.t, url: p.enlace.url, ...(k ? { cantidad: `${k[1]} caso${k[1] === '1' ? '' : 's'}` } : {}) }); }
   if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: ap && ap.n >= 2 ? bb2aMin(a.bb) : bbMinReserva(a.bb, dia.fecha) });
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) recursos.push({ t: 'DermNet · atlas del átomo', url: dia.atlasUrl });
   if (dn) for (const l of dn.lecturas) if (l.pag !== dn.atlas) recursos.push({ t: `DermNet · ${l.pag}${l.de ? ` (del ${fdc(l.de)})` : ''}`, url: l.url });
   const ids = dia.casoIds;
   return {
-    franja: franjaDe(ini, total), plan: 'research-derma', titulo: `DERMA d${dia.d} · ${dia.sub.slice(0, 80)} — PLAN B (AccessDerma caducado)`, totalMin: total, pasos: p2, recursos,
+    franja: franjaDe(ini, total), plan: 'research-derma', titulo: `DERMA d${dia.d} · ${subTitulo(dia.sub)} — PLAN B (AccessDerma caducado)`, totalMin: total, pasos: p2, recursos,
     hecho: 'Todos los pasos hechos con sus fallos anotados + ≤3 tarjetas de MECANISMO.',
     planB: ids.length ? `Casos ${ids.map((id) => `#${id} (${dermaCasoTitulo(id)})`).join(', ')} PENDIENTES: al recuperar el acceso, 1 caso pendiente por sesión en el slot del review (variable de ajuste) hasta ponerte al día. El caso nunca se salta.` : 'Sin casos nuevos hoy.',
     aviso: ACCESSDERMA_AVISO,
@@ -579,8 +684,9 @@ export function dermaGuiaPar(dia: DiaDerma, opts: { ini?: string; minutos?: numb
   const ini = opts.ini ?? '13:30';
   const total = opts.minutos ?? 45;
   const c = DERMA_GUIA_CURADA[dia.d];
-  // v6.10e (base cero): cada guía (plan A y B) abre su aviso con la FASE, qué se hace en ella y el criterio para pasar a la siguiente
-  const fase = (g: GuiaBloque): GuiaBloque => ({ ...g, aviso: g.aviso ? `${dermaFaseAviso(dia)} · ${g.aviso}` : dermaFaseAviso(dia) });
+  // v6.10e (base cero): cada guía (plan A y B) lleva en su aviso la FASE, qué se hace en ella y el criterio para pasar a la siguiente (v6.10g: tras el de AccessDerma)
+  // v6.10g (revisión 18-nov · c11): el aviso de AccessDerma (renovar el acceso remoto) va PRIMERO; el resto de avisos, tras la fase como antes
+  const fase = (g: GuiaBloque): GuiaBloque => ({ ...g, aviso: !g.aviso ? dermaFaseAviso(dia) : /^AccessDerma/.test(g.aviso) ? `${g.aviso} · ${dermaFaseAviso(dia)}` : `${dermaFaseAviso(dia)} · ${g.aviso}` });
   if (c && c.fecha === dia.fecha && total === 45) return { planA: fase(moverA(c.planA, ini)), planB: fase(moverA(c.planB, ini)), curada: true };
   return { planA: fase(planAPorRegla(dia, ini, total)), planB: fase(planBPorRegla(dia, ini, total)), curada: false };
 }

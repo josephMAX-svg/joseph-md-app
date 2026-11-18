@@ -427,13 +427,13 @@
       "id": "motor-preguntas-encaps",
       "rotacion": "preguntas",
       "deload": true,
-      "nombre": "Motor de preguntas ENCAPS semiautomático (stock del banco propio) — semana DELOAD",
-      "sirveA": "ENCAPS — la hora de banqueo 16:15 depende de que el chat genere preguntas con el mapa (pronóstico v3 + TRACKING_ERRORES) y registre la ronda; hay 18 sets / 2.052 preguntas del banco propio, gen_encaps_minisim.js (--banco/--eval/--sim100) y _etiquetas_examenes_reales_v3.json ya construidos: el motor debe SERVIR del stock REAL por subtema del día (exámenes con clave oficial) y registrar la ronda; v6.10 · base cero (orden de Joseph del 18-nov: «las preguntas tienen que ser preguntas reales»): ya NO genera preguntas nuevas cuando el stock se agota, lo dice y sirve del subtema más cercano. Semanas deload del Step 1 en v6.08 (homeBriefing.DELOAD_SEMANAS): lun 14 → vie 18-dic, tras el NBME 25 del jue 10-dic —el único NBME de F1— = S5 EXACTA, y la del lun 28-dic = el último paso de S6 (lun 28) y los 2 primeros de S7 (mar 29 y mié 30-dic); S7 corre mar 29-dic → mié 6-ene con el flag `deload` (2 de 5 pasos en la deload; el flag no se mueve) · v6.06: semana deload post-NBME 26 = lun 7 → vie 11-dic (NBME 26 vie 4-dic, D25): esa semana era S6 EXACTA y S7 corría lun 14 → vie 18-dic con el flag `deload` (0 de 5 pasos en la deload; el flag no se mueve: el contenido de S7 ya está escrito para deload) · v6.05 (NBME 26 vie 27-nov): deload lun 30-nov → vie 4-dic = S6 EXACTA y S7 lun 7 → vie 11-dic · v6.03 (NBME 26 mar 24-nov): S7 corría mié 2 → mar 8-dic y 3 de sus 5 pasos (mié 2, jue 3 y vie 4-dic) caían en esa semana; lun 30-nov y mar 1-dic eran los 2 últimos pasos de S6 (alineado PARCIAL, como en v6.00) · v6.02: deload lun 23 → vie 27-nov (NBME 26 vie 20-nov) = S6 EXACTA y S7 lun 30-nov → vie 4-dic (0 de 5 pasos en la deload) · v6.01: deload lun 16 → vie 20-nov (NBME 26 vie 13-nov) = S6 exacta y S7 lun 23 → vie 27-nov · v6.00 = v5.20 (NBME 26 mar 10-nov; la misma semana que en v5.19): S7 corre mié 18 → mar 24-nov, lleva el flag `deload` y 3 de sus 5 pasos (mié 18, jue 19 y vie 20-nov) caen en esa semana — alineado PARCIAL: lun 16 y mar 17-nov son los 2 últimos pasos de S6 (v5.19: S7 mar 17 → lun 23-nov, 4 de 5 ✅ · v5.18: deload lun 9 → vie 13-nov = S6 exacta y S7 = lun 16 → vie 20-nov; el flag en S7 quedaba desalineado): 2 días de 45' + 3 de ≤15'.",
-      "objetivo": "Una skill /pregunta-encaps que lea el mapa del examen + el perfil de errores, sirva 5 preguntas REALES ciegas del subtema del día (exámenes ENCAPS con clave oficial; sin repetir las ya usadas, fuente citada; nunca generadas) y registre la ronda en _registro_resoluciones.json.",
-      "entregable": ".claude/skills/pregunta-encaps/SKILL.md + DATA/ENCAPS/TRACKING_ERRORES/_stock_usado.json (control de repetición) + 1 ronda real de 5Q registrada con confianza/error/ruta + commit [S7].",
+      "nombre": "Motor de selección y registro de preguntas REALES ENCAPS (examen oficial · Theomed · QX, con id y clave) — semana DELOAD",
+      "sirveA": "ENCAPS — la hora de banqueo 16:15 y las evals sirven SOLO preguntas REALES con fuente (regla de Joseph del 18-nov: «las preguntas tienen que ser preguntas reales»): exámenes oficiales con clave (BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json, etiquetados por código v3 en _etiquetas_examenes_reales_v3.json; nunca el examen reservado como pre-test) y los banqueos de Theomed y de QX con su id y su clave. Falta un sitio único que diga qué pregunta real toca por subtema, cuál ya salió y con qué resultado: el motor SELECCIONA del stock real (no genera, no reescribe y no usa espejos ni ítems «nuevos») y REGISTRA la ronda. Sin stock real del subtema → lo dice y sirve del subtema más cercano con stock (o recall en blanco contrastado con la fuente). Semana DELOAD del vibecoding (flag `deload`): 2 días de 45' + 3 de ≤15'.",
+      "objetivo": "Una skill /pregunta-encaps que lea el mapa del examen + el perfil de errores, SELECCIONE 5 preguntas REALES ciegas del subtema del día (examen oficial con clave · banqueo de Theomed · banqueo de QX; cada una con su fuente, su id y su clave; sin repetir las ya usadas; nunca generadas, espejo ni reescritas) y REGISTRE la ronda en _registro_resoluciones.json.",
+      "entregable": ".claude/skills/pregunta-encaps/SKILL.md + DATA/ENCAPS/TRACKING_ERRORES/_stock_usado.json (control de repetición: id, fuente y clave de cada pregunta servida) + 1 ronda real de 5Q registrada con confianza/error/ruta + commit [S7].",
       "aceptacion": [
-        ".claude/skills/pregunta-encaps/SKILL.md existe y cita PRONOSTICO_WALKFORWARD_2027-1_v3 + PERFIL_CONOCIMIENTO + el banco propio (rutas reales) y sirve SOLO ítems de examen real con clave oficial (ninguno espejo ni generado)",
-        "DATA/ENCAPS/TRACKING_ERRORES/_stock_usado.json registra los ids servidos (≥5) para no repetir preguntas del banco",
+        ".claude/skills/pregunta-encaps/SKILL.md existe, cita PRONOSTICO_WALKFORWARD_2027-1_v3 + PERFIL_CONOCIMIENTO + las rutas reales del stock (exámenes oficiales; Theomed y QX con su id) y solo SELECCIONA preguntas reales con fuente, id y clave (ninguna generada, espejo ni reescrita)",
+        "DATA/ENCAPS/TRACKING_ERRORES/_stock_usado.json registra los ids servidos (≥5) con su fuente y su clave, para no repetir ninguna",
         "La ronda se APENDA a _registro_resoluciones.json con el esquema del README (tu/correcta/ok/confianza/error/ruta) y PERFIL_CONOCIMIENTO.md se actualiza con el % ciego real",
         "Commit [S7] en joseph-md-app · deload respetado (2 días de 45' + 3 de ≤15')"
       ],
@@ -459,7 +459,7 @@
           "grep": "[S7]"
         }
       ],
-      "repo": ".claude/skills/pregunta-encaps/ (nuevo) · DATA/ENCAPS/TRACKING_ERRORES/ · DATA/_scripts/gen_encaps_minisim.js (ya existe) · DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md",
+      "repo": ".claude/skills/pregunta-encaps/ (nuevo) · DATA/ENCAPS/BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json + _etiquetas_examenes_reales_v3.json · DATA/ENCAPS/TRACKING_ERRORES/ · DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md",
       "repo_git": "D:/joseph-md-app",
       "docs": [
         {
@@ -472,13 +472,13 @@
         }
       ],
       "pasos": [
-        "(45') Escribir SKILL.md: lee PRONOSTICO v3 + rotación del día + PERFIL_CONOCIMIENTO → sirve 5 preguntas REALES del subtema del día (exámenes ENCAPS con clave oficial: BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json etiquetado en _etiquetas_examenes_reales_v3.json; nunca ítems espejo ni generados, nunca el examen reservado como pre-test) en formato pregunta→solución interactiva, sin clave hasta que Joseph responda; sin stock real del subtema → lo dice y sirve del más cercano con stock.",
-        "(15' deload) Revisar el formato de salida con 1 pregunta REAL del banco (su id de BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json); nada más.",
-        "(45') Registro: la skill apenda la ronda a _registro_resoluciones.json (esquema README), vuelca RONDAS/<codigo>_<fecha>.json y anota los ids servidos en _stock_usado.json.",
+        "(45') Escribir SKILL.md: lee PRONOSTICO v3 + rotación del día + PERFIL_CONOCIMIENTO → SELECCIONA 5 preguntas REALES del subtema del día (examen oficial con clave: BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json etiquetado en _etiquetas_examenes_reales_v3.json; banqueos de Theomed y de QX con su id y su clave; nunca generadas, espejo ni reescritas; nunca el examen reservado como pre-test) en formato pregunta→solución interactiva, sin clave hasta que Joseph responda; sin stock real del subtema → lo dice y sirve del más cercano con stock.",
+        "(15' deload) Revisar el formato de salida con 1 pregunta REAL (su fuente y su id: examen oficial, Theomed o QX); nada más.",
+        "(45') Registro: la skill apenda la ronda a _registro_resoluciones.json (esquema README), vuelca RONDAS/<codigo>_<fecha>.json y anota en _stock_usado.json el id, la fuente y la clave de cada pregunta servida.",
         "(15' deload) Descanso activo: leer 1 ronda anterior y anotar 1 mejora.",
         "(15') 1 ronda real de 5Q en la hora ENCAPS (16:15) registrada + commit [S7] + node DATA/_scripts/verify_vibecoding.js 7 + journal."
       ],
-      "ship": "SHIP S7 (deload): skill funcionando desde el stock + 1 ronda registrada. Sin ampliar alcance (verify 7 → 4/4)."
+      "ship": "SHIP S7 (deload): la skill selecciona del stock real y registra + 1 ronda registrada. Sin ampliar alcance (verify 7 → 4/4)."
     },
     {
       "s": 8,

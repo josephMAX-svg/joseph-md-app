@@ -12,7 +12,7 @@
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas del tema de AYER (código de ayer V-2: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas del código de la sesión anterior (código de ayer V-2: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
@@ -30,6 +30,13 @@
      "marca de lista negra → _meta.lista_negra_pretest («VIGENTE»)"
     ],
     "motivo": "textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos"
+   },
+   {
+    "el": "2026-11-18",
+    "cambios": [
+     "instrucciones"
+    ],
+    "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
    }
   ],
   "realineado": [

@@ -38,7 +38,7 @@
    "reales": 21
   },
   "avisos": [
-   "principal: solo 10Q libres de III-5 en el pool (receta 16-20) → FALLBACK 6Q: paso 1 reales de III-5 ya usados (re-test con otro enfoque) (5Q) · paso 4 cola larga del área III (libres) (1Q)"
+   "principal: solo 10Q libres de III-5 en el pool (receta 16-20) → FALLBACK 6Q: paso 1 reales de III-5 ya usados (re-test de las mismas preguntas reales, sin la clave) (5Q) · paso 4 cola larga del área III (libres) (1Q)"
   ],
   "lista_negra_pretest": "VIGENTE",
   "rechazados": [
@@ -99,7 +99,7 @@
    "cadena": [
     {
      "paso": 1,
-     "fuente": "reales de III-5 ya usados (re-test con otro enfoque)",
+     "fuente": "reales de III-5 ya usados (re-test de las mismas preguntas reales, sin la clave)",
      "n": 5
     },
     {
@@ -109,7 +109,17 @@
     }
    ],
    "n_fallback": 6
-  }
+  },
+  "refrescado": [
+   {
+    "el": "2026-11-18",
+    "cambios": [
+     "_meta.avisos",
+     "_meta.fallback.cadena"
+    ],
+    "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
+   }
+  ]
  },
  "items": [
   {

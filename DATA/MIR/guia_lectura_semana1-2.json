@@ -1188,8 +1188,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -1200,7 +1200,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,6′ medidos a 150 palabras/min; 13,5′ a 180) · Orientación MIR (1′) + 1.1. Descripción de un caso o series de casos (1′ · 1 preguntas MIR citadas) · 1.2. Estudios descriptivos de prevalencia (0.5′ · 3 preguntas MIR citadas) · 1.3. Estudios ecológicos (1.5′ · 8 preguntas MIR citadas) · 2.1. Estudios de corte transversal o de prevalencia (1.5′ · 5 preguntas MIR citadas) · 2.2. Estudios de casos y controles (3.5′ · 22 preguntas MIR citadas) · 2.3. Estudios de cohortes (3′ · 19 preguntas MIR citadas) · 2.4. Estudios de casos y controles anidados en una cohorte (1.5′ · 4 preguntas MIR citadas) · 7 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,6′ medidos a 150 palabras/min; 13,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1.1. Descripción de un caso o series de casos (1′ · 1 preguntas MIR citadas) · 1.2. Estudios descriptivos de prevalencia (0.5′ · 3 preguntas MIR citadas) · 1.3. Estudios ecológicos (1.5′ · 8 preguntas MIR citadas) · 2.1. Estudios de corte transversal o de prevalencia (1.5′ · 5 preguntas MIR citadas) · 2.2. Estudios de casos y controles (3.5′ · 22 preguntas MIR citadas) · 2.3. Estudios de cohortes (3′ · 19 preguntas MIR citadas) · 2.4. Estudios de casos y controles anidados en una cohorte (1.5′ · 4 preguntas MIR citadas) · 7 secciones que pregunta el MIR",
       "como": "Hoy lees 15,6′ de 15,8′ (99 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 0,2′ en 2 secciones (1. 2.) · todo a 150 palabras/min · Base cero: estas 7 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la lista ya cubre todas las secciones con preguntas citadas). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,6′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)",
@@ -1755,8 +1755,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -1767,7 +1767,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 3.2. Índices de validez diagnóstica (10′ · 34 preguntas MIR citadas) · 3.3. Curvas ROC (3′ · 2 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 3.2. Índices de validez diagnóstica (10′ · 34 preguntas MIR citadas) · 3.3. Curvas ROC (3′ · 2 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,2′ de 36,9′ (44 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 20,7′ en 9 secciones (1. 2. 3. 3.1. 4. 4.1. 4.2. 4.3. 4.4.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2. · 3.1. · 4.3.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Evaluación de pruebas diagnósticas",
@@ -2227,7 +2227,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 1. Principios de bioética (2′ · 7 preguntas MIR citadas) · 2. Relación médico-paciente. Atención al paciente en situaciones especiales (1.5′ · 11 preguntas MIR citadas) · 3. Normativa en la investigación biomédica (2.5′ · 1 preguntas MIR citadas) · 4. Comités de ética asistencial (1.5′ · 1 preguntas MIR citadas) · 6. Transfusiones de hemoderivados en situaciones especiales. Consentimientos prestados con limitaciones (1.5′ · 1 preguntas MIR citadas) · 7. Rechazo de tratamiento o denegación de consentimiento (4′ · 1 preguntas MIR citadas) · 6 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Principios de bioética (2′ · 7 preguntas MIR citadas) · 2. Relación médico-paciente. Atención al paciente en situaciones especiales (1.5′ · 11 preguntas MIR citadas) · 3. Normativa en la investigación biomédica (2.5′ · 1 preguntas MIR citadas) · 4. Comités de ética asistencial (1.5′ · 1 preguntas MIR citadas) · 6. Transfusiones de hemoderivados en situaciones especiales. Consentimientos prestados con limitaciones (1.5′ · 1 preguntas MIR citadas) · 7. Rechazo de tratamiento o denegación de consentimiento (4′ · 1 preguntas MIR citadas) · 6 secciones que pregunta el MIR",
       "como": "Hoy lees 16,2′ de 19,4′ (84 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 3,2′ en 1 sección (5.) · todo a 150 palabras/min · Base cero: estas 6 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la lista ya cubre todas las secciones con preguntas citadas). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Principios de bioética y relación médico-paciente",
@@ -2942,7 +2942,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (17,4′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.3. Shock (2.5′ · 6 preguntas MIR citadas) · 3.3. Auscultación cardíaca (11.5′ · 12 preguntas MIR citadas · clip 0:34) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (17,4′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.3. Shock (2.5′ · 6 preguntas MIR citadas) · 3.3. Auscultación cardíaca (11.5′ · 12 preguntas MIR citadas · clip 0:34) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 17,4′ de 113,3′ (15 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 95,9′ en 18 secciones (1. 1.1. 1.2. 1.3. 1.4. 1.5. 2. 2.1. 2.2. 2.4. 2.5. 3. 3.1. 3.2. 4. 4.1. 4.2. 4.3.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2.2. · 4.1. · 4.3.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,4′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cardiología básica",
@@ -3711,8 +3711,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -3723,7 +3723,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2.1. Definición (0.5′ · 1 preguntas MIR citadas) · 2.5. Indicaciones de marcapasos (0.5′ · 3 preguntas MIR citadas) · 2.6. Tipos de marcapasos (3′ · 1 preguntas MIR citadas) · 5.1. Síndrome de Brugada (1.5′ · 1 preguntas MIR citadas) · 5.2. Síndrome de intervalo QT (8′ · 5 preguntas MIR citadas) · 5 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.1. Definición (0.5′ · 1 preguntas MIR citadas) · 2.5. Indicaciones de marcapasos (0.5′ · 3 preguntas MIR citadas) · 2.6. Tipos de marcapasos (3′ · 1 preguntas MIR citadas) · 5.1. Síndrome de Brugada (1.5′ · 1 preguntas MIR citadas) · 5.2. Síndrome de intervalo QT (8′ · 5 preguntas MIR citadas) · 5 secciones que pregunta el MIR",
       "como": "Hoy lees 16′ de 116,7′ (14 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 100,7′ en 18 secciones (1. 1.1. 1.2. 1.3. 1.4. 2. 2.2. 2.3. 2.4. 3. 3.1. 3.2. 3.3. 4. 5. 5.3. 5.4. 5.5.) · todo a 150 palabras/min · Base cero: estas 5 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.3. · 3.1. · 3.2.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Trastornos del ritmo",
@@ -4382,8 +4382,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -4394,7 +4394,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,7′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 1. Introducción y fisiopatología (2′ · 1 preguntas MIR citadas) · 2.1. Concepto de angina crónica estable (2′ · contexto, sin preguntas citadas) · 3. Síndrome coronario agudo (0.5′ · contexto, sin preguntas citadas) · 3.1. Fisiopatología (1.5′ · 2 preguntas MIR citadas) · 3.4. Tratamiento del SCASEST (2′ · 4 preguntas MIR citadas) · 3.5. Tratamiento del SCACEST (5.5′ · 10 preguntas MIR citadas) · 4 secciones que pregunta el MIR (+ 2 de contexto, sin preguntas citadas), enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,7′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Introducción y fisiopatología (2′ · 1 preguntas MIR citadas) · 2.1. Concepto de angina crónica estable (2′ · contexto, sin preguntas citadas) · 3. Síndrome coronario agudo (0.5′ · contexto, sin preguntas citadas) · 3.1. Fisiopatología (1.5′ · 2 preguntas MIR citadas) · 3.4. Tratamiento del SCASEST (2′ · 4 preguntas MIR citadas) · 3.5. Tratamiento del SCACEST (5.5′ · 10 preguntas MIR citadas) · 4 secciones que pregunta el MIR (+ 2 de contexto, sin preguntas citadas)",
       "como": "Hoy lees 16,7′ de 79,4′ (21 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 62,7′ en 7 secciones (2. 2.2. 2.3. 2.4. 3.2. 3.3. 3.6.) · todo a 150 palabras/min · Base cero: estas 6 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2.4. · 3.3. · 3.6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,7′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cardiopatía isquémica",
@@ -5200,8 +5200,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -5212,7 +5212,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,1′ medidos a 150 palabras/min; 13,5′ a 180) · Orientación MIR (1′) + 2. Definición universal de insuficiencia cardíaca (2′ · 1 preguntas MIR citadas) · 4.1. Clasificación de la insuficiencia cardíaca según la fracción de eyección del ventrículo izquierdo (5.5′ · 6 preguntas MIR citadas · clip 0:39 + 0:17) · 5. Causas de la insuficiencia cardíaca. Factores de descompensación (3.5′ · 1 preguntas MIR citadas) · 6. Tratamiento de la insuficiencia cardíaca (1.5′ · 4 preguntas MIR citadas) · 4 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,1′ medidos a 150 palabras/min; 13,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2. Definición universal de insuficiencia cardíaca (2′ · 1 preguntas MIR citadas) · 4.1. Clasificación de la insuficiencia cardíaca según la fracción de eyección del ventrículo izquierdo (5.5′ · 6 preguntas MIR citadas · clip 0:39 + 0:17) · 5. Causas de la insuficiencia cardíaca. Factores de descompensación (3.5′ · 1 preguntas MIR citadas) · 6. Tratamiento de la insuficiencia cardíaca (1.5′ · 4 preguntas MIR citadas) · 4 secciones que pregunta el MIR",
       "como": "Hoy lees 15,1′ de 187,5′ (8 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 172,4′ en 18 secciones (1. 3. 3.1. 3.2. 3.3. 3.4. 4. 4.2. 4.3. 6.1. 6.2. 6.3. 7. 7.1. 7.2. 7.3. 7.4. 8.) · todo a 150 palabras/min · Base cero: estas 4 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —3.1. · 6.1. · 6.2.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Insuficiencia cardíaca",
@@ -6311,8 +6311,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -6323,7 +6323,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (18,1′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.5. Tratamiento (11′ · 10 preguntas MIR citadas · clip 0:05) · 5.4. Enfoque diagnóstico (1.5′ · 3 preguntas MIR citadas) · 6.1. Definición, etiología y fisiopatogenia (0.5′ · 1 preguntas MIR citadas) · 8. Elección del tipo de prótesis (1′ · 4 preguntas MIR citadas) · 4 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (18,1′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.5. Tratamiento (11′ · 10 preguntas MIR citadas · clip 0:05) · 5.4. Enfoque diagnóstico (1.5′ · 3 preguntas MIR citadas) · 6.1. Definición, etiología y fisiopatogenia (0.5′ · 1 preguntas MIR citadas) · 8. Elección del tipo de prótesis (1′ · 4 preguntas MIR citadas) · 4 secciones que pregunta el MIR",
       "como": "Hoy lees 18,1′ de 67′ (27 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 48,9′ en 39 secciones (1. 1.1. 1.2. 1.3. 1.4. 1.5. 1.6. 1.7. 2. 2.1. 2.2. 2.3. 2.4. 3. 3.1. 3.2. 3.3. 3.4. 3.5. 4. 4.1. 4.2. 4.3. 4.4. 4.5. 5. 5.1. 5.2. 5.3. 5.5. 6. 6.2. 6.3. 6.4. 7. 7.1. 7.2. 7.3. 7.4.) · todo a 150 palabras/min · Base cero: estas 4 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2.2. · 2.4. · 7.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 18,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Valvulopatías",
@@ -7128,8 +7128,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -7140,7 +7140,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,5′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 4.1. Pacientes de muy alto riesgo cardiovascular (1′ · 5 preguntas MIR citadas) · 6.4. Prevención de la enfermedad cardiovascular en el diabético y prediabético (12′ · 12 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,5′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 4.1. Pacientes de muy alto riesgo cardiovascular (1′ · 5 preguntas MIR citadas) · 6.4. Prevención de la enfermedad cardiovascular en el diabético y prediabético (12′ · 12 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,5′ de 84,5′ (20 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 68′ en 22 secciones (1. 2. 3. 4. 4.2. 5. 5.1. 5.2. 5.3. 5.4. 6. 6.1. 6.2. 6.3. 7. 7.1. 7.2. 7.3. 7.4. 7.5. 7.6. 7.7.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —5.1. · 7.5. · 7.7.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV",
@@ -8021,8 +8021,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -8033,7 +8033,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 3.3. Etiología y fisiopatogenia (3′ · 1 preguntas MIR citadas) · 3.5. Enfoque diagnóstico (4.5′ · 5 preguntas MIR citadas · clip 0:02 + 0:02 + 0:02 + 0:01 + 0:02 + 0:01 + 0:02 + 0:01) · 5.3. Etiología y fisiopatogenia (0.5′ · 5 preguntas MIR citadas) · 5.4. Manifestaciones clínicas y enfoque diagnóstico (2′ · 2 preguntas MIR citadas) · 7.2. Takotsubo (3.5′ · 3 preguntas MIR citadas · clip 0:07 + 0:05) · 5 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 3.3. Etiología y fisiopatogenia (3′ · 1 preguntas MIR citadas) · 3.5. Enfoque diagnóstico (4.5′ · 5 preguntas MIR citadas · clip 0:02 + 0:02 + 0:02 + 0:01 + 0:02 + 0:01 + 0:02 + 0:01) · 5.3. Etiología y fisiopatogenia (0.5′ · 5 preguntas MIR citadas) · 5.4. Manifestaciones clínicas y enfoque diagnóstico (2′ · 2 preguntas MIR citadas) · 7.2. Takotsubo (3.5′ · 3 preguntas MIR citadas · clip 0:07 + 0:05) · 5 secciones que pregunta el MIR",
       "como": "Hoy lees 16,2′ de 34,4′ (47 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 18,2′ en 26 secciones (1. 1.1. 1.2. 1.3. 1.4. 1.5. 2. 3. 3.1. 3.2. 3.4. 3.6. 4. 4.1. 4.2. 4.3. 4.4. 4.5. 5. 5.1. 5.2. 5.5. 6. 6.1. 7. 7.1.) · todo a 150 palabras/min · Base cero: estas 5 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —3.6. · 4.3. · 6.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del miocardio",
@@ -8605,7 +8605,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,7′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2. Pruebas para el estudio de la función pulmonar (7′ · 16 preguntas MIR citadas) · 3. Circulación pulmonar (6.5′ · 7 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,7′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2. Pruebas para el estudio de la función pulmonar (7′ · 16 preguntas MIR citadas) · 3. Circulación pulmonar (6.5′ · 7 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,7′ de 33,7′ (50 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 17′ en 4 secciones (1. 4. 5. 6.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1. · 5. · 6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,7′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fisiología y fisiopatología del aparato respiratorio",
@@ -9252,8 +9252,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -9264,7 +9264,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,1′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2.4. Manifestaciones clínicas (6.5′ · 18 preguntas MIR citadas) · 2.7. Tratamiento (7′ · 13 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,1′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.4. Manifestaciones clínicas (6.5′ · 18 preguntas MIR citadas) · 2.7. Tratamiento (7′ · 13 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,1′ de 42,5′ (38 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 26,4′ en 17 secciones (1. 1.1. 1.2. 1.3. 2. 2.1. 2.2. 2.3. 2.5. 2.6. 3. 3.1. 3.2. 3.3. 4. 4.1. 4.2.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1. · 2.5. · 2.6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Cáncer de pulmón",
@@ -9785,8 +9785,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -9797,7 +9797,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (14,8′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 1. Enfermedades de la pleura (0.5′ · contexto, sin preguntas citadas) · 1.2. Neumotórax (5′ · 9 preguntas MIR citadas) · 1.3. Tumores pleurales (2′ · 3 preguntas MIR citadas) · 2. Enfermedades del mediastino (0.5′ · contexto, sin preguntas citadas) · 2.1. Masas mediastínicas (2.5′ · 5 preguntas MIR citadas) · 2.2. Mediastinitis (1.5′ · contexto, sin preguntas citadas) · 3. Enfermedades del diafragma (0.5′ · 1 preguntas MIR citadas) · 3.1. Parálisis del diafragma (0.5′ · contexto, sin preguntas citadas) · 4 secciones que pregunta el MIR (+ 4 de contexto, sin preguntas citadas), enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (14,8′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Enfermedades de la pleura (0.5′ · contexto, sin preguntas citadas) · 1.2. Neumotórax (5′ · 9 preguntas MIR citadas) · 1.3. Tumores pleurales (2′ · 3 preguntas MIR citadas) · 2. Enfermedades del mediastino (0.5′ · contexto, sin preguntas citadas) · 2.1. Masas mediastínicas (2.5′ · 5 preguntas MIR citadas) · 2.2. Mediastinitis (1.5′ · contexto, sin preguntas citadas) · 3. Enfermedades del diafragma (0.5′ · 1 preguntas MIR citadas) · 3.1. Parálisis del diafragma (0.5′ · contexto, sin preguntas citadas) · 4 secciones que pregunta el MIR (+ 4 de contexto, sin preguntas citadas)",
       "como": "Hoy lees 14,8′ de 37′ (40 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 22,2′ en 2 secciones (1.1. 3.2.) · todo a 150 palabras/min · Base cero: estas 8 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 14,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades de la pleura, mediastino y diafragma",
@@ -10610,8 +10610,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -10622,7 +10622,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,1′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 3. Factores de riesgo (0.5′ · 1 preguntas MIR citadas) · 4. Fisiopatogenia (1′ · 1 preguntas MIR citadas) · 7. Enfoque diagnóstico (4′ · 12 preguntas MIR citadas) · 8.5. Corticoides inhalados (0.5′ · 1 preguntas MIR citadas) · 8.6. Corticoides sistémicos (0.5′ · 3 preguntas MIR citadas) · 8.8. Otros tratamientos (0.5′ · 2 preguntas MIR citadas) · 8.9. Tratamientos no farmacológicos (4.5′ · 14 preguntas MIR citadas) · 9. Pronóstico (1.5′ · 1 preguntas MIR citadas) · 8 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,1′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 3. Factores de riesgo (0.5′ · 1 preguntas MIR citadas) · 4. Fisiopatogenia (1′ · 1 preguntas MIR citadas) · 7. Enfoque diagnóstico (4′ · 12 preguntas MIR citadas) · 8.5. Corticoides inhalados (0.5′ · 1 preguntas MIR citadas) · 8.6. Corticoides sistémicos (0.5′ · 3 preguntas MIR citadas) · 8.8. Otros tratamientos (0.5′ · 2 preguntas MIR citadas) · 8.9. Tratamientos no farmacológicos (4.5′ · 14 preguntas MIR citadas) · 9. Pronóstico (1.5′ · 1 preguntas MIR citadas) · 8 secciones que pregunta el MIR",
       "como": "Hoy lees 15,1′ de 44,5′ (34 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 29,4′ en 20 secciones (1. 2. 3.1. 3.2. 3.3. 3.4. 3.5. 3.6. 3.7. 5. 5.1. 5.2. 5.3. 6. 8. 8.1. 8.2. 8.3. 8.4. 8.7.) · todo a 150 palabras/min · Base cero: estas 8 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —5.1. · 6. · 8.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · EPOC",
@@ -11293,8 +11293,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -11305,7 +11305,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,9′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2. Fibrosis pulmonar idiopática (11.5′ · 15 preguntas MIR citadas) · 7. Proteinosis alveolar (2′ · 2 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,9′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2. Fibrosis pulmonar idiopática (11.5′ · 15 preguntas MIR citadas) · 7. Proteinosis alveolar (2′ · 2 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 15,9′ de 37,8′ (42 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 21,9′ en 13 secciones (1. 1.1. 1.2. 3. 4. 5. 6. 8. 9. 10. 11. 12. 13.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —3. · 4. · 6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,9′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades intersticiales",
@@ -12012,7 +12012,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,3′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 1.2. El glomérulo (11.5′ · 8 preguntas MIR citadas) · 3.1. Factores reguladores de la homeostasis del potasio (2′ · 1 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,3′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1.2. El glomérulo (11.5′ · 8 preguntas MIR citadas) · 3.1. Factores reguladores de la homeostasis del potasio (2′ · 1 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,3′ de 104,8′ (16 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 88,5′ en 22 secciones (1. 1.1. 1.3. 1.4. 2. 2.1. 2.2. 2.3. 3. 3.2. 3.3. 4. 4.1. 4.2. 4.3. 5. 5.1. 5.2. 6. 6.1. 6.2. 6.3.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.3. · 3.3. · 6.2.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,3′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base",
@@ -12742,8 +12742,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -12754,7 +12754,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (14,4′ medidos a 150 palabras/min; 13′ a 180) · Orientación MIR (1′) + 1. Definición (0.5′ · 1 preguntas MIR citadas) · 3.2. Causas parenquimatosas (1′ · 1 preguntas MIR citadas) · 4.1. Análisis básico (0.5′ · 2 preguntas MIR citadas) · 4.2. Estudio de funcionalidad: índices urinarios (4.5′ · 6 preguntas MIR citadas) · 7.1. Tratamiento médico (1.5′ · 2 preguntas MIR citadas) · 7.2. Tratamiento renal sustitutivo: indicaciones absolutas (4′ · 1 preguntas MIR citadas) · 6 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (14,4′ medidos a 150 palabras/min; 13′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Definición (0.5′ · 1 preguntas MIR citadas) · 3.2. Causas parenquimatosas (1′ · 1 preguntas MIR citadas) · 4.1. Análisis básico (0.5′ · 2 preguntas MIR citadas) · 4.2. Estudio de funcionalidad: índices urinarios (4.5′ · 6 preguntas MIR citadas) · 7.1. Tratamiento médico (1.5′ · 2 preguntas MIR citadas) · 7.2. Tratamiento renal sustitutivo: indicaciones absolutas (4′ · 1 preguntas MIR citadas) · 6 secciones que pregunta el MIR",
       "como": "Hoy lees 14,4′ de 37′ (39 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 22,6′ en 16 secciones (2. 2.1. 2.2. 3. 3.1. 3.3. 4. 4.3. 4.4. 4.5. 4.6. 5. 6. 6.1. 6.2. 7.) · todo a 150 palabras/min · Base cero: estas 6 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —4.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 14,4′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Fracaso renal agudo",
@@ -13297,8 +13297,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -13309,7 +13309,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,5′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 1. Definiciones (2′ · contexto, sin preguntas citadas) · 2. Clasificación (0.5′ · contexto, sin preguntas citadas) · 4. Nefropatía por cambios mínimos (6′ · 5 preguntas MIR citadas) · 7. Nefropatía mesangial IgA (4.5′ · 4 preguntas MIR citadas) · 2 secciones que pregunta el MIR (+ 2 de contexto, sin preguntas citadas), enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,5′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Definiciones (2′ · contexto, sin preguntas citadas) · 2. Clasificación (0.5′ · contexto, sin preguntas citadas) · 4. Nefropatía por cambios mínimos (6′ · 5 preguntas MIR citadas) · 7. Nefropatía mesangial IgA (4.5′ · 4 preguntas MIR citadas) · 2 secciones que pregunta el MIR (+ 2 de contexto, sin preguntas citadas)",
       "como": "Hoy lees 15,5′ de 60,7′ (26 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 45,2′ en 6 secciones (3. 5. 6. 8. 9. 10.) · todo a 150 palabras/min · Base cero: estas 4 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —6. · 8. · 10.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Glomerulonefritis primarias",
@@ -13963,8 +13963,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -13975,7 +13975,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (14,8′ medidos a 150 palabras/min; 13′ a 180) · Orientación MIR (1′) + 1.2. Vasculitis asociadas a inmunocomplejos (2′ · 6 preguntas MIR citadas) · 2. Microangiopatías trombóticas: Síndrome hemolítico urémico y Púrpura trombótica trombocitopénica (3′ · 4 preguntas MIR citadas) · 3. Amiloidosis (4.5′ · 2 preguntas MIR citadas) · 5. Riñón y discrasia sanguínea (2.5′ · 5 preguntas MIR citadas) · 4 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (14,8′ medidos a 150 palabras/min; 13′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1.2. Vasculitis asociadas a inmunocomplejos (2′ · 6 preguntas MIR citadas) · 2. Microangiopatías trombóticas: Síndrome hemolítico urémico y Púrpura trombótica trombocitopénica (3′ · 4 preguntas MIR citadas) · 3. Amiloidosis (4.5′ · 2 preguntas MIR citadas) · 5. Riñón y discrasia sanguínea (2.5′ · 5 preguntas MIR citadas) · 4 secciones que pregunta el MIR",
       "como": "Hoy lees 14,8′ de 52,6′ (28 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 37,8′ en 15 secciones (1. 1.1. 1.3. 4. 6. 7. 8. 8.1. 8.2. 9. 10. 11. 11.1. 11.2. 11.3.) · todo a 150 palabras/min · Base cero: estas 4 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.1. · 6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 14,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Riñón y enfermedades sistémicas",
@@ -14483,8 +14483,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -14495,7 +14495,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3. Clasificación (0.5′ · 2 preguntas MIR citadas) · 5.2. Tratamiento renal sustitutivo (12′ · 4 preguntas MIR citadas) · 3 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3. Clasificación (0.5′ · 2 preguntas MIR citadas) · 5.2. Tratamiento renal sustitutivo (12′ · 4 preguntas MIR citadas) · 3 secciones que pregunta el MIR",
       "como": "Hoy lees 16,2′ de 31′ (52 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 14,8′ en 5 secciones (1. 4. 5. 5.1. 5.3.) · todo a 150 palabras/min · Base cero: estas 3 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1. · 4. · 5.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Insuficiencia renal crónica",
@@ -15117,8 +15117,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -15129,7 +15129,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,5′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 1. Introducción (0.5′ · contexto, sin preguntas citadas) · 1.1. Hematuria (1′ · contexto, sin preguntas citadas) · 1.2. Proteinuria (2.5′ · contexto, sin preguntas citadas) · 1.3. Sedimento urinario (2′ · contexto, sin preguntas citadas) · 1.4. Fracaso renal agudo (0.5′ · contexto, sin preguntas citadas) · 1.5. Insuficiencia renal crónica (0.5′ · contexto, sin preguntas citadas) · 2.3. Manifestaciones clínicas (0.5′ · 1 preguntas MIR citadas) · 3.2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3.3. Manifestaciones clínicas (4.5′ · 4 preguntas MIR citadas) · 3 secciones que pregunta el MIR (+ 6 de contexto, sin preguntas citadas), enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,5′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Introducción (0.5′ · contexto, sin preguntas citadas) · 1.1. Hematuria (1′ · contexto, sin preguntas citadas) · 1.2. Proteinuria (2.5′ · contexto, sin preguntas citadas) · 1.3. Sedimento urinario (2′ · contexto, sin preguntas citadas) · 1.4. Fracaso renal agudo (0.5′ · contexto, sin preguntas citadas) · 1.5. Insuficiencia renal crónica (0.5′ · contexto, sin preguntas citadas) · 2.3. Manifestaciones clínicas (0.5′ · 1 preguntas MIR citadas) · 3.2. Etiología (1.5′ · 2 preguntas MIR citadas) · 3.3. Manifestaciones clínicas (4.5′ · 4 preguntas MIR citadas) · 3 secciones que pregunta el MIR (+ 6 de contexto, sin preguntas citadas)",
       "como": "Hoy lees 15,5′ de 25,6′ (61 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 10,1′ en 9 secciones (2. 2.1. 2.2. 2.4. 2.5. 3. 3.1. 3.4. 3.5.) · todo a 150 palabras/min · Base cero: estas 9 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la lista ya cubre todas las secciones con preguntas citadas). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Síndromes clínicos en nefrología",
@@ -16201,7 +16201,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (17,1′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 9.1. Enfermedad hepática grasa no alcohólica (3′ · 6 preguntas MIR citadas) · 9.8. Afectación digestiva en la fibrosis quística. Hepatopatía en la fibrosis quística (1′ · 1 preguntas MIR citadas) · 11.2. Hepatocarcinoma (10′ · 14 preguntas MIR citadas) · 3 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (17,1′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 9.1. Enfermedad hepática grasa no alcohólica (3′ · 6 preguntas MIR citadas) · 9.8. Afectación digestiva en la fibrosis quística. Hepatopatía en la fibrosis quística (1′ · 1 preguntas MIR citadas) · 11.2. Hepatocarcinoma (10′ · 14 preguntas MIR citadas) · 3 secciones que pregunta el MIR",
       "como": "Hoy lees 17,1′ de 239′ (7 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 221,9′ en 39 secciones (1. 1.1. 1.2. 1.3. 2. 2.1. 2.2. 2.3. 3. 3.1. 3.2. 3.3. 3.4. 3.5. 3.6. 4. 5. 6. 7. 8. 8.1. 8.2. 9. 9.2. 9.3. 9.4. 9.5. 9.6. 9.7. 9.9. 10. 10.1. 10.2. 10.3. 10.4. 11. 11.1. 11.3. 11.4.) · todo a 150 palabras/min · Base cero: estas 3 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —4. · 10.2. · 11.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del hígado",
@@ -16999,8 +16999,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -17011,7 +17011,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (17,2′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.3. Cáncer colorrectal (12.5′ · 26 preguntas MIR citadas) · 4.3. Tratamiento (1.5′ · 5 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (17,2′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 3.3. Cáncer colorrectal (12.5′ · 26 preguntas MIR citadas) · 4.3. Tratamiento (1.5′ · 5 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 17,2′ de 100,6′ (17 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 83,4′ en 21 secciones (1. 1.1. 1.2. 1.3. 2. 3. 3.1. 3.2. 4. 4.1. 4.2. 5. 5.1. 5.2. 5.3. 5.4. 5.5. 5.6. 5.7. 5.8. 5.9.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.1. · 3.2. · 4.1.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del colon",
@@ -17810,8 +17810,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -17822,7 +17822,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,5′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 3.1. Obstrucción intestinal mecánica (11.5′ · 14 preguntas MIR citadas) · 7.1. Definición y diagnóstico (2.5′ · 3 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,5′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 3.1. Obstrucción intestinal mecánica (11.5′ · 14 preguntas MIR citadas) · 7.1. Definición y diagnóstico (2.5′ · 3 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,5′ de 108,1′ (15 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 91,6′ en 25 secciones (1. 2. 2.1. 2.2. 2.3. 2.4. 3. 3.2. 4. 4.1. 4.2. 5. 5.1. 5.2. 5.3. 5.4. 5.5. 5.6. 6. 6.1. 6.2. 6.3. 6.4. 7. 7.2.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2.1. · 2.4. · 6.2.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,5′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del intestino delgado",
@@ -18611,8 +18611,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -18623,7 +18623,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 4.1. Gastroparesia (1.5′ · 3 preguntas MIR citadas) · 5.4. Tratamiento médico (3′ · 3 preguntas MIR citadas) · 5.6. Complicaciones de la úlcera péptica (1′ · 3 preguntas MIR citadas) · 6.3. Tratamiento endoscópico (2′ · 5 preguntas MIR citadas) · 7.1. Tumores benignos (6′ · 7 preguntas MIR citadas) · 5 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,2′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 4.1. Gastroparesia (1.5′ · 3 preguntas MIR citadas) · 5.4. Tratamiento médico (3′ · 3 preguntas MIR citadas) · 5.6. Complicaciones de la úlcera péptica (1′ · 3 preguntas MIR citadas) · 6.3. Tratamiento endoscópico (2′ · 5 preguntas MIR citadas) · 7.1. Tumores benignos (6′ · 7 preguntas MIR citadas) · 5 secciones que pregunta el MIR",
       "como": "Hoy lees 16,2′ de 68,4′ (24 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 52,2′ en 24 secciones (1. 2. 2.1. 2.2. 2.3. 2.4. 3. 3.1. 3.2. 4. 4.2. 5. 5.1. 5.2. 5.3. 5.5. 6. 6.1. 6.2. 6.4. 6.5. 7. 7.2. 8.) · todo a 150 palabras/min · Base cero: estas 5 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —6.2. · 6.5. · 8.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,2′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del estómago",
@@ -19251,8 +19251,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -19263,7 +19263,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,6′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.1. Hernias (12.5′ · 13 preguntas MIR citadas · clip 2:01) · 3. Complicaciones de la cirugía (1.5′ · 3 preguntas MIR citadas) · 2 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,6′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.1. Hernias (12.5′ · 13 preguntas MIR citadas · clip 2:01) · 3. Complicaciones de la cirugía (1.5′ · 3 preguntas MIR citadas) · 2 secciones que pregunta el MIR",
       "como": "Hoy lees 16,6′ de 39,3′ (42 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 22,7′ en 12 secciones (1. 2. 2.2. 2.3. 3.1. 3.2. 3.3. 3.4. 3.5. 4. 5. 6.) · todo a 150 palabras/min · Base cero: estas 2 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —3.1. · 4. · 6.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,6′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Miscelánea de temas quirúrgicos",
@@ -19878,8 +19878,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -19890,7 +19890,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,9′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 2.1. Etiología (4′ · 3 preguntas MIR citadas) · 2.3. Diagnóstico (1′ · 3 preguntas MIR citadas) · 3.1. Tumores sólidos (9′ · 18 preguntas MIR citadas) · 3 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,9′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.1. Etiología (4′ · 3 preguntas MIR citadas) · 2.3. Diagnóstico (1′ · 3 preguntas MIR citadas) · 3.1. Tumores sólidos (9′ · 18 preguntas MIR citadas) · 3 secciones que pregunta el MIR",
       "como": "Hoy lees 16,9′ de 87,7′ (19 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 70,8′ en 12 secciones (1. 1.1. 1.2. 1.3. 1.4. 1.5. 2. 2.2. 2.4. 3. 3.2. 4.) · todo a 150 palabras/min · Base cero: estas 3 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —1.2. · 1.5. · 4.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,9′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del páncreas",
@@ -20443,8 +20443,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -20455,7 +20455,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,7′ medidos a 150 palabras/min; 14′ a 180) · Orientación MIR (1′) + 2.2. Otros trastornos motores esofágicos (3.5′ · 2 preguntas MIR citadas) · 3.2. Esofagitis infecciosas (2′ · 1 preguntas MIR citadas · clip 1:31) · 3.4. Esofagitis eosinofílica (4′ · 6 preguntas MIR citadas) · 5. Tumores del esófago (3.5′ · 5 preguntas MIR citadas) · 4 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,7′ medidos a 150 palabras/min; 14′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2.2. Otros trastornos motores esofágicos (3.5′ · 2 preguntas MIR citadas) · 3.2. Esofagitis infecciosas (2′ · 1 preguntas MIR citadas · clip 1:31) · 3.4. Esofagitis eosinofílica (4′ · 6 preguntas MIR citadas) · 5. Tumores del esófago (3.5′ · 5 preguntas MIR citadas) · 4 secciones que pregunta el MIR",
       "como": "Hoy lees 15,7′ de 76,1′ (21 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 60,4′ en 7 secciones (1. 2. 2.1. 3. 3.1. 3.3. 4.) · todo a 150 palabras/min · Base cero: estas 4 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —2.1. · 3.1. · 4.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,7′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades del esófago",
@@ -21016,8 +21016,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -21028,7 +21028,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (15,8′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 2. Anatomía y fisiología (1′ · 1 preguntas MIR citadas) · 3. Colelitiasis o litiasis biliar (3.5′ · 3 preguntas MIR citadas) · 4.4. Coledocolitiasis (5.5′ · 6 preguntas MIR citadas) · 4.5. Colangitis aguda (3′ · 4 preguntas MIR citadas) · 5.1. Benignos (0.5′ · 1 preguntas MIR citadas) · 5 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (15,8′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 2. Anatomía y fisiología (1′ · 1 preguntas MIR citadas) · 3. Colelitiasis o litiasis biliar (3.5′ · 3 preguntas MIR citadas) · 4.4. Coledocolitiasis (5.5′ · 6 preguntas MIR citadas) · 4.5. Colangitis aguda (3′ · 4 preguntas MIR citadas) · 5.1. Benignos (0.5′ · 1 preguntas MIR citadas) · 5 secciones que pregunta el MIR",
       "como": "Hoy lees 15,8′ de 52,3′ (30 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 36,5′ en 7 secciones (1. 4. 4.1. 4.2. 4.3. 5. 5.2.) · todo a 150 palabras/min · Base cero: estas 5 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —4.2. · 4.3. · 5.2.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 15,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Enfermedades de la vía biliar",
@@ -21829,7 +21829,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (17,8′ medidos a 150 palabras/min; 15′ a 180) · Orientación MIR (1′) + 1. Metabolismo de los hidratos de carbono (5′ · 7 preguntas MIR citadas) · 3. Diagnóstico y cribado (2′ · 4 preguntas MIR citadas) · 7.2. Fármacos no insulínicos (7′ · 21 preguntas MIR citadas) · 3 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (17,8′ medidos a 150 palabras/min; 15′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 1. Metabolismo de los hidratos de carbono (5′ · 7 preguntas MIR citadas) · 3. Diagnóstico y cribado (2′ · 4 preguntas MIR citadas) · 7.2. Fármacos no insulínicos (7′ · 21 preguntas MIR citadas) · 3 secciones que pregunta el MIR",
       "como": "Hoy lees 17,8′ de 90,4′ (20 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 52,7′ en 25 secciones (2. 4. 5. 5.1. 5.2. 6. 7. 7.1. 7.3. 7.4. 7.5. 7.6. 7.7. 8. 8.1. 8.2. 8.3. 9. 9.1. 9.2. 9.3. 10. 10.1. 10.2. 10.3.) + 19,9′ de vídeos del capítulo (Vídeo 5-1 8:38 · Vídeo 5-2 11:13) · todo a 150 palabras/min · Base cero: estas 3 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —7.3. · 7.4. · 7.7.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 17,8′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Diabetes mellitus",
@@ -22861,8 +22861,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 7,
@@ -22873,7 +22873,7 @@
      {
       "min": 16,
       "hora": "15:37–15:53",
-      "que": "LECTURA DE BASE 16′ (16,1′ medidos a 150 palabras/min; 14,5′ a 180) · Orientación MIR (1′) + 6.1. Tiroiditis dolorosas (3′ · 6 preguntas MIR citadas) · 8.1. Tumores del epitelio folicular (8.5′ · 6 preguntas MIR citadas) · 8.2. Carcinoma medular de tiroides (2′ · 7 preguntas MIR citadas) · 3 secciones que pregunta el MIR, enteras y en el orden del capítulo",
+      "que": "LECTURA DE BASE 16′ (16,1′ medidos a 150 palabras/min; 14,5′ a 180), en orden y cada apartado entero (Whole Page Rule) · Orientación MIR (1′) + 6.1. Tiroiditis dolorosas (3′ · 6 preguntas MIR citadas) · 8.1. Tumores del epitelio folicular (8.5′ · 6 preguntas MIR citadas) · 8.2. Carcinoma medular de tiroides (2′ · 7 preguntas MIR citadas) · 3 secciones que pregunta el MIR",
       "como": "Hoy lees 16,1′ de 72,5′ (22 %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): 56,4′ en 36 secciones (1. 1.1. 1.2. 1.3. 1.4. 1.5. 2. 2.1. 2.2. 2.3. 2.4. 3. 3.1. 3.2. 3.3. 3.4. 3.5. 3.6. 4. 5. 5.1. 5.2. 5.3. 5.4. 5.5. 5.6. 5.7. 6. 6.2. 7. 7.1. 7.2. 7.3. 8. 8.3. 8.4.) · todo a 150 palabras/min · Base cero: estas 3 secciones en el orden del capítulo, cada una entera (Whole Page Rule): ninguna a medias y ninguna de la lista se salta aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte) · la lista son las secciones más citadas por el MIR que caben ENTERAS en 14′ (a 180 palabras/min; la que no cabe se salta y entra la siguiente entera: criterio de la academia para la 1.ª vuelta, lo que ya cayó); Ravi pide más amplitud desde el principio: tensión declarada en DATA/MIR/METODO_BASE_CERO.md §10, decide Joseph · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, repasa en blanco lo leído (la reserva —5.3. · 5.4. · 5.7.— no cabe entera en lo que sobra: va a la 2.ª vuelta). Minutos de cada sección a 180 palabras/min (ritmo de referencia del método); a 150 —la regla de lectura en español— la lista suma 16,1′ con el recuadro: por eso el paso es de 16′. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.",
       "enlace": {
        "t": "ProMIR · Glándula tiroides",
@@ -23897,8 +23897,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -24911,8 +24911,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -25520,8 +25520,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -26167,8 +26167,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -27771,8 +27771,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -28405,8 +28405,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -28946,8 +28946,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -29544,8 +29544,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -30167,8 +30167,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -30764,8 +30764,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -31934,8 +31934,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -32468,8 +32468,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -32946,8 +32946,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -33603,8 +33603,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -35147,8 +35147,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -36000,8 +36000,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -36784,8 +36784,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -37459,8 +37459,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -38182,8 +38182,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -38755,8 +38755,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -39341,8 +39341,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -40596,8 +40596,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -41327,8 +41327,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -42054,8 +42054,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -42570,8 +42570,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -43113,8 +43113,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -44255,8 +44255,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -44750,8 +44750,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -45336,8 +45336,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -45895,8 +45895,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -46435,8 +46435,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -48337,8 +48337,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -48932,8 +48932,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -49590,8 +49590,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -50085,8 +50085,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -51521,8 +51521,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,
@@ -52203,8 +52203,8 @@
      {
       "min": 3,
       "hora": "15:27–15:30",
-      "que": "Log de la eval en la app",
-      "como": "aciertos/4 · brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
+      "que": "Log de la eval en la app · aciertos/4",
+      "como": "brecha knowledge / transfer / proceso · fallo D-7 → cola D+14 · slot ✗ → tema caliente en la próxima sesión."
      },
      {
       "min": 8,

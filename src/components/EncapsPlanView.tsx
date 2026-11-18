@@ -510,11 +510,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         {!!carrilB && (
           <Text style={styles.subEjeLine}>
             ◈ 16:15 CARRIL B · {carrilB.tipo === 'mini_sim'
-              ? `REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q · cola larga ${carrilB.colaLarga.join(' + ')}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de la F1 ${(carrilB.origen || '').replace('mantenimiento_', '') || 'anterior'}${carrilB.fechaOriginal ? `, ${fechaCorta(carrilB.fechaOriginal)}` : ''}: no cupo tras el corrimiento → se REPONE hoy)` : ''}${recetaCB ? ` · receta ${miniSimRecetaTexto(recetaCB)} · 16:15-16:45 mini-sim + 16:45-17:15 corrección → CIERRE tipo mini_sim (nota /25 → study_sim_scores sim_n = ${recetaCB.simN})` : ''}`
+              ? `REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q · cola larga ${carrilB.colaLarga.join(' + ')}${carrilB.diaMant ? ' (sesión de F1 que no cupo → se REPONE hoy)' : ''}${recetaCB ? ` · receta ${miniSimRecetaTexto(recetaCB)} · 16:15-16:45 mini-sim + 16:45-17:15 corrección → CIERRE tipo mini_sim (nota /25 → study_sim_scores sim_n = ${recetaCB.simN})` : ''}`
               : carrilB.tipo === 'banqueo1h'
               ? carrilB.reposicionF1
-                ? `REPOSICIÓN F1 · ${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de la F1 ${(carrilB.origen || '').replace('mantenimiento_', '') || 'anterior'}: no cupo tras el corrimiento)` : ''}`
-                : `${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de v5.20)` : ''}`
+                ? `REPOSICIÓN F1 · ${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ' (sesión de F1 que no cupo)' : ''}`
+                : `${carrilB.codigo || ''} ${carrilB.subtema}`
               : CARRIL_B_REPOSICION_LABEL}
           </Text>
         )}
@@ -528,7 +528,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <Text style={styles.subEjeLine}>
             ◈ SÁB {fechaCorta(carrilSab.fecha).replace(/-\d{4}$/, '')} {carrilSab.ini}-{carrilSab.fin} · CARRIL SÁBADO · REPOSICIÓN F1 · {carrilSab.cb.tipo === 'mini_sim'
               ? `🔥 MINI-SIMULACRO 25Q · cola larga ${carrilSab.cb.colaLarga.join(' + ')} · nota /25 → study_sim_scores sim_n = ${carrilSab.simN ?? today.dia}`
-              : `${carrilSab.cb.codigo || ''} ${carrilSab.cb.subtema}`}{carrilSab.cb.diaMant ? ` (fila mant. ${carrilSab.cb.diaMant} de la F1 ${(carrilSab.cb.origen || '').replace('mantenimiento_', '') || 'anterior'}: no cupo en la F1 ni en el carril B lun-jue)` : ''}
+              : `${carrilSab.cb.codigo || ''} ${carrilSab.cb.subtema}`}{carrilSab.cb.diaMant ? ' (sesión de F1 que no cupo en la F1 ni en el carril B lun-jue)' : ''}
           </Text>
         )}
         {!!today.primer_finde_estudio && (
@@ -1100,7 +1100,7 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
   const bloqueCB: HorarioBlock = {
     hora: '16:15-17:15',
     titulo: cb.tipo === 'mini_sim'
-      ? `◈ CARRIL B · REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q (${recCB?.segPorQ ?? 72} s/Q) · cola larga ${cb.colaLarga.join(' + ')}${cb.diaMant ? ` · fila mant. ${cb.diaMant} de la F1 ${(cb.origen || '').replace('mantenimiento_', '') || 'anterior'}` : ''}`
+      ? `◈ CARRIL B · REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q (${recCB?.segPorQ ?? 72} s/Q) · cola larga ${cb.colaLarga.join(' + ')}${cb.diaMant ? ' · sesión de F1 que no cupo' : ''}`
       : cb.tipo === 'banqueo1h'
       ? `◈ CARRIL B · ${cb.reposicionF1 ? 'REPOSICIÓN F1 · ' : ''}${cb.codigo || ''} ${cb.subtema}`.replace(/\s+/g, ' ') // v6.01: + reposición F1
       : `◈ CARRIL B · ${CARRIL_B_REPOSICION_LABEL}`,

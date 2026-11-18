@@ -5,14 +5,14 @@
  "fecha": "2026-11-18",
  "codigo": "MIX",
  "sub_eje": null,
- "tema": "eval anclada · D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero",
+ "tema": "eval anclada · D1 del régimen (sin sesión anterior): 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero",
  "fuente_preguntas": "BANCO_PROPIO (set_I-3_1.json)",
  "n": 5,
  "seg_por_q": 72,
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas del tema de AYER (D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas REALES (examen oficial con clave) de fallos previos del registro, críticos primero · D1 del régimen (sin sesión anterior), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
@@ -21,7 +21,7 @@
    "codigo": null,
    "sub_eje": null
   },
-  "modo": "D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero",
+  "modo": "D1 del régimen (sin sesión anterior): 5Q REALES (examen oficial con clave) de fallos previos del registro, críticos primero",
   "lista_negra_pretest": "VIGENTE",
   "refrescado": [
    {
@@ -30,6 +30,15 @@
      "marca de lista negra → _meta.lista_negra_pretest («VIGENTE»)"
     ],
     "motivo": "textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos"
+   },
+   {
+    "el": "2026-11-18",
+    "cambios": [
+     "_meta.modo",
+     "tema",
+     "instrucciones"
+    ],
+    "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
    }
   ],
   "realineado": [

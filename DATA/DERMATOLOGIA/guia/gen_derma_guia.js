@@ -56,6 +56,10 @@
 //   StatPearls «Facial Artery»). El --check valida además: (1) ninguna sesión (F1 + 2027, plan A/B, 45′/30′) menciona el proyecto Claude ni pide preguntas o
 //   viñetas a una IA; (2) cada sesión de F1 del mapa lleva su paso DermNet con k casos × min/caso / minutos del paso en 0,85-1,15, casos dentro del quiz y sin
 //   repetir casos entre sesiones; (3) la lectura real de F1 declara sus «(N′ medidos» y cuadra. Las FASES (base cero) viven en src/lib/dermaGuia.ts.
+// v6.10g (revisión 18-nov · c10/c11): (1) d1: el mazo APEX::DERMA::A nace con la 1.ª tarjeta del cierre (ya no se crea vacío a las 13:30) · (2) AccessDerma
+//   primero en el aviso (dermaGuia.dermaGuiaPar) · (3) DermNet: +3 «Dermoscopy quiz (n of 3)» (20 casos, sinTiempo) y k = floor(min/2) en el mapa de F1 (+1′ de
+//   ledger) · (4) --check valida TODO el plan (F1 + 2027, plan B en su franja): cada paso «DermNet Quizzes ›» con quiz real, rango de casos dentro del quiz,
+//   0 casos repetidos en el plan, aritmética = minutos del paso y «cómo» que abre en su primer caso (el cursor vive en dermaGuia.dermnetAsignacion).
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -345,7 +349,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
 
 /** v6.10e (18-nov-2026 · PREGUNTAS REALES): DermNet Quizzes (https://dermnetnz.org/quizzes — públicos, escritos por DermNet: imagen real + respuesta tras
  *  «Show Answers») leídos el 18-nov-2026: slug → título · nº de casos · minutos por caso que declara el propio quiz. Sustituyen al proyecto Claude. */
-export const DERMNET_QUIZZES: Record<string, { t: string; n: number; min: number }> = ${JSON.stringify(CAT.DERMNET_QUIZZES)};
+export const DERMNET_QUIZZES: Record<string, { t: string; n: number; min: number; sinTiempo?: boolean }> = ${JSON.stringify(CAT.DERMNET_QUIZZES)};
 /** v6.10e: F1 — rango de casos REALES por sesión (clave = d; k = minutos del hueco / min por caso) o ProMIR (nº de preguntas MIR oficiales) y qué se entrena. */
 export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: number; lectura?: string; promir?: number; foco: string }> = ${J1(CAT.DERMA_QUIZ_F1)};
 /** v6.10e: lecturas REALES medidas el 18-nov-2026 (palabras/100 + 0,25′ por figura) que sustituyen al proyecto Claude (d5 StatPearls · d6 lista de 3 puntos). */
@@ -467,7 +471,39 @@ function validarTodo(tsDatos) {
     const dib = /dibujo[^(]*\(≈(\d+(?:,\d+)?)′\)/.exec(p.que); const nec = Number(mm[1].replace(',', '.')) + (dib ? Number(dib[1].replace(',', '.')) : 0);
     if (!(nec / p.min >= 0.85 && nec / p.min <= 1.15)) errores.push(`d${dia.d} ${dia.fecha}: «${p.que.slice(0, 60)}…» ${p.min}′ para ${nec.toFixed(2)}′ medidos (fuera de 0,85-1,15)`);
   }
-  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1, nIA, nQuizF1, nCasosF1 };
+  // (4) v6.10g (revisión 18-nov · c11): TODO el plan (F1 + 2027, plan B en su franja: 45′; 30′ en el SERUMS), en orden de fecha: cada paso «DermNet Quizzes ›»
+  //   nombra quizzes REALES del catálogo y su rango de casos (dentro del quiz y sin repetir un caso en todo el plan), su aritmética cuadra con los minutos
+  //   del paso (Σ casos × min/caso + ≤ 1′ de ledger, o el resto como 2.ª pasada de fallos solo si el catálogo se agotó) y el «cómo» abre en su primer caso
+  const porTitulo = new Map(Object.entries(CAT.DERMNET_QUIZZES).map(([s, q]) => [q.t, { slug: s, ...q }]));
+  const usadosDN = new Map(); let nPasosDN = 0, nCasosDN = 0, nSegunda = 0;
+  for (const dia of [...D2.DERMA_DIAS_TODOS].sort((a, b) => (a.fecha < b.fecha ? -1 : 1))) {
+    const min = F6.faseV6(dia.fecha) === 'F4' ? 30 : 45; const tag = `d${dia.d} ${dia.fecha}`;
+    for (const p of DG.dermaGuiaPar(dia, min === 30 ? { minutos: 30 } : {}).planB.pasos) {
+      if (!/^DermNet Quizzes /.test(p.que)) continue;
+      nPasosDN++;
+      if (/^DermNet Quizzes · 2\.ª pasada de tus fallos/.test(p.que)) { nSegunda++; continue; }
+      const cab = /^DermNet Quizzes › (.*) \((\d+) casos? REALES?(?::| ×)(.*?)= (\d+)′(?: \+ (\d+)′ (para el ledger y la nota docente de tus fallos|para el ledger|de 2\.ª pasada de tus fallos))?(?:,[^)]*)?\)$/.exec(p.que);
+      if (!cab) { errores.push(`${tag}: paso DermNet sin el formato «quiz · casos (N casos REALES × ~m′ = X′)»: «${p.que.slice(0, 120)}»`); continue; }
+      const segs = [...cab[1].matchAll(/«([^»]+)» · casos? ([\d]+(?:-\d+)?(?:(?:, | y )\d+(?:-\d+)?)*)/g)];
+      if (!segs.length) { errores.push(`${tag}: paso DermNet sin quiz ni casos: «${p.que.slice(0, 120)}»`); continue; }
+      let nCas = 0, mins = 0; let primero = null;
+      for (const [, t, r] of segs) {
+        const Q = porTitulo.get(t); if (!Q) { errores.push(`${tag}: «${t}» no es un quiz del catálogo (dermnetnz.org/quizzes)`); continue; }
+        const cs = r.split(/, | y /).flatMap((x) => { const [a, b] = x.split('-').map(Number); return b ? Array.from({ length: b - a + 1 }, (_, i) => a + i) : [a]; });
+        if (primero == null) primero = cs[0];
+        const u = usadosDN.get(Q.slug) || new Map();
+        for (const c of cs) { if (c < 1 || c > Q.n) errores.push(`${tag}: «${t}» caso ${c} fuera del quiz (${Q.n} casos)`); if (u.has(c)) errores.push(`${tag}: «${t}» caso ${c} repetido (ya en ${u.get(c)})`); u.set(c, tag); }
+        usadosDN.set(Q.slug, u); nCas += cs.length; mins += cs.length * Q.min;
+      }
+      const resto = cab[5] ? Number(cab[5]) : 0;
+      if (Number(cab[2]) !== nCas || Number(cab[4]) !== mins || mins + resto !== p.min) errores.push(`${tag}: aritmética DermNet ${cab[2]} casos = ${cab[4]}′ + ${resto}′ ≠ ${nCas} casos = ${mins}′ en ${p.min}′`);
+      if (cab[6] === 'para el ledger' && resto > 1) errores.push(`${tag}: ${resto}′ «para el ledger» (máx. 1′)`);
+      if (/nota docente/.test(cab[6] || '') && !(resto >= 2 && resto <= 4)) errores.push(`${tag}: ${resto}′ «para el ledger y la nota docente» (2-4′: lo que no llena un caso de ~5′)`);
+      if (primero != null && !p.como.includes(`→ caso ${primero}`)) errores.push(`${tag}: el «cómo» del paso DermNet no abre en el caso ${primero}`);
+      nCasosDN += nCas;
+    }
+  }
+  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1, nIA, nQuizF1, nCasosF1, nPasosDN, nCasosDN, nSegunda };
   return { errores, n, resumen };
 }
 const v = validarTodo(out);
@@ -475,7 +511,7 @@ if (v.errores.length) { console.error(v.errores.slice(0, 40).join('\n')); aborta
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/dermaGuiaDatos.ts NO está al día → node DATA/DERMATOLOGIA/guia/gen_derma_guia.js'); process.exit(1); }
-  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes) · 0 pasos con preguntas/viñetas de IA en ${v.resumen.nIA} bloques · F1 con ${v.resumen.nQuizF1} pasos DermNet Quizzes (${v.resumen.nCasosF1} casos REALES, sin repetir) + ProMIR`);
+  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes) · 0 pasos con preguntas/viñetas de IA en ${v.resumen.nIA} bloques · F1 con ${v.resumen.nQuizF1} pasos DermNet Quizzes (${v.resumen.nCasosF1} casos REALES, sin repetir) + ProMIR · todo el plan: ${v.resumen.nPasosDN} pasos DermNet con quiz y rango REAL (${v.resumen.nCasosDN} casos, 0 repetidos${v.resumen.nSegunda ? `, ${v.resumen.nSegunda} de 2.ª pasada` : ""})`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/dermaGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total}`);

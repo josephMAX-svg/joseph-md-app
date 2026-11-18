@@ -274,8 +274,10 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
     case 2: return [
       P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'VS Code: Ctrl+A, Ctrl+C del fichero → n8n: doble clic en el nodo → clic en el código → Ctrl+A, Ctrl+V. No toques «Anki + Obsidian» ni los modos (All Items / Each Item). Ctrl+F «v2.5.1» en cada nodo: tiene que aparecer.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
-      P(13, '1 APEX de prueba [TEST S1] y lectura de Executions: el verde solo NO basta (con Anki cerrado también sale verde)', 'Ctrl+A, Ctrl+C del .txt de prueba (D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\S1_bloque_APEX_prueba_USMLE.txt; el mismo texto está en el PDF de GoodNotes › S01_APEX) → Ctrl+Shift+A → n8n › Executions → la primera, con la hora de ahora: el reverso del item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath.'),
-      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
+      // v6.10h (revisión 18-nov · c10): la acción primero y la ruta del .txt al final (el Calendar corta el «cómo» a 110: antes se veía solo la ruta) · la
+      //   [TEST S1] es la 1.ª tarjeta de APEX::USMLE: crea el mazo raíz y ::Cardiology (suspendida); el preset va al cerrar el bloque Step de las 07:15 (usmleGuia)
+      P(13, '1 APEX de prueba [TEST S1] y lectura de Executions: el verde solo NO basta (con Anki cerrado también sale verde)', 'Ctrl+A, Ctrl+C del .txt de prueba → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El .txt: D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\S1_bloque_APEX_prueba_USMLE.txt (el mismo texto está en el PDF de GoodNotes › S01_APEX).'),
+      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas; APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
     ];
     case 3: return [
       P(10, 'Anki: ¿la [TEST S1] cayó en APEX::USMLE::Cardiology (subdeck, no el mazo raíz)?', `Anki › Browse → \`deck:APEX::USMLE*\` → ordena por «Created»: la [TEST S1] del ${dia(2)} (amarilla = suspendida). Si el ${dia(2)} salió rojo, hoy va primero ese arreglo (fichero → test «0 failed» → repega + Publish → reenvía → suspende).`),
@@ -695,7 +697,24 @@ function synSabadoResto(iso: string, min: number): { franja: string; aviso: stri
   const c = bizCierreDe(iso);
   const tras = !!c && c.fecha === iso && aMin(c.ini) < aMin('15:00') + min && aMin(c.fin) > aMin('15:00');
   const ini = tras && c ? c.fin : '15:00';
-  return { franja: franjaDesde(ini, min), aviso: tras && c ? `Sábado: A/B/C a las ${ini}, al terminar el cierre de Business (${c.ini}-${c.fin}), o en cualquier tiempo muerto. El SHIP del vibecoding es el domingo.` : 'Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto). El SHIP del vibecoding es el domingo.' };
+  return { franja: franjaDesde(ini, min), aviso: tras && c ? `Sábado: A/B/C a las ${ini}, al terminar el cierre de Business (${c.ini}-${c.fin}), o en cualquier tiempo muerto.${pcDomingoTxt(iso)}` : `Sábado: A/B/C a las 15:00 (o en cualquier tiempo muerto).${pcDomingoTxt(iso)}` };
+}
+/** v6.10 (c12, 18-nov): lo que el aviso del SYNAPSE de un sábado dice del PC del DOMINGO siguiente, según lo que ese domingo trae de verdad
+ *  (vibePCDomingo): SHIP · avance · PC opcional del taper; '' si ese domingo no tiene PC (antes, «El SHIP del vibecoding es el domingo» fijo, también
+ *  los sábados 20-feb, 27-feb, 6-mar y 20-mar de 2027, cuyo domingo solo trae el PC opcional del taper, y el 27-mar, sin PC). */
+function pcDomingoTxt(sab: string): string {
+  const pcs = vibePCDomingo(addDias(sab, 1)), main = pcs[pcs.length - 1];
+  if (!main) return '';
+  if (main.tipo === 'ship') return ' El SHIP del vibecoding es el domingo.';
+  if (main.tipo === 'avance') return ' El avance del vibecoding es el domingo.';
+  return pcs.some((x) => x.taper?.tipo === 'mantenimiento') ? ' El PC opcional del taper es el domingo.' : '';
+}
+/** v6.10 (c12, 18-nov): la tarde de un sábado de F2 en el aviso del SYNAPSE — el CARRIL SÁBADO ENCAPS solo si ese sábado lo tiene (encapsSabadoDe, el
+ *  mismo dato con el que plantillasV6 pinta el bloque) y, sin carril, «preparar la clase» 14:45 si hay clase en vivo (sáb 6-mar-2027); antes, «14:00
+ *  carril SÁBADO ENCAPS» fijo. */
+function tardeSabadoF2Txt(sab: string, vivo: boolean): string {
+  const cs = encapsSabadoDe(sab);
+  return cs ? ` · ${cs.ini} carril SÁBADO ENCAPS` : vivo ? ' · 14:45 preparar la clase' : '';
 }
 /** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30) ·
  *  v6.05 (fix): ENCAPS 11:00-13:00 de F2 (SIM #7/#8 · D-2) → 13:00 (antes 12:30, solapado 30′ con el SIM). */
@@ -710,10 +729,10 @@ export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: st
   const vivoTxt = (sabTh ? !!sabTh.vivo : faseV6(iso) === 'F2') ? ' · 15:00-17:00 Theomed en vivo' : '';
   if (dow(iso) === 6) return sabadoTheomed(iso)
     // v6.07b (mar 10-nov): sábado real de Joseph = gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 en vivo · baile 17:00-20:00 → A/B/C a las 21:00, al volver
-    ? { franja: franjaDesde('21:00', min), aviso: `Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00)${faseV6(iso) === 'F1' || ((FECHAS_V6.step1 as { f1_extra?: string[] }).f1_extra ?? []).includes(iso) /* v6.10: el sáb 2-ene (D13 del Step) también lleva el Anki de las 21:30 · tanda C: decisión 4 (el Step ya no usa el sáb 2-ene) quita step1.f1_extra → sin él, solo F1 (como la v6.09) */ ? '; después, el Anki de las 21:30' : ''}. El SHIP del vibecoding es el domingo.` }
+    ? { franja: franjaDesde('21:00', min), aviso: `Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00)${faseV6(iso) === 'F1' || ((FECHAS_V6.step1 as { f1_extra?: string[] }).f1_extra ?? []).includes(iso) /* v6.10: el sáb 2-ene (D13 del Step) también lleva el Anki de las 21:30 · tanda C: decisión 4 (el Step ya no usa el sáb 2-ene) quita step1.f1_extra → sin él, solo F1 (como la v6.09) */ ? '; después, el Anki de las 21:30' : ''}.${pcDomingoTxt(iso)}` }
     // v6.08 (14-nov-2026): F2 (ene-mar) — 15:00-17:00 es la clase EN VIVO de Theomed (repasos) y 14:00-15:00 el carril SÁBADO ENCAPS → A/B/C a las 21:00
     : faseV6(iso) === 'F2'
-      ? { franja: franjaDesde('21:00', min), aviso: `Sábado de la intensiva: A/B/C a las 21:00, al volver del baile (04:15 STEP 1 VIVO · 07:15 revisión · gimnasio 08:30-14:00 · 14:00 carril SÁBADO ENCAPS${vivoTxt} · baile 17:00-20:00). El SHIP del vibecoding es el domingo.` }
+      ? { franja: franjaDesde('21:00', min), aviso: `Sábado de la intensiva: A/B/C a las 21:00, al volver del baile (04:15 STEP 1 VIVO · 07:15 revisión · gimnasio 08:30-14:00${tardeSabadoF2Txt(iso, !!vivoTxt)}${vivoTxt} · baile 17:00-20:00).${pcDomingoTxt(iso)}` }
       : synSabadoResto(iso, min);
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
@@ -859,9 +878,11 @@ const SHIP_EJ = { tarde: '14:45', manana: '07:25', min: 120, feynmanMin: 10 } as
  *  ejemplo de TARDE el Feynman ya no va 10′ antes del SHIP (14:35, lo pisaba) sino en sus 10′ iniciales (14:45-14:55, «al empezar el SHIP»).
  *  El ejemplo de mañana (07:15 Feynman + 07:25 SHIP) no cambia. Lo usan guiaFeynmanDe y check_rutina_guia.js (16). */
 export const FEYNMAN_AL_EMPEZAR_DESDE = '2026-12-06';
-/** v6.09b lote 1-quater FX1 (revisión V3): domingos de F1 sin compromiso que pise 14:35-14:45 (dom 27-dic: a las 12:00 · dom 3-ene: ninguno declarado) → el Feynman
- *  vuelve justo ANTES del SHIP (14:35-14:45), como el 29-nov; antes iba en sus 10′ iniciales (14:45-14:55) y su hora de ejemplo se solapaba con la del SHIP. */
-const FEYNMAN_ANTES_SHIP_F1 = new Set(['2026-12-27', '2027-01-03']);
+/** v6.09b lote 1-quater FX1 (revisión V3): domingos de F1 sin compromiso que pise 14:35-14:45 (dom 27-dic: a las 12:00) → el Feynman
+ *  vuelve justo ANTES del SHIP (14:35-14:45), como el 29-nov; antes iba en sus 10′ iniciales (14:45-14:55) y su hora de ejemplo se solapaba con la del SHIP.
+ *  v6.10 (c12, 18-nov): sin el dom 3-ene — el Calendar tiene ese día un compromiso personal hasta las 14:45 y puso el Feynman 14:45-14:55, al empezar el
+ *  SHIP (como los domingos de 2027): la app dice lo mismo (antes 14:35-14:45 «justo antes del SHIP», contra el Calendar). */
+const FEYNMAN_ANTES_SHIP_F1 = new Set(['2026-12-27']);
 export function feynmanAlEmpezarShip(iso: string): boolean {
   return iso >= FEYNMAN_AL_EMPEZAR_DESDE && shipEjemploIni(iso) === SHIP_EJ.tarde && !FEYNMAN_ANTES_SHIP_F1.has(iso);
 }
@@ -1237,10 +1258,16 @@ export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
     const T = S.tracy;
     const ds = T.dias.map((d) => `D${d}`).join(' · ');
     const ad = T.adelantados.length ? AURUM_DIAS.filter((x) => T.adelantados.includes(x.d)) : [];
-    const sig = [...aurumF1().dias.values()].filter((r) => r.fecha > iso && (r.tracyA || r.tracyL)).sort((a, b) => (a.fecha < b.fecha ? -1 : 1))[0];
+    // v6.10 (c12, 18-nov): la sesión siguiente del hilo se busca en orden de día REAL (alias corrida_s1: el lunes real hace el plan del viernes; en orden
+    //   de plan el sábado saltaba ese lunes: «Sigue → mar 15-dic» en vez del lun 14-dic). El texto lleva su FECHA DE PLAN (la app la pinta con su día real).
+    const rf = (f: string): string => fechaRealDe(f, 'aurum');
+    const sig = [...aurumF1().dias.values()].filter((r) => rf(r.fecha) > iso && (r.tracyA || r.tracyL)).sort((a, b) => (rf(a.fecha) < rf(b.fecha) ? -1 : rf(a.fecha) > rf(b.fecha) ? 1 : 0))[0];
+    // el tramo ADELANTADO se nombra por días REALES y sin día de la semana («del 28-dic al 2-ene»: así la app no lo vuelve a traducir)
+    const fR = (real: string): string => fCorta(real).replace(/^\S+ /, '');
+    const adR = ad.map((x) => rf(x.fecha)).sort();
     pasos.push(P(T.min, `ESCUCHAR · ${TRACY.t} — tramo ${hms(T.seg[0])}–${hms(T.seg[1])} (${T.min}′ a 1,25×)`,
       // v6.09b lote 1-ter (revisión R, hallazgo 5): las fechas (adónde sigue el hilo y qué días se adelantan), al principio del «cómo»
-      `${sig ? `Sigue → ${fCorta(sig.fecha)}, desde ${hms((sig.tracyA ?? sig.tracyL as [number, number])[0])}. ` : 'Con este tramo terminas el libro. '}${ad.length ? `Incluye, ADELANTADO, lo de las 14:15 ${ad.length > 1 ? `del ${Number(ad[0]!.fecha.slice(8))} al ${fCorta(ad[ad.length - 1]!.fecha).replace(/^\S+ /, '')}` : `del ${fCorta(ad[0]!.fecha)}`} (${ad.some((x) => extraCorridaDe(dow(x.fecha) === 6 ? x.fecha : siguienteDow(x.fecha, 6)).length) ? 'el sábado siguiente es el que recupera, sin sitio para la L' : 'no hay sábado de F1 después'}). ` : ''}${ds ? `Es lo que el plan daba a la L de ${ds} y no cupo a las 14:15.` : 'Hilo del libro.'} Audio activo: 1 frase por idea que usarías con un lead.`,
+      `${sig ? `Sigue → ${fCorta(sig.fecha)}, desde ${hms((sig.tracyA ?? sig.tracyL as [number, number])[0])}. ` : 'Con este tramo terminas el libro. '}${ad.length ? `Incluye, ADELANTADO, lo de las sesiones ${adR.length > 1 ? `del ${fR(adR[0]!)} al ${fR(adR[adR.length - 1]!)}` : `del ${fR(adR[0]!)}`} (${ad.some((x) => extraCorridaDe(dow(x.fecha) === 6 ? x.fecha : siguienteDow(x.fecha, 6)).length) ? 'el sábado siguiente es el que recupera, sin sitio para la L' : 'no hay sábado de F1 después'}). ` : ''}${ds ? `Es lo que el plan daba a la L de ${ds} y no cupo a las 14:15.` : 'Hilo del libro.'} Audio activo: 1 frase por idea que usarías con un lead.`,
       { t: '▶ tramo', url: yt(TRACY.id, T.seg[0]) }));
     recursos.push(R(TRACY.t, yt(TRACY.id), { min: T.min }));
   }
@@ -1356,7 +1383,9 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
   const pinkArchive = !!lUrl && lUrl.includes(AURUM_PINK_ARCHIVE);
   const pinkVideo = pinkArchive && !a.min30 && !!AURUM_F1_LVID[a.d];
   if (L && lUrl && !pinkVideo) recursos.push(R(pinkArchive ? 'L · Archive.org (NO se presta: solo lectores con discapacidad visual)' : `L · ${L.material}`, lUrl, { min: L.min }));
-  if (pinkArchive && !pinkVideo) avisos.push(AURUM_PINK_SIN_VIDEO);
+  // v6.10 (c12, 18-nov): desde el 4-ene (min30) el aviso de la decisión pendiente va DETRÁS del plan opcional y de la franja (el Calendar corta el aviso
+  //   a 240 y dejaba fuera los minutos de lo opcional, 13-ene); en F1 sigue delante (allí ya sube el destino de la L si queda lejos)
+  if (pinkArchive && !pinkVideo && !a.min30) avisos.push(AURUM_PINK_SIN_VIDEO);
   const pasos: GuiaPaso[] = [];
   let franja: string;
   let hitoF4: ReturnType<typeof hitoUsmleF4De> = null; // v6.08: hito nominal de F4 con el bloque de AURUM sin hora (ver abajo)
@@ -1445,6 +1474,7 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
       franja = franjaDesde(i0, W);
       avisos.push(`SERUMS (F4): 30′ en TIEMPO MUERTO de la posta, justo después de los 30′ de R↔D — hoy ${franja}${ini || hitoF4 ? '' : ' (turno M sin marcar = PISO; con otro turno la franja sigue a su bloque de tiempo muerto: T 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L 16:50 tras el R↔D · guardia sin hora)'}. Si la posta no deja hueco, al volver (antes de la cena); el drill nunca se salta.`);
     } else franja = '14:15–14:45';
+    if (pinkArchive && !pinkVideo) avisos.push(AURUM_PINK_SIN_VIDEO); // v6.10 (c12): al final (ver arriba)
   }
   // v6.06 (fix 31-oct-2026): AURUM en un día de HITO USMLE (F1/F3) — v6.06: D35 = PITCH v2 el vie 18-dic, día del NBME 27 (07:00-12:30) y del
   //   CHECKPOINT DEL AÑO de ENCAPS (16:15) — la guía lo avisa (primer aviso): el hito es por la mañana y AURUM va a su hora, tras el hito; la fecha no se
@@ -1763,7 +1793,7 @@ const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: n
   //   26-nov: solo la TED (19,3′ → 20′) y la acción vuelve a 4′; el clip del apetito (1:53) pasa al 27-nov: 1,9′ + 18,4′ = 20,3′ en 20′ (min fijo).
   '8#2': { piezas: [ytF1('y9F47gANUEw', 'Sleep Diplomat (Matt Walker) · «Episode 01: What is Sleep? (What’s going to happen when you fall asleep tonight)» (13:08)', 0, 788), ytF1('x3a0O8F6ZuQ', 'FoundMyFitness Clips · «REM sleep vs. deep sleep and their importance for cardiovascular and emotional health | Matt Walker» (4:54)', 0, 294), ytF1('6TyIY6u31gk', 'TED · «Hacking your memory — with sleep | Sleeping with Science» (4:43)', 0, 283)], min: 21, nota: 'La arquitectura del sueño y lo que hace cada fase, contadas por el propio Walker: las 2 clases de sueño (NREM en 4 fases y REM), el ciclo de 90 minutos y los husos (episodio 01 de su podcast) · qué aporta el sueño profundo y el REM al corazón y a las emociones (clip de FoundMyFitness) · cómo guarda la memoria el sueño antes y después de aprender (Sleeping with Science, TED): es la tarjeta de la acción.' },
   '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158)], nota: 'El clip del apetito (1:53, grelina/leptina) → lun 30-nov 13:00, al empezar su sesión (hoy no cabe con la acción de 4′). La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker: es también el «para qué dormimos» que el mié 25-nov deja para hoy.' },
-  '8#4': { piezas: [ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113), ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], min: 20, nota: 'Primero el clip del apetito de la serie Sleeping with Science (grelina/leptina), que el viernes no cupo junto a la TED: completa la nota sueño↔peso del viernes. Después, los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
+  '8#4': { piezas: [ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113), ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], min: 20, nota: 'Primero el clip del apetito de la serie Sleeping with Science (grelina/leptina), que en la sesión anterior no cupo junto a la TED: completa la nota sueño↔peso de esa sesión. Después, los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
   '9#1': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 0, 1103)], nota: 'La charla de Panda (Salk, 2018) en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
   '9#2': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 1103, 2206)], nota: 'Tramo 2/3 de la charla de Panda: sigue donde paraste ayer (min 18:23).' },
   '9#3': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 2206, 3308)], nota: 'Tramo 3/3 de la charla de Panda: hasta el final.' },
@@ -2064,7 +2094,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   }
   pasos.push(P(25 - sumMin(pasos), `ACCIÓN + NOTA · ${r.accion}`, 'Nota de 3 líneas en Obsidian (01_PULSO) o 1 tarjeta de mecanismo (¿por qué?), no datos sueltos.', { t: '◆ 01_PULSO', url: PULSO_OBS }));
   return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.materia} — ${r.lectura.split(':')[0]}`, pasos, recursos, `tramo escuchado/leído + «${r.accion.replace(/\.$/, '')}» hecho`, // v6.10e (revisión del 18-nov · dias-1920-17): la acción entera (≤ 113 car.; antes slice(0, 80) la cortaba a media frase)
-    { aviso: [...avisos, minutosFranja(franja) === 25 && !h && !once && !fx ? 'Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.' : '', bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') || undefined,
+    { aviso: [...avisos, minutosFranja(franja) === 25 && !h && !once && !fx ? 'Business 13:00-13:25; en ÁMBAR, solo 13:00-13:15.' : '' /* v6.10 (c12, 18-nov): sin nombrar eventos que el Calendar ya no tiene («LECTURA DE LIBRO», siesta) */, bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') || undefined,
       planB: 'Sin datos/YouTube: el libro en papel o PDF, 20′ del capítulo indicado. Sin tiempo hoy: el tramo pasa a la próxima sesión de Business (1 tramo por sesión, en orden).' }); // v6.10g: no «mañana» (vie 20-nov → lun 23, sáb 2-ene)
 }
 
@@ -2141,7 +2171,7 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const cmdPrev = sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} se generó el ${fCorta(addDias(sabPrev, 1))} con \`node DATA/_scripts/gen_revision_semanal.js ${sabPrev} --forzar\`; si no llegaste a hacerla, córrelo ahora y deja sus métricas «sin dato»: las 4 decisiones van solo aquí)` : '';
   return bloque(franjaDesde(ini, 30), 'revision', `REVISIÓN SEMANAL · ${nomJ}${enDomingo ? ` (la del ${fCorta(sab)}, hoy domingo de llegada)` : sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} fue el ${fCorta(addDias(sabPrev, 1))})` : ''}`, [
     P(3, juntas.length ? `GENERAR y abrir ${ficheros.join(' y ')} (el ${juntas.map(fCorta).join(', ')} no hubo sesión: van juntas)` : `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: ${cmdJ}\`node DATA/_scripts/gen_revision_semanal.js ${sab}${forzar(sab)}\` → crea DATA/USMLE/REVISIONES/${ficheros.join(' y ')} y actualiza _semanas.json${cmdPrev}.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
-    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (aún sin hito, sin juicio: la línea base es el NBME 25; v6.10b, el UWSA1 pasó al tramo 2)' : ''} · 4 ENCAPS: ${miniSimRevTxt(sab)}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
+    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', `1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (aún sin hito, sin juicio: la línea base es el NBME 25; el UWSA1 va en el tramo 2)' : ''} · 4 ENCAPS: ${miniSimRevTxt(sab)}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
     P(6, juntas.length ? `DECIDIR (4 líneas, solo en ${fichero.replace('.md', '')}: la semana que entra)` : 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),
     P(5, 'PREPARAR la semana siguiente', prep),

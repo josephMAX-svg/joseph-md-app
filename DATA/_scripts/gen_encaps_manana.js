@@ -603,7 +603,10 @@ const CRITICOS = 'I-3 · V-2 · IV-1+IV-2 · I-4 · II-3 · III-5 · II-5 · II-
 //   («sáb 28-nov 14:00»: la revisión S01 va junto con la S02); antes «sábado 14:00» también la semana del 17 al 20-nov
 // v6.10e (revisión del 18-nov · dias-1920-10): un sábado sin sesión cuyo domingo es de LLEGADA (dom 22-nov) tiene su revisión ESE domingo, 30′ antes de la
 //   recuperación ENCAPS (= rutinaGuia.revisionDomingoDe: «revisión S01 del dom 22-nov 14:30»); antes se saltaba al sábado siguiente (sáb 28-nov = la S02)
-const revSab = (iso) => {
+// v6.10h (revisión del 18-nov · c10 MEDIA): el sábado siguiente al día REAL del registro (alias de corrida_s1): la mañana 2/21 es de plan vie 20-nov y se hace
+//   el lun 23 → su revisión es la del sáb 28-nov 14:00 («sábado 14:00»), no la del dom 22-nov 14:30 (un día antes del propio registro)
+const revSab = (iso0) => {
+  const iso = realDe(iso0);
   let s = addDias(iso, ((6 - dow(iso)) + 7) % 7 || 7), salto = false;
   while (SIN_SESION.has(s)) {
     const dom = J.domingos.find((d) => d.fecha === addDias(s, 1) && d.llegada && d.recupera);
@@ -612,6 +615,16 @@ const revSab = (iso) => {
   }
   return s <= F6.transicion.hasta ? (salto ? `${corta(s)} 14:00` : 'sábado 14:00') : `${corta(s)} 07:15`;
 };
+/** v6.10h (c11 · 5-ene): «Hecho» de la TEORÍA según lo que lleva: sesiones (lo de siempre) · hoja de reglas · preguntas en bloque (con su corrección).
+ *  Antes, «sesiones vistas o leídas» también el mar 5-ene, que no tiene sesiones (hoja de reglas + 10Q). */
+function hechoTeoria(dia) {
+  const ts = dia.teoria || [];
+  const hoja = ts.some((t) => /^Hoja de reglas/.test(t.item)), qs = ts.filter((t) => t.modo === 'preguntas');
+  const ses = ts.some((t) => !/^Hoja de reglas/.test(t.item) && t.modo !== 'preguntas');
+  if (!hoja && !qs.length) return 'sesiones vistas o leídas, con notas SOLO en forma de pregunta';
+  return [ses ? 'sesiones vistas o leídas, con notas SOLO en forma de pregunta' : null, hoja ? 'hoja de reglas releída entera (las que no salieron, con ★)' : null,
+    ...qs.map((q) => `las ${q.n}Q respondidas con su confianza y corregidas (cada fallo con su tipo y su regla de 1 línea)`)].filter(Boolean).join(' · ');
+}
 const VIGENCIA = 'Si dos fuentes no coinciden, manda la norma más reciente del campus Theomed 2027-I / MINSA.';
 const WDL = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 /** v6.07 (fix lote 1b del Calendar): de qué mañana ENCAPS son las tarjetas y los errores del arranque de `hoy` (la anterior es `prev`):
@@ -754,7 +767,8 @@ for (const dia of J.mananas) {
     gs.push(guia(fr('07:30', '09:15'), `${tag} · TEORÍA · ${resumenT}`, pasosT, [R99, ...(dia.teoria.some((t) => /^Banqueo|^Revisión normativa/.test(t.item)) ? [R116] : [])],
       // v6.09b lote 1-quater FX1 (revisión V2 · planes B a franja llena): lo que no se vea hoy ya no va «a las 18:00» (sus 45′ ya están llenos): va al ENCAPS del
       //   domingo siguiente que lo tiene, antes del simulacro opcional (2027, sin cambios)
-      'sesiones vistas o leídas, con notas SOLO en forma de pregunta', { aviso: avisoT, planB: `Si el campus no carga: la misma sesión en ${RUTA.theoDrive}, o el Theoesencial del tema. Lo que no veas hoy ${dia.fecha >= F6.encaps.intensiva_desde ? `va ${esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00'}` : `→ ${corta(J.domingos.map((x) => x.fecha).find((x) => x > realDe(dia.fecha) && domConEncaps(x)))}, primeros pasos de su ENCAPS (antes de su simulacro o sus banqueos; ese bloque empieza antes)`}.` }));
+      // v6.10i (remate de la revisión del 18-nov): la mañana de la HOJA DE REGLAS (mar 5-ene, 21/21) no tiene sesión del campus → su plan B no remite al campus
+      hechoTeoria(dia), { aviso: avisoT, planB: /^Hoja de reglas/.test((dia.teoria[0] || {}).item || '') ? `Si no tienes el registro a mano: la hoja de reglas de tus notas de Obsidian (las ★ y las de los 8 críticos); las 10Q, de QX · App Banqueo (mezcla de áreas) o del post-test de DR LOPEZ del área (${RUTA.drLopezPT}), preguntas reales con su clave. Lo que no veas hoy va a las 18:00.` : `Si el campus no carga: la misma sesión en ${RUTA.theoDrive}, o el Theoesencial del tema. Lo que no veas hoy ${dia.fecha >= F6.encaps.intensiva_desde ? `va ${esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00'}` : `→ ${corta(J.domingos.map((x) => x.fecha).find((x) => x > realDe(dia.fecha) && domConEncaps(x)))}, primeros pasos de su ENCAPS (antes de su simulacro o sus banqueos; ese bloque empieza antes)`}.` }));
     // 09:15 post-test
     const pts = rep.manana.filter((u) => u.postTest).map((u) => u.postTest);
     gs.push(guia(fr('09:15', '09:30'), pts.length ? `${tag} · POST-TEST de Theomed · ${pts.join(' · ')}` : `${tag} · RECALL de cifras y definiciones de hoy`, pts.length
@@ -794,11 +808,13 @@ for (const dia of J.mananas) {
     gs.push(guia(fr(finB, '11:40'), `${tag} · CORRECCIÓN Y REGLAS${normaHoy ? ' + NORMA' : ''}`, [
       P(minCorr, `Cada fallo y cada dudosa de las ${nMax === nQ ? nQ : `${nQ}-${nMax}`}Q de hoy → ${minCorr}′`, `${cap(TIPOS_ERROR)}. Mira por qué es correcta la buena, no solo la tuya. ${String(CORR_Q).replace('.', ',')}′ por pregunta${verif ? ': si hiciste menos, el tiempo que sobra va a la verificación.' : '; las reglas de cifra o definición, contra la hoja de reglas de esta mañana (hoy no hay franja aparte de verificación en la norma).'}${trampasSec(dia.banqueo.area, dia.fecha)}`),
       ...(verif ? [P(verif, normaHoy ? `Verificación en la norma: ${normaHoy}` : 'Verificación en la norma de cada regla nueva', `Definición de las primeras páginas, tabla o flujograma. ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99)] : []),
-    ], [R99], 'cada fallo con su tipo y su regla de 1 línea en el registro; las reglas verificadas en la norma', { planB: `Si la norma no está en el campus: ${RUTA.drLopezNorm}.` }));
+    ], [R99], verif ? 'cada fallo con su tipo y su regla de 1 línea en el registro; las reglas verificadas en la norma'
+      // v6.10h (c11 · 5-ene): sin franja de verificación en la norma, el «Hecho» no la pide (las reglas de cifra o definición se contrastan con la hoja de reglas)
+      : 'cada fallo con su tipo y su regla de 1 línea en el registro; las de cifra o definición, contrastadas con la hoja de reglas', { planB: verif ? `Si la norma no está en el campus: ${RUTA.drLopezNorm}.` : 'Si la hoja de reglas no está a mano: tus notas de Obsidian de cada código (la regla y la cifra exacta); hoy no hay verificación en la norma.' }));
     // 11:40 tarjetas
     gs.push(guia(fr('11:40', '12:00'), `${tag} · TARJETAS de lo que fallaste`, [
       P(15, '5-10 tarjetas nuevas', 'Solo cifra o definición textual de lo que fallaste. Nada de tarjetas de lo que ya sabes.'),
-      P(5, 'Registro del día', `Nota del post-test, n y % ciego del banqueo, errores nuevos: lo usa la revisión del ${revSab(dia.fecha)}.`),
+      P(5, 'Registro del día', `${pts.length ? 'Nota del post-test, n' : 'n'} y % ciego del banqueo, errores nuevos: lo usa la revisión del ${revSab(dia.fecha)}.`),
     ], [], '5-10 tarjetas creadas y el registro del día cerrado'));
     MD[dia.fecha] = { tarde: rep.tarde.map((u) => ({ min: u.min, que: typeof u.que === 'function' ? u.que(u.min) : u.que, como: u.como, postTest: u.postTest || null, ...(u.forzada ? { forzada: true } : {}), ...(u.cond ? { cond: true } : {}), ...(u.alt ? { alt: u.alt } : {}) })) };
   }
@@ -1327,7 +1343,9 @@ const comoPPT = `Títulos y diapositivas de concepto; notas SOLO en forma de pre
 const ANTES_USADOS = new Set();
 /** v6.09b lote 1-quater (R2 · N7): restos que se adelantan a un domingo de plan si la clase del sábado se vio en vivo → plan B del domingo de su resto_en */
 const ADEL_PB = {};
-const sigManana = (f) => (J.mananas.find((x) => x.fecha > f) || {}).fecha || null;
+// v6.10h (revisión del 18-nov · c10 BAJA): desde un domingo, la siguiente mañana ENCAPS en orden REAL (alias de corrida_s1): la del vie 11-dic de plan se hace
+//   el lun 14-dic, después del dom 13 → «banqueo del vie 11-dic 09:45» (la app lo pinta «lun 14-dic»); antes la de plan lun 14-dic, que se hace el mar 15-dic
+const sigManana = (f) => (J.mananas.find((x) => realDe(x.fecha) > f) || {}).fecha || null;
 function antesDom(d) {
   const L = [];
   const pv = d.previo || null;

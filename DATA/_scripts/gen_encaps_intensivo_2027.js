@@ -10,7 +10,7 @@
  *   · NÚCLEO S2-S9 (lun 11-ene → vie 5-mar = encaps.nucleo_hasta): 32 slots `loop` de barrido lun-jue (--slots-barrido) con el reparto
  *     I-3 7 · V-2 5 · IV-1+IV-2 4 · I-4 4 · II-3 4 · III-5 3 · II-4 3 · II-5 2 en el ORDEN BASE r2 (S3/S5/S6/S7 permutados: ningún día
  *     repite el código del carril B) · último hábil de cada semana = `sim100` (8): #1 2025-II oficial · #4 2024-II oficial ·
- *     #7 2025-I oficial (ancla tardía) · #2/#3/#5/#6/#8 Theomed / QX 2027-I / propios (acceso A VERIFICAR) · 2026-I reservado al dress.
+ *     #7 2025-I oficial (ancla tardía) · #2/#3/#5/#6/#8 simulacros reales de Theomed (cursos 37/105) y QX (v6.10h: ya no «propios») · 2026-I reservado al dress.
  *   · MÓDULOS DE EXTENSIÓN (solo si el examen es posterior al 14-mar), semana a semana entre el núcleo y la cola: lun + mar pasada
  *     profunda #1/#2 · mié rebote cola larga (II-1 / II-11 / II-8 rotando) · jue lista de vigilancia · el ÚLTIMO hábil de la semana es
  *     SIEMPRE el `sim100` (regla del módulo parcial: Semana Santa 25-26-mar → SIM el mié 24-mar).
@@ -159,7 +159,7 @@
  *     slot): I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3 (IV 4 · III-5 3 · II-4 3 · II-5 2). Orden = r2 de S2-S8 recortado: el código que sobra pierde su
  *     ÚLTIMA aparición (I-3 del lun 22-feb → IV-1+IV-2); el resto de S2-S8 igual que en v6.06 (S9 desaparece). El --pretest re-ordena los 28 igual.
  *   · QUINCENA FINAL (lun 1 → vie 12-mar = simulacros y repaso): los hábiles entre el núcleo y la cola que caen en los 14 días previos al examen (lun 1
- *     → vie 5-mar) ya no son módulo de extensión: lun · mié · vie = SIM 100Q 11:00-13:00 (#8 propio #3 lun 1 · #9 academia con clave mié 3 · #10
+ *     → vie 5-mar) ya no son módulo de extensión: lun · mié · vie = SIM 100Q 11:00-13:00 (#8 QX Simulacro Virtual lun 1 · #9 academia con clave mié 3 · #10
  *     Theomed vie 5; SIMS_QUINCENA) y mar · jue = REPASO (tipo repaso_final, extra.cola 'quincena'); extra.quincena en esas filas. La cola (lun 8 →
  *     vie 12-mar) no cambia: D-5 pasada profunda · D-4 / D-3 repaso final · jue 11 DRESS 2026-I 11:00 · vie 12 medio día. → 4 SIM 100Q en la última
  *     quincena (lun 1, mié 3, vie 5 y el dress) + 2 mini-sims 25Q del carril B (mar 2 y mié 10). Las horas de los SIM salen por FECHA (SIM_11).
@@ -386,23 +386,32 @@ for (const f of EMx.ENCAPS_MANANA_FECHAS.filter((x) => x >= D1 && x <= addDays(E
 const NOTA_PROFUNDA = 'pasada profunda solo para sub-ejes < 70 % en su D+21';
 
 // ── simulacros 100Q del núcleo (v6.00: orden §C3 · #1 2025-II · #4 2024-II · #7 2025-I ancla tardía · 2026-I reservado al dress) ──
+// v6.10h (mié 18-nov-2026 · regla de Joseph: TODA pregunta de evaluación es REAL, de un banco real con su fuente; nada «propio», «espejo» ni generado):
+//   los SIM «propio #1/#2/#3» (y el fallback «--sim100 propio» de los SIM 2, 5, 9, 10, del dress y de los SIM de reserva) pasan a SIMULACROS REALES con
+//   clave (DATA/ENCAPS_SIMULACROS_INVENTARIO.md + FASE_INTENSIVA_2027-I.md §4): Theomed curso 37 «SIMULACROS MEDICINA» (Examen TIPO A · TIPO A(2) ·
+//   simulacros 15/05 · 29-MAY · 12-JUN), Theomed curso 105 «SIMULACROS MEDICINA 2027» (el ciclo en curso; los de F1 van los domingos), QX · Simulacros
+//   Virtuales y DR LOPEZ / Villamedic (📝 Simulacros del Drive). El fallback es SIEMPRE otro simulacro real o, si no queda ninguno, un examen oficial ya
+//   hecho en RE-TEST (runner --sim100 <proceso>). Los exámenes oficiales siguen: 2025-II = SIM 1 · 2024-II = SIM 4 · 2025-I = SIM 7 · 2026-I = dress ·
+//   2026-II = pre-test del vie 8-ene (las formas B de 2024-II y 2025-I son el mismo examen barajado: no cuentan como simulacro nuevo).
 let SIMS = [
   { label: 'SIM 100Q · examen real 2025-II (clave oficial extraída de los resaltados, BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json)', fuente: 'exams_txt/2025-2.txt · runner gen_encaps_minisim.js --sim100 2025-2', clave: 'oficial' },
-  { label: 'SIM 100Q · Theomed curso 37 "Examen TIPO A/B" o QX Simulacro Virtual 2027-I (A VERIFICAR acceso); si no, propio', fuente: 'Theomed quiz 7934/7935 · QX Simulacros Virtuales · fallback gen_encaps_minisim.js --sim100 propio', clave: 'plataforma' },
-  { label: 'SIM 100Q · propio #1 (vector v3, 50/50 viñeta-directa, espejos 2026-II ya liberado + BANCO_PROPIO)', fuente: 'gen_encaps_minisim.js --sim100 propio', clave: 'verificada por ítem' },
+  { label: 'SIM 100Q · Theomed curso 37 «SIMULACROS MEDICINA» · Examen TIPO A (quiz 7934); si no abre, el QX · Simulacro Virtual N°01', fuente: 'Theomed curso 37 · quiz 7934 · respaldo: QX · Simulacros Virtuales (N°01)', clave: 'plataforma' },
+  { label: 'SIM 100Q · QX · Simulacro Virtual (el primero de la serie que no hayas hecho); si no abre, Theomed curso 37 · Simulacro 15/05 (quiz 20244)', fuente: 'QX · Simulacros Virtuales · respaldo: Theomed curso 37 · quiz 20244', clave: 'plataforma' },
   { label: 'SIM 100Q · examen real 2024-II (forma A; clave oficial)', fuente: 'exams_txt/2024-2A.txt · runner --sim100 2024-2A', clave: 'oficial' },
-  { label: 'SIM 100Q · QX Simulacro Virtual 2027-I o Theomed (A VERIFICAR acceso); si no, propio', fuente: 'QX Simulacros Virtuales · Theomed curso 37 · fallback gen_encaps_minisim.js --sim100 propio', clave: 'plataforma' },
-  { label: 'SIM 100Q · propio #2 (mix vector v3 + rebotes + señales DGE/RM del verano)', fuente: 'gen_encaps_minisim.js --sim100 propio', clave: 'verificada por ítem' },
+  { label: 'SIM 100Q · Theomed curso 37 · Examen TIPO A(2) (quiz 7937); si no abre, el siguiente QX · Simulacro Virtual que no hayas hecho', fuente: 'Theomed curso 37 · quiz 7937 · respaldo: QX · Simulacros Virtuales', clave: 'plataforma' },
+  { label: 'SIM 100Q · Theomed curso 105: el simulacro con ranking más reciente que no hayas hecho; si no hay, Theomed curso 37 · Simulacro 29-MAY (quiz 4242)', fuente: 'Theomed curso 105 «SIMULACROS MEDICINA 2027» · respaldo: Theomed curso 37 · quiz 4242', clave: 'plataforma' },
   { label: 'SIM 100Q · examen real 2025-I (forma A; clave oficial) · ANCLA TARDÍA', fuente: 'exams_txt/2025-1A.txt · runner --sim100 2025-1A', clave: 'oficial' },
-  { label: 'SIM 100Q · propio #3 (mix vector v3 + rebotes + cola larga + señales)', fuente: 'gen_encaps_minisim.js --sim100 propio', clave: 'verificada por ítem' },
+  { label: 'SIM 100Q · QX · Simulacro Virtual (el siguiente de la serie que no hayas hecho); si no abre, Theomed curso 37 · Simulacro 12-JUN (quiz 4442)', fuente: 'QX · Simulacros Virtuales · respaldo: Theomed curso 37 · quiz 4442', clave: 'plataforma' },
 ];
 if (SIMS_ARG) SIMS = JSON.parse(fs.readFileSync(path.resolve(SIMS_ARG), 'utf8'));
-// v6.07: la QUINCENA FINAL suma SIM 100Q (lun · mié · vie 1-5 mar): primero los de SIMS que el núcleo de 7 semanas ya no usa (v6.07: #8 propio #3)
+// v6.07: la QUINCENA FINAL suma SIM 100Q (lun · mié · vie 1-5 mar): primero los de SIMS que el núcleo de 7 semanas ya no usa (v6.07: #8)
 // y después estos (#9, #10). Material de academias: se usa en su carpeta del Drive, nunca se copia al repo (repo público).
 const SIMS_QUINCENA = [
-  { label: 'SIM 100Q · simulacro de academia con clave que no hayas visto (DR LOPEZ · Qx · Villamedic, en su carpeta del Drive); si no hay, propio #4', fuente: 'Drive de academias (no se copia al repo) · fallback gen_encaps_minisim.js --sim100 propio', clave: 'academia (verificar contra la norma vigente)' },
-  { label: 'SIM 100Q · Theomed: el último simulacro publicado (o uno antiguo no hecho); si no hay, propio #5', fuente: 'Theomed curso 37 «SIMULACROS MEDICINA» · fallback gen_encaps_minisim.js --sim100 propio', clave: 'plataforma' },
+  { label: 'SIM 100Q · DR LOPEZ · 📝 Simulacros (Drive): uno con clave que no hayas visto; si no queda, Villamedic (su carpeta del Drive) o un QX · Simulacro Virtual no hecho', fuente: 'Drive de academias (DR LOPEZ · Villamedic; no se copia al repo) · respaldo: QX · Simulacros Virtuales', clave: 'academia (verificar contra la norma vigente)' },
+  { label: 'SIM 100Q · Theomed curso 105: el último simulacro publicado (o uno antiguo que no hayas hecho); si no hay ninguno, el examen real 2025-II en RE-TEST', fuente: 'Theomed curso 105 «SIMULACROS MEDICINA 2027» · respaldo: examen oficial 2025-II en re-test (runner --sim100 2025-2)', clave: 'plataforma' },
 ];
+// v6.10h: SIM de RESERVA (solo si la convocatoria alarga la intensiva y faltan simulacros en las listas): uno real con clave que no hayas hecho; nunca «propio»
+const simReserva = (cuando) => ({ label: `SIM 100Q · ${cuando} · simulacro real con clave que no hayas hecho (Theomed curso 105 · QX · Simulacros Virtuales · DR LOPEZ · Villamedic); si no queda ninguno, un examen oficial ya hecho, en RE-TEST`, fuente: 'Theomed curso 105 / curso 37 · QX · Simulacros Virtuales · Drive de academias · respaldo: examen oficial en re-test (runner --sim100 <proceso>)', clave: 'plataforma u oficial' });
 // §C3: 07:15 salvo los SIM a la hora del examen = 11:00 (v6.00-v6.06: #7 y #8 = los 2 últimos viernes del núcleo · v6.07: por FECHA = SIM_11, los 2
 // últimos del núcleo —vie 19 y vie 26-feb, = rutinaGuia.SIM_F2_11— + los de la quincena final); el dress siempre 11:00
 const horaSim = (fecha, s) => (s && s.hora) || (SIM_11.has(fecha) ? '11:00' : '07:15');
@@ -695,8 +704,8 @@ plan.forEach(({ fecha, dow }, i) => {
     extra.regla = 'doctrina del sprint 2026-II: D-1 medio día, cero preguntas nuevas';
   } else if (kCola === 3) {
     tipo = 'dress_rehearsal'; subtema = 'D-2 · DRESS REHEARSAL 11:00-13:00: simulacro 100Q / 72 s/Q a la hora del examen, ropa, comida y traslado simulados · corrección por código';
-    extra.sim = { n: 100, seg_por_q: 72, hora: '11:00', clave: 'consenso QX + Theomed + norma (si no, verificada por ítem)',
-      fuente: '2026-I real (QX BanqueApp / Theomed) SOLO si hay clave por consenso QX+Theomed+norma; si no, gen_encaps_minisim.js --sim100 propio (mix vector v3, 50/50, rebotes + señales)' };
+    extra.sim = { n: 100, seg_por_q: 72, hora: '11:00', clave: 'oficial 2026-I por consenso QX + Theomed + norma (si no, la de la plataforma, o la oficial del examen en re-test)',
+      fuente: 'examen real 2026-I (QX BanqueApp / Theomed) SOLO si hay clave por consenso QX + Theomed + norma; si no, el simulacro de Theomed curso 105 más reciente que no hayas hecho; y si no queda, el examen real 2025-I en RE-TEST (runner --sim100 2025-1A)' };
   } else if (kCola === 1 || kCola === 2) {
     tipo = 'repaso_final'; prio = 'ALTA';
     subtema = 'REPASO FINAL · sin material nuevo: errores del registro + cifras + mapas en blanco de los 8 críticos';
@@ -730,7 +739,7 @@ plan.forEach(({ fecha, dow }, i) => {
     const q = { desde: QUINCENA[0], hasta: COLA[4], regla: REGLA_QUINCENA };
     if (QUINCENA_SIMS.includes(fecha)) {
       tipo = 'sim100'; simIdx++;
-      const s = SIMS[simIdx - 1] || SIMS_QUINCENA[simIdx - 1 - SIMS.length] || { label: `SIM 100Q · quincena final · propio #${simIdx - 5} (gen_encaps_minisim.js --sim100 propio)`, fuente: 'BANCO_PROPIO · gen_encaps_minisim.js --sim100 propio', clave: 'verificada por ítem' };
+      const s = SIMS[simIdx - 1] || SIMS_QUINCENA[simIdx - 1 - SIMS.length] || simReserva('quincena final');
       subtema = `SIMULACRO ${simIdx} · QUINCENA FINAL · ${s.label}`;
       extra.sim = simExtra(s, simIdx, fecha); extra.quincena = { ...q, rol: 'sim100' };
     } else {
@@ -741,7 +750,7 @@ plan.forEach(({ fecha, dow }, i) => {
   } else if (SIM_NUCLEO.includes(fecha) || (MODULOS_EXT.includes(fecha) && fecha === ultimoHabilSemana(fecha, MODULOS_EXT))) {
     tipo = 'sim100'; simIdx++;
     const enModulo = MODULOS_EXT.includes(fecha);
-    const s = (!enModulo && SIMS[simIdx - 1]) || { label: `SIM 100Q · módulo de extensión · propio #${simIdx - 5} (gen_encaps_minisim.js --sim100 propio)`, fuente: 'BANCO_PROPIO · gen_encaps_minisim.js --sim100 propio', clave: 'verificada por ítem' };
+    const s = (!enModulo && SIMS[simIdx - 1]) || simReserva('módulo de extensión');
     subtema = `SIMULACRO ${simIdx} · ${s.label}`;
     extra.sim = simExtra(s, simIdx, fecha);
     if (enModulo) { extra.modulo = { semana: semanasModulo.indexOf(lunesDe(fecha)) + 1, rol: 'sim100' }; if (dow !== 5) extra.sim.nota = `en ${WD[dow]} por día sin sesión (regla del módulo parcial)`; }
@@ -999,8 +1008,11 @@ const notaHorarios = `${VERSION_V6} (${hoyLima()}; D1 = ${fCorta(BASE)}; F1 = ${
 // El resto de cada texto va LITERAL en HORARIO_* (copiado del texto vivo el 17-oct). Una guarda DO va antes del UPDATE y ABORTA la transacción si
 // el texto vivo ya no tiene ese texto fijo (md5 del prefijo y del sufijo) o si el objeto de la ruta no es el de esa hora y título. Así nunca se pisa
 // un texto que el generador no conoce. Es idempotente: tras aplicarlo, el texto fijo sigue igual y la guarda vuelve a pasar.
-const HORARIO_EVAL_FIJO = '5Q del código de AYER, de memoria, sin material: 3 cifras + 2 viñetas, solución al final. Lunes = 5Q rehechas con OTRO enfoque de los fallos del mini-sim del viernes; martes = código del lunes; miércoles = código del martes; jueves = código del miércoles (el viernes no lleva eval: el mini-sim ocupa las 16:15). Si fallas ≥2 → el código queda CALIENTE para el override del viernes (gen_encaps_semana.js: máx. 2 sustituciones/semana, I-3 y V-2 intocables, un crítico solo se cede si ya está ≥85 % con n ≥ 5). NO desplaza al tema del día siguiente.';
-const HORARIO_BANCO_FIJO = '16-20Q del código ceñidas al sub-eje del día (◈ Sub-eje de hoy) + 4-5Q del secundario de cola larga, pregunta-por-pregunta con corrección inmediata (método Palmerton) y confianza 1-3 por ítem. Nivel ≥ examen real, distractor = concepto vecino. Orden de fuentes: BANCO_PROPIO (runner) → postests Theomed → banco QX (por área) → sets nuevos (motor 4 factores).';
+// v6.10i (remate de la revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): sin «5Q rehechas con OTRO enfoque» ni «sets nuevos
+//   (motor 4 factores)»: el lunes = 5Q REALES de los códigos fallados en el mini-sim; fuentes = runner (examen oficial) → Theomed → QX → DR LOPEZ. Aplicado
+//   en Supabase con respaldo (study_metrics_bk_v610i_20261118) y llevado a mano al .metrics.sql (el texto vivo de weekend[0] también: no lo genera este script).
+const HORARIO_EVAL_FIJO = '5Q del código de AYER, de memoria, sin material: 3 cifras + 2 viñetas, solución al final. Lunes = 5Q REALES de los códigos que fallaste en el mini-sim del viernes (examen oficial con clave; sin runner, re-test de las MISMAS preguntas, sin la clave); martes = código del lunes; miércoles = código del martes; jueves = código del miércoles (el viernes no lleva eval: el mini-sim ocupa las 16:15). Si fallas ≥2 → el código queda CALIENTE para el override del viernes (gen_encaps_semana.js: máx. 2 sustituciones/semana, I-3 y V-2 intocables, un crítico solo se cede si ya está ≥85 % con n ≥ 5). NO desplaza al tema del día siguiente.';
+const HORARIO_BANCO_FIJO = '16-20Q del código ceñidas al sub-eje del día (◈ Sub-eje de hoy) + 4-5Q del secundario de cola larga, pregunta-por-pregunta con corrección inmediata (método Palmerton) y confianza 1-3 por ítem. Orden de fuentes, solo preguntas reales con su clave: runner del día (examen oficial) → postests Theomed → QX · App Banqueo (por área) → PosTest DR LOPEZ.';
 const HORARIO_CIERRE_VIE_PRE = 'Corrección 1×1 por código → nota /25 en ▲ SIM (study_sim_scores, sim_n = día) + cierre con tipoRonda=mini_sim y nota=NN (umbral ≥18/25 hacia diciembre; <15/25 dos viernes seguidos → override obligatorio). Luego node DATA/_scripts/gen_encaps_semana.js --sql: % ciego semanal, temas calientes (n ≥ 5 por código) y override de la semana siguiente, que se ACUMULA en SEMANAS/overrides_acumulado.json → ';
 const HORARIO_CIERRE_VIE_POST = ' → execute_sql (backup study_schedule_bk_<YYYYMMDD>, DELETE solo modo=MANTENIMIENTO).';
 const SQL_MANT_F1 = path.join(__dirname, '_encaps_mantenimiento_2027.sql');
@@ -1043,7 +1055,7 @@ const horarioTextos = (() => {
     //   hay fin de semana de por medio → el motivo es el real (el mini-sim fue el día anterior), no el viaje. Las fechas van de PLAN (la app las traduce).
     const _AL = (F6.corrida_s1 && F6.corrida_s1.alias) || {}, realDe = (f) => Object.keys(_AL).find((k) => _AL[k] === f) || f;
     const rR = realDe(r.fecha), diaAntes = rR !== r.fecha && addDays(rR, -1) === realDe(ms.fecha);
-    return `Excepción: el ${fCorta(r.fecha)} (D${r.dia}) la eval es la de ${j.codigo} (código del ${fCorta(sa.fecha)}, la sesión de banco anterior), no las 5Q rehechas del mini-sim del ${fCorta(ms.fecha)}${diaAntes ? `: el mini-sim fue el día anterior y el runner de ${j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día` : SIN_SES.has(d1.toISOString().slice(0, 10)) ? ': el fin de semana siguiente fue sin sesión (viaje) y no hubo hueco para generarlas' : ''}.`;
+    return `Excepción: el ${fCorta(r.fecha)} (D${r.dia}) la eval es la de ${j.codigo} (código del ${fCorta(sa.fecha)}, la sesión de banco anterior), no las 5Q REALES de los códigos que fallaste en el mini-sim del ${fCorta(ms.fecha)}${diaAntes ? `: el mini-sim fue el día anterior y el runner de ${j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día` : SIN_SES.has(d1.toISOString().slice(0, 10)) ? ': el fin de semana siguiente fue sin sesión (viaje) y no hubo hueco para generarlas' : ''}.`;
   }).filter(Boolean);
   // v6.10 (17-nov-2026): un día de FIN DE SEMANA del mantenimiento (corrida_s1.extra: dom 29-nov = D9, recupera el mar 17) lleva la eval del código de la sesión
   //   de banco anterior (I-4 del jue 26), como un martes-jueves
@@ -1055,7 +1067,7 @@ const horarioTextos = (() => {
   excLunes.push(...excFinde);
   return { r1, r2, r3, vie1, cmdViernes, rutas: [
     { ruta: ['weekday', 0], hora: '16:15-16:30', titulo: 'EVAL ANCLADA', ini: `${HORARIO_EVAL_FIJO} `, fin: '',
-      d: `${HORARIO_EVAL_FIJO} D1 (${fCorta(r1.fecha)}, sin sesión anterior en el SQL): SÍ lleva eval — eval_${r1.fecha} = 5Q de fallos previos del registro (críticos primero) antes de la parte 1 del pre-test; el ${fCorta(r2.fecha)} (D2) la eval es la del código de AYER (${r1.codigo}), antes de la parte 2; ${tramoD3}${excLunes.length ? ` ${excLunes.join(' ')}` : ''}` },
+      d: `${HORARIO_EVAL_FIJO} D1 (${fCorta(r1.fecha)}, sin sesión anterior en el SQL): SÍ lleva eval — eval_${r1.fecha} = 5Q REALES de fallos previos del registro (examen oficial con clave, críticos primero) antes de la parte 1 del pre-test; el ${fCorta(r2.fecha)} (D2) la eval es la del código de AYER (${r1.codigo}), antes de la parte 2; ${tramoD3}${excLunes.length ? ` ${excLunes.join(' ')}` : ''}` },
     { ruta: ['weekday', 1], hora: '16:30-17:10', titulo: 'BANCO DEL DÍA', ini: `${HORARIO_BANCO_FIJO} `, fin: '',
       d: `${HORARIO_BANCO_FIJO} ${par.charAt(0).toUpperCase()}${par.slice(1)}: PRE-TEST DE ARRANQUE 20Q + 20Q (pretest_arranque_<fecha>.html, modo examen 72 s/Q, solución al final) en vez del banco del día.` },
     { ruta: ['weekend', 1], hora: '16:45-17:15', titulo: 'Corrección', ini: HORARIO_CIERRE_VIE_PRE, fin: HORARIO_CIERRE_VIE_POST,

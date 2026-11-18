@@ -602,9 +602,36 @@ export function tendenciaCiego(semanas: CiegoSemana[]): TendenciaCiego {
 // ── EVAL ANCLADA del día (16:15-16:30): regla REAL (gen_encaps_semana.js + gen_encaps_minisim.js --eval) ──
 // fallos ≥2 → el código queda CALIENTE para el override del VIERNES (semana siguiente; máx. 2 sustituciones; I-3/V-2 nunca
 // se ceden; un crítico solo se cede si ya está ≥85% con n ≥ 5). NO desplaza al tema de mañana.
-// lunes = 5Q rehechas con OTRO enfoque de los fallos del mini-sim del viernes · mar-jue = código de AYER (3 cifras + 2 viñetas)
-// · D1 (sin sesión anterior) = 5Q de fallos previos del registro, críticos primero · viernes = sin eval (la trae el mini-sim).
+// lunes = 5Q REALES de los códigos que fallaste en el mini-sim del viernes · mar-jue = código de AYER (3 cifras + 2 viñetas)
+// · D1 (sin sesión anterior) = 5Q REALES de fallos previos del registro, críticos primero · viernes = sin eval (la trae el mini-sim).
+// v6.10h (revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL, de un banco real con su fuente): el runner (gen_encaps_minisim.js
+//   --eval) solo trae ítems de EXAMEN OFICIAL con clave (R-…); sin runner, re-test de las MISMAS preguntas reales falladas (sin la clave a la vista) o recall
+//   en blanco de la regla contrastado con la norma. Nada «rehecho con otro enfoque». «De AYER» solo si la sesión anterior fue el día REAL anterior.
+/** v6.10h (c11 · lun 4-ene): «del código de AYER» solo si la sesión anterior fue el día REAL anterior (alias de corrida_s1 incluido); si no, «del código de la
+ *  última sesión (sáb 2-ene)»: el lun 4-ene la anterior es el sáb 2-ene (D32, recuperación) y el dom 3-ene no tiene banco. */
+function deAyerTxt(day: StudyScheduleDay, prev: StudyScheduleDay): string {
+  const iso = (f: unknown) => (typeof f === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(f) ? f : null);
+  const a = iso(prev.fecha), b = iso(day.fecha);
+  if (!a || !b) return 'del código de AYER';
+  const ra = fechaRealDe(a, 'encaps'), rb = fechaRealDe(b, 'encaps');
+  if (Math.round((Date.parse(`${rb}T12:00:00Z`) - Date.parse(`${ra}T12:00:00Z`)) / 864e5) === 1) return 'del código de AYER';
+  const d = new Date(`${ra}T12:00:00Z`);
+  return `del código de la última sesión (${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][d.getUTCDay()]} ${d.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][d.getUTCMonth()]})`;
+}
+/** v6.10h: fuente REAL de los bancos de F2 sin runner (pre-test 10Q · consolidación · eval 20Q · banco del día del carril B) */
+export const FUENTE_REAL_F2 = 'QX · App Banqueo → área → tema del sub-eje (preguntas reales de academia, con su clave; primero las que no hayas visto) o el runner del día si trae ítems de examen oficial; si QX no trae el tema, el PosTest de DR LOPEZ del área';
+/** v6.10h: la eval anclada tras un simulacro = re-test de las MISMAS preguntas reales que fallaste (nada «rehecho con otro enfoque») */
+export const RETEST_SIM = 're-test de 5 de las MISMAS preguntas que fallaste (las de su corrección), sin la clave a la vista, y la regla de cada una en 1 línea, contrastada con la norma · de memoria, sin material';
 export const EVAL_ANCLADA_REGLA = 'si fallas ≥2 → el código queda CALIENTE para el override del viernes (no desplaza al tema de mañana)';
+/** v6.10i: dónde se hace el re-test de los fallos de un SIM 100Q / pre-test: el examen oficial, en su runner; un simulacro de plataforma (QX · Theomed ·
+ *  DR LOPEZ), en esa plataforma (revisión del simulacro, sin mirar la clave). Lo mismo dice la guía del carril SÁBADO (gen_encaps_guia.js). */
+export function fuenteRetestSim(sim: StudyScheduleDay | null | undefined): string {
+  const ex = (sim?.extra || {}) as Record<string, unknown>;
+  const s = (ex.sim && typeof ex.sim === 'object' ? ex.sim : null) as Record<string, unknown> | null;
+  if (sim?.tipo === 'pretest' || String(s?.clave ?? '') === 'oficial') return ' · en su runner (examen oficial con clave)';
+  const lbl = String(s?.label ?? '').replace(/^SIM 100Q · /, '').split(/[;:(]/)[0].replace(/«[^»]*»\s*/g, '').replace(/\s+·\s*$/, '').trim();
+  return s ? ` · en la plataforma del simulacro${lbl ? ` (${lbl})` : ''}` : '';
+}
 export interface EvalAnclada { modo: 'inicio' | 'lunes' | 'ayer' | 'ninguna'; codigo: string; label: string; detail: string; regla: string }
 export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | null | undefined): EvalAnclada {
   const regla = EVAL_ANCLADA_REGLA;
@@ -614,22 +641,22 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
   if (!prev) {
     return {
       modo: 'inicio', codigo: 'MIX',
-      label: `🎯 EVAL ANCLADA D${day.dia}: 5Q de FALLOS PREVIOS del registro, críticos v3 primero (sin sesión anterior)`,
-      detail: `Arranque del régimen: no hay tema de ayer → 5Q del registro de errores, de memoria, sin material · ${regla}`, regla,
+      label: `🎯 EVAL ANCLADA D${day.dia}: 5Q REALES de tus fallos previos del registro, críticos v3 primero (sin sesión anterior)`,
+      detail: `Arranque del régimen: no hay tema de ayer → 5Q de examen oficial con clave, elegidas por el registro de errores · de memoria, sin material · ${regla}`, regla,
     };
   }
   if (prev.tipo === 'mini_sim' || !prev.codigo) {
     return {
       modo: 'lunes', codigo: 'MIX',
-      label: `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del mini-sim del viernes (D${prev.dia})`,
-      detail: `Mismo concepto, otro escenario (nunca la misma pregunta) · de memoria, sin material · ${regla}`, regla,
+      label: `🎯 EVAL ANCLADA (lunes): 5Q REALES de los códigos que fallaste en el mini-sim del viernes (D${prev.dia})`,
+      detail: `Examen oficial con clave (runner); sin runner, re-test de 5 de las MISMAS preguntas que fallaste en el mini-sim, sin la clave a la vista · de memoria, sin material · ${regla}`, regla,
     };
   }
   const se = subEjeDe(prev);
   return {
     modo: 'ayer', codigo: prev.codigo,
-    label: `🎯 EVAL ANCLADA: 5Q del código de AYER ${prev.codigo} (D${prev.dia}) · 3 cifras + 2 viñetas`,
-    detail: `${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''} · de memoria, sin material, recall + corrección · ${regla}`, regla,
+    label: `🎯 EVAL ANCLADA: 5Q ${deAyerTxt(day, prev)} ${prev.codigo} (D${prev.dia}) · 3 cifras + 2 viñetas`,
+    detail: `${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''} · preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de las de ese código que fallaste, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla}`, regla,
   };
 }
 
@@ -948,7 +975,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     items.push({
       key: `D${N}:m_banco`, kind: 'theomed',
       label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${ses?.principal ? `${ses.principal.n}Q con el secundario` : secCL ? '16-20Q' : '20-25Q'} ciegas)`,
-      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ''}${ses ? ' · 20Q en 30′ (90 s/Q): las que el runner no traiga, de QX App Banqueo, mismo tema (la guía de la hora dice cuántas)' : ''}`,
+      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ` · fuente: ${FUENTE_REAL_F2}`}${ses ? ' · 20Q en 30′ (90 s/Q): las que el runner no traiga, de QX App Banqueo, mismo tema (la guía de la hora dice cuántas)' : ''}`,
       url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: day.codigo,
       dur: ses ? 30 : (secCL ? 32 : 40), hora: ses ? '16:25–16:55' : (secCL ? '16:30–17:02' : '16:30–17:10'),
     });
@@ -956,7 +983,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
       items.push({
         key: `D${N}:m_sec`, kind: 'theomed',
         label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
-        detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · ${ses ? '5Q ciegas en 8′ (90 s/Q)' : '4-5Q ciegas'} dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}${ses ? ' · si trae menos de 5, las que falten de QX App Banqueo (la guía de la hora dice cuántas)' : ''}`,
+        detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · ${ses ? '5Q ciegas en 8′ (90 s/Q)' : '4-5Q ciegas'} dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}${ses ? ' · si trae menos de 5, las que falten de QX App Banqueo (la guía de la hora dice cuántas)' : ' · fuente: QX · App Banqueo, mismo tema (preguntas reales, con su clave)'}`,
         url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: secCL.codigo, dur: 8, hora: ses ? '16:55–17:03' : '17:02–17:10',
       });
     }
@@ -965,7 +992,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     items.push({
       key: `D${N}:m_postest:${i}`, kind: 'theomed',
       label: `🎯 Postest alternativo: ${q.label}`,
-      detail: 'Si el banco principal se agota para este tema',
+      detail: 'Si el banco principal se agota para este tema (preguntas reales de academia, con su clave)',
       url: q.url, source: q.fuente, code: day.codigo,
     });
   });
@@ -1070,8 +1097,8 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
     if (day.tipo === 'repaso_final') {
       items.push({
         key: `D${N}:i_registro`, kind: 'eval',
-        label: '🔁 REPASO FINAL · errores del registro (_registro_resoluciones.json: CCSN · CONCEPTO · OLVIDO) rehechos con otro enfoque',
-        detail: `Repaso multi-temporal: ${repTxt} · sin material nuevo${sufijo}`, dur: 90,
+        label: '🔁 REPASO FINAL · re-test de las MISMAS preguntas reales que fallaste (registro: CCSN · CONCEPTO · OLVIDO), sin la clave a la vista',
+        detail: `Repaso multi-temporal: ${repTxt} · las preguntas salen del registro (_registro_resoluciones.json) y de los runners y simulacros ya hechos; lo que no recuerdes, recall en blanco de la regla contrastado con la norma · sin material nuevo${sufijo}`, dur: 90,
       });
       items.push({
         key: `D${N}:i_cifras`, kind: 'material',
@@ -1122,8 +1149,8 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
       const kind = kindDe(sg.seg);
       const t = sg.seg.toLowerCase();
       let label = sg.seg, detail: string | undefined;
-      if (/repaso/.test(t)) { detail = `Códigos: ${repTxt}${typeof ex.repaso_registro === 'string' ? ` · ${ex.repaso_registro}` : ''}`; }
-      else if (/pre-test/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `10Q ciegas de ${temaTxt} · sin clave hasta responder · registro como pretest del día`; }
+      if (/repaso/.test(t)) { detail = `Códigos: ${repTxt}${typeof ex.repaso_registro === 'string' ? ` · ${ex.repaso_registro}` : ''} · re-test de las MISMAS preguntas reales que fallaste esos días (registro y runners), sin la clave a la vista; lo que no recuerdes, recall en blanco de la regla contrastado con la norma`; }
+      else if (/pre-test/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `10Q ciegas de ${temaTxt} · sin clave hasta responder · registro como pretest del día · fuente: ${FUENTE_REAL_F2}`; }
       else if (/deep prime/.test(t)) {
         label = `🔥 DEEP PRIME: ${temaTxt}`;
         detail = [
@@ -1131,8 +1158,12 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
           drill || null, paraguas.length ? `paraguas: ${paraguas.map(p => p.codigo).join(' + ')}` : null,
         ].filter(Boolean).join(' · ') + sufijo;
       }
-      else if (/consolidaci/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `60 % ${day.codigo || 'hoy'} · 40 % previos (${repTxt}) · pregunta-por-pregunta con corrección inmediata`; }
-      else if (/evaluaci/.test(t)) { detail = `Eval modo examen del crítico del día (${day.codigo || 'MIX'}) · 72 s/Q · CIERRE DE SESIÓN al final de la cola → study_progress`; }
+      else if (/consolidaci/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `60 % ${day.codigo || 'hoy'} · 40 % previos (${repTxt}) · pregunta-por-pregunta con corrección inmediata · fuente: ${FUENTE_REAL_F2}`; }
+      // v6.10i: el BANQUEO de la mañana 21/21 (mar 5-ene: «BANQUEO 50Q · mezcla del vector … evaluación modo examen») no es la EVALUACIÓN 20Q del loop:
+      //   detalle propio con sus fuentes (las de la guía del Home)
+      else if (/banqueo \d+q/.test(t)) { const nq = (/banqueo (\d+)q/.exec(t) || [])[1]; detail = `${nq}Q de mezcla del vector (los 8 críticos primero) · 72 s/Q, modo examen, confianza en cada una · fuentes: DR LOPEZ post-tests y QX banqueo F2 de varias áreas (preguntas reales, con su clave) · CIERRE DE SESIÓN al final de la cola → study_progress`; }
+      // v6.10i: la regla corta primero (10 nuevas + 10 en re-test) y la fuente larga al final (el Calendar corta el texto)
+      else if (/evaluaci/.test(t)) { detail = `Eval modo examen (${day.codigo || 'MIX'}) · 72 s/Q · 10 nuevas del sub-eje del día + 10 de hace 7-21 días en re-test (las MISMAS preguntas reales que fallaste, sin la clave) · CIERRE DE SESIÓN al final de la cola → study_progress · fuente de las 10 nuevas: ${FUENTE_REAL_F2}`; }
       else if (/cierre/.test(t)) { detail = 'Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)?'; }
       items.push({
         key: `D${N}:i_loop:${i}`, kind, label, detail,
@@ -1511,9 +1542,9 @@ function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): Pla
   if (!pseudo) return [];
   if (cb.tipo === 'mini_sim') {
     // v6.01: mini-sim F1 repuesto → rama mini_sim (msim / msim_corr) con claves del carril B (D{dia}:b_msim, D{dia}:b_msim_corr)
-    const fo = cb.fechaOriginal && ISO_RE.test(cb.fechaOriginal) ? new Date(`${cb.fechaOriginal}T12:00:00Z`) : null;
-    const foTxt = fo ? `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][fo.getUTCDay()]} ${fo.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][fo.getUTCMonth()]}` : '';
-    const deF1 = `fila mant. ${cb.diaMant ?? '—'} de la F1 ${(cb.origen || '').replace('mantenimiento_', '') || 'anterior'}${foTxt ? `, ${foTxt}` : ''}`;
+    // v6.10h (revisión del 18-nov · sin bitácora en los textos que lee Joseph): sin «fila mant. N de la F1 v6.0X, vie 18-dic» (la fila y la fecha de una
+    //   versión anterior del plan): es un mini-sim de F1 que no cupo en F1; la cola larga lo identifica
+    const deF1 = `cola larga ${cb.colaLarga.join(' + ')}`;
     return itemsMantenimiento(pseudo, null).map((it) => {
       const label = it.key.endsWith(':msim')
         ? it.label.replace('MINI-SIMULACRO SEMANAL', `MINI-SIMULACRO 25Q (mini-sim F1 que no cupo: ${deF1})`)
@@ -1536,25 +1567,31 @@ function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): Pla
       const fp = ISO_RE.test(String(prev.fecha || '')) ? new Date(`${prev.fecha}T12:00:00Z`) : null;
       const wdPrev = fp ? fp.getUTCDay() : 5;
       if (wdPrev === 5) {
-        label = `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del ${que} del ${String(prev.weekday || 'viernes').toLowerCase()} (D${prev.dia})`;
+        // v6.10i (remate de la revisión del 18-nov): si el SIM del viernes tuvo CARRIL SÁBADO, el sábado ya re-testeó 5 de sus fallos → el lunes, OTRAS 5
+        //   (no las del sábado); y la fuente del re-test sale del SIM (examen oficial en su runner · simulacro de plataforma en su plataforma)
+        const csPrev = carrilSabadoDe(prev);
+        const tras = !!csPrev && ISO_RE.test(String(day.fecha || '')) && String(day.fecha) > csPrev.fecha;
+        const retest = tras ? RETEST_SIM.replace('re-test de 5 de las MISMAS preguntas que fallaste', 're-test de OTRAS 5 (no las del sábado) de las MISMAS preguntas que fallaste') : RETEST_SIM;
+        label = `🎯 EVAL ANCLADA (lunes): re-test de ${tras ? 'otras 5 preguntas' : '5 preguntas'} del ${que} del ${String(prev.weekday || 'viernes').toLowerCase()} que fallaste (D${prev.dia})${tras ? ' · no las del sábado' : ''}`;
         // v6.07 (fix 3): «el mini-sim de ese viernes quedó absorbido» solo si la fila del viernes lo dice (extra.minisim_absorbido: vie 8-ene → 12-feb);
         //   desde el vie 19-feb (filas 72 · 77 · 82) no hay mini-sim que absorber —y el vie 5-mar sí hubo sesión a las 16:15, el CARRIL VIERNES—
         detail = minisimAbsorbidoDe(prev)
-          ? `El mini-sim de ese viernes quedó absorbido por el ${que} (no se hizo) → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`
-          : `El viernes fue día de ${que} (D${prev.dia}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' · quincena final' : ''}): 5Q de sus fallos → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+          ? `El mini-sim de ese viernes quedó absorbido por el ${que} (no se hizo) → ${retest}${fuenteRetestSim(prev)} · ${EVAL_ANCLADA_REGLA}`
+          : `El viernes fue día de ${que} (D${prev.dia}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' · quincena final' : ''}) → ${retest}${fuenteRetestSim(prev)} · ${EVAL_ANCLADA_REGLA}`;
       } else {
         const wdTxt = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][wdPrev];
         const fd = ISO_RE.test(String(day.fecha || '')) ? new Date(`${day.fecha}T12:00:00Z`) : null;
         const ayer = !!fp && !!fd && Math.round((fd.getTime() - fp.getTime()) / 864e5) === 1;
         const cuando = ayer ? `de ayer (${wdTxt} · D${prev.dia})` : `del ${wdTxt} (D${prev.dia})`;
-        label = `🎯 EVAL ANCLADA: 5Q REHECHAS con otro enfoque de los fallos del ${que} ${cuando}`;
-        detail = `${ayer ? 'Ayer' : `El ${wdTxt}`} fue día de ${que}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' de la quincena final' : ''}: 5Q de sus fallos → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+        label = `🎯 EVAL ANCLADA: re-test de 5 preguntas del ${que} ${cuando} que fallaste`;
+        detail = `${ayer ? 'Ayer' : `El ${wdTxt}`} fue día de ${que}${prev.extra && (prev.extra as Record<string, unknown>).quincena ? ' de la quincena final' : ''} → ${RETEST_SIM}${fuenteRetestSim(prev)} · ${EVAL_ANCLADA_REGLA}`;
       }
       code = undefined;
     } else if (/:m_eval$/.test(it.key) && prev && prevPseudo && esMiniSimRepuesto(prevPseudo)) {
       // v6.02: ayer fue un MINI-SIM F1 repuesto (no es viernes: p.ej. mar 23-feb tras el mini-sim del lun 22-feb) → misma eval que tras un
       // mini-sim de viernes, con el texto del día real (antes diría «lunes» / «viernes»); la clave D{dia}:b_eval no cambia
-      label = `🎯 EVAL ANCLADA: 5Q REHECHAS con otro enfoque de los fallos del MINI-SIM 25Q repuesto de ayer (${String(prev.weekday || '').toLowerCase()} · D${prev.dia})`;
+      label = `🎯 EVAL ANCLADA: re-test de 5 preguntas del MINI-SIM 25Q repuesto de ayer que fallaste (${String(prev.weekday || '').toLowerCase()} · D${prev.dia})`;
+      detail = `${RETEST_SIM} · ${EVAL_ANCLADA_REGLA}`;
       code = undefined;
     }
     if (/:m_log$/.test(it.key)) {

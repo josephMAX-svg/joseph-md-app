@@ -262,6 +262,8 @@ const excepcionLunes = (fila, rEval) => {
   // v6.10e (dias-1920-1): esa sesión anterior pudo ser el pre-test de arranque que sustituyó al banco (jue 19-nov de plan): la excepción vale igual
   return ms && (sa.tipo === 'banqueo1h' || sa.tipo === 'pretest_arranque') && SIN_SESION_S1.has(addD(ms.fecha, 1)) ? { ms, sa } : null;
 };
+/** v6.10h (c10 · mar 24-nov): «La última» con n = 1 (antes «Las 1 últimas») */
+const ultimasDe = (n) => (n === 1 ? 'La última' : `Las ${n} últimas`);
 const recursoRunner = (r, t) => (r ? [{ t, url: r.url || r.local, cantidad: `${r.n}Q` }] : []);
 const proyectoDe = (codigo) => CAT.PROYECTO[romano(codigo)] || CAT.PROYECTO.LOPEZ;
 
@@ -281,23 +283,25 @@ const REGISTRO_RUNNER = (r, tipo) => `Una sola vía (nunca las dos): (a) en el P
 const evalDesc = (r, fila, prev) => {
   if (!r) return null;
   const modo = String(r.meta.modo || r.j.tema || '');
-  if (/fallos previos/i.test(modo)) return `5Q de FALLOS PREVIOS del registro (hoy: ${Object.entries(r.porCod).map(([c, n]) => `${n} × ${c}`).join(' + ')})`;
+  // v6.10h (revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): el runner elige ítems de EXAMEN OFICIAL (R-…) por los fallos previos
+  //   del registro (antes «5Q de FALLOS PREVIOS del registro», que podía leerse como preguntas propias)
+  if (/fallos previos/i.test(modo)) return `5Q REALES de tus fallos previos del registro (examen oficial con clave · hoy: ${Object.entries(r.porCod).map(([c, n]) => `${n} × ${c}`).join(' + ')})`;
   // v6.03: el código y la sesión anterior salen del propio runner (_meta.sesion_anterior); «AYER» solo si fue el día anterior
   const sa = r.meta.sesion_anterior || {}; const cod = r.j.codigo && r.j.codigo !== 'MIX' ? r.j.codigo : (prev ? prev.codigo : '');
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
   // v6.10e (revisión del 18-nov · dias-1920-1): la sesión anterior fue el PRE-TEST DE ARRANQUE (sustituyó al banco): sin «código de AYER» ni banqueo inventado
   if (sa.tipo === 'pretest_arranque') {
     const nPre = (r.j.items || []).filter((x) => x.fallback === 'pre-test de ayer').length;
-    if (nPre) return `${r.n}Q de ${cod} del PRE-TEST de ${sa.fecha === ayer ? 'ayer' : corta(sa.fecha)}, rehechas en otro orden (examen real; no quedan preguntas reales de ${cod} sin usar)`;
+    if (nPre) return `${r.n}Q de ${cod} del PRE-TEST de ${sa.fecha === ayer ? 'ayer' : corta(sa.fecha)} en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de ${cod} sin usar)`;
     const parte = (() => { try { return JSON.parse(fs.readFileSync(path.join(BP, `${sa.archivo}.json`), 'utf8'))._meta.parte; } catch (e) { return null; } })();
-    return `${r.n}Q reales de ${cod} = el código del banco del ${corta(sa.fecha)}, que sustituyó el pre-test ${parte ? `${parte}/2` : 'de arranque'} (ninguna salió en el pre-test)${excepcionLunes(fila, r) ? ` · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)` : ''}`;
+    return `${r.n}Q reales de ${cod} = el código del banco que el pre-test ${parte ? `${parte}/2` : 'de arranque'} del ${corta(sa.fecha)} sustituyó (ninguna de ${cod} salió en el pre-test)${excepcionLunes(fila, r) ? ` · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)` : ''}`;
   }
   if (sa.fecha && sa.fecha !== ayer) {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
     if (excepcionLunes(fila, r)) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas) · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)`; // v6.09 (fix revisión, datos 6)
-    return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, rehaz esos primero` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
+    return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
   }
   return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
 };
@@ -311,12 +315,24 @@ const saltadosEntre = (a0, b0) => { const a = realDe(a0), b = realDe(b0); const 
 function evalSinRunner(fila, prev) {
   if (!prev || prev.tipo === 'mini_sim' || !prev.codigo) {
     const de = !prev || prev.tipo !== 'mini_sim' ? 'del registro' : (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 3); return d.getUTCDay() === 5 && d.toISOString().slice(0, 10) === prev.fecha && !conAlias(fila.fecha) ? 'del mini-sim del viernes' : `del mini-sim del ${corta(prev.fecha)}`; })(); // v6.10d: con alias, la fecha de plan (la app la pinta con su día real)
-    return `5Q REHECHAS con otro enfoque de los fallos ${de}`;
+    // v6.10h (regla de Joseph del 18-nov): el runner de esa eval (gen_encaps_minisim.js --eval, modo fallos previos) solo trae ítems de EXAMEN OFICIAL (R-…) de
+    //   los códigos fallados; nada «rehecho con otro enfoque» (antes «5Q REHECHAS con otro enfoque de los fallos …»)
+    return /^del mini-sim/.test(de) ? `5Q REALES de los códigos que fallaste en el mini-sim${de.replace(/^del mini-sim/, '')} (examen oficial con clave)` : `5Q REALES de tus fallos previos ${de} (examen oficial con clave)`;
   }
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
   if (prev.fecha === ayer) return `5Q del código de AYER ${prev.codigo} (3 cifras + 2 viñetas)`;
   const sk = saltadosEntre(prev.fecha, fila.fecha);
   return `5Q de ${prev.codigo} = código de la sesión anterior (${corta(prev.fecha)}${sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
+}
+
+/** v6.10h (revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): plan B de la eval anclada SIN runner = re-test de las MISMAS preguntas
+ *  reales que fallaste (sin la clave a la vista) o recall en blanco de la regla de cada fallo, contrastado con la norma. Antes pedía a un proyecto de Claude
+ *  «5 preguntas nuevas … con otro escenario» (preguntas generadas). */
+function evalSinRunnerPB(fila, prev, sab, lunes) {
+  const reTest = 'sin la clave a la vista; si tienes menos de 5, recall en blanco de la regla de cada fallo, contrastado con la norma';
+  if (sab) return ` Eval sin runner: re-test de 5 preguntas reales que ya fallaste (las del registro), ${reTest}.`;
+  if (lunes && prev && prev.tipo === 'mini_sim') return ` Eval ${conAlias(fila.fecha) ? 'de hoy' : 'del lunes'} sin runner: re-test de 5 de las preguntas reales que fallaste en el mini-sim del ${conAlias(fila.fecha) ? corta(prev.fecha) : 'viernes'} (las guarda su runner), ${reTest}.`;
+  return ` Eval sin runner: re-test de las preguntas reales de ${prev && prev.codigo ? prev.codigo : 'la sesión anterior'} que fallaste el ${prev ? corta(prev.fecha) : 'último día'} (las guarda su runner), ${reTest}.`;
 }
 
 // ── construcción por sesión ───────────────────────────────────────────────────────────────────────────────────
@@ -466,19 +482,19 @@ function construirGuia(fila, sab = null) {
         totalMin: 60,
         pasos: [
           PASO_ARRANQUE([rEval, rBan]),
-          { min: 8, que: `EVAL ANCLADA · ${evalTxt} — ${rEval ? rEval.f : 'runner POR GENERAR'}`, como: sab ? 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2 de un código, queda CALIENTE en el registro (temas calientes de ENCAPS → Plan): no cambia el banco de hoy.'
+          { min: 8, que: `EVAL ANCLADA · ${evalTxt}${rEval ? ` — ${rEval.f}` : sab ? '' : ' — runner POR GENERAR'}`, como: sab ? 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2 de un código, queda CALIENTE en el registro (temas calientes de ENCAPS → Plan): no cambia el banco de hoy.'
             : 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2, ese código queda CALIENTE para el override que propone el próximo mini-sim (no cambia el tema de la próxima sesión).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
           { min: 30, que: `BANCO DEL DÍA · ${qPri} CIEGAS de ${codigo}${priReparto} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
             como: `Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
               : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLbl)} hasta ${rcB.principal}, mismo método.`
-              : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLbl)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${proyecto.t} (no cuentan para el % ciego hasta verificar la clave).`
+              : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLbl)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t}.`
               : ` ${rcB.principal}Q × 90 s = 30′.`}`, ...(rBan ? { enlace: enlaceRunner(rBan, 'Banco') } : {}) },
           { min: 8, que: secCods.length ? `SECUNDARIO de cola larga · ${qSec} de ${secCods.join(' + ')}${secFuente} — ${sec.map((s) => s.subtema).join(' / ').slice(0, 160)}` : 'Sin secundario: 8′ más del banco principal (sub-ejes distintos)',
             como: !secCods.length ? 'Mismo método.' : !rcB ? 'Las últimas preguntas del mismo runner, mismo método (corrección inmediata + confianza). Si el runner trae menos de 4, completa con el banco de respaldo (plan B) hasta 5.'
               : `${qxS == null ? `Las últimas del mismo runner; si trae menos de ${rcB.secundario}, completa con ${qxDe(secCods[0], sec[0].subtema)} hasta ${rcB.secundario}.`
-                : qxS === 0 ? `Las ${rcB.secundario} últimas del mismo runner.`
+                : qxS === 0 ? `${ultimasDe(rcB.secundario)} del mismo runner.`
                 : nSec === 0 ? `El runner no trae ninguna: las ${rcB.secundario} de ${qxDe(secCods[0], sec[0].subtema)}.`
-                : `Las ${nSec} últimas del mismo runner y, al acabar, ${qxS} de ${qxDe(secCods[0], sec[0].subtema)} (las primeras que no hayas visto).`} ${rcB.secundario}Q × 90 s ≈ 8′, mismo método (corrección inmediata + confianza).` },
+                : `${ultimasDe(nSec)} del mismo runner y, al acabar, ${qxS} de ${qxDe(secCods[0], sec[0].subtema)} (las primeras que no hayas visto).`} ${rcB.secundario}Q × 90 s ≈ 8′, mismo método (corrección inmediata + confianza).` },
           { min: 7, que: mat1 ? `MATERIAL — SOLO si fallaste ≥2 del principal: ${mat1.t}` : 'MATERIAL — solo si fallaste ≥2: compendio del área',
             como: rcB ? `Busca en el PDF SOLO la sección de tus fallos, ≤${rcB.material.paginas} p a 2′/p (empieza por los que marcaste «segura»), y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).`
               : 'Busca en el PDF SOLO la sección de tus fallos y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).', ...(mat1 ? { enlace: { t: `${mat1.tipo === 'mp4' ? 'Vídeo' : mat1.tipo === 'carpeta' ? 'Carpeta' : 'PDF'}`, url: mat1.url } } : {}) },
@@ -489,8 +505,8 @@ function construirGuia(fila, sab = null) {
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rBan, `Banco ${rBan ? rBan.f : ''}`), ...mat.items.slice(0, 4), ...matSec, ...(obs ? [obs] : []), ...obsSec, proyecto, ...(area ? [area.videoclases] : [])],
         hecho: `Eval 5/5 + ${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · sesión registrada por UNA vía (--registrar o CIERRE DE SESIÓN) · 1-3 APEX creados.`,
         planB: pendiente
-          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio; (2) o en ${proyecto.t} pide «${qPri} tipo ENCAPS del sub-eje ${subEje || codigo}, 4 opciones, con la cita textual de la norma en cada clave»: esas NO cuentan para el % ciego hasta verificar la clave contra la fuente (gate §3-bis).${!rEval ? (sab ? ' Eval sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre mis fallos previos del registro (te pego los enunciados), con otro escenario, sin repetir la pregunta».' : lunes ? (prev && prev.tipo === 'mini_sim' ? (conAlias(fila.fecha) ? ` Eval de hoy sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre los conceptos que fallé en el mini-sim del ${corta(prev.fecha)} (te pego los enunciados), con otro escenario, sin repetir la pregunta».` : ' Eval del lunes sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre los conceptos que fallé en el mini-sim del viernes (te pego los enunciados), con otro escenario, sin repetir la pregunta».') : ` Eval sin runner: 5Q de ${prev && prev.codigo ? prev.codigo : 'la sesión anterior'} rehechas desde tus fallos del ${prev ? corta(prev.fecha) : 'registro'} (mismo proyecto, otro escenario).`) : ` Eval sin runner: 5Q de ${prev && prev.codigo ? prev.codigo : 'ayer'} rehechas desde tus fallos de ayer (mismo proyecto, otro escenario).`) : ''} Respaldo de academia: ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}`
-          : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${proyecto.t} (preguntas con cita textual; no cuentan para el % ciego hasta verificarlas).`,
+          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio (preguntas reales, con su clave); (2) si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}. Nada de preguntas generadas: solo bancos reales.${!rEval ? (sab && sab.evalPB ? sab.evalPB : evalSinRunnerPB(fila, prev, sab, lunes)) : ''}`
+          : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${CAT.POSTEST_DRLOPEZ.t} (preguntas reales, con su clave).`,
         ...((() => {
           const av = [];
           // v6.03: si la semana ya tiene runners armados (p.ej. los re-fechados del lun 26 / mar 27-oct), --semana los re-sortearía → comandos del día
@@ -503,10 +519,10 @@ function construirGuia(fila, sab = null) {
           // v6.10d (fix revisión 18-nov): con el alias el lunes de plan se hace el martes real y el mini-sim del viernes de plan, el lunes real: ya no hubo fin de
           //   semana entre los dos → «de hoy» y el motivo real (antes: «de este lunes» y «generarlas exigía el fin de semana, que fue sin sesión»)
           // v6.10e (dias-1920-1): si esa «última sesión de banco» fue en realidad el pre-test de arranque que la sustituyó, el aviso lo dice
-          const excDe = exc && exc.sa.tipo === 'pretest_arranque' ? `del código del banco del ${corta(exc.sa.fecha)}, que sustituyó el pre-test de arranque (5Q reales que no salieron en él)` : exc ? `del ${corta(exc.sa.fecha)} (la última sesión de banco)` : '';
+          const excDe = exc && exc.sa.tipo === 'pretest_arranque' ? `del código del banco que el pre-test de arranque del ${corta(exc.sa.fecha)} sustituyó (5Q reales que no salieron en él)` : exc ? `del ${corta(exc.sa.fecha)} (la última sesión de banco)` : '';
           if (exc) av.push(conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha)
-            ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} ${excDe}, no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
-            : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} ${excDe} (su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
+            ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} ${excDe}, no las 5Q reales de los códigos que fallaste en el mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
+            : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} ${excDe} (su runner ya está hecho), no las 5Q reales de los códigos que fallaste en el mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
           // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
           if (!pendiente && !sab) {
             const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 6)); // v6.10: hasta el domingo (dom 29-nov = D9, recupera el mar 17)
@@ -515,13 +531,13 @@ function construirGuia(fila, sab = null) {
           }
           const primeraPend = bancosSinRunner(cmdSemana, addD(cmdSemana, 4))[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
           if (pendiente && sab) av.push(semanaArmada // v6.06 (fix): el sábado se arma con su semana del carril B (--semana) o solo (--eval / --banco del sábado)
-            ? `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha} → node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía).`
-            : `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} (con el carril B lun-jue arma también el sábado: eval_ + banco_${fila.fecha}) → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
+            ? `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía).`
+            : `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} (con el carril B lun-jue arma también el banco del sábado: banco_${fila.fecha}; la eval del sábado es el re-test de los fallos del simulacro, sin runner propio) → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           else if (pendiente) av.push(semanaArmada
             ? `Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
             : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           if (prev2 && prev2.nota) av.push(prev2.nota);
-          if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map(String));
+          if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map((x) => String(x).replace(/re-test con otro enfoque/g, 're-test de las mismas preguntas reales, sin la clave'))); // v6.10h: el re-test es de las MISMAS preguntas
           for (const c of [codigo, ...secCods]) if (CAT.AVISO_CODIGO[c]) av.push(CAT.AVISO_CODIGO[c]);
           if (mat.fuente !== 'drive') av.push(`${codigo} · ${subEje}: sin fichero del Drive inventariado para este sub-eje → material = ${mat.fuente === 'fichas' ? 'fichas MINSA del sub-eje + compendio del área' : 'compendio + videoclases del área (ninguna ficha MINSA del código trata este sub-eje)'}.`);
           return av.length ? { aviso: av.join(' · ') } : {};
@@ -566,18 +582,31 @@ for (const fila of FILAS) { const { g, ses } = construirGuia(fila); GUIA[fila.fe
 //    runner del SÁBADO si existe (eval_/banco_/minisim_<sábado>: gen_encaps_minisim.js --semana <lunes>). Clave = el sábado.
 const GUIA_SAB = {}; const SES_SAB = {};
 const HOST_TXT = { pretest: 'PRE-TEST 2026-II 100Q', sim100: 'SIM 100Q', dress_rehearsal: 'DRESS REHEARSAL' };
+// v6.10i: gemelo de encapsPlan.fuenteRetestSim (dónde se re-testean los fallos de un SIM 100Q / pre-test): examen oficial → en su runner; plataforma → en ella
+const fuenteRetestSim = (sim) => {
+  const ex = (sim && sim.extra) || {}; const sm = ex.sim && typeof ex.sim === 'object' ? ex.sim : null;
+  if ((sim && sim.tipo === 'pretest') || String((sm && sm.clave) || '') === 'oficial') return ' · en su runner (examen oficial con clave)';
+  const lbl = String((sm && sm.label) || '').replace(/^SIM 100Q · /, '').split(/[;:(]/)[0].replace(/«[^»]*»\s*/g, '').replace(/\s+·\s*$/, '').trim();
+  return sm ? ` · en la plataforma del simulacro${lbl ? ` (${lbl})` : ''}` : '';
+};
 for (const [fecha, s] of Object.entries(SABADOS)) {
   const { p, hostTipo } = SAB_CTX[fecha];
   const lunesSem = (() => { const d = new Date(fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 5); return d.toISOString().slice(0, 10); })();
   const hostTxt = HOST_TXT[hostTipo] || hostTipo;
   const sab = {
     franja: `${s.ini}–${s.fin}`, simN: s.simN, host: s.host, hostTxt, lunesSem,
-    etq: `🔁 REPOSICIÓN F1 · mant. ${s.diaMant} de la ${s.origen}`,
+    // v6.10h (revisión del 18-nov · sin bitácora en los textos que lee Joseph): sin «mant. N de la F1 v6.0X» ni «(v6.0X)»: es una sesión de F1 que no cupo
+    etq: `🔁 REPOSICIÓN F1`,
     // v6.08: el viernes host puede traer también el CARRIL VIERNES 16:15 (banco de un pendiente F1) tras el SIM / pre-test de las 07:15; la eval del
     //   sábado sigue siendo la de los fallos del simulacro (la de la app: EVAL ANCLADA (sábado), ver encapsPlan.itemsCarrilSabado)
-    evalSin: (() => { const cbV = (SAB_CTX[fecha].host.extra || {}).carril_b; const pV = cbV && cbV.pendiente_f1; return `5Q de FALLOS PREVIOS del registro (otro enfoque, críticos primero: ayer, ${corta(s.host.fecha)}, fue el ${hostTxt}${pV ? ` y, a las 16:15, el banco ${pV.codigo} del carril VIERNES` : ', sin banco de un código'})`; })(),
+    // v6.10i (remate de la revisión del 18-nov): = ENCAPS → Plan (D{dia}:s_eval, «re-test de 5 preguntas del SIM … que fallaste») y con la fuente del SIM
+    //   del viernes: examen oficial → en su runner; simulacro de plataforma (QX · Theomed · DR LOPEZ) → en esa plataforma (encapsPlan.fuenteRetestSim).
+    //   Antes «5Q REALES de tus fallos previos del registro (examen oficial con clave …)» aunque el SIM fuera de QX o Theomed. Sin runner propio: el re-test
+    //   es de las preguntas del simulacro (gen_encaps_minisim.js --semana ya no arma eval_<sábado>).
+    evalSin: `RE-TEST de 5 preguntas que fallaste ayer en el ${hostTxt} (${corta(s.host.fecha)}): las mismas, sin la clave${fuenteRetestSim(SAB_CTX[fecha].host)}`,
+    evalPB: ` Eval: re-test de 5 de las preguntas que fallaste ayer en el ${hostTxt}${fuenteRetestSim(SAB_CTX[fecha].host)}; si fallaste menos de 5, recall en blanco de la regla de cada fallo, contrastado con la norma.`,
     tipoCierre: `«Carril B 16:15» (el sábado ENCAPS → Plan abre la fila del ${corta(s.host.fecha)}, D${s.host.dia}, y el cierre sale con la fecha del sábado)`,
-    nota: `REPOSICIÓN F1 (${s.corrimiento}) · CARRIL SÁBADO ${s.ini}-${s.fin}: fila mant. ${s.diaMant} de la ${s.origen} (${corta(s.fechaOriginal)}) que no cupo en la F1 tras el corrimiento ni en los días de reposición lun-jue del carril B; ítems en ENCAPS → Plan, fila del ${corta(s.host.fecha)} (D${s.host.dia}, claves s_*)`,
+    nota: `REPOSICIÓN F1 · CARRIL SÁBADO ${s.ini}-${s.fin}: sesión de F1 que no cupo en la F1 ni en los días de reposición lun-jue del carril B; ítems en ENCAPS → Plan, fila del ${corta(s.host.fecha)} (D${s.host.dia}, claves s_*)`,
   };
   const fila = { dia: s.host.dia, fecha, tipo: p.tipo, codigo: p.codigo || null, subtema: p.subtema, temas_secundarios: p.temas_secundarios || [], extra: p.extra || {} };
   const { g, ses } = construirGuia(fila, sab);
@@ -588,7 +617,7 @@ for (const [fecha, s] of Object.entries(SABADOS)) {
 for (const [fecha, s] of Object.entries(SABADOS)) {
   const g = GUIA_SAB[fecha], ses = SES_SAB[fecha];
   if (!g || !ses) aborta(`carril SÁBADO ${fecha}: sin guía «qué · cuánto · cómo»`);
-  if (g.franja !== `${s.ini}–${s.fin}` || !g.titulo.startsWith('🔁 REPOSICIÓN F1') || !String(g.aviso || '').includes(`REPOSICIÓN F1 (${s.corrimiento}) · CARRIL SÁBADO`)) aborta(`carril SÁBADO ${fecha}: franja «${g.franja}» / rótulo / nota de reposición`);
+  if (g.franja !== `${s.ini}–${s.fin}` || !g.titulo.startsWith('🔁 REPOSICIÓN F1') || !String(g.aviso || '').includes(`REPOSICIÓN F1 · CARRIL SÁBADO ${s.ini}-${s.fin}`)) aborta(`carril SÁBADO ${fecha}: franja «${g.franja}» / rótulo / nota de reposición`);
   if (ses.dia !== s.host.dia || ses.tipo !== (s.tipo === 'mini_sim' ? 'minisim' : 'banco') || (s.tipo === 'mini_sim' ? !g.titulo.includes(`sim_n ${s.simN}`) : ses.codigo !== s.codigo)) aborta(`carril SÁBADO ${fecha}: sesión ≠ pendiente (dia ${ses.dia}/${s.host.dia} · tipo ${ses.tipo}/${s.tipo} · código ${ses.codigo}/${s.codigo})`);
   if (GUIA[fecha]) aborta(`carril SÁBADO ${fecha}: choca con una sesión de F1`);
 }
