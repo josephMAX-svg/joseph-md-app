@@ -25,8 +25,90 @@
  *   (d3) y «Vitiligo» (d4) ACOTADOS al tiempo (piden sesión: no se pueden medir) · d5: resumen de PubMed 177 palabras → 5′ = 0,35 → 2′; el consenso PMC
  *   re-medido (la Pregunta 3 son 655 palabras: las «789» contaban dentro el pie de la Figura 3) + su Tabla 2 + «Key Points» + Figuras 1-3 = 11,98′ en 13′;
  *   mapa de memoria 4′ → 5′ (compara también con la Figura 3 y la Tabla 2) · ProMIR de d1-d3 a 150 palabras/min (min150 de E2) · Blaschko con el total primero.
+ * v6.10e (18-nov-2026 · BASE CERO + PREGUNTAS REALES, orden de Joseph: «las preguntas tienen que ser REALES · todos partimos de CERO»): fuera el proyecto
+ *   Claude «AESTHETIC DERMATOLOGY» (viñetas / dictado / tabla + preguntas generadas por IA). Lo sustituyen casos REALES de los DermNet Quizzes (imagen real
+ *   + respuesta de DermNet tras «Show Answers»; ~2′/caso según el propio quiz) con su rango de casos por sesión (DERMA_QUIZ_F1), una lectura real medida
+ *   (d5: StatPearls «Facial Artery»; d6: DermNet «Three-point checklist», el algoritmo para no expertos) o ProMIR (MIR oficiales) cuando el hueco no
+ *   cuadra con casos de 2′ (d15). Mismos minutos y fechas; síntesis del método en DATA/DERMATOLOGIA/METODO_BASE_CERO.md.
  */
 'use strict';
+
+/** v6.10e (18-nov-2026): DermNet Quizzes (https://dermnetnz.org/quizzes — públicos y gratuitos, escritos por DermNet; cada caso = imagen real + «Name the
+ *  skin lesion/s» / «What is the diagnosis?» y la respuesta con su nota docente tras «Show Answers»). Leído el 18-nov-2026: título, nº de casos (páginas
+ *  /case/N que existen) y el tiempo por caso que declara el propio quiz («Each case should take approximately 2 minutes»; 5′ en «Mixed diagnoses» 3-11).
+ *  Solo slug · título · nº · minutos (nada del contenido). */
+const DERMNET_QUIZZES = {
+  'acne-16-cases': { t: 'Acne – 16 cases', n: 16, min: 2 },
+  'acneiform-eruptions-12-cases': { t: 'Acneiform eruptions – 12 cases', n: 12, min: 2 },
+  'annular-plaque-12-cases': { t: 'Annular plaque – 12 cases', n: 12, min: 2 },
+  'benign-melanocytic-naevi-11-cases': { t: 'Benign melanocytic naevi – 11 cases', n: 11, min: 2 },
+  'blistering-conditions-affecting-the-feet-12-cases': { t: 'Blistering conditions affecting the feet – 12 cases', n: 12, min: 2 },
+  'brown-skin-lesions-12-cases': { t: 'Brown skin lesions – 12 cases', n: 12, min: 2 },
+  'cause-of-contact-allergic-dermatitis-10-cases': { t: 'Causes of contact allergic dermatitis – 10 cases', n: 10, min: 2 },
+  'cutaneous-adverse-reactions-10-cases': { t: 'Cutaneous adverse reactions – 10 cases', n: 10, min: 2 },
+  'dermoscopy-local-features-quiz': { t: 'Dermoscopy local features quiz', n: 16, min: 2 },
+  'dermoscopy-pattern-analysis-quiz': { t: 'Dermoscopy pattern analysis quiz', n: 12, min: 2 },
+  'different-causes-of-purpura-10-cases': { t: 'Different causes of purpura – 10 cases', n: 10, min: 2 },
+  'eczema-14-cases': { t: 'Eczema – 14 cases', n: 14, min: 2 },
+  'fungal-infection-12-cases': { t: 'Fungal infections – 12 cases', n: 12, min: 2 },
+  'hair-loss-14-cases': { t: 'Hair loss – 14 cases', n: 14, min: 2 },
+  'irritant-contact-dermatitis-12-cases': { t: 'Irritant contact dermatitis – 12 cases', n: 12, min: 2 },
+  'led-rashes-and-unwell-10-cases': { t: 'Leg rashes and unwell – 10 cases', n: 10, min: 2 },
+  'lichen-12-cases': { t: 'Lichen – 12 cases', n: 12, min: 2 },
+  'malignant-skin-lesions-10-cases': { t: 'Malignant skin lesions – 10 cases', n: 10, min: 2 },
+  'melanoma-terminology-10-cases': { t: 'Melanoma terminology – 10 cases', n: 10, min: 2 },
+  'mixed-diagnoses-10-cases-1-of-11': { t: 'Mixed diagnoses – 10 cases (1 of 11)', n: 10, min: 2 },
+  'mixed-diagnoses-10-cases-2-of-11': { t: 'Mixed diagnoses – 10 cases (2 of 11)', n: 10, min: 2 },
+  'mixed-diagnoses-10-cases-3-of-11': { t: 'Mixed diagnoses – 10 cases (3 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-4-of-11': { t: 'Mixed diagnoses – 10 cases (4 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-5-of-11': { t: 'Mixed diagnoses – 10 cases (5 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-6-of-11': { t: 'Mixed diagnoses – 10 cases (6 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-7-of-11': { t: 'Mixed diagnoses – 10 cases (7 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-8-of-11': { t: 'Mixed diagnoses – 10 cases (8 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-9-of-11': { t: 'Mixed diagnoses – 10 cases (9 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-10-of-11': { t: 'Mixed diagnoses – 10 cases (10 of 11)', n: 10, min: 5 },
+  'mixed-diagnoses-10-cases-11-of-11': { t: 'Mixed diagnoses – 10 cases (11 of 11)', n: 10, min: 5 },
+  'nail-abnormalities-10-cases': { t: 'Nail abnormalities – 10 cases', n: 10, min: 2 },
+  'nonmelanoma-skin-cancers-10-cases': { t: 'Nonmelanoma skin cancers – 10 cases', n: 10, min: 2 },
+  'pigmented-lesions-10-cases': { t: 'Pigmented lesions – 10 cases', n: 10, min: 2 },
+  'psoriasis-16-cases': { t: 'Psoriasis – 16 cases', n: 16, min: 2 },
+  'pustules-15-cases': { t: 'Pustules – 15 cases', n: 15, min: 2 },
+  'skin-coloured-lumps-and-bumps-12-cases': { t: 'Skin coloured lumps and bumps – 12 cases', n: 12, min: 2 },
+  'skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases': { t: 'Skin conditions due to fungi, bacteria and viruses – 10 cases', n: 10, min: 2 },
+  'solitary-red-patches-17-cases': { t: 'Solitary red patches – 17 cases', n: 17, min: 2 },
+  'telangiectasia-10-cases': { t: 'Telangiectasia – 10 cases', n: 10, min: 2 },
+  'vascular-naevi-10-cases': { t: 'Vascular naevi – 10 cases', n: 10, min: 2 },
+  'white-skin-lesions-12-cases': { t: 'White skin lesions – 12 cases', n: 12, min: 2 },
+};
+
+/** v6.10e (18-nov-2026): F1 — el hueco que llenaba el proyecto Claude, sesión a sesión (clave = d), con casos REALES de un quiz DermNet afín (rango fijo:
+ *  `desde` y k = minutos/2, sin repetir casos entre sesiones; el generador lo comprueba) · d6 antes LEE el algoritmo para no expertos (lista de 3 puntos,
+ *  medida) · d15 (5′ no cuadra con casos de 2′) → ProMIR cap. 2, 4Q a 77 s/Q. `foco` = qué se entrena (base cero: describir ANTES de diagnosticar). */
+const DERMA_QUIZ_F1 = {
+  // k = nº de casos (minutos del hueco / ~2′ por caso; el generador comprueba que cuadra con los minutos del paso en 0,85-1,15)
+  1: { quiz: 'acne-16-cases', desde: 1, k: 5, foco: 'casos 1-5 = lesiones PRIMARIAS (comedón, pápula, pústula, nódulo): nombra la lesión elemental y descríbela con los 8 ejes ANTES de «Show Answers»' },
+  4: { quiz: 'brown-skin-lesions-12-cases', desde: 4, k: 8, foco: 'pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene' },
+  6: { quiz: 'dermoscopy-local-features-quiz', desde: 1, k: 4, lectura: 'tresPuntos', foco: 'aplica la lista de 3 puntos que acabas de leer (asimetría · red atípica · estructuras blanco-azuladas) y nombra la estructura local antes de «Show Answers»' },
+  9: { quiz: 'acne-16-cases', desde: 12, k: 5, foco: 'formas clínicas de acné: lesión elemental + gravedad antes de «Show Answers»' },
+  10: { quiz: 'blistering-conditions-affecting-the-feet-12-cases', desde: 1, k: 8, foco: 'nivel de la ampolla (tensa = subepidérmica · flácida/erosión = intraepidérmica) antes de «Show Answers»' },
+  11: { quiz: 'solitary-red-patches-17-cases', desde: 6, k: 8, foco: 'repaso INTERCALADO de la fase 2 (placas rojas: eccemas, psoriasis… ya vistos): 8 ejes + diferencial de 3 antes de «Show Answers»' },
+  12: { quiz: 'cutaneous-adverse-reactions-10-cases', desde: 1, k: 5, foco: 'reacción a fármacos: morfología + latencia + signos de alarma (mucosas, despegamiento) antes de «Show Answers»' },
+  13: { quiz: 'different-causes-of-purpura-10-cases', desde: 1, k: 5, foco: 'púrpura palpable (vasculitis) vs no palpable: describe y da 3 causas antes de «Show Answers»' },
+  14: { quiz: 'led-rashes-and-unwell-10-cases', desde: 1, k: 6, foco: '¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»' },
+  15: { promir: 4, foco: '4 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test y a las 2 de la 2.ª pasada)' },
+  16: { quiz: 'skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases', desde: 1, k: 5, foco: '¿virus, bacteria u hongo?: lesión elemental + agrupación (herpetiforme, umbilicada…) antes de «Show Answers»' },
+  17: { quiz: 'fungal-infection-12-cases', desde: 1, k: 5, foco: 'tiña vs candida vs versicolor: borde activo, satélites, escama antes de «Show Answers»' },
+};
+
+/** v6.10e: lecturas REALES medidas el 18-nov-2026 que sustituyen al proyecto Claude (min = palabras/100 + 0,25′ por figura, regla fija de inglés). */
+const LECTURA_REAL = {
+  // DermNet › Dermoscopy course › «Three-point checklist» (curl 200): Introduction 163 + Symmetry 69 + Network 84 + Blue-white structures 56 = 372 palabras;
+  //   imágenes 4 + 16 + 16 + 8 = 44 → 3,72 + 11 = 14,72′. «Activity» (136) no entra (ejercicio del curso CME, plan A del d10).
+  tresPuntos: { t: 'DermNet · Dermoscopy course › «Three-point checklist»', url: 'https://dermnetnz.org/cme/dermoscopy-course/three-point-checklist', secciones: [['Introduction', 163, 4], ['Symmetry', 69, 16], ['Network', 84, 16], ['Blue-white structures', 56, 8]] },
+  // StatPearls › «Anatomy, Head and Neck: Facial Artery» (Fakoya AO, Nessel TA, Downs BW; NBK536932, act. 6-may-2024; leído en Chrome el 18-nov-2026):
+  //   Introduction 135 + Structure and Function 311 + Physiologic Variants 84 + Surgical Considerations 179 + Clinical Significance 143 = 852 palabras + Figura 1.
+  arteriaFacial: { t: 'StatPearls · «Anatomy, Head and Neck: Facial Artery» (NBK536932)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK536932/', secciones: [['Introduction', 135, 0], ['Structure and Function', 311, 0], ['Physiologic Variants', 84, 0], ['Surgical Considerations', 179, 0], ['Clinical Significance', 143, 0], ['Figure 1', 0, 1]] },
+};
 
 /** Temas del «Create Custom Quiz» del Pictorial Review 4e (nombre exacto · nº disponible), leídos el 18-oct-2026. */
 const PICTORIAL_TEMAS = [
@@ -89,7 +171,6 @@ const CME_DESPLAZADO = {
   },
 };
 
-const AESTHETIC = 'https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f';
 const QBANKS = 'https://qbankly.app/qbanks';
 const VIDEOS = 'https://qbankly.app/videos';
 const DERMNET = 'https://dermnetnz.org';
@@ -150,7 +231,21 @@ const bbVideo = (C, id, fecha, que) => {
     enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS },
   };
 };
-const proyecto = (min, que, como) => ({ min, que: `Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · ${que}`, como, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC } });
+// v6.10e (18-nov-2026): el helper `proyecto` (proyecto Claude «AESTHETIC DERMATOLOGY»: viñetas, dictado y preguntas generadas por IA) desaparece. Lo sustituyen
+//   casos REALES de DermNet Quizzes (`quizPaso`) y lecturas reales medidas (`lecturaReal`).
+const DN_QUIZ_URL = (slug) => `${DERMNET}/quizzes/${slug}`;
+/** k casos REALES de un DermNet Quiz (rango fijo desde `desde`) en `minPaso` minutos (k × min/caso declarado por el quiz; el generador valida 0,85-1,15). */
+const quizPaso = (slug, desde, k, minPaso, foco) => {
+  const q = DERMNET_QUIZZES[slug];
+  return {
+    min: minPaso,
+    que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`,
+    como: `dermnetnz.org/quizzes (gratis, sin cuenta) → «${q.t}» → caso ${desde}: ${foco} · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).`,
+    enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: `${DN_QUIZ_URL(slug)}/case/${desde}` },
+  };
+};
+/** Palabras, figuras y minutos medidos (palabras/100 + 0,25′/figura) de una LECTURA_REAL. */
+const medLectura = (L) => { const pal = L.secciones.reduce((a, s) => a + s[1], 0), fig = L.secciones.reduce((a, s) => a + s[2], 0); return { pal, fig, nec: DN_NEC(pal, fig) }; };
 
 const AVISO_B = 'AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o Sign in via OpenAthens/Shibboleth). Hasta entonces manda el PLAN B (sin casos ni Pictorial ni libros AccessDerma).';
 const pendientes = (C, ids) => `Casos ${ids.map((p) => `#${p} (${C.caso(p).titulo})`).join(' y ')}, la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.`;
@@ -167,6 +262,7 @@ function curadas(C) {
     const x = dia(1); const [c1, c2] = x.casoIds;
     const ch2 = C.cap(2960, '248574793'), ch3 = C.cap(2960, '248574973'), dsa1 = C.cap(2929, '245859873');
     const pmd = C.pmd1Lectura(1);
+    const mD1 = 45 - (3 + 12 + Math.round(pmd.min150) + DN_MIN(119 + 419 + 224) + 2), kD1 = DERMA_QUIZ_F1[1].k; // v6.10e: 10′ = 5 casos × ~2′ (el generador comprueba 0,85-1,15)
     out[1] = {
       planA: B(1, `DERMA d1 · ${x.sub.split(':')[0]} — plan A (AccessDerma)`, [
         anki(C, 1),
@@ -190,14 +286,16 @@ function curadas(C) {
         //   dictado (11′ → 10′ = 5 rondas de ~2′). Ubicación en GoodNotes aprobada por Joseph: DERMATOLOGIA › A_Fundamentos › 01_d01_… y 02_d01_…
         { min: Math.round(pmd.min150), que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
         { min: DN_MIN(119 + 419 + 224), que: `DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = ${DN_TXT(DN_NEC(762))})`, como: 'Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…) · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «02_d01_DermNet_Terminology».', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
-        (() => { const dict = 45 - (3 + 12 + Math.round(pmd.min150) + DN_MIN(119 + 419 + 224) + 2), k = Math.round(dict / 2); return proyecto(dict, 'DICTADO INVERSO de morfología', `Pídele: «Dame ${k} descripciones morfológicas de lesiones de mis libros SIN diagnóstico; yo nombro la lesión primaria y la secundaria; corrígeme citando libro y página». ${k} rondas de ~2′ (las ${k} en ${dict}′) · cada fallo → tarjeta.`); })(),
+        // v6.10e (18-nov-2026 · PREGUNTAS REALES): el «dictado inverso» del proyecto Claude (descripciones generadas por IA) → casos REALES de DermNet Quizzes
+        //   (Acne 1-5 = lesiones primarias), mismos minutos (el hueco de siempre: 45 − el resto)
+        quizPaso(DERMA_QUIZ_F1[1].quiz, DERMA_QUIZ_F1[1].desde, kD1, mD1, DERMA_QUIZ_F1[1].foco),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
         { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '5Q' },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` },
-        { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
-      ], `5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + ${Math.round((45 - (3 + 12 + Math.round(pmd.min150) + DN_MIN(119 + 419 + 224) + 2)) / 2)} rondas de dictado inverso + ≤3 tarjetas.`,
+        { t: `DermNet Quiz · ${DERMNET_QUIZZES[DERMA_QUIZ_F1[1].quiz].t}`, url: DN_QUIZ_URL(DERMA_QUIZ_F1[1].quiz), cantidad: `${kD1} casos` },
+      ], `5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + ${kD1} casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.`,
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -291,6 +389,8 @@ function curadas(C) {
   {
     const x = dia(4); const [c1, c2] = x.casoIds;
     const tk1 = C.cap(3609, '301535746');
+    // v6.10e: el hueco que ocupaba el proyecto Claude (45 − el resto del plan B) → k casos DermNet de ~2′
+    const mD4 = 45 - (3 + C.bbMin(73, x.fecha).min + DN_MIN(227, 6) + DN_MIN(438, 8) + 5 + 2 + 2), kD4 = DERMA_QUIZ_F1[4].k; // 15′ ≈ 8 casos × ~2′ (16′ · 1,07)
     out[4] = {
       planA: B(4, `DERMA d4 · Fototipos I-VI + piel de color — plan A (AccessDerma)`, [
         anki(C, 4),
@@ -313,7 +413,9 @@ function curadas(C) {
         // v6.09b · lote 1-quater (revisión R2): PassMedicine «Vitiligo» pide iniciar sesión → acotado a 2′ (el texto lo dice); DermNet medido
         { min: 5, que: `Diferencial de hipopigmentación (${String(Math.round((DN_NEC(155, 4) + 2) * 100) / 100).replace('.', ',')}′ medidos y acotados: DermNet «Pityriasis alba» › clinical features, 155 palabras + 4 figuras = ${DN_TXT(DN_NEC(155, 4))} + PassMedicine «Vitiligo» (Library de Qbankly) acotado a 2′, no medible sin iniciar sesión)`, como: 'Primero DermNet (las 4 figuras + clinical features) · después lee 2′ de PassMedicine «Vitiligo»: definición → clínica → diagnóstico (lámpara de Wood); marca dónde paras · mientras lees, tabla de 3 columnas: pitiriasis alba vs vitíligo vs pitiriasis versicolor (borde, escama, Wood).', enlace: { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` } },
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Globules» (pública)', como: 'Describe antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Globules', url: `${DSC}/Globules` } },
-        proyecto(0, 'viñetas en fototipo IV-VI', 'Pídele 3 viñetas (≈5′ cada una: los 15′ del paso; v6.09b · lote 1-ter, antes 5 en 16′) de tus libros en piel oscura SIN diagnóstico (eritema, PIH, melasma, queloide…); tú describes y diferencias (PIH vs melasma vs liquen plano pigmentoso · queloide vs cicatriz hipertrófica); que corrija citando libro y página. Puente con SR-2 (L5).'),
+        // v6.10e (18-nov-2026 · PREGUNTAS REALES): las «3 viñetas en fototipo IV-VI» del proyecto Claude → casos REALES de DermNet Quizzes (Brown skin lesions
+        //   4-11: melasma, pigmentación postinflamatoria, liquen plano pigmentoso… sin revelar cuál es cuál), mismos minutos (el hueco: 45 − el resto)
+        quizPaso(DERMA_QUIZ_F1[4].quiz, DERMA_QUIZ_F1[4].desde, kD4, mD4, `${DERMA_QUIZ_F1[4].foco} · puente con SR-2 (L5)`),
         cierre(2),
       ], [
         { t: `B&B · ${C.bb(73).nombre}`, url: VIDEOS, min: C.bbMin(73, x.fecha).min },
@@ -321,8 +423,8 @@ function curadas(C) {
         { t: 'DermNet · Postinflammatory hyperpigmentation', url: `${DERMNET}/topics/postinflammatory-hyperpigmentation` },
         { t: 'DermNet · Pityriasis alba', url: `${DERMNET}/topics/pityriasis-alba` },
         { t: 'PassMedicine · Vitiligo', url: PASSMED(1413) }, R_DSC,
-        { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
-      ], 'Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + 3 viñetas corregidas + ≤3 tarjetas.',
+        { t: `DermNet Quiz · ${DERMNET_QUIZZES[DERMA_QUIZ_F1[4].quiz].t}`, url: DN_QUIZ_URL(DERMA_QUIZ_F1[4].quiz), cantidad: `${kD4} casos` },
+      ], `Vídeo B&B con free recall + tabla de fototipos + tabla de hipopigmentaciones + ${kD4} casos DermNet reales corregidos + ≤3 tarjetas.`,
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -347,24 +449,28 @@ function curadas(C) {
       'Sin acceso a AccessDerma → PLAN B.'),
       planB: B(5, `DERMA d5 · Anatomía facial + DANGER ZONES — PLAN B (AccessDerma caducado)`, [
         anki(C, 5),
-        proyecto(20, 'tabla de arterias de riesgo', 'Pídele la tabla de arterias de riesgo (facial, angular, supratroclear, supraorbitaria, dorsal nasal, rama frontal de la temporal superficial): trayecto, plano/profundidad y qué produce su oclusión, con libro y página; después 8 preguntas de verificación que respondes sin mirar.'),
+        // v6.10e (18-nov-2026 · PREGUNTAS REALES): la «tabla de arterias de riesgo + 8 preguntas de verificación» del proyecto Claude (generadas por IA) → lectura
+        //   REAL medida (StatPearls «Facial Artery», 852 palabras + Figura 1 = 8,77′ en 9′) + la tabla la construyes TÚ al final (paso «TABLA»), con las figuras del
+        //   consenso; las 8 preguntas → recall en blanco del MAPA DE MEMORIA. Mismos 20′ (9 + 11).
+        (() => { const L = LECTURA_REAL.arteriaFacial; const m = medLectura(L); return { min: Math.round(m.nec), que: `${L.t} › ${L.secciones.filter((s) => s[1]).map((s) => `«${s[0]}»`).join(' + ')} + su Figura 1 (${m.pal} palabras + ${m.fig} figura = ${DN_TXT(m.nec)} a 100 palabras/min)`, como: 'Lee esas secciones (Embryology, Blood Supply, Nerves y Muscles no forman parte del átomo: el átomo es trayecto + plano + riesgo) · la Figura 1 primero: tapa el pie y sigue el trayecto de la a. facial hasta la angular · subraya dónde es superficial y su relación con el surco nasogeniano.', enlace: { t: 'StatPearls · Facial Artery (NBK536932)', url: L.url } }; })(),
         // v6.09b · lote 1-quater (revisión de F1): el resumen de PubMed tiene 177 palabras (1,77′; medido el 17-nov-2026) → 5′ = 0,35 → 2′. El consenso, re-medido
         //   (PMC HTML + Europe PMC XML, 17-nov-2026): el texto de la Pregunta 3 son 655 palabras (las «789» contaban dentro el pie de la Figura 3) y los pies de
         //   las Figuras 1-3 suman 335; la Pregunta 3 remite a su Tabla 2 (riesgo por región, 72 palabras) → con los «Key Points» del inicio (61) = 1.123 palabras
         //   + 3 figuras = 11,98′ en 13′ (0,92). El mapa de memoria (relleno) se compara además con la Figura 3 y la Tabla 2.
         { min: 2, que: `PubMed · Cotofana S et al. «Vascular Safe Zones for Facial Soft Tissue Filler Injections» (Plast Aesthet Nurs 2022) — resumen (177 palabras = ${DN_TXT(DN_NEC(177))})`, como: 'Lee el resumen y apunta qué zonas llama «seguras» y en qué plano (resumen medido el 17-nov-2026 a 100 palabras/min).', enlace: { t: 'PubMed 36469395', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' } },
         { min: 13, que: `PMC (acceso abierto) · «A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss…» (ASJ 2020) › «Question 3: Are There Areas of Increased Risk…» (655 palabras) + su Tabla 2 «Regions of the Face and Their Relative Risk of Blindness» (72) + «Key Points» del inicio (61) + pies de las Figuras 1-3 (335) = 1.123 palabras + 3 figuras (${DN_TXT(DN_NEC(1123, 3))} a 100 palabras/min)`, como: 'La Pregunta 3 con su Tabla 2 y las 3 figuras: qué zonas son de alto riesgo y por qué (anastomosis con la a. oftálmica, Figura 3); los «Key Points», el mecanismo en 4 líneas · es la lectura del d20, aquí solo la anatomía y el riesgo por región.', enlace: { t: 'PMC7427155', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
-        { min: 0, que: 'MAPA DE MEMORIA', como: 'Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo sin mirar; compáralo con la tabla del proyecto, con la Figura 3 y con la Tabla 2 del consenso, y corrige en rojo.' },
+        { min: 11, que: 'TABLA de las 6 arterias de riesgo, hecha por TI (sin IA) desde lo leído hoy: facial · angular · supratroclear · supraorbitaria · dorsal nasal · rama frontal de la temporal superficial (6 filas × trayecto · plano/profundidad · qué produce su oclusión ≈ 1,8′ por fila)', como: 'Fuentes: StatPearls (a. facial y angular, Figura 1) + Figura 3 y Tabla 2 del consenso (ramas de la oftálmica y riesgo por región) · celda que no puedas llenar con lo leído = «?» en rojo y va como pregunta al Anki, nunca inventada.' },
+        { min: 0, que: 'MAPA DE MEMORIA (recall en blanco)', como: 'Dibuja la cara con las 6 arterias y las 2 zonas de máximo riesgo SIN mirar; compáralo con tu tabla, con la Figura 1 de StatPearls y con la Figura 3 y la Tabla 2 del consenso, y corrige en rojo: es tu verificación (sin preguntas generadas: lo que no recuerdes = tarjeta).' },
         cierre(2),
       ], [
-        { t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC },
+        { t: LECTURA_REAL.arteriaFacial.t, url: LECTURA_REAL.arteriaFacial.url, min: Math.round(medLectura(LECTURA_REAL.arteriaFacial).nec) },
         { t: 'PubMed · Vascular Safe Zones (Cotofana 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' },
         { t: 'PMC · Consenso de pérdida visual embólica (2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' },
-      ], 'Tabla de arterias corregida + 8 preguntas respondidas + mapa de memoria corregido + ≤3 tarjetas.',
+      ], 'StatPearls leído + tabla de las 6 arterias hecha por ti + mapa de memoria corregido contra las figuras reales + ≤3 tarjetas.',
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
   return out;
 }
 
-module.exports = { PICTORIAL_TEMAS, PICTORIAL_ASIGNACION, curadas, AESTHETIC, QBANKS, VIDEOS, DERMNET, CME_DESPLAZADO, DERMNET_DERMOSCOPY };
+module.exports = { PICTORIAL_TEMAS, PICTORIAL_ASIGNACION, curadas, QBANKS, VIDEOS, DERMNET, CME_DESPLAZADO, DERMNET_DERMOSCOPY, DERMNET_QUIZZES, DERMA_QUIZ_F1, LECTURA_REAL };

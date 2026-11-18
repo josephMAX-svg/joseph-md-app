@@ -122,10 +122,18 @@ const FILAS = fs.readFileSync(SQL, 'utf8').split(/\r?\n/).filter((l) => l.starts
 const F6 = require('./gen_fechas_v6').cargarFechasV6();
 // v6.09 (16-nov-2026): + los L-V HÁBILES de la transición (no SKIP; v6.09: jue 31-dic, que recupera el lun 16-nov) = filas del mantenimiento (dia 32)
 const HAB_TRANS = []; for (let d = F6.transicion.desde; d <= F6.transicion.hasta; ) { const w = new Date(d + 'T12:00:00Z').getUTCDay(); if (w >= 1 && w <= 5 && !(F6.skip || []).includes(d)) HAB_TRANS.push(d); const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); d = x.toISOString().slice(0, 10); }
-// v6.10 (17-nov-2026): + los fines de semana de corrida_s1.extra con ENCAPS (dom 29-nov 07:15 = dia 9, recupera el mar 17): también son fila del mantenimiento
+// v6.10 (17-nov-2026): + los fines de semana de corrida_s1.extra con ENCAPS (v6.10c: sáb 2-ene 04:30 = dia 32 · v6.10: dom 29-nov 07:15 = dia 9; recuperan el mar 17): también son fila del mantenimiento
 const EXTRA_ENC = Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.encaps && f >= F6.f1.inicio && f <= F6.transicion.hasta).map(([f]) => f);
 const F1_DIAS = F6.f1.dias + HAB_TRANS.length + EXTRA_ENC.length; // v6.10: 30 + 1 + 1 = 32 · v6.09: 31 + 1 = 32 · v6.08: 32 · v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
 const CORR = (F6.corrimientos || []).at(-1) || null; // v6.05: versión y fecha del régimen vigente (META, cabecera del .ts)
+// v6.10d (18-nov-2026): con alias en corrida_s1 (jue 19-nov → vie 1-ene hacen el plan del hábil anterior) NO hay re-fecha: el SQL, Supabase y los
+//   runners siguen con la fecha de PLAN y la app pinta cada sesión en su día real (fechasV6.fechaPlanDe / fechaRealDe). Solo cambia la cabecera.
+const ALIAS_S1 = Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).sort();
+// v6.10d (fix revisión 18-nov): día REAL en que se hace una fecha de PLAN (alias de corrida_s1: el plan del vie 20-nov se hace el lun 23; sin alias = la propia).
+//   Los textos siguen citando fechas de PLAN (la app las traduce), pero lo que depende del orden REAL (qué hubo entre dos sesiones, «hoy lunes») se mira aquí.
+const _AL6 = (F6.corrida_s1 && F6.corrida_s1.alias) || {};
+const realDe = (f) => Object.keys(_AL6).find((k) => _AL6[k] === f) || f;
+const conAlias = (f) => realDe(f) !== f;
 if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias ${F6.f1.dias} + ${HAB_TRANS.length} hábil(es) de la transición + ${EXTRA_ENC.length} fin(es) de semana de corrida_s1.extra = ${F1_DIAS})`);
 const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^--\s*/, '');
 // v6.06: CARRIL SÁBADO de la intensiva (extra.carril_sabado de la fila del viernes host) → ENCAPS_SABADO_F2 (clave = el sábado)
@@ -280,19 +288,21 @@ const evalDesc = (r, fila, prev) => {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
-    if (excepcionLunes(fila, r)) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas) · EXCEPCIÓN de este lunes (ver el aviso)`; // v6.09 (fix revisión, datos 6)
+    if (excepcionLunes(fila, r)) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas) · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)`; // v6.09 (fix revisión, datos 6)
     return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, rehaz esos primero` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
   }
   return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
 };
 /** v6.07 (fix lote 1b): días L-V SKIP / protegidos estrictamente entre dos fechas (vie 25-dic entre el jue 24 y el lun 28-dic). */
-const saltadosEntre = (a, b) => { const out = []; for (let d = new Date(a + 'T12:00:00Z'); ; ) { d.setUTCDate(d.getUTCDate() + 1); const iso = d.toISOString().slice(0, 10); if (iso >= b) break; if (d.getUTCDay() >= 1 && d.getUTCDay() <= 5 && NO_PLAN.has(iso)) out.push(iso); } return out; };
+// v6.10d (fix revisión 18-nov): entre los días REALES de las dos sesiones (alias de corrida_s1) y sin las claves del alias (días de plan): antes el sáb 2-ene decía
+//   «(jue 31-dic; el vie 1-ene fue SKIP)» → visible «(vie 1-ene; el vie 1-ene fue SKIP)», y el mar 29-dic «(lun 28-dic; el vie 25-dic fue SKIP)»
+const saltadosEntre = (a0, b0) => { const a = realDe(a0), b = realDe(b0); const out = []; for (let d = new Date(a + 'T12:00:00Z'); ; ) { d.setUTCDate(d.getUTCDate() + 1); const iso = d.toISOString().slice(0, 10); if (iso >= b) break; if (d.getUTCDay() >= 1 && d.getUTCDay() <= 5 && NO_PLAN.has(iso) && !_AL6[iso]) out.push(iso); } return out; };
 /** v6.07 (fix lote 1b): EVAL ANCLADA de un banco SIN runner = la regla de gen_encaps_minisim.js (modoEval): la sesión anterior es un mini-sim o
  *  no tiene código → 5Q de fallos previos con otro enfoque · si no → 5Q de su código, «de AYER» solo si fue el día anterior. Antes: «lunes» =
  *  fallos del mini-sim del viernes, y el lun 28-dic (sesión anterior jue 24-dic, banco III-8; vie 25-dic SKIP, sin mini-sim) lo decía mal. */
 function evalSinRunner(fila, prev) {
   if (!prev || prev.tipo === 'mini_sim' || !prev.codigo) {
-    const de = !prev || prev.tipo !== 'mini_sim' ? 'del registro' : (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 3); return d.getUTCDay() === 5 && d.toISOString().slice(0, 10) === prev.fecha ? 'del mini-sim del viernes' : `del mini-sim del ${corta(prev.fecha)}`; })();
+    const de = !prev || prev.tipo !== 'mini_sim' ? 'del registro' : (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 3); return d.getUTCDay() === 5 && d.toISOString().slice(0, 10) === prev.fecha && !conAlias(fila.fecha) ? 'del mini-sim del viernes' : `del mini-sim del ${corta(prev.fecha)}`; })(); // v6.10d: con alias, la fecha de plan (la app la pinta con su día real)
     return `5Q REHECHAS con otro enfoque de los fallos ${de}`;
   }
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
@@ -469,7 +479,7 @@ function construirGuia(fila, sab = null) {
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rBan, `Banco ${rBan ? rBan.f : ''}`), ...mat.items.slice(0, 4), ...matSec, ...(obs ? [obs] : []), ...obsSec, proyecto, ...(area ? [area.videoclases] : [])],
         hecho: `Eval 5/5 + ${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · sesión registrada por UNA vía (--registrar o CIERRE DE SESIÓN) · 1-3 APEX creados.`,
         planB: pendiente
-          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio; (2) o en ${proyecto.t} pide «${qPri} tipo ENCAPS del sub-eje ${subEje || codigo}, 4 opciones, con la cita textual de la norma en cada clave»: esas NO cuentan para el % ciego hasta verificar la clave contra la fuente (gate §3-bis).${!rEval ? (sab ? ' Eval sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre mis fallos previos del registro (te pego los enunciados), con otro escenario, sin repetir la pregunta».' : lunes ? ' Eval del lunes sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre los conceptos que fallé en el mini-sim del viernes (te pego los enunciados), con otro escenario, sin repetir la pregunta».' : ` Eval sin runner: 5Q de ${prev && prev.codigo ? prev.codigo : 'ayer'} rehechas desde tus fallos de ayer (mismo proyecto, otro escenario).`) : ''} Respaldo de academia: ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}`
+          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio; (2) o en ${proyecto.t} pide «${qPri} tipo ENCAPS del sub-eje ${subEje || codigo}, 4 opciones, con la cita textual de la norma en cada clave»: esas NO cuentan para el % ciego hasta verificar la clave contra la fuente (gate §3-bis).${!rEval ? (sab ? ' Eval sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre mis fallos previos del registro (te pego los enunciados), con otro escenario, sin repetir la pregunta».' : lunes ? (prev && prev.tipo === 'mini_sim' ? (conAlias(fila.fecha) ? ` Eval de hoy sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre los conceptos que fallé en el mini-sim del ${corta(prev.fecha)} (te pego los enunciados), con otro escenario, sin repetir la pregunta».` : ' Eval del lunes sin runner: en el mismo proyecto pide «5 preguntas nuevas sobre los conceptos que fallé en el mini-sim del viernes (te pego los enunciados), con otro escenario, sin repetir la pregunta».') : ` Eval sin runner: 5Q de ${prev && prev.codigo ? prev.codigo : 'la sesión anterior'} rehechas desde tus fallos del ${prev ? corta(prev.fecha) : 'registro'} (mismo proyecto, otro escenario).`) : ` Eval sin runner: 5Q de ${prev && prev.codigo ? prev.codigo : 'ayer'} rehechas desde tus fallos de ayer (mismo proyecto, otro escenario).`) : ''} Respaldo de academia: ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}`
           : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${proyecto.t} (preguntas con cita textual; no cuentan para el % ciego hasta verificarlas).`,
         ...((() => {
           const av = [];
@@ -480,7 +490,11 @@ function construirGuia(fila, sab = null) {
           if (sab) av.push(sab.nota); // v6.06 (fix): nota de reposición del carril SÁBADO
           // v6.09 (fix revisión 16-nov, datos 6): la excepción de la eval de este lunes, explícita
           const exc = !sab && excepcionLunes(fila, rEval);
-          if (exc) av.push(`EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco; su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
+          // v6.10d (fix revisión 18-nov): con el alias el lunes de plan se hace el martes real y el mini-sim del viernes de plan, el lunes real: ya no hubo fin de
+          //   semana entre los dos → «de hoy» y el motivo real (antes: «de este lunes» y «generarlas exigía el fin de semana, que fue sin sesión»)
+          if (exc) av.push(conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha)
+            ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
+            : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco; su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
           // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
           if (!pendiente && !sab) {
             const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 6)); // v6.10: hasta el domingo (dom 29-nov = D9, recupera el mar 17)
@@ -619,7 +633,7 @@ const ts = `/**
  * Fuentes: filas del SQL vigente (_encaps_mantenimiento_2027.sql = Supabase; no cambia fechas, dia ni códigos del régimen ${META.version}) · runners de
  * DATA/ENCAPS/BANCO_PROPIO publicados en ${WEB} (public/encaps/bp) · material del Drive del 18-oct por código · nota Obsidian del CÓDIGO ·
  * proyecto de Claude del área. Una sesión cuya fila de Supabase no cuadre (dia/código) con la de aquí NO usa la guía (sesionEncapsCuadra).
- * v6.02c (18-oct-2026, E4): nuevo. · ${META.version} (generado ${META.generado}): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)}${CORR ? ` (corrimiento D1 ${corta(CORR.d1_previo)} → ${corta(CORR.d1)}: ${CORR.perdidos.length} hábiles sin estudio; runners re-fechados por sesión)` : ''}.
+ * v6.02c (18-oct-2026, E4): nuevo. · ${META.version} (generado ${META.generado}): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)}${ALIAS_S1.length ? ` (${CORR ? CORR.version : 'corrida_s1'}: SIN re-fecha — alias de corrida_s1: cada sesión se hace el hábil siguiente, ${corta(ALIAS_S1[0])} → ${corta(ALIAS_S1[ALIAS_S1.length - 1])}; las fechas de aquí, las de Supabase y las de los runners son de PLAN y la app las muestra con su día real)` : CORR ? ` (corrimiento D1 ${corta(CORR.d1_previo)} → ${corta(CORR.d1)}: ${CORR.perdidos.length} hábiles sin estudio; runners re-fechados por sesión)` : ''}.
  */
 import type { GuiaBloque } from './guia';
 

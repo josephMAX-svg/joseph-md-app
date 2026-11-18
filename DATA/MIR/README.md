@@ -6,6 +6,14 @@ Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 
+> ## ✅ v6.10 · BASE CERO (mié 18-nov-2026) — manda sobre lo de abajo en el CONTENIDO de la hora MIR
+> Joseph (18-nov): *«Todos estamos partiendo de CERO … las preguntas tienen que ser preguntas REALES.»* La 1.ª vuelta va por **fases** con puerta medida
+> en el log: **F1 BASE · nivel 1** (D1-D32, jue 19-nov → sáb 2-ene con el alias de corrida_s1: pre-test de línea base, LECTURA DE BASE en el orden del
+> capítulo sin saltar secciones, comentario literal, APEX solo de fallos) · **F2 CONSOLIDACIÓN · niveles 1-2** (D33-D76) · **F3 DISCRIMINATIVA · nivel 3**
+> (D77-D78 + banqueo). Preguntas solo MIR oficiales con su año-número (pool 2022-2026 + citadas en ProMIR; el respaldo «test ProMIR» sin filtro sale).
+> Mismas franjas, minutos, fechas y preguntas. Síntesis y fuentes (NotebookLM 18-nov, academia, ciencia del aprendizaje, peso por asignatura):
+> [`METODO_BASE_CERO.md`](METODO_BASE_CERO.md) · datos `metodo_ravimedtest.json` › `fases` · lógica `src/lib/mirGuia.ts` (`mirFaseDe`).
+
 > ## ✅ v6.06 VIGENTE (sáb 31-oct-2026 · D1 = LUN 2-NOV-2026) — corrimiento +5 hábiles sobre la v6.05 (la semana lun 26 → vie 30-oct no se estudió)
 > Joseph (31-oct): *«Reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre.»*
 > Mismos 78 días y las MISMAS **203** sesiones de banqueo de la v6.05 (por tipo, por asignatura foco y por Tier C); nada se recorta.

@@ -8,7 +8,7 @@ import {
 } from '../../theme/aurumTheme';
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import {
-  AURUM_RUBRICA_PITCH, AURUM_RUBRICA_MAX, aurumRubricaSemaforo, AurumRubricaScore, AurumRubricaStore, aurumRubricaKey,
+  AURUM_RUBRICA_PITCH, AURUM_RUBRICA_MAX, aurumRubricaSemaforo, aurumPasoFase, AurumRubricaScore, AurumRubricaStore, aurumRubricaKey,
   AurumScoreKey, AurumScoreSemana, AURUM_SCOREBOARD_METAS, aurumScoreSemaforo,
 } from '../../lib/aurumData';
 
@@ -309,8 +309,9 @@ export function AurumRubricaPitch({ pitch, variante, titulo, initial, onSave }: 
   }, [initial?.fecha, initial?.total]); // eslint-disable-line react-hooks/exhaustive-deps
   const completo = puntos.every((p) => p >= 0);
   const total = puntos.reduce((s, p) => s + Math.max(0, p), 0);
-  const sem = aurumRubricaSemaforo(total);
-  const acc = completo ? aurumSemaforoColor(sem) : C.textMute;
+  // v6.10e (BASE CERO): el semáforo del PITCH es el del PASO DE FASE (ítems de la etapa; v1 = línea base), no el total /12 (aurumData.aurumPasoFase)
+  const paso = aurumPasoFase(pitch, puntos);
+  const acc = completo ? (paso.sem === 'base' ? C.gold : aurumSemaforoColor(paso.sem)) : C.textMute;
   const liv = variante === 'liviano';
   const guardar = () => {
     if (!completo) return;
@@ -327,7 +328,7 @@ export function AurumRubricaPitch({ pitch, variante, titulo, initial, onSave }: 
         </View>
         <View style={[rb.scoreBox, { borderColor: withAlpha(acc, 0.6), backgroundColor: withAlpha(acc, 0.12) }]}>
           <Text style={[rb.scoreVal, { color: acc }]}>{completo ? total : '—'}<Text style={rb.scoreMax}>/{AURUM_RUBRICA_MAX}</Text></Text>
-          <Text style={rb.scoreLbl}>{completo ? (sem === 'verde' ? 'nivel closer' : sem === 'ambar' ? 'en camino' : 'repetir toma') : 'puntúa los 6'}</Text>
+          <Text style={rb.scoreLbl}>{completo ? paso.label : 'puntúa los 6'}</Text>
         </View>
       </View>
       {AURUM_RUBRICA_PITCH.map((it, i) => {

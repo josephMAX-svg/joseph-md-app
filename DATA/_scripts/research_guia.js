@@ -29,8 +29,28 @@
  * v6.08 (14-nov-2026 · re-fecha D1 = lun 16-nov; pausa desde el jue 21-ene): GUIA_RESEARCH_MINIMO calcula el paso 3 con el ÚLTIMO paso del case report
  *   cerrado antes de la pausa: «relee el borrador v1 (CR-5)» solo si CR-5 va antes de la pausa (desde la v6.07 va tras ella: el texto fijo era falso);
  *   si no, repasa lo cerrado (v6.08: CR-2, consentimiento) y apunta lo que falta para el primer paso tras la pausa (v6.08: CR-3, fotos).
+ * v6.10e (18-nov-2026 · BASE CERO + PREGUNTAS REALES, orden de Joseph: «las preguntas tienen que ser REALES · todos partimos de CERO»): Research no tiene
+ *   banco de preguntas real propio → las «2Q de auto-test» de las evals ancladas (preguntas escritas por la IA) pasan a RECALL EN BLANCO de los 2 puntos
+ *   clave del átomo previo, contrastados con su fuente real (recurso 1 del átomo); el pre-test de M1 es un recall en blanco y su corrección (y la «clave» del
+ *   abstract) sale de las fuentes reales (checklists oficiales, el propio abstract), no de un chat. + FASES (base cero): FASES_RESEARCH / faseResearchAviso →
+ *   cada guía abre su aviso con la fase, qué se hace y el criterio para pasar a la siguiente. Síntesis con fuentes: DATA/RESEARCH/METODO_BASE_CERO.md.
  */
 'use strict';
+
+/** v6.10e: fases del plan Research desde cero (por código de átomo; la última atrapa el resto). Criterios = entregables verificables con su checklist real. */
+const FASES_RESEARCH = [
+  { n: 1, re: '^(M1|R0|R1)$', nombre: 'Fundamentos e infraestructura', que: 'qué es una revisión sistemática (SR-1 primero), identidad de autor, PICO y diseño de estudio leído desde los Métodos (Greenhalgh)', criterio: '3 PICO completos (P·I·C·O + tipo + diseño ideal) en 01_PICO.md y 1 abstract real clasificado por diseño, comprobado contra el propio abstract; infra ≥ 7/10' },
+  { n: 2, re: '^(C-\\d+|M2|T-1|R9)$', nombre: 'Primer producto guiado: carta al editor', que: 'diana → letters modelo → borrador de 3-4 puntos → citas verificadas → formato de la revista → envío (Siau 2020), con ética de la tesis, mentor de inglés y AMSTAR-2 de las SR que solapan', criterio: 'carta ENVIADA con nº de manuscrito, dentro del límite de la revista y con 0 referencias sin DOI/PMID verificado' },
+  { n: 3, re: '^(CR-\\d+|T-\\d+|X-7|X-8|M3)$', nombre: 'Case report (CARE) + tesis → research letter', que: 'caso y consentimiento de publicación, fotos, CARE 13/13, borrador y revisión; research letter de la tesis', criterio: 'case report con CARE 13/13 y consentimiento firmado + research letter enviada' },
+  { n: 4, re: '^(R2|R3|R6b?|R7|R8b?|R9b|R10|R11|X-[1-6]|X-9|K\\d)$', nombre: 'SR-1: protocolo y registro', que: 'pregunta y equipo de 2 revisores, protocolo a priori (PRISMA-P) y registro PROSPERO antes de ver resultados (Cochrane Handbook cap. 1)', criterio: 'protocolo con los 17 ítems de PRISMA-P y registro PROSPERO enviado' },
+  { n: 5, re: '^R(1[2-9]|2\\d|3[0-3])\\b', nombre: 'SR-1: búsqueda → cribado → extracción → sesgo → metaanálisis', que: 'búsqueda reproducible, cribado y extracción por duplicado, riesgo de sesgo por estudio, forest plot y GRADE', criterio: 'cribado dual con kappa, extracción doble, RoB por estudio y diagrama PRISMA 2020' },
+  { n: 6, re: '.', nombre: 'Manuscritos, revisión por pares y segunda línea', que: 'manuscrito SR-1 (PRISMA 2020), rebuttal, bibliométrico y case report 2', criterio: 'manuscrito SR-1 con PRISMA 2020 27/27 enviado (fin del plan)' },
+];
+/** Aviso de fase (texto) de un átomo por su código. */
+function faseResearchAviso(code) {
+  const f = FASES_RESEARCH.find((x) => new RegExp(x.re).test(code)); const sig = FASES_RESEARCH.find((x) => x.n === f.n + 1);
+  return `FASE ${f.n}/${FASES_RESEARCH.length} (base cero) · ${f.nombre}: ${f.que} · ${sig ? `pasa a la fase ${sig.n} cuando: ${f.criterio}` : `cierre: ${f.criterio}`}`;
+}
 
 const GH = 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/';
 const OBS_VAULT = 'Vault_Medicina MIR_Joseph';
@@ -50,6 +70,13 @@ const VERSION = ((v) => (v === 'v6.09' || v === 'v6.10' ? 'v6.08' : v))(require(
  * ejecución desde DIAS + REC (todo el texto ya está en el bundle: no se duplica). Σ pasos = 45 / 30 (fijo).
  */
 const TS_BUILDER = `
+/** v6.10e (18-nov-2026 · base cero): fases del plan Research (por código de átomo; la última atrapa el resto) — fuente: DATA/_scripts/research_guia.js. */
+const FASES_RESEARCH: Array<{ n: number; re: string; nombre: string; que: string; criterio: string }> = ${JSON.stringify(FASES_RESEARCH)};
+/** Aviso de fase de un átomo: la fase, qué se hace y el criterio para pasar a la siguiente. */
+export function faseResearchAviso(code: string): string {
+  const f = FASES_RESEARCH.find((x) => new RegExp(x.re).test(code)) ?? FASES_RESEARCH[FASES_RESEARCH.length - 1]!; const sig = FASES_RESEARCH.find((x) => x.n === f.n + 1);
+  return \`FASE \${f.n}/\${FASES_RESEARCH.length} (base cero) · \${f.nombre}: \${f.que} · \${sig ? \`pasa a la fase \${sig.n} cuando: \${f.criterio}\` : \`cierre: \${f.criterio}\`}\`;
+}
 const corto = (s: string, n: number): string => (s.length > n ? s.slice(0, Math.max(s.lastIndexOf(' ', n - 3), 20)) + '…' : s);
 function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   const recs = x.recs.map((k) => ({ k, ...(REC[k] || { label: k, url: 'https://pubmed.ncbi.nlm.nih.gov/' }) }));
@@ -67,14 +94,14 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
       ],
       recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
       hecho: x.entregable,
-      aviso: ['F4 (SERUMS): 30′ en tiempo muerto de la posta, SIN hora fija — la franja 13:30–14:00 es nominal', ...chips].join(' · '),
+      aviso: [faseResearchAviso(x.code), 'F4 (SERUMS): 30′ en tiempo muerto de la posta, SIN hora fija — la franja 13:30–14:00 es nominal', ...chips].join(' · '),
     };
   }
   return {
     franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${corto(x.objetivo, 110)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: 2Q de auto-test del método + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'De memoria; si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
-      { min: 5, que: 'Pre-test / free recall 60 s: ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final.' },
+      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: recall en blanco de los 2 puntos clave de su método (sin preguntas inventadas: los contrastas con «\${(REC[prev.recs[0] as string] || { label: prev.recs[0] }).label}») + ¿existe el artefacto «\${corto(prev.artefacto, 120)}»?\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como: \`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
+      { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
       { min: 5, que: '≤3 APEX-método (Palmerton) + guardar el artefacto', como: \`Dónde queda: \${corto(x.artefacto, 160)}\`, ...(obs ? { enlace: { t: '◆ Obsidian', url: obs } } : {}) },
@@ -82,10 +109,10 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
     recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
     hecho: x.entregable,
     ...(recs.length > 1 ? { planB: \`Si «\${r0.label}» no abre o no basta: «\${recs[1].label}».\` } : {}),
-    ...(chips.length || rdFinde(x.fecha) ? { aviso: [rdFinde(x.fecha), ...chips].filter(Boolean).join(' · ') } : {}),
+    aviso: [faseResearchAviso(x.code), rdFinde(x.fecha), ...chips].filter(Boolean).join(' · '),
   };
 }
-/** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: dom 6-dic 05:00-05:45; el
+/** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: v6.10c sáb 2-ene 15:30-16:15, el T-3 · v6.10 dom 6-dic 05:00-05:45; el
  *  mar 17-nov fue sin sesión y los átomos de F1 corrieron una ranura) → aviso con la hora real (la franja de la guía es la de PLAN, 13:30-14:15: el Home
  *  la mueve) y qué hacer si el entregable necesita una oficina abierta. '' si no lo es. */
 function rdFinde(fecha: string): string {
@@ -106,12 +133,13 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   let ciroYa = false;
   /** v6.06 (fix): las 2Q de auto-test de cada átomo paso a paso (fuente única: la eval anclada de 5′ y la «express» de 2′ de R0 las citan igual). */
   const Q2 = {
-    R0: '«¿qué identificador pide PROSPERO a todo el equipo?» · «¿dónde NO se guarda una API key?»',
-    R1: '«terapia → ¿qué diseño?» · «Taylor 2009: ¿diseño y quién está ciego?»',
+    // v6.10e (base cero · preguntas reales): sin banco real de Research → RECALL EN BLANCO de los 2 puntos clave, contrastados con su fuente
+    R0: 'recall en blanco de 2 puntos clave: el identificador de autor que piden PROSPERO y Editorial Manager · dónde se guarda una API key y dónde nunca (fuente: la página de registro de PROSPERO y tu gestor)',
+    R1: 'recall en blanco de 2 puntos clave: el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego (fuente: 01_PICO.md y el abstract PMID 19807760)',
     // v6.10 · tanda C (decidido con Joseph en el chat Research, 17-nov): M1 = SR-1 primero → su eval anclada (R0, lun 23) = 1Q de PRISMA-P / PRISMA 2020 /
     //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
-    M1: '1Q: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene',
-    'C-1': 'la regla de la ventana · por qué un dato verificable',
+    M1: 'recall en blanco: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene (fuente: sus checklists oficiales)',
+    'C-1': 'recall en blanco de 2 puntos clave: la regla de la ventana · por qué un dato verificable (fuente: candidatos.md)',
   };
   const evalAnclada = (prev, x) => {
     if (!prev) return { min: 5, que: 'Arranque (1.ª sesión Research): abre MENTORES.md §3 «Mensaje 1 — Dr. Ciro» y TESIS_L0/etica.md §1', como: '⏸ El plazo interno del 31-oct-2026 (caso + consentimiento + senior author) venció sin día-Research (la semana lun 26 → vie 30-oct no se estudió): este mensaje va PRIMERO; no se inventa un plazo nuevo.' };
@@ -119,11 +147,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (regístralo en MENTORES.md §2)` : '';
     if (prev.code === 'M1' || ciroPend) ciroYa = true;
     const T = {
-      R0: { que: `Eval anclada de R0: ¿checklist «Infra académica» en 7/10? + 2Q: ${Q2.R0}`, como: 'Responde de memoria; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
-      R1: { que: `Eval anclada de R1: ¿existe 01_PICO.md con 3 PICO? + 2Q: ${Q2.R1}`, como: 'De memoria; si falta algo de R1, anótalo como deuda.' },
-      M1: { que: `Eval anclada de M1: ¿respondió el asesor? (regístralo) + ${Q2.M1}`, como: 'De memoria; la respuesta del asesor va a MENTORES.md §2.' },
-      'C-1': { que: `Eval anclada de C-1: ¿5 candidatos con DOI en candidatos.md? + 2Q: ${Q2['C-1']}`, como: 'De memoria.' },
-    }[prev.code] || { que: `Eval anclada de ${prev.code}: 2Q de auto-test del método + ¿existe su artefacto?`, como: 'De memoria; lo que falte va como deuda a la Mesa editorial.' };
+      R0: { que: `Eval anclada de R0: ¿checklist «Infra académica» en 7/10? + ${Q2.R0}`, como: 'A papel y sin mirar; después compruébalo en la fuente y corrige en rojo; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
+      R1: { que: `Eval anclada de R1: ¿existe 01_PICO.md con 3 PICO? + ${Q2.R1}`, como: 'A papel y sin mirar; después compruébalo en la fuente; si falta algo de R1, anótalo como deuda.' },
+      M1: { que: `Eval anclada de M1: ¿respondió el asesor? (regístralo) + ${Q2.M1}`, como: 'A papel y sin mirar; después compruébalo en las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
+      'C-1': { que: `Eval anclada de C-1: ¿5 candidatos con DOI en candidatos.md? + ${Q2['C-1']}`, como: 'A papel y sin mirar; después compruébalo en candidatos.md.' },
+    }[prev.code] || { que: `Eval anclada de ${prev.code}: recall en blanco de los 2 puntos clave de su método + ¿existe su artefacto?`, como: 'A papel y sin mirar; después compruébalo en su recurso 1; lo que falte va como deuda a la Mesa editorial.' };
     return { min: 5, que: T.que + ciroPend, como: T.como };
   };
   /** v6.06 (fix): R0 abre con 2′ de arranque (sus 7 cuentas ocupan los otros 43′). Si R0 ya no es la 1.ª sesión (v6.06: M1 · R0 · …), esos 2′ llevan
@@ -134,10 +162,10 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const cuentas = 'Cada cuenta la creas TÚ (Claude no crea cuentas ni escribe contraseñas). Una contraseña distinta por cuenta, guardada en el gestor.';
     if (!prev) return { min: 2, que: `Arranque: ${base}`, como: cuentas };
     // v6.10 · tanda C: tras M1 (SR-1 + WhatsApp), la express de R0 = 1Q de PRISMA-P / PRISMA 2020 / AMSTAR-2 + ¿respondió el asesor? (regístralo)
-    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (de memoria: ${Q2.M1}) + ¿respondió el asesor? + arranque: ${base}`,
-      como: `La 1Q a papel, sin mirar (lo que falle va como deuda a la Mesa editorial); si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
-    return { min: 2, que: `Eval anclada express de ${prev.code} (2Q de memoria: ${Q2[prev.code] || 'las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
-      como: `Las 2Q a papel, 1 línea cada una y sin mirar; lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
+    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (${Q2.M1}) + ¿respondió el asesor? + arranque: ${base}`,
+      como: `El recall a papel, sin mirar (lo que falle va como deuda a la Mesa editorial); si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
+    return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] || 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
+      como: `El recall a papel, 1 línea por punto y sin mirar; lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };
 
   /** Guías paso a paso (45′). `prev` = átomo anterior (eval anclada). */
@@ -184,10 +212,10 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       titulo: 'M1 · SR-1 primero (protocolo del metaanálisis) + WhatsApp al asesor con las 3 coautorías',
       pasos: [
         { min: 2, que: 'Arranque (1.ª sesión Research): el evento del Calendar + el chat Research + Anki abierto', como: 'Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del M1 original solo queda el WhatsApp al asesor.' },
-        { min: 5, que: 'Pre-test ciego de SR-1, a papel y con confianza (1-3): (1) la pregunta de SR-1 en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene cada una', como: 'Sin mirar nada, con tu confianza (1-3) en cada respuesta; la corrección la da el chat Research.' },
+        { min: 5, que: 'Pre-test = RECALL EN BLANCO de SR-1, a papel y con confianza (1-3): escribe (1) la pregunta de SR-1 en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems crees que tiene cada una', como: 'Sin mirar nada, con tu confianza (1-3) en cada punto; lo corriges con las FUENTES reales (las checklists oficiales de PRISMA-P 2015, PRISMA 2020 y AMSTAR-2), no con un chat: la corrección es la eval anclada de R0.' },
         { min: 8, que: 'WhatsApp al asesor con las 3 coautorías (lo envías tú)', como: `Plan B: el mismo texto por correo o en persona. Texto: «Doctor, buenos días. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío: 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto: ${fLargo(fechaDe('T-8'))}. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor (unos 30 minutos de revisión); envío: ${fLargo(fechaDe('C-6'))}. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el caso antes del ${fLargo(fechaDe('CR-1'))}. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.» (Si prefieres 2 coautorías, borra el punto 2.)`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'Lista tengo / falta de los 10 documentos de etica.md §1, ANTES de la reunión con el asesor', como: `Para T-1 (ética de la tesis, ${f('T-1')}): marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al asesor en la reunión.`, enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
-        { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa · nº de estudios y de pacientes. La clave la da el chat Research.', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
+        { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa · nº de estudios y de pacientes. La clave es el propio abstract: relee y corrige en rojo (lo que el abstract no diga = «no consta», nunca inventado).', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
         { min: 5, que: 'PRISMA-P 2015 (GoodNotes › Documentos › RESEARCH › SR-1_complicaciones_rellenos › 01_PRISMA-P_2015_checklist, pág. 5): marca qué ítems ya tiene SR-1', como: 'Solo marcar (✓ / falta) sobre la lista; lo que falte es el trabajo del protocolo de las próximas sesiones.' },
         { min: 5, que: 'Free recall + ≤2 APEX', como: 'El mazo APEX::RESEARCH::01_Protocolo_SR nace hoy, con estas tarjetas (nada de mazos ni carpetas vacíos por adelantado).' },
       ],
@@ -235,7 +263,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     let g;
     if (DET[x.code] && !f4) {
       const d = DET[x.code](x, prev);
-      g = { franja: '13:30–14:15', plan: 'research-derma', titulo: d.titulo, totalMin: 45, pasos: d.pasos, recursos: [...d.recursos, { t: '◆ Obsidian · carpeta del entregable', url: obsUrl(obs) }], hecho: d.hecho, ...(d.planB ? { planB: d.planB } : {}), ...(d.aviso || x.chips ? { aviso: [d.aviso, ...(x.chips || [])].filter(Boolean).join(' · ') } : {}) };
+      g = { franja: '13:30–14:15', plan: 'research-derma', titulo: d.titulo, totalMin: 45, pasos: d.pasos, recursos: [...d.recursos, { t: '◆ Obsidian · carpeta del entregable', url: obsUrl(obs) }], hecho: d.hecho, ...(d.planB ? { planB: d.planB } : {}), aviso: [faseResearchAviso(x.code), d.aviso, ...(x.chips || [])].filter(Boolean).join(' · ') }; // v6.10e: + la fase (base cero)
       conDetalle.push(x.code);
     } else {
       continue; // genérica / F4: la construye guiaResearchDe() en src/lib/researchGuia.ts (TS_BUILDER) desde DIAS + REC (no se duplica el texto en el bundle)
@@ -259,6 +287,8 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const prev = TODOS.find((y) => y.d === x.d - 1);
     if (prev && Q2[prev.code] && x.fecha < SERUMS_INICIO && !out[x.d]) throw new Error(`research_guia: ${x.code} (d${x.d}) sigue a ${prev.code} sin guía paso a paso → la genérica perdería sus 2Q (${Q2[prev.code]})`);
   }
+  // v6.10e (base cero · preguntas reales) · CONTROL: ninguna guía paso a paso pide «2Q de auto-test» ni deja la corrección o la clave a un chat (la da la fuente real)
+  for (const g of Object.values(out)) for (const p of g.pasos) if (/2Q de auto-test|(corrección|clave) la da el chat/.test(`${p.que} ${p.como}`)) throw new Error(`research_guia: «${p.que.slice(0, 70)}…» pide preguntas inventadas o deja la clave a un chat`);
   const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
   if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el (Dr\. Ciro|asesor)/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el asesor');
   // v6.10 · tanda C: el nº de ítems de PRISMA-P / PRISMA 2020 / AMSTAR-2 solo lo pide el pre-test de M1 (ningún otro paso de ese día lo da)
@@ -287,4 +317,4 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   return { porD: out, minimo, conDetalle };
 }
 
-module.exports = { construirGuiasResearch, TS_BUILDER };
+module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso };

@@ -1,7 +1,7 @@
-# Introduction to Model Context Protocol (Anthropic Skilljar)
+# Introduction to Model Context Protocol (Anthropic Academy)
 
-> URL: https://anthropic.skilljar.com/introduction-to-model-context-protocol
-> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · URL verificada 200 con check_links.js.
+> URL: https://academy.claude.com/courses/introduction-to-model-context-protocol
+> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · v6.10c (17-nov-2026): enlace a academy.claude.com (Skilljar cierra en diciembre; slug verificado en la Academy).
 > Verificación: CONFIRMADA.
 
 1. **[Introduction]** Welcome to the course

@@ -45,7 +45,7 @@
  *   decisión 4 de Joseph: el UWSA1 sale de F1 y el Step vuelve a sus fechas v6.09): el campo `step1.f1_extra` (sáb 2-ene = D13) del diseño B se
  *   RETIRA → diasStepF1De = mar · jue de F1 (12: jue 19-nov → mar 29-dic), ultimoStepF1 = f1.fin y la pausa empieza el jue 31-dic, como en la v6.09.
  *   Además `corrida_s1.extra` (opcional) = { día de fin de semana:
- *   { frente: 'HH:MM-HH:MM' } } — el día que cada plan recupera, a hora fija, el día perdido (v6.10: sáb 28-nov, dom 29-nov y dom 6-dic);
+ *   { frente: 'HH:MM-HH:MM' } } — el día que cada plan recupera, a hora fija, el día perdido (v6.10: sáb 28-nov, dom 29-nov y dom 6-dic · v6.10c, decisión de Joseph del 17-nov 17:20: sáb 2-ene, la última sesión de F1 de cada frente, + dom 3-ene 05:00 el SYNAPSE de recuperación);
  *   validación: sábado o domingo, sin SKIP, protegidos ni sin_sesion; frente de BLOQUES_POR_FRENTE; franja dentro de las ventanas fijas del
  *   fin de semana (sáb 04:15-05:45 · 07:15-08:25 · 14:00-17:00 · 21:00-22:00; dom 05:00-05:45 · 07:15-17:00) y sin solapes en el día.
  */
@@ -316,6 +316,24 @@ function comprobarExtra(c, F) {
   }
   return err;
 }
+/**
+ * v6.10d (mié 18-nov-2026): días SIN SESIÓN cuyo PLAN se pierde, para los GENERADORES (trabajan con fechas de PLAN): corrida_s1.sin_sesion menos
+ * las fechas de plan que un alias o un reparto hace otro día real. Con la v6.10d el mié 18-nov es sin sesión para la app (día real) pero su plan
+ * se hace el jue 19 (alias) → no es un día perdido del plan: los generadores no lo tratan como SKIP ni como descanso (si no, todo correría dos días).
+ */
+function sinSesionPlan(F = fechasPorDefecto()) {
+  const c = F.corrida_s1 || {};
+  const llevadas = new Set([...Object.values(c.alias || {}), ...Object.values(c.reparto || {}).flatMap((x) => ((x && x.partes) || []).map((p) => p.de))]);
+  return (c.sin_sesion || []).filter((d) => !llevadas.has(d));
+}
+/**
+ * v6.10d: último corrimiento que RE-FECHA el plan (bitácora `corrimientos`): se saltan los que solo añaden un alias (sus `perdidos` son fechas de plan
+ * que otro día real hace). Lo que recupera el sáb 2-ene (corrida_s1.extra) sigue siendo el mar 17 de la v6.10, no el mié 18 de la v6.10d.
+ */
+function corrimientoRefecha(F = fechasPorDefecto()) {
+  const llevadas = new Set(Object.values((F.corrida_s1 && F.corrida_s1.alias) || {}));
+  return [...(F.corrimientos || [])].reverse().find((x) => !(x.perdidos || []).length || !x.perdidos.every((d) => llevadas.has(d))) || null;
+}
 /** Semana corrida (gemelo node de corridaS1De del .ts): null fuera de ella. */
 function corridaS1De(s, F = fechasPorDefecto()) {
   const c = F.corrida_s1;
@@ -563,7 +581,10 @@ function emitirTS(F, d) {
     ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
     // v6.04: + una línea por cambio de la fecha del examen Step 1 (step1.cambios; el motivo completo está en el JSON) · v6.05: todo por fecha
     ...[
-      ...(F.corrimientos || []).map((c) => [c.fecha, ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`]),
+      // v6.10d (fix revisión 18-nov): un corrimiento que solo añade un ALIAS (sus perdidos los hace otro día real; corrimientoRefecha lo salta) no es «rígido»
+      ...(F.corrimientos || []).map((c) => [c.fecha, corrimientoRefecha({ ...F, corrimientos: [c] }) === c
+        ? ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`
+        : ` * ${c.version} (${fy(c.fecha)}): SIN re-fecha — alias de corrida_s1 (el plan del ${c.perdidos.map(f).join(' · ')} lo hace el ${f(c.d1)} y cada hábil hasta el ${f(Object.keys(F.corrida_s1.alias).sort().at(-1))} hace el del anterior; las filas conservan su fecha de plan).`]),
       ...(F.step1.cambios || []).map((c) => [c.fecha, ` * ${c.version} (${fy(c.fecha)}): examen Step 1 ${fy(c.examen_previo)} → ${fy(c.examen)} (decisión de Joseph; step1.cambios).`]),
     ].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]),
     ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — ` +
@@ -1069,6 +1090,8 @@ module.exports = {
   fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1,
   // v6.02d: semana 1 corrida (alias en la consulta)
   comprobarCorridaS1, corridaS1De, fechaPlanDe, fechaRealDe, BLOQUES_POR_FRENTE,
+  // v6.10d: alias → los generadores no cuentan como perdido el día cuyo plan hace otro día real
+  sinSesionPlan, corrimientoRefecha,
 };
 
 if (require.main === module) main();

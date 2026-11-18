@@ -163,7 +163,9 @@ const PROTEGIDOS = new Set(F6.protegidos.map((p) => p.fecha));
 // siguen nombrando la v6.08, la que fijó estas fechas (así los overlays 🔬 del Calendar no se recrean solo por la etiqueta). Misma regla en
 // research_guia.js y gen_research_calendar.js. Con otra versión vuelve a ser F6.version.
 // v6.10 (17-nov-2026): VER_TXT SIN CAMBIO («v6.08»): la v6.10 solo corre átomos de F1 (M1 jue 19 … T-1 dom 6-dic) y desde el R9 (lun 7-dic) todo cae
-//   igual; subir la etiqueta volvería a crear los 12 overlays 🔬 de 2027 (gen_research_calendar.js --check = 0).
+//   igual; subir la etiqueta volvería a crear los 12 overlays 🔬 de 2027 (gen_research_calendar.js --check = 0). v6.10c (decisión de Joseph del 17-nov
+//   17:20, corrimiento literal): los átomos de F1 corren una ranura-Research hasta fin de año (M1 jue 19 … T-1 lun 7-dic … C-6 lun 21 · CR-1 mié 23 ·
+//   CR-2 mar 29-dic) y el T-3 va el SÁB 2-ENE 15:30-16:15 (TIPO_RD_FORZADO + corrida_s1.extra); desde el T-4 (lun 4-ene) todo igual (2027: 0 overlays).
 const VER_TXT = ['v6.09', 'v6.10'].includes(F6.version) ? 'v6.08' : F6.version;
 /** v6.00 (DJ-3): desde el inicio del SERUMS el SÁBADO es día de plan y cuenta en la paridad (Research mar · jue · sáb; Derma lun · mié · vie). */
 const SERUMS_INICIO = F6.serums.inicio;
@@ -672,7 +674,7 @@ export const REC: Record<string, { label: string; url: string }> = {
 // ─── Bloque estático 2: FRANJAS + MAESTRÍA TRANSVERSAL + TOP 2026 (contenido aditivo, no depende de las fechas) ───
 const STATIC_REST = `/** Franjas del bloque Research (45 min). Mezcla eval anclada + deep work productivo. */
 export const FRANJAS = [
-  { hora: '13:30–13:35', fase: 'Eval anclada del átomo PREVIO: 2Q de auto-test del método + ¿avanzó el entregable de ayer?', tipo: 'eval' },
+  { hora: '13:30–13:35', fase: 'Eval anclada del átomo PREVIO: recall en blanco de los 2 puntos clave de su método (contrastados con su fuente) + ¿avanzó el entregable de ayer?', tipo: 'eval' },
   { hora: '13:35–13:40', fase: 'Pre-test / free-recall 60s del objetivo de HOY (¿qué sé ya de este paso?)', tipo: 'pretest' },
   { hora: '13:40–14:05', fase: 'DEEP WORK (25 min): recurso real del átomo MIENTRAS produces el ARTEFACTO del entregable (carta · tesis · case report · SR-1)', tipo: 'work' },
   { hora: '14:05–14:10', fase: 'Free recall a papel + log (gap método / razonamiento / herramienta)', tipo: 'recall' },
@@ -1281,7 +1283,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 
 | Franja | Fase | Tipo |
 |---|---|---|
-| 13:30–13:35 | Eval anclada del átomo PREVIO: 2 preguntas de auto-test del método + ¿avanzó el entregable? | \`eval\` |
+| 13:30–13:35 | Eval anclada del átomo PREVIO: recall en blanco de los 2 puntos clave de su método (contrastados con su fuente) + ¿avanzó el entregable? | \`eval\` |
 | 13:35–13:40 | Pre-test / free-recall 60 s del objetivo de HOY | \`pretest\` |
 | 13:40–14:05 | DEEP WORK (25 min): recurso real del átomo MIENTRAS ejecutas el ARTEFACTO | \`work\` |
 | 14:05–14:10 | Free recall a papel + log (gap método / razonamiento / herramienta) | \`recall\` |

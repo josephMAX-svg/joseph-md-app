@@ -18,7 +18,9 @@
 //   recuperación, sin solaparse y sin Anki · (e) los repasos ENCAPS del Anki 05:00 van 05:20-05:45 (lun · mié · vie y jue 31-dic) o 05:30-05:45 (mar · jue).
 // v6.10 (mar 17-nov): + bloque syn-rec (SYNAPSE de recuperación a hora fija: rutinaGuia.guiaSynapseRecDe) (v6.10b: los bloques usmle2 / usmle3 del D13 del
 //   sáb 2-ene ya no existen: step1.f1_extra retirado) · (f) FINES DE SEMANA QUE RECUPERAN (corrida_s1.extra: sáb 28 y dom 29-nov, dom 6-dic): cada frente
-//   pinta su bloque en su franja, dentro de las ventanas fijas del fin de semana, sin solaparse con otro bloque con hora.
+//   pinta su bloque en su franja, dentro de las ventanas fijas del fin de semana, sin solaparse con otro bloque con hora. v6.10c (decisión de Joseph del 17-nov
+//   17:20): los días extra son el sáb 2-ene (la última sesión de F1 de cada frente, en las ventanas del sábado) y el dom 3-ene 05:00 (SYNAPSE de recuperación);
+//   el mismo control (f) los cubre (y el sáb 28, el dom 29-nov y el dom 6-dic ya no traen bloques de recuperación).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
@@ -201,7 +203,10 @@ function controlSkip31(iso, p) {
   if (p.plantilla !== 'SKIP') return [];
   const d31 = iso.slice(5, 7) === '01' ? `${Number(iso.slice(0, 4)) - 1}-12-31` : `${iso.slice(0, 4)}-12-31`;
   const plan31 = P.plantillaDelDia(d31).bloques.some((b) => b.id === 'encaps-am');
-  const dice = p.notas.some((n) => /31-dic[^.]*d[ií]a de plan/.test(n));
+  // v6.10d (18-nov-2026): con el alias de corrida_s1 el plan del 31-dic se hace el 1-ene y la nota lo dice con su día REAL («el vie 1-ene sí es día de plan»)
+  const r31 = F6.fechaRealDe(d31), MESr = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const et31 = `${Number(r31.slice(8))}-${MESr[Number(r31.slice(5, 7)) - 1]}`;
+  const dice = p.notas.some((n) => new RegExp(`${et31}[^.]*d[ií]a de plan`).test(n));
   if (dice !== plan31) return [`nota SKIP: ${dice ? 'dice' : 'no dice'} que el 31-dic (${d31}) es día de plan y ${plan31 ? 'sí' : 'no'} lo es`];
   if (plan31 && !p.notas.some((n) => (iso < d31 ? /sí es día de plan/ : /fue día de plan/).test(n))) return [`nota SKIP: el 31-dic (${d31}) ${iso < d31 ? 'debe decir «sí es día de plan»' : 'debe decir «fue día de plan»'}`];
   return [];

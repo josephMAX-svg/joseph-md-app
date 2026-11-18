@@ -458,6 +458,31 @@ export function aurumRubricaSemaforo(score: number): 'verde' | 'ambar' | 'rojo' 
   return score >= 10 ? 'verde' : score >= 7 ? 'ambar' : 'rojo';
 }
 
+/** v6.10e (18-nov-2026 · BASE CERO): qué ítems de la rúbrica deciden el PASO DE FASE de cada PITCH. Un closer que empieza no puede puntuar en oferta,
+ *  objeciones ni cierre antes de que se enseñen (salen 0 por diseño): juzgar el v1-v5 por el total /12 los pintaba siempre en rojo. v1 = línea base (el paso
+ *  a la F2 lo dan el Manifiesto, 3 mejoras frente a la 1.ª toma y ≥ 5 días de tablero). Misma regla que rutinaGuia.AURUM_BASE_CERO y DATA/AURUM/METODO_BASE_CERO.md. */
+export const AURUM_PASO_FASE: Record<number, { req: Record<string, number>; total?: number }> = {
+  1: { req: {} },
+  2: { req: { empatia: 2, habla: 1 } },
+  3: { req: { habla: 2, spin: 2 } },
+  4: { req: { oferta: 2, habla: 1, empatia: 1, spin: 1 } },
+  5: { req: { objeciones: 2 } },
+  6: { req: { cierre: 2 }, total: 10 },
+  7: { req: {}, total: 10 },
+};
+/** Semáforo del PASO DE FASE de un PITCH (base cero): 'base' en el v1 (línea base), verde = pasa, ámbar = a 1 punto, rojo = repetir la toma. */
+export function aurumPasoFase(pitch: number, puntos: number[]): { sem: 'verde' | 'ambar' | 'rojo' | 'base'; label: string } {
+  const total = puntos.reduce((s, p) => s + Math.max(0, p), 0);
+  const P = AURUM_PASO_FASE[pitch];
+  if (!P) { const s = aurumRubricaSemaforo(total); return { sem: s, label: s === 'verde' ? 'nivel closer' : s === 'ambar' ? 'en camino' : 'repetir toma' }; }
+  if (pitch === 1) return { sem: 'base', label: 'línea base (v1)' };
+  const val = (k: string): number => Math.max(0, puntos[AURUM_RUBRICA_PITCH.findIndex((i) => i.key === k)] ?? 0);
+  const faltan = Object.entries(P.req).filter(([k, n]) => val(k) < n);
+  if (!faltan.length && (!P.total || total >= P.total)) return { sem: 'verde', label: 'pasa de fase' };
+  const casi = faltan.every(([k, n]) => val(k) >= n - 1) && (!P.total || total >= P.total - 1);
+  return { sem: casi ? 'ambar' : 'rojo', label: casi ? 'casi: afina la etapa' : 'repetir toma' };
+}
+
 /** Score persistido por grabación. Clave = `v${pitch}` (ALLPA/Qori) o `v${pitch}L` (versión LIVIANO). */
 export type AurumRubricaScore = { pitch: number; variante: 'base' | 'liviano'; puntos: number[]; total: number; fecha: string; nota?: string };
 export type AurumRubricaStore = Record<string, AurumRubricaScore>;

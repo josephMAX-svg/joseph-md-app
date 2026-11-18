@@ -6,7 +6,7 @@ import { Chip, GlassPanel, monoText } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
   SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque, synDiaDe, syn7d,
-  SYN_FORMATO_ICON,
+  SYN_FORMATO_ICON, SYN_FASES_BC, synFaseBCDe, // v6.10 · base cero: fase explícita del día (1-6)
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
@@ -75,7 +75,7 @@ function BloqueRow({ b }: { b: SynBloque }) {
           <Text style={[st.blkTag, { color: accent }]}>[{b.tag}·{minTxt}]</Text>
           <Text style={st.blkFmt}>{SYN_FORMATO_ICON[b.formato]} {b.formato}</Text>
           {b.real ? <Chip label="temario real" color={Colors.green} small /> : <Chip label="continúa" color={Colors.muted} small />}
-          {b.audit ? <Chip label="auditar: ✓ si ya hecho" color={Colors.amber} small /> : null}
+          {b.audit ? <Chip label="base cero: se cursa entera" color={Colors.amber} small /> : null /* v6.10 · base cero (antes «auditar: ✓ si ya hecho») */}
           {obs ? (
             <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }} onPress={() => openUrl(obs)}>
               <Chip label="◆" color={OBS} small />
@@ -242,6 +242,7 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
         <View style={[st.misionCard, { borderColor: INDIGO + '55' }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <Chip label={dia.fase} color={INDIGO} small />
+            {(() => { const f = synFaseBCDe(dia.fecha); return f ? <Chip label={`fase ${f.id}/${SYN_FASES_BC.length} · ${f.corto}`} color={PERIWINKLE} small /> : null; })() /* v6.10 · base cero */}
             <Chip label={`week ${dia.semana}`} color={Colors.muted} small />
             {dia.deload ? <Chip label="DELOAD · si aprieta: solo A o solo B" color={Colors.amber} small /> : null}
             {dia.wd !== 'Dom' && <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opt' : ''}`} color={Colors.amber} small />}
@@ -360,7 +361,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (base cero: fases 1-4, se cursa entera) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
       <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.07: por el corrimiento del D1 al lun 9-nov el FIN se corre del mar 16-mar al mar 23-mar, ya en F3, con las mismas 110 A-units; el PC del SHIP pasa al domingo · v6.06: por el corrimiento del D1 al lun 2-nov el FIN se corre del vie 5-mar al mar 16-mar, con las mismas 110 A-units en {SYN_PLAN_META.totalDias} días de plan —v6.05: 131—: los PROTEGIDOS vie 12 → lun 15-mar no tienen SYNAPSE y la última A-unit va al mar 16-mar, ya tras el ENCAPS · v6.05: D1 lun 26-oct → vie 5-mar, dentro de la intensiva ENCAPS · v6.03: +2 días, D1 mié 21-oct → lun 1-mar · v6.02: +6 días, D1 lun 19-oct → vie 26-feb · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>

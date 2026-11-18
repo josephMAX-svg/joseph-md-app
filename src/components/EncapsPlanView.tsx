@@ -44,6 +44,7 @@ import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe } from '../lib/encapsPlan';
 import { fechaPlanDe, fechaRealDe, extraCorridaDe } from '../lib/fechasV6';
+import { fechasRealesEnTexto } from '../lib/corridaTexto'; // v6.10d: los textos del Horario (study_metrics.extra.horarios) citan fechas de PLAN → día real
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from '../lib/encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de TODO simulacro + cierre semanal = Home (plantillasV6.bloqueCorrSim / bloqueCierreSemanal) = ítems
 
 // v6.02d: fecha real visible (semana corrida) — día de la semana a MOSTRAR de una fila: el guardado (weekday) si su fecha real es la de
@@ -1042,7 +1043,7 @@ function HorarioBlockRow({ b, tema, evalHoy }: { b: HorarioBlock; tema?: string;
         <Text style={[styles.horarioHora, NUM, b.apex && { color: Colors.gold }]}>{b.hora}</Text>
         <View style={{ flex: 1 }}>
           <Text style={styles.horarioTitulo} numberOfLines={2}>
-            {b.titulo}{hasDetail ? (open ? '  ▾' : '  ▸') : ''}
+            {fechasRealesEnTexto(b.titulo, 'encaps')}{hasDetail ? (open ? '  ▾' : '  ▸') : ''}
           </Text>
           {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
           {/* Eval anclada del día según la regla real (código de ayer / fallos del mini-sim / arranque) */}
@@ -1050,8 +1051,8 @@ function HorarioBlockRow({ b, tema, evalHoy }: { b: HorarioBlock; tema?: string;
           {!!b.fuente && <Text style={styles.horarioFuente}>▪ {b.fuente.label}</Text>}
           {open && (b.pasos || []).map((p, i) => (
             <View key={i} style={styles.pasoRow}>
-              <Text style={styles.pasoT}>{p.t}</Text>
-              <Text style={styles.pasoD}>{p.d}</Text>
+              <Text style={styles.pasoT}>{fechasRealesEnTexto(p.t, 'encaps')}</Text>
+              <Text style={styles.pasoD}>{fechasRealesEnTexto(p.d, 'encaps')}</Text>
             </View>
           ))}
           {open && !!b.fuente?.url && (
@@ -1177,11 +1178,14 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // Plantilla por TIPO de día (no por día de semana): simulacro real o mini-sim de viernes (v6.2
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
-  // v6.10 (17-nov-2026): un fin de semana con fila ENCAPS (corrida_s1.extra: dom 29-nov 07:15-08:15 = dia 9, recupera el mar 17) no es «libre»
+  // v6.10 (17-nov-2026): un fin de semana con fila ENCAPS (corrida_s1.extra: v6.10c sáb 2-ene 04:30-05:30 = dia 32 · v6.10 dom 29-nov = dia 9; recuperan el mar 17) no es «libre»
   const extraEnc = today?.fecha ? extraCorridaDe(String(today.fecha).slice(0, 10)).find((x) => x.frente === 'encaps') ?? null : null;
   const isWeekendDay = (dow === 0 || dow === 6) && !extraEnc;
   const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.02: lun 4-ene → vie 12-mar = dia 53-102 (v6.01: dia 58-107 · v6.00: dia 61-110), examen dom 14-mar PROVISIONAL · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
+  // v6.10d (18-nov-2026): con el alias de corrida_s1 el mini-sim del viernes de plan se hace el LUNES real siguiente → la cabecera dice el día real
+  const fSim = today?.fecha ? String(today.fecha).slice(0, 10) : '', fSimR = fSim ? fechaRealDe(fSim, 'encaps') : '';
+  const diaSimTxt = fSim && fSimR !== fSim ? `${['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][new Date(`${fSimR}T12:00:00`).getDay()]} (el viernes de plan)` : 'Viernes';
   // v5.20 (6-oct): study_metrics.extra.horarios es la plantilla del MANTENIMIENTO (16:15-17:15). En la INTENSIVA (mar 23-feb →
   // mar 9-mar) los bloques salen de la propia fila: loop de 8 segmentos (extra.loop), simulacro 100Q (extra.sim) o día especial.
   const blocks = esIntensivo ? bloquesIntensivo(today) : (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
@@ -1211,7 +1215,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <Text style={styles.horarioHint}>
         {esIntensivo
           ? (useSimTemplate ? `▲ Fase intensiva: simulacro 100Q (72s/Q) desde las ${simIntensivoDe(today)?.hora || '07:15'} + corrección por código v3` : `● Fase intensiva (${intM.desde ? `${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}` : 'feb-mar 2027'} · examen ${exFecha ? fechaCorta(exFecha) : 'por confirmar'}${exProv ? ' PROVISIONAL' : ''}): bloques sembrados en la fila del día — loop v6 (extra.loop, horas definitivas F2) o día especial (señales / D-1 medio día) + CARRIL B 16:15 si la fila lo trae`)
-          : useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
+          : useSimTemplate ? `▲ ${diaSimTxt}: mini-simulacro 25Q mixtas (72s/Q) + corrección` : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
       </Text>
       {exRendido && <Text style={styles.horarioWarn}>▪ Examen ENCAPS rendido ({fechaCorta(exFecha)}): el plan queda en su último día.</Text>}
       {extraEnc && (

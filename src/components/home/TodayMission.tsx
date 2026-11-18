@@ -690,7 +690,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     }
     case 'synapse': {
       // v6.09b lote 1-ter: bloque «syn-cola» = la cola del SYNAPSE de F1 con franja real (sáb 26-dic 07:15 · F5 04:15 L-V) → su propia guía
-      // v6.10 (17-nov-2026): bloque «syn-rec» = la sesión del SYNAPSE que recupera el mar 17 a hora fija (sáb 28-nov 07:15; su guía trae la franja real)
+      // v6.10 (17-nov-2026): bloque «syn-rec» = la sesión del SYNAPSE que recupera el mar 17 a hora fija (v6.10c: dom 3-ene 05:00 · v6.10: sáb 28-nov 07:15; su guía trae la franja real)
       if (b.id === 'syn-rec') {
         const gR = guiaSynapseRecDe(iso);
         const url = gR?.pasos.find((p) => p.enlace)?.enlace?.url;

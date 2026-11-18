@@ -6,10 +6,12 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **✅ v6.10 (mar 17-nov-2026, VIGENTE) — D1 del régimen = MIÉ 18-NOV-2026 (Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»).
-> El mar 17 (día-Research) tampoco se estudió → los átomos de F1 corren UNA ranura-Research y el T-1 recupera el día el DOM 6-DIC 05:00-05:45 (hábil extra,
-> researchData.TIPO_RD_FORZADO): **M1 jue 19-nov** · R0 lun 23-nov · R1 mié 25-nov · C-1 vie 27-nov · M2 mar 1-dic · C-2 jue 3-dic · **T-1 dom 6-dic (d7)** ·
-> desde el **R9 lun 7-dic (d8)** todo igual que abajo (pausa 21-ene → 10-feb, CR-9 lun 1-mar, ciclo 2). Derma, sin cambio.**
+> **✅ v6.10c (mar 17-nov-2026, VIGENTE) — D1 del régimen = MIÉ 18-NOV-2026 (Joseph: «todo inicia mañana, el 18 es el primer día; corre nomás un día»;
+> 17:20: el día que sobra se recupera ENTERO el sáb 2-ene, corrimiento literal). El mar 17 (día-Research) tampoco se estudió → los átomos de F1 corren
+> UNA ranura-Research y el último de F1 (T-3) va el SÁB 2-ENE 15:30-16:15 (hábil extra, researchData.TIPO_RD_FORZADO): **M1 jue 19-nov** · R0 lun 23-nov ·
+> R1 mié 25-nov · C-1 vie 27-nov · M2 mar 1-dic · C-2 jue 3-dic · **T-1 lun 7-dic (d7)** · **R9 mié 9-dic (d8)** · C-3 vie 11-dic · C-4 mar 15-dic · C-5 jue
+> 17-dic · **C-6 lun 21-dic** (SUBMIT de la carta) · **CR-1 mié 23-dic (d13)** · **CR-2 mar 29-dic** · **T-3 sáb 2-ene** · desde el **T-4 lun 4-ene** todo igual que
+> abajo (pausa 21-ene → 10-feb, CR-9 lun 1-mar, ciclo 2). Derma, sin cambio. (v6.10, sin efecto: el T-1 recuperaba el día el dom 6-dic 05:00.)**
 >
 > **⏸ v6.09 (lun 16-nov-2026; sus fechas de M1 → T-1 quedan SIN EFECTO desde la v6.10) — D1 del régimen = MAR 17-NOV-2026 (Joseph: «hoy no avancé, todo empieza a partir de mañana; el sábado y el domingo viajo»).
 > Research NO cambia: el lun 16 era día-DERMA (M1 sigue el mar 17-nov y todos los átomos, la pausa 21-ene → 10-feb, CR-9 lun 1-mar y el ciclo 2 caen igual).

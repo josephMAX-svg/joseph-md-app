@@ -87,9 +87,10 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 
-> **✅ v6.10 (17-nov-2026, vigente): M1 jue 19-nov = 1.ª sesión Research · T-1 DOM 6-DIC 05:00-05:45 (d7; hábil extra: el mar 17 no se estudió). Si no
-> hubo CEI formal, la solicitud se deja LISTA ese domingo y se presenta en la mesa de partes el lun 7-dic, antes del R9. Desde T-3 (mar 29-dic), las
-> fechas del bloque v6.08 de abajo siguen vigentes.**
+> **✅ v6.10c (17-nov-2026, vigente; 17:20: el día que sobra va entero al sáb 2-ene): M1 jue 19-nov = 1.ª sesión Research · T-1 LUN 7-DIC (d7; el mar 17
+> no se estudió y los átomos de F1 corren una ranura) · T-3 SÁB 2-ENE 15:30-16:15 (hábil extra; si algo necesita una oficina abierta, se deja LISTO ese
+> sábado y se presenta el lun 4-ene, antes del T-4). Desde el T-4 (lun 4-ene), las fechas del bloque v6.08 de abajo siguen vigentes. (v6.10, sin efecto:
+> T-1 dom 6-dic 05:00.)**
 >
 > **v6.08 (14-nov-2026; M1 y T-1 corridos por la v6.10; `researchDailyPlan.ts` regenerado con START 2026-11-16, Research d1 mar 17-nov):** M1 (Dr. Ciro: vía CEI + 10 documentos)
 > **mar 17-nov = 1.ª sesión Research** · **T-1 jue 3-dic (d7)** · T-3 mar 29-dic · T-4 lun 4-ene · T-2 STROBE mié 6-ene · T-5 vie 8-ene (día del pre-test 2026-II

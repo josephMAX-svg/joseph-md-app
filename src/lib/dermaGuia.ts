@@ -7,7 +7,7 @@
  *      plan A = AccessDermatology (casos ciegos exactos con su URL directa · imagen dermatoscópica · Pictorial Review 4e por TEMA del
  *               «Create Custom Quiz» o el banco de la fila · test ProMIR en las sesiones d ≡ 0 mod 3 · lectura del libro por NOMBRE de capítulo)
  *      plan B = acceso remoto CADUCADO (comprobado el 18-oct): uWorld Step 1 › System de Dermatology afín (Tutor) · B&B Step 1 › Dermatology
- *               a la velocidad de la semana · ProMIR Dermatología · DermNet · proyecto Claude «AESTHETIC DERMATOLOGY»; los casos del día
+ *               a la velocidad de la semana · ProMIR Dermatología · DermNet · casos REALES de DermNet Quizzes (v6.10e; antes, proyecto Claude); los casos del día
  *               quedan PENDIENTES (nada se recorta: entran en el slot del Pictorial al recuperar el acceso).
  *  · d1-d5 (v6.09: mié 18 · vie 20 · mar 24 · jue 26 · lun 30-nov; v6.08: lun 16 · mié 18 · vie 20 · mar 24 · jue 26-nov; v6.07: mar 10 · jue 12 · lun 16 · mié 18 · vie 20-nov; v6.06: lun 2 · mié 4 · vie 6 · mar 10 · jue 12-nov; v6.05: mar 27 · jue 29-oct · lun 2 · mié 4 · vie 6-nov; v6.03: mié 21 · vie 23 · mar 27 · jue 29-oct · lun 2-nov; v6.02: lun 19 · mié 21 · vie 23 · mar 27 · jue 29-oct) = CURADAS (DERMA_GUIA_CURADA, src/lib/dermaGuiaDatos.ts GENERADO por
  *    DATA/DERMATOLOGIA/guia/gen_derma_guia.js); el resto = POR REGLA desde la fila del plan (dermaDailyPlan / dermaCiclo2) con aviso visible.
@@ -39,6 +39,15 @@
  * v6.09b · lote 1-quater (17-nov-2026, revisión R2 · pendiente de U2; SOLO F1, ≤ LOTE1_HASTA): regla FIJA del modo Tutor de uWorld = 90 s + 0,85′ = 2,35′/Q
  *  (antes ~3′/Q: 4Q en 12′ = 0,78). `UW_TUTOR_F1` reparte las Unused de F1 para que cada paso cuadre (5Q en 12′ · 3Q en 7′, lo que suelta va al proyecto
  *  Claude con k = round(min/5)) con el MISMO total por System que antes (2027 recibe el mismo stock: no cambia).
+ * v6.10e (18-nov-2026 · BASE CERO + PREGUNTAS REALES, orden de Joseph: «las preguntas tienen que ser REALES · todos partimos de CERO»):
+ *  · el proyecto Claude «AESTHETIC DERMATOLOGY» (viñetas de texto, dictado inverso, tablas y preguntas generadas por IA) DESAPARECE de todas las sesiones.
+ *    Su hueco (la variable de ajuste del plan B, mismos minutos) lo llena `practicaReal`: en F1, los casos REALES de DermNet Quizzes del mapa DERMA_QUIZ_F1
+ *    (rango fijo por sesión; d6 antes lee la lista de 3 puntos, medida; d15 → 4Q ProMIR) · en 2027, k casos del quiz DermNet AFÍN (Afin.dn, ~2′/caso) o,
+ *    si el hueco es de 3-5′, preguntas MIR oficiales de ProMIR (77 s/Q) o, si el tema no tiene banco real abierto (estética, dermpath, cirugía),
+ *    PRÁCTICA SIN PREGUNTAS (recall en blanco + explicar en voz alta + tarjetas), dicho como tal.
+ *  · FASES (base cero): `DERMA_FASES` / `dermaFaseDe` — cada guía (plan A y B) lleva en su aviso la fase, qué se hace en ella y el criterio para pasar a la
+ *    siguiente (Palmerton: 80 % en 10 consecutivas, Tutor y sin reloj al principio; si no se llega, los Four Critical Adjustments, nunca mover fechas).
+ *    Síntesis con fuentes: DATA/DERMATOLOGIA/METODO_BASE_CERO.md.
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -51,12 +60,12 @@ import { faseV6 } from './fechasV6';
 import { dermaAnkiDeck } from './ankiLinks';
 import {
   DERMA_CASO_GBOS, DERMA_GUIA_CURADA, PICTORIAL_ASIGNACION, PICTORIAL_TEMAS, BB_DERM, UW_DERM, DERMA_VELOCIDAD, DERMA_TEST_PROMIR_D3,
-  DERMA_GUIA_DATOS_META, DERMA_CME_DESPLAZADO, DERMNET_DERMOSCOPY, DERMNET_MEDIDO,
+  DERMA_GUIA_DATOS_META, DERMA_CME_DESPLAZADO, DERMNET_DERMOSCOPY, DERMNET_MEDIDO, DERMNET_QUIZZES, DERMA_QUIZ_F1, DERMA_LECTURA_REAL,
 } from './dermaGuiaDatos';
 
-export { DERMA_GUIA_DATOS_META, DERMA_TEST_PROMIR_D3, DERMNET_DERMOSCOPY };
+export { DERMA_GUIA_DATOS_META, DERMA_TEST_PROMIR_D3, DERMNET_DERMOSCOPY, DERMNET_QUIZZES };
 
-export const AESTHETIC_DERMATOLOGY_URL = 'https://claude.ai/project/019d135e-b442-71fc-bd3c-e2b6ea78796f';
+// v6.10e (18-nov-2026 · PREGUNTAS REALES): fuera el proyecto Claude «AESTHETIC DERMATOLOGY» (viñetas y preguntas generadas por IA) → practicaReal().
 export const ACCESSDERMA_AVISO = 'AccessDerma: renueva el acceso remoto desde la red de tu institución (campus/VPN, o «Sign in via OpenAthens/Shibboleth»). Mientras tanto manda el PLAN B.';
 const QBANKS = 'https://qbankly.app/qbanks';
 const VIDEOS = 'https://qbankly.app/videos';
@@ -177,6 +186,89 @@ function pasoDermnetMedido(dn: DermnetMedido, atlasUrl: string): GuiaPaso {
   };
 }
 
+// ── v6.10e (18-nov-2026 · BASE CERO + PREGUNTAS REALES): FASES y práctica REAL del hueco del plan B (antes: proyecto Claude) ─────────────────────────
+/** Una fase del plan Derma desde cero: qué se hace y el criterio objetivo para pasar a la siguiente (fechas fijas: si no se llega, se ajusta el método). */
+export interface DermaFase { n: number; nombre: string; desde: number; hasta: number; que: string; criterio: string }
+/** Fases (sesiones d1-d103). Criterio = mastery gate de Palmerton (80 % en 10 consecutivas, Tutor y sin reloj al principio) aplicado a lo que entrena cada
+ *  fase; donde no hay banco real abierto (dermpath, cirugía, estética), el criterio es un recall en blanco sin error. Fuentes: METODO_BASE_CERO.md. */
+export const DERMA_FASES: DermaFase[] = [
+  { n: 1, nombre: 'Lenguaje y estructura', desde: 1, hasta: 6, que: 'describir ANTES de diagnosticar (lesión elemental, color, configuración, distribución), estructura de la piel, fototipos, anatomía facial y dermatoscopia de triaje (lista de 3 puntos); preguntas en Tutor, sin reloj', criterio: '≥ 80 % de lesiones elementales bien nombradas en 10 casos DermNet seguidos (ledger)' },
+  { n: 2, nombre: 'Patrones inflamatorios', desde: 7, hasta: 13, que: 'psoriasis, eccemas, acné, ampollosas, urticaria, farmacodermias y conectivopatías: uWorld en Tutor + casos DermNet del tema + test ProMIR del capítulo', criterio: '≥ 80 % en 10 casos/preguntas seguidos de la fase (DermNet + uWorld Tutor, ledger)' },
+  { n: 3, nombre: 'Infecciosas y parasitosis', desde: 14, hasta: 18, que: 'bacterianas, sífilis/ITS, virales, micosis y parasitosis: de la lesión elemental al agente', criterio: '≥ 80 % en 10 casos/preguntas seguidos de la fase + el test ProMIR del cap. 2 corregido' },
+  { n: 4, nombre: 'Seguridad de rellenos', desde: 19, hasta: 20, que: 'oclusión vascular y ceguera ANTES que cualquier técnica (regla de seguridad del PLAN_ELITE §4)', criterio: 'protocolo HDPH y kit de emergencia recitados de memoria sin error (recall en blanco)' },
+  { n: 5, nombre: 'Tumores y dermatoscopia', desde: 21, hasta: 28, que: 'benignos, queratosis actínica, CBC/CEC, melanoma, dermatoscopia II-III, linfomas y fotoenvejecimiento', criterio: '≥ 80 % en 10 casos seguidos de tumores/pigmentadas (DermNet + uWorld)' },
+  { n: 6, nombre: 'Dermatopatología', desde: 29, hasta: 33, que: 'patrones de inflamación, vocabulario dermpath, ampollosas al microscopio, histología de tumores y depósitos', criterio: 'los patrones de inflamación dibujados y nombrados de memoria sin error (no hay banco real abierto: recall)' },
+  { n: 7, nombre: 'Pediatría y genodermatosis', desde: 34, hasta: 38, que: 'neonatales, hemangiomas, exantemas y Kawasaki, facomatosis, genodermatosis y atopia pediátrica', criterio: '≥ 80 % en 10 casos seguidos de la fase (DermNet + uWorld)' },
+  { n: 8, nombre: 'Cirugía dermatológica', desde: 39, hasta: 43, que: 'anatomía quirúrgica II, biopsias y anestesia local, suturas, colgajos e injertos, Mohs', criterio: 'pasos y complicaciones de cada técnica recitados de memoria sin error (no hay banco real abierto: recall)' },
+  { n: 9, nombre: 'Consolidación (alivio del Step 1) + checkpoints', desde: 44, hasta: 52, que: 'segunda pasada de fallos, cicatrización y mapa de fallos por módulo CORE', criterio: 'mapa de debilidades hecho y cada módulo CORE con ≥ 80 % en sus 10 últimos casos' },
+  { n: 10, nombre: 'Estética (seguridad primero)', desde: 53, hasta: 71, que: 'anatomía 3D → envejecimiento → toxina → rellenos → peelings → láser → microneedling → cosmecéutica', criterio: 'cada técnica: indicación + complicación + manejo recitados de memoria sin error (no hay banco real abierto: recall)' },
+  { n: 11, nombre: 'Repaso intercalado + ciclo 2', desde: 72, hasta: 103, que: 'casos restantes, segunda pasada FSRS y práctica MEZCLADA (DermNet «Mixed diagnoses»)', criterio: '80 % sostenido en bloques mixtos (fin del plan)' },
+];
+/** Fase de una sesión (por su nº d). */
+export function dermaFaseDe(dia: DiaDerma): DermaFase {
+  return DERMA_FASES.find((f) => dia.d >= f.desde && dia.d <= f.hasta) ?? (DERMA_FASES[DERMA_FASES.length - 1] as DermaFase);
+}
+/** Aviso de fase que encabeza cada guía (plan A y B). */
+export function dermaFaseAviso(dia: DiaDerma): string {
+  const f = dermaFaseDe(dia); const sig = DERMA_FASES.find((x) => x.n === f.n + 1);
+  return `FASE ${f.n}/${DERMA_FASES.length} (base cero) · ${f.nombre} (d${f.desde}-d${f.hasta}): ${f.que} · ${sig
+    ? `pasa a la fase ${sig.n} con ${f.criterio}; si no llegas, las fechas no se mueven: ajusta el método (recursos → comprensión → aplicación → memoria) y sigue en Tutor`
+    : `cierre: ${f.criterio}`}`;
+}
+const DN_Q = (slug: string) => `${DERMNET}/quizzes/${slug}`;
+const en0 = (r: number) => r >= 0.85 && r <= 1.15;
+/** Primer caso de un quiz DermNet que el mapa de F1 deja libre (2027 empieza ahí). */
+function primerLibreF1(slug: string): number {
+  let m = 0;
+  for (const q of Object.values(DERMA_QUIZ_F1)) if (q.quiz === slug && q.desde && q.k) m = Math.max(m, q.desde + q.k - 1);
+  return m + 1;
+}
+/** k casos REALES de un DermNet Quiz con rango fijo (el mismo formato que el catálogo de las curadas: el generador lo valida). */
+function quizPasoF1(slug: string, desde: number, k: number, min: number, foco: string): GuiaPaso {
+  const q = DERMNET_QUIZZES[slug]!;
+  return {
+    min, que: `DermNet Quizzes › «${q.t}» · casos ${desde}-${desde + k - 1} (${k} casos REALES × ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`,
+    como: `dermnetnz.org/quizzes (gratis, sin cuenta) → «${q.t}» → caso ${desde}: ${foco} · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).`,
+    enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: `${DN_Q(slug)}/case/${desde}` },
+  };
+}
+/** El hueco del plan B (variable de ajuste, `min` minutos) con práctica REAL: F1 = el mapa DERMA_QUIZ_F1 (casos fijos, lectura medida o ProMIR) · 2027 = k casos
+ *  del quiz DermNet afín · 3-6′ = preguntas MIR oficiales del capítulo afín · sin banco real abierto = PRÁCTICA SIN PREGUNTAS (nada inventado). */
+function practicaReal(dia: DiaDerma, min: number, a: Afin, corto: boolean): GuiaPaso[] {
+  const f1 = !corto && dia.fecha <= LOTE1_HASTA ? DERMA_QUIZ_F1[dia.d] : undefined;
+  if (f1 && f1.quiz && f1.desde && f1.k) {
+    const out: GuiaPaso[] = []; let resto = min;
+    const L = f1.lectura ? DERMA_LECTURA_REAL[f1.lectura] : undefined;
+    if (L) {
+      const m = Math.round(L.necesario);
+      out.push({ min: m, que: `LECTURA REAL · ${L.t} › ${L.secciones.map((s) => `«${s[0]}»`).join(' + ')} (${L.palabras} palabras + ${L.figuras} imágenes = ${dec(L.necesario)}′ medidos a 100 palabras/min + 0,25′/imagen)`, como: 'El algoritmo para NO expertos, la puerta de entrada de la dermatoscopia (el análisis de patrones viene después, en la fase 5): en cada imagen tapa el pie y di si cumple el criterio ANTES de leerlo · «Activity» (ejercicio del curso CME) no forma parte del átomo de hoy.', enlace: { t: L.t.slice(0, 70), url: L.url } });
+      resto -= m;
+    }
+    out.push(quizPasoF1(f1.quiz, f1.desde, f1.k, resto, f1.foco));
+    return out;
+  }
+  if (f1 && f1.promir) {
+    const c = capDe(dia) ?? PROMIR_DERMA_CAPS[(a.pmd ?? 1) - 1]!;
+    return [{ min, que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${f1.promir}Q REALES más a 77 s/Q (preguntas MIR oficiales: ${dec1((f1.promir * SEG_Q) / 60)}′)`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${f1.foco} · si una ya la hiciste, sáltala y toma la siguiente · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }];
+  }
+  const lista = quizzesDe(dia).filter((s) => DERMNET_QUIZZES[s]);
+  if (lista.length && min >= 4) {
+    const s0 = lista[0]!; const q = DERMNET_QUIZZES[s0]!; const k = Math.round(min / q.min);
+    if (k >= 1 && en0((k * q.min) / min)) {
+      const mixto = lista === MIXTOS || lista.every((s) => s.startsWith('mixed-'));
+      const sig = mixto ? '«Mixed diagnoses» 2 → 11 (los sets 3-11 declaran ~5′/caso: allí, 2 casos por cada 5′)' : lista.slice(1).map((s) => `«${DERMNET_QUIZZES[s]!.t}»`).join(' → ');
+      return [{ min, que: `DermNet Quizzes › «${q.t}»${mixto ? ' y siguientes (práctica MEZCLADA)' : ''} · ${k} casos REALES (× ~${q.min}′ = ${k * q.min}′, el tiempo por caso que declara el quiz)`, como: `dermnetnz.org/quizzes (gratis) → «${q.t}» desde el caso ${primerLibreF1(s0)}${primerLibreF1(s0) > 1 ? ' (el primero que F1 no usó)' : ''} o el siguiente que no hayas hecho (anota «DermNet · quiz · caso N» en el ledger); si el quiz se acaba, sigue en ${sig || 'otro quiz del tema en dermnetnz.org/quizzes'} · en cada caso, 8 ejes + diferencial de 3 ANTES de «Show Answers» · cada fallo → tarjeta de MECANISMO.`, enlace: { t: `DermNet Quiz · ${q.t}`.slice(0, 70), url: DN_Q(s0) } }];
+    }
+  }
+  const pmdN = a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined); const nQ = Math.round((min * 60) / SEG_Q);
+  if (pmdN && min <= 6 && nQ >= 1 && en0((nQ * SEG_Q) / 60 / min)) {
+    const c = PROMIR_DERMA_CAPS[pmdN - 1]!;
+    return [{ min, que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${nQ}Q REALES más a 77 s/Q (preguntas MIR oficiales: ${dec1((nQ * SEG_Q) / 60)}′)`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${nQ} preguntas que no hayas hecho · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }];
+  }
+  const r1 = Math.max(1, Math.round(min * 0.4)), r2 = Math.max(0, Math.round(min * 0.3)), r3 = Math.max(0, min - r1 - r2);
+  return [{ min, que: `PRÁCTICA SIN PREGUNTAS (${min}′; este tema no tiene banco real abierto): recall en blanco + explicar en voz alta + tarjetas`, como: `≈${r1}′ recall en blanco a papel de los puntos clave de «${dia.sub.split(/[:(—·]/)[0]!.trim()}»${r2 ? ` · ≈${r2}′ contrástalo con la lectura/vídeo de hoy y corrige en rojo` : ''}${r3 ? ` · ≈${r3}′ explícalo en voz alta como a un colega` : ''} · cada hueco = 1 tarjeta de MECANISMO. Nada de preguntas inventadas.` }];
+}
+
 /** Afinidad átomo → B&B (vídeo) · uWorld (System) · ProMIR Dermatología (capítulo). Por palabras del `sub`; si no, por bloque. */
 interface Afin { bb?: number; uw?: number; pmd?: number }
 const AFIN_SUB: Array<[RegExp, Afin]> = [
@@ -197,9 +289,40 @@ const AFIN_SUB: Array<[RegExp, Afin]> = [
   [/exantema|Kawasaki/i, { bb: 75, uw: 1031, pmd: 2 }],
 ];
 const AFIN_BLOQUE: Partial<Record<DiaDerma['bKey'], Afin>> = {
-  A: { bb: 69, uw: 1030, pmd: 1 }, B: { bb: 71, uw: 1028, pmd: 5 }, C: { bb: 75, uw: 1031, pmd: 2 }, D: { bb: 78, uw: 1032, pmd: 4 },
+  A: { bb: 69, uw: 1030, pmd: 1 }, B: { bb: 71, uw: 1028, pmd: 5 },
+  C: { bb: 75, uw: 1031, pmd: 2 }, D: { bb: 78, uw: 1032, pmd: 4 },
   E: { uw: 1028, pmd: 1 }, F: { bb: 79, uw: 1032, pmd: 9 },
 };
+/** v6.10e (18-nov-2026): DermNet Quizzes afines por átomo (en orden: si el primero se acaba, el siguiente). Lista propia (no la de Afin, que reparte uWorld y
+ *  B&B): los tumores van ANTES que los eccemas para que «q. seborreica» no caiga en eccema. Sin entrada = sin banco real abierto (estética, cirugía, dermpath). */
+const MIXTOS = Array.from({ length: 11 }, (_, i) => `mixed-diagnoses-10-cases-${i + 1}-of-11`);
+const DN_SUB: Array<[RegExp, string[]]> = [
+  [/dermatoscop/i, ['dermoscopy-local-features-quiz', 'dermoscopy-pattern-analysis-quiz']],
+  [/melanoma|basocelular|espinocelular|queratosis actínica|linfoma|Merkel|Kaposi|tumores benignos|nevus|q\. seborreica/i, ['malignant-skin-lesions-10-cases', 'nonmelanoma-skin-cancers-10-cases', 'pigmented-lesions-10-cases', 'benign-melanocytic-naevi-11-cases', 'skin-coloured-lumps-and-bumps-12-cases', 'melanoma-terminology-10-cases']],
+  [/psoria|papuloescam|liquen/i, ['psoriasis-16-cases', 'lichen-12-cases']],
+  [/eccema|atópica|atopia|contacto|seborreica/i, ['eczema-14-cases', 'cause-of-contact-allergic-dermatitis-10-cases', 'irritant-contact-dermatitis-12-cases']],
+  [/acné|rosácea|hidradenitis/i, ['acne-16-cases', 'acneiform-eruptions-12-cases']],
+  [/ampoll|pénfigo|penfigoide|herpetiforme/i, ['blistering-conditions-affecting-the-feet-12-cases']],
+  [/urticaria|angioedema|prurito/i, ['solitary-red-patches-17-cases']],
+  [/farmacoderm|SJS|DRESS|AGEP/i, ['cutaneous-adverse-reactions-10-cases']],
+  [/conectivopat|lupus|dermatomiositis|morfea|vasculitis|paniculitis/i, ['different-causes-of-purpura-10-cases', 'annular-plaque-12-cases']],
+  [/micosis|KOH|esporotric/i, ['fungal-infection-12-cases']],
+  [/bacterian|impétigo|celulitis|SSSS|fascitis|sífilis|ITS|micobacter|lepra|virales|HSV|VPH|molusco|parasitosis|escabiosis|leishmaniasis|exantema|Kawasaki/i, ['skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases', 'led-rashes-and-unwell-10-cases', 'pustules-15-cases']],
+  [/hemangioma|malformaciones vasculares|neonatal/i, ['vascular-naevi-10-cases', 'telangiectasia-10-cases']],
+  [/facomatosis|NF1|esclerosis tuberosa|Sturge|genodermatosis|ictiosis|epidermólisis/i, MIXTOS],
+];
+const DN_BLOQUE: Partial<Record<DiaDerma['bKey'], string[]>> = {
+  A: ['solitary-red-patches-17-cases', 'annular-plaque-12-cases'], B: ['psoriasis-16-cases', 'eczema-14-cases'], C: ['skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases'],
+  D: ['malignant-skin-lesions-10-cases', 'pigmented-lesions-10-cases'], F: ['vascular-naevi-10-cases', ...MIXTOS],
+  // repasos, checkpoints y ciclo 2 = práctica INTERCALADA (fase de mezcla): «Mixed diagnoses» de DermNet
+  H: MIXTOS, Z: MIXTOS,
+};
+/** Quizzes DermNet afines de una sesión ([] = el tema no tiene banco real abierto). Repasos/ciclo 2 (H, Z o «CICLO 2 · …») = mixtos. */
+function quizzesDe(dia: DiaDerma): string[] {
+  if (dia.bKey === 'H' || dia.bKey === 'Z' || /^CICLO 2 · (Casos|Segunda pasada|Checkpoint|REPASO)/.test(dia.sub)) return MIXTOS;
+  for (const [re, l] of DN_SUB) if (re.test(dia.sub)) return l;
+  return DN_BLOQUE[dia.bKey] ?? [];
+}
 function afinDe(dia: DiaDerma): Afin {
   for (const [re, a] of AFIN_SUB) if (re.test(dia.sub)) return a;
   return AFIN_BLOQUE[dia.bKey] ?? {};
@@ -407,7 +530,7 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
     }
   } else if (!corto && a.bb && BB_DERM[a.bb]) {
     const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
-    pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al proyecto Claude)' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
+    pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al paso de práctica real (casos DermNet / ProMIR))' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
   }
   // v6.09b · lote 1-bis (a2-9) → lote 1-ter (revisión R, hallazgos 4 · 5 · 8): en F1 el atlas lleva su medida POR FECHA (DERMNET_MEDIDO: lecturas + palabras +
   //   imágenes → minutos = palabras/100 + 0,25′/imagen); lo que no es del alcance «no forma parte del átomo» y lo del átomo que no cabe va a su fecha con sus
@@ -417,17 +540,19 @@ function planBPorRegla(dia: DiaDerma, ini: string, total: number): GuiaBloque {
   if (dn && dia.atlasUrl) pasos.push(pasoDermnetMedido(dn, dia.atlasUrl));
   else if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) pasos.push({ min: corto ? 6 : 8, que: `DermNet · atlas del átomo (${dia.atlasUrl.replace(`${DERMNET}/`, '')}) — sin medir`, como: 'Primero las imágenes (tapa el pie y describe), después «clinical features» y «differential diagnosis» · ~120 palabras/min.', enlace: { t: 'DermNet · atlas del átomo', url: dia.atlasUrl } });
   else if (!corto && a.pmd && a.pmd !== cap?.n) { const c = PROMIR_DERMA_CAPS[a.pmd - 1]!; pasos.push({ min: 8, que: `LECTURA (español) · ProMIR Dermatología › cap. ${c.n} «${c.t}» — la sección del átomo de hoy (sin medir)`, como: 'Solo el apartado del átomo · Whole Page Rule · ritmo de referencia 180 palabras/min.', enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } }); }
-  // con el atlas medido, el proyecto Claude es la variable de ajuste: si el atlas se lleva toda la franja (4 y 8-dic), hoy no hay viñetas
-  const conClaude = !dn || pasos.reduce((s, p) => s + p.min, 0) + 2 < total;
-  if (conClaude) pasos.push({ min: 0, que: 'Proyecto Claude «AESTHETIC DERMATOLOGY» (tus libros) · casos de texto del átomo', como: `Pídele: «Dame viñetas de ${dia.sub.split(/[:(—·]/)[0].trim()} de mis libros SIN diagnóstico; yo describo (8 ejes), doy diferencial de 3 y diagnóstico; corrígeme citando libro y página». Cada fallo → tarjeta de MECANISMO.`, enlace: { t: 'Proyecto AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL } });
+  // v6.10e (18-nov-2026 · PREGUNTAS REALES): la variable de ajuste ya no es el proyecto Claude (viñetas generadas por IA) sino un HUECO que llena practicaReal()
+  //   con casos REALES (DermNet Quizzes), preguntas MIR oficiales (ProMIR) o práctica sin preguntas; si el atlas medido se lleva toda la franja (4 y 8-dic), no hay hueco
+  const HUECO = '§hueco de práctica real§';
+  const conHueco = !dn || pasos.reduce((s, p) => s + p.min, 0) + 2 < total;
+  if (conHueco) pasos.push({ min: 0, que: HUECO, como: HUECO });
   pasos.push(cierrePaso(2));
   let p2 = cuadrar(pasos, total);
-  // si el relleno quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar (no con el atlas medido de F1: ahí cuadra por medida)
-  const rell = p2.find((p) => p.que.startsWith('Proyecto Claude'));
+  // si el hueco quedó < 3′, quita el paso más largo opcional (DermNet/ProMIR lectura) y vuelve a cuadrar (no con el atlas medido de F1: ahí cuadra por medida)
+  const rell = p2.find((p) => p.que === HUECO);
   if (!dn && rell && rell.min < 3) { const sin = pasos.filter((p) => !/^(DermNet|LECTURA \(español\))/.test(p.que)); p2 = cuadrar(sin, total); }
-  // v6.09b · lote 1-ter (hallazgo 8): con el atlas medido (F1), el proyecto Claude dice cuántas viñetas caben (k = round(min/5)) y los minutos REALES de cada una
-  if (dn) p2 = p2.map((p) => { if (!p.que.startsWith('Proyecto Claude')) return p; const n = Math.max(1, Math.round(p.min / 5)); return { ...p, que: `${p.que} · hoy ${p.min}′ ≈ ${n} viñeta${n === 1 ? '' : 's'} (≈${dec1(p.min / n)}′ cada una)` }; });
-  const recursos: GuiaRecurso[] = [...(conClaude ? [{ t: 'Proyecto Claude · AESTHETIC DERMATOLOGY', url: AESTHETIC_DERMATOLOGY_URL }] : []), { t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
+  p2 = p2.flatMap((p) => (p.que === HUECO ? practicaReal(dia, p.min, a, corto) : [p]));
+  const recursos: GuiaRecurso[] = [{ t: 'ProMIR · Dermatología', url: pm(PM_CAP.c1) }];
+  for (const p of p2) if (p.enlace && /^(DermNet Quizzes|LECTURA REAL)/.test(p.que)) recursos.unshift({ t: p.enlace.t, url: p.enlace.url, ...(/casos (\d+)-(\d+)/.test(p.que) ? { cantidad: `${Number(/casos (\d+)-(\d+)/.exec(p.que)![2]) - Number(/casos (\d+)-(\d+)/.exec(p.que)![1]) + 1} casos` } : {}) });
   if (a.bb && BB_DERM[a.bb]) recursos.push({ t: `B&B · ${BB_DERM[a.bb]!.nombre}`, url: VIDEOS, min: ap && ap.n >= 2 ? bb2aMin(a.bb) : bbMinReserva(a.bb, dia.fecha) });
   if (dia.atlasUrl && dia.atlasUrl.startsWith(DERMNET)) recursos.push({ t: 'DermNet · atlas del átomo', url: dia.atlasUrl });
   if (dn) for (const l of dn.lecturas) if (l.pag !== dn.atlas) recursos.push({ t: `DermNet · ${l.pag}${l.de ? ` (del ${fdc(l.de)})` : ''}`, url: l.url });
@@ -449,8 +574,10 @@ export function dermaGuiaPar(dia: DiaDerma, opts: { ini?: string; minutos?: numb
   const ini = opts.ini ?? '13:30';
   const total = opts.minutos ?? 45;
   const c = DERMA_GUIA_CURADA[dia.d];
-  if (c && c.fecha === dia.fecha && total === 45) return { planA: moverA(c.planA, ini), planB: moverA(c.planB, ini), curada: true };
-  return { planA: planAPorRegla(dia, ini, total), planB: planBPorRegla(dia, ini, total), curada: false };
+  // v6.10e (base cero): cada guía (plan A y B) abre su aviso con la FASE, qué se hace en ella y el criterio para pasar a la siguiente
+  const fase = (g: GuiaBloque): GuiaBloque => ({ ...g, aviso: g.aviso ? `${dermaFaseAviso(dia)} · ${g.aviso}` : dermaFaseAviso(dia) });
+  if (c && c.fecha === dia.fecha && total === 45) return { planA: fase(moverA(c.planA, ini)), planB: fase(moverA(c.planB, ini)), curada: true };
+  return { planA: fase(planAPorRegla(dia, ini, total)), planB: fase(planBPorRegla(dia, ini, total)), curada: false };
 }
 /** La guía que manda hoy según la preferencia «AccessDerma renovado» (por defecto: plan B). */
 export function dermaGuiaDe(dia: DiaDerma, opts: { ini?: string; minutos?: number; accessOK?: boolean } = {}): GuiaBloque {

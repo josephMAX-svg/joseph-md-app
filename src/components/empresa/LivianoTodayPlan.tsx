@@ -21,7 +21,7 @@ import {
 /**
  * LivianoTodayPlan — "LIVIANO Academia" día a día (90 días L-V · medicina de la obesidad).
  * v2 (Palmerton v3): el ✓ binario pasa a SCORE medido:
- *   · LUNES  → pre-test ciego 5Q sobre la semana D-7 (tarjetas de mecanismo) → % ciego
+ *   · LUNES  → RECALL EN BLANCO de la semana D-7 (v6.10e: 1 línea por lección; antes «pre-test ciego 5Q» con tarjetas escritas por Claude) → % ciego
  *   · DRILL  → cifras ancla en ciego (v6.07: D36 · D56 · D75 · D87 = mar 29-dic · jue 28-ene · mié 24-feb · mié 17-mar; D37 · D56 · D75 · D88, v6.06 = mar 22-dic · jue 21-ene · mié 17-feb · lun 8-mar; v6.05 = mar 15-dic · jue 14-ene · mié 10-feb · lun 1-mar; v6.03: D37 · D57 · D76 · D88 = jue 10-dic · mar 12-ene · lun 8-feb · mié 24-feb; v6.02: D37 · D56 · D75 · D88 = mar 8-dic · jue 7-ene · mié 3-feb · lun 22-feb; v6.01: D37 · D57 · D75 · D88 = mar 1-dic · mié 30-dic · mié 27-ene · lun 15-feb; v6.00 = v5.20: D37 · D58 · D76 · D88; v5.19 = v5.18: D37 · D58 · D75 · D88 · v5.17: D36 · D58 · D75 · D87) → % ciego
  *   · VIERNES→ caso del banco LIV_CASOS con rúbrica 0-2 × 4 → rúbrica media
  * Persistencia (v5.14, 19-sep): localStorage 'jmd-liviano-score' + ESPEJO en Supabase `study_progress`
@@ -318,12 +318,12 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
               </View>
               <Chip label={`${dia.min} min`} color={c} small />
               {dia.casoId ? <Chip label={`🩺 caso ${dia.casoId}/16 · rúbrica`} color={SALVIA} small /> : null}
-              {dia.pretest ? <Chip label="📝 pre-test 5Q (D-7)" color={Colors.blue} small /> : null}
-              {dia.drill ? <Chip label="🎯 drill cifras ancla" color={Colors.coral} small /> : null}
+              {dia.pretest ? <Chip label="📝 recall en blanco (D-7)" color={Colors.blue} small /> : null}
+              {dia.drill ? <Chip label="🎯 tabla de cifras ancla" color={Colors.coral} small /> : null}
               {hecho ? <Chip label="✓ hecho" color={SALVIA} small solid /> : null}
             </View>
             <Text style={st.temaTitle}>{dia.tema}</Text>
-            <Text style={st.temaSub}>25' mecanismo (Palmerton) + 20' explicárselo al paciente{dia.pretest ? ' · los primeros 5-7 min: pre-test ciego' : ''}</Text>
+            <Text style={st.temaSub}>25' mecanismo (Palmerton) + 20' explicárselo al paciente{dia.pretest ? ' · los primeros 6 min: recall en blanco de la semana anterior' : ''}</Text>
             {!dia.casoId && !dia.pretest && !dia.drill ? (
               <TouchableOpacity activeOpacity={0.85} onPress={() => marcarHecho(dia.d)}
                 style={[st.doneBtn, hecho ? { backgroundColor: SALVIA, borderColor: SALVIA } : { backgroundColor: SALVIA + '14', borderColor: SALVIA + '66' }]}>
@@ -339,8 +339,8 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
         {dia.pretest ? (
           <FadeUp delay={30}>
             <QuizBlock
-              titulo="📝 Pre-test ciego · semana anterior (D-7)"
-              sub={`5 tarjetas de mecanismo de los días D${dia.d - 5}-D${dia.d - 1}. Responde en voz alta ANTES de ver la respuesta; luego marca honesto. Meta ≥ ${LIV_META_CIEGO_PCT} %.`}
+              titulo="📝 Recall en blanco · semana anterior (D-7)"
+              sub={`1 línea por lección de D${Math.max(1, dia.d - 5)}-D${dia.d - 1}: con solo el título, escribe el mecanismo SIN mirar; después destapa la tarjeta y su fuente y marca honesto. No es un test (LIVIANO no tiene banco real de preguntas). Meta ≥ ${LIV_META_CIEGO_PCT} %.`}
               color={Colors.blue} qs={pretestQs} guardado={score.pretests[String(dia.d)]}
               onSave={(ok, total) => { const e: ScoreEntry = { ok, total, fecha: stamp() }; persist({ ...score, pretests: { ...score.pretests, [String(dia.d)]: e } }, { tipo: 'pretest', clave: String(dia.d), d: dia.d, modulo: dia.modulo, entry: e }); marcarHecho(dia.d, true); }}
             />
@@ -351,8 +351,8 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
         {drill ? (
           <FadeUp delay={40}>
             <QuizBlock
-              titulo="🎯 Drill de cifras ancla (ciego)"
-              sub={`${drill.titulo}. Una cifra por pregunta, sin notas. Lo fallado va a Anki hoy mismo.`}
+              titulo="🎯 Tabla en blanco · cifras ancla"
+              sub={`${drill.titulo}. Cifras de ensayos y guías reales: escribe cada una sin notas y corrige contra la fuente que trae su respuesta. Lo fallado va a Anki hoy mismo.`}
               color={Colors.coral} qs={drill.qs} guardado={score.drills[String(dia.d)]}
               onSave={(ok, total) => { const e: ScoreEntry = { ok, total, fecha: stamp() }; persist({ ...score, drills: { ...score.drills, [String(dia.d)]: e } }, { tipo: 'drill', clave: String(dia.d), d: dia.d, modulo: dia.modulo, entry: e }); marcarHecho(dia.d, true); }}
             />

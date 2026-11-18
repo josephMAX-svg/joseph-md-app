@@ -192,6 +192,12 @@
  *   se renumera POR FECHA solo en las filas 1-9 (dom 29 = dia 9, IV-1); desde el dia 10 (lun 30-nov) todo es idéntico a la v6.09, extra.de incluido
  *   (se pasa fijo: --de-hasta 2027-03-29). Uso v6.10: node gen_encaps_mantenimiento_2027.js 2026-11-18 --de-hasta 2027-03-29 --pendientes-de <SQL v6.09>
  *   --no-persistir --out <scratchpad>/mant_v610.sql → comparar con el del repo (solo cambian las filas 1-9 y la cabecera) y copiar.
+ * v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el día extra pasa al SÁB 2-ENE 04:30-05:30
+ *   (corrida_s1.extra; el dom 29-nov ya no es fila) → las 27 filas de banco corren UNA ranura no-viernes del mié 18-nov al jue 31-dic y la 27.ª (V-2
+ *   planeamiento) va el sáb 2-ene = dia 32; los 5 mini-sims se quedan en sus viernes (vie 20 = dia 3, vie 27 = 8, vie 4-dic = 13, vie 11 = 18, vie 18 =
+ *   23 = CHECKPOINT DEL AÑO; sim_n = dia). Las filas 1-8 (mié 18 → vie 27) quedan idénticas a la v6.10; las 9-32 cambian de fecha (y de sim_n los
+ *   mini-sims), con el mismo contenido y extra.de. La intensiva (dia 33-82) no cambia. Uso: node gen_encaps_mantenimiento_2027.js 2026-11-18 --de-hasta
+ *   2027-03-29 --pendientes-de <SQL v6.09> --no-persistir --bk study_schedule_bk_v610_mant_20261117 --out <scratchpad>/mant_v610c.sql → comparar y copiar.
  */
 const fs = require('fs');
 const path = require('path');
@@ -230,7 +236,11 @@ const DE_HASTA_DEF = (() => {
 const DE_HASTA = opt('--de-hasta', DE_HASTA_DEF);
 const PENDIENTES_DE = opt('--pendientes-de', null); // v6.01: SQL de la F1 ANTERIOR (formato de este generador) → overflow a _pendientes_f1.json
 const PENDIENTES_JSON = path.join(ROOT, 'DATA', 'ENCAPS', '_pendientes_f1.json');
-const CORR = (F6.corrimientos || []).at(-1) || null; // v6.01: último corrimiento registrado en _fechas_v6.json
+// v6.10d (fix revisión 18-nov): solo los corrimientos que RE-FECHAN el plan (= gen_fechas_v6.corrimientoRefecha): uno que solo añade un ALIAS de corrida_s1
+//   (v6.10d: el plan del mié 18 lo hace el jue 19 …) no es un día perdido → ni la cabecera del SQL («corrimiento RÍGIDO»), ni _pendientes_f1.json ni versionPrev
+const _ALIAS_PLAN = new Set(Object.values((F6.corrida_s1 && F6.corrida_s1.alias) || {}));
+const CORRS_REFECHA = (F6.corrimientos || []).filter((c) => !(c.perdidos || []).length || !c.perdidos.every((d) => _ALIAS_PLAN.has(d)));
+const CORR = CORRS_REFECHA.at(-1) || null; // v6.01: último corrimiento registrado en _fechas_v6.json · v6.10d: el último que re-fecha
 const OUT = opt('--out', path.join(__dirname, '_encaps_mantenimiento_2027.sql'));
 if (!/^[a-z_][a-z0-9_]*$/.test(BK)) throw new Error('--bk inválido: ' + BK);
 if (!/^20\d\d-\d\d-\d\d$/.test(HASTA) || !/^20\d\d-\d\d-\d\d$/.test(DE_HASTA)) throw new Error('--hasta / --de-hasta inválido');
@@ -411,7 +421,7 @@ if (PENDIENTES_DE) {
   const porClave = {}; for (const r of vB) (porClave[claveInst(r)] = porClave[claveInst(r)] || []).push(r);
   const distintas = nB.filter((r) => { const v = (porClave[claveInst(r)] || []).shift(); return !v || v.subtema !== r.subtema || v.prioridad !== r.prioridad || JSON.stringify(v.temas_secundarios) !== JSON.stringify(r.temas_secundarios) || JSON.stringify(v.extra) !== JSON.stringify(r.extra); });
   if (distintas.length) throw new Error(`--pendientes-de: ${distintas.length} fila(s) banqueo1h con contenido distinto al de la F1 anterior (${distintas.slice(0, 5).map((r) => `dia ${r.dia} ${claveInst(r)}`).join(', ')}): revisa --de-hasta / overrides`);
-  const versionPrev = (F6.corrimientos || []).length >= 2 ? F6.corrimientos.at(-2).version : 'v6.00';
+  const versionPrev = CORRS_REFECHA.length >= 2 ? CORRS_REFECHA.at(-2).version : 'v6.00'; // v6.10d: sin los corrimientos que solo son alias
   const corr = CORR ? CORR.version : 'manual';
   let pj = { _meta: {}, filas: [] };
   if (fs.existsSync(PENDIENTES_JSON)) { try { pj = JSON.parse(fs.readFileSync(PENDIENTES_JSON, 'utf8')); } catch (e) { throw new Error('_pendientes_f1.json ilegible: ' + e.message); } }

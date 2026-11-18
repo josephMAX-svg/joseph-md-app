@@ -8,8 +8,9 @@
  * completitud). Fuente completa: DATA/SYNAPSE/_raw_findings.json (85 materiales)
  * y DATA/SYNAPSE/materiales-verificados.md. Cero URLs inventadas.
  * v6.10 · tanda C (17-nov-2026): anthropic.skilljar.com cierra «in early December» (FAQ de academy.claude.com) → Claude 101 y AI Fluency
- * enlazan a academy.claude.com/courses/<slug> (verificados con WebFetch el 17-nov: mismas lecciones). El resto de cursos sigue en Skilljar
- * hasta re-curarlos (los de 2027; «claude-with-the-anthropic-api» da 404 en la Academy nueva).
+ * enlazan a academy.claude.com/courses/<slug> (verificados con WebFetch el 17-nov: mismas lecciones). v6.10c (17-nov-2026, verificado en la
+ * Academy ≈18:05): TODOS los cursos de la Academy enlazan ya a academy.claude.com/courses/<slug> (mismo slug salvo «claude-with-the-anthropic-api»,
+ * 404 → «building-with-the-claude-api»).
  *
  * El motor día-a-día (misiones estilo ENCAPS/Business + Calendar 30 min) lo
  * construye el chat SYNAPSE: DATA/SYNAPSE/PROMPT_CHAT_SYNAPSE.md.
@@ -36,7 +37,8 @@
  * de plan → desde el lun 4-ene todo igual que en la v6.08, d incluido).
  * v6.10 (17-nov-2026 · 1.ª sesión mié 18-nov): mismas fechas del motor (lun 16-nov → jue 1-abr-2027, 137 días, d igual); el mar 17 pasa a SIN SESIÓN y
  * su A-unit (auditoría F0) sale en la sesión de recuperación del sáb 28-nov 07:15-07:45 (synapseDailyPlan.SYN_REC_F1 · synRecDe), con las piezas del
- * martes de la sem 2; el mar 24 lleva las de la sem 1. Desde el sáb 28 21:00, como la v6.09.
+ * martes de la sem 2; el mar 24 lleva las de la sem 1. Desde el sáb 28 21:00, como la v6.09. v6.10c (decisión de Joseph del 17-nov 17:20, corrimiento
+ * literal): esa sesión pasa al dom 3-ene 05:00-05:30 y el carril del martes corre una semana (mar 24 ← sem 1 … mar 29-dic ← sem 6; el dom 3-ene, la sem 7).
  * v6.08 (14-nov-2026 · corrimiento D1 = lun 16-nov): lun 16-nov → jue 1-abr-2027 (137 días, mismas 110 A-units; sin SYNAPSE en los PROTEGIDOS
  * vie 12 → lun 15-mar ni en la Semana Santa jue 25 / vie 26-mar). La cabecera de SYNAPSE_META.nota sale ya de SYN_PLAN_META (inicio, fin,
  * totalDias, semanas) y de FECHAS_V6.version: antes se escribía a mano y quedaba vieja en cada corrimiento (decía «hasta el mar 23-mar»).
@@ -131,13 +133,13 @@ const M = {
   llmZoomcamp: { nombre: 'LLM Zoomcamp — 10 semanas (RAG, agents, eval, monitoring)', referente: 'DataTalksClub', credencial: 'Curso gratis con proyecto final desplegable', tipo: 'curso', url: 'https://github.com/DataTalksClub/llm-zoomcamp', gratis: 'gratis', duracion: '10 semanas + proyecto', nivel: 'intermedio', porQue: 'Hilo conductor y fuente de proyectos de portafolio: RAG, vector search, embeddings, agentes, function calling, evaluación y monitoring → un sistema público en GitHub' },
 
   // F4 — Agentes & LLM engineering (el corazón)
-  claudeApi: { nombre: 'Building with the Claude API', referente: 'Anthropic Academy', credencial: 'El curso TRONCAL de la academia para developers', tipo: 'curso', url: 'https://anthropic.skilljar.com/claude-with-the-anthropic-api', gratis: 'gratis', duracion: '8 secciones (API, evals, tools, RAG, MCP)', nivel: 'intermedio', porQue: 'Cubre exactamente los skills que los puestos de Anthropic listan', audio: true },
+  claudeApi: { nombre: 'Building with the Claude API', referente: 'Anthropic Academy', credencial: 'El curso TRONCAL de la academia para developers', tipo: 'curso', url: 'https://academy.claude.com/courses/building-with-the-claude-api', gratis: 'gratis', duracion: '8 secciones (API, evals, tools, RAG, MCP)', nivel: 'intermedio', porQue: 'Cubre exactamente los skills que los puestos de Anthropic listan', audio: true },
   promptTutorial: { nombre: 'Prompt Engineering Interactive Tutorial', referente: 'Anthropic (GitHub oficial)', credencial: 'Repo oficial · 36.3k estrellas', tipo: 'tutorial', url: 'https://github.com/anthropics/prompt-eng-interactive-tutorial', gratis: 'gratis (tokens aparte)', duracion: '9 capítulos', nivel: 'base', porQue: 'El estándar de oro de prompting según la propia Anthropic', audio: true },
   anthropicCourses: { nombre: 'anthropics/courses (API, Prompt Eng, Evals, Tool Use)', referente: 'Anthropic (GitHub oficial)', credencial: 'Repo educativo oficial · 21.8k estrellas', tipo: 'tutorial', url: 'https://github.com/anthropics/courses', gratis: 'gratis (tokens aparte)', duracion: '5 cursos en notebooks', nivel: 'intermedio', porQue: '"Prompt Evaluations" es ORO: evals aparece en casi todos los puestos de Anthropic' },
-  mcpIntro: { nombre: 'Introduction to Model Context Protocol', referente: 'Anthropic Academy', credencial: 'Curso oficial de la creadora del estándar MCP', tipo: 'curso', url: 'https://anthropic.skilljar.com/introduction-to-model-context-protocol', gratis: 'gratis', duracion: '13 lecciones', nivel: 'intermedio', porQue: 'MCP aparece textualmente en los requisitos de los puestos Applied AI', audio: true },
-  mcpAdvanced: { nombre: 'MCP: Advanced Topics', referente: 'Anthropic Academy', credencial: 'Curso oficial de Anthropic', tipo: 'curso', url: 'https://anthropic.skilljar.com/model-context-protocol-advanced-topics', gratis: 'gratis', duracion: '14 lecciones', nivel: 'avanzado', porQue: 'Sampling, transports, producción — diferencia a un candidato técnico' },
-  claudeCodeAction: { nombre: 'Claude Code in Action', referente: 'Anthropic Academy', credencial: 'Curso oficial destacado en anthropic.com/learn', tipo: 'curso', url: 'https://anthropic.skilljar.com/claude-code-in-action', gratis: 'gratis', duracion: '~20 lecciones', nivel: 'intermedio', porQue: 'Cómo está construido un agente de código real (el de Anthropic)', audio: true },
-  agentSkills: { nombre: 'Intro to agent skills + Intro to subagents', referente: 'Anthropic Academy', credencial: 'Cursos oficiales de las primitivas más nuevas', tipo: 'curso', url: 'https://anthropic.skilljar.com/introduction-to-agent-skills', gratis: 'gratis', duracion: '6 + 4 módulos', nivel: 'avanzado', porQue: 'Skills y subagentes: las piezas más recientes del stack de agentes' },
+  mcpIntro: { nombre: 'Introduction to Model Context Protocol', referente: 'Anthropic Academy', credencial: 'Curso oficial de la creadora del estándar MCP', tipo: 'curso', url: 'https://academy.claude.com/courses/introduction-to-model-context-protocol', gratis: 'gratis', duracion: '13 lecciones', nivel: 'intermedio', porQue: 'MCP aparece textualmente en los requisitos de los puestos Applied AI', audio: true },
+  mcpAdvanced: { nombre: 'MCP: Advanced Topics', referente: 'Anthropic Academy', credencial: 'Curso oficial de Anthropic', tipo: 'curso', url: 'https://academy.claude.com/courses/model-context-protocol-advanced-topics', gratis: 'gratis', duracion: '14 lecciones', nivel: 'avanzado', porQue: 'Sampling, transports, producción — diferencia a un candidato técnico' },
+  claudeCodeAction: { nombre: 'Claude Code in Action', referente: 'Anthropic Academy', credencial: 'Curso oficial destacado en anthropic.com/learn', tipo: 'curso', url: 'https://academy.claude.com/courses/claude-code-in-action', gratis: 'gratis', duracion: '~20 lecciones', nivel: 'intermedio', porQue: 'Cómo está construido un agente de código real (el de Anthropic)', audio: true },
+  agentSkills: { nombre: 'Intro to agent skills + Intro to subagents', referente: 'Anthropic Academy', credencial: 'Cursos oficiales de las primitivas más nuevas', tipo: 'curso', url: 'https://academy.claude.com/courses/introduction-to-agent-skills', gratis: 'gratis', duracion: '6 + 4 módulos', nivel: 'avanzado', porQue: 'Skills y subagentes: las piezas más recientes del stack de agentes' },
   agentSdk: { nombre: 'Claude Agent SDK (documentación oficial)', referente: 'Anthropic', credencial: 'Claude Code como librería (Python/TS)', tipo: 'docs', url: 'https://code.claude.com/docs/en/agent-sdk/overview', gratis: 'gratis (uso consume API)', duracion: 'overview + hooks, subagents, MCP', nivel: 'avanzado', porQue: 'El proyecto-portfolio nivel-Anthropic se construye con esto', audio: true },
   evalsDocs: { nombre: 'Define success criteria & build evals (Claude Docs)', referente: 'Anthropic (docs oficiales)', credencial: 'La guía de referencia de evaluaciones', tipo: 'docs', url: 'https://platform.claude.com/docs/en/docs/test-and-evaluate/develop-tests', gratis: 'gratis', duracion: '~30 min + código', nivel: 'intermedio', porQue: 'La habilidad que separa amateur de ingeniero LLM', audio: true },
   hfAgents: { nombre: 'Hugging Face Agents Course', referente: 'Hugging Face', credencial: 'La plataforma central del open-source en IA', tipo: 'curso', url: 'https://huggingface.co/learn/agents-course/unit0/introduction', gratis: 'gratis (2 certificados)', duracion: '5 unidades + 3 bonus', nivel: 'base', porQue: 'El curso gratuito de agentes más completo: smolagents, LlamaIndex, LangGraph, evals' },
@@ -299,7 +301,7 @@ export const SYNAPSE_FASES: SynapseFase[] = [
   {
     id: 'f0', fase: 'F0', titulo: 'La Escuela de Anthropic', duracion: 'sem 1–4', estado: 'activa',
     desc: 'La "licenciatura básica" de Anthropic con la que pediste empezar: Academy completa de nivel base + la visión panorámica de Karpathy. Todo apto para huecos móviles.',
-    entregable: 'Certificados Claude 101 + AI Fluency · dominar los 5 patrones de agentes',
+    entregable: 'v6.10 base cero (fases 1-4, SYN_FASES_BC): «Course quiz» oficial aprobado de AI Fluency · Claude 101 · Claude Code 101 · Platform 101 (insignias de la Academy) · los 5 patrones de agentes de memoria · el LLM explicado de punta a punta',
     materiales: [M.academy, M.claude101, M.aiFluency, M.effectiveAgents, M.karpathyIntro, M.karpathyDeep, M.nn3b1b],
   },
   {

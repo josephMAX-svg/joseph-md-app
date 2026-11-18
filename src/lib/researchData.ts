@@ -57,7 +57,11 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
 /** v6.10 (17-nov-2026): + dom 6-dic = día-RESEARCH a hora fija (05:00-05:45; _fechas_v6.json › corrida_s1.extra['2026-12-06']['research-derma']): el mar
  *  17-nov (día-Research) no se estudió → los átomos corren una ranura-Research (M1 jue 19 … C-2 jue 3-dic) y el T-1 va ese domingo; desde el R9 (lun
  *  7-dic) todo igual. Un FORZADO se mira ANTES que la regla del domingo / sábado (diaEstudioTipo y los 4 generadores). */
-export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-06': 'research', '2026-12-31': 'derma' };
+/** v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el dom 6-dic deja de ser día-Research; el
+ *  día-RESEARCH a hora fija pasa al SÁB 2-ENE 15:30-16:15 (corrida_s1.extra['2027-01-02']['research-derma']): los átomos corren una ranura-Research del
+ *  jue 19-nov al mar 29-dic (M1 jue 19 … T-1 lun 7-dic … C-6 lun 21-dic … CR-2 mar 29-dic) y el T-3, el último de F1, va ese sábado; desde el T-4 (lun
+ *  4-ene) todo igual. Derma no cambia. */
+export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-31': 'derma', '2027-01-02': 'research' };
 const _isoLocal = (x: Date): string => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb

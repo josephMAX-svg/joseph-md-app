@@ -27,7 +27,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 import GuiaBloqueCard from '../GuiaBloqueCard';
-import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, type MirGuiaQ } from '../../lib/mirGuia';
+import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, mirFaseDe, type MirGuiaQ } from '../../lib/mirGuia'; // v6.10 · base cero: + mirFaseDe
 import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
 
 /**
@@ -80,6 +80,10 @@ const GREEN = Colors.green;    // jade
 const OBS = Colors.purple;     // amethyst
 const CORAL = Colors.coral;
 const APEX_DIRECTO_ANKI = 'Crea los APEX DIRECTAMENTE en Anki escritorio (no por la nota Obsidian / n8n) hasta que el redeploy de n8n esté verificado con un test multilínea real.';
+// v6.10 · base cero (18-nov-2026 · «las preguntas tienen que ser REALES»): si el pool oficial de la app no llega, el respaldo es SOLO MIR oficial con su
+//   año-número (antes «test del capítulo / por asignatura ProMIR», sin filtro: ese test no está verificado como solo-MIR)
+const FB_MIR_CAP = 'MIR oficiales citadas en el capítulo ProMIR (/pregunta/MIR/AAAA-NNN)';
+const FB_MIR_ASIG = 'MIR oficiales citadas en los capítulos ProMIR de la asignatura o cuadernillos oficiales (examenesmir)';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -382,7 +386,7 @@ function AnclasView({ dia, slots, calientes, onPick }: { dia: DiaMIR; slots: Mir
                   {s.motivo === 'cola' ? <Chip label="cola D+14 vencida" color={AMBER} small /> : null}
                 </View>
                 <Text style={st.anchorVal} numberOfLines={2}>{x.tema}</Text>
-                <Text style={st.anchorSub}>test del capítulo ProMIR ↗ · {s.motivo === 'caliente' ? `sale de caliente con ${MIR_GATE.aciertosConsecutivos} aciertos seguidos${s.estado?.necesitaAjuste ? ' · ⚠ 2º fallo: ajuste obligatorio' : ''}` : s.k === 'd7' && s.motivo === 'fijo' ? 'fallo aquí → cola D+14 (no hay finde) y tema caliente' : 'fallo → tema caliente mañana + Whole-Page del capítulo + APEX'}</Text>
+                <Text style={st.anchorSub}>MIR oficiales citadas en el capítulo ProMIR ↗ · {s.motivo === 'caliente' ? `sale de caliente con ${MIR_GATE.aciertosConsecutivos} aciertos seguidos${s.estado?.necesitaAjuste ? ' · ⚠ 2º fallo: ajuste obligatorio' : ''}` : s.k === 'd7' && s.motivo === 'fijo' ? 'fallo aquí → cola D+14 (no hay finde) y tema caliente' : 'fallo → tema caliente mañana + Whole-Page del capítulo + APEX'}</Text>
               </TouchableOpacity>
             ) : (
               <View style={[st.anchor, { borderLeftColor: Hairline.medium }]}>
@@ -420,7 +424,7 @@ function CierreCard({ dia, qIds, onSaved }: { dia: DiaMIR; qIds: string[]; onSav
         {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {fechaRealDe(prev.entry.fecha, 'mir')} · neto {prev.netoPct} % → {mirEstadoCierreTxt(prev.estado, dia.fecha)}</Text>}
         {agg.fuente === 'agregado' && <Text style={st.formHint}>Agregado de la asignatura (cierre + ancladas + quiz, {agg.total}Q): neto {agg.netoPct} % → {mirEstadoCierreTxt(agg.estado, dia.fecha)} (el agregado manda sobre el cierre de 10Q)</Text>}
         <TimerQ color={CORAL} presets={[10, 25, 40]} />
-        {mirPoolDisponible() && <MirPoolLista qIds={qIds} color={CORAL} titulo={`Pool oficial · ${c.asignatura} (mezcla determinista por fecha)`} pedidas={10} fallback="test por asignatura ProMIR" />}
+        {mirPoolDisponible() && <MirPoolLista qIds={qIds} color={CORAL} titulo={`Pool oficial · ${c.asignatura} (mezcla determinista por fecha)`} pedidas={10} fallback={FB_MIR_ASIG} />}
         <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: c.num }} kind="cierre" total={10} asignatura={c.asignatura} tema={`Cierre ${c.asignatura}`} color={CORAL} titulo="Registrar test de cierre (10Q)" tactica qIds={qIds} onSaved={onSaved} />
       </View>
     </FadeUp>
@@ -480,7 +484,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
   const gDia = useMemo(() => mirGuiaPlan(dia), [dia.d, dia.fecha]);
   const pasoDe = (re: RegExp) => gDia.pasos.find((p) => re.test(p.que.replace(/^\d{2}:\d{2}–\d{2}:\d{2} · /, '')));
   const minPre = pasoDe(/^PRE-TEST/)?.min ?? 8;
-  const minLec = pasoDe(/^LECTURA DIRIGIDA/)?.min ?? 15;
+  const minLec = pasoDe(/^LECTURA (DIRIGIDA|DE BASE)/)?.min ?? 15; // v6.10 · base cero: F1 = LECTURA DE BASE
+  const fase = mirFaseDe(dia.d); // v6.10 · base cero (18-nov-2026): fase de la 1.ª vuelta (nivel del comentario + puerta de avance)
+  const lecBase = fase?.n === 1;
   const finPre = (dia.fecha <= '2027-01-03' ? /^\d{2}:\d{2}–(\d{2}:\d{2})/.exec(pasoDe(/^PRE-TEST/)?.que ?? '')?.[1] : undefined) ?? '15:38';
   return (
     <View>
@@ -542,7 +548,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
               <Plegable titulo={`⏱ Cronómetro ${MIR_SEG_POR_Q} s/Q (4Q · 10Q · 25Q · 40Q) · aviso a 100 s por pregunta`} color={BLUE}>
                 <TimerQ color={BLUE} />
               </Plegable>
-              {poolOK && <MirPoolLista qIds={pool.anclada} color={BLUE} titulo="Pool oficial · anclada (2Q D-1 + 1Q por slot dinámico)" pedidas={din.slots.reduce((a, s) => a + (s.dia ? s.nQ : 0), 0)} fallback="test del capítulo ProMIR de cada slot" />}
+              {poolOK && <MirPoolLista qIds={pool.anclada} color={BLUE} titulo="Pool oficial · anclada (2Q D-1 + 1Q por slot dinámico)" pedidas={din.slots.reduce((a, s) => a + (s.dia ? s.nQ : 0), 0)} fallback={`${FB_MIR_CAP} de cada slot`} />}
               <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="anclada" total={4} asignatura={d1?.asignatura || dia.asignatura} tema={d1?.tema || dia.tema} capId={d1?.capId} color={BLUE} titulo="15:27 · Registrar eval anclada (4Q)" conAnclas slots={din.slots} tactica qIds={pool.anclada} onSaved={bump} />
             </>
           )}
@@ -553,15 +559,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
       {esTema && (
         <>
           <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 15-17 Q/día</Text>
-          <FadeUp delay={60}><ColaItem icon="❓" lbl={`PRE-TEST · 5Q ciegas (pool oficial → test del capítulo ProMIR) · ${minPre} min`} val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={60}><ColaItem icon="❓" lbl={`PRE-TEST · 5Q ciegas (pool oficial → MIR citadas en ProMIR)${lecBase ? ' · línea base' : ''} · ${minPre} min`} val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub={`${lecBase ? 'Base cero: contesta las 5 aunque adivines (es la línea base, no la nota)' : 'En blanco si no descartas 2'} · la sección de cada pregunta, DESPUÉS de contestar · REGÍSTRALO: cuenta para el gate del tema`} color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar pre-test 5Q (10 s · diagnóstico, no cuenta para readiness; sí para validar el tema)" color={GREEN}>
-            {poolOK && <MirPoolLista qIds={pool.pretest} color={GREEN} titulo="Pool oficial · pre-test (ciego: no abras la clave antes de contestar)" pedidas={5} />}
+            {poolOK && <MirPoolLista qIds={pool.pretest} color={GREEN} titulo="Pool oficial · pre-test (ciego: no abras la clave antes de contestar)" pedidas={5} fallback={FB_MIR_CAP} />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo={`${finPre} · Pre-test 5Q ciegas`} qIds={pool.pretest} onSaved={bump} />
           </Plegable>
-          <FadeUp delay={90}><ColaItem icon="📖" lbl={`LECTURA DIRIGIDA · solo los gaps del pre-test · ${minLec} min`} val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
-          <FadeUp delay={120}><ColaItem icon="🧪" lbl="6Q COMENTADAS (máx. 8) · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={90}><ColaItem icon="📖" lbl={`${lecBase ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} · en el orden del capítulo, sin saltar secciones · ${minLec} min`} val={`Whole Page Rule sobre el capítulo ProMIR (las secciones de la guía, enteras)${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="1.ª vuelta: no se recorta el temario por acertar el pre-test · vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={120}><ColaItem icon="🧪" lbl="6Q COMENTADAS (máx. 8) · Rule-In → Rule-Out · 12 min" val={`MIR oficiales del capítulo (pool de la app + citadas en ProMIR, con su año-número) · cover-the-options · ${MIR_SEG_POR_Q} s/Q + 30 s de comentario${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (MIR citadas en el capítulo)'}`} sub={`${fase ? `${fase.n === 1 ? 'Nivel 1' : fase.n === 2 ? 'Niveles 1-2' : 'Nivel 3'} (FASE ${fase.n} · ${fase.nombre.split(' · ')[0]}) · ` : ''}cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana`} color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar quiz 6-8Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
-            {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={8} />}
+            {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={8} fallback={FB_MIR_CAP} />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={6} totalOpciones={[6, 7, 8]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 6Q comentadas (máx. 8)" tactica qIds={qIdsQuiz} onSaved={bump} />
           </Plegable>
           {mirObsUrl(dia.capId) && (
@@ -887,7 +893,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (
         <>
-          {poolOK && <MirPoolLista qIds={pool.foco} color={color} titulo={dia.tipo === 'sabado' ? 'Pool oficial · MIXTAS de las 14 asignaturas' : `Pool oficial · ${foco.asignatura}${!tierC && dia.modo === 'normal' && dia.asignatura2 ? ` + ${dia.asignatura2} (10Q interleaving)` : ''}`} pedidas={focoNQ} fallback="test por asignatura ProMIR / cuadernillos examenesmir" />}
+          {poolOK && <MirPoolLista qIds={pool.foco} color={color} titulo={dia.tipo === 'sabado' ? 'Pool oficial · MIXTAS de las 14 asignaturas' : `Pool oficial · ${foco.asignatura}${!tierC && dia.modo === 'normal' && dia.asignatura2 ? ` + ${dia.asignatura2} (10Q interleaving)` : ''}`} pedidas={focoNQ} fallback={FB_MIR_ASIG} />}
           <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={focoNQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${focoNQ}Q`} color={color} titulo={`Registrar ${focoNQ}Q (${dia.minCorr} min corrección)`} tactica qIds={pool.foco} onSaved={bump} />
         </>
       )}
@@ -898,7 +904,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
             <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff del vie 24-sep).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
             {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → test del capítulo ProMIR` : ''}</Text>}
             <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(tierC.capId))} style={[st.dChip, { borderColor: CORAL + '66', alignSelf: 'flex-start', marginTop: 6 }]}><Text style={[st.dChipTxt, { color: CORAL }]}>capítulo ProMIR ↗</Text></TouchableOpacity>
-            {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} />}
+            {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} fallback={FB_MIR_CAP} />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: tierC.num }} kind="mantenimiento" total={tierC.nQ} asignatura={tierC.asignatura} tema={`Tier C express · ${tierC.capitulo}`} capId={tierC.capId} color={CORAL} titulo={`Registrar ${tierC.nQ}Q Tier C · ${tierC.asignatura}`} tactica qIds={pool.tierC} onSaved={bump} />
           </View>
         </FadeUp>

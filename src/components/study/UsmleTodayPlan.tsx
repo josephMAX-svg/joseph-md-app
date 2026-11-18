@@ -28,6 +28,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 import { usmleObsUrl } from '../../lib/obsidianMap';
 import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ankiLinks';
 import { guiaUsmleDe, GUIA_USMLE_META } from '../../lib/usmleGuia';
+import { fasePalmertonDe, faseInfo, metodoSistemaDe, ajustesDe, notaDe } from '../../lib/usmlePalmertonFases';
 /** semana 1 estructurada (18-oct): en días de hito la hora del texto de la fila (p. ej. «UWSA1 … 09:00-13:00») cede a la de la guía (08:50-13:00). */
 function subConGuia(sub: string, fecha: string): string {
   const hito = guiaUsmleDe(fecha).find((g) => /^HITO ·/.test(g.titulo)); // el bloque del hito, no «PREPARACIÓN DEL HITO 1/2» (fix 19-oct)
@@ -355,6 +356,37 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
           </View>
         </FadeUp>
       ) : null}
+      {/* v6.10 · estructura base cero (18-nov): FASE Palmerton + MÉTODO del día/sistema de la fila (usmlePalmertonFases.ts, generado) y, si la fila
+          contradecía su fase, el AJUSTE de modo (mismas preguntas, mismos minutos). Fuente: DATA/USMLE/PALMERTON_ESTRUCTURA_BASE_CERO.md */}
+      {(() => {
+        const fp = fasePalmertonDe(dia.d); if (!fp) return null;
+        const fi = faseInfo(fp.fase); const ms = metodoSistemaDe(fp.metodo); const ms2 = metodoSistemaDe(fp.metodo2); const aj = ajustesDe(dia.d); const nota = notaDe(dia.d);
+        return (
+          <FadeUp delay={22}>
+            <View style={[st.anchor, { borderLeftColor: aj.length ? RED : Colors.gold }]}>
+              <Text style={[st.anchorLbl, { color: Colors.gold }]}>🧭 {fi ? fi.nombre : fp.fase} · método Palmerton</Text>
+              {fi ? <Text style={st.anchorSub}>{fi.preguntas} · {fi.modo} · pasa con: {fi.pasa}</Text> : null}
+              {nota ? <Text style={st.anchorSub}>{nota}</Text> : null}
+              {aj.map((a, i) => <Text key={i} style={[st.anchorSub, { color: RED }]}>⚠ AJUSTE DE FASE: {a}</Text>)}
+              {fp.dia ? <Text style={st.anchorSub}>⚓ Ancla del día: {fp.dia.ancla}</Text> : null}
+              {fp.dia ? <Text style={st.anchorSub}>📖 Orden de lectura: {fp.dia.leer}</Text> : null}
+              {/* v6.10 (fix revisión 18-nov · «preguntas primero, libro después»): el método al responder (con sus trampas) se lee DESPUÉS del pre-test ciego */}
+              {fp.dia ? <Text style={st.anchorSub}>🎯 Al responder (léelo después del pre-test ciego, no antes): {fp.dia.pregunta}</Text> : null}
+              {fp.dia ? <Text style={st.anchorSub}>🃏 Tarjetas: {fp.dia.tarjetas}</Text> : null}
+              {[ms, ms2].filter((x): x is NonNullable<typeof x> => !!x).map((m, i) => (
+                <View key={i} style={{ marginTop: 6 }}>
+                  <Text style={[st.anchorSub, { color: Colors.gold }]}>{m.nombre} · prioridad {m.prioridad} · {m.oficial}</Text>
+                  {!fp.dia || i > 0 ? <Text style={st.anchorSub}>⚓ {m.ancla}</Text> : null}
+                  <Text style={st.anchorSub}>🧱 Orden: {m.orden}</Text>
+                  <Text style={st.anchorSub}>🪤 Trampas (después del pre-test ciego): {m.trampas}</Text>
+                  <Text style={st.anchorSub}>⭐ Lo más preguntado: {m.top}</Text>
+                  <Text style={[st.anchorSub, { color: Colors.muted }]}>Fuente: {m.fuente}</Text>
+                </View>
+              ))}
+            </View>
+          </FadeUp>
+        );
+      })()}
       {/* v6.00: el bloque D-1/EXAMEN va SOLO en el ritual (sáb 25-sep, T158 · esDiaRitual) — antes `dia.d === DAILY_META.totalDias`, que en v6 pintaría el examen en d 218 (= UWSA2) */}
       {ritual && (
         <FadeUp delay={25}>

@@ -10,9 +10,9 @@
   "reglas": {
     "formato": "25' estudio del módulo (tarjetas de MECANISMO, estilo Palmerton) + 20' aplicación (explicárselo al paciente).",
     "viernes": "Cada VIERNES real = 1 caso clínico del banco LIV_CASOS (16 casos únicos, progresión por competencia). Se evalúa con la rúbrica 0-2 × 4 ítems.",
-    "lunes": "Cada LUNES (desde la semana 2) los primeros 5-7' del bloque de estudio son un PRE-TEST CIEGO de 5 preguntas sobre la semana anterior (tarjetas de mecanismo D-7). Se registra el % ciego.",
-    "drills": "Drill de cifras ancla (ciego) cada ~20 días: D37 · D58 · D77 · D88. Se registra el % ciego.",
-    "score": "El ✓ binario se sustituye por SCORE: % ciego (pre-tests + drills) y rúbrica media de los casos. Meta Palmerton: ≥ 80 % ciego y ≥ 6/8 por caso.",
+    "lunes": "Cada LUNES (desde la semana 2) los primeros 6' del bloque de estudio son un RECALL EN BLANCO de la semana anterior: 1 línea por lección (o 3 por caso) con solo el título a la vista; se corrige contra la tarjeta de mecanismo y la fuente del día y se registra el % ciego. v6.10e (18-nov-2026): sustituye al PRE-TEST CIEGO de 5 preguntas (eran tarjetas escritas por Claude, no preguntas reales; LIVIANO no tiene banco real propio).",
+    "drills": "Tabla en blanco de cifras ancla de ensayos y guías REALES cada ~20 días (v6.10e: cada respuesta lleva su fuente primaria o «A VERIFICAR»). Se registra el % ciego.",
+    "score": "El ✓ binario se sustituye por SCORE: % ciego (recall del lunes + tablas de cifras) y rúbrica media de los casos. Meta Palmerton: ≥ 80 % ciego y ≥ 6/8 por caso.",
     "antiAlucinacion": "Todo dato clínico, regulatorio o de precio se verifica contra fuente primaria antes de publicarse. Lo no verificado se escribe 'A VERIFICAR (dd-mmm)'.",
     "regeneracion": "NO editar livianoStudyPlan.ts / livianoCasos.ts a mano: editar este JSON y correr node DATA/_scripts/gen_liviano_plan.js <YYYY-MM-DD>. remap_inicio.js llama a liviano_reslot_viernes.js, que ahora regenera desde aquí."
   },

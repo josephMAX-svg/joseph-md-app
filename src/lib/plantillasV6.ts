@@ -134,9 +134,15 @@
  *  = ese día; desfase = hora real − hora L-V: las guías se piden a su hora L-V y moverGuia las lleva a la real) y una nota automática; el SYNAPSE es un
  *  bloque propio (syn-rec, su guía trae la franja real). v6.10b: el sáb 2-ene ya no es mañana de Step (step1.f1_extra retirado: el D13 vuelve al mar
  *  29-dic) y la pausa del Step empieza el jue 31-dic, como en la v6.09.
+ * v6.10c (mar 17-nov · decisión de Joseph de las 17:20: el día que sobra en los secundarios se recupera ENTERO el sáb 2-ene; corrimiento literal, sin
+ *  recuperación por partes): corrida_s1.extra = { sáb 2-ene: 04:15 vibecoding · 04:30 ENCAPS 16:15 · 07:15 MIR · 14:30 AURUM · 15:30 Research · 16:15
+ *  LIVIANO · 21:30 Business · dom 3-ene: 05:00 SYNAPSE de recuperación } (el mismo mecanismo genérico bloquesExtraDe, ahora también en el SÁBADO de la
+ *  transición: case 'TRANSICION'); sáb 28-nov, dom 29-nov y dom 6-dic sin bloques de recuperación. extrasSabado no pinta el Business del sábado que
+ *  ya trae bloquesExtraDe.
  */
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
+import { fechasRealesEnTexto, relativosReales } from './corridaTexto'; // v6.10d: títulos, notas y nombres de bloque con fechas de PLAN → su día real (como las guías)
 import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2, DIAS_TODOS } from './usmleStep1Daily'; // v6.09b: sin diaPorD (el domingo de llegada ya no lleva Anki) · v6.10b: + DIAS_TODOS (nombres de los bloques de Step del nivel 0-1)
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
 import { infoTurno, ordenSemanaDe, filaT2DelDia, filasEmpujadas, dowCorto } from './serumsTurnos';
@@ -157,6 +163,11 @@ import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el 
 import { encapsSabadoDe, encapsF2De } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue) · v6.07 (fix): índice F2 (fila sembrada del día)
 import type { EncapsF2Dia } from './encapsGuia';
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de los simulacros y cierre semanal de F2 = Horario = ítems (fuente única)
+
+/** v6.10d (18-nov-2026): último corrimiento que RE-FECHA el plan (bitácora `corrimientos`, saltando los que solo añaden un alias: sus `perdidos` los hace
+ *  otro día real). Lo que recupera el fin de semana de corrida_s1.extra (sáb 2-ene · dom 3-ene) es el mar 17 de la v6.10, no el mié 18 de la v6.10d. */
+const _ALIAS_PLAN_PV = new Set<string>(Object.values(FECHAS_V6.corrida_s1.alias));
+const CORR_REFECHA = [...FECHAS_V6.corrimientos].reverse().find((x) => !x.perdidos.length || !x.perdidos.every((d) => _ALIAS_PLAN_PV.has(d)));
 
 export type PlanBloque = 'usmle' | 'encaps' | 'mir' | 'research-derma' | 'aurum' | 'liviano' | 'synapse' | 'vibecoding'
   | 'serums' | 'gimnasio' | 'vida' | 'revision' | 'business';
@@ -365,7 +376,7 @@ const EXTRA_INI_LV: Record<string, string> = { vibecoding: '04:15', 'research-de
  *  trae la franja real). [] si el día no trae nada. */
 function bloquesExtraDe(iso: string): BloqueV6[] {
   const out: BloqueV6[] = [];
-  const perd = (FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [])[0];
+  const perd = (CORR_REFECHA?.perdidos ?? [])[0] /* v6.10d: el último que re-fecha */;
   const rec = perd ? ` · recupera el ${fCorta(perd)}` : '';
   for (const x of extraCorridaDe(iso)) {
     const min = aMin(x.fin) - aMin(x.ini);
@@ -393,8 +404,13 @@ const ETQ_EXTRA: Record<string, string> = { vibecoding: 'vibecoding', synapse: '
 function notaExtraDe(iso: string): string | null {
   const xs = extraCorridaDe(iso);
   if (!xs.length) return null;
-  const perd = (FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [])[0];
-  return `Hoy, a hora fija, lo que recupera el ${perd ? fCorta(perd) : 'día perdido'}: ${xs.map((x) => `${x.ini}-${x.fin} ${ETQ_EXTRA[x.frente] ?? x.frente}`).join(' · ')} (el ${perd ? fCorta(perd) : 'día perdido'} fue sin sesión: cada plan corrió un día y lo recupera aquí; desde el lunes, las fechas de siempre).`;
+  const perd = (CORR_REFECHA?.perdidos ?? [])[0] /* v6.10d: el último que re-fecha */;
+  const lista = xs.map((x) => `${x.ini}-${x.fin} ${ETQ_EXTRA[x.frente] ?? x.frente}`).join(' · ');
+  const pTxt = perd ? fCorta(perd) : 'día perdido';
+  // v6.10c: el SÁBADO de la transición (sáb 2-ene) = la última sesión de F1 de cada plan · el domingo siguiente (dom 3-ene) = lo que ese sábado no tenía sitio
+  if (faseV6(iso) === 'TRANSICION' && dow(iso) === 6) return `Hoy, a hora fija, la ÚLTIMA sesión de F1 de cada plan: ${lista} (el ${pTxt} fue sin sesión: cada plan corrió un día hasta fin de año y hoy cierra su F1; desde el lunes, las fechas de siempre).`;
+  if (dow(iso) === 0 && extraCorridaDe(addDias(iso, -1)).length) return `Hoy, a hora fija, lo que recupera el ${pTxt} y ayer no tenía sitio: ${lista} (antes de la rutina de la mañana; desde el lunes, las fechas de siempre).`;
+  return `Hoy, a hora fija, lo que recupera el ${pTxt}: ${lista} (el ${pTxt} fue sin sesión: cada plan corrió un día y lo recupera aquí; desde el lunes, las fechas de siempre).`;
 }
 /** v6.07: sábado con clase EN VIVO de Theomed: 14:45-15:00 preparar la clase + 15:00-17:00 en vivo (sin clase ese sábado → sin bloques).
  *  v6.08 (fix revisión 14-nov, est6): también los sábados de F2 (9-ene → 6-mar; encapsManana.theomedSabadoDe, títulos del calendario del campus).
@@ -620,7 +636,8 @@ function extrasSabado(iso: string, conAnki: boolean): BloqueV6[] {
   const bs: BloqueV6[] = [];
   bs.push(...bloqueSynSabado(iso));
   bs.push(...bloqueSynCola(iso)); // v6.09b lote 1-ter: hueco de F1 con hora (sáb 26-dic 07:15)
-  const biz = bloqueBiz(iso); if (biz) bs.push(biz);
+  // v6.10c: un sábado con Business a hora fija (corrida_s1.extra; sáb 2-ene 21:30) lo pinta bloquesExtraDe (bloqueCorrido), no aquí
+  const biz = extraCorridaDe(iso).some((x) => x.frente === 'business') ? null : bloqueBiz(iso); if (biz) bs.push(biz);
   if (conAnki) bs.push(bloque('anki-sab', '21:30', '22:00', /* v6.07b: sáb gimnasio 08:30-14:00 + baile 17:00-20:00 */ 'USMLE · ANKI del sábado (cola FSRS)', 'usmle', 'usmle-anki', 'Solo vencidas de APEX::USMLE (nuevas = 0 el sábado) · telemetría al terminar'));
   return bs;
 }
@@ -803,7 +820,13 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     const plan31 = !SKIP_V6.has(d31) && !!am31 && faseV6(d31) === 'TRANSICION';
     if (plan31) {
       const que31 = 'recupera un día perdido: mañana ENCAPS, 16:15 y planes secundarios; el Step 1, en pausa';
-      return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic · 1-ene · Jueves y Viernes Santo).${iso < d31 ? ` El ${fCorta(d31)} sí es día de plan (${que31}).` : ` Ayer, ${fCorta(d31)}, fue día de plan (${que31.replace(/^recupera/, 'recuperó')}).`}`] });
+      // v6.10c: si mañana es el sábado que recupera (corrida_s1.extra; vie 1-ene → sáb 2-ene), la nota lo anuncia con sus horas extremas
+      const xMan = extraCorridaDe(addDias(iso, 1));
+      const manTxt = xMan.length && dow(addDias(iso, 1)) === 6 ? ` Mañana, ${fCorta(addDias(iso, 1))}: la última sesión de F1 de cada plan, a hora fija (${xMan[0]!.ini} → ${xMan[xMan.length - 1]!.fin}; gimnasio 08:30-14:00 y baile 17:00-20:00, como siempre).` : '';
+      // v6.10d (18-nov-2026): con el alias de corrida_s1 el 1-ene hace el plan del 31-dic → ya no es «sin sesión» (la nota no lo lista; «el jue 31-dic» se pinta «el vie 1-ene»)
+      const uno = `${d31.slice(0, 4) === iso.slice(0, 4) && iso.slice(5, 7) === '12' ? Number(iso.slice(0, 4)) + 1 : iso.slice(0, 4)}-01-01`;
+      const unoTxt = corridaS1De(uno)?.tipo === 'alias' ? '' : ' · 1-ene';
+      return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: [`Ningún plan tiene sesión hoy (25-dic${unoTxt} · Jueves y Viernes Santo).${iso < d31 ? ` El ${fCorta(d31)} sí es día de plan (${que31}).` : ` Ayer, ${fCorta(d31)}, fue día de plan (${que31.replace(/^recupera/, 'recuperó')}).`}${manTxt}`] });
     }
     const extra31 = !!am31;
     const con31 = !corridaS1De(d31) && !extra31; // = la v6.08
@@ -854,7 +877,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     // v6.10: domingo que recupera el día perdido a hora fija (corrida_s1.extra) → título y nota (los bloques flexibles, después de los fijos)
     const xD = extraCorridaDe(iso), nxD = notaExtraDe(iso);
     if (nxD) notasD.unshift(nxD);
-    const titD = xD.length ? `Domingo · a hora fija lo del ${fCorta((FECHAS_V6.corrimientos.at(-1)?.perdidos ?? [iso])[0] as string)} (${xD.map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente} ${x.ini}`).join(' · ')}) + ${titD1.replace(/^Domingo · /, '')}` : titD1;
+    const titD = xD.length ? `Domingo · a hora fija lo del ${fCorta((CORR_REFECHA?.perdidos ?? [iso])[0] as string)} (${xD.map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente} ${x.ini}`).join(' · ')}) + ${titD1.replace(/^Domingo · /, '')}` : titD1;
     return out('DOMINGO', titD, bsD, { notas: notasD });
   }
 
@@ -866,6 +889,16 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       if (amT) return out('TRANSICION', `Día de plan (transición, sin Step 1) · mañana ENCAPS ${amT.n}/${amT.de}${amT.pendiente18.length ? ` + ${amT.pendiente18.join(' + ')} a las 18:00` : ''} + 16:15 + planes secundarios`, bloquesHabilTransicion(iso, amT), {
         notas: [`Día de plan que recupera un día perdido de F1: mañana ENCAPS ${amT.n}/${amT.de}, ENCAPS 16:15, planes secundarios y las 18:00 de ENCAPS${amT.pendiente18.length ? ` (+ ${amT.pendiente18.join(' + ')} en diferido)` : ''}. Step 1 en PAUSA desde hoy: en el Anki, solo vencidas (opcional), 0 nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] });
       // v6.02c (E5): el sáb 2-ene sí tiene revisión semanal (S11) y PC (SHIP S10; también en v6.03 · v6.05: revisión S10 y SHIP S9) en el Calendar y en los planes → se muestran
+      // v6.10c (17-nov-2026 · decisión de Joseph de las 17:20: el día que sobra se recupera ENTERO el sáb 2-ene, corrimiento literal): SÁBADO QUE RECUPERA
+      //   (_fechas_v6.json › corrida_s1.extra['2027-01-02']) = la ÚLTIMA sesión de F1 de cada frente, a hora fija en las ventanas del sábado (bloquesExtraDe:
+      //   04:15 vibecoding · 04:30 ENCAPS 16:15 · 07:15 MIR · 14:30 AURUM · 15:30 Research · 16:15 LIVIANO · 21:30 Business) + lo que ya tenía (revisión
+      //   14:00 · SYNAPSE 21:00). Gimnasio 08:30-14:00, baile 17:00-20:00 y la rutina 05:45-07:15, intactos. Sin Anki (Step 1 en pausa).
+      if (w === 6 && extraCorridaDe(iso).length) {
+        const nxT = notaExtraDe(iso);
+        return out('TRANSICION', `Sábado que recupera (transición) · la última sesión de F1 de cada plan a hora fija (${extraCorridaDe(iso).map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente} ${x.ini}`).join(' · ')}) + revisión 14:00 · gimnasio 08:30-14:00 y baile 17:00-20:00 fijos`,
+          [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso), ...bloquesExtraDe(iso)],
+          { notas: [...(nxT ? [nxT] : []), `Step 1 en PAUSA desde el ${fCorta(FECHAS_V6.transicion.desde)}: hoy sin Anki ni Step; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] });
+      }
       return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso)] : [], { notas: [`Step 1 en PAUSA desde ${iso === FECHAS_V6.transicion.desde ? 'hoy' : `el ${fCorta(FECHAS_V6.transicion.desde)}`}: 0 tarjetas nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.08 (rev. dia5): la pausa empieza el jue 31-dic (transicion.desde), no «hoy» (sáb 2-ene)
     }
     case 'LIBRE_POST_ENCAPS':
@@ -1027,9 +1060,26 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
   const extra = FECHAS_V6.corrida_s1.notas?.[iso];
   return extra?.length ? { ...p, notas: [...extra, ...p.notas] } : p;
 }
+/**
+ * v6.10d (18-nov-2026): título, notas y nombres/detalle de bloque de una plantilla de día (escritos con fechas de PLAN) con las fechas de la corrida
+ * cambiadas por su día REAL (corridaTexto.fechasRealesEnTexto, como ya hacían las guías en GuiaBloqueCard): con el alias del jue 19-nov al vie 1-ene,
+ * «Step 1 en PAUSA desde el jue 31-dic» se lee «desde el vie 1-ene» y «18 flashcards del mié 25-nov» (dom 29) «del jue 26-nov». Las notas de la corrida
+ * (corrida_s1.notas, NOTA_CORRIDA, «Hoy toca el plan del …») ya están en días reales y no pasan por aquí. Fuera de la corrida (sin alias) = la misma.
+ */
+const _ALIAS_ACTIVO = Object.keys(FECHAS_V6.corrida_s1.alias).length > 0;
+function conFechasReales(p: PlantillaDia, plan?: string, real?: string): PlantillaDia {
+  if (!_ALIAS_ACTIVO) return p;
+  // día de alias (plan ≠ real): primero las palabras relativas («ayer», «mañana a las …») → fecha de plan; después, todas las fechas de plan → día real
+  const tx = (t: string, frente?: string): string => fechasRealesEnTexto(plan && real ? relativosReales(t, plan, real) : t, frente);
+  return {
+    ...p, titulo: tx(p.titulo), notas: p.notas.map((n) => tx(n)),
+    bloques: p.bloques.map((b) => ({ ...b, nombre: tx(b.nombre, b.plan), ...(b.detalle ? { detalle: tx(b.detalle, b.plan) } : {}) })),
+  };
+}
 function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
   const c = corridaS1De(iso);
-  if (!c) return plantillaBase(iso, turno);
+  // v6.10d: solo hasta el examen ENCAPS (las notas del SERUMS de 2027 escriben «mar 29» de su propio mes y no son fechas de la corrida)
+  if (!c) return iso <= FECHAS_V6.encaps.examen ? conFechasReales(plantillaBase(iso, turno)) : plantillaBase(iso, turno);
   const base = plantillaBase(iso, turno);
   // v6.06e (vie 6-nov): semana de domingo a viernes → los sábados de la corrida son LIBRES: ni plan ni revisión (lo suyo va los domingos)
   // v6.08 (rev. dia4/est8): solo si el DOMINGO siguiente trae plan de la corrida (alias o reparto): «lo de los sábados va los domingos». Con un
@@ -1074,7 +1124,8 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     const rep = sig ? [] : Object.entries(FECHAS_V6.corrida_s1.reparto).filter(([, x]) => x.partes.some((pt) => pt.de === iso)).map(([r]) => r).sort();
     // v6.09 (16-nov-2026): un día SIN SESIÓN después del D1 sin alias ni reparto (sáb 21 y dom 22-nov, viaje) no tiene «plan de hoy» que se haga otro
     //   día: lo suyo ya está re-fechado en los planes → «<día> libre · hoy no hay plan» (antes: «Día corrido · tu plan de hoy se hace el próximo día de plan»)
-    const libre = !sig && !rep.length && !_C1_ALIAS.length && !_C1_REPARTO.length;
+    // v6.10d (18-nov): con alias (jue 19 → vie 1-ene) el sáb 21 sigue siendo «Sábado libre» (fin de semana sin plan propio que se haga otro día)
+    const libre = !sig && !rep.length && ((!_C1_ALIAS.length && !_C1_REPARTO.length) || dow(iso) === 0 || dow(iso) === 6);
     const titulo = rep.length ? `Día corrido · tu plan de hoy se hace el ${rep.map(fCorta).join(' y el ')}`
       : libre ? `${['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][dow(iso)]} libre · hoy no hay plan`
       : _C1_ALIAS.length || _C1_REPARTO.length || !sig ? `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}` : `Día corrido · sin sesión · próximo día de plan: ${fCorta(sig)} (todo arranca ese día)`;
@@ -1084,7 +1135,7 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     };
   }
   if (c.tipo === 'alias') {
-    const p = plantillaBase(c.de, turno);
+    const p = conFechasReales(plantillaBase(c.de, turno), c.de, iso); // v6.10d: sus textos citan fechas de plan → día real
     return {
       ...p, fecha: iso, corrida: 'alias', bloques: p.bloques.map((b) => bloqueCorrido(b, c.de, 0)),
       titulo: `${p.titulo} · plan del ${fCorta(c.de)}`, // v6.07a: un martes con «mañana ENCAPS (lun · mié · vie)» tiene que decir de qué día es

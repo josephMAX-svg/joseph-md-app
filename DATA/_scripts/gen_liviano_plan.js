@@ -16,7 +16,7 @@
 //    Si hay más viernes que casos (v5.20: 17 viernes), los casos van en los PRIMEROS viernes con ≥2 días de contenido delante y el
 //    viernes sobrante es el ÚLTIMO (vie 12-feb, contenido) → caso 16 = vie 5-feb, antes del capstone (jue 11-feb). Hasta v5.19 se
 //    saltaban los PRIMEROS viernes (semana parcial de arranque).
-//  · pretest:true en cada LUNES con semana previa (pre-test ciego 5Q sobre D-7, dentro de los 25' de estudio).
+//  · pretest:true en cada LUNES con semana previa (v6.10e: RECALL EN BLANCO de D-7 —1 línea por lección—; hasta la v6.10d, «pre-test ciego 5Q»; dentro de los 25' de estudio).
 //  · drill:true en los temas marcados en el JSON (drill de cifras ancla ciego cada ~20 días).
 //  · casoId en las filas de viernes; el detalle clínico + rúbrica vive en livianoCasos.ts.
 //
@@ -106,6 +106,13 @@
 //   2-abr). Con el D1 en miércoles, los CASOS 1 y 2 de F1 se difieren al MARTES (24-nov y 1-dic: «MARTES CASO k/16», tras sus 4 lecciones; la regla del
 //   caso diferido admite cualquier día L-V de F1) y el pre-test ciego 5Q sigue el LUNES (lun 23 y lun 30-nov, dentro de la lección). inicioDefault del JSON
 //   = 2026-11-18. Un día extra nunca es SKIP, protegido, D-2 del ENCAPS ni día sin sesión, y su franja tiene los minutos de la fila (ABORTA si no).
+// v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el hábil extra pasa al SÁB 2-ENE 16:15-17:00
+//   (corrida_s1.extra['2027-01-02'].liviano) → d1-d31 corren UN hábil (mié 18-nov … jue 31-dic: CASOS 1-5 en MARTES 24-nov, 1, 8, 15 y 22-dic; pre-test
+//   ciego los lunes) y el d32 va el sáb 2-ene; desde el d33 (lun 4-ene, pre-test) todo idéntico (fin vie 2-abr).
+// v6.10e (18-nov-2026 · BASE CERO y PREGUNTAS REALES, orden de Joseph «las preguntas tienen que ser REALES; todos partimos de cero»): mismas filas, fechas y
+//   minutos; cambia el CONTENIDO de dos evaluaciones: (1) el «pre-test ciego 5Q» del lunes (5 tarjetas escritas por Claude) → RECALL EN BLANCO (LIV_RECALL:
+//   1 ítem por fila de D-5…D-1, pista = título, respuesta = tarjeta / decisiones del caso + fuente); (2) el drill de cifras ancla → TABLA EN BLANCO con la
+//   fuente primaria en cada respuesta (FUENTES_DRILL; «A VERIFICAR» si el plan no la fija). Sin banco real propio: ver DATA/BUSINESS/METODO_BASE_CERO.md.
 // Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-18   (v6.10; v6.09: 2026-11-17 · v6.08: 2026-11-16 · v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
@@ -142,7 +149,7 @@ const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + 
 const dow = (s) => fromISO(s).getUTCDay();
 const wdOf = (s) => WD[dow(s)];
 const isWeekend = (s) => { const w = dow(s); return w === 0 || w === 6; };
-// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].liviano = franja; dom 6-dic 08:15-09:00: recupera el mar 17) desde el START
+// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].liviano = franja; v6.10c: sáb 2-ene 16:15-17:00 · v6.10: dom 6-dic 08:15-09:00: recupera el mar 17) desde el START
 const EXTRA_LIV = new Map(Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.liviano && f >= START).map(([f, x]) => [f, x.liviano]));
 for (const f of EXTRA_LIV.keys()) {
   if (!isWeekend(f)) throw new Error(`corrida_s1.extra ${f}: el hábil extra de LIVIANO debe ser sábado o domingo`);
@@ -188,6 +195,28 @@ const esperadoContenido = TOTAL - casos.length;
 const nHuecos = fechas.length - TOTAL; // v6.08: hábiles no-viernes sin contenido (0 salvo con el calendario alargado)
 if (contenido.length !== esperadoContenido) throw new Error(`contenido ${contenido.length} ≠ ${esperadoContenido} (= ${TOTAL} − ${casos.length} casos)`);
 
+// v6.10e (18-nov-2026 · PREGUNTAS REALES, orden de Joseph): el drill de cifras ancla pasa a TABLA EN BLANCO de cifras de ensayos y guías REALES → cada
+//   respuesta lleva su fuente primaria (la misma lista verificada de rutinaGuia.LIV_FUENTES / LIV_LECT_F1); lo que no tiene fuente fijada sale «A VERIFICAR»
+//   (regla antiAlucinacion del JSON). Solo se añade texto a la respuesta: cifras, ítems y fechas del drill, sin cambio.
+const FUENTES_DRILL = [
+  [/STEP 1/, 'STEP 1 · Wilding 2021 NEJM (PubMed 33567185)'],
+  [/suspender|Suspensi|recupera/i, 'STEP 1 extensión · Wilding 2022 Diabetes Obes Metab (PMC9542252)'],
+  [/SELECT/, 'SELECT · Lincoff 2023 NEJM (PubMed 37952131)'],
+  [/prediabetes|progresi[oó]n a diabetes/i, 'SURMOUNT-1 a 3 años · Jastreboff 2025 NEJM (PubMed 39536238)'],
+  [/SURMOUNT-1(?![^]*prediabetes)|SURMOUNT-1[^]*(dosis|placebo)/, 'SURMOUNT-1 · Jastreboff 2022 NEJM (PubMed 35658024)'],
+  [/SURMOUNT-5/, 'SURMOUNT-5 · Aronne 2025 NEJM (PubMed 40353578)'],
+  [/AI vs restricci|Meta-análisis AI|Adherencia > 80/i, 'meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946)'],
+  [/DIETFITS/, 'DIETFITS · Gardner 2018 JAMA (PMC5839290)'],
+  [/NWCR/, 'NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667)'],
+  [/ASMBS\/IFSO/, 'ASMBS/IFSO 2022 (PMC9834364)'],
+  [/\bDPP\b/, 'DPP · Knowler 2002 NEJM (PMC1370926)'],
+  [/Cadena de frío/i, 'ficha técnica WEGOVY (FDA, DailyMed) › 16 How Supplied/Storage'],
+];
+function conFuenteDrill(x) {
+  const fs_ = FUENTES_DRILL.filter(([re]) => re.test(x.q)).map(([, f]) => f);
+  return { q: x.q, a: `${x.a} — fuente: ${fs_.length ? fs_.join(' + ') : 'A VERIFICAR (sin fuente primaria fijada en el plan)'}` };
+}
+
 // ─── construir las filas ───
 const rows = [];
 let ci = 0, ki = 0;
@@ -228,7 +257,7 @@ for (let idx = 0; idx < fechas.length; idx++) {
       fuente: t.fuente || CUR.modulos.find((m) => m.id === t.modulo && m.slug === t.slug).fuente, min: t.min || 45,
     };
     if (wd === 'Lun' && idx > 0) row.pretest = true;
-    if (t.drill) { row.drill = true; drillsPorD.push({ d, fecha, modulo: t.modulo, titulo: t.tema, qs: t.drillQs || [] }); }
+    if (t.drill) { row.drill = true; drillsPorD.push({ d, fecha, modulo: t.modulo, titulo: t.tema, qs: (t.drillQs || []).map(conFuenteDrill) }); }
     rows.push(row);
     t._d = d; t._fecha = fecha; // para las tarjetas Anki
   }
@@ -268,6 +297,24 @@ const semanaDe = (d) => Math.ceil(d / 5);
 const cardsPorSemana = {};
 for (const c of cards) cardsPorSemana[semanaDe(c.d)] = (cardsPorSemana[semanaDe(c.d)] || 0) + 1;
 
+// ─── v6.10e (18-nov-2026 · PREGUNTAS REALES): RECALL EN BLANCO del lunes (sustituye al «pre-test ciego 5Q») ───
+// Antes: livPretest = 5 tarjetas de mecanismo del JSON (Q/A escritas por Claude) servidas como «5 preguntas ciegas» con % ciego. LIVIANO no tiene banco
+// real de preguntas propio (pool MIR oficial 2022-2026: 0 preguntas de leptina / grelina / arcuato; las de fármacos y cirugía de la obesidad son del plan MIR,
+// que consume cada pregunta oficial una sola vez; OMA / StatPearls / Rosh Review son de pago → decisión de Joseph). Ahora: 1 ítem por FILA de la semana
+// anterior (D-5…D-1) cuya única pista es el TÍTULO de la lección (o del caso) y cuya «respuesta» para corregir es la tarjeta de ese día (o las decisiones del
+// caso) + su fuente primaria. Mismos lunes, mismos 6′, mismo registro x/n en la UI.
+const recallDe = {};
+for (const r of rows.filter((x) => x.pretest)) {
+  recallDe[r.d] = rows.filter((x) => x.d >= r.d - 5 && x.d < r.d).map((x) => {
+    if (x.casoId) {
+      const c = casos.find((k) => k.id === x.casoId);
+      return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · CASO ${c.id}/${casos.length} «${c.titulo}»: mecanismo · metáfora · plan del caso, en 3 líneas y sin mirar`, a: `${(c.decisiones || []).join(' · ')} — corrige con el caso y su fuente: ${c.fuente}` };
+    }
+    const cs = cards.filter((k) => k.d === x.d);
+    return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · «${x.tema}»: el mecanismo (causa → efecto) en 1 línea, sin mirar`, a: `${cs.length ? cs.map((k) => k.a).join(' · ') : x.estudio} — corrige con la fuente del día: ${x.fuente}` };
+  });
+}
+
 // ─── salida 1: livianoStudyPlan.ts ───
 const modulosResumen = CUR.modulos.map((m) => `${m.id} ${rows.filter((r) => r.modulo === m.id && !r.casoId).length}`).join(' · ');
 const planTS = `/**
@@ -279,8 +326,9 @@ const planTS = `/**
  * Bloque diario de 45 min (17:15–18:00 L-V): 25' estudio del módulo (tarjetas de MECANISMO,
  * estilo Palmerton) + 20' APLICACIÓN = explicárselo a un paciente (metáforas: termostato,
  * ruido de comida, ladrillo, GPS). Cada VIERNES real: 1 caso del banco LIV_CASOS (casoId) con
- * rúbrica 0-2 × 4. Cada LUNES (desde la semana 2): pre-test ciego 5Q sobre D-7 (pretest:true).
- * Drill de cifras ancla ciego cada ~20 días (drill:true). Módulos (días de contenido):
+ * rúbrica 0-2 × 4. Cada LUNES (desde la semana 2): RECALL EN BLANCO de la semana D-7 (pretest:true; v6.10e: sustituye al
+ * «pre-test ciego 5Q», que eran tarjetas escritas por Claude — LIV_RECALL en livianoCasos.ts). Tabla en blanco de cifras ancla de
+ * ensayos reales (con su fuente) cada ~20 días (drill:true). Módulos (días de contenido):
  * ${modulosResumen}. Sin sesión: fines de semana + ${[...SKIP].filter((x) => x >= rows[0].fecha && x <= finISO).sort().join(' / ')} (feriados, días protegidos y D-2 del ENCAPS dentro del plan).${HUECOS.length ? `
  * v6.08: calendario ALARGADO hasta el viernes del caso ${casos.length} (${finISO}): ${HUECOS.join(' / ')} quedan sin LIVIANO (hueco: ya se dio todo el temario; sin fila).` : ''}
  * Inicio ${rows[0].fecha} → fin ${finISO}. Casos en viernes: ${casos.length}/${casos.length}.
@@ -290,9 +338,9 @@ export interface DiaLiviano {
   tema: string; estudio: string; aplicacion: string; fuente: string; min: number;
   /** viernes: id del caso clínico en LIV_CASOS (livianoCasos.ts) */
   casoId?: number;
-  /** lunes: pre-test ciego de 5 preguntas sobre la semana anterior (dentro de los 25' de estudio) */
+  /** lunes: RECALL EN BLANCO de la semana anterior, 1 línea por lección (v6.10e: antes «pre-test ciego 5Q»; dentro de los 25' de estudio) */
   pretest?: boolean;
-  /** drill de cifras ancla en ciego (LIV_DRILLS por d) */
+  /** tabla en blanco de cifras ancla de ensayos reales, cada respuesta con su fuente (LIV_DRILLS por d) */
   drill?: boolean;
 }
 
@@ -304,7 +352,7 @@ export const LIV_META = {
 };
 
 export const LIV_FRANJAS = [
-  { hora: '17:15–17:40', fase: 'ESTUDIO · 25 min: mecanismo del día (Palmerton — tarjetas de ¿por qué?, no datos sueltos). Lunes: los primeros 5-7 min son el pre-test ciego 5Q', tipo: 'estudio' },
+  { hora: '17:15–17:40', fase: 'ESTUDIO · 25 min: mecanismo del día (Palmerton — tarjetas de ¿por qué?, no datos sueltos). Lunes: los primeros 6 min son el RECALL EN BLANCO de la semana anterior (1 línea por lección; no es un test: LIVIANO no tiene banco real de preguntas)', tipo: 'estudio' },
   { hora: '17:40–18:00', fase: 'APLICACIÓN · 20 min: explicárselo al paciente — metáfora en voz alta / role-play / caso (viernes: rúbrica 0-2 × 4)', tipo: 'aplicacion' },
 ];
 
@@ -340,7 +388,10 @@ const casosTS = `/**
  *   esperadas, frase de cierre, pistas por ítem de la rúbrica. Cifras clínicas solo si están en las
  *   fuentes de LIVIANO_ACADEMIA.md; lo demás lleva "A VERIFICAR".
  * · LIV_RUBRICA: 4 ítems 0-2 (mecanismo · metáfora · people-first/sin estigma · plan pactado y medible).
- * · LIV_DRILLS: drills ciegos de cifras ancla (por d del plan).
+ * · LIV_DRILLS: tablas en blanco de cifras ancla de ensayos y guías reales (por d del plan); v6.10e: cada respuesta trae su fuente primaria
+ *   (o «A VERIFICAR» si el plan no la fija).
+ * · LIV_RECALL: v6.10e — RECALL EN BLANCO del lunes (sustituye al «pre-test ciego 5Q»): 1 ítem por fila de la semana anterior, con el título
+ *   de la lección como pista y la tarjeta / decisiones del caso + la fuente como respuesta para corregir. No hay preguntas inventadas.
  * · LIV_ANKI_CARDS: ${cards.length} tarjetas de mecanismo generadas del campo "estudio" (~10/semana);
  *   deck APEX::LIVIANO::<modulo>. CSV importable: DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv.
  * Los campos d/fecha se recalculan en cada regeneración (mismo calendario que LIV_DIAS).
@@ -377,17 +428,14 @@ export function livDrillDe(d: number): LivDrill | undefined { return LIV_DRILLS.
 export function livCardsDeDia(d: number): LivAnkiCard[] { return LIV_ANKI_CARDS.filter(c => c.d === d); }
 /** Tarjetas de las 5 filas previas a d (la semana D-7). */
 export function livCardsSemanaPrevia(d: number): LivAnkiCard[] { return LIV_ANKI_CARDS.filter(c => c.d >= d - 5 && c.d < d); }
+/** v6.10e (18-nov-2026 · preguntas reales): RECALL EN BLANCO de cada lunes con pretest (clave = d del lunes): 1 ítem por fila de D-5…D-1. */
+export const LIV_RECALL: Record<number, LivAnkiCard[]> = ${j(recallDe)};
 /**
- * Pre-test ciego del lunes: 5 tarjetas de la semana anterior, repartidas por día de forma
- * determinista (misma selección en cada render). Si hay < 5, devuelve las que haya.
+ * Lunes: RECALL EN BLANCO de la semana anterior (v6.10e; antes «pre-test ciego 5Q» = 5 tarjetas escritas por Claude). Mismo nombre y forma
+ * para la UI: 1 ítem por lección / caso de D-5…D-1 (pista = título; respuesta = tarjeta o decisiones del caso + fuente). [] si ese día no toca.
  */
-export function livPretest(d: number, n = 5): LivAnkiCard[] {
-  const pool = livCardsSemanaPrevia(d);
-  if (pool.length <= n) return pool;
-  const out: LivAnkiCard[] = [];
-  const paso = pool.length / n;
-  for (let i = 0; i < n; i++) out.push(pool[Math.floor(i * paso)]);
-  return out;
+export function livPretest(d: number): LivAnkiCard[] {
+  return LIV_RECALL[d] || [];
 }
 `;
 escribe(OUT_CASOS, casosTS);

@@ -56,6 +56,11 @@
  *    tarjetas de Ravi del ensayo clínico 3′ —, sin ARRANQUE de Anki y con las «5Q ciegas extra» como RESERVA opcional (la eval del D2 las usa si la cola
  *    del quiz se agota); (D) el pre-test de TODOS los días dice que la sección de cada pregunta se mira DESPUÉS de contestar (antes, «la guía dice en qué
  *    sección cae»: con la lista de lectura delataba la clave). Derma d1 (corrección de hecho, ProMIR en vivo): §2.1-2.2 = 24 figuras, no 11 (FIGS_VERIFICADAS).
+ *  · v6.10 · base cero (18-nov-2026 · Joseph: «todos estamos partiendo de CERO»): fases de metodo_ravimedtest.json (faseDe). Mismas secciones, preguntas y
+ *    minutos; cambia el texto: (1) F1 (D2-D32) pre-test = LÍNEA BASE como el D1 («contesta las 5 aunque adivines»; la regla del blanco va en la eval y el
+ *    quiz) y la lectura = LECTURA DE BASE «en orden y entera»; (2) en toda la 1.ª vuelta (D2-D76) ninguna sección se salta por acertar el pre-test (antes
+ *    «las secciones cuyas preguntas acertaste se saltan y entra la reserva»; la reserva solo si sobra tiempo); (3) fase 2 (D33-D76): el pre-test ya lleva
+ *    la regla del blanco. El nivel del comentario del quiz y el criterio APEX por fase los mete mirGuia.metodoRavi.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -84,6 +89,8 @@ function load(rel) {
 const MD = load('src/lib/mirDailyPlan.ts');
 // v6.10 · tanda C: nombre real del mazo de Ravi («1º VUELTA», ya en Anki) y tarjetas por subtema contadas con Joseph (DATA/MIR/metodo_ravimedtest.json)
 const METODO = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/MIR/metodo_ravimedtest.json'), 'utf8'));
+// v6.10 · base cero (18-nov-2026): fase de la 1.ª vuelta de cada día (metodo_ravimedtest.json › fases; F1 BASE D1-D32 · F2 CONSOLIDACIÓN D33-D76 · F3 D77+)
+const faseDe = (d) => { const f = (METODO.fases || []).find((z) => d >= z.dDesde && d <= z.dHasta); if (!f) throw new Error(`metodo_ravimedtest.json: el D${d} no tiene fase`); return f; };
 const POOL = load('src/lib/mirPreguntasOficiales.ts');
 const DERMA = load('src/lib/dermaDailyPlan.ts');
 const ANKI = load('src/lib/ankiLinks.ts');
@@ -420,13 +427,29 @@ function pasosDia(d) {
   }
   // pre-test (v6.09b · lote 1-ter: en F1, 7′ = 5 × 77 s ≈ 6,4′; el minuto pasa a la lectura)
   const preMin = LP ? 7 : 8; const hPre = `15:${30 + preMin}`;
-  pasos.push({ min: preMin, hora: `15:30–${hPre}`, que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial de la app${pre.some((p) => p.fuente !== 'pool app') ? ` + ${pre.filter((p) => p.fuente !== 'pool app').length} citadas en ProMIR` : ''})`, como: (LP ? 'Sin leer nada · 77 s/Q (5Q ≈ 6,4′)' : 'Sin leer nada · 77 s/Q') + ' · registra en la app (kind pretest) · cada fallo = una sección «gap»: la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).' }); // v6.10 · tanda C (regla D)
+  // v6.10 · base cero (18-nov-2026): fase 1 (F1, D2-D32) = pre-test como LÍNEA BASE (igual que el D1 decidido con Joseph: contesta las 5 aunque adivines; la
+  //   regla del blanco va en la eval y el quiz) · fase 2 (2027) = con la regla del blanco; ningún fallo «recorta» la lectura (todas las secciones se leen)
+  const fz = faseDe(d);
+  const preQue = `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial de la app${pre.some((p) => p.fuente !== 'pool app') ? ` + ${pre.filter((p) => p.fuente !== 'pool app').length} citadas en ProMIR` : ''})${fz.n === 1 ? ' · línea base, no nota' : ''}`;
+  const preComo = fz.n === 1
+    ? `Base cero: contesta las 5 aunque adivines (si no sabes, marca A): es la línea base, no la nota; la regla del blanco va en la eval y el quiz · sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`
+    : `${LP ? 'Sin leer nada · 77 s/Q (5Q ≈ 6,4′)' : 'Sin leer nada · 77 s/Q'} · fase 2: en blanco si no descartas 2 (la táctica −1/3 ya se entrena desde la primera pregunta) · registra en la app (kind pretest) · cada fallo marca la sección que lees con más atención (no se salta ninguna): la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`;
+  pasos.push({ min: preMin, hora: `15:30–${hPre}`, que: preQue, como: preComo }); // v6.10 · tanda C (regla D) · base cero (fases)
   preguntas.pretest = pre;
   // lectura
   const linea = (u) => `${u.titulo} (${u.parcial ? `PARCIAL ${u.minLeer}′ de ${u.min}′: solo los párrafos con chip MIR ≥2015` : `${u.min}′`}${u.citasMIR ? ` · ${u.citasMIR} preguntas MIR citadas` : ''}${u.contexto ? ' · contexto, sin preguntas citadas' : ''}${u.clips.length ? ` · clip ${u.clips.map((c) => c.dur).join(' + ')}` : ''})`;
   // v6.09b · lote 1-ter: en F1 la lectura es de 16′ con las MISMAS secciones (a 150 palabras/min suman m150′ con el recuadro)
   const m150 = Math.round(min150(sel) * 10) / 10; const lecMin = LP ? LECTURA_MIN + (8 - preMin) : LECTURA_MIN;
-  pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `LECTURA DIRIGIDA ${lecMin}′${LP ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: `Orden: primero la sección de cada pregunta FALLADA en el pre-test; las secciones cuyas preguntas acertaste se saltan y entra la reserva (${reserva.map((u) => `${u.titulo} ${u.min}′`).join(' · ') || '—'}). Whole Page Rule: lee el apartado entero, no frases sueltas; por cada fallo escribe en el Shopping List la regla que lo habría resuelto. ${LP ? `Minutos de cada sección a ${RITMO.prosaPpm} palabras/min (ritmo de referencia del método); a ${PPM_REGLA} —la regla de lectura en español— la lista suma ${dec1(m150)}′ con el recuadro: por eso el paso es de ${lecMin}′` : `Ritmo de referencia ${RITMO.prosaPpm} palabras/min`}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
+  // v6.10 · base cero (18-nov-2026): las MISMAS secciones y minutos; cambia el cómo. Antes «las secciones cuyas preguntas acertaste se saltan y entra la
+  //   reserva» (recortaba el temario por el pre-test: Ravi lo desaconseja en 1.ª vuelta y, partiendo de cero, un acierto puede ser suerte) → en el orden
+  //   del capítulo, sin saltar ninguna; la reserva solo si sobra tiempo. F1 (fase 1) se llama LECTURA DE BASE, como el D1 decidido con Joseph.
+  // si sobra tiempo: la reserva en orden; sin reserva (la lista ya cubre todas las secciones citadas), repaso en blanco de lo leído
+  const sobraTxt = reserva.length ? `sigue en orden con la reserva (${reserva.map((u) => `${u.titulo} ${u.min}′`).join(' · ')})` : 'repasa en blanco lo leído (la lista ya cubre todas las secciones con preguntas citadas)';
+  const minTxt = LP ? `Minutos de cada sección a ${RITMO.prosaPpm} palabras/min (ritmo de referencia del método); a ${PPM_REGLA} —la regla de lectura en español— la lista suma ${dec1(m150)}′ con el recuadro: por eso el paso es de ${lecMin}′` : `Ritmo de referencia ${RITMO.prosaPpm} palabras/min`;
+  const lecComo = fz.n === 1
+    ? `Base cero: en el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno aunque aciertes su pregunta del pre-test (partiendo de cero un acierto puede ser suerte; Ravi: en 1.ª vuelta no se recorta el temario por las preguntas) · por cada fallo del pre-test, la regla que lo habría resuelto al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`
+    : `En el orden del capítulo, cada apartado entero (Whole Page Rule) y sin saltar ninguno por acertar el pre-test (1.ª vuelta: no se recorta el temario); los de las preguntas FALLADAS, con más atención y su regla al Shopping List · si acabas antes de las 15:53, ${sobraTxt}. ${minTxt}. Vídeos largos (Masterclass/Videoclase) NO entran en la franja.`;
+  pasos.push({ min: lecMin, hora: `${hPre}–15:53`, que: `${fz.n === 1 ? 'LECTURA DE BASE' : 'LECTURA DIRIGIDA'} ${lecMin}′${LP ? ` (${dec1(m150)}′ medidos a ${PPM_REGLA} palabras/min; ${dec1(minUsados)}′ a ${RITMO.prosaPpm})` : ''}${fz.n === 1 ? ', en orden y cada apartado entero' : ''} · Orientación MIR (1′) + ${sel.map(linea).join(' · ')}`, como: lecComo, enlace: { t: `ProMIR · ${x.tema}`, url: capUrl(x.capId) } });
   // quiz
   preguntas.quiz = quiz;
   const nRepaso = quiz.filter((q) => q.deDia).length; // v6.03: complemento con capítulos ya leídos
@@ -450,12 +473,12 @@ function pasosDia(d) {
   return {
     bloque: {
       franja: '15:15–16:15', plan: 'MIR', titulo: `MIR D${d}/78 · ${x.asignatura} — ${x.tema}`, totalMin, pasos, recursos,
-      hecho: `${cierre ? 'Cierre 10Q registrado + ' : !anc.d1 ? 'Mazo creado + 5Q ciegas extra + ' : 'Eval registrada + Anki a cero + '}pre-test 5Q registrado + lectura de las secciones gap (o de la lista) + ≥${QUIZ_HACER}Q del quiz registradas + ≤4 APEX creados.`,
+      hecho: `${cierre ? 'Cierre 10Q registrado + ' : !anc.d1 ? 'Mazo creado + 5Q ciegas extra + ' : 'Eval registrada + Anki a cero + '}pre-test 5Q registrado${fz.n === 1 ? ' (línea base)' : ''} + lectura de ${fz.n === 1 ? 'base' : 'la lista'} en orden, sin saltar secciones + ≥${QUIZ_HACER}Q del quiz registradas + ≤4 APEX creados.`,
       planB: `Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: ${pool.length}Q del capítulo + ${POOL.preguntasDeAsignatura(x.num).length} de ${x.asignatura}) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′).`,
     },
     preguntas,
     lectura: {
-      minUsados, ritmo: RITMO, ...(lectF1(x) ? { min150: Math.round(min150(sel) * 10) / 10, minPaso: pasos.find((p) => p.que.startsWith('LECTURA DIRIGIDA')).min } : {}),
+      minUsados, ritmo: RITMO, ...(lectF1(x) ? { min150: Math.round(min150(sel) * 10) / 10, minPaso: pasos.find((p) => /^LECTURA (DIRIGIDA|DE BASE)/.test(p.que)).min } : {}),
       secciones: sel.map((u) => ({ titulo: u.titulo, min: u.min, minLeer: u.minLeer, parcial: u.parcial, palabras: u.palabras, palabrasTabla: u.palabrasTabla, figs: u.figs, citasMIR: u.citasMIR, citasDesde2015: u.citasDesde2015, citasDesde2020: u.citasDesde2020, clips: u.clips, ...(u.contexto ? { contexto: true } : {}) })),
       reserva: reserva.map((u) => ({ titulo: u.titulo, min: u.min, citasMIR: u.citasMIR })),
       paraElRepaso: { min: r05(minCompleta - sel.reduce((s, u) => s + u.minLeer, 0)), donde: '2.ª vuelta MIR (fase principal desde oct-2027) · el audio «escuchar todo el tema» de ProMIR es opcional en tiempos muertos (no está en el plan)', secciones: us.filter((u) => u.nivel !== 'H2' && !sel.some((s) => s.i === u.i && !s.parcial)).map((u) => `${u.titulo} ${u.min}′`) },
@@ -575,7 +598,9 @@ for (const x of salida) {
   if (lectF1(x) && !x.lectura.d1) { // v6.10: + el D1 (pre-test y lectura; no tiene eval) · tanda C: el D1 tiene su comprobación propia (arriba)
     const P = (re) => x.bloque.pasos.find((p) => re.test(p.que));
     const ok = (n, m) => m > 0 && n / m >= 0.85 && n / m <= 1.15;
-    const ev = P(/^EVAL ANCLADA (\d+)Q/); const pr = P(/^PRE-TEST 5Q/); const le = P(/^LECTURA DIRIGIDA/);
+    const ev = P(/^EVAL ANCLADA (\d+)Q/); const pr = P(/^PRE-TEST 5Q/); const le = P(/^LECTURA (DIRIGIDA|DE BASE)/);
+    // v6.10 · base cero: en F1 (fase 1) la lectura es LECTURA DE BASE en orden y el pre-test es línea base; en toda la 1.ª vuelta ninguna sección se salta
+    if (faseDe(x.d).n === 1 && (!le || !/^LECTURA DE BASE/.test(le.que) || !pr || !/línea base/.test(pr.que))) errs.push(`D${x.d}: fase 1 sin LECTURA DE BASE o sin pre-test de línea base`);
     if (ev) {
       const n = +/^EVAL ANCLADA (\d+)Q/.exec(ev.que)[1];
       // v6.09b · lote 1-quater: eval de 2-3Q ancladas + la cola del quiz del D-1 = 4Q comentadas (107 s/Q) en sus 7′; nada de «adelanta el Anki»

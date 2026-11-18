@@ -50,6 +50,12 @@
 //   (3) d5 (30-nov): el resumen de PubMed medido (177 palabras → 2′, antes 5′ = 0,35) y el consenso PMC re-medido (Pregunta 3 + Tabla 2 + Key Points +
 //   Figuras 1-3 = 11,98′ en 13′); (4) la lectura ProMIR de d1-d3 declara sus minutos a 150 palabras/min (min150 de E2). El --check exige en TODA sesión de F1
 //   la regla del Tutor y que ningún paso sin medida quede sin acotar, y que el consumo de uWorld de F1 por System no cambie (UW_F1_TOTAL).
+// v6.10e (18-nov-2026 · BASE CERO + PREGUNTAS REALES, orden de Joseph): fuera el proyecto Claude «AESTHETIC DERMATOLOGY» (viñetas, dictado inverso, tabla +
+//   «8 preguntas de verificación» = preguntas GENERADAS por IA). Emite DERMNET_QUIZZES (DermNet Quizzes leídos el 18-nov: título · nº de casos · ~min/caso que
+//   declara el quiz) · DERMA_QUIZ_F1 (rango de casos REALES por sesión de F1) · DERMA_LECTURA_REAL (lecturas reales medidas: «Three-point checklist» y
+//   StatPearls «Facial Artery»). El --check valida además: (1) ninguna sesión (F1 + 2027, plan A/B, 45′/30′) menciona el proyecto Claude ni pide preguntas o
+//   viñetas a una IA; (2) cada sesión de F1 del mapa lleva su paso DermNet con k casos × min/caso / minutos del paso en 0,85-1,15, casos dentro del quiz y sin
+//   repetir casos entre sesiones; (3) la lectura real de F1 declara sus «(N′ medidos» y cuadra. Las FASES (base cero) viven en src/lib/dermaGuia.ts.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -192,6 +198,20 @@ function pasosSinMedidaMal(pasos) {
  *  para que 2027 reciba el mismo stock (Inflammatory 28 − 24 = 4 · Skin and soft tissue infections 18 − 15 = 3). */
 const UW_F1_TOTAL = { 1028: 24, 1031: 15 };
 
+// v6.10e (18-nov-2026): mapa de F1 con casos REALES (DermNet Quizzes) y lecturas reales medidas — comprobación de forma (el reparto se valida en validarTodo)
+for (const [d, q] of Object.entries(CAT.DERMA_QUIZ_F1)) {
+  const fila = DD.DERMA_DIAS.find((x) => x.d === Number(d));
+  if (!fila || !(fila.fecha <= '2027-01-03')) aborta(`DERMA_QUIZ_F1 d${d}: no es una sesión de F1`);
+  if (q.quiz && !(CAT.DERMNET_QUIZZES[q.quiz] && q.desde >= 1 && q.k >= 1 && q.desde + q.k - 1 <= CAT.DERMNET_QUIZZES[q.quiz].n)) aborta(`DERMA_QUIZ_F1 d${d}: quiz «${q.quiz}» desconocido o casos ${q.desde}-${q.desde + q.k - 1} fuera de rango`);
+  if (q.lectura && !CAT.LECTURA_REAL[q.lectura]) aborta(`DERMA_QUIZ_F1 d${d}: lectura «${q.lectura}» sin medir`);
+  if (!q.quiz && !(q.promir >= 1)) aborta(`DERMA_QUIZ_F1 d${d}: ni quiz ni ProMIR`);
+}
+const DERMA_LECTURA_REAL = {};
+for (const [k, L] of Object.entries(CAT.LECTURA_REAL)) {
+  const palabras = L.secciones.reduce((a, s) => a + s[1], 0), figuras = L.secciones.reduce((a, s) => a + s[2], 0);
+  DERMA_LECTURA_REAL[k] = { ...L, palabras, figuras, necesario: r2(palabras / DN_PPM + DN_IMG * figuras) };
+}
+
 const E2 = rd('DATA/MIR/guia_lectura_semana1-2.json');
 const E2D = (d) => E2.derma.find((x) => x.d === d) || aborta(`E2 sin derma d${d}`);
 
@@ -323,6 +343,14 @@ export const DERMNET_DERMOSCOPY = ${JSON.stringify(CAT.DERMNET_DERMOSCOPY)};
 export interface DermnetLectura { pag: string; url: string; texto: string[]; soloImagenes?: string[]; palabras: number; imagenes: number; de?: string }
 export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLectura[]; palabras: number; imagenes: number; necesario: number; min: number; fuera: { palabras: number; temas: string[] }; aOtroDia?: { fecha: string; pag: string; texto: string[]; palabras: number; imagenes: number; necesario: number }; motivo?: string }> = ${J1(DERMNET_MEDIDO)};
 
+/** v6.10e (18-nov-2026 · PREGUNTAS REALES): DermNet Quizzes (https://dermnetnz.org/quizzes — públicos, escritos por DermNet: imagen real + respuesta tras
+ *  «Show Answers») leídos el 18-nov-2026: slug → título · nº de casos · minutos por caso que declara el propio quiz. Sustituyen al proyecto Claude. */
+export const DERMNET_QUIZZES: Record<string, { t: string; n: number; min: number }> = ${JSON.stringify(CAT.DERMNET_QUIZZES)};
+/** v6.10e: F1 — rango de casos REALES por sesión (clave = d; k = minutos del hueco / min por caso) o ProMIR (nº de preguntas MIR oficiales) y qué se entrena. */
+export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: number; lectura?: string; promir?: number; foco: string }> = ${J1(CAT.DERMA_QUIZ_F1)};
+/** v6.10e: lecturas REALES medidas el 18-nov-2026 (palabras/100 + 0,25′ por figura) que sustituyen al proyecto Claude (d5 StatPearls · d6 lista de 3 puntos). */
+export const DERMA_LECTURA_REAL: Record<string, { t: string; url: string; secciones: Array<[string, number, number]>; palabras: number; figuras: number; necesario: number }> = ${J1(DERMA_LECTURA_REAL)};
+
 /** Sesiones CURADAS (d1-d5): plan A (AccessDerma) y plan B (acceso remoto caducado), 13:30–14:15. */
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = ${J1(curada)};
 `;
@@ -383,15 +411,7 @@ function validarTodo(tsDatos) {
     if (g.pasos.reduce((a, x) => a + x.min, 0) !== 45) errores.push(`${tag}: el plan B suma ${g.pasos.reduce((a, x) => a + x.min, 0)}′ (≠ 45′)`);
     if (g.pasos.some((x) => /no hoy/.test(`${x.que} ${x.como}`))) errores.push(`${tag}: un paso dice «no hoy» (destino sin fecha)`);
     if (!new RegExp(`\\(${String(m.necesario).replace('.', ',')}′ medidos`).test(p.que)) errores.push(`${tag}: el paso DermNet no declara sus «(${m.necesario}′ medidos»`);
-    const cl = g.pasos.find((x) => x.que.startsWith('Proyecto Claude'));
-    const sumaOtros = g.pasos.filter((x) => x !== cl).reduce((a, x) => a + x.min, 0);
-    if (!cl && sumaOtros !== 45) errores.push(`${tag}: sin proyecto Claude y la franja no cuadra`);
-    if (cl) {
-      const v = vinetas(cl.min);
-      if (!(v.k >= 1 && v.razon >= 0.85 && v.razon <= 1.15)) errores.push(`${tag}: proyecto Claude ${cl.min}′ ≈ ${v.k} viñetas (${v.k} × 5 / ${cl.min} = ${v.razon.toFixed(2)}, fuera de 0,85-1,15)`);
-      const r = /hoy (\d+)′ ≈ (\d+) viñetas? \(≈([\d,]+)′ cada una\)/.exec(cl.que);
-      if (!r || Number(r[1]) !== cl.min || Number(r[2]) !== v.k || Math.abs(Number(r[3].replace(',', '.')) - cl.min / v.k) > 0.051) errores.push(`${tag}: el texto del proyecto Claude no dice «hoy ${cl.min}′ ≈ ${v.k} viñetas (≈${(cl.min / v.k).toFixed(1).replace('.', ',')}′ cada una)»`);
-    }
+    // v6.10e: el proyecto Claude (variable de ajuste con «k viñetas») ya no existe: la variable de ajuste es el paso de casos REALES (validado abajo)
     if (m.aOtroDia) {
       const f = m.aOtroDia.fecha; const dd = new Date(f + 'T12:00:00Z'); const etq = `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][dd.getUTCDay()]} ${dd.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][dd.getUTCMonth()]}`;
       if (!(p.como.indexOf(etq) >= 0 && p.como.indexOf(etq) + etq.length <= 100)) errores.push(`${tag}: el destino «${etq}» no está en los primeros 100 caracteres del «cómo»`);
@@ -412,7 +432,42 @@ function validarTodo(tsDatos) {
   const f1Uw = {}; for (const [f, a] of DG.dermaUwAsignacion()) if (f <= '2027-01-03') f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
   for (const [uw, n] of Object.entries(UW_F1_TOTAL)) if (f1Uw[uw] !== n) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 consume ${f1Uw[uw] || 0}Q y debe consumir ${n} (si no, cambia el stock de 2027)`);
   for (const uw of Object.keys(f1Uw)) if (!(uw in UW_F1_TOTAL)) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 lo usa y no está en UW_F1_TOTAL`);
-  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1 };
+  // v6.10e (18-nov-2026 · PREGUNTAS REALES): (1) ninguna sesión (F1 + 2027, plan A/B, 45′/30′) menciona el proyecto Claude ni pide preguntas/viñetas a una IA
+  const IA_RE = /Proyecto Claude|proyecto Claude|AESTHETIC DERMATOLOGY|Pídele|claude\.ai\/project|viñetas? \(≈/;
+  let nIA = 0;
+  for (const dia of D2.DERMA_DIAS_TODOS) for (const opts of [{}, { minutos: 30 }]) {
+    const par = DG.dermaGuiaPar(dia, opts);
+    for (const k of ['planA', 'planB']) { const g = par[k]; const txt = [g.titulo, g.hecho, g.aviso || '', g.planB || '', ...g.pasos.flatMap((p) => [p.que, p.como, p.enlace ? p.enlace.url : '']), ...g.recursos.flatMap((r) => [r.t, r.url])].join(' '); nIA++; if (IA_RE.test(txt)) errores.push(`d${dia.d} ${dia.fecha} ${k} ${opts.minutos || 45}′: sigue pidiendo preguntas/viñetas a una IA («${(IA_RE.exec(txt) || [''])[0]}»)`); }
+  }
+  // (2) F1: cada sesión del mapa DERMA_QUIZ_F1 lleva sus casos REALES (k × min/caso / min del paso en 0,85-1,15, dentro del quiz, sin repetir casos) o su ProMIR
+  const quizRe = /^DermNet Quizzes › «([^»]+)» · casos (\d+)-(\d+) \((\d+) casos REALES × ~(\d+)′ = (\d+)′/;
+  const usados = new Map(); let nQuizF1 = 0, nCasosF1 = 0;
+  for (const [dStr, q] of Object.entries(CAT.DERMA_QUIZ_F1)) {
+    const dia = D2.DERMA_DIAS_TODOS.find((x) => x.d === Number(dStr) && x.fecha <= '2027-01-03');
+    const tag = `d${dStr} ${dia ? dia.fecha : '?'}`;
+    if (!dia) { errores.push(`${tag}: DERMA_QUIZ_F1 sin sesión de F1`); continue; }
+    const g = DG.dermaGuiaPar(dia).planB;
+    if (q.quiz) {
+      const Q = CAT.DERMNET_QUIZZES[q.quiz]; const p = g.pasos.find((x) => quizRe.test(x.que));
+      if (!p) { errores.push(`${tag}: falta el paso «DermNet Quizzes › ${Q.t}» del mapa de F1`); continue; }
+      const mm = quizRe.exec(p.que); const a = +mm[2], b = +mm[3], k = +mm[4];
+      if (mm[1] !== Q.t || a !== q.desde || k !== q.k || b !== a + k - 1 || b > Q.n || +mm[5] !== Q.min || +mm[6] !== k * Q.min) errores.push(`${tag}: el paso DermNet no cuadra con el mapa («${p.que.slice(0, 90)}…»; mapa: ${q.quiz} desde ${q.desde}, ${Q.n} casos)`);
+      const razon = (k * Q.min) / p.min; if (!(razon >= 0.85 && razon <= 1.15)) errores.push(`${tag}: ${k} casos × ${Q.min}′ en ${p.min}′ (${razon.toFixed(2)}, fuera de 0,85-1,15)`);
+      for (const [a2, b2, t2] of usados.get(q.quiz) || []) if (!(b < a2 || a > b2)) errores.push(`${tag}: repite casos de «${Q.t}» con ${t2} (${a}-${b} ∩ ${a2}-${b2})`);
+      usados.set(q.quiz, [...(usados.get(q.quiz) || []), [a, b, tag]]); nQuizF1++; nCasosF1 += k;
+    } else {
+      const p = g.pasos.find((x) => /· (\d+)Q REALES más a 77 s\/Q/.test(x.que));
+      const n = p ? +/· (\d+)Q REALES más/.exec(p.que)[1] : 0; const razon = p ? (n * 77) / 60 / p.min : 0;
+      if (!p || n !== q.promir || !(razon >= 0.85 && razon <= 1.15)) errores.push(`${tag}: falta el paso ProMIR de ${q.promir}Q (77 s/Q) del mapa de F1 o no cuadra (${razon.toFixed(2)})`);
+    }
+  }
+  // (3) F1: todo paso que declara «(N′ medidos» (DermNet, PMC, StatPearls, lista de 3 puntos) cuadra en 0,85-1,15 (con su dibujo «(≈N′)» si lo hay)
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03')) for (const p of DG.dermaGuiaPar(dia).planB.pasos) {
+    const mm = /(\d+(?:[.,]\d+)?)′ medidos/.exec(p.que); if (!mm) continue;
+    const dib = /dibujo[^(]*\(≈(\d+(?:,\d+)?)′\)/.exec(p.que); const nec = Number(mm[1].replace(',', '.')) + (dib ? Number(dib[1].replace(',', '.')) : 0);
+    if (!(nec / p.min >= 0.85 && nec / p.min <= 1.15)) errores.push(`d${dia.d} ${dia.fecha}: «${p.que.slice(0, 60)}…» ${p.min}′ para ${nec.toFixed(2)}′ medidos (fuera de 0,85-1,15)`);
+  }
+  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1, nIA, nQuizF1, nCasosF1 };
   return { errores, n, resumen };
 }
 const v = validarTodo(out);
@@ -420,7 +475,7 @@ if (v.errores.length) { console.error(v.errores.slice(0, 40).join('\n')); aborta
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/dermaGuiaDatos.ts NO está al día → node DATA/DERMATOLOGIA/guia/gen_derma_guia.js'); process.exit(1); }
-  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes)`);
+  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes) · 0 pasos con preguntas/viñetas de IA en ${v.resumen.nIA} bloques · F1 con ${v.resumen.nQuizF1} pasos DermNet Quizzes (${v.resumen.nCasosF1} casos REALES, sin repetir) + ProMIR`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/dermaGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total}`);

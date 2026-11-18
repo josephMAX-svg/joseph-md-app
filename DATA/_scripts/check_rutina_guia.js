@@ -350,7 +350,11 @@ const SAB_DD0 = sabTras(primeraSyn(/^Canal Anthropic.*deep dive.*tramo 1\b/, 'B'
 // v6.05 (fix): si el 1.er sábado tras el deep dive ya lo ocupa la curaduría original, sus comodines van al SIGUIENTE sábado (v6.05: sáb 7-nov)
 const SAB_DD = SAB_DD0 === SAB_NP ? addDias(SAB_DD0, 7) : SAB_DD0;
 // v6.07: los comodines del sábado están en guiaSynapseDe (el PC pasó al domingo)
-if (!conTexto(RG.guiaSynapseDe(SAB_NP), /Greg Brockman/) || !conTexto(RG.guiaSynapseDe(SAB_NP), /Prompt injection attacks/)) errores.push(`${SAB_NP} guiaSynapseDe: faltan los comodines curados de la curaduría original (No Priors + «Prompt injection…»)`);
+// v6.10c (cadena del carril del martes): el resto de «Prompt injection…» va al comodín del 1.er sábado tras la sesión de la serie que lo deja (mar 1-dic → sáb
+//   5-dic; v6.09 y v6.10: el sáb 28-nov); No Priors sigue en el 1.er sábado tras su pieza
+const piResto = (S.SYN_DIAS.find((d) => d.bloques.some((b) => b.tag === 'C' && /^Simon Willison — serie Prompt injection/.test(b.material) && b.guia && /^Resto → /.test(b.guia.como))) || {}).fecha;
+const SAB_PI = piResto ? sabTras(piResto) : SAB_NP;
+if (!conTexto(RG.guiaSynapseDe(SAB_NP), /Greg Brockman/) || !conTexto(RG.guiaSynapseDe(SAB_PI), /Prompt injection attacks/)) errores.push(`${SAB_NP}/${SAB_PI} guiaSynapseDe: faltan los comodines curados de la curaduría original (No Priors + «Prompt injection…»)`);
 if (!conTexto(RG.guiaSynapseDe(SAB_DD), /deep dive.*minutos \d+:00-\d+:00/) || !conTexto(RG.guiaSynapseDe(SAB_DD), /lethal trifecta/)) errores.push(`${SAB_DD} guiaSynapseDe: faltan los comodines curados del deep dive + trifecta (1.er sábado LIBRE tras la pieza)`);
 if (SAB_DD0 === SAB_NP && conTexto(RG.guiaSynapseDe(SAB_NP), /deep dive.*minutos/)) errores.push(`${SAB_NP} guiaSynapseDe: el comodín del deep dive pisa al de No Priors`);
 // v6.05 (fix): el deep dive retoma donde quedó (tramos de 10′ ya vistos antes del sábado): con el tramo 2 del vie 6-nov → minutos 20:00-30:00
@@ -387,7 +391,10 @@ if (SAB_DD0 === SAB_NP && conTexto(RG.guiaSynapseDe(SAB_NP), /deep dive.*minutos
       nCaso21++;
       const g = RG.guiaLivianoDe(r.fecha); if (!g || !/va hoy .* y no el viernes/.test(g.aviso || '') || (r.wd === 'Lun' && !r.pretest)) errores.push(`${r.fecha} (21): CASO ${r.casoId} en ${r.wd} sin el aviso (o sin el pre-test del lunes)`);
       const vie = [...L.LIV_DIAS].reverse().find((x) => x.d < r.d && x.wd === 'Vie');
-      const gv = vie && RG.guiaLivianoDe(vie.fecha); if (vie && vie.casoId == null && (!gv || !/Hoy viernes no hay caso/.test(gv.aviso || ''))) errores.push(`${vie.fecha} (21): el viernes de la lección no avisa de que el CASO ${r.casoId} va el ${r.fecha}`);
+      const gv = vie && RG.guiaLivianoDe(vie.fecha);
+      // v6.10d (fix revisión 18-nov): con el alias, el viernes de plan se hace otro día real (vie 20 → lun 23) y el aviso nombra ese día
+      const nomV = vie ? ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][new Date(FV.fechaRealDe(vie.fecha, 'liviano') + 'T12:00:00Z').getUTCDay()] : '';
+      if (vie && vie.casoId == null && (!gv || !new RegExp(`Hoy ${nomV} no hay caso`).test(gv.aviso || ''))) errores.push(`${vie.fecha} (21): el viernes de la lección no avisa de que el CASO ${r.casoId} va el ${r.fecha}`);
     }
   }
   // (22) D1 sin sesión → el 1.er día con sesión sale como D2 / «día 2» y lo avisa (Business y SYNAPSE)
@@ -1122,8 +1129,8 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
 // Dueño de esta sección: SECUNDARIOS (vibecoding · SYNAPSE · Business · AURUM · MIR · LIVIANO · Research/Derma). Controles PERMANENTES (no comparan con
 //   un commit): (s0) el mar 17-nov no tiene sesión en ningún plan secundario · (s1) cada (fecha, frente) de corrida_s1.extra tiene su sesión en el plan
 //   del frente, con los minutos de su franja, y su guía (Σ pasos = franja; la franja de la guía es la L-V del frente —la mueve plantillasV6 ›
-//   bloqueCorrido + moverGuia— salvo la sesión de recuperación del SYNAPSE, que trae la suya) · (s2) anclas de identidad: desde el hueco de cada frente,
-//   las fechas de la v6.09 (vibecoding, Business, MIR: lun 30-nov · AURUM, LIVIANO, Research: lun 7-dic · SYNAPSE: sáb 28 21:00) · (s3) L de AURUM de los
+//   bloqueCorrido + moverGuia— salvo la sesión de recuperación del SYNAPSE, que trae la suya) · (s2) anclas de identidad (v6.10c: la última sesión de F1
+//   de cada frente el sáb 2-ene y desde el lun 4-ene las fechas de la v6.09; OUTPUT de F1 en martes; SYNAPSE de recuperación el dom 3-ene) · (s3) L de AURUM de los
 //   sábados de F1 ≤ 05:45 y el vibecoding del sáb 28 ≥ 39′ sin solaparse con ella · (s4) LIVIANO: casos diferidos de F1 tras sus 4 lecciones y el
 //   pre-test solo en lunes · (s5) SYNAPSE: A+B+C = 30′ en la sesión de recuperación y el aviso «Primera sesión» del mié 18 nombra los 2 días sin sesión.
 {
@@ -1161,9 +1168,17 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       const chkGuia = (g, nom) => {
         if (!g) { secErr.push(`(v610-s1) ${f} ${frente}: sin guía (${nom})`); return; }
         if (sumP(g) !== m) secErr.push(`(v610-s1) ${f} ${frente}: Σ pasos ${sumP(g)} ≠ ${m}′ de la franja ${franja}`);
-        if (frente !== 'synapse' && g.franja !== LV[frente]) secErr.push(`(v610-s1) ${f} ${frente}: la guía viene en ${g.franja} y debe venir en la franja L-V ${LV[frente]} (la mueve el Home)`);
+        // v6.10c: el vibecoding de un día deload (15′) viene en su franja L-V corta (04:15-04:30)
+        const lvF = frente === 'vibecoding' && V.vibeDiaDe(f) ? `04:15–${String(Math.floor((255 + V.vibeDiaDe(f).min) / 60)).padStart(2, '0')}:${String((255 + V.vibeDiaDe(f).min) % 60).padStart(2, '0')}` : LV[frente];
+        if (frente !== 'synapse' && g.franja !== lvF) secErr.push(`(v610-s1) ${f} ${frente}: la guía viene en ${g.franja} y debe venir en la franja L-V ${lvF} (la mueve el Home)`);
         if (!/a hora fija/.test(g.aviso || '')) secErr.push(`(v610-s1) ${f} ${frente}: la guía no avisa «a hora fija» con la hora real`);
-        else if (frente !== 'synapse' && !(g.aviso || '').includes(franja.split('-')[0]) && frente !== 'vibecoding') secErr.push(`(v610-s1) ${f} ${frente}: el aviso no nombra la hora real ${franja}`);
+        else if (frente !== 'synapse' && frente !== 'vibecoding') {
+          // v6.10c: el aviso se lee tras moverGuia (como lo pinta el Home): con la hora real DENTRO de la franja de plan (sáb 2-ene AURUM 14:30 en 14:15-15:15)
+          //   el texto se escribe compensado y es la guía movida la que debe nombrar la hora real
+          const dz = hm(franja.split('-')[0]) - hm(String(g.franja).split('–')[0]);
+          const gm = dz ? G.moverGuia(g, dz) : g;
+          if (!(gm.aviso || '').includes(franja.split('-')[0])) secErr.push(`(v610-s1) ${f} ${frente}: el aviso no nombra la hora real ${franja} (tras moverGuia: «${(gm.aviso || '').slice(0, 80)}»)`);
+        }
       };
       if (frente === 'vibecoding') { const d = V.vibeDiaDe(f); if (!d || d.min !== m) secErr.push(`(v610-s1) ${f} vibecoding: ${d ? `${d.min}′ ≠ ${m}′` : 'sin fila'}`); chkGuia(RG.guiaVibeDe(f), 'guiaVibeDe'); nEx++; }
       else if (frente === 'synapse') {
@@ -1185,21 +1200,33 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         nEx++;
       }
     }
-    // (s2) anclas de identidad desde el hueco de cada frente (las fechas de la v6.09)
+    // (s2) anclas de identidad · v6.10c (decisión de Joseph del 17-nov 17:20, corrimiento LITERAL): cada frente corre un hábil hasta fin de año, su última
+    //   sesión de F1 va el sáb 2-ene y desde el lun 4-ene todo cae como en la v6.09 (antes: identidad desde el lun 30-nov / lun 7-dic / sáb 28 21:00)
     const ancla = (cond, txt) => { if (!cond) secErr.push(`(v610-s2) ${txt}`); };
-    const vd = V.VIBE_DIAS.find((x) => x.d === 10); ancla(vd && vd.fecha === '2026-11-30', `vibecoding d10 = ${vd && vd.fecha} (esperado lun 30-nov)`);
+    const SAB2 = '2027-01-02', LUN4 = '2027-01-04';
+    const v32 = V.VIBE_DIAS.find((x) => x.d === 32), v33 = V.VIBE_DIAS.find((x) => x.d === 33); ancla(v32 && v32.fecha === SAB2 && v33 && v33.fecha === LUN4, `vibecoding d32/d33 = ${v32 && v32.fecha} / ${v33 && v33.fecha} (esperado sáb 2-ene / lun 4-ene)`);
     ancla(V.VIBE_META.finTaper === '2027-04-06' && V.VIBE_DIAS.length === 95, `vibecoding: fin ${V.VIBE_META.finTaper} / ${V.VIBE_DIAS.length} días (esperado mar 6-abr / 95)`);
-    const b30 = B.bizDiaDe('2026-11-30'); ancla(b30 && B.bizModo(b30) === 'OUTPUT' && b30.d === 15, `Business lun 30-nov = ${b30 && `D${b30.d} ${B.bizModo(b30)}`} (esperado D15 OUTPUT S2)`);
+    const b2 = B.bizDiaDe(SAB2), b4 = B.bizDiaDe(LUN4); ancla(b2 && B.bizModo(b2) !== 'DESCANSO' && B.bizModo(b2) !== 'OUTPUT' && b2.d === 48 && b4 && b4.d === 50, `Business sáb 2-ene = ${b2 && `D${b2.d} ${B.bizModo(b2)}`} (esperado D48 lectura) · lun 4-ene = ${b4 && `D${b4.d}`} (esperado D50)`);
     ancla(B.BIZ_DIAS.filter((x) => B.bizModo(x) !== 'DESCANSO').length === 84 && B.BIZ_DIAS[B.BIZ_DIAS.length - 1].fecha === '2027-03-19', 'Business: 84 filas de trabajo y fin vie 19-mar');
-    const m10 = MDp.MIR_DIAS.find((x) => x.d === 10); ancla(m10 && m10.fecha === '2026-11-30', `MIR D10 = ${m10 && m10.fecha} (esperado lun 30-nov)`);
+    for (const f of ['2026-11-24', '2026-12-01', '2026-12-08', '2026-12-15', '2026-12-22']) { const r = B.bizDiaDe(f); ancla(r && B.bizModo(r) === 'OUTPUT', `Business ${f}: se espera el OUTPUT de F1 (martes, tras su última lectura)`); }
+    const m32 = MDp.MIR_DIAS.find((x) => x.d === 32), m33 = MDp.MIR_DIAS.find((x) => x.d === 33); ancla(m32 && m32.fecha === SAB2 && m33 && m33.fecha === LUN4, `MIR D32/D33 = ${m32 && m32.fecha} / ${m33 && m33.fecha} (esperado sáb 2-ene / lun 4-ene)`);
     ancla(MDp.MIR_DIAS[MDp.MIR_DIAS.length - 1].fecha === '2027-03-08', 'MIR D78 = lun 8-mar');
-    const a15 = A.AURUM_DIAS.find((x) => x.d === 15); ancla(a15 && a15.fecha === '2026-12-07' && a15.pitch === 1, `AURUM D15 (PITCH v1) = ${a15 && a15.fecha} (esperado lun 7-dic)`);
+    const a15 = A.AURUM_DIAS.find((x) => x.d === 15), a32 = A.AURUM_DIAS.find((x) => x.d === 32), a33 = A.AURUM_DIAS.find((x) => x.d === 33);
+    ancla(a15 && a15.fecha === '2026-12-08' && a15.pitch === 1, `AURUM D15 (PITCH v1) = ${a15 && a15.fecha} (esperado mar 8-dic)`);
+    ancla(a32 && a32.fecha === SAB2 && a33 && a33.fecha === LUN4, `AURUM D32/D33 = ${a32 && a32.fecha} / ${a33 && a33.fecha} (esperado sáb 2-ene / lun 4-ene)`);
     ancla(A.AURUM_DIAS[A.AURUM_DIAS.length - 1].fecha === '2027-05-25', 'AURUM D130 = mar 25-may');
-    const l15 = L.LIV_DIAS.find((x) => x.d === 15); ancla(l15 && l15.fecha === '2026-12-07' && l15.casoId === 3, `LIVIANO d15 = ${l15 && l15.fecha} (esperado LUNES CASO 3 el lun 7-dic)`);
+    const l15 = L.LIV_DIAS.find((x) => x.d === 15), l32 = L.LIV_DIAS.find((x) => x.d === 32), l33 = L.LIV_DIAS.find((x) => x.d === 33);
+    ancla(l15 && l15.fecha === '2026-12-08' && l15.casoId === 3, `LIVIANO d15 = ${l15 && l15.fecha} (esperado MARTES CASO 3 el mar 8-dic)`);
+    ancla(l32 && l32.fecha === SAB2 && l32.casoId == null && l33 && l33.fecha === LUN4 && l33.pretest, `LIVIANO d32/d33 = ${l32 && l32.fecha} / ${l33 && l33.fecha} (esperado sáb 2-ene lección / lun 4-ene con pre-test)`);
     ancla(L.LIV_DIAS[L.LIV_DIAS.length - 1].fecha === '2027-04-02', 'LIVIANO fin = vie 2-abr');
-    const r9 = RDp.DIAS.find((x) => x.code === 'R9'); ancla(r9 && r9.fecha === '2026-12-07' && r9.d === 8, `Research R9 = ${r9 && r9.fecha} (esperado lun 7-dic, d8)`);
+    const r9 = RDp.DIAS.find((x) => x.code === 'R9'), t3 = RDp.DIAS.find((x) => x.code === 'T-3'), t4 = RDp.DIAS.find((x) => x.code === 'T-4');
+    ancla(r9 && r9.fecha === '2026-12-09' && r9.d === 8, `Research R9 = ${r9 && r9.fecha} (esperado mié 9-dic, d8)`);
+    ancla(t3 && t3.fecha === SAB2 && t4 && t4.fecha === LUN4, `Research T-3/T-4 = ${t3 && t3.fecha} / ${t4 && t4.fecha} (esperado sáb 2-ene / lun 4-ene)`);
     ancla(S.SYN_DIAS.length === 137 && S.SYN_PLAN_META.fin === '2027-04-01', `SYNAPSE: ${S.SYN_DIAS.length} días · fin ${S.SYN_PLAN_META.fin} (esperado 137 · jue 1-abr)`);
     const s28 = S.synDiaDe('2026-11-28'); ancla(s28 && s28.d === 13 && s28.bloques.some((b) => b.tag === 'A'), 'SYNAPSE sáb 28-nov 21:00 = d13 con su A-unit');
+    ancla(!S.synRecDe('2026-11-28') && !!S.synRecDe('2027-01-03'), 'SYNAPSE: la sesión de recuperación va el dom 3-ene (no el sáb 28-nov)');
+    for (const f of ['2026-11-28', '2026-11-29', '2026-12-06']) ancla(!EX[f], `corrida_s1.extra ${f}: la recuperación por partes se retiró (v6.10c)`);
+    ancla(!RG.aurumLSabadoDe(SAB2), 'AURUM: el sáb 2-ene (sábado que recupera) no lleva «L de la semana»');
     // (s3) L de AURUM de los sábados de F1 ≤ 05:45; el vibecoding extra del sábado tras la L y ≥ 39′
     let nSab = 0;
     for (let s = '2026-11-21'; s <= FVs.FECHAS_V6.transicion.hasta; s = (() => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })()) {
@@ -1216,7 +1243,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     // (s5) aviso «Primera sesión» del SYNAPSE: nombra los días sin sesión y la sesión de recuperación
     const s1 = S.SYN_DIAS.find((x) => x.bloques.some((b) => b.tag === 'A'));
     const av = (s1 && (RG.guiaSynapseDe(s1.fecha) || {}).aviso) || '';
-    if (s1 && s1.fecha === '2026-11-18' && !(/Primera sesión\. Sale como día 3/.test(av) && /mar 17-nov/.test(av) && /sáb 28-nov a las 07:15/.test(av))) secErr.push(`(v610-s5) SYNAPSE mié 18: el aviso «Primera sesión» no nombra el mar 17 ni la sesión del sáb 28 07:15: «${av.slice(0, 160)}»`);
+    if (s1 && s1.fecha === '2026-11-18' && !(/Primera sesión\. Sale como día 3/.test(av) && /mar 17-nov/.test(av) && /carril del martes corre una semana/.test(av))) secErr.push(`(v610-s5) SYNAPSE mié 18: el aviso «Primera sesión» no nombra el mar 17 ni la cadena del carril del martes: «${av.slice(0, 160)}»`);
     console.log(`v6.10 · secundarios: mar 17 sin sesión · ${nEx} bloques extra de fin de semana con sesión y guía · anclas de identidad · ${nSab} L de AURUM de sábado ≤ 05:45 · LIVIANO casos/pre-test · SYNAPSE «Primera sesión»`);
   }
   for (const e of secErr) errores.push(e);
@@ -1287,12 +1314,13 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   const D = Un.DIAS, T2 = Un.DIAS_T2;
   const d1 = D[0];
   if (!d1 || d1.d !== 2 || !/lesión celular/.test(d1.sub) || d1.fecha !== '2026-11-19' || D.some((x) => /UWSA1/.test(x.sub))) nErr.push(`(v610-c) 1.ª fila de F1 = ${d1 && 'D' + d1.d} ${d1 && d1.fecha} ${d1 && d1.sub.slice(0, 30)} (se espera el D2 lesión celular del jue 19-nov y ningún UWSA1 en F1)`);
-  else { const p = PLn.plantillaDelDia(d1.fecha); const s = p.bloques.find((b) => b.id === 'syn'); const u = p.bloques.find((b) => b.id === 'usmle'); if (!s || s.ini !== '12:30') nErr.push(`(v610-c) ${d1.fecha}: el SYNAPSE no va a las 12:30 (${s && s.hora})`); if (!u || u.ini !== '07:15' || u.fin !== '12:00') nErr.push(`(v610-c) ${d1.fecha}: el bloque USMLE no es el normal 07:15-12:00 (${u && u.hora})`); }
+  // v6.10d: con el alias de corrida_s1 el D2 (fecha de plan jue 19) se hace el vie 20 y el NBME 25 (plan jue 10-dic) el vie 11-dic → se mira la plantilla del día REAL
+  else { const r1 = F6n.fechaRealDe(d1.fecha, 'usmle'); const p = PLn.plantillaDelDia(r1); const s = p.bloques.find((b) => b.id === 'syn'); const u = p.bloques.find((b) => b.id === 'usmle'); if (!s || s.ini !== '12:30') nErr.push(`(v610-c) ${r1} (plan ${d1.fecha}): el SYNAPSE no va a las 12:30 (${s && s.hora})`); if (!u || u.ini !== '07:15' || u.fin !== '12:00' || (u.fechaPlan || r1) !== d1.fecha) nErr.push(`(v610-c) ${r1} (plan ${d1.fecha}): el bloque USMLE no es el normal 07:15-12:00 del D2 (${u && u.hora} · plan ${u && u.fechaPlan})`); }
   const uw1 = T2.find((x) => x.tipo === 'hito' && x.dOrig === 1);
   if (!uw1 || uw1.t !== 82 || uw1.fecha !== '2027-06-29' || !T2.some((x) => x.t === 83 && x.tipo === 'day_after' && /UWSA1/.test(x.sub))) nErr.push(`(v610-c) el UWSA1 no está en el tramo 2 en T82 (mar 29-jun-2027) con su Day-After en T83 (${uw1 ? 'T' + uw1.t + ' ' + uw1.fecha : '—'})`);
   const n25 = D.find((x) => /NBME 25/.test(x.sub));
   if (!n25 || n25.fecha !== '2026-12-10' || n25.d !== 8) nErr.push(`(v610-c) NBME 25 = ${n25 && 'D' + n25.d + ' ' + n25.fecha} (se espera D8 jue 10-dic)`);
-  else { const b = PLn.plantillaDelDia(n25.fecha).bloques.find((y) => y.id === 'usmle'); if (!b || b.ini !== '07:00' || b.fin !== '12:30') nErr.push(`(v610-c) NBME 25: bloque ${b && b.hora} (≠ 07:00-12:30)`); }
+  else { const r25 = F6n.fechaRealDe(n25.fecha, 'usmle'); const b = PLn.plantillaDelDia(r25).bloques.find((y) => y.id === 'usmle'); if (!b || b.ini !== '07:00' || b.fin !== '12:30' || (b.fechaPlan || r25) !== n25.fecha) nErr.push(`(v610-c) NBME 25 (plan ${n25.fecha} → real ${r25}): bloque ${b && b.hora} (≠ 07:00-12:30 del plan ${n25.fecha})`); }
   if ('f1_extra' in F6j.step1) nErr.push('(v610-c) _fechas_v6.json › step1.f1_extra sigue ahí (retirado en la v6.10b)');
   { const p2 = PLn.plantillaDelDia('2027-01-02'); const st = p2.bloques.filter((b) => ['usmle', 'usmle2', 'usmle3', 'eval', 'anki-sab'].includes(b.id)); if (st.length || UGn.guiaUsmleDe('2027-01-02').length) nErr.push(`(v610-c) sáb 2-ene: bloques o guía de Step (${st.map((b) => b.id).join(', ') || 'guía'}) — ya no es mañana de Step`); }
   const ultS = F6n.DERIVADOS_V6.ultimoStepF1;
@@ -1332,15 +1360,37 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     const ord = [...M].sort((a, b) => (a.fecha < b.fecha ? -1 : 1));
     ord.forEach((r, i) => { if (r.dia !== i + 1) nErr.push(`(v610-e) mantenimiento: ${r.fecha} es dia ${r.dia} y por fecha toca ${i + 1}`); });
     for (const r of M.filter((x) => x.tipo === 'mini_sim')) if (r.simN !== r.dia) nErr.push(`(v610-e) mini-sim ${r.fecha}: sim_n ${r.simN} ≠ dia ${r.dia}`);
-    const ESPd = { '2026-11-18': 1, '2026-11-20': 3, '2026-11-23': 4, '2026-11-27': 8, '2026-11-29': 9, '2026-11-30': 10, '2026-12-31': 32, '2027-01-04': 33, '2027-03-12': 82 };
+    // v6.10c: sin el dom 29-nov; el dia 32 es el sáb 2-ene (fin de semana que recupera, corrida_s1.extra)
+    // v6.10d (mié 18-nov · alias de corrida_s1: jue 19-nov → vie 1-ene hacen el plan del hábil anterior): el SQL, Supabase, los runners y el daemon siguen
+    //   con la fecha de PLAN; diaActual(día real) = el dia de su fecha de plan (fechaPlanDe): jue 19 = 1 · vie 20 = 2 · lun 23 = 3 (mini-sim del vie 20) …
+    //   vie 1-ene = 31 (el del jue 31-dic) · sáb 2-ene = 32 · desde el lun 4-ene, por fecha. El mié 18 (sin sesión) y el fin de semana sin sesión
+    //   enseñan la próxima sesión (la del día real siguiente con plan).
+    const ESPd = { '2026-11-18': 1, '2026-11-19': 1, '2026-11-20': 2, '2026-11-21': 3, '2026-11-23': 3, '2026-11-27': 7, '2026-11-30': 8, '2026-12-01': 9, '2026-12-04': 12, '2026-12-11': 17, '2026-12-14': 18, '2026-12-18': 22, '2026-12-21': 23, '2026-12-28': 27, '2026-12-31': 30, '2027-01-01': 31, '2027-01-02': 32, '2027-01-04': 33, '2027-03-12': 82 };
     for (const [iso, d] of Object.entries(ESPd)) { const v = EPn.diaActual('ENCAPS', F6j.f1.inicio, 82, iso); if (v !== d) nErr.push(`(v610-e) diaActual(${iso}) = ${v} (se espera ${d})`); }
+    // v6.10d: cada día real del 18-nov al 4-ene → el dia de la fila del SQL con su fecha de PLAN (fechaPlanDe), y cada fila del SQL se pinta en su día real
+    //   (fechaRealDe) con el bloque ENCAPS de esa fecha de plan
+    for (let iso = addDias(F6j.f1.inicio, 0); iso <= '2027-01-04'; iso = addDias(iso, 1)) {
+      const fp = F6n.fechaPlanDe(iso, 'encaps'), r = M.find((x) => x.fecha === fp);
+      if (r && EPn.diaActual('ENCAPS', F6j.f1.inicio, 82, iso) !== r.dia) nErr.push(`(v610-e) diaActual(${iso}) ≠ dia ${r.dia} de su fecha de plan ${fp}`);
+    }
+    for (const r of M) {
+      const real = F6n.fechaRealDe(r.fecha, 'encaps'), p = PLn.plantillaDelDia(real);
+      if (!p.bloques.some((b) => b.plan === 'encaps' && b.id === 'encaps' && (b.fechaPlan || real) === r.fecha)) nErr.push(`(v610-e) fila dia ${r.dia} (plan ${r.fecha}): el día real ${real} no trae su bloque ENCAPS con esa fecha de plan`);
+    }
     try {
       const H = leer(cpx.execFileSync('git', ['show', 'e34e1ad:DATA/_scripts/_encaps_mantenimiento_2027.sql'], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8', maxBuffer: 64 << 20 }));
-      const a = H.filter((x) => x.dia >= 10).map((x) => x.l).join('\n'), b = M.filter((x) => x.dia >= 10).map((x) => x.l).join('\n');
-      if (a !== b) nErr.push('(v610-f) mantenimiento ENCAPS: las filas dia ≥ 10 cambiaron respecto a la v6.09 (e34e1ad)');
+      // v6.10c (corrimiento literal): las 27 filas de banco de la v6.09, en el MISMO orden y con el mismo contenido (sin dia/fecha/weekday), y los 5 mini-sims
+      //   en sus mismos viernes con el mismo contenido (salvo sim_n = dia); antes: «filas dia ≥ 10 idénticas»
+      const sinF = (l) => l.replace(/^\('ENCAPS',\d+,'[\d-]+','[^']+',/, '').replace(/"sim_n":\d+/, '"sim_n":N');
+      const byF = (x, y) => (x.fecha < y.fecha ? -1 : 1);
+      const bancoH = H.filter((x) => x.tipo !== 'mini_sim').sort(byF).map((x) => sinF(x.l)), bancoM = M.filter((x) => x.tipo !== 'mini_sim').sort(byF).map((x) => sinF(x.l));
+      if (JSON.stringify(bancoH) !== JSON.stringify(bancoM)) nErr.push('(v610-f) mantenimiento ENCAPS: las filas de banco no son las de la v6.09 (e34e1ad) en el mismo orden');
+      const simH = H.filter((x) => x.tipo === 'mini_sim').map((x) => x.fecha + sinF(x.l)), simM = M.filter((x) => x.tipo === 'mini_sim').map((x) => x.fecha + sinF(x.l));
+      if (JSON.stringify(simH) !== JSON.stringify(simM)) nErr.push('(v610-f) mantenimiento ENCAPS: los mini-sims no están en los mismos viernes con el mismo contenido que en la v6.09 (e34e1ad)');
+      if (M.length !== H.length || M[M.length - 1].fecha !== '2027-01-02') nErr.push(`(v610-f) mantenimiento ENCAPS: ${M.length} filas (v6.09: ${H.length}) · última ${M[M.length - 1] && M[M.length - 1].fecha} (se espera el sáb 2-ene)`);
     } catch (e) { /* sin el commit: no se compara */ }
   }
-  console.log(`v6.10 · núcleo: mar 17 sin sesión · ${nX} bloques de corrida_s1.extra con su bloque · Step D2 jue 19 (nivel 0; UWSA1 → T82) · NBME 25 jue 10-dic · sin sábados de Step · pausa desde el ${addDias(ultS, 1)} · Anki 18-24 nov · ENCAPS dia por fecha + diaActual + sim_n · tramo 2 y filas dia ≥ 10 = v6.09`);
+  console.log(`v6.10 · núcleo: mar 17 sin sesión · ${nX} bloques de corrida_s1.extra con su bloque · Step D2 jue 19 (nivel 0; UWSA1 → T82) · NBME 25 jue 10-dic · sin sábados de Step · pausa desde el ${addDias(ultS, 1)} · Anki 18-24 nov · ENCAPS dia por fecha + diaActual + sim_n · tramo 2 = v6.09 · filas de banco de la v6.09 en orden (v6.10c: dia 32 = sáb 2-ene)`);
   for (const e of nErr) errores.push(e);
 }
 

@@ -1107,6 +1107,61 @@ const fS0 = (sl) => (filaF1(sl) || { fecha: 'sin fecha' }).fecha;
   }
 }
 
+// ── v6.10 · ESTRUCTURA BASE CERO (18-nov-2026): fase Palmerton + método por sistema (DATA/USMLE/PALMERTON_ESTRUCTURA_BASE_CERO.md) ──
+//   (1) src/lib/usmlePalmertonFases.ts = gen_palmerton_fases.js (una fase y, si la fila tiene sistema, un método por cada una de las filas; ajustes solo de modo)
+//   (2) F1 (nivel 0-1 hasta el gate del 80 %): ningún paso cronometrado fuera del día del NBME 25 · (3) cada mañana de contenido de F1 lleva su MÉTODO DEL DÍA
+{
+  const rp = require('child_process').spawnSync(process.execPath, [path.join(__dirname, 'gen_palmerton_fases.js'), '--check'], { encoding: 'utf8' });
+  ok(rp.status === 0, 'v6.10 · usmlePalmertonFases.ts = gen_palmerton_fases.js --check (fase Palmerton + método por fila; ajustes de modo sin tocar fechas, qDia ni nivelUW)', `${(rp.stdout || '').trim()}${(rp.stderr || '').trim()}`.split('\n').pop());
+  const G10 = cargarModuloTS(path.join('src', 'lib', 'usmleGuia.ts'));
+  const timed = [], sinMetodo = [];
+  for (const r of DIAS) {
+    if (/🎯/.test(r.sub)) continue;
+    const gs = G10.guiaUsmleDe(r.fecha);
+    for (const g of gs) for (const p of g.pasos) if (/\btimed\b/i.test(p.que)) timed.push(`${r.fecha} ${g.franja.slice(0, 5)} «${p.que.slice(0, 40)}»`);
+    if (!gs.some((g) => g.pasos.some((p) => /MÉTODO DEL DÍA \(Palmerton/.test(p.como || '')))) sinMetodo.push(`D${r.d} ${r.fecha}`);
+  }
+  ok(timed.length === 0 && sinMetodo.length === 0, 'v6.10 · F1 en nivel 0-1: 0 pasos cronometrados fuera del NBME 25 y el MÉTODO DEL DÍA (Palmerton) en cada mañana de contenido',
+    [...timed, ...sinMetodo.map((x) => `sin método: ${x}`)].slice(0, 8).join(' · ') || `${DIAS.filter((r) => !/🎯/.test(r.sub)).length} mañanas`);
+}
+// v6.10 (fix revisión 18-nov): (4) «preguntas primero»: el MÉTODO AL RESPONDER del día (sus trampas) no va en el paso de responder ni antes, en las preguntas a
+//   fondo del nivel 0 ni en el pre-test ciego (va en el Educational Objective / la bitácora), y sin la etiqueta doble «Trampa del día: trampas:» · (5) la capa
+//   pone eval18F3 SOLO en las filas de F3 cuyas 18:00 son una evaluación (EVALUACIÓN ACUMULATIVA o el 6/6 comprimido; la T1, sin guía, por la plantilla) y esas
+//   18:00 llevan el texto del ajuste · (6) la rama Tutor existe en el paso de ARMAR de la 16:15 REENTRADA y de la eval de F3, y el título de la 16:15 lo dice
+{
+  const G11 = cargarModuloTS(path.join('src', 'lib', 'usmleGuia.ts'));
+  const FP = cargarModuloTS(path.join('src', 'lib', 'usmlePalmertonFases.ts'));
+  const malT = [], malE = [], malR = []; let nT = 0, nE = 0, nR = 0;
+  for (const r of DIAS) {
+    if (/🎯/.test(r.sub)) continue;
+    for (const g of G11.guiaUsmleDe(r.fecha)) {
+      if (/Trampa del día: trampas?:/.test(g.pasos.map((p) => p.como || '').join(' '))) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: etiqueta doble «Trampa del día: trampas:»`);
+      if (!/PREGUNTA \d+\/\d+ a fondo|PRE-TEST/.test(g.titulo)) continue;
+      const iResp = g.pasos.findIndex((p) => /^Leer con las opciones tapadas|\d+Q ciegas/.test(p.que));
+      const iMet = g.pasos.findIndex((p) => /MÉTODO AL RESPONDER|Trampa del día/.test(p.como || ''));
+      if (iResp < 0) { malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: no encuentro el paso de responder`); continue; }
+      nT++;
+      if (iMet < 0) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: sin el método al responder del día (después de responder)`);
+      else if (iMet <= iResp) malT.push(`${r.fecha} ${g.franja.slice(0, 5)}: el método al responder va ANTES de responder (paso ${iMet + 1} ≤ ${iResp + 1})`);
+    }
+  }
+  const AJ_EVAL = FP.AJUSTES_PALMERTON.eval18F3;
+  for (const r of DIAS_T2.filter((x) => x.fase === 'F3')) {
+    const fp = FP.fasePalmertonDe(r.d); const tiene = !!(fp && fp.ajustes.includes('eval18F3'));
+    const gs = G11.guiaUsmleDe(r.fecha); const g18 = gs.find((g) => g.franja === '18:00–18:45');
+    const esEval = !!(g18 && (/^EVALUACIÓN ACUMULATIVA/.test(g18.titulo) || / \+ eval 10Q/.test(g18.titulo)));
+    const conTxt = !!(g18 && g18.pasos.some((p) => (p.como || '').includes(AJ_EVAL)));
+    if (gs.length) { nE++; if (tiene !== esEval || esEval !== conTxt) malE.push(`T${r.t} ${r.fecha}: capa ${tiene ? 'con' : 'sin'} eval18F3 · 18:00 «${g18 ? g18.titulo.slice(0, 45) : '—'}» ${conTxt ? 'con' : 'sin'} el texto del ajuste`); }
+    else if (tiene && r.tipo !== 'reentrada') malE.push(`T${r.t} ${r.fecha}: eval18F3 en una fila sin guía que no es la REENTRADA (T1)`);
+    const g16 = gs.find((g) => g.franja === U.FRANJA_F3_REENTRADA.hora);
+    const armaTutor = (g) => g.pasos.some((p) => /^Armar/.test(p.que) && /si no, Tutor/.test(p.como || ''));
+    if (g16) { nR++; if (!/timed solo con gate/.test(g16.titulo) || !armaTutor(g16)) malR.push(`T${r.t} ${r.fecha} 16:15: sin la rama Tutor en el título o en el paso de armar`); }
+    if (esEval) { nR++; if (!armaTutor(g18)) malR.push(`T${r.t} ${r.fecha} 18:00: sin la rama Tutor en el paso de armar`); }
+  }
+  ok(malT.length === 0 && malE.length === 0 && malR.length === 0, 'v6.10 (fix revisión 18-nov) · el método al responder del día DESPUÉS de responder (nivel 0 y pre-test) · eval18F3 de la capa = las 18:00 de F3 que son evaluación, con su texto · rama Tutor en el paso de armar de la 16:15 y de la eval de F3',
+    [...malT, ...malE, ...malR].slice(0, 8).join(' · ') || `${nT} bloques de responder · ${nE} filas de F3 con guía (eval18F3 en ${Object.values(FP.FASE_FILA).filter((x) => x.ajustes.includes('eval18F3')).length}) · ${nR} pasos de armar`);
+}
+
 fs.rmSync(TMP, { recursive: true, force: true });
 console.log(fallos.length ? `\n✗ ${fallos.length} verificación(es) FALLAN: ${fallos.join(' | ')}` : '\n✓ todas las verificaciones del Lote 1A pasan');
 process.exit(fallos.length ? 1 : 0);

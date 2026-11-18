@@ -1,7 +1,7 @@
-# Building with the Claude API (Anthropic Skilljar)
+# Building with the Claude API (Anthropic Academy)
 
-> URL: https://anthropic.skilljar.com/claude-with-the-anthropic-api
-> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · URL verificada 200 con check_links.js.
+> URL: https://academy.claude.com/courses/building-with-the-claude-api
+> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · v6.10c (17-nov-2026): enlace a academy.claude.com (Skilljar cierra en diciembre; slug verificado en la Academy).
 > Verificación: CONFIRMADA.
 
 1. **[Introduction]** Welcome to the course · Anthropic overview · Overview of Claude models

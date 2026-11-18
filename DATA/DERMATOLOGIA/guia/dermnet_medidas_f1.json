@@ -6,7 +6,7 @@
   "regla": "min = palabras / 100 + 0,25′ por imagen (regla fija de lectura en inglés); razón necesario/asignado 0,85-1,15 (gen_derma_guia.js lo comprueba)",
   "alcance": "el de la guía anterior al lote 1-bis: TODAS las imágenes de la página del átomo + clínica + diagnóstico diferencial (si la página no lo tiene, su sustituto: las complicaciones o, si tampoco las tiene, el diagnóstico); se conserva lo que añadió el lote 1-bis (qué es; causa y tratamiento del acné).",
   "fuera": "lo que no está en el alcance (epidemiología, causas, tratamiento, pronóstico…) no forma parte del átomo: el atlas es imagen + clínica + diferencial. Lo que es del átomo y no cabe lleva fecha («aOtroDia») y sus minutos en el paso de destino.",
-  "uso": "src/lib/dermaGuia.ts › paso «DermNet · atlas del átomo» del PLAN B de las sesiones de F1 (≤ 3-ene-2027), por fecha; el resto de la franja, al proyecto Claude «AESTHETIC DERMATOLOGY» (variable de ajuste: 0′ o ≈5′ por viñeta)",
+  "uso": "src/lib/dermaGuia.ts › paso «DermNet · atlas del átomo» del PLAN B de las sesiones de F1 (≤ 3-ene-2027), por fecha; el resto de la franja, al paso de práctica REAL (v6.10e: casos DermNet Quizzes / ProMIR del mapa DERMA_QUIZ_F1; variable de ajuste, 0′ si el atlas llena la franja)",
   "alcance2027": "sin medir en la guía (otro lote)"
  },
  "paginas": {
@@ -709,7 +709,7 @@
      "How is psoriasis diagnosed?"
     ]
    },
-   "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no hay viñetas del proyecto Claude"
+   "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no queda hueco para el paso de casos reales"
   },
   "2026-12-08": {
    "atlas": "atopic-dermatitis",
@@ -729,7 +729,7 @@
      ]
     }
    ],
-   "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no hay viñetas del proyecto Claude"
+   "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no queda hueco para el paso de casos reales"
   },
   "2026-12-10": {
    "atlas": "acne",

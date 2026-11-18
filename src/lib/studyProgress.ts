@@ -4,6 +4,8 @@
  * empezamos de cero. `hoyD` se usa solo para resaltar el día de hoy (no para contar).
  * Compartido USMLE + MIR.
  */
+import { fechaRealDe } from './fechasV6'; // v6.10d: planHoyD salta a la siguiente fila por su día REAL (alias de corrida_s1)
+
 export interface DiaBase { d: number; fecha: string; }
 
 export interface GrupoProgreso<T extends DiaBase> {
@@ -53,7 +55,10 @@ export function planHoyD(dias: DiaBase[], iso: string): number {
   if (!dias.length) return 1;
   const exact = dias.find((x) => x.fecha === iso);
   if (exact) return exact.d;
-  const next = dias.find((x) => x.fecha > iso);
+  // v6.10d (fix revisión 18-nov): la siguiente fila por su día REAL (alias de corrida_s1: el plan del vie 27-nov se hace el lun 30). Un fin de semana o el
+  //   vie 25-dic dentro de la ventana del alias (fechaPlanDe los devuelve tal cual) mostraban la fila del MARTES real (plan lun 30 / lun 28-dic) y el hub se
+  //   saltaba la sesión del lunes real. En un día hábil de plan no cambia nada (ninguna fila anterior se hace después de él); sin alias, real = plan.
+  const next = dias.find((x) => fechaRealDe(x.fecha) > iso);
   if (next) return next.d;
   return dias[dias.length - 1].d;
 }

@@ -9,6 +9,9 @@
 > El MÉTODO GENERAL (pre-test ciego, banqueo con clave, repaso espaciado, FSRS, registro de errores, simulacro en condiciones reales)
 > es el mismo del Step 1 y ya está escrito en el repo (`SISTEMA_LOOP_DIARIO.md`, `METODO_SIMULACRO_ENCAPS.md`, `META_NIVEL_METODO_ENCAPS.md`).
 > Aquí solo va lo ESPECÍFICO del ENCAPS.
+> **v6.10 (mié 18-nov):** el MÉTODO POR SECTOR (qué se memoriza, qué se razona, trampas entre vecinos, banqueo, y las 4 fases sobre las fechas de
+> este plan), sintetizado de YouTube → NotebookLM y cruzado con el v3: `METODO_POR_SECTOR_NLM.md`. En la app: «Método <área>» en las sesiones de la
+> teoría y «Trampas <área>» en la corrección del banqueo de F1, después de responder (fix del 18-nov: antes iban antes de responder) (`_encaps_manana_v607.json` → `_meta.metodo_sector`); sin cambiar minutos ni fechas.
 
 ---
 

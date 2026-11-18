@@ -100,12 +100,20 @@
 //    (hábil EXTRA de _fechas_v6.json › corrida_s1.extra[fecha].aurum, primer domingo con hueco real tras el viaje) → desde el D15 (PITCH v1, lun 7-dic)
 //    TODO idéntico a la v6.09 (fin mar 25-may). La L del D14 sigue los sábados (rutinaGuia.aurumF1: un hábil en domingo manda su «fuera» al sábado
 //    siguiente). Un día extra nunca es SKIP, protegido ni día sin sesión (ABORTA).
+// v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el hábil extra pasa al SÁB 2-ENE 14:30-15:30
+//    (corrida_s1.extra['2027-01-02'].aurum) → D1-D31 corren UN hábil (D1 mié 18-nov … D14 lun 7-dic · PITCH v1 D15 MAR 8-DIC … D31 jue 31-dic) y el D32 va
+//    el sáb 2-ene; desde el D33 (lun 4-ene) todo idéntico (PITCH v2-v7 y fin mar 25-may sin cambio). Las L de los sábados las recalcula rutinaGuia.aurumF1
+//    (el sáb 2-ene no es sábado de L: lo que no cabe del 28-dic al 2-ene va adelantado al sáb 26-dic, hilo de Tracy).
 // v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (se eliminan los v5.20 22-feb / 9-mar /
 //    10-mar; entran vie 12-mar, lun 15-mar y la Semana Santa jue 25 / vie 26-mar) → 130 hábiles mié 7-oct-2026 → JUE 15-ABR-2027
 //    (D96 lun 22-feb · pitch v5 D95 vie 19-feb = · v6 D115 mar 23-mar · v7 D130 jue 15-abr). DJ-4: desde la F2 (encaps.intensiva_desde =
 //    lun 4-ene-2027) AURUM va a 30' (14:15-14:45) = el `min` núcleo de la fila; los bloques extra quedan opcionales → campo por fila
 //    `min30: fecha >= intensiva_desde` (la UI muestra 30'). Nada se recorta: mismas 130 lecciones, mismo orden.
-// Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD
+// v6.10e (18-nov-2026 · BASE CERO, orden de Joseph «todos partimos de cero»): las 130 lecciones, fechas y minutos NO cambian. La progresión de un closer que
+//   empieza (A escucha y preguntas F1-F3 → B oferta y objeciones F4-F5 → C cierre F6-F7) ya es la del currículo; lo nuevo vive en la guía (rutinaGuia.ts ›
+//   AURUM_BASE_CERO: etapa + criterio observable de paso de fase sobre los ítems de la rúbrica del PITCH) y en DATA/AURUM/METODO_BASE_CERO.md. AURUM no tiene
+//   preguntas de evaluación (solo role-plays y rúbrica): nada que sustituir. Este generador gana `--check` (compara sin escribir).
+// Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD   ·   comprobar: node DATA/_scripts/gen_aurum_plan.js --check
 const fs = require('fs');
 const path = require('path');
 
@@ -126,7 +134,8 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-11-18'; // v6.10 (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el dom 6-dic → desde el D15 lun 7-dic igual que la v6.09) · v6.09: 2026-11-17 · default = D1 v6.09 (mar 17-nov: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const CHECK = process.argv.includes('--check'); // v6.10e (18-nov-2026): `--check` = genera en memoria y compara con src/lib/aurumDailyPlan.ts sin escribir (como gen_liviano_plan)
+const START_ISO = process.argv.slice(2).find((x) => !x.startsWith('--')) || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el D33 lun 4-ene igual que la v6.09; v6.10: dom 6-dic) · v6.09: 2026-11-17 · default = D1 v6.09 (mar 17-nov: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 // v6.00 (6-oct-2026): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js aborta si no cuadra con sus derivaciones).
 // SKIP v6 = 25-dic · 31-dic · 1-ene · jue 25 / vie 26-mar-2027 · PROTEGIDOS v6 = vie 12-mar · sáb 13 · dom 14-mar · lun 15-mar · sáb 25-sep ·
@@ -139,7 +148,7 @@ const PROTEGIDOS = new Set(F6.protegidos.map((x) => x.fecha));
 /** v6.00 (DJ-4): desde la F2 (lun 4-ene-2027) AURUM = 30' (14:15-14:45) = `min` núcleo; el resto, opcional. */
 const MIN30_DESDE = F6.encaps.intensiva_desde;
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].aurum = franja; dom 6-dic 07:15-08:15: recupera el mar 17) desde el START
+// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].aurum = franja; v6.10c: sáb 2-ene 14:30-15:30 · v6.10: dom 6-dic 07:15-08:15: recupera el mar 17) desde el START
 const EXTRA_AURUM = new Map(Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.aurum && f >= START_ISO).map(([f, x]) => [f, x.aurum]));
 for (const f of EXTRA_AURUM.keys()) {
   const w = new Date(f + 'T12:00:00Z').getUTCDay();
@@ -383,14 +392,18 @@ export function aurumObsUrl(nota?: string): string | null {
 }
 `;
 
-fs.writeFileSync(path.join(ROOT, 'src/lib/aurumDailyPlan.ts'), ts, 'utf8');
+const OUT_TS = path.join(ROOT, 'src/lib/aurumDailyPlan.ts');
+if (CHECK) {
+  const sinCR = (x) => x.split(String.fromCharCode(13, 10)).join(String.fromCharCode(10));
+  if (!fs.existsSync(OUT_TS) || sinCR(fs.readFileSync(OUT_TS, 'utf8')) !== sinCR(ts)) { console.error(`✗ gen_aurum_plan --check: src/lib/aurumDailyPlan.ts NO está al día (regenerar: node DATA/_scripts/gen_aurum_plan.js ${START_ISO})`); process.exit(1); }
+} else fs.writeFileSync(OUT_TS, ts, 'utf8');
 
 // ─── Verificaciones de salida ───
 const finSemana = dias.filter((x) => (x.wd === 'Sáb' || x.wd === 'Dom') && !EXTRA_AURUM.has(x.fecha)); // v6.10: salvo los hábiles extra (corrida_s1.extra)
 for (const f of EXTRA_AURUM.keys()) if (!dias.some((x) => x.fecha === f)) throw new Error(`v6.10: el hábil extra ${f} quedó sin lección`);
 const semanasCubiertas = new Set(dias.map((x) => x.semana));
 const minFuera = dias.filter((x) => x.min < 30 || x.min > 60);
-console.log('OK src/lib/aurumDailyPlan.ts');
+console.log(CHECK ? `✓ gen_aurum_plan --check: src/lib/aurumDailyPlan.ts al día (START ${START_ISO})` : 'OK src/lib/aurumDailyPlan.ts');
 console.log('  inicio:', dias[0].fecha, '· fin:', finISO, '· totalDias:', TOTAL, '· semanas:', SEMANAS);
 console.log('  ventana:', '14:15–15:15');
 console.log('  días en fin de semana:', finSemana.length, '(debe ser 0)');

@@ -34,6 +34,10 @@
  *  · v6.10 · tanda C (17-nov-2026 · decidido con Joseph en el chat MIR): MIR_METODO lleva el estado real del mazo de Ravi («1º VUELTA», ya en Anki, 851
  *    tarjetas suspendidas) y las tarjetas por subtema contadas (raviPorCap); --check exige en D1-D76 las reglas A (la hora empieza con preguntas; Anki solo
  *    repasa), B (sin importar nada; reactivación POR SUBTEMA al terminarlo, al final del día) y D (el pre-test no muestra la sección antes de contestar).
+ *  · v6.10 · base cero (18-nov-2026 · Joseph: «todos estamos partiendo de CERO … las preguntas tienen que ser REALES»): MIR_METODO.fases (metodo_ravimedtest.json:
+ *    F1 BASE nivel 1 D1-D32 · F2 CONSOLIDACIÓN niveles 1-2 D33-D76 · F3 DISCRIMINATIVA nivel 3 D77-D78 + banqueo; puerta de avance medida en el log). --check
+ *    exige en cada día su FASE (aviso), el quiz al nivel de su fase, el criterio APEX de su fase, en F1 la LECTURA DE BASE en orden y el pre-test como línea
+ *    base, ninguna sección saltada por acertar el pre-test (1.ª vuelta) y ningún paso —plan ni banqueo— con preguntas que no sean MIR oficiales.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */
@@ -77,7 +81,20 @@ const metodo = {
   nuevasBase1V: MJ.anki.nuevasBase1V, nuevasBaseBanqueo: MJ.anki.nuevasBaseBanqueo, umbralVencidas: MJ.anki.umbralVencidas,
   relMin: MJ.relacional.min, relMin1dia: MJ.relacional.min1dia, raviCarpeta: MJ.relacional.raviCarpeta, raviBusca: MJ.relacional.raviBusca, seccionNota: MJ.relacional.seccionNota,
   videos: MJ.videos, asignaturas: metodoAsig,
+  // v6.10 · base cero (18-nov-2026): fases de la 1.ª vuelta (nivel de aprovechamiento de cada pregunta + puerta de avance) → mirGuia.mirFaseDe
+  fases: (MJ.fases || []).map((f) => ({ n: f.n, id: f.id, nombre: f.nombre, dDesde: f.dDesde, dHasta: f.dHasta, banqueo: !!f.banqueo, tramo: f.tramo, pretest: f.pretest || '', lectura: f.lectura || '', quiz: f.quiz, apex: f.apex, avance: f.avance })),
 };
+// v6.10 · base cero: las fases cubren D1-D78 sin huecos ni solapes, en orden, y la última lleva el banqueo
+{
+  const F = metodo.fases; const nDias = MD.MIR_DIAS.length;
+  if (!F.length) aborta('metodo_ravimedtest.json: faltan las fases de la 1.ª vuelta (v6.10 · base cero)');
+  F.forEach((f, i) => {
+    if (f.n !== i + 1) aborta(`metodo_ravimedtest.json: la fase ${i + 1} se numera ${f.n}`);
+    if (f.dDesde !== (i ? F[i - 1].dHasta + 1 : 1)) aborta(`metodo_ravimedtest.json: la fase ${f.n} empieza en D${f.dDesde} (hueco o solape)`);
+    if (!(f.dHasta >= f.dDesde) || !f.quiz || !f.apex || !f.avance) aborta(`metodo_ravimedtest.json: la fase ${f.n} está incompleta`);
+  });
+  if (F[F.length - 1].dHasta !== nDias || !F[F.length - 1].banqueo) aborta(`metodo_ravimedtest.json: la última fase debe acabar en D${nDias} y llevar el banqueo`);
+}
 
 // ── D1-D10 medidos ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 const q = (x) => { const o = { id: x.promir, url: x.url }; if (x.seccion !== undefined) o.seccion = x.seccion; if (x.fuente === 'pool app' && x.id) o.pool = x.id; return o; };
@@ -185,6 +202,13 @@ export interface MirMetodo {
   nuevasBase1V: number; nuevasBaseBanqueo: number; umbralVencidas: number;
   relMin: number; relMin1dia: number; raviCarpeta: string; raviBusca: string; seccionNota: string;
   videos: Record<string, { t: string; url: string }>; asignaturas: Record<number, MirMetodoAsig>;
+  /** v6.10 · base cero (18-nov-2026): fases de la 1.ª vuelta (D1-D78 + banqueo): nivel de aprovechamiento de cada pregunta, criterio de APEX y puerta de avance */
+  fases: MirFase[];
+}
+/** v6.10 · base cero: una fase de la 1.ª vuelta MIR (DATA/MIR/metodo_ravimedtest.json › fases · DATA/MIR/METODO_BASE_CERO.md). */
+export interface MirFase {
+  n: number; id: string; nombre: string; dDesde: number; dHasta: number; banqueo: boolean; tramo: string;
+  pretest: string; lectura: string; quiz: string; apex: string; avance: string;
 }
 export const MIR_METODO: MirMetodo = ${J2(metodo)};
 `;
@@ -237,7 +261,38 @@ function validarTodo(tsDatos) {
     const g = MG.mirGuiaDe(d.fecha);
     const anki = g.pasos.find((p) => /^Anki /.test(sinH(p.que)));
     if (anki && !(anki.que.includes(metodo.mazoPersonal) && anki.que.includes(metodo.mazoBase))) errores.push(`D${d.d}: el paso Anki no lleva el mazo personal y el de Ravi`);
-    if (!g.pasos.some((p) => /APEX en /.test(p.que) && /nivel 3-4\/5/.test(p.como))) errores.push(`D${d.d}: el paso APEX no lleva el criterio de tarjeta de Ravi`);
+    // v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles de nivel 3-4/5 son de la fase 3)
+    const fz = metodo.fases.find((f) => d.d >= f.dDesde && d.d <= f.dHasta);
+    if (!g.pasos.some((p) => /APEX en /.test(p.que) && p.como.includes(`Criterio de la fase ${fz.n}`) && /nivel 3-4\/5/.test(p.como))) errores.push(`D${d.d}: el paso APEX no lleva el criterio de tarjeta de la fase ${fz.n} (Ravi)`);
+  }
+  // v6.10 · base cero (18-nov-2026 · Joseph: «todos estamos partiendo de CERO»; «las preguntas tienen que ser preguntas REALES»): cada día del plan dice su FASE,
+  //   el quiz comenta al NIVEL de su fase, F1 (D1-D32) lee la base en orden sin saltar nada y su pre-test es línea base; en ningún día de la 1.ª vuelta se
+  //   salta una sección por acertar el pre-test; ningún paso (plan + banqueo) pide preguntas que no sean MIR oficiales con su año-número
+  const RX_INVENTADAS = /genera\w*\s+\d+\s*(preguntas|Q\b)|preguntas (propias|inventadas|generadas|de Claude)|proyecto claude|viñetas? (propias|de Claude|espejo)/i;
+  let nFase = 0;
+  for (const d of MDD.MIR_DIAS) {
+    const g = MG.mirGuiaDe(d.fecha);
+    const fz = metodo.fases.find((f) => d.d >= f.dDesde && d.d <= f.dHasta);
+    if (!fz) { errores.push(`D${d.d}: sin fase`); continue; }
+    if (!(g.aviso || '').includes(`FASE ${fz.n} de la 1.ª vuelta`)) errores.push(`D${d.d}: la guía no dice su fase (FASE ${fz.n} de la 1.ª vuelta)`); else nFase++;
+    if (g.pasos.some((p) => RX_INVENTADAS.test(`${p.que} ${p.como}`))) errores.push(`D${d.d}: un paso pide preguntas que no son MIR oficiales`);
+    if (d.d > MDD.MIR_TEMAS_TOTAL) continue;
+    const quiz = g.pasos.find((p) => /Q comentadas \(máx\./.test(sinH(p.que)));
+    const nivel = fz.n === 1 ? 'Nivel 1 (fase 1' : 'Niveles 1-2 (fase 2';
+    if (!quiz || !quiz.como.includes(nivel)) errores.push(`D${d.d}: el quiz no comenta al nivel de su fase («${nivel}»)`);
+    const lec = g.pasos.find((p) => /^LECTURA (DE BASE|DIRIGIDA)/.test(sinH(p.que)));
+    if (!lec || /se saltan/.test(lec.como)) errores.push(`D${d.d}: la lectura salta secciones por acertar el pre-test (1.ª vuelta: no se recorta el temario)`);
+    if (fz.n === 1) {
+      if (!/^LECTURA DE BASE/.test(sinH(lec ? lec.que : ''))) errores.push(`D${d.d}: en la fase 1 la lectura es «LECTURA DE BASE» (en orden, entera)`);
+      const pre = g.pasos.find((p) => /^PRE-TEST/.test(sinH(p.que)));
+      if (!pre || !/línea base/.test(pre.que + ' ' + pre.como) || !/aunque adivines/.test(pre.como)) errores.push(`D${d.d}: el pre-test de la fase 1 no es línea base («contesta las 5 aunque adivines»)`);
+    }
+  }
+  for (const m of MM.MIR_MANT_DIAS) {
+    const g = MG.mirGuiaMant(m, '15:15');
+    if (g.pasos.some((p) => RX_INVENTADAS.test(`${p.que} ${p.como}`))) errores.push(`M${m.d}: un paso pide preguntas que no son MIR oficiales`);
+    const qz = g.pasos.find((p) => /Q reales MIR/.test(p.que));
+    if (qz && !/solo MIR oficiales/.test(qz.como)) errores.push(`M${m.d}: el bloque de preguntas no limita el respaldo a MIR oficiales con su año-número`);
   }
   // v6.10 · tanda C (decidido con Joseph en el chat MIR, 17-nov): (A) la hora MIR empieza SIEMPRE con preguntas (cierre · eval · pre-test) y Anki solo
   //   repasa lo ya estudiado · (B) el mazo de Ravi ya está en Anki: nada de importar; se reactiva POR SUBTEMA al terminarlo (último paso del día-tema) ·
@@ -260,7 +315,7 @@ function validarTodo(tsDatos) {
   if (!tiene(g77, /REVISIÓN FORMAL/) || !g77.pasos.some((p) => /reloj/i.test(p.como))) errores.push('D77: falta la técnica de simulacro (reloj + revisión formal)');
   if (!tiene(g78, /EN BLANCO/) || !tiene(g78, /FALLADAS/)) errores.push('D78: falta el orden de corrección de Ravi');
   void prev;
-  return { errores, n, nRel };
+  return { errores, n, nRel, nFase };
 }
 
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
@@ -268,9 +323,9 @@ const v = validarTodo(out);
 if (v.errores.length) { console.error(v.errores.slice(0, 30).join('\n')); aborta(`${v.errores.length} bloque(s) no cuadran`); }
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/mirGuiaDatos.ts NO está al día → node DATA/MIR/guia_lectura/gen_mir_guia.js'); process.exit(1); }
-  console.log(`✓ mirGuiaDatos.ts al día · ${v.n} bloques validados (D1-D78 + banqueo × 4 inicios) · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía`);
+  console.log(`✓ mirGuiaDatos.ts al día · ${v.n} bloques validados (D1-D78 + banqueo × 4 inicios) · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía · base cero: ${v.nFase} días con su fase (${metodo.fases.map((f) => `F${f.n} D${f.dDesde}-D${f.dHasta}`).join(' · ')}), 0 preguntas no oficiales`);
 } else {
   fs.writeFileSync(OUT, out);
-  console.log(`✓ escrito src/lib/mirGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía`);
+  console.log(`✓ escrito src/lib/mirGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · ${rangoMedido} (${meta.medidos.length} días) · método RaviMedTest: ${v.nRel} repasos relacionales en la guía · base cero: ${v.nFase} días con su fase`);
 }
 if (!vaultMontado) console.warn('⚠ vault de Obsidian no montado: no se comprobó que las notas madre del repaso relacional existan');

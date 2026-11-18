@@ -1,6 +1,6 @@
-# Introduction to Claude Cowork (Anthropic Skilljar)
+# Introduction to Claude Cowork (Anthropic Academy)
 
-> URL: https://anthropic.skilljar.com/introduction-to-claude-cowork
+> URL: https://academy.claude.com/courses/introduction-to-claude-cowork
 > Extraído con WebFetch el 12-sep-2026 (F2 · Academy restante + prep CCA-F, v5.10-b) · URL verificada 200 con check_links.js.
 > Verificación: CONFIRMADA.
 

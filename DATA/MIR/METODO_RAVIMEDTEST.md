@@ -1,5 +1,11 @@
 # MIR · Método RaviMedTest adaptado a la hora MIR (v6.03b · 20-oct-2026)
 
+> **✅ v6.10 · base cero (18-nov-2026 · Joseph: «todos estamos partiendo de CERO») — manda sobre §3, §9.2 y §10 donde se contradigan:** la 1.ª
+> vuelta sube de NIVEL por fases → [`METODO_BASE_CERO.md`](METODO_BASE_CERO.md): F1 BASE nivel 1 (D1-D32, jue 19-nov → sáb 2-ene: pre-test de línea
+> base, LECTURA DE BASE en orden, comentario literal, APEX solo de fallos) · F2 CONSOLIDACIÓN niveles 1-2 (D33-D76) · F3 DISCRIMINATIVA nivel 3 (D77-D78 +
+> banqueo), con puerta medida en el log. **Tensión 2 de §9 resuelta:** ninguna sección se salta por acertar el pre-test. El respaldo de preguntas es
+> solo MIR oficial con su año-número. Datos: `metodo_ravimedtest.json` › `fases`.
+
 > **✅ v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat MIR) — manda sobre lo que diga abajo:** (A) la hora MIR empieza SIEMPRE con
 > preguntas; Anki solo repasa lo ya estudiado (desde el D+1), nunca es estudio de inicio · (B) el mazo de Ravi YA está en Anki: «1º VUELTA», 851
 > tarjetas, todas suspendidas («1ºVUELTA 2MIR21» existe pero vacío) → **no se importa nada**; se reactiva POR SUBTEMA, al TERMINARLO (último minuto

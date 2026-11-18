@@ -40,6 +40,14 @@
 //  21:00 de ese día; la serie dario / pi1 sigue en ellas desde los 600 s / 500 palabras (10:00-25:00 a 1,5× · «Leaking your prompt» p. 10 → «Detect…»
 //  p. 3, lo que la v6.09 tenía el mar 24) y desde la sesión de las 21:00 todo queda igual. Su resultado va con la clave «fecha@hora|tag»; el resto de
 //  «Prompt injection…» conserva en la cola el ORIGEN de la sesión que recupera (mar 17, como en la v6.09), así el comodín de las 21:00 no cambia de orden.
+// v6.10c (mar 17-nov-2026 · decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): la sesión de recuperación (ctx.rec) pasa
+//  al DOM 3-ENE 05:00-05:30 y lleva las piezas B/C del ÚLTIMO martes de F1 (gen_synapse_plan.js › REC_V610.cadena: cada martes de F1 desde el mar 24 lleva
+//  las de la semana anterior) → la serie dario / pi1 / demis / sholto corre un martes y su última pieza de F1 va el dom 3-ene; las piezas fijas del primer
+//  martes siguen el mar 24 (PRIMER_MARTES). Si el «cómo» base ya empieza por un destino con fecha, el «Resto → …» se acorta para que ambas fechas queden
+//  antes del corte del Calendar (mar 1-dic).
+// v6.10 · BASE CERO (mié 18-nov-2026 · orden de Joseph «todos partimos de cero»; DATA/SYNAPSE/METODO_BASE_CERO.md): el A medido de F0 ya no dice «si ya lo
+//  viste, márcalo ✓ y adelanta» (se ve entero) y el cierre de cada A deja de ser «anota 1 idea» para ser RECALL EN BLANCO (práctica de recuperación: sin
+//  mirar, lo que recuerdes). Mismos minutos, velocidades y tramos.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -169,13 +177,39 @@ function crear(MED, ctx) {
       colaC.sort((x, y) => (x.articulo === y.articulo ? (x.origen < y.origen ? -1 : x.origen > y.origen ? 1 : 0) : x.articulo ? -1 : 1));
       const it = colaC[0];
       const quedan = sumW(it.L, it.a, it.b);
-      const v = quedan <= falta * 1.15 ? { a: it.a, b: it.b, w: quedan } : ventana(it.L, it.a, falta, it.b);
+      let v = quedan <= falta * 1.15 ? { a: it.a, b: it.b, w: quedan } : ventana(it.L, it.a, falta, it.b);
+      // v6.10c: sin MIGAS — si cortar deja < 100 palabras del artículo y llevárselo entero mantiene la sesión ≤ 1,15 × su objetivo, se lee entero (con la
+      //   cadena del carril del martes, el resto de «Prompt injection…» del mar 1-dic dejaba ≈80 palabras al sáb 12-dic: 241 palabras en 3′ = 0,80)
+      if (v.b < it.b && quedan - v.w < 100 && obj - falta + quedan <= obj * RAT[1]) v = { a: it.a, b: it.b, w: quedan };
       if (v.b <= v.a) break;
       piezas.push({ it, a: v.a, b: v.b, w: v.w });
       addDest(it.k, fecha, `≈${r10(v.w)} palabras`, horaSes(fecha));
       falta -= v.w;
       it.a = v.b;
       if (it.a >= it.b) colaC.shift();
+    }
+    // v6.10c: RELLENO — si la sesión queda por debajo de 0,85 × su objetivo porque el siguiente párrafo de la pieza en curso no cabe (sáb 19-dic: «Many-shot…»
+    //   244 palabras en 3′ = 0,81 y el párrafo siguiente, 145), se completa con el comienzo de la SIGUIENTE pieza de la cola (por orden), en párrafos enteros
+    //   y sin pasar de 1,15; nada se salta: esa pieza sigue después donde quedó. Solo actúa en las sesiones que si no quedarían fuera de [0,85; 1,15].
+    if (piezas.length && obj - falta < obj * RAT[0]) {
+      const usados = new Set(piezas.map((p) => p.it));
+      for (const it of colaC) {
+        if (usados.has(it) || obj - falta >= obj * RAT[0]) continue;
+        let w = 0, b = null;
+        for (let i = it.a; i < it.b; i++) {
+          w += it.L.flat[i].w;
+          if (obj - falta + w > obj * RAT[1]) break;
+          if (!it.L.prohibido.has(i + 1)) { b = i + 1; if (obj - falta + w >= obj * RAT[0]) break; }
+        }
+        if (b == null) continue;
+        const wv = sumW(it.L, it.a, b);
+        if (obj - falta + wv < obj * RAT[0]) continue;
+        piezas.push({ it, a: it.a, b, w: wv });
+        addDest(it.k, fecha, `≈${r10(wv)} palabras`, horaSes(fecha));
+        falta -= wv;
+        it.a = b;
+      }
+      for (let i = colaC.length - 1; i >= 0; i--) if (colaC[i].a >= colaC[i].b) colaC.splice(i, 1);
     }
     return { piezas, w: obj - falta };
   }
@@ -184,6 +218,7 @@ function crear(MED, ctx) {
   const posA = {}, posL = {};
   const keyRes = (id) => `${id}#resto`;
   const res = { sesiones: new Map() }; // fecha|tag → {leccion, guia, med, min?}
+  const ajusteMin = new Map(); // v6.10c · FIX r1: fecha|tag → minutos de un bloque SIN tramo medido (caja de la Academy) que compensa a otro del día
   const extra2027 = new Map(); // v6.09b lote 1-quater: fecha|tag de EXTRA_2027 → {leccion, guia, med}
   // v6.10: sesión de recuperación en curso (ctx.rec) → su resultado va con la clave «fecha@hora|tag» (la de las 21:00 de ese día conserva «fecha|tag»)
   let curRec = null;
@@ -223,7 +258,33 @@ function crear(MED, ctx) {
     return { v: pick.v, pausa: false, min: d / pick.v };
   }
   /** `sab` (v6.09b lote 1-ter, hallazgo 9): el sábado el A lleva sus minutos reales y el C del comodín compensa → devuelve los minutos del A */
+  /** v6.10c · FIX r1 (hallazgo 1 de la revisión): A de la SESIÓN DE RECUPERACIÓN (dom 3-ene 05:00). Antes «la siguiente lección de F0 sin ✓» de la Academy,
+   *  pero las lecciones de la Academy de F0 terminan el mié 9-dic («serie 101 COMPLETA») y el 3-ene no queda ninguna: era una caja de 15′ sin material.
+   *  Ahora lleva 15′ MEDIDOS del vídeo que el comodín de AYER dejó a medias (cola de audio de F1, la pieza a 1,5× de origen más reciente; v6.10c: canal
+   *  Anthropic «Interpretability…», min 15:00-37:30 de 59:02), en pantalla. Ese tramo sale de la cola post-Step 1 (declarado en cambios_2027) y lo que
+   *  queda sigue allí, con su fecha al principio del «cómo». */
+  function bloqueArec(dia, b) {
+    const f = dia.fecha;
+    const cand = colaB.filter((x) => x.vel === VEL && x.a < x.b - 1);
+    if (!cand.length) throw new Error(`v6.10c: la A de la sesión de recuperación ${f} ${dia.hora} no tiene pieza de audio a ${VEL}× en la cola de F1`);
+    const it = cand.reduce((m, x) => (x.origen > m.origen ? x : m));
+    const a = it.a, fin = Math.min(it.b, a + Math.round(b.min * 60 * it.vel)), med = (fin - a) / it.vel / 60;
+    if (med / b.min < RAT[0] || med / b.min > RAT[1]) throw new Error(`v6.10c: la A de la sesión de recuperación ${f}: ${fmt1(med)}′ de material en ${b.min}′`);
+    const prev = prevSes[it.id] || it.origen;
+    addDest(it.k, f, `${ts(a)}-${ts(fin)}`, dia.hora);
+    prevSes[it.id] = f;
+    it.a = fin; if (it.a >= it.b - 1) colaB.splice(colaB.indexOf(it), 1);
+    const nom = it.titulo.replace(/^.*· /, '');
+    const que = `${it.titulo} → min ${ts(a)}-${ts(fin)} de ${ts(AUD[it.id].seg)} a ${velTxt(it.vel)}× (${ts(fin - a)} de vídeo = ${Math.round(med)}′)`;
+    const como = `En el PC (vídeo en pantalla), ${velTxt(it.vel)}× con subtítulos en inglés: ${ts(fin - a)} de vídeo = ${fmt1(med)}′ de reloj. Sigue donde lo dejó el comodín de audio del ${fC(prev)} (21:00). Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).`;
+    const base = { leccion: `${nom} → min ${ts(a)}-${ts(fin)} de ${ts(AUD[it.id].seg)} a ${velTxt(it.vel)}× = ${Math.round(med)}′ (sigue al comodín del ${fC(prev)}; medido el 17-nov)`, material: it.titulo, url: it.url, audit: false,
+      guia: { que, como, url: it.url + (/youtube/.test(it.url) && a ? `&t=${a}s` : ''), t: 'A ↗' }, med };
+    if (it.a < it.b - 1) pendTxt.push({ fecha: f, key: K(f), tag: 'A', resto: it.k, restoTxt: `min ${ts(it.a)}-${ts(it.b)} = ${fmt1((it.b - it.a) / it.vel / 60)}′ a ${velTxt(it.vel)}×`, base });
+    else out(f, 'A', base);
+    return b.min;
+  }
   function bloqueA(dia, b, sab) {
+    if (dia.rec && b.audit && /^F0 · la siguiente lección sin ✓/.test(b.leccion)) return bloqueArec(dia, b); // v6.10c · FIX r1 (hallazgo 1)
     let seg = null, a = 0, rango = '';
     if (/^Karpathy — \[1hr Talk\]/.test(b.material)) { const k = Number((/Part (\d)/.exec(b.leccion) || [])[1]); a = kiCortes[k - 1]; seg = kiCortes[k] - a; rango = `${ts(a)} → ${ts(kiCortes[k])}`; }
     else if (/^Karpathy — Deep Dive/.test(b.material)) { const k = Number((/Tramo (\d+)\/11/.exec(b.leccion) || [])[1]); a = ddCortes[k - 1]; seg = ddCortes[k] - a; rango = `${ts(a)} → ${ts(ddCortes[k])}`; }
@@ -236,15 +297,16 @@ function crear(MED, ctx) {
     //   después (Business 13:00); lo que el C no lee sigue con su fecha («Sigue → …» / «Resto → …», al principio del «cómo»). Si pide menos, sin cambio.
     const comp = !sab && Math.round(v.min) > b.min;
     const asig = sab || comp ? Math.round(v.min) : b.min;
-    const auditTxt = b.audit ? ' F0 = auditoría: si ya lo viste, márcalo ✓ y adelanta la siguiente pendiente.' : '';
+    // v6.10 · BASE CERO (18-nov-2026): F0 ya no se salta lo «ya visto» (antes «F0 = auditoría: si ya lo viste, márcalo ✓ y adelanta la siguiente pendiente»)
+    const auditTxt = b.audit ? ' Base cero: se ve entero aunque ya lo hayas visto.' : '';
     const compTxt = comp ? ` Hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′: el bloque sigue sumando 30′ y no retrasa el bloque siguiente.` : '';
     const como = v.pausa
       ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′, cabe entero en los ${asig}′.${compTxt}${auditTxt}`
       : comp
-        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}).${compTxt} Anota 1 idea en el journal.${auditTxt}`
+        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}).${compTxt} Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
       : sab && asig !== b.min
-        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 21:30 (antes del Anki; nada después de las 22:00). Anota 1 idea en el journal.${auditTxt}`
-        : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${v.min > asig + 0.5 ? `, ${fmt1(v.min - asig)}′ más que la franja: dentro del margen del plan (±15 %), termínalo` : `, caben en los ${asig}′`}. Anota 1 idea en el journal.${auditTxt}`;
+        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 21:30 (antes del Anki; nada después de las 22:00). Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
+        : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${v.min > asig + 0.5 ? `, ${fmt1(v.min - asig)}′ más que la franja: dentro del margen del plan (±15 %), termínalo` : `, caben en los ${asig}′`}. Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`;
     const que = `${b.material} › ${b.leccion} → ${rango} (${ts(seg)} de vídeo) a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′`;
     out(dia.fecha, 'A', { leccion: `${b.leccion} → ${ts(seg)} de vídeo a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′ (medido el 17-nov)`, dur: `${ts(seg)} (a ${velTxt(v.v)}× = ${minTxt}′)`, guia: { que, como, url: b.url, t: 'A ↗' }, med: v.min, ...(asig !== b.min ? { min: asig } : {}) });
     return asig;
@@ -288,7 +350,19 @@ function crear(MED, ctx) {
         prevSes[p.it.id] = f;
       }
       const med = minCap + extra.seg / 60;
-      out(f, 'B', { leccion: `Cap. ${n}: "${c.titulo}" (desde ${ts(c.ini)} hasta ${ts(sig.ini)} = ${ts(segCap)})${extra.piezas.length ? ' + cola de audio' : ''}`, guia: { que: partes.join(' + '), como: comoP.join(' '), url: b.url, t: 'B ↗' }, med });
+      // v6.10c · FIX r1 (hallazgos 3 y 6 de la revisión): si el capítulo + la cola de audio a 1,5× (el deep dive, a 1,0×, sigue en los comodines del sábado)
+      //   se quedan por debajo de 0,85 × 10′ (mié 2-dic: el cap. 3 dura 8:26 y, con el carril del martes corrido una semana, la cola está vacía ese día:
+      //   8,43′ = 0,84), el B baja a los minutos ENTEROS más cercanos a 10 que dejan el paso en [0,85; 1,15] (9′ → 0,94) y el A del día, una caja de la
+      //   Academy (sin duración publicada), sube lo mismo (16′): el bloque sigue sumando 30′ (patrón del jue 31-dic: «el A tiene 16′ y el C 4′»).
+      let minB = 10;
+      if (med / 10 < RAT[0]) {
+        minB = [9, 8, 7].find((x) => med / x >= RAT[0] && med / x <= RAT[1]);
+        const bA = dia.bloques.find((x) => x.tag === 'A');
+        if (!minB || !bA || res.sesiones.has(`${K(f)}|A`)) throw new Error(`v6.10c: ${f}: el B de Lex se queda en ${fmt1(med)}′ y el A del día no es una caja de la Academy que lo compense`);
+        ajusteMin.set(`${K(f)}|A`, bA.min + (10 - minB));
+        comoP.push(`Hoy el B tiene ${minB}′ (el cap. ${n} dura ${ts(segCap)} y hoy la cola de audio de F1 no tiene pieza a 1,5×) y el A ${bA.min + (10 - minB)}′: el bloque sigue sumando 30′.`);
+      }
+      out(f, 'B', { leccion: `Cap. ${n}: "${c.titulo}" (desde ${ts(c.ini)} hasta ${ts(sig.ini)} = ${ts(segCap)})${extra.piezas.length ? ' + cola de audio' : ''}`, guia: { que: partes.join(' + '), como: comoP.join(' '), url: b.url, t: 'B ↗' }, med, ...(minB !== 10 ? { min: minB } : {}) });
       return;
     }
     if (/^Comodín de audio/.test(m)) {
@@ -622,7 +696,12 @@ function crear(MED, ctx) {
     const o = JSON.parse(JSON.stringify(p.base));
     const pre0 = p.pre || '';
     if (p.resto) {
-      const pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10, p.key && p.key.includes('@') ? p.key.split('@')[1] : null)}. `;
+      const hR = p.key && p.key.includes('@') ? p.key.split('@')[1] : null;
+      let pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10, hR)}. `;
+      // v6.10c: si el «cómo» base ya empieza por un destino con fecha («Siguiente artículo de la serie → mar 8-dic.» / «Sigue → …»), el «Resto» se
+      //   acorta lo justo para que esa fecha también quede antes del corte del Calendar (mar 1-dic: el resto de «Prompt injection…» va a 2 comodines)
+      const dBase = (/^(?:Siguiente artículo de la serie|Sigue) → [^.]+\. /.exec(o.guia.como) || [''])[0].length;
+      if (dBase && pre0.length + pre.length + dBase > CORTE_COMO) pre = `Resto → ${destTxt(p.resto, p.fecha, CORTE_COMO - pre0.length - 10 - dBase, hR)}. `;
       if (/^Resto → \. /.test(pre)) throw new Error(`v6.10: ${p.key || p.fecha}|${p.tag}: resto sin destino`);
       o.guia.como = pre0 + pre + `${o.guia.como} Lo que queda: ${p.restoTxt}.`;
     } else if (pre0) o.guia.como = pre0 + o.guia.como;
@@ -630,7 +709,8 @@ function crear(MED, ctx) {
     if (p.piezas) {
       fins = p.piezas.map((x) => { const ds = (destinos.get(x.k) || []).filter((d) => d.fecha > p.fecha && d.det !== 'x'); return ds.length ? { k: x.k } : null; }).filter(Boolean);
       if (fins.length) {
-        const arma = (max) => `Lo que queda → ${fins.map((x) => `${p.piezas.length > 1 ? `${cortoDe(x.k)}: ` : ''}${destTxt(x.k, p.fecha, max)}`).join(' · ')}. `;
+        // v6.10 · base cero (A-units de F1 en orden REAL): dos piezas del MISMO artículo con el mismo destino se nombran una vez (sáb 26-dic: «Constitutional Classifiers» ×2)
+        const arma = (max) => `Lo que queda → ${[...new Set(fins.map((x) => `${p.piezas.length > 1 ? `${cortoDe(x.k)}: ` : ''}${destTxt(x.k, p.fecha, max)}`))].join(' · ')}. `;
         let pre = arma(84); if (pre.length > CORTE_COMO) pre = arma(40); if (pre.length > CORTE_COMO) pre = arma(24);
         o.guia.como = pre + o.guia.como;
       }
@@ -649,7 +729,7 @@ function crear(MED, ctx) {
     for (const x of fechasEn(o.guia.que)) if (x.iso > f && x.fin > CORTE_QUE) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «qué» (> ${CORTE_QUE})`);
     for (const x of fechasEn(o.guia.como)) if (x.iso > f && x.fin > CORTE_COMO) throw new Error(`v6.09b lote 1-ter: ${k}: fecha de destino «${x.txt}» en el carácter ${x.fin} del «cómo» (> ${CORTE_COMO}): ${o.guia.como.slice(0, 160)}`);
   }
-  return { sesiones: res.sesiones, cola: colaOut, colaF1, extra2027 };
+  return { sesiones: res.sesiones, cola: colaOut, colaF1, extra2027, ajusteMin };
 }
 
 module.exports = { crear, DESDE, HASTA, COLA_DESDE, COLA_MIN, COLA_INI, F1_EXTRA, EXTRA_2027, fechasEn };

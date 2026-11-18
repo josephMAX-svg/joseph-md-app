@@ -11,7 +11,17 @@ import type { GuiaBloque } from './guia';
 
 const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-const RX = /(^|[^\p{L}])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?![\p{L}])/giu;
+// v6.10d (fix revisión 18-nov): + el nombre COMPLETO con fecha («las 10 tarjetas del jueves 31-dic» → «viernes 1-ene»); sin mes, no (RX2): «(lunes 30, 19:30,
+//   en vivo)» y los reemplazos «(viernes 20, 19:00)» son fechas reales a propósito
+const RX = /(^|[^\p{L}])(lunes|martes|miércoles|jueves|viernes|sábado|domingo|lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?![\p{L}])/giu;
+const DOW_L = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+/** «jueves» → «jue» (las abreviaturas, tal cual en minúscula) */
+const abrev = (dow: string): string => { const i = DOW_L.indexOf(dow.toLowerCase()); return i >= 0 ? DOW[i] as string : dow.toLowerCase(); };
+/** el nombre COMPLETO del día de `iso` con la capitalización de `como` («Jueves» → «Viernes») */
+const largoComo = (iso: string, como: string): string => {
+  const n = DOW_L[new Date(iso + 'T12:00:00Z').getUTCDay()] as string;
+  return como === como.toUpperCase() ? n.toUpperCase() : como[0] !== como[0]?.toLowerCase() ? n.charAt(0).toUpperCase() + n.slice(1) : n;
+};
 const dowDe = (iso: string): number => new Date(iso + 'T12:00:00Z').getUTCDay();
 // v6.06a: el rango sale de corrida_s1 (días sin sesión, alias y repartos con sus fechas de plan), no de «19-25-oct» fijo. Sin alias ni reparto = inerte.
 const _C = FECHAS_V6.corrida_s1;
@@ -26,9 +36,22 @@ const DESDE = _FECHAS[0] ?? '', HASTA = _FECHAS[_FECHAS.length - 1] ?? '';
 const RX2 = /(^|[^\p{L}\d\-])(lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})(?![\d\p{L}\-\/]|:\d)/giu;
 // v6.07a: fechas REALES externas (en vivo de Theomed, apertura y publicación de simulacros, banqueos grabados de Theomed) y la bitácora de
 //   versiones viejas (v5.x) no se traducen: no son fechas de plan. Se mira el texto de antes (60) y el de después (25: «(vie 13, grabado)»)
-const EXTERNA = /theomed|en vivo|se public|banqueo \d+\/\d+|\bv5\.\d+/i;
-const EXTERNA_DESPUES = /^.{0,25}(grabad|grabaci)/i; // v6.07d: también «(vie 27, grabación)»
-const externa = (s: string, i: number, n = 0): boolean => EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40));
+// v6.10d (18-nov): + «SIMULACROS MEDICINA» (el simulacro de Theomed del viernes se publica ese viernes REAL: «Campus › curso 105 (SIMULACROS MEDICINA 2027) ›
+//   el del vie 11-dic») · el banqueo en vivo solo protege la fecha que lo sigue de cerca («Banqueo 9/19 (vie 18-dic, grabado)»; antes, 60 caracteres, y
+//   «Banqueo 9/19 + 30 flashcards del jue 31-dic» quedaba sin traducir) · después: «(vie 20-nov, en diferido)» = la fecha de la clase en vivo
+const EXTERNA = /theomed|en vivo|se public|simulacros medicina|\bv5\.\d+/i;
+const EXTERNA_BANQUEO = /banqueo \d+\/\d+ \(?$/i;
+// v6.10d: bitácora de versiones viejas pegada a la fecha («de la F1 v6.05 (lun 28-dic)», «v6.05: mar 29-dic»): es la fecha de ENTONCES, no se traduce
+const EXTERNA_VERSION = /\bv6\.0\d[a-z]?(?: lote [\w-]+)?(?::\s*| \(\s*)$/i;
+// v6.10d (fix revisión 18-nov): solo la fecha PEGADA a «, grabado / grabación» («(vie 13, grabado)», «(vie 27, grabación)», «Banqueo 9/19 (vie 18-dic, grabado)»):
+//   antes bastaba «grabad» a ≤ 25 caracteres y la frase SIGUIENTE bloqueaba la traducción («… en la mañana del lun 30-nov. Banqueos grabados nuevos …», «las 11:40
+//   del vie 4-dic (y las de los banqueos grabados del domingo …)»): el aviso y la nota del dom 6-dic daban días distintos para la misma mañana
+const EXTERNA_DESPUES = /^,\s?(grabad|grabaci)|^.{0,3}en diferido/i; // v6.07d: también «(vie 27, grabación)» · v6.10d: «(vie 20-nov, en diferido)»
+// v6.10d: una fecha justo detrás de «→» es un DESTINO del plan («Banqueo 5/19 (hoy 19:00) → mié 2-dic (mañana 7/21)», «INV 4/4 (hoy 19:30, en vivo), en
+//   diferido → vie 11-dic»): se traduce aunque antes se nombre una clase en vivo (antes, «en vivo» o «Banqueo n/m» a ≤ 60 caracteres la dejaban con la fecha de plan)
+const externa = (s: string, i: number, n = 0, pre = ''): boolean => !/→\s*$/.test(s.slice(Math.max(0, i - 4), i) + pre)
+  && (EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_BANQUEO.test(s.slice(Math.max(0, i - 20), i) + pre) || EXTERNA_VERSION.test(s.slice(Math.max(0, i - 30), i) + pre)
+    || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40)));
 // v6.07d (mié 11-nov): se prueban TODOS los meses de DESDE a HASTA, no solo los dos de los extremos. Con los repartos del 6, 13 y 20-dic el rango
 //   va del 19-oct al 20-dic y noviembre quedaba fuera, así que «mar 10 18:00» ya no se traducía. Si dos meses cuadran (día del mes y día de la
 //   semana), la fecha es ambigua y no se toca.
@@ -52,16 +75,18 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
   const t1 = t.replace(RX, (m, pre: string, dow: string, punto: string, dd: string, mes: string, i: number, s: string) => {
     const plan = `${DESDE.slice(0, 4)}-${String(MES.indexOf(mes.toLowerCase()) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
     if (plan < DESDE || plan > HASTA) return m;
-    if (DOW[dowDe(plan)] !== dow.toLowerCase()) return m; // el día de la semana no cuadra: no es una fecha de esta semana
-    if (externa(s, i, m.length)) return m;
+    if (DOW[dowDe(plan)] !== abrev(dow)) return m; // el día de la semana no cuadra: no es una fecha de esta semana
+    if (externa(s, i, m.length, pre)) return m;
     const real = fechaRealDe(plan, frente);
     if (real === plan) return m;
     const mr = MES[Number(real.slice(5, 7)) - 1] ?? mes;
-    return `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}-${mes === mes.toUpperCase() ? mr.toUpperCase() : mr}`;
+    const dr = DOW_L.includes(dow.toLowerCase()) ? largoComo(real, dow) : diaReal(real, dow); // v6.10d: completo → completo
+    return `${pre}${dr}${punto} ${Number(real.slice(8))}-${mes === mes.toUpperCase() ? mr.toUpperCase() : mr}`;
   });
   return t1.replace(RX2, (m, pre: string, dow: string, punto: string, dd: string, i: number, s: string) => {
-    const plan = planSinMes(dd, dow);
-    if (!plan || externa(s, i, m.length)) return m;
+    // v6.10d: «mar 08» (día con cero delante) no es una fecha de plan (las guías escriben «mar 8»): la nota del SERUMS «preferente mar 08» es de 2027
+    const plan = dd.startsWith('0') ? null : planSinMes(dd, dow);
+    if (!plan || externa(s, i, m.length, pre)) return m;
     const real = fechaRealDe(plan, frente);
     return real === plan ? m : `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}`;
   });
@@ -75,8 +100,10 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
  */
 export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque {
   const xs = (_C.reemplazos?.[fechaPlan] ?? []).filter((x) => !x.frente || x.frente === g.plan);
-  if (!xs.length) return g;
-  const f = (t: string): string => xs.reduce((acc, x) => acc.split(x.a).join(x.por), t);
+  // v6.10d: + «ayer» / «mañana a las HH:MM» / «el lunes a las HH:MM» del día de PLAN → el día que de verdad nombran (relativosReales)
+  const real = fechaRealDe(fechaPlan);
+  if (!xs.length && real === fechaPlan) return g;
+  const f = (t: string): string => relativosReales(xs.reduce((acc, x) => acc.split(x.a).join(x.por), t), fechaPlan, real);
   return {
     ...g,
     // v6.07e: también la franja (el UWSA1 del dom 15 va 07:40-11:50, no a la hora del plan del mar 10; un desfase único no la cuadra)
@@ -88,6 +115,41 @@ export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque 
     ...(g.planB ? { planB: f(g.planB) } : {}),
     ...(g.aviso ? { aviso: f(g.aviso) } : {}),
   };
+}
+
+const _add = (iso: string, n: number): string => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const _corta = (iso: string): string => `${DOW[dowDe(iso)]} ${Number(iso.slice(8))}-${MES[Number(iso.slice(5, 7)) - 1]}`;
+const _cap = (t: string, como: string): string => (como[0] !== undefined && como[0] !== como[0].toLowerCase() ? t.charAt(0).toUpperCase() + t.slice(1) : t);
+/**
+ * v6.10d (mié 18-nov-2026): palabras RELATIVAS de un texto escrito para el día de PLAN `plan` y pintado el día REAL `real` (alias de corrida_s1: el
+ * plan del vie 20 se hace el lun 23). «ayer» (= plan − 1), «mañana a las HH:MM» (= plan + 1) y «el lunes a las HH:MM» (= el lunes siguiente al plan)
+ * siguen igual si su día real sigue siendo ayer / mañana; si no, pasan a la FECHA DE PLAN del día que nombran («el jue 19-nov», «el vie 20-nov a las
+ * 05:00»), que fechasRealesEnTexto (después) pinta con su día real («el vie 20-nov» / «el lun 23-nov»). Sin alias (real = plan) = el texto tal cual.
+ */
+export function relativosReales(t: string, plan: string, real: string): string {
+  if (!t || plan === real) return t;
+  const ayerR = _add(real, -1), mananaR = _add(real, 1);
+  const sinSes = new Set(_C.sin_sesion);
+  // «de ayer» → «del <día>»; si el día nombrado y el ayer real fueron los dos sin sesión (1.er día), «ayer» sigue valiendo
+  let o = t.replace(/(^|[^\p{L}])(de )?(ayer)(?![\p{L}])/giu, (m, pre: string, de: string | undefined, w: string) => {
+    const ref = _add(plan, -1);
+    if (fechaRealDe(ref) === ayerR || (sinSes.has(ref) && sinSes.has(ayerR))) return m;
+    return de ? `${pre}${_cap('del ' + _corta(ref), de)}` : `${pre}${_cap('el ' + _corta(ref), w)}`;
+  });
+  o = o.replace(/(^|[^\p{L}])(mañana)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
+    const ref = _add(plan, 1);
+    return fechaRealDe(ref) === mananaR ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
+  });
+  o = o.replace(/(^|[^\p{L}])(el lunes)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
+    let ref = _add(plan, 1); while (dowDe(ref) !== 1) ref = _add(ref, 1);
+    const r = fechaRealDe(ref);
+    return r === mananaR ? `${pre}${_cap('mañana', w)}${h}` : dowDe(r) === 1 && r > real && r <= _add(real, 7) ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
+  });
+  // v6.10d (fix revisión 18-nov): «hoy <día>» con el día de la semana del PLAN → el del día REAL («Hoy viernes no va el OUTPUT» pintado el lunes real). Red de
+  //   seguridad: rutinaGuia y gen_encaps_guia ya escriben el día real; esto cubre los textos de otros generadores (otro día nombrado = se deja tal cual)
+  o = o.replace(/(^|[^\p{L}])(hoy) (lunes|martes|miércoles|jueves|viernes|sábado|domingo)(?![\p{L}])/giu, (m, pre: string, h: string, d: string) =>
+    (d.toLowerCase() === DOW_L[dowDe(plan)] ? `${pre}${h} ${largoComo(real, d)}` : m));
+  return o;
 }
 
 /** La guía con sus textos visibles pasados por fechasRealesEnTexto (frente = g.plan). Franja, minutos y enlaces intactos. */

@@ -1,6 +1,6 @@
-# AI Capabilities and Limitations (Anthropic Skilljar)
+# AI Capabilities and Limitations (Anthropic Academy)
 
-> URL: https://anthropic.skilljar.com/ai-capabilities-and-limitations
+> URL: https://academy.claude.com/courses/ai-capabilities-and-limitations
 > Extraído con WebFetch el 12-sep-2026 (F2 · Academy restante + prep CCA-F, v5.10-b) · URL verificada 200 con check_links.js.
 > Verificación: CONFIRMADA.
 

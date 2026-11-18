@@ -115,11 +115,14 @@
 //   día»): node DATA/_scripts/gen_vibecoding_plan.js 2026-11-18 → S1 mié 18 → mar 24-nov · S2 mié 25 → lun 30-nov con su k4 el SÁB 28-NOV 05:00-05:45
 //   (hábil EXTRA de _fechas_v6.json › corrida_s1.extra[fecha].vibecoding: el sábado de F1 tras el viaje recupera el mar 17) → desde el lun 30-nov
 //   (S2 k5) TODO idéntico a la v6.09 (mismo 95.º hábil, mismos SHIP: S1 dom 29-nov, S2 dom 6-dic …). isHabil acepta esas fechas.
+// v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el hábil extra pasa al SÁB 2-ENE 04:15-04:30
+//   (corrida_s1.extra['2027-01-02'].vibecoding): S1 mié 18 → mar 24-nov · S2 mié 25-nov → mar 1-dic · … · S6 mié 23 → mié 30-dic · S7 jue 31-dic → mié
+//   6-ene con su k2 (deload 15′) el sáb 2-ene → desde el lun 4-ene (S7 k3) todo idéntico; los SHIP de los domingos no se mueven (29-nov … 3-ene).
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-11-18'; // v6.10 (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 28-nov → desde el lun 30-nov igual que la v6.09) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el lun 4-ene igual que la v6.09; v6.10: sáb 28-nov) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -157,7 +160,7 @@ const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); //
 //   ENCAPS: vie 12-mar = D-1 hábil y lun 15-mar = libre post-ENCAPS → lo que no cabe antes va al mar 16-mar y siguientes; antes no hacía falta: el
 //   95.º hábil caía antes del vie 12-mar con cualquier START ≤ 26-oct, así que las fechas de v6.00-v6.05 se reproducen igual).
 const PROT_HAB = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
-// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha].vibecoding = franja; sáb 28-nov 05:00-05:45: recupera
+// v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha].vibecoding = franja; v6.10c: sáb 2-ene 04:15-04:30 · v6.10: sáb 28-nov 05:00-05:45: recupera
 //   el mar 17). Solo cuentan desde el START; nunca un SKIP, un protegido ni un día sin sesión (se comprueba).
 const EXTRA_VIBE = (() => {
   const F6 = require('./gen_fechas_v6').cargarFechasV6();
@@ -172,7 +175,8 @@ const EXTRA_VIBE = (() => {
 const isHabil = (s) => EXTRA_VIBE.has(s) || (dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s) && !PROT_HAB.has(s));
 // v6.09 (16-nov-2026): días SIN SESIÓN de corrida_s1 desde el START (sáb 21 y dom 22-nov, viaje) → sin PC del domingo (VIBE_SIN_SESION en el .ts);
 //   ningún SHIP puede caer en uno (se comprueba abajo). Los L-V sin sesión anteriores al START no cuentan.
-const SIN_SESION_VIBE = require('./gen_fechas_v6').cargarFechasV6().corrida_s1.sin_sesion.filter((f) => f >= START).sort();
+// v6.10d (18-nov-2026): sin los días cuyo plan hace otro día real por ALIAS (mié 18-nov → jue 19): gen_fechas_v6.sinSesionPlan
+const SIN_SESION_VIBE = require('./gen_fechas_v6').sinSesionPlan(require('./gen_fechas_v6').cargarFechasV6()).filter((f) => f >= START).sort();
 // 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
@@ -216,6 +220,13 @@ const sabadoShip = (fechaVie) => { let s = fechaVie; while (dow(s) !== DOW_SHIP)
 const semanas = P.map((p) => {
   const ds = dias.filter((x) => x.semana === p.s);
   return { s: p.s, id: p.id, ini: ds[0].fecha, fin: ds[ds.length - 1].fecha, ship: sabadoShip(ds[ds.length - 1].fecha) };
+});
+
+// v6.10 · BASE CERO: fases PRIMM del catálogo (_meta.fases_base_cero) con sus fechas (1.er hábil del primer proyecto → SHIP del último)
+const FASES_BC = ((CAT._meta.fases_base_cero || {}).fases || []).map((f) => {
+  const ws = f.proyectos.map((n) => semanas.find((w) => w.s === n));
+  if (ws.some((w) => !w)) throw new Error(`v6.10 · base cero: la fase ${f.id} cita un proyecto que no existe`);
+  return { id: f.id, nombre: f.nombre, proyectos: f.proyectos, desde: ws[0].ini, hasta: ws[ws.length - 1].ship, que: f.que, gate: f.gate };
 });
 
 // ─── S13-S20: bloques SECUENCIALES de pasos.length días hábiles a partir del hábil siguiente a S12, tope = D95 ───
@@ -396,6 +407,14 @@ export const VIBE_META = {
   rotacion: { yocpmd: 'Automatización YoCPMD', preguntas: 'Pipeline de preguntas ENCAPS/USMLE/MIR', bots: 'Bots CRM Pulso / LIVIANO', contenido: 'Contenido IA para las marcas' },
 } as const;
 
+/** v6.10 · BASE CERO (mié 18-nov-2026 · orden de Joseph «todos partimos de cero»; DATA/SYNAPSE/METODO_BASE_CERO.md): las 3 fases PRIMM del vibecoding
+ *  (vibecoding_proyectos.json › _meta.fases_base_cero): 1 guiado (predice → corre → investiga, S1-S3) · 2 modificar (S4-S6) · 3 crear (S7-S12). desde = 1.er
+ *  hábil de su primer proyecto · hasta = SHIP de su último proyecto (= el gate: verify 4/4, evidencia real, nunca preguntas). Mismas fechas y horas. */
+export interface VibeFaseBC { id: string; nombre: string; proyectos: number[]; desde: string; hasta: string; que: string; gate: string }
+export const VIBE_FASES_BC: VibeFaseBC[] = ${JSON.stringify(FASES_BC)};
+/** fase del PROYECTO de ese día L-V (los rangos se solapan: el SHIP de un proyecto es el domingo, con el siguiente ya en curso) */
+export function vibeFaseBCDe(fechaISO: string): VibeFaseBC | undefined { const d = vibeDiaDe(fechaISO); return d ? VIBE_FASES_BC.find((f) => f.proyectos.includes(d.semana)) : undefined; }
+
 export const VIBE_PROYECTOS: VibeProyecto[] = [
 ${P.map(proyTs).join(',\n')}
 ];
@@ -537,6 +556,7 @@ md.push(`- **Verificación mecánica**: ${CAT._meta.verificacion}`);
 md.push('- **Definition of done** = los 4 criterios de aceptación del proyecto verificados por `verify_vibecoding.js` (commit hash / test verde / URL o tabla viva / fichero de salida). Sin eso, el PC del domingo se usa para cerrar; nada se arrastra a la semana siguiente.');
 md.push('- **Rotación** (repite subiendo nivel): ' + Object.entries(CAT._meta.rotacion).map(([k, v]) => `\`${k}\` = ${v}`).join(' · '));
 md.push(`- **Deload**: ${CAT._meta.deload}`);
+if (FASES_BC.length) md.push(`- **Base cero (v6.10, fases PRIMM)**: ${CAT._meta.fases_base_cero.regla} ` + FASES_BC.map((f) => `**Fase ${f.id} · ${f.nombre}** (S${f.proyectos[0]}-S${f.proyectos[f.proyectos.length - 1]}, ${f.desde} → SHIP ${f.hasta}): ${f.que} Gate: ${f.gate}`).join(' · '));
 md.push(`- **Taper S13-S20**: ${CAT._meta.taper_regla}`);
 md.push('- **Cero inventos**: ' + CAT._meta.urls_verificadas + ' Lo que exija credenciales o decisión de Joseph está marcado "A VERIFICAR".');
 md.push('- Cada día cierra con la entrada del journal (`node DATA/_scripts/journal_hoy.js` → `D:/synapse-journal/journal/<semana ISO>.md`: objetivo · qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo). El domingo de SHIP se corre `verify` ANTES de marcar el proyecto como shipped.');

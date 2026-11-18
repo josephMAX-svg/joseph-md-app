@@ -1,0 +1,257 @@
+{
+  "_meta": {
+    "que": "Estructura Step 1 desde nivel cero (método Palmerton por FASES y por SISTEMA) — fuente ÚNICA de datos para gen_palmerton_fases.js (→ src/lib/usmlePalmertonFases.ts) y para el método del día de gen_usmle_guia.js (F1 D2-D13 y desplazadas con guía). Síntesis PROPIA: el detalle y las marcas de fuente están en DATA/USMLE/PALMERTON_ESTRUCTURA_BASE_CERO.md.",
+    "fecha": "2026-11-18",
+    "version": "v6.10 · estructura base cero",
+    "marcas": "⚠NLM = respuesta sintetizada del cuaderno NotebookLM «STEP 1 · Palmerton Engine» (18-nov, preguntas i-iv; no literal) · POR_MATERIA / METODO = PALMERTON_POR_MATERIA.md / PALMERTON_METODO_COMPLETO.md · ARRANQUE = PALMERTON_NIVEL0_ARRANQUE.md · USMLE = Step 1 Content Outline (usmle.org, leído el 18-nov) · UW = qbankly_uworld_step1_filtros.tsv (18-oct) · [SÍNTESIS] = decisión de este documento"
+  },
+  "fases": [
+    { "id": "N0", "fase": 1, "nivel": 0, "nombre": "FASE 1 · SUBTEMA · nivel 0 (arranque desde cero)", "corto": "F1·N0", "preguntas": "UN solo subtema · 3-4 preguntas a fondo por mañana (≤45′ cada una)", "modo": "Tutor, sin reloj", "volumen": "3-4 Q + 5 de validación", "pasa": "≥1 subtema con 80 % en 10 consecutivas y el análisis de una pregunta en ≤20-25′ en 2 sesiones seguidas", "siFalla": "mismo subtema; vuelve a la página completa de First Aid y rehaz las tarjetas como cronologías (PC); nunca añadir un recurso nuevo", "fuente": "ARRANQUE §3.0-3.4 [SÍNTESIS] · METODO §3.3 (principiante 5-10 Q/día) · ⚠NLM ii" },
+    { "id": "N1", "fase": 1, "nivel": 1, "nombre": "FASE 1 · SUBTEMA · nivel 1 (subtopic mastery, untimed)", "corto": "F1·N1", "preguntas": "UN solo subtema en bloques de 5", "modo": "Tutor, sin reloj", "volumen": "10-20 Q/día (20-30 solo si la revisión cabe)", "pasa": "80 % en 10 consecutivas del subtema, validadas en ≤24-48 h (con 2 días/semana: al final de la misma sesión + revalidación el siguiente día de Step)", "siFalla": "Four Critical Adjustments en orden: recursos → comprensión → aplicación → memoria; bloques de 5 del subtema fallado; si en 1-2 días de Step no llega, el método está roto", "fuente": "METODO §3.1-3.3 (UWorld Complete Guide: The Five Levels of Mastery) · ⚠NLM i-ii" },
+    { "id": "N2", "fase": 1, "nivel": 2, "nombre": "FASE 1 · SUBTEMA · nivel 2 (subtopic mastery, timed)", "corto": "F1·N2", "preguntas": "bloques de 5 de subtemas YA al 80 %", "modo": "Timed (90 s/Q · tope 2′)", "volumen": "creciente (20-30 Q/día)", "pasa": "80 % en ≥3 subtemas distintos, ≥1 validado en <48 h", "siFalla": "si cae por contenido → vuelve a Tutor (nivel 1) en ese subtema; si cae por tiempo → regla de los 2′", "fuente": "METODO §3.1 · ⚠NLM i" },
+    { "id": "N3", "fase": 2, "nivel": 3, "nombre": "FASE 2 · SISTEMA (nivel 3, system mastery)", "corto": "F2·N3", "preguntas": "bloques de 10-20 Q de TODO el sistema", "modo": "Timed", "volumen": "30-50 Q/día", "pasa": "80 % en 20 Q timed consecutivas del sistema", "siFalla": "desglosa por subtema y haz un bloque correctivo de 5 del subtema débil antes de repetir el del sistema", "entrada": "3-5 subtemas del sistema al 80 % sin reloj", "fuente": "METODO §3.1 · ⚠NLM i («First Aid Ultimate Guide: 5 Phases» fase 2 = síntesis del sistema)" },
+    { "id": "N4", "fase": 3, "nivel": 4, "nombre": "FASE 3 · MULTISISTEMA (nivel 4, 2+ sistemas combinados)", "corto": "F3·N4", "preguntas": "20-30 Q mezclando los sistemas dominados con el nuevo", "modo": "Timed", "volumen": "40-70 Q/día", "pasa": "80 % en un bloque mixto de 20 Q timed con ≥3 sistemas", "siFalla": "deja de mezclar y vuelve al sistema que concentra los fallos (nivel 3)", "entrada": "≥3 sistemas con 80 % en 20 Q timed (nivel 3)", "fuente": "METODO §3.1 · ⚠NLM i (+ «USMLE Step 1 Study Plan From a Learning Scientist»: intercalar en cuanto hay un 2.º sistema dominado)" },
+    { "id": "N5", "fase": 4, "nivel": 5, "nombre": "FASE 4 · RANDOM (nivel 5, full mixed timed)", "corto": "F4·N5", "preguntas": "40 Q al azar de todo el banco", "modo": "Timed (60′ por bloque)", "volumen": "40-80 Q/día (1-2 bloques)", "pasa": "80 % sostenido (90 % para élite) y NBME ≥65 % (≈95 % de pase) / ≥70 % (≈99 %)", "siFalla": "vuelve a nivel 4 con los sistemas débiles del último NBME; no examinarse sin margen en los NBME", "entrada": "80 % en mixtos de ≥3 sistemas; últimas 2-8 semanas", "fuente": "METODO §3.1, §9.1, §11.4 · ⚠NLM i" },
+    { "id": "MED", "fase": 0, "nivel": 5, "nombre": "MEDICIÓN (NBME / UWSA / Free 120)", "corto": "MEDICIÓN", "preguntas": "formulario oficial completo", "modo": "Timed, Standard-Paced", "volumen": "el del formulario", "pasa": "no es progresión: es el mapa (NBME ≥65 % ≈95 % de pase)", "siFalla": "el Day-After decide los sistemas débiles; el plan no se re-fecha", "fuente": "METODO §9.1-9.2 · ⚠NLM i-ii («Tracking Method»: 2-3 NBME seguidos en ascenso)" }
+  ],
+  "pasosComunes": [
+    "1 · PRE-TEST ciego de 3-5 Q del subtema (Tutor, sin reloj): UWorld = diagnóstico (⚠NLM ii «UWorld + First Aid: 4 Keys»)",
+    "2 · Cada pregunta: tapar opciones → CCSN → SAQ → juez, no abogado → Educational Objective → shopping list (METODO §3.5, §5.1-5.6)",
+    "3 · First Aid = tratamiento: la página completa del subtema (2-4 págs., Whole Page Rule), no solo el dato fallado (METODO §2, §3.5)",
+    "4 · Tarjetas de MECANISMO / PC (Subject - question), nunca listas ni hechos sueltos (⚠NLM ii «I Analyzed 28,655 Anki Cards»)",
+    "5 · VALIDACIÓN con 5-10 Q NUEVAS del subtema hasta 80 % en 10 consecutivas (METODO §3.1-3.2; ⚠NLM ii)",
+    "6 · Registro (Tracking Method): % por subtema + causa de cada fallo: knowledge / transfer (interpretación) / unforced (⚠NLM i-ii)"
+  ],
+  "oficial": {
+    "fuente": "USMLE Step 1 Content Outline and Specifications (usmle.org, leído el 18-nov-2026; «percentages are subject to change»)",
+    "sistemas": [
+      { "cat": "Reproductive & Endocrine Systems", "pct": "12-16", "uw": ["Endocrine, Diabetes & Metabolism", "Female Reproductive System & Breast", "Male Reproductive System", "Pregnancy, Childbirth & Puerperium"] },
+      { "cat": "Respiratory & Renal/Urinary Systems", "pct": "11-15", "uw": ["Pulmonary & Critical Care", "Renal, Urinary Systems & Electrolytes"] },
+      { "cat": "Behavioral Health & Nervous Systems/Special Senses", "pct": "10-14", "uw": ["Nervous System", "Psychiatric/Behavioral & Substance Use Disorder", "Ear, Nose & Throat (ENT)", "Ophthalmology"] },
+      { "cat": "Blood & Lymphoreticular/Immune Systems", "pct": "9-13", "uw": ["Hematology & Oncology", "Allergy & Immunology"] },
+      { "cat": "Musculoskeletal, Skin & Subcutaneous Tissue", "pct": "8-12", "uw": ["Rheumatology/Orthopedics & Sports", "Dermatology"] },
+      { "cat": "Multisystem Processes & Disorders", "pct": "8-12", "uw": ["Infectious Diseases", "Microbiology (General Principles)", "Pathology (General Principles)", "Biochemistry (General Principles)", "Genetics (General Principles)", "Pharmacology (General Principles)", "Poisoning & Environmental Exposure", "Miscellaneous (Multisystem)"], "nota": "asignación de los System «General Principles» e Infectious a esta categoría = [SÍNTESIS], A VERIFICAR contra el PDF del outline" },
+      { "cat": "Cardiovascular System", "pct": "7-11", "uw": ["Cardiovascular System"] },
+      { "cat": "Gastrointestinal System", "pct": "6-10", "uw": ["Gastrointestinal & Nutrition"] },
+      { "cat": "Social Sciences: Communication and Interpersonal Skills", "pct": "6-9", "uw": ["Social Sciences (Ethics/Legal/Professional)"] },
+      { "cat": "Biostatistics & Epidemiology/Population Health", "pct": "4-6", "uw": ["Biostatistics & Epidemiology"] },
+      { "cat": "Human Development", "pct": "1-3", "uw": [] }
+    ],
+    "disciplinas": [
+      ["Pathology", "45-55"], ["Physiology", "30-40"], ["Nutrition", "15-20"], ["Gross Anatomy & Embryology", "10-20"], ["Microbiology", "10-20"], ["Pharmacology", "10-20"], ["Behavioral Sciences", "10-15"], ["Biochemistry", "5-15"], ["Histology & Cell Biology", "5-15"], ["Immunology", "5-15"], ["Genetics", "5-10"]
+    ],
+    "competencias": [
+      ["Medical Knowledge: Applying Foundational Science Concepts", "60-70"], ["Patient Care: Diagnosis", "20-25"], ["Communication and Interpersonal Skills", "6-9"], ["Practice-based Learning & Improvement", "4-6"]
+    ]
+  },
+  "sistemas": {
+    "Fundamentos": {
+      "nombre": "Patología general (lesión celular · inflamación · neoplasia)", "prioridad": "A (transversal)", "uw": "Pathology GP 39 (Cellular 6 · Inflammation 2 · Neoplasia 31) · respaldo Mehlman 37 + 38 + 34 · Subject Pathology 819 (22,4 %)", "oficial": "Pathology 45-55 % de las preguntas (disciplina)",
+      "ancla": "Un solo patrón de lesión: aguda = neutrófilos (24 h) → crónica = macrófagos + linfocitos (3-5 d) → fibrosis (semanas); la misma cronología vale en corazón, riñón o piel",
+      "orden": "inflamación (aguda → crónica → fibrosis) → lesión reversible (hipoxia → ATP↓ → Na/K-ATPasa → tumefacción) → marcadores → necrosis / apoptosis / absceso → neoplasia (hiperplasia vs neoplasia, Warburg) → amiloide",
+      "recursos": "Pathoma 1-3 + First Aid (material de la app; Pathoma no está en el corpus de Palmerton) · Palmerton: «The Secret Connection Between Digoxin, Reversible Cell Damage, and Trousseau's Sign»",
+      "trampas": "llamar «específica» a la LDH (la troponina lo es) · creer que un absceso se cura solo con antibiótico (se drena) · confundir hiperplasia (depende de una señal) con neoplasia (autónoma)",
+      "top": "lesión reversible vs irreversible · troponina vs CK/LDH · cronología celular · Warburg / PET-FDG · nódulo frío vs caliente · amiloide",
+      "tarjetas": "PC de la cronología celular (en presente, 4-6 pasos) · mecanismo de la tumefacción · compare & contrast hiperplasia / neoplasia",
+      "vacios": "caspasas y vía extrínseca, radicales libres, adaptaciones como bloque, oncogenes/supresores → First Aid + B&B General Topics",
+      "fuente": "POR_MATERIA §1 a-c · ARRANQUE §7.1 · ⚠NLM iii-a (hiperplasia vs neoplasia: «High Yield Endocrinology»)"
+    },
+    "Immunology": {
+      "nombre": "Inmunología", "prioridad": "A", "uw": "Allergy & Immunology 108 (Principles 25 · Immune deficiencies 23 · Misc 21 · Anaphylaxis 19 · Autoimmune 13 · Transplant 7) · Subject 132", "oficial": "Blood & Lymphoreticular/Immune 9-13 % (con Hemato) · Immunology 5-15 % (disciplina)",
+      "ancla": "El MHC solo presenta péptidos → los T solo responden a proteínas; el cambio de isotipo exige un T helper → vacuna conjugada, Rh (IgG) vs ABO (IgM)",
+      "orden": "innata/adaptativa + MHC → citocinas → granuloma → hipersensibilidades I-IV → vacunas → inmunodeficiencias → autoinmunidad",
+      "recursos": "AMBOSS/Pathoma + First Aid (app) · Palmerton: «High Yield Immunology» · «Could You Connect Conjugate Vaccines and ABO Incompatibility…»",
+      "trampas": "la célula gigante como «definición» del granuloma (la define la epitelioide) · memorizar listas por tipo de hipersensibilidad en vez de regenerarlas: ¿antígeno fijo o soluble? ¿con anticuerpo o sin él? · tipo II lineal vs III granular",
+      "top": "MHC I/II · vacuna conjugada · IL-1 fiebre / IL-6 fase aguda / TNF caquexia · granuloma epitelioide · Bruton hacia los 6 meses · Coombs directo vs indirecto",
+      "tarjetas": "PC «carbohidrato puro → solo IgM sin memoria → vacuna conjugada» · compare & contrast tipo II / tipo III",
+      "vacios": "inmunodeficiencias primarias por patrón, complemento, trasplante y EICH → First Aid",
+      "fuente": "POR_MATERIA §2 · ARRANQUE §7.2 · ⚠NLM iii-b (Rh vs ABO)"
+    },
+    "Cardiovascular": {
+      "nombre": "Cardiovascular", "prioridad": "A (1.º System de uWorld)", "uw": "413 Q (11,3 %): Normal structure 55 · Myopericardial 52 · Arrhythmias 50 · Coronary 47 · Valvular 46 · HF/shock 44 · Aortic 37 · Congenital 32 · HTN 24 · Drugs 16", "oficial": "Cardiovascular 7-11 %",
+      "ancla": "PAM = GC × RPT (GC = FC × VS) y ΔP = Flujo × Resistencia; isquemia = demanda > oferta",
+      "orden": "Palmerton empieza por la CAD (tema limpio y autocontenido) → insuficiencia cardíaca → arritmias → valvulopatías → congénitas y shock; el plan de la app va fisiología → hemodinámica → curvas → ECG → arritmias → fármacos → CAD (A7 pendiente): úsala como ejemplo de cada fórmula",
+      "recursos": "First Aid + Costanzo (electrofisiología y curvas) + AMBOSS/B&B (app) · Palmerton: «High Yield Cardiology» 1-2 · «The #1 USMLE Cardiology Equation» · «The Most Useful USMLE Equation Ever» · cheat sheets de Swan-Ganz y antiarrítmicos",
+      "trampas": "nitratos en el IAM de VD/inferior · creer que el nodo usa Na rápido en la fase 0 (es Ca tipo L) · confundir fallo derecho aislado (pulmones limpios) con fallo izquierdo · mareo/síncope = hipotensión hasta que se demuestre lo contrario",
+      "top": "SCA y complicaciones (RCA → bloqueo AV) · potencial de acción nodal vs miocito y antiarrítmicos por fase · valvulopatías y maniobras · perfiles de shock (Swan-Ganz) · barorreflejo",
+      "tarjetas": "PC de cada fórmula con una enfermedad (CAD: demanda > oferta) · 1 tarjeta por clase de antiarrítmico (fase → efecto en el ECG → toxicidad) · imagen: ECG",
+      "vacios": "bucle PV, Frank-Starling, Laplace, maniobras, desdoblamiento de S2, criterios de Jones → First Aid + Costanzo",
+      "fuente": "POR_MATERIA §3 · ARRANQUE §7.3 · ⚠NLM iii-a (orden CAD → IC → arritmias → valvulopatías → congénitas/shock; trampas)"
+    },
+    "Respiratory": {
+      "nombre": "Respiratorio", "prioridad": "A (con Renal: 11-15 %)", "uw": "Pulmonary & Critical Care 265 (Pulmonary infections 62 · Obstructive 48 · Critical care 40 · ILD 26 · Normal 25 · Vascular 23)", "oficial": "Respiratory & Renal/Urinary 11-15 %",
+      "ancla": "«¿Llega el O2 adonde tiene que ir y, si no, por qué?» — el sistema más lógico, deducible de la física",
+      "orden": "gas alveolar → gradiente A-a → V/Q → shunt vs espacio muerto → gasometría en 3 pasos → SDRA/TEP → PFT/DLCO (orden interno: NOT IN SOURCES; síntesis de POR_MATERIA)",
+      "recursos": "First Aid + Costanzo (mecánica, gas alveolar) · Palmerton: «High Yield Respiratory» · «Alveolar Gas Equation for the USMLE Step 1? Diuretics?…»",
+      "trampas": "en la altitud la FiO2 sigue en 21 % (cae la presión barométrica) · O2 al 100 % en el retenedor crónico de CO2 · solo el shunt no corrige con O2 · lesión intra- vs extratorácica",
+      "top": "ecuación del gas alveolar y A-a · mecanismos de hipoxemia · vasoconstricción pulmonar hipóxica → cor pulmonale · PFT obstructivo vs restrictivo y DLCO",
+      "tarjetas": "transfer (gasometría → mecanismo) · compare & contrast shunt / V-Q / hipoventilación",
+      "vacios": "FQ, neumoconiosis, criterios de Light, surfactante → First Aid",
+      "fuente": "POR_MATERIA §4 · ⚠NLM iii-a"
+    },
+    "Renal": {
+      "nombre": "Renal y electrolitos", "prioridad": "A (con Respiratorio)", "uw": "224 Q (Glomerular 39 · Fluid/electrolytes/acid-base 38 · Normal 24 · AKI 22 · Congenital 21 · Litiasis 16)", "oficial": "Respiratory & Renal/Urinary 11-15 %",
+      "ancla": "«¿En qué punto del túbulo está el problema?» · la creatinina dice que la filtración bajó, no por qué · nefrótico = falla de barrera vs nefrítico = inflamación",
+      "orden": "creatinina/GFR → túbulo proximal → sodio y agua → contracorriente y diuréticos → K → AKI/NTA → glomérulo → ácido-base → Ca/PTH (Renal va justo después de Cardio por la continuidad hemodinámica, ⚠NLM)",
+      "recursos": "First Aid + Costanzo (aclaramiento, transporte tubular) · Palmerton: «High Yield Renal» 1-2 · «High Yield Surgery…: LFTs & Renal»",
+      "trampas": "tratar la creatinina como toxina · esperar edema en el SIADH (euvolémico) · olvidar la fase poliúrica de la NTA (hipopotasemia) · AINE = aferente vs IECA = eferente",
+      "top": "nefrótico vs nefrítico · fases de la NTA · hiponatremia/SIADH y asa vs tiazida · hemodinámica glomerular y fármacos · FENa",
+      "tarjetas": "PC por segmento de la nefrona (fármaco → transportador → electrolito) · transfer (labs → sitio del túbulo)",
+      "vacios": "glomerulopatías por entidad y litiasis por tipo (fuera del corpus) → First Aid",
+      "fuente": "POR_MATERIA §5 · ⚠NLM iii-a"
+    },
+    "Gastrointestinal": {
+      "nombre": "Gastrointestinal e hígado", "prioridad": "B", "uw": "306 Q (Intestinal 66 · Hepatic 59 · Gastroesophageal 45 · Tumors 27 · Normal 22)", "oficial": "Gastrointestinal 6-10 %",
+      "ancla": "localizar el dolor + leer las LFTs + entender la náusea · PT/INR = función aguda (factor VII, vida media corta) vs albúmina = función crónica",
+      "orden": "bilirrubina → LFTs (daño vs función, patrón hepatocelular vs colestásico) → hepatitis/serología VHB → vía biliar → páncreas → luminal (ERGE, EII, diverticulitis) (orden interno: NOT IN SOURCES)",
+      "recursos": "First Aid + Costanzo (secreción, digestión de lípidos) · Palmerton: «High Yield GI» 1-2 · «High Yield Surgery…: LFTs & Renal»",
+      "trampas": "usar la albúmina para la falla hepática aguda · anti-HBs aislado (vacunado) vs anti-HBs + anti-HBc (infección resuelta) · abdomen agudo sin decidir el tipo de shock",
+      "top": "patrones de LFT · serología y oncogénesis del VHB · complicaciones de la cirrosis (encefalopatía, lactulosa) · 5-HT3 y náusea",
+      "tarjetas": "transfer (patrón de LFT → sitio) · PC de la cirrosis → hipertensión portal",
+      "vacios": "hormonas GI, H. pylori/úlcera, varices, Wilson, hemocromatosis, pancreatitis en detalle → First Aid + UWorld",
+      "fuente": "POR_MATERIA §6 · ⚠NLM iii-a"
+    },
+    "Endocrine": {
+      "nombre": "Endocrino", "prioridad": "A (con Repro: 12-16 %)", "uw": "199 Q (DM 49 · Tiroides 34 · Tumores 26 · Repro endocrine 21 · Congenital 19)", "oficial": "Reproductive & Endocrine 12-16 %",
+      "ancla": "inhibición por retroalimentación dicha en voz alta (primario / secundario = hipófisis / terciario): piden flechas, no definiciones",
+      "orden": "ejes y retroalimentación → hipófisis (panhipopituitarismo) → tiroides → suprarrenal → DM → Ca/PTH (orden interno: NOT IN SOURCES)",
+      "recursos": "First Aid + Costanzo (ejes) · Palmerton: «High Yield Endocrinology»",
+      "trampas": "reponer calcio sin corregir antes el magnesio · calcificación distrófica (calcio normal) vs metastásica · hipertiroidismo vs tirotoxicosis (RAIU)",
+      "top": "tablas 1.º/2.º/3.º · síntesis tiroidea y RAIU · DM2/metformina y CAD · PTH y calcio por cuadrantes · PTHrP paraneoplásica",
+      "tarjetas": "flechas por eje (compare & contrast primario / secundario) · PC de la CAD (cetoacidosis)",
+      "vacios": "Cushing/dexametasona, Addison, feocromocitoma, MEN, HSC, acromegalia → First Aid",
+      "fuente": "POR_MATERIA §7 · ⚠NLM iii-a"
+    },
+    "Nervous System": {
+      "nombre": "Neurología", "prioridad": "A (2.º System de uWorld)", "uw": "399 Q (Nervios periféricos y músculo 69 · Cerebrovascular 62 · Normal 48 · Congénito 34 · Neurodegenerativas 34 · Infecciones 30)", "oficial": "Behavioral Health & Nervous Systems/Special Senses 10-14 %",
+      "ancla": "dónde está la lesión, no qué enfermedad es: si cortas en cualquier punto y predices qué se pierde, entiendes neuro · decusaciones · hallazgos cruzados de tronco",
+      "orden": "vías y decusaciones → médula (Brown-Séquard) → tronco y pares → MNS vs MNI → territorios vasculares → hemorragias → unión neuromuscular/SNA (orden interno: NOT IN SOURCES)",
+      "recursos": "First Aid + Costanzo (potencial de acción, sinapsis) · Palmerton: «High Yield Neuro» 1-2",
+      "trampas": "buscar déficits bilaterales en tronco (la clave son los cruzados) · MNS (hiperreflexia, Babinski) vs MNI (atrofia, fasciculaciones) · succinilcolina en denervación (hiperpotasemia)",
+      "top": "ictus por territorio · síndromes de tronco · PPC = PAM − PIC y Cushing · miastenia vs botulismo · HSA vs subdural",
+      "tarjetas": "imagen (cortes y territorios) · transfer (déficit → nivel de la lesión)",
+      "vacios": "cefaleas, convulsiones, demencias, tumores del SNC; Wallenberg/Weber con atribución contradictoria del cuaderno (A VERIFICAR) → First Aid",
+      "fuente": "POR_MATERIA §8 · ⚠NLM iii-b"
+    },
+    "Hematology & Oncology": {
+      "nombre": "Hemato-oncología", "prioridad": "A (con Inmuno: 9-13 %)", "uw": "229 Q (Hematíes 85 · Leucocitos 48 · Hemostasia 36 · Oncología 22 · Plaquetas 15)", "oficial": "Blood & Lymphoreticular/Immune 9-13 %",
+      "ancla": "«¿Los hematíes se crean o se destruyen?» · el VCM como un globo que se llena · panel de hierro con hepcidina · trombo arterial (plaquetas) vs venoso (fibrina)",
+      "orden": "LDH/reticulocitos → hierro (micro) → macro/normocíticas → hemólisis → hemostasia y coagulación → anticoagulantes → neoplasias (Palmerton empieza por anemias por VCM y coagulación, ⚠NLM)",
+      "recursos": "Pathoma + First Aid · Palmerton: «High Yield Hematology» · «How Can You Master Coagulation…» 1-2 · «Can You Connect the Mechanism of Anemia with the Iron Panel…» · «Gel electrophoresis…»",
+      "trampas": "warfarina sin puente de heparina (proteína C → necrosis cutánea) · ferritina normal ≠ sin anemia (enfermedad crónica) · revertir heparina con vitamina K (es protamina)",
+      "top": "panel de hierro · electroforesis HbS/HbC · PT/PTT y fármacos · B12 vs folato (MMA) · HIT · Coombs",
+      "tarjetas": "transfer (panel de hierro → mecanismo) · compare & contrast heparina / warfarina por polaridad",
+      "vacios": "translocaciones y leucemias, vWD/hemofilia, esferocitosis, HPN → First Aid + Pathoma",
+      "fuente": "POR_MATERIA §9 · ⚠NLM iii-b"
+    },
+    "Microbiology / ID": {
+      "nombre": "Microbiología e infecciosas", "prioridad": "A (Subject 348; Bacterial infections 112 = la subcategoría más grande del banco)", "uw": "Infectious 271 + Micro GP 30 · Subject Microbiology 348 (9,5 %)", "oficial": "Microbiology 10-20 % (disciplina) · Multisystem 8-12 %",
+      "ancla": "sin columna vertebral en el corpus: ideas transversales — la cápsula → IgM y vacuna conjugada · la guerra por el hierro · el absceso se drena · +RNA infectivo vs −RNA",
+      "orden": "bacteriología general → Gram+ → Gram− → micobacterias/atípicas → virus DNA → virus RNA/VIH → hongos y parásitos → antimicrobianos (orden de la app)",
+      "recursos": "Sketchy Micro + First Aid + UWorld aplicando el método (material de la app) · Palmerton: «Why Does the USMLE Step 1 Care if a Virus Has +RNA or -RNA?»",
+      "trampas": "VACÍO en el corpus: el pre-test y la shopping list son aquí la fuente principal",
+      "top": "Bacterial infections (112 Q) · HIV/ITS 42 · virus 43 · antimicrobianos 23 (UW)",
+      "tarjetas": "mecanismo de virulencia → presentación · fármaco → diana → resistencia",
+      "vacios": "casi todo el contenido microbiológico → Sketchy + First Aid",
+      "fuente": "POR_MATERIA §10 · ARRANQUE §7.10 · ⚠NLM iii-c"
+    },
+    "Reproductive": {
+      "nombre": "Reproductor (OB/GYN + masculino)", "prioridad": "A (con Endocrino: 12-16 %)", "uw": "190 Q (femenino 79 · embarazo 59 · masculino 52)", "oficial": "Reproductive & Endocrine 12-16 % · Human Development 1-3 %",
+      "ancla": "¿qué estructura produce qué hormona en cada fase? · modelo de dos células (teca → andrógenos, granulosa → estrógenos) · GnRH pulsátil estimula, continua suprime",
+      "orden": "ciclo y ejes → embarazo (fisiología, hCG) → preeclampsia → anovulación/SOP → anticoncepción → gineco-oncología → masculino (orden interno: NOT IN SOURCES)",
+      "recursos": "First Aid + Costanzo (eje gonadal) · Palmerton: «High Yield OB/GYN Review» 1-2 · «Could You Connect Conjugate Vaccines and ABO Incompatibility…»",
+      "trampas": "ABO tan grave como Rh (la IgM no cruza) · hiperplasia endometrial (señal) vs neoplasia · heparina segura / warfarina teratógena",
+      "top": "enfermedad hemolítica Rh vs ABO · Klinefelter · VPH E6/E7 · fármacos en el embarazo",
+      "tarjetas": "compare & contrast por fase del ciclo · PC de la anovulación",
+      "vacios": "citología/VPH en detalle, BRCA, placenta previa/desprendimiento, DM gestacional, HPB/PSA → First Aid",
+      "fuente": "POR_MATERIA §11 · ⚠NLM iii-b (con atribuciones a verificar)"
+    },
+    "Musculoskeletal / Rheum": {
+      "nombre": "MSK, reuma y derma", "prioridad": "B (8-12 %)", "uw": "Rheum/Ortho 165 + Dermatology 99 = 264 · Subject Anatomy 309", "oficial": "Musculoskeletal, Skin & Subcutaneous 8-12 %",
+      "ancla": "reuma = inmuno aplicada: busca el macrófago (IL-1 fiebre, IL-6 VSG, TNF peso, IFN-γ granuloma) · hueso: osteoporosis (masa) vs osteomalacia (mineralización)",
+      "orden": "hueso y Ca/PTH/vit D → acoplamiento excitación-contracción → artritis → autoinmunidad y vasculitis → piel (orden interno: NOT IN SOURCES)",
+      "recursos": "First Aid + Costanzo (contracción) · sin vídeo High Yield propio de Palmerton para MSK/Derma (VACÍO)",
+      "trampas": "IMC bajo como 1.er factor de osteoporosis (es la edad) · diagnosticar Kawasaki sin todos los criterios · fármaco identificado por su efecto adverso específico",
+      "top": "osteoporosis vs osteomalacia · espondiloartropatías HLA-B27 · vasculitis · Paget",
+      "tarjetas": "compare & contrast por patrón articular · PC de la citocina → síntoma",
+      "vacios": "artritis por patrón, autoanticuerpos, vasculitis por entidad, tumores óseos, plexos y casi toda la derma → First Aid (atribuciones del cuaderno a verificar)",
+      "fuente": "POR_MATERIA §12 · ⚠NLM iii-b"
+    },
+    "Psychiatry & Behavioral": {
+      "nombre": "Psiquiatría y conducta", "prioridad": "B (con Neuro: 10-14 %)", "uw": "Psychiatric 179 (ánimo 33 · psicóticos 26 · ansiedad 25 · sustancias 25) · Subject Behavioral science 254", "oficial": "Behavioral Health & Nervous Systems 10-14 % · Behavioral Sciences 10-15 % (disciplina)",
+      "ancla": "la DURACIÓN decide el diagnóstico (la C de Cronología de CCSN): esquizofrenia ≥6 meses vs esquizofreniforme 1-6 meses",
+      "orden": "ánimo y psicóticos → ansiedad/personalidad/infancia → sustancias → psicofármacos (orden de la app; NOT IN SOURCES)",
+      "recursos": "First Aid + UWorld aplicando CCSN (corpus casi VACÍO de psiquiatría clínica)",
+      "trampas": "diagnosticar sin la cronología · efecto adverso específico del psicofármaco",
+      "top": "ánimo · psicóticos · ansiedad · sustancias (UW)",
+      "tarjetas": "cronología (duración → diagnóstico) · fármaco → receptor → efecto adverso",
+      "vacios": "DSM, psicofarmacología detallada, SNM → First Aid",
+      "fuente": "POR_MATERIA §13 · ⚠NLM iii-b"
+    },
+    "Biostat & Ethics": {
+      "nombre": "Bioestadística, epidemiología y ética", "prioridad": "A por hora (puntos «gratis»: 10-15 % entre los dos)", "uw": "Biostatistics & Epidemiology 120 (diseño 54 · epi 31 · pruebas 23) + Social Sciences 108 (comunicación 62 · ética 20)", "oficial": "Biostatistics & Epidemiology 4-6 % + Social Sciences: Communication 6-9 %",
+      "ancla": "¿son diferentes los grupos? (exposición, desenlace y su relación) · ética: «elicit more information» antes de actuar",
+      "orden": "diseños → OR vs RR → sensibilidad/especificidad/VPP/VPN y prevalencia → p, α, β, poder → sesgos · ética: autonomía, capacidad, confidencialidad, comunicación",
+      "recursos": "First Aid + UWorld (Palmerton remite al paquete de estadística de UWorld) · Palmerton: «Biostatistics SUMMARY STEP 1 + 2» · «The 6 Things Successful IMGs Do Differently»",
+      "trampas": "VPP como propiedad fija de la prueba (sube con la prevalencia) · confusión no identificada · respuestas confrontativas o de acción prematura en ética",
+      "top": "2×2 y VPP/VPN · diseños y sesgos · OR vs RR · comunicación con preguntas abiertas",
+      "tarjetas": "cada definición en inglés llano, dicha 5 veces · transfer (escenario → diseño / sesgo)",
+      "vacios": "ROC, NNT y principios éticos como contenido → First Aid + UWorld",
+      "fuente": "POR_MATERIA §14 · ⚠NLM iii-b/iii-c"
+    },
+    "Biochemistry": {
+      "nombre": "Bioquímica y genética", "prioridad": "B (Biochemistry 5-15 % · Genetics 5-10 %)", "uw": "Biochemistry GP 65 + Genetics GP 61 · Subjects 159 + 107", "oficial": "Biochemistry 5-15 % · Genetics 5-10 % (disciplinas)",
+      "ancla": "de la bioquímica solo se pregunta el paso regulado, el primero o el clínicamente relevante · genética: falta una enzima → recesivo; canal hiperactivo → dominante",
+      "orden": "membranas («likes dissolve likes») → metabolismo HY (glucólisis/gluconeogénesis, glucógeno) → lípidos → vitaminas → biología molecular → genética clínica",
+      "recursos": "First Aid + B&B (app) · Palmerton: «High Yield Biochemistry»",
+      "trampas": "memorizar la ruta entera en vez del paso regulado · von Gierke vs McArdle",
+      "top": "von Gierke · MCAD · gluconeogénesis · folato/B12 · electroforesis",
+      "tarjetas": "1 por enzima regulada (activador / inhibidor → enfermedad)",
+      "vacios": "gran parte de la bioquímica y genética de detalle → First Aid",
+      "fuente": "POR_MATERIA §15 · ⚠NLM iii-c"
+    },
+    "Pharmacology": {
+      "nombre": "Farmacología general (transversal)", "prioridad": "A (Subject 550 = 15 %, el 2.º del banco)", "uw": "Pharmacology GP 45 + Poisoning 32 · Subject 550", "oficial": "Pharmacology 10-20 % (disciplina)",
+      "ancla": "mecanismo ↔ nombre ↔ toxicidad: agrupa los efectos adversos por mecanismo; el examen da el nombre, no la clase",
+      "orden": "membranas → receptores y PK/PD → SNA → fármacos por sistema (con su sistema) → toxicología",
+      "recursos": "Sketchy Pharm + First Aid (app) · Palmerton: «High Yield Pharmacology» 1-2 · «How to Master Step 1 Pharmacology Over a Glass of Wine» · «USMLE Step 1 Pharmacology: The Ultimate Memory Hack»",
+      "trampas": "estudiar la clase sin el mecanismo que explica uso y toxicidad · mazos prehechos masivos",
+      "top": "SNA · antiarrítmicos · anticoagulantes · toxicidades específicas",
+      "tarjetas": "1 tarjeta por CLASE con el mecanismo que explica uso y toxicidad; mazo aparte a 20 nuevas/día si hace falta",
+      "vacios": "—",
+      "fuente": "POR_MATERIA §15 · ARRANQUE §7.15 · ⚠NLM iii-c"
+    }
+  },
+  "f1": {
+    "2": { "fase": "N0", "sis": "Fundamentos", "ancla": "hipoxia → ATP↓ → Na/K-ATPasa ↓ → tumefacción (reversible) → daño de membranas con entrada de Ca²⁺ → necrosis (irreversible); la adaptación es la respuesta a un estrés sostenido", "leer": "lesión reversible (hipoxia → ATP↓ → Na/K-ATPasa → tumefacción) → irreversible y necrosis → adaptaciones (hipertrofia, hiperplasia, atrofia, metaplasia) → calcificación patológica; la inflamación (aguda → crónica → fibrosis) va con sus vídeos B&B 06-07, en la cola del D2", "pregunta": "trampa: la tumefacción es reversible; lo irreversible es el daño de membranas (entra Ca²⁺) · calcificación distrófica (tejido dañado, Ca²⁺ normal) vs metastásica (Ca²⁺ o fosfato altos)", "tarjetas": "PC de la lesión hipóxica (ATP↓ → bomba ↓ → tumefacción → Ca²⁺ → necrosis) · compare & contrast calcificación distrófica / metastásica", "anclaCola": { "bb": [85, 86], "ancla": "aguda = neutrófilos (24 h) → crónica = macrófagos (3-5 d) → fibrosis (semanas)", "pregunta": "«¿qué célula predomina a las X horas?» en cualquier órgano; trampa: la LDH no es específica", "nota": "v6.10 (fix revisión 18-nov): era el método del D2; su material (B&B 06 Inflammation Principles y 07 Acute and Chronic Inflammation) no se ve el D2 sino en la cola → el ancla viaja con esos vídeos; la tarjeta PC post-IAM pasa al D13" } },
+    "3": { "fase": "N0", "sis": "Fundamentos", "ancla": "hiperplasia = depende de una señal · neoplasia = crecimiento autónomo", "leer": "principios de neoplasia → carcinogénesis → Warburg y PET-FDG → nódulo frío vs caliente", "pregunta": "trampa: confundir hiperplasia (endometrio con estrógenos sin oposición) con neoplasia", "tarjetas": "compare & contrast hiperplasia / neoplasia · mecanismo de Warburg" },
+    "4": { "fase": "N0", "sis": "Immunology", "ancla": "el MHC solo presenta péptidos → los T solo responden a proteínas; el cambio de isotipo exige un T helper", "leer": "innata vs adaptativa → MHC I/II → linfocitos T/B → cambio de isotipo → vacuna conjugada", "pregunta": "trampa: un carbohidrato puro solo da IgM y no deja memoria (por eso la vacuna se conjuga)", "tarjetas": "PC «polisacárido → IgM sin memoria → vacuna conjugada» · Rh (IgG) vs ABO (IgM)" },
+    "5": { "fase": "N1", "sis": "Immunology", "ancla": "regenera las hipersensibilidades con 2 preguntas: ¿antígeno fijo o soluble? ¿con anticuerpo o sin él?", "leer": "tipos I-IV → autoinmunidad → inmunodeficiencias por patrón (B, T, fagocito, complemento)", "pregunta": "trampas: la célula gigante no define el granuloma (la epitelioide sí) · tipo II lineal vs III granular · Bruton hacia los 6 meses", "tarjetas": "compare & contrast II / III · citocinas: IL-1 fiebre, IL-6 fase aguda, TNF caquexia" },
+    "6": { "fase": "N1", "sis": "Cardiovascular", "ancla": "PAM = GC × RPT (GC = FC × VS); mareo o síncope ⇒ hipotensión", "leer": "anatomía y ciclo → GC, precarga, poscarga y contractilidad; cada fórmula con un ejemplo de CAD (Palmerton empieza Cardio por la CAD)", "pregunta": "preguntas de flechas: escribe la fórmula y mueve una variable cada vez; trampa: confundir despolarización con contracción", "tarjetas": "PC de cada fórmula con una enfermedad (isquemia = demanda > oferta)" },
+    "7": { "fase": "N1", "sis": "Cardiovascular", "ancla": "ΔP = Flujo × Resistencia; resistencias en serie y en paralelo; barorreflejo", "leer": "flujo y resistencia → regulación de la PA (barorreflejo, SRAA) → HTA primaria y secundaria", "pregunta": "trampa: anclarse en el diagnóstico en vez de seguir la flecha de la presión", "tarjetas": "transfer (cambio de PA → respuesta del barorreflejo)" },
+    "9": { "fase": "N1", "sis": "Cardiovascular", "ancla": "las curvas son ΔP = Q × R en el tiempo: precarga, poscarga y contractilidad mueven el bucle", "leer": "bucle PV → Wiggers → Starling con First Aid + Costanzo (VACÍO en el corpus de Palmerton) · PCWP ≈ PTDVI salvo en la estenosis mitral (cheat sheet Swan-Ganz)", "pregunta": "dibuja el bucle antes de mirar las opciones; trampa: PCWP alta en la estenosis mitral con PTDVI normal", "tarjetas": "imagen del bucle PV con la variable que cambia · PCWP vs PTDVI" },
+    "10": { "fase": "N1", "sis": "Cardiovascular", "ancla": "canales iónicos ↔ ECG: cada fase del potencial de acción explica una onda", "leer": "potencial del miocito vs nodal → conducción → ECG → bloqueos AV", "pregunta": "trampa: el nodo NO usa Na rápido en la fase 0 (es Ca tipo L)", "tarjetas": "compare & contrast potencial nodal / miocito · imagen: ECG de cada bloqueo" },
+    "11": { "fase": "N1", "sis": "Cardiovascular", "ancla": "mecanismo (reentrada o automatismo) → ECG → severidad (CCSN) → tratamiento", "leer": "FA, TSV, WPW y TV por mecanismo; IAM inferior (CD) → bloqueo AV", "pregunta": "la S de CCSN decide: inestable → cardioversión; trampa: tratar el ECG sin mirar la hemodinámica", "tarjetas": "PC de cada taquiarritmia (mecanismo → ECG → riesgo)" },
+    "12": { "fase": "N1", "sis": "Cardiovascular", "ancla": "antiarrítmico por fase del potencial de acción; farmaco: mecanismo ↔ nombre ↔ toxicidad", "leer": "clases I-IV sobre el potencial que ya dibujaste el D10 → fármacos autonómicos CV", "pregunta": "el examen da el nombre, no la clase: tradúcelo a mecanismo antes de mirar las opciones", "tarjetas": "1 por CLASE: fase → efecto en el ECG → toxicidad (agrupada por mecanismo)" },
+    "13": { "fase": "N1", "sis": "Cardiovascular", "ancla": "isquemia = demanda > oferta (el 1.er subtema de Palmerton): integra D2 + D6-D12", "leer": "aterosclerosis (lesión hipóxica del D2 + cronología de la inflamación de B&B 06-07) → angina estable/inestable → IAM y sus complicaciones (CD → bloqueo AV)", "pregunta": "trampas: nitratos en el IAM de VD/inferior · la troponina es la específica (sale con el daño de membrana del D2; la LDH no lo es)", "tarjetas": "PC aterosclerosis → placa → isquemia → necrosis → fibrosis (cierra la cadena del D2) · PC de la cronología post-IAM (enlaza con la CAD de Palmerton)" }
+  },
+  "reglasT2": {
+    "reentrada": { "fase": "N2", "ajuste": "Plan N4 (2×20Q timed mezclados) → nivel 2 hasta tener sistemas en nivel 3: mezcla los subtemas de F1 (interleaving) en bloques de 5; TIMED solo los subtemas con el gate superado en 📏 Medición, el resto en Tutor. Mismas 40Q y mismos minutos." },
+    "contenido-N1": { "fase": "N1", "nota": "Tutor en bloques de 5 del subtema; la cifra del día es un TECHO: si la revisión de un bloque pasa de 30′, para ahí (la calidad manda)." },
+    "contenido-N1-timed": { "fase": "N1", "ajuste": "La fila dice «CONSOLIDACIÓN 20Q timed», pero su nivel es 1: esos 20Q van en Tutor (bloques de 5) hasta que el subtema tenga 80 % en 10 consecutivas; timed solo los subtemas ya validados. Mismas Q y mismos minutos (Tutor = 90 s + 0,85′/Q = timed + revisión)." },
+    "contenido-N2": { "fase": "N2", "nota": "Timed SOLO en subtemas con el gate superado; el subtema que no lo pasó sigue en Tutor (nivel 1). La cifra del día es un techo." },
+    "contenido-N4": { "fase": "N4", "ajuste": "Viernes de nivel 4 CONDICIONADO: mixto timed solo si ≥3 sistemas ya tienen 80 % en 20Q timed (nivel 3, 📏 Medición); si no, nivel 3: 20-30Q timed del sistema anterior completo (o del de hoy si ya tiene 3-5 subtemas al 80 %). Mismas Q y mismos minutos." },
+    "reentrada1615": { "ajuste": "16:15 REENTRADA (nivel 3) CONDICIONADA: 20Q timed del sistema solo si tiene 3-5 subtemas al 80 % sin reloj; si no, 20Q en Tutor en bloques de 5 de sus subtemas más débiles (nivel 1-2). Mismas Q y mismos minutos." },
+    "eval18F3": { "ajuste": "18:00 EVALUACIÓN ACUMULATIVA: 10Q mezcladas de subtemas YA VALIDADOS (interleaving, «Study Plan From a Learning Scientist»); no es nivel 4 hasta tener ≥3 sistemas en nivel 3 → hasta entonces, timed solo los subtemas con gate y el resto en Tutor." },
+    "colchon": { "fase": "N4", "ajuste": "Colchón sin fila atrasada: mixto timed (nivel 4) solo con ≥3 sistemas en nivel 3; si no, 40Q timed del sistema más débil del último NBME (nivel 3)." },
+    "refuerzo": { "fase": "N2", "nota": "2.ª vuelta de subtemas ya estudiados: timed (nivel 2) los que pasaron el gate; Tutor los que no." },
+    "reactivacion": { "fase": "N3", "nota": "Sistema completo timed (nivel 3): <80 % en 20Q → bloque correctivo de 5 del subtema débil antes de repetir el del sistema." },
+    "uw_random": { "fase": "N5", "ajuste": "Bloques de 40 al azar (nivel 5) solo con 80 % en mixtos de ≥3 sistemas; si no, los 40Q van como mixtos de los sistemas dominados (nivel 4) + el sistema débil en Tutor. Mismas Q." },
+    "incorrectas": { "fase": "N5", "nota": "Fase 4: incorrectas de uWorld en bloques timed + sistema débil del NBME." },
+    "consolidacion": { "fase": "N5", "nota": "Fase 4: cierre con incorrectas y conceptos de AMBOSS; nada nuevo." },
+    "taper": { "fase": "N5", "nota": "Taper: 20Q flagged, nada nuevo." },
+    "ritual": { "fase": "MED", "nota": "Ritual pre-examen: sin estudio." },
+    "hito": { "fase": "MED", "nota": "Medición en formato nivel 5 (no es progresión): Standard-Paced, completo." },
+    "day_after": { "fase": "MED", "nota": "Day-After: clasificar cada fallo (knowledge / transfer / unforced) y elegir los sistemas débiles." }
+  }
+}

@@ -1,6 +1,6 @@
-# Model Context Protocol: Advanced Topics (Anthropic Skilljar)
+# Model Context Protocol: Advanced Topics (Anthropic Academy)
 
-> URL: https://anthropic.skilljar.com/model-context-protocol-advanced-topics
+> URL: https://academy.claude.com/courses/model-context-protocol-advanced-topics
 > Extraído con WebFetch el 12-sep-2026 (F2 · Academy restante + prep CCA-F, v5.10-b) · URL verificada 200 con check_links.js.
 > Verificación: CONFIRMADA.
 

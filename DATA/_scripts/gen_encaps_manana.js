@@ -79,7 +79,8 @@
  *   vuelve entero. Donde la tarde sigue sin caber (25 y 27-nov, 7 y 31-dic: pendiente de la mañana), cada paso que no entra lleva DESTINO CON FECHA
  *   (mananas[].destinos_18: cifras / norma → un domingo ENCAPS o la PIZARRA de una 18:00 posterior; la pizarra → la próxima pizarra; las flashcards:
  *   las vencidas, el próximo Anki ENCAPS; las nuevas siguen en la cola del mazo) y el aviso lo dice; si falta un destino, ABORTA. (3) Plan B del dom 22 →
- *   vie 27-nov 18:00: la ET 2/3 = su PPT (9′) + 36′ de tramos útiles; los 9′ que faltan, el dom 29-nov. (6) Nada «en audio en un tiempo muerto»: lo que
+ *   vie 27-nov 18:00: la ET 2/3 = su PPT (9′) + 36′ de tramos útiles; los 9′ que faltan, el dom 6-dic (v6.10d: con el alias, las 18:00 del vie 27 se hacen
+ *   el lun 30, después del dom 29; el aviso de la mañana del lun 23-nov y el diferido del sáb 21 lo dicen igual). (6) Nada «en audio en un tiempo muerto»: lo que
  *   falta hasta el 60 % de cada clase en diferido (mananas[].teoria[].resto_en) y el tramo 17:00-17:30 de cada clase en vivo del sábado de F1 (grabación
  *   a 2×, 15′) van como PRIMEROS PASOS NO OPCIONALES del ENCAPS de un domingo con fecha (domingos[].antes + los automáticos); en los domingos de tarde
  *   (6, 13 y 20-dic) esos pasos van antes del compromiso personal y la guía lleva la pausa (domingos[].antes_hasta). (9) Dom 3-ene: la corrección
@@ -133,6 +134,11 @@ const addDias = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDa
 const WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const corta = (iso) => `${WD[dow(iso)]} ${Number(iso.slice(8))}-${MES[Number(iso.slice(5, 7)) - 1]}`;
+// v6.10d (18-nov-2026): con el ALIAS de corrida_s1 (jue 19-nov → vie 1-ene hacen el plan del hábil anterior) la mañana de un viernes de PLAN se hace el
+//   LUNES real siguiente: lo que mandaba «al domingo» (lo que falta hasta el 60 %, las cifras que no caben a las 18:00, la teoría que no cabe, el plan B)
+//   iría a un domingo YA PASADO. Todo destino de domingo se compara con el día REAL de su origen (gen_fechas_v6.fechaRealDe; sin alias = la propia fecha).
+const _A1 = (F6.corrida_s1 && F6.corrida_s1.alias) || {};
+const realDe = (f) => { for (const [r, de] of Object.entries(_A1)) if (de === f) return r; return f; };
 const durTxt = (m) => (m < 60 ? `${m}′` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}′`);
 const vel = (v) => String(v).replace('.', ',') + '×';
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
@@ -327,6 +333,27 @@ const VEL_VIDEO = 1.75, VEL_TEXTO = RT_.texto_div /* FX1: declarada en _meta.reg
   THEO_P = RT_.theo_min_por_p, PDF_P = RT_.pdf_min_por_p, CORR_Q = RT_.correccion_min_por_q;
 const pct100 = (x) => `${Math.round(x * 100)} %`;
 const MODO = J._meta.modos;
+/** v6.10 (mié 18-nov-2026 · Joseph: «método por sector: YouTube → NotebookLM → síntesis»): _meta.metodo_sector (síntesis: DATA/ENCAPS/METODO_POR_SECTOR_NLM.md)
+ *  → «Método <área>» al FINAL del «cómo» de cada sesión asíncrona de la teoría (vídeo o texto primero) y «Trampas <área>» al FINAL del paso de CORRECCIÓN
+ *  del banqueo (fix 18-nov: antes, del primer paso del banqueo de las 09:45), solo en F1 (antes de la intensiva). Al final y sin fechas ni horas: no desplaza ningún destino (el Calendar corta el «cómo» a ≈100) ni toca
+ *  minutos (tiempo ↔ material intacto). */
+const MS = J._meta.metodo_sector || {};
+for (const a of ['SP', 'CI', 'GES', 'ET', 'INV']) if (!MS[a] || !MS[a].metodo || !MS[a].trampas) aborta(`_meta.metodo_sector.${a}: faltan «metodo» y «trampas»`);
+if (!MS.mezcla || !MS.mezcla.trampas) aborta('_meta.metodo_sector.mezcla.trampas falta');
+for (const [k, m] of Object.entries(MS)) for (const t of (m && typeof m === 'object' ? [m.metodo, m.trampas] : []).filter(Boolean))
+  if (/\d{1,2}:\d{2}|\d{1,2}-(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\b/.test(t)) aborta(`_meta.metodo_sector.${k}: sin fechas ni horas («${t.slice(0, 50)}…»)`);
+const enF1MS = (f) => !f || f < F6.encaps.intensiva_desde;
+const metodoSec = (a, f) => (enF1MS(f) && MS[a] && MS[a].metodo ? ` ${MS[a].metodo}` : '');
+// v6.10 (fix revisión 18-nov): las «Trampas <área>» (CONTENIDO) se leen DESPUÉS de responder → al final del paso de CORRECCIÓN (finB-11:40): antes iban en el
+//   primer paso del banqueo de las 09:45 («Sin mirar nada… modo examen») e inflaban el % ciego, que es la métrica del gate (≥ 75 %). La de la mezcla (una
+//   instrucción sin contenido: «nombra el área y su trampa») sigue en el primer paso del banqueo. Mismos minutos.
+const areasSec = (areaTxt) => [...new Set((String(areaTxt).match(/\b(SP|CI|GES|ET|INV|MCI)\b/g) || []).map((x) => (x === 'MCI' ? 'CI' : x)))].slice(0, 2);
+const trampasSec = (areaTxt, f) => {
+  if (!enF1MS(f)) return '';
+  const as = areasSec(areaTxt);
+  return as.length ? ` Ya respondido (no antes: el % ciego del banqueo es la medición), contrasta cada fallo con las trampas del área. ${as.map((x) => MS[x].trampas).join(' ')}` : '';
+};
+const trampasMezcla = (areaTxt, f) => (enF1MS(f) && !areasSec(areaTxt).length && /mezcla|mixto/.test(String(areaTxt)) ? ` ${MS.mezcla.trampas}` : '');
 /** v6.09b: minutos de tramos útiles de una clase en vivo en diferido (60 % de la clase a 2×). */
 const vivoMin = (dur) => Math.round(dur * VIVO_FRAC / VIVO_VEL);
 /** v6.09b lote 1-bis: el tramo 17:00-17:30 de la clase en vivo del sábado (30′ de clase) en la grabación a 2× (lote 1-ter: arriba, lo usa unidades). */
@@ -393,7 +420,7 @@ function unidades(it) {
         return {
           tipo: 'sesion', modo: it.modo, area: a, s: i, min: Math.round(ex), exact: ex, postTest: `${a} S${i}`, codigos: it.codigos || [],
           que: (min) => `${a} S${i}${extra ? ' ' + extra : ''} · vídeo ${segTxt(seg)} → ${min}′ a ${vel(v)} con pausas${cod}`,
-          como: `${MODO.video.replace(/^vídeo a 1,75× \(2× donde se indica\)/, `Vídeo a ${vel(v)}`)}. Los minutos llevan las pausas (vídeo ÷ ${vel(v)} × ${String(PAUSA).replace('.', ',')}). Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.`,
+          como: `${MODO.video.replace(/^vídeo a 1,75× \(2× donde se indica\)/, `Vídeo a ${vel(v)}`)}. Los minutos llevan las pausas (vídeo ÷ ${vel(v)} × ${String(PAUSA).replace('.', ',')}). Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.${metodoSec(a, it.fecha)}`,
           enlace: L99,
         };
       }
@@ -413,7 +440,7 @@ function unidades(it) {
         },
         como: null, comoDe: (min) => {
           const { k } = mat(min);
-          return `En este orden: PPT de la sesión (${PPT_MIN}′) → Theoesencial de sus temas (≈${Math.round(pT)} p a ${THEO_P}′/p) → ${k ? `la norma del tema, hasta ${k} p a ${PDF_P}′/p (definiciones → tablas → cifras)` : 'la norma del tema, en los pasos de norma y cifras de hoy (aquí no quedan minutos)'}. El vídeo, solo en lo que no entiendas${it.velocidad ? ` (${it.velocidad})` : ''} y dentro de estos minutos. Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.`;
+          return `En este orden: PPT de la sesión (${PPT_MIN}′) → Theoesencial de sus temas (≈${Math.round(pT)} p a ${THEO_P}′/p) → ${k ? `la norma del tema, hasta ${k} p a ${PDF_P}′/p (definiciones → tablas → cifras)` : 'la norma del tema, en los pasos de norma y cifras de hoy (aquí no quedan minutos)'}. El vídeo, solo en lo que no entiendas${it.velocidad ? ` (${it.velocidad})` : ''} y dentro de estos minutos. Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.${metodoSec(a, it.fecha)}`;
         },
         enlace: L99,
       };
@@ -450,7 +477,7 @@ function unidades(it) {
     if (it.min != null && !(it.min > 0 && it.min < ref)) aborta(`«${it.item}» (${it.fecha}): «min» ${it.min} solo vale por debajo del ${pct100(VIVO_FRAC)} de la clase (${ref}′)`);
     // v6.09b lote 1-bis (hallazgo 6): con `min`, lo que falta hasta el 60 % va a un domingo con ENCAPS (resto_en), posterior a la mañana; sin `min`, nada
     if ((it.min != null) !== !!it.resto_en) aborta(`«${it.item}» (${it.fecha}): «resto_en» va solo (y siempre) con «min»: lo que falta hasta el ${pct100(VIVO_FRAC)} necesita fecha`);
-    if (it.resto_en && (!domConEncaps(it.resto_en) || it.resto_en <= it.fecha)) aborta(`«${it.item}» (${it.fecha}): resto_en ${it.resto_en} no es un domingo con ENCAPS posterior (domingos del JSON sin «sin_sesion» ni «manana»)`);
+    if (it.resto_en && (!domConEncaps(it.resto_en) || it.resto_en <= realDe(it.fecha))) aborta(`«${it.item}» (${it.fecha}${realDe(it.fecha) !== it.fecha ? `, se hace el ${realDe(it.fecha)}` : ''}): resto_en ${it.resto_en} no es un domingo con ENCAPS posterior a su día real (domingos del JSON sin «sin_sesion» ni «manana»)`);
     if (it.resto_en) RESTOS.push({ dom: it.resto_en, de: it.fecha, clase: `${v[1]} ${v[2]}/${v[3]}`, item: it.item, dur: durJ, min: it.min, resto: ref - it.min });
     const cls = `${v[1]} ${v[2]}/${v[3]}`;
     const comoVivo = `${cap(MODO.vivo_diferido)}. Primero el PPT; el vídeo solo donde el PPT no explica. Ruta: ${RUTA.vivo(AREA[v[1]])}.`;
@@ -588,10 +615,13 @@ const WDL = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 's
 function prevMananaTxt(prev, hoy) {
   if (addDias(prev, 1) === hoy) return { de: 'de ayer', saltadas: [] };
   // v6.08: un día extra tras F1 (mar 5-ene) → la última mañana ENCAPS (jue 31-dic), sin hablar de la rotación ni de los SKIP de por medio
-  if (hoy > F6.f1.fin) return { de: `del ${WDL[dow(prev)]} ${Number(prev.slice(8))}-${MES[Number(prev.slice(5, 7)) - 1]} (la última mañana ENCAPS)`, saltadas: [] };
+  // v6.10d (fix revisión 18-nov): con la fecha corta (antes «del jueves 31-dic»): la app la traduce a su día real (el jue 31-dic de plan se hace el vie 1-ene)
+  if (hoy > F6.f1.fin) return { de: `del ${corta(prev)} (la última mañana ENCAPS)`, saltadas: [] };
   let esperada = addDias(hoy, -1); // la mañana ENCAPS anterior según la rotación (L-V sin Step), ignorando los SKIP
   while (dow(esperada) === 0 || dow(esperada) === 6 || STEP_DIAS.includes(dow(esperada))) esperada = addDias(esperada, -1);
-  if (esperada === prev) return { de: `del ${WDL[dow(prev)]}`, saltadas: [] };
+  // v6.10d (fix revisión 18-nov): con el ALIAS de corrida_s1 el nombre del día de la rotación no vale (el plan del vie 20 se hace el lun 23: «del miércoles»
+  //   el lun 23 real remitía al jue 19) → la fecha de plan, que la app pinta con su día real
+  if (esperada === prev) return { de: realDe(hoy) !== hoy || realDe(prev) !== prev ? `del ${corta(prev)}` : `del ${WDL[dow(prev)]}`, saltadas: [] };
   const saltadas = [];
   for (let d = addDias(prev, 1); d < hoy; d = addDias(d, 1)) if (SKIP.has(d) && dow(d) >= 1 && dow(d) <= 5 && !STEP_DIAS.includes(dow(d))) saltadas.push(d);
   return { de: `del último día ENCAPS, ${corta(prev)}`, saltadas };
@@ -709,7 +739,7 @@ for (const dia of J.mananas) {
     gs.push(guia(fr('07:30', '09:15'), `${tag} · TEORÍA · ${resumenT}`, pasosT, [R99, ...(dia.teoria.some((t) => /^Banqueo|^Revisión normativa/.test(t.item)) ? [R116] : [])],
       // v6.09b lote 1-quater FX1 (revisión V2 · planes B a franja llena): lo que no se vea hoy ya no va «a las 18:00» (sus 45′ ya están llenos): va al ENCAPS del
       //   domingo siguiente que lo tiene, antes del simulacro opcional (2027, sin cambios)
-      'sesiones vistas o leídas, con notas SOLO en forma de pregunta', { aviso: avisoT, planB: `Si el campus no carga: la misma sesión en ${RUTA.theoDrive}, o el Theoesencial del tema. Lo que no veas hoy ${dia.fecha >= F6.encaps.intensiva_desde ? `va ${esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00'}` : `→ ${corta(J.domingos.map((x) => x.fecha).find((x) => x > dia.fecha && domConEncaps(x)))}, primeros pasos de su ENCAPS (antes de su simulacro o sus banqueos; ese bloque empieza antes)`}.` }));
+      'sesiones vistas o leídas, con notas SOLO en forma de pregunta', { aviso: avisoT, planB: `Si el campus no carga: la misma sesión en ${RUTA.theoDrive}, o el Theoesencial del tema. Lo que no veas hoy ${dia.fecha >= F6.encaps.intensiva_desde ? `va ${esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00'}` : `→ ${corta(J.domingos.map((x) => x.fecha).find((x) => x > realDe(dia.fecha) && domConEncaps(x)))}, primeros pasos de su ENCAPS (antes de su simulacro o sus banqueos; ese bloque empieza antes)`}.` }));
     // 09:15 post-test
     const pts = rep.manana.filter((u) => u.postTest).map((u) => u.postTest);
     gs.push(guia(fr('09:15', '09:30'), pts.length ? `${tag} · POST-TEST de Theomed · ${pts.join(' · ')}` : `${tag} · RECALL de cifras y definiciones de hoy`, pts.length
@@ -734,7 +764,7 @@ for (const dia of J.mananas) {
     const mezcla = /mezcla/.test(dia.banqueo.area);
     const pasosB = [P(Math.min(minQ, aMin(finB) - aMin('09:45')), `${nQ}Q de ${dia.banqueo.area}${dia.banqueo.cronometrado ? ' · EN BLOQUE CRONOMETRADO' : ''} · modo examen (72 s c/u)`,
       // v6.09 (fix revisión 16-nov, joseph 1): la 1.ª mañana no tiene reglas ★ del arranque (es la orientación en el campus) → sin esa frase
-      `Sin mirar nada. ${CONFIANZA} ${mezcla ? 'Reparto del vector v3: CI 30 · SP 27 · GES 21 · ET 13 · INV 9 (los 8 críticos primero). Fuentes: DR LOPEZ post-tests y Qx banqueo F2 de varias áreas' : `Fuentes, por orden: ${FUENTES}`}.${primera ? '' : ' Las reglas con ★ del arranque, primero.'} ${RESERVA}`)];
+      `Sin mirar nada. ${CONFIANZA} ${mezcla ? 'Reparto del vector v3: CI 30 · SP 27 · GES 21 · ET 13 · INV 9 (los 8 críticos primero). Fuentes: DR LOPEZ post-tests y Qx banqueo F2 de varias áreas' : `Fuentes, por orden: ${FUENTES}`}.${primera ? '' : ' Las reglas con ★ del arranque, primero.'} ${RESERVA}${trampasMezcla(dia.banqueo.area, dia.fecha)}`)];
     const restoB = aMin(finB) - aMin('09:45') - pasosB[0].min;
     const nMax = restoB >= 15 ? Math.min(40, nQ + Math.floor((restoB - 5) * 60 / 72)) : nQ; // v6.09b: lo que de verdad se corrige (las del «hasta NQ si sobra» también)
     if (restoB > 0) pasosB.push(P(restoB, restoB >= 15 ? `Vuelta a las marcadas + hasta ${nMax}Q del mismo tema si sobra` : 'Vuelta a las marcadas', restoB >= 15 ? 'Como en el examen: primero las dudosas, sin clave. Si sobra, sigue con preguntas del mismo tema (o los post-tests que no cupieron a las 09:15).' : 'Como en el examen: las dudosas al final, sin clave.'));
@@ -747,7 +777,7 @@ for (const dia of J.mananas) {
     if (minC < minCorr || (minC - minCorr > 0 && minC - minCorr < 10)) aborta(`${dia.fecha}: la corrección de ${nMax}Q (${minCorr}′) no cabe en ${finB}-11:40 o deja menos de 10′ de verificación en la norma`);
     const verif = minC - minCorr;
     gs.push(guia(fr(finB, '11:40'), `${tag} · CORRECCIÓN Y REGLAS${normaHoy ? ' + NORMA' : ''}`, [
-      P(minCorr, `Cada fallo y cada dudosa de las ${nMax === nQ ? nQ : `${nQ}-${nMax}`}Q de hoy → ${minCorr}′`, `${cap(TIPOS_ERROR)}. Mira por qué es correcta la buena, no solo la tuya. ${String(CORR_Q).replace('.', ',')}′ por pregunta${verif ? ': si hiciste menos, el tiempo que sobra va a la verificación.' : '; las reglas de cifra o definición, contra la hoja de reglas de esta mañana (hoy no hay franja aparte de verificación en la norma).'}`),
+      P(minCorr, `Cada fallo y cada dudosa de las ${nMax === nQ ? nQ : `${nQ}-${nMax}`}Q de hoy → ${minCorr}′`, `${cap(TIPOS_ERROR)}. Mira por qué es correcta la buena, no solo la tuya. ${String(CORR_Q).replace('.', ',')}′ por pregunta${verif ? ': si hiciste menos, el tiempo que sobra va a la verificación.' : '; las reglas de cifra o definición, contra la hoja de reglas de esta mañana (hoy no hay franja aparte de verificación en la norma).'}${trampasSec(dia.banqueo.area, dia.fecha)}`),
       ...(verif ? [P(verif, normaHoy ? `Verificación en la norma: ${normaHoy}` : 'Verificación en la norma de cada regla nueva', `Definición de las primeras páginas, tabla o flujograma. ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99)] : []),
     ], [R99], 'cada fallo con su tipo y su regla de 1 línea en el registro; las reglas verificadas en la norma', { planB: `Si la norma no está en el campus: ${RUTA.drLopezNorm}.` }));
     // 11:40 tarjetas
@@ -979,7 +1009,8 @@ for (const d of DIAS_GA) {
   //   siguiente a una tarde ENCAPS, «del viernes» el lunes; si ya hubo otro Anki 05:30 en medio (mié, vie, lun 28-dic), no hay ★ pendientes
   const ultT = [...GT_FECHAS].reverse().find((x) => x < d);
   const pend = ultT && !GA_FECHAS.some((x) => x > ultT && x < d);
-  const deT = !pend ? null : ultT === addDias(d, -1) ? 'de ayer' : w === 1 && ultT === addDias(d, -3) ? 'del viernes' : `del ${corta(ultT)}`;
+  // v6.10d (fix revisión 18-nov): «del viernes» solo sin alias (con alias el lunes de plan es un martes real y el viernes, un lunes): si no, la fecha de plan
+  const deT = !pend ? null : ultT === addDias(d, -1) ? 'de ayer' : w === 1 && ultT === addDias(d, -3) && realDe(d) === d ? 'del viernes' : `del ${corta(ultT)}`;
   const cif = P(10, deT ? `ENCAPS::Cifras · vencidas (y las ★ ${deT})` : 'ENCAPS::Cifras · vencidas', 'Responde en voz alta antes de girar. FSRS: Good / Again, nunca Hard ni Easy.');
   // v6.09b lote 1-ter (hallazgo 2): las vencidas de una tarde que no hizo flashcards (vie 27-nov) llegan a ESTE Anki (el primero de después): el texto lo dice
   const vencX = DESPL.filter((x) => x.tipo === 'flash' && !x.paso && GA_FECHAS.find((y) => y > x.de && y < x.dest) === d);
@@ -993,7 +1024,7 @@ for (const d of DIAS_GA) {
     cif,
     // v6.09b lote 1-quater FX1 (revisión V1): lo que no acabes ya no va «al próximo Anki de 25′» (sus 10′ ya tienen sus vencidas): va a la próxima 18:00, que hace
     //   las vencidas PRIMERO (y ese día entran menos nuevas)
-    P(minGA - 10, `ENCAPS::Flashcards + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → la 18:00 del ${corta(GT_FECHAS.find((x) => x > d) || d)} (allí van primero las vencidas; ese día entran menos nuevas). Si aún no importaste el mazo de DR LOPEZ (decisión tuya), estos minutos van a ENCAPS::Cifras.`),
+    P(minGA - 10, `ENCAPS::Flashcards + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → la 18:00 del ${corta(GT_FECHAS.find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas). Si aún no importaste el mazo de DR LOPEZ (decisión tuya), estos minutos van a ENCAPS::Cifras.`),
   ], [], minGA >= 25 ? '0 vencidas en ENCAPS::Cifras, ENCAPS::Flashcards y APEX::ENCAPS' : '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: GT_FECHAS.includes(d) ? 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' : undefined }); // v6.09: el aviso, si ese día hay mañana ENCAPS (jue 31-dic: jueves sin Step); antes, si no era día de Step
 }
 
@@ -1020,7 +1051,7 @@ const condCorta = (x) => `si las 18:00 del ${corta(x.de)} no fueron las normales
   const acortaDom = (f, m) => ((J.domingos.find((y) => y.fecha === f) || {}).antes_hasta ? `empieza ${m}′ después` : `es ${m}′ más corto`);
   for (const x of DESPL.filter((y) => y.tipo === 'cifras' || y.tipo === 'norma')) {
     const f = x.dest;
-    if (!/^20\d\d-\d\d-\d\d$/.test(f || '') || f <= x.de) aborta(`${x.de} 18:00: destinos_18.${x.tipo} = ${f}: tiene que ser una fecha posterior`);
+    if (!/^20\d\d-\d\d-\d\d$/.test(f || '') || f <= x.de || (domConEncaps(f) && f <= realDe(x.de))) aborta(`${x.de} 18:00: destinos_18.${x.tipo} = ${f}: tiene que ser una fecha posterior (un domingo, posterior a su día real ${realDe(x.de)})`);
     const como = x.tipo === 'cifras'
       ? (d) => `Las filas de esos códigos en DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md (= mazo ENCAPS::Cifras): tapa el valor y dilo. Las que no salgan → ★ para ${proxAnkiTxt(d, GA_FECHAS) || 'la próxima sesión de Anki'}.`
       : () => `Una tabla o flujograma más de esa norma → tarjeta. Ruta: ${RUTA.normas}.`;
@@ -1042,7 +1073,7 @@ const condCorta = (x) => `si las 18:00 del ${corta(x.de)} no fueron las normales
   }
   for (const x of DESPL.filter((y) => y.tipo === 'flash')) {
     const f = x.dest;
-    if (!domConEncaps(f) || f <= x.de) aborta(`${x.de} 18:00: destinos_18.flash = ${f}: tiene que ser un domingo con ENCAPS posterior (las ${x.faltan} nuevas van como primer paso NO opcional)`);
+    if (!domConEncaps(f) || f <= realDe(x.de)) aborta(`${x.de} 18:00: destinos_18.flash = ${f}: tiene que ser un domingo con ENCAPS posterior a su día real ${realDe(x.de)} (las ${x.faltan} nuevas van como primer paso NO opcional)`);
     const fV = x.paso ? null : GA_FECHAS.find((y) => y > x.de && y < f) || null;
     const conVenc = !x.paso && !fV;
     // v6.09b lote 1-quater FX1 (revisión V1 · flashcards): las vencidas que van con las nuevas tienen sus minutos (5′ ≈ 20 repasos a 15 s; antes 0′: «30 nuevas → 25′ + vencidas»)
@@ -1124,7 +1155,8 @@ const CIF = (() => {
     const m = /^Cifras y plazos de (.*?) \(las del /.exec(a.paso.que);
     if (m) pasos.push({ f, i: -1, p: a.paso, cod: m[1], hora: `${corta(f)} (su ENCAPS)`, dom: true });
   }
-  pasos.sort((x, y) => (x.f < y.f ? -1 : x.f > y.f ? 1 : x.i - y.i));
+  // v6.10d: en orden de día REAL (con el alias, las 18:00 del vie 4-dic se hacen el lun 7, después del domingo 6 que recibe las cifras del vie 27)
+  pasos.sort((x, y) => { const a = realDe(x.f), b = realDe(y.f); return a < b ? -1 : a > b ? 1 : x.i - y.i; });
   let carry = null;
   pasos.forEach((x, k) => {
     const { esp, pools } = parse(x.cod.replace(/ \(las del .*$/, ''));
@@ -1298,7 +1330,7 @@ function antesDom(d) {
     }
   }
   for (const it of d.antes || []) {
-    if (!/^20\d\d-\d\d-\d\d$/.test(it.origen || '') || it.origen >= d.fecha || !it.motivo) aborta(`domingo ${d.fecha}: antes › «${it.item}» sin «origen» (la mañana de la que sale, anterior al domingo) o sin motivo`);
+    if (!/^20\d\d-\d\d-\d\d$/.test(it.origen || '') || realDe(it.origen) >= d.fecha || !it.motivo) aborta(`domingo ${d.fecha}: antes › «${it.item}» sin «origen» (la mañana de la que sale, anterior al domingo en días reales: v6.10d) o sin motivo`);
     if (!['theoesencial', 'video', 'texto'].includes(it.modo)) aborta(`domingo ${d.fecha}: antes › «${it.item}»: solo Theoesencial o sesiones (vídeo / texto)`);
     const nom = it.modo === 'theoesencial' ? `Theoesencial ${it.area}` : it.item.replace(/\s*\(.*\)$/, '');
     const sigM = sigManana(d.fecha);
@@ -1486,7 +1518,7 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
     if (!m18 || !m18.some((u) => u.postTest === g2.clase)) aborta(`domingo ${d.fecha}: plan_b › la 18:00 del ${ps.fecha} no lleva la ${g2.clase} (con la que se intercambia la ${ps.clase})`);
     const m18c = m18.find((u) => u.postTest === g2.clase);
     if (m18c.min !== grabMin) aborta(`domingo ${d.fecha}: plan_b › la ${g2.clase} del ${ps.fecha} 18:00 dura ${m18c.min}′ y la grabación ${grabMin}′: el intercambio no cuadra`);
-    const domPB = domEncapsTras(ps.fecha);
+    const domPB = domEncapsTras(realDe(ps.fecha)); // v6.10d: el domingo siguiente a su día REAL (la 18:00 del vie 27 se hace el lun 30)
     if (!domPB) aborta(`domingo ${d.fecha}: plan_b › no hay domingo con ENCAPS después del ${ps.fecha} para lo que falta de la ${ps.clase}`);
     // el texto del ítem de la 18:00 (alternativa) dice los mismos minutos
     const alt = (J.mananas.find((x) => x.fecha === ps.fecha).teoria.find((t) => t.item.startsWith(g2.clase)) || {}).alternativa || '';
@@ -1502,7 +1534,9 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
   const sigPPT = J.domingos.filter((x) => x.fecha > d.fecha && x.ppt).flatMap((x) => x.ppt.clases.filter((c) => c.de > d.fecha).map((c) => ({ ...c, dom: x.fecha })));
   // v6.09b: el domingo de llegada lleva también la revisión semanal (30′ antes) y el SYNAPSE de recuperación (al terminar): bloques propios (rutinaGuia)
   const llegadaTxt = d.llegada ? ` Domingo de llegada: la mañana es libre (viaje); desde las ${d.llegada}, de vuelta: ${hhmm(aMin(ini) - 30)} la revisión semanal, ${ini}-${fin} esta recuperación y, al terminar, el SYNAPSE de recuperación (bloques propios); nada de estudio desde las 17:00.` : '';
-  const sigTxt = sigPPT.map((c) => `PPT de ${c.clase} (clase del ${corta(c.de)}, después de hoy) → ${corta(c.dom)}, primer paso de su ENCAPS del domingo. `).join('');
+  // v6.10d (fix revisión 18-nov): «clase EN VIVO del …» — la fecha de la clase es REAL (Theomed) y corridaTexto no debe traducirla (antes «(clase del lun 23-nov,
+//   después de hoy)» se pintaba «(clase del mar 24-nov…)»: la SP 2/11 en vivo es el lun 23 a las 19:30)
+const sigTxt = sigPPT.map((c) => `PPT de ${c.clase} (clase en vivo del ${corta(c.de)}, después de hoy) → ${corta(c.dom)}, primer paso de su ENCAPS del domingo. `).join('');
   GR[d.fecha] = guia(fr(ini, fin), `ENCAPS · RECUPERACIÓN DEL VIAJE (fija) · grabación ${r.grabacion.clase} + ${r.ppt.length} PPT en diferido`, pasos, [R99],
     `${r.grabacion.clase} vista en sus tramos útiles y los ${r.ppt.length} PPT leídos, con las notas en forma de pregunta`, {
       aviso: `${sigTxt}Fijo, no opcional: recupera lo de la semana del viaje.${llegadaTxt} Los PPT que las notas de esos días mandan a este domingo van aquí (${r.ppt.map((x) => x.clase).join(' · ')}).${conOpcional ? ` Después, el ENCAPS opcional${d.simulacro ? ` (simulacro${d.ranking ? ' con RANKING' : ''})` : ''}, de ejemplo ${ejI}-${ejF}.` : ''}`,
@@ -1510,6 +1544,21 @@ for (const d of J.domingos.filter((x) => x.recupera)) {
     });
   REC_PPT_MIN.push(r.ppt.length * r.ppt_min);
   REC[d.fecha] = { fecha: d.fecha, ini, fin, nombre: `ENCAPS · recuperación del viaje (fija): grabación ${r.grabacion.clase} + ${r.ppt.length} PPT en diferido`, tema: `Grabación ${r.grabacion.clase} a 2× en sus tramos útiles + PPT ${r.ppt.map((x) => x.clase).join(' · ')}`, clases: r.ppt.map((x) => x.clase), motivo: r.motivo, ...(d.llegada ? { llegada: d.llegada } : {}) };
+}
+// v6.10d (18-nov-2026): el plan B de una recuperación (dom 22 → la 18:00 del vie 27-nov, que con el alias se hace el lun 30) manda lo que falta de su
+//   clase al domingo con ENCAPS siguiente a su día REAL, aunque sea de banqueos (dom 6-dic): antes de nada y con sus minutos; el bloque empieza antes
+//   (las guías de banqueos ya están hechas: se completan aquí su aviso y su plan B)
+for (const x of PLANB_DOM) {
+  const dB = J.domingos.find((y) => y.fecha === x.dom);
+  if (!dB || !['banqueos', 'banqueos_correccion', 'simulacro_2h'].includes(dB.modo)) continue; // los de simulacro, en su bucle (abajo)
+  const g = GD[x.dom];
+  const m = g && /^(\d\d:\d\d)/.exec(g.franja);
+  if (!m) aborta(`plan B de la recuperación (${x.clase}) → ${x.dom}: ese domingo no tiene guía con franja`);
+  const iniPB = hhmm(aMin(m[1]) - x.min);
+  if (aMin(iniPB) < aMin(RUTINA_AM[1])) aborta(`domingo ${x.dom}: con el plan B (${x.clase}, +${x.min}′) el bloque empezaría a las ${iniPB}, antes de las ${RUTINA_AM[1]}`);
+  g.planB = `Si el dom ${Number(x.desde.slice(8))} fue con el plan B (la grabación de la ${x.clase} aún no estaba publicada): antes de nada, los ${x.min}′ de tramos útiles de la ${x.clase} que no cupieron el ${corta(x.de)} a las 18:00 (lo que falta hasta el ${pct100(VIVO_FRAC)}); el bloque empieza ${x.min}′ antes, de ejemplo a las ${iniPB}.${g.planB ? ' ' + g.planB : ''}`;
+  g.aviso = `Si el dom ${Number(x.desde.slice(8))} fue con el plan B: antes de todo, ${x.min}′ de la ${x.clase} (de ejemplo, desde las ${iniPB}).${g.aviso ? ' ' + g.aviso : ''}`;
+  ANTES_USADOS.add(x);
 }
 for (const d of J.domingos.filter((x) => !x.modo || x.modo === 'simulacro')) {
   if (!d.simulacro) aborta(`domingo ${d.fecha}: modo simulacro sin «simulacro»`);
@@ -1610,6 +1659,28 @@ if (/\{\{INI_PB\}\}/.test(JSON.stringify({ GD, GSV }))) aborta('queda «{{INI_PB
 // … y ningún texto de las guías ENCAPS de F1 manda nada «en un tiempo muerto» (sin fecha ni franja)
 for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [f, g])), ...Object.entries(GT), ...Object.entries(GD), ...Object.entries(GR), ...Object.entries(GSV).filter(([f]) => !esSabF2(f))]) {
   if (/tiempo muerto|tiempos muertos/.test(JSON.stringify(g))) aborta(`${f} «${g.titulo.slice(0, 60)}»: manda algo «en un tiempo muerto» (sin fecha ni franja)`);
+}
+
+// v6.10d (fix revisión 18-nov, hallazgo 3): destinos EN CADENA de los avisos libres del JSON (mananas[].extra): «→ <día> D-mes (…) + dom D-mes (…)» = una parte a
+//   un día y lo que falta a un domingo → ese domingo va DESPUÉS del día REAL del primer destino (alias de corrida_s1: el vie 11-dic de plan se hace el lun 14) y su
+//   guía (GD / GR) nombra la clase (la primera de la frase). Antes el aviso del mié 18-nov mandaba los 15′ de la INV 2/4 al dom 13-dic (ya van al dom 20, tras
+//   los 30′ del vie 11 de plan) y el del lun 23-nov, los 9′ de la ET 2/3 al dom 29-nov (van al dom 6-dic): los destinos sueltos con «+» no se miraban.
+{
+  const MES_RX = MES.join('|');
+  const isoDe = (dd, mm, ref) => { const m = MES.indexOf(mm) + 1; const y = Number(ref.slice(0, 4)) + (m < Number(ref.slice(5, 7)) - 2 ? 1 : 0); return `${y}-${String(m).padStart(2, '0')}-${String(dd).padStart(2, '0')}`; };
+  const RXC = new RegExp(`→ (?:[A-Z]\\d+ )?(lun|mar|mié|jue|vie|sáb|dom) (\\d{1,2})-(${MES_RX})[^→·;]{0,90}?\\+ dom (\\d{1,2})-(${MES_RX})`, 'g');
+  for (const m of J.mananas) {
+    for (const fr0 of String(m.extra || '').split(/\.\s/)) {
+      const clase = (fr0.match(/[A-Z]{2,3} \d+\/\d+/) || [])[0];
+      for (const x of fr0.matchAll(RXC)) {
+        const a = isoDe(x[2], x[3], m.fecha), dom = isoDe(x[4], x[5], m.fecha);
+        if (dow(dom) !== 0) aborta(`mañana ${m.fecha} › extra: «${x[0]}»: el dom ${x[4]}-${x[5]} no es domingo`);
+        if (dom <= realDe(a)) aborta(`mañana ${m.fecha} › extra: «${x[0]}»: el domingo (${dom}) no va después del día REAL del primer destino (${a} se hace el ${realDe(a)})`);
+        const gDom = JSON.stringify([GD[dom] || null, GR[dom] || null]);
+        if (clase && !gDom.includes(clase)) aborta(`mañana ${m.fecha} › extra: «${x[0]}»: la guía del domingo ${dom} no nombra la ${clase}`);
+      }
+    }
+  }
 }
 
 // ── validación de todas las guías ─────────────────────────────────────────────────────────────────────────────
