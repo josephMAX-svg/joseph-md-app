@@ -41,6 +41,9 @@
  *  · v6.10 · base cero · fix 18-nov (revisión de los frentes): --check exige además en F1 (D1-D32) la LECTURA DE BASE sin ninguna sección PARCIAL, secciones y
  *    reserva en el orden del capítulo, y al principio del «cómo» la cobertura del día (minutos leídos / lectura completa medida) con el destino del resto
  *    (2.ª vuelta con fecha). Antes solo buscaba /se saltan/ y el prefijo «LECTURA DE BASE».
+ *  · v6.10e (18-nov-2026 · revisión adversarial): la cobertura de F1 se comprueba a 150 palabras/min y con la fecha de la 2.ª vuelta antes del carácter 100
+ *    del «cómo» (el Calendar lo corta a 110; antes se buscaba en 260) · metodo_ravimedtest.json fases[2].avance ya no dice «oct-2027» y --check exige 0
+ *    «oct-2027» en la guía D1-D78, en los avisos de fase y en las 220 sesiones del banqueo (mir-5).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */
@@ -298,11 +301,19 @@ function validarTodo(tsDatos) {
         if (/PARCIAL/.test(`${lec.que} ${lec.como}`) || jm.lectura.secciones.some((u) => u.parcial)) errores.push(`D${d.d}: la lectura de base de la fase 1 lee una sección PARCIAL`);
         if (!enOrden(jm.lectura.secciones) || !enOrden(jm.lectura.reserva)) errores.push(`D${d.d}: secciones o reserva de la lectura de base fuera del orden del capítulo`);
         const dec = (n) => String(n).replace('.', ',');
-        if (!cob || cob.minCapitulo !== jm.capitulo.minLecturaCompleta || !lec.como.startsWith(`Hoy lees ${dec(cob.minLeidos)}′ de los ${dec(cob.minCapitulo)}′ del capítulo (${cob.pct} %`) || !/→ 2\.ª vuelta MIR \(fase principal, tras el handoff del [^ ]+ \d+-[a-z]+-\d{4}\)/.test(lec.como.slice(0, 260))) errores.push(`D${d.d}: la lectura de base no empieza declarando su cobertura (min leídos / lectura completa) y el destino del resto con fecha`);
+        // v6.10e (revisión del 18-nov · mir-7, regresiones-3): cobertura a 150 palabras/min (la unidad del paso) y la fecha de la 2.ª vuelta antes del carácter 100
+        //   (el Calendar corta el «cómo» a 110; antes se miraba en 260 y la fecha caía en el 146-181)
+        const mD = /resto → 2\.ª vuelta MIR \(tras el [^ ]+ \d+-[a-z]+-\d{4}\)/.exec(lec.como);
+        if (!cob || cob.a !== 150 || !lec.como.startsWith(`Hoy lees ${dec(cob.minLeidos)}′ `) || !mD || mD.index + mD[0].length > 100) errores.push(`D${d.d}: la lectura de base no empieza declarando su cobertura a 150 palabras/min y el destino del resto con fecha antes del carácter 100`);
         else nCob++;
       }
     }
   }
+  // v6.10e (revisión del 18-nov · mir-5): la 2.ª vuelta va «tras el handoff del vie 3-dic-2027» en TODO (guía D1-D78, avisos de fase y las 220 sesiones del
+  //   banqueo): ningún texto visible con «oct-2027» (fecha de la v6.00 que ya no es)
+  const txtGuia = (g) => [g.titulo, g.aviso || '', g.hecho || '', g.planB || '', ...g.pasos.flatMap((p) => [p.que, p.como]), ...(g.recursos || []).map((r) => r.t)].join(' ');
+  for (const d of MDD.MIR_DIAS) if (/oct-2027/.test(txtGuia(MG.mirGuiaDe(d.fecha)))) errores.push(`D${d.d}: la guía todavía dice «oct-2027» (la 2.ª vuelta va tras el handoff del vie 3-dic-2027)`);
+  for (const m of MM.MIR_MANT_DIAS) if (/oct-2027/.test(txtGuia(MG.mirGuiaMant(m, '15:15')))) errores.push(`M${m.d}: el banqueo todavía dice «oct-2027» (la 2.ª vuelta va tras el handoff del vie 3-dic-2027)`);
   for (const m of MM.MIR_MANT_DIAS) {
     const g = MG.mirGuiaMant(m, '15:15');
     if (g.pasos.some((p) => RX_INVENTADAS.test(`${p.que} ${p.como}`))) errores.push(`M${m.d}: un paso pide preguntas que no son MIR oficiales`);

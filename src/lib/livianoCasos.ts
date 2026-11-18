@@ -802,7 +802,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D1 · «La obesidad como enfermedad: disfunción de la homeostasis energética»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el peso está regulado por un sistema homeostático (cerebro–intestino–tejido adiposo) que defiende un nivel de adiposidad; en la obesidad ese sistema defiende un nivel más alto (Endocrine Society, Schwartz 2017). · Que se maneja de forma CRÓNICA (como la hipertensión), no con un esfuerzo de voluntad puntual: al retirar el tratamiento vuelve la presión biológica hacia el peso defendido. · Tejido adiposo (leptina: cuánta reserva hay), intestino (grelina antes de comer; GLP-1/PYY/CCK después: qué pasa con la comida ahora) e hipotálamo/tronco encefálico (integran y ajustan hambre y gasto)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el peso está regulado por un sistema homeostático (cerebro–intestino–tejido adiposo) que defiende un nivel de adiposidad; en la obesidad ese sistema defiende un nivel más alto (Endocrine Society, Schwartz 2017). · Que se maneja de forma CRÓNICA (como la hipertensión), no con un esfuerzo de voluntad puntual: al retirar el tratamiento vuelve la presión biológica hacia el peso defendido. · Tejido adiposo (leptina: cuánta reserva hay), intestino (grelina antes de comer; GLP-1/PYY/CCK después: qué pasa con la comida ahora) e hipotálamo/tronco encefálico (integran y ajustan hambre y gasto)."
     },
     {
       "d": 2,
@@ -810,7 +810,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D2 · «Set point: el cerebro defiende un nivel de adiposidad»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Detecta desviaciones del peso (vía leptina y otras señales) y las corrige ajustando hambre y gasto energético para volver al nivel defendido. · Porque el sistema interpreta la pérdida como amenaza: sube el hambre y baja el gasto para devolver el peso al nivel defendido — la dieta pelea contra el termostato, no lo resetea. · Porque el nivel que su cerebro defiende (set point) es distinto: la biología fija el punto que la conducta intenta mover; la misma disciplina opera contra una presión diferente en cada uno."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Detecta desviaciones del peso (vía leptina y otras señales) y las corrige ajustando hambre y gasto energético para volver al nivel defendido. · Porque el sistema interpreta la pérdida como amenaza: sube el hambre y baja el gasto para devolver el peso al nivel defendido — la dieta pelea contra el termostato, no lo resetea. · Porque el nivel que su cerebro defiende (set point) es distinto: la biología fija el punto que la conducta intenta mover; la misma disciplina opera contra una presión diferente en cada uno."
     },
     {
       "d": 3,
@@ -818,7 +818,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D3 · «Leptina: la señal de reservas del tejido adiposo al hipotálamo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): El tamaño de las reservas de grasa: la secreta el tejido adiposo en proporción a la masa grasa. · Cae. El hipotálamo lo lee como 'hambruna' → aumenta el hambre y reduce el gasto energético. · Sube en proporción a la masa grasa; en un sistema sano eso frenaría el hambre y subiría el gasto. En obesidad la señal alta no produce esa respuesta (resistencia leptínica)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): El tamaño de las reservas de grasa: la secreta el tejido adiposo en proporción a la masa grasa. · Cae. El hipotálamo lo lee como 'hambruna' → aumenta el hambre y reduce el gasto energético. · Sube en proporción a la masa grasa; en un sistema sano eso frenaría el hambre y subiría el gasto. En obesidad la señal alta no produce esa respuesta (resistencia leptínica)."
     }
   ],
   "9": [
@@ -828,7 +828,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D4 · «Resistencia leptínica: mucha señal, poca respuesta»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Por resistencia a su señal: hay mucha leptina pero el hipotálamo responde poco ('el timbre suena, nadie abre'); por eso dar leptina exógena no funcionó en la obesidad común. · Porque el problema no es falta de leptina sino falta de respuesta a ella: el hipotálamo ya recibe mucha señal y no la 'escucha'; añadir más no cambia la lectura (solo funciona en la deficiencia congénita de leptina). · El cerebro responde con fuerza a la CAÍDA de leptina (defensa contra la hambruna: más hambre, menos gasto) y débilmente a su SUBIDA: el sistema está diseñado para proteger reservas, no para evitar excesos."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Por resistencia a su señal: hay mucha leptina pero el hipotálamo responde poco ('el timbre suena, nadie abre'); por eso dar leptina exógena no funcionó en la obesidad común. · Porque el problema no es falta de leptina sino falta de respuesta a ella: el hipotálamo ya recibe mucha señal y no la 'escucha'; añadir más no cambia la lectura (solo funciona en la deficiencia congénita de leptina). · El cerebro responde con fuerza a la CAÍDA de leptina (defensa contra la hambruna: más hambre, menos gasto) y débilmente a su SUBIDA: el sistema está diseñado para proteger reservas, no para evitar excesos."
     },
     {
       "d": 5,
@@ -844,7 +844,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D6 · «Circuito arcuato I: neuronas AgRP/NPY — el acelerador del hambre»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Son el ACELERADOR del hambre: se activan con déficit energético (leptina baja, grelina alta) y disparan búsqueda e ingesta de comida. · Hambre hormonal = AgRP activada por señales (leptina↓/grelina↑) aunque haya reservas; hambre real = necesidad energética. La primera no se resuelve con fuerza de voluntad. · Grelina alta (estómago vacío) y leptina baja (reservas cayendo); al activarse disparan búsqueda de comida, ingesta y menor gasto: es el 'acelerador' del hambre."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Son el ACELERADOR del hambre: se activan con déficit energético (leptina baja, grelina alta) y disparan búsqueda e ingesta de comida. · Hambre hormonal = AgRP activada por señales (leptina↓/grelina↑) aunque haya reservas; hambre real = necesidad energética. La primera no se resuelve con fuerza de voluntad. · Grelina alta (estómago vacío) y leptina baja (reservas cayendo); al activarse disparan búsqueda de comida, ingesta y menor gasto: es el 'acelerador' del hambre."
     },
     {
       "d": 7,
@@ -852,7 +852,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D7 · «Circuito arcuato II: POMC/α-MSH — el freno de saciedad»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Son el FRENO de saciedad: las activan la leptina y las señales de saciedad y reducen la ingesta. El balance AgRP (acelerador) / POMC (freno) fija el hambre del momento. · Son poblaciones antagónicas del arcuato: AgRP bloquea la vía de saciedad (señal melanocortina) mientras POMC libera α-MSH que la activa; el balance entre ambas define hambre o saciedad en cada momento. · Acelerador = AgRP/NPY (hambre; activado por grelina y leptina baja). Freno = POMC/α-MSH (saciedad; activado por leptina y señales intestinales). En la dieta el acelerador se pisa más y el freno se afloja."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Son el FRENO de saciedad: las activan la leptina y las señales de saciedad y reducen la ingesta. El balance AgRP (acelerador) / POMC (freno) fija el hambre del momento. · Son poblaciones antagónicas del arcuato: AgRP bloquea la vía de saciedad (señal melanocortina) mientras POMC libera α-MSH que la activa; el balance entre ambas define hambre o saciedad en cada momento. · Acelerador = AgRP/NPY (hambre; activado por grelina y leptina baja). Freno = POMC/α-MSH (saciedad; activado por leptina y señales intestinales). En la dieta el acelerador se pisa más y el freno se afloja."
     },
     {
       "d": 8,
@@ -860,7 +860,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D8 · «Grelina: la hormona del estómago vacío — sube tras la dieta»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): La grelina (gástrica, orexigénica, pico preprandial) AUMENTA de forma sostenida con la restricción calórica: es parte de la respuesta defensiva del set point, no un fallo del paciente. · Grelina alta + leptina baja → AgRP activado: hambre hormonal esperable tras restringir; por eso el tratamiento no puede ser solo 'aguantar'. · Sube antes de cada comida (estómago vacío) y baja al comer; tras la pérdida de peso su nivel basal queda más alto de forma sostenida, por eso el hambre 'de fondo' aumenta."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): La grelina (gástrica, orexigénica, pico preprandial) AUMENTA de forma sostenida con la restricción calórica: es parte de la respuesta defensiva del set point, no un fallo del paciente. · Grelina alta + leptina baja → AgRP activado: hambre hormonal esperable tras restringir; por eso el tratamiento no puede ser solo 'aguantar'. · Sube antes de cada comida (estómago vacío) y baja al comer; tras la pérdida de peso su nivel basal queda más alto de forma sostenida, por eso el hambre 'de fondo' aumenta."
     }
   ],
   "14": [
@@ -870,7 +870,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D9 · «Señales de saciedad intestinal: GLP-1, PYY y CCK vía tronco encefálico»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Tras la comida libera GLP-1, PYY y CCK → señal de saciedad vía tronco encefálico. Es la base fisiológica de los fármacos GLP-1 (copian una hormona que el intestino ya produce). · Se liberan desde el intestino cuando llegan nutrientes; actúan por el nervio vago y el tronco encefálico (núcleo del tracto solitario) y desde ahí sobre el hipotálamo: el mensaje es 'ya comiste, frena'. · Porque los agonistas de GLP-1 copian una de esas señales y la mantienen activa durante días: el cerebro recibe 'estamos satisfechos' de forma sostenida y el vaciamiento gástrico se enlentece."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Tras la comida libera GLP-1, PYY y CCK → señal de saciedad vía tronco encefálico. Es la base fisiológica de los fármacos GLP-1 (copian una hormona que el intestino ya produce). · Se liberan desde el intestino cuando llegan nutrientes; actúan por el nervio vago y el tronco encefálico (núcleo del tracto solitario) y desde ahí sobre el hipotálamo: el mensaje es 'ya comiste, frena'. · Porque los agonistas de GLP-1 copian una de esas señales y la mantienen activa durante días: el cerebro recibe 'estamos satisfechos' de forma sostenida y el vaciamiento gástrico se enlentece."
     },
     {
       "d": 10,
@@ -886,7 +886,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D11 · «Integración: mapa intestino–tejido adiposo–hipotálamo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Convergen en hipotálamo (arcuato AgRP/POMC) y tronco encefálico: leptina = reservas; grelina = estómago vacío; GLP-1/PYY/CCK = comida reciente. · Largo plazo (reservas): leptina. Corto plazo (comida en curso): grelina antes de comer; GLP-1, PYY y CCK después. El arcuato integra ambas para decidir hambre y gasto. · Cae la leptina (reservas bajan) y sube la grelina (estómago vacío), mientras las señales de saciedad postprandiales son menores por comer menos: todo el sistema empuja hacia comer y ahorrar."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Convergen en hipotálamo (arcuato AgRP/POMC) y tronco encefálico: leptina = reservas; grelina = estómago vacío; GLP-1/PYY/CCK = comida reciente. · Largo plazo (reservas): leptina. Corto plazo (comida en curso): grelina antes de comer; GLP-1, PYY y CCK después. El arcuato integra ambas para decidir hambre y gasto. · Cae la leptina (reservas bajan) y sube la grelina (estómago vacío), mientras las señales de saciedad postprandiales son menores por comer menos: todo el sistema empuja hacia comer y ahorrar."
     },
     {
       "d": 12,
@@ -894,7 +894,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D12 · «Adaptación metabólica I: cae el gasto energético tras perder peso»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Tras perder peso el gasto energético cae MÁS de lo que predice la masa perdida: el cuerpo 'ahorra' para recuperar el peso defendido. · No: es adaptación metabólica esperable (gasto↓ + hambre↑). Se planifica para ella (proteína, fuerza, tratamiento crónico) en vez de sorprenderse. · Baja el gasto por menor masa corporal (esperable) y además cae por debajo de lo que esa masa predice: ese exceso de caída es la termogénesis adaptativa (mayor eficiencia muscular, menor tono simpático/tiroideo)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Tras perder peso el gasto energético cae MÁS de lo que predice la masa perdida: el cuerpo 'ahorra' para recuperar el peso defendido. · No: es adaptación metabólica esperable (gasto↓ + hambre↑). Se planifica para ella (proteína, fuerza, tratamiento crónico) en vez de sorprenderse. · Baja el gasto por menor masa corporal (esperable) y además cae por debajo de lo que esa masa predice: ese exceso de caída es la termogénesis adaptativa (mayor eficiencia muscular, menor tono simpático/tiroideo)."
     },
     {
       "d": 13,
@@ -902,7 +902,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D13 · «Adaptación metabólica II: más hambre y menos saciedad — persiste AÑOS»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque la respuesta hormonal a la pérdida (leptina baja, grelina alta, menos saciedad) no se apaga con el tiempo — de ahí el argumento del tratamiento crónico. · No necesariamente: en los seguimientos, la leptina baja y la grelina alta persisten años después de la pérdida; el sistema sigue leyendo el nuevo peso como déficit."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque la respuesta hormonal a la pérdida (leptina baja, grelina alta, menos saciedad) no se apaga con el tiempo — de ahí el argumento del tratamiento crónico. · No necesariamente: en los seguimientos, la leptina baja y la grelina alta persisten años después de la pérdida; el sistema sigue leyendo el nuevo peso como déficit."
     }
   ],
   "19": [
@@ -912,7 +912,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D14 · «El argumento del tratamiento crónico»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque la adaptación metabólica persiste: al retirar el tratamiento vuelve la presión biológica hacia el peso anterior, igual que la presión arterial sube al dejar el antihipertensivo. · Tratamiento a largo plazo con revisión periódica; el plan de salida es gradual y se decide con datos (no una promesa de 'cura'). · Ambas son enfermedades de un sistema regulador desajustado: el tratamiento controla la variable mientras se aplica y, al retirarlo, la variable vuelve porque el mecanismo de base sigue ahí."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Schwartz 2017 (PMC5546881) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque la adaptación metabólica persiste: al retirar el tratamiento vuelve la presión biológica hacia el peso anterior, igual que la presión arterial sube al dejar el antihipertensivo. · Tratamiento a largo plazo con revisión periódica; el plan de salida es gradual y se decide con datos (no una promesa de 'cura'). · Ambas son enfermedades de un sistema regulador desajustado: el tratamiento controla la variable mientras se aplica y, al retirarlo, la variable vuelve porque el mecanismo de base sigue ahí."
     },
     {
       "d": 15,
@@ -928,7 +928,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D16 · «Palmerton: 10 tarjetas Anki de MECANISMO del módulo (deck APEX::LIVIANO::fisiologia)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Pregunta '¿por qué?' y encadena causa→efecto (dieta → leptina↓ → AgRP↑ → hambre↑), no 'STEP 1 = 14,9 %' aislado. · Pregunta '¿por qué / cómo?' → respuesta que encadena causa → efecto → consecuencia clínica en 1-3 frases; sin listas de datos sueltos; una idea por tarjeta. · Porque el recuerdo en ciego (testing effect) consolida más que releer y da una medida honesta: el % ciego dice qué se sabe, no qué se leyó."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Pregunta '¿por qué?' y encadena causa→efecto (dieta → leptina↓ → AgRP↑ → hambre↑), no 'STEP 1 = 14,9 %' aislado. · Pregunta '¿por qué / cómo?' → respuesta que encadena causa → efecto → consecuencia clínica en 1-3 frases; sin listas de datos sueltos; una idea por tarjeta. · Porque el recuerdo en ciego (testing effect) consolida más que releer y da una medida honesta: el % ciego dice qué se sabe, no qué se leyó."
     },
     {
       "d": 17,
@@ -936,7 +936,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D17 · «Repaso del eje completo: leptina → arcuato → intestino → adaptación»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): ← hambre↑ y gasto↓ ← leptina↓ / grelina↑ ← pérdida de peso leída por el hipotálamo como amenaza al set point. · Peso ↓ → leptina ↓ y grelina ↑ → AgRP más activo y POMC menos → más hambre y menos gasto: cada semana el sistema empuja más fuerte contra el déficit."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): ← hambre↑ y gasto↓ ← leptina↓ / grelina↑ ← pérdida de peso leída por el hipotálamo como amenaza al set point. · Peso ↓ → leptina ↓ y grelina ↑ → AgRP más activo y POMC menos → más hambre y menos gasto: cada semana el sistema empuja más fuerte contra el déficit."
     },
     {
       "d": 18,
@@ -944,7 +944,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D18 · «Biblioteca de metáforas del módulo: termostato · timbre · acelerador/freno»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Termostato = por qué se recupera el peso (set point); timbre = resistencia leptínica; acelerador/freno = hambre vs saciedad (AgRP vs POMC). · Timbre: la grelina toca el timbre antes de comer y en dieta el timbre suena más veces y más fuerte; no es 'ansiedad', es una señal biológica a la que el tratamiento puede bajarle el volumen."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Termostato = por qué se recupera el peso (set point); timbre = resistencia leptínica; acelerador/freno = hambre vs saciedad (AgRP vs POMC). · Timbre: la grelina toca el timbre antes de comer y en dieta el timbre suena más veces y más fuerte; no es 'ansiedad', es una señal biológica a la que el tratamiento puede bajarle el volumen."
     }
   ],
   "24": [
@@ -954,7 +954,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FISIOLOGÍA",
       "deck": "APEX::LIVIANO::fisiologia",
       "q": "RECALL · D19 · «Síntesis módulo 1 → sección 'por qué tratamiento crónico' del protocolo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Endocrine Society Statement (Schwartz 2017) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Un sistema hipotalámico lee reservas (leptina), estómago (grelina) e intestino (GLP-1/PYY/CCK) y, ante la pérdida, sube el hambre y baja el gasto de forma persistente. · Definición (enfermedad del sistema regulador), set point, adaptación metabólica persistente, consecuencia (tratamiento crónico), las 3 metáforas y la regla de lenguaje sin culpa. · Perder peso es fácil de empezar y difícil de sostener por biología, no por carácter; por eso el plan LIVIANO es crónico y mide adherencia, no voluntad."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Un sistema hipotalámico lee reservas (leptina), estómago (grelina) e intestino (GLP-1/PYY/CCK) y, ante la pérdida, sube el hambre y baja el gasto de forma persistente. · Definición (enfermedad del sistema regulador), set point, adaptación metabólica persistente, consecuencia (tratamiento crónico), las 3 metáforas y la regla de lenguaje sin culpa. · Perder peso es fácil de empezar y difícil de sostener por biología, no por carácter; por eso el plan LIVIANO es crónico y mide adherencia, no voluntad."
     },
     {
       "d": 20,
@@ -970,7 +970,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D21 · «Incretinas: qué hace el GLP-1 endógeno»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Saciedad central, enlentece el vaciamiento gástrico y estimula insulina de forma dependiente de glucosa. · Porque explica sin miedo el mecanismo (agonista de un receptor fisiológico) y conecta con la señal de saciedad del módulo 1. · Saciedad central → 'menos ruido de comida'; vaciamiento gástrico lento → 'me lleno antes' (y náusea si come rápido/graso); insulina dependiente de glucosa → mejor glucemia sin hipoglucemia por sí solo."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PMC6812410 · la tarjeta, solo como resumen (la escribió el generador del plan): Saciedad central, enlentece el vaciamiento gástrico y estimula insulina de forma dependiente de glucosa. · Porque explica sin miedo el mecanismo (agonista de un receptor fisiológico) y conecta con la señal de saciedad del módulo 1. · Saciedad central → 'menos ruido de comida'; vaciamiento gástrico lento → 'me lleno antes' (y náusea si come rápido/graso); insulina dependiente de glucosa → mejor glucemia sin hipoglucemia por sí solo."
     },
     {
       "d": 22,
@@ -978,7 +978,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D22 · «STEP 1: semaglutida 2,4 mg → −14,9% vs −2,4% placebo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): STEP 1 / SELECT — semaglutida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): −14,9 % vs −2,4 % con placebo a 68 semanas. · Porque el paciente decide con kilos, no con porcentajes: −14,9 % de 90 kg ≈ 13 kg; ancla expectativas realistas sin prometer (CMP Art. 73). · Porque ambos brazos tuvieron intervención de estilo de vida: la diferencia (~12,5 puntos) es el efecto atribuible al fármaco, y muestra lo poco que logra la vía conductual sola en 68 semanas."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PubMed 33567185 + PMC9542252 + ficha FDA de WEGOVY (DailyMed) · la tarjeta, solo como resumen (la escribió el generador del plan): −14,9 % vs −2,4 % con placebo a 68 semanas. · Porque el paciente decide con kilos, no con porcentajes: −14,9 % de 90 kg ≈ 13 kg; ancla expectativas realistas sin prometer (CMP Art. 73). · Porque ambos brazos tuvieron intervención de estilo de vida: la diferencia (~12,5 puntos) es el efecto atribuible al fármaco, y muestra lo poco que logra la vía conductual sola en 68 semanas."
     },
     {
       "d": 23,
@@ -986,7 +986,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D23 · «Suspensión: se recupera ~67% del peso en 1 año»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): STEP 1 / SELECT — semaglutida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Se recupera ~67 % del peso perdido en 1 año. · El fármaco baja el 'volumen' de la señal de hambre pero no resetea el set point: al retirarlo vuelve la presión biológica (módulo 1) → base de la cronicidad y del plan de mantenimiento. · Como probabilidad, no como amenaza: 'si lo dejamos sin cambiar nada más, lo esperable es recuperar dos tercios en un año'; luego se ofrecen opciones (mantener, reducir, salida gradual con criterios de reinicio)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PMC9542252 · la tarjeta, solo como resumen (la escribió el generador del plan): Se recupera ~67 % del peso perdido en 1 año. · El fármaco baja el 'volumen' de la señal de hambre pero no resetea el set point: al retirarlo vuelve la presión biológica (módulo 1) → base de la cronicidad y del plan de mantenimiento. · Como probabilidad, no como amenaza: 'si lo dejamos sin cambiar nada más, lo esperable es recuperar dos tercios en un año'; luego se ofrecen opciones (mantener, reducir, salida gradual con criterios de reinicio)."
     }
   ],
   "28": [
@@ -996,7 +996,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D23 · «Suspensión: se recupera ~67% del peso en 1 año»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): STEP 1 / SELECT — semaglutida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Se recupera ~67 % del peso perdido en 1 año. · El fármaco baja el 'volumen' de la señal de hambre pero no resetea el set point: al retirarlo vuelve la presión biológica (módulo 1) → base de la cronicidad y del plan de mantenimiento. · Como probabilidad, no como amenaza: 'si lo dejamos sin cambiar nada más, lo esperable es recuperar dos tercios en un año'; luego se ofrecen opciones (mantener, reducir, salida gradual con criterios de reinicio)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PMC9542252 · la tarjeta, solo como resumen (la escribió el generador del plan): Se recupera ~67 % del peso perdido en 1 año. · El fármaco baja el 'volumen' de la señal de hambre pero no resetea el set point: al retirarlo vuelve la presión biológica (módulo 1) → base de la cronicidad y del plan de mantenimiento. · Como probabilidad, no como amenaza: 'si lo dejamos sin cambiar nada más, lo esperable es recuperar dos tercios en un año'; luego se ofrecen opciones (mantener, reducir, salida gradual con criterios de reinicio)."
     },
     {
       "d": 24,
@@ -1004,7 +1004,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D24 · «SELECT: −20% de eventos cardiovasculares mayores»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): STEP 1 / SELECT — semaglutida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Obesidad + enfermedad cardiovascular sin diabetes: ~−20 % de eventos cardiovasculares mayores con semaglutida. · Porque demuestra reducción de eventos cardiovasculares mayores en personas con obesidad y enfermedad cardiovascular sin diabetes: el beneficio no depende solo de los kilos; se trata una enfermedad, no una apariencia. · A quien no tiene enfermedad cardiovascular establecida (población distinta): decir 'te protege el corazón' a un paciente sano de 30 años es extrapolar fuera del estudio (regla anti-alucinación)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PubMed 37952131 + ficha FDA de WEGOVY (DailyMed) · la tarjeta, solo como resumen (la escribió el generador del plan): Obesidad + enfermedad cardiovascular sin diabetes: ~−20 % de eventos cardiovasculares mayores con semaglutida. · Porque demuestra reducción de eventos cardiovasculares mayores en personas con obesidad y enfermedad cardiovascular sin diabetes: el beneficio no depende solo de los kilos; se trata una enfermedad, no una apariencia. · A quien no tiene enfermedad cardiovascular establecida (población distinta): decir 'te protege el corazón' a un paciente sano de 30 años es extrapolar fuera del estudio (regla anti-alucinación)."
     },
     {
       "d": 25,
@@ -1020,7 +1020,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D26 · «SURMOUNT-1: tirzepatida −15 / −19,5 / −20,9% según dosis»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): SURMOUNT-1 / SURMOUNT-5 — tirzepatida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): −15 % (5 mg) / −19,5 % (10 mg) / −20,9 % (15 mg) vs −3,1 % placebo. · Agonista de dos receptores (GIP + GLP-1): 'dos llaves en dos cerraduras' de la saciedad y el metabolismo. · Afirmable: es agonista dual GIP/GLP-1 y en SURMOUNT-1 llegó a −20,9 % vs −3,1 % placebo. No afirmable en consulta: el mecanismo exacto del aporte del GIP (en estudio); se explica el resultado, no una teoría."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PubMed 35658024 + ficha FDA de ZEPBOUND (DailyMed) · la tarjeta, solo como resumen (la escribió el generador del plan): −15 % (5 mg) / −19,5 % (10 mg) / −20,9 % (15 mg) vs −3,1 % placebo. · Agonista de dos receptores (GIP + GLP-1): 'dos llaves en dos cerraduras' de la saciedad y el metabolismo. · Afirmable: es agonista dual GIP/GLP-1 y en SURMOUNT-1 llegó a −20,9 % vs −3,1 % placebo. No afirmable en consulta: el mecanismo exacto del aporte del GIP (en estudio); se explica el resultado, no una teoría."
     },
     {
       "d": 27,
@@ -1028,7 +1028,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D27 · «SURMOUNT-1: 94% menos progresión a diabetes en prediabetes»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): SURMOUNT-1 / SURMOUNT-5 — tirzepatida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): 94 % de reducción de la progresión a diabetes. · Es reducción RELATIVA de la progresión frente a placebo en el estudio, mientras se toma el fármaco; se dice 'baja mucho el riesgo mientras tratamos', nunca garantía individual (CMP Art. 73)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PubMed 39536238 + PMC12815056 · la tarjeta, solo como resumen (la escribió el generador del plan): 94 % de reducción de la progresión a diabetes. · Es reducción RELATIVA de la progresión frente a placebo en el estudio, mientras se toma el fármaco; se dice 'baja mucho el riesgo mientras tratamos', nunca garantía individual (CMP Art. 73)."
     }
   ],
   "33": [
@@ -1038,7 +1038,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D28 · «SURMOUNT-5 cabeza a cabeza: tirzepatida ~20% vs semaglutida ~14%»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): SURMOUNT-1 / SURMOUNT-5 — tirzepatida (cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Tirzepatida ~20 % vs semaglutida ~14 % de pérdida de peso. · Que la semaglutida 'no sirve': la elección se individualiza por costo, tolerancia, comorbilidad (p. ej. SELECT en ECV) y disponibilidad real en Perú. · Ambas mueven la aguja (~14 % también es clínicamente relevante); se elige la que puede sostener meses: la mejor molécula es la que no se abandona."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PubMed 40353578 + PMC12448458 · la tarjeta, solo como resumen (la escribió el generador del plan): Tirzepatida ~20 % vs semaglutida ~14 % de pérdida de peso. · Que la semaglutida 'no sirve': la elección se individualiza por costo, tolerancia, comorbilidad (p. ej. SELECT en ECV) y disponibilidad real en Perú. · Ambas mueven la aguja (~14 % también es clínicamente relevante); se elige la que puede sostener meses: la mejor molécula es la que no se abandona."
     },
     {
       "d": 29,
@@ -1046,7 +1046,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D29 · «Efectos adversos GI y la escalada lenta como manejo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Gastrointestinales (náusea, vómito, estreñimiento). El manejo es la escalada LENTA de dosis + porciones pequeñas, menos grasa, hidratación. · Da tiempo a la adaptación al enlentecimiento gástrico y a la saciedad central antes de subir la dosis (esquema exacto: ficha técnica — A VERIFICAR). · Vaciamiento gástrico enlentecido + acción central sobre el tronco encefálico: el estómago se llena antes y el cerebro recibe señal de 'demasiado'; por eso porciones pequeñas, menos grasa y comer lento reducen el síntoma."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ficha FDA de WEGOVY (DailyMed) + PubMed 34775881 · la tarjeta, solo como resumen (la escribió el generador del plan): Gastrointestinales (náusea, vómito, estreñimiento). El manejo es la escalada LENTA de dosis + porciones pequeñas, menos grasa, hidratación. · Da tiempo a la adaptación al enlentecimiento gástrico y a la saciedad central antes de subir la dosis (esquema exacto: ficha técnica — A VERIFICAR). · Vaciamiento gástrico enlentecido + acción central sobre el tronco encefálico: el estómago se llena antes y el cerebro recibe señal de 'demasiado'; por eso porciones pequeñas, menos grasa y comer lento reducen el síntoma."
     },
     {
       "d": 30,
@@ -1054,7 +1054,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D30 · «Seguridad: colelitiasis · pancreatitis · gastroparesia · MEN2/CMT»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Antecedente personal/familiar de carcinoma medular de tiroides o MEN2 (motivo exacto en ficha técnica — A VERIFICAR). · Pancreatitis (dolor abdominal intenso irradiado a espalda + vómitos), colelitiasis sintomática, gastroparesia; cualquiera → suspender y evaluar antes de reintroducir. · Embarazo o búsqueda de embarazo → suspender y derivar a obstetricia (periodo de lavado según ficha técnica — A VERIFICAR). · MEN2/CMT: antecedente personal/familiar de carcinoma medular de tiroides; pancreatitis: episodio previo, alcohol, triglicéridos muy altos; biliar: cólico/cálculos sintomáticos; embarazo/lactancia o búsqueda de embarazo."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ficha FDA de WEGOVY (DailyMed) · la tarjeta, solo como resumen (la escribió el generador del plan): Antecedente personal/familiar de carcinoma medular de tiroides o MEN2 (motivo exacto en ficha técnica — A VERIFICAR). · Pancreatitis (dolor abdominal intenso irradiado a espalda + vómitos), colelitiasis sintomática, gastroparesia; cualquiera → suspender y evaluar antes de reintroducir. · Embarazo o búsqueda de embarazo → suspender y derivar a obstetricia (periodo de lavado según ficha técnica — A VERIFICAR). · MEN2/CMT: antecedente personal/familiar de carcinoma medular de tiroides; pancreatitis: episodio previo, alcohol, triglicéridos muy altos; biliar: cólico/cálculos sintomáticos; embarazo/lactancia o búsqueda de embarazo."
     },
     {
       "d": 31,
@@ -1062,7 +1062,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D31 · «Masa magra: la pérdida muscular exige proteína + fuerza»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque un déficit calórico grande y sostenido pierde también masa magra; el fármaco reduce mucho la ingesta → sin proteína (1,2-1,6 g/kg) ni fuerza (2x/sem) la pérdida incluye músculo. · En déficit el cuerpo usa también proteína muscular como sustrato; sin estímulo (fuerza) ni ladrillos (proteína) parte de lo perdido es masa magra. Proteína 1,2-1,6 g/kg + fuerza 2x/semana dan la señal de 'conservar músculo'. · Pérdida de fuerza funcional (le cuesta subir escaleras, sentarse-levantarse peor, agarre más débil) mientras la balanza baja: la balanza no distingue; la fuerza sí."
+      "a": "Corrige PRIMERO con lo que leíste ese día: PMC11611443 · la tarjeta, solo como resumen (la escribió el generador del plan): Porque un déficit calórico grande y sostenido pierde también masa magra; el fármaco reduce mucho la ingesta → sin proteína (1,2-1,6 g/kg) ni fuerza (2x/sem) la pérdida incluye músculo. · En déficit el cuerpo usa también proteína muscular como sustrato; sin estímulo (fuerza) ni ladrillos (proteína) parte de lo perdido es masa magra. Proteína 1,2-1,6 g/kg + fuerza 2x/semana dan la señal de 'conservar músculo'. · Pérdida de fuerza funcional (le cuesta subir escaleras, sentarse-levantarse peor, agarre más débil) mientras la balanza baja: la balanza no distingue; la fuerza sí."
     },
     {
       "d": 32,
@@ -1070,7 +1070,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D32 · «Semaglutida oral: Wegovy en tabletas (FDA dic-2025)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Wegovy en tabletas — FDA dic-2025 (requisitos de toma y disponibilidad en Perú: A VERIFICAR). · A quien rechaza inyecciones o tiene una barrera práctica; requiere condiciones de toma según ficha técnica (A VERIFICAR) y registro en Perú (tabla de acceso): sin eso, no se ofrece. · Que existe en EE. UU. (FDA dic-2025) y que su disponibilidad y precio en Perú se verifican, no se suponen; mientras tanto se usa lo que tiene registro."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ficha FDA de WEGOVY (DailyMed) + PubMed 40934115 · la tarjeta, solo como resumen (la escribió el generador del plan): Wegovy en tabletas — FDA dic-2025 (requisitos de toma y disponibilidad en Perú: A VERIFICAR). · A quien rechaza inyecciones o tiene una barrera práctica; requiere condiciones de toma según ficha técnica (A VERIFICAR) y registro en Perú (tabla de acceso): sin eso, no se ofrece. · Que existe en EE. UU. (FDA dic-2025) y que su disponibilidad y precio en Perú se verifican, no se suponen; mientras tanto se usa lo que tiene registro."
     }
   ],
   "38": [
@@ -1080,7 +1080,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D33 · «Orforglipron (FDA abr-2026) y pipeline: retatrutide, CagriSema — qué NO prometer»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): GLP-1 ORAL no peptídico (FDA abr-2026): ~8 % en diabéticos, EA GI 44-70 %. · Retatrutide y CagriSema (en desarrollo). Se explica que no se prescribe lo no aprobado ni se prometen cifras de estudios en curso. · Porque la tolerancia decide la adherencia: una molécula oral 'cómoda' con alta tasa de EA GI puede abandonarse; el paciente debe saberlo antes, no después."
+      "a": "Corrige PRIMERO con lo que leíste ese día: STEP 1 · Wilding 2021 NEJM (PubMed 33567185) + SELECT · Lincoff 2023 NEJM (PubMed 37952131) + SURMOUNT-1 · Jastreboff 2022 NEJM (PubMed 35658024) · la tarjeta, solo como resumen (la escribió el generador del plan): GLP-1 ORAL no peptídico (FDA abr-2026): ~8 % en diabéticos, EA GI 44-70 %. · Retatrutide y CagriSema (en desarrollo). Se explica que no se prescribe lo no aprobado ni se prometen cifras de estudios en curso. · Porque la tolerancia decide la adherencia: una molécula oral 'cómoda' con alta tasa de EA GI puede abandonarse; el paciente debe saberlo antes, no después."
     },
     {
       "d": 34,
@@ -1088,7 +1088,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D34 · «Genéricos de semaglutida (Brasil/India, mar-2026): el costo va a cambiar»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque aprobaciones y precios se mueven rápido: genéricos de semaglutida en Brasil/India desde mar-2026 → el costo en Perú cambiará. · Baja el COGS y el precio de mercado: la ventaja del magistral se erosiona y el valor pasa al acompañamiento; por eso el margen se justifica con servicio, no con el fármaco. · Value stack (medicamento 3 m), COGS/KPI margen y objeciones de precio; las tres se recalculan en la revisión trimestral con cotizaciones fechadas."
+      "a": "Corrige PRIMERO con lo que leíste ese día: STEP 1 · Wilding 2021 NEJM (PubMed 33567185) + SELECT · Lincoff 2023 NEJM (PubMed 37952131) + SURMOUNT-1 · Jastreboff 2022 NEJM (PubMed 35658024) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque aprobaciones y precios se mueven rápido: genéricos de semaglutida en Brasil/India desde mar-2026 → el costo en Perú cambiará. · Baja el COGS y el precio de mercado: la ventaja del magistral se erosiona y el valor pasa al acompañamiento; por eso el margen se justifica con servicio, no con el fármaco. · Value stack (medicamento 3 m), COGS/KPI margen y objeciones de precio; las tres se recalculan en la revisión trimestral con cotizaciones fechadas."
     },
     {
       "d": 35,
@@ -1096,7 +1096,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D35 · «Drill de cifras ancla (ciego) — módulo 2»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque en consulta se recuperan sin notas; el recuerdo activo con retroalimentación inmediata es lo que las fija (testing effect); lo fallado va a Anki el mismo día."
+      "a": "Corrige PRIMERO con lo que leíste ese día: STEP 1 · Wilding 2021 NEJM (PubMed 33567185) + SELECT · Lincoff 2023 NEJM (PubMed 37952131) + SURMOUNT-1 · Jastreboff 2022 NEJM (PubMed 35658024) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque en consulta se recuperan sin notas; el recuerdo activo con retroalimentación inmediata es lo que las fija (testing effect); lo fallado va a Anki el mismo día."
     },
     {
       "d": 36,
@@ -1104,7 +1104,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "GLP-1",
       "deck": "APEX::LIVIANO::glp1",
       "q": "RECALL · D36 · «Síntesis módulo 2: protocolo de prescripción LIVIANO → sección M2 del protocolo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Algorithm 2026 · fichas semaglutida / tirzepatida / orforglipron (STEP 1, SELECT, SURMOUNT-1/5 — cifras verificadas) · la tarjeta, solo como resumen (la escribió el generador del plan): Candidato (IMC/comorbilidad) → screening de contraindicaciones (MEN2/CMT, embarazo, pancreatitis) → labs basales → inicio y escalada lenta (ficha técnica) → check-in de EA → criterios de escalada/suspensión/derivación. · Sospecha de pancreatitis (dolor abdominal intenso irradiado a la espalda + vómitos), embarazo o búsqueda de embarazo, y EA intolerables pese a mantener la dosis: suspender, evaluar/derivar y no reintroducir sin decisión compartida. · La dosis sube solo cuando la actual se tolera: la escalada lenta ES el manejo del EA; subir con náusea activa multiplica el abandono."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Candidato (IMC/comorbilidad) → screening de contraindicaciones (MEN2/CMT, embarazo, pancreatitis) → labs basales → inicio y escalada lenta (ficha técnica) → check-in de EA → criterios de escalada/suspensión/derivación. · Sospecha de pancreatitis (dolor abdominal intenso irradiado a la espalda + vómitos), embarazo o búsqueda de embarazo, y EA intolerables pese a mantener la dosis: suspender, evaluar/derivar y no reintroducir sin decisión compartida. · La dosis sube solo cuando la actual se tolera: la escalada lenta ES el manejo del EA; subir con náusea activa multiplica el abandono."
     },
     {
       "d": 37,
@@ -1122,7 +1122,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "ACCESO PERÚ",
       "deck": "APEX::LIVIANO::acceso_peru",
       "q": "RECALL · D38 · «Registro sanitario DIGEMID: semaglutida (inyectable y oral) y tirzepatida — ¿existen, quién es el titular, hasta cuándo?»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Portal público de registros sanitarios DIGEMID (URL A VERIFICAR) · cotizaciones fechadas de farmacia · QF/abogado de salud (A VERIFICAR) · LIVIANO_LOGISTICA (cadena de frío 2–8 °C) · la tarjeta, solo como resumen (la escribió el generador del plan): Sin registro no hay dispensación legal ni trazabilidad por lote; el riesgo cae sobre el médico prescriptor. Dato exacto por molécula: LIVIANO_ACCESO_PERU (A VERIFICAR en DIGEMID). · Solo se afirma lo capturado con fecha en el portal oficial; si no aparece se escribe 'SIN REGISTRO HALLADO (fecha)'. · La verdad con fecha: 'lo estoy verificando en DIGEMID, te lo confirmo el (fecha)'; nunca 'sí, es legal' sin captura fechada."
+      "a": "Corrige PRIMERO con lo que leíste ese día: DIGEMID (portal; la consulta de registro sanitario: A VERIFICAR) · la tarjeta, solo como resumen (la escribió el generador del plan): Sin registro no hay dispensación legal ni trazabilidad por lote; el riesgo cae sobre el médico prescriptor. Dato exacto por molécula: LIVIANO_ACCESO_PERU (A VERIFICAR en DIGEMID). · Solo se afirma lo capturado con fecha en el portal oficial; si no aparece se escribe 'SIN REGISTRO HALLADO (fecha)'. · La verdad con fecha: 'lo estoy verificando en DIGEMID, te lo confirmo el (fecha)'; nunca 'sí, es legal' sin captura fechada."
     },
     {
       "d": 39,
@@ -1130,7 +1130,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "ACCESO PERÚ",
       "deck": "APEX::LIVIANO::acceso_peru",
       "q": "RECALL · D39 · «Condición de venta y receta: qué exige el registro y qué implica para el flujo CRM (receta → farmacia → paciente)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Portal público de registros sanitarios DIGEMID (URL A VERIFICAR) · cotizaciones fechadas de farmacia · QF/abogado de salud (A VERIFICAR) · LIVIANO_LOGISTICA (cadena de frío 2–8 °C) · la tarjeta, solo como resumen (la escribió el generador del plan): La fija el registro sanitario (venta con receta / receta retenida — A VERIFICAR): define quién dispensa, qué documento queda y cómo se diseña el flujo receta → farmacia → paciente en el CRM. · Quién prescribe (médico LIVIANO), qué documento entrega, dónde se dispensa (farmacia licenciada), qué queda registrado (receta retenida o no, según condición de venta) y cómo se anota en el CRM. · Porque define si el paciente puede comprar por su cuenta o depende de la receta en cada ciclo: cambia la cadencia de consultas, el kit de bienvenida y la logística."
+      "a": "Corrige PRIMERO con lo que leíste ese día: DIGEMID (portal; la consulta de registro sanitario: A VERIFICAR) · la tarjeta, solo como resumen (la escribió el generador del plan): La fija el registro sanitario (venta con receta / receta retenida — A VERIFICAR): define quién dispensa, qué documento queda y cómo se diseña el flujo receta → farmacia → paciente en el CRM. · Quién prescribe (médico LIVIANO), qué documento entrega, dónde se dispensa (farmacia licenciada), qué queda registrado (receta retenida o no, según condición de venta) y cómo se anota en el CRM. · Porque define si el paciente puede comprar por su cuenta o depende de la receta en cada ciclo: cambia la cadencia de consultas, el kit de bienvenida y la logística."
     },
     {
       "d": 40,
@@ -1138,7 +1138,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "ACCESO PERÚ",
       "deck": "APEX::LIVIANO::acceso_peru",
       "q": "RECALL · D40 · «Precio real en farmacia (S/): 2 cotizaciones fechadas (cadena + independiente) por presentación y dosis»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Portal público de registros sanitarios DIGEMID (URL A VERIFICAR) · cotizaciones fechadas de farmacia · QF/abogado de salud (A VERIFICAR) · LIVIANO_LOGISTICA (cadena de frío 2–8 °C) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el precio cambia rápido (genéricos 2026) y un precio inventado rompe la confianza y el margen: la regla es 2 cotizaciones fechadas + fecha de verificación en LIVIANO_ACCESO_PERU. · Porque los precios de farmacia varían y la oferta usa un número público: dos fuentes fechadas evitan publicar un precio inventado o desactualizado. · El 'medicamento 3 m' del stack, el COGS por paciente-mes y el margen del tier; si el margen cae por debajo de lo aceptable se ajusta la escalera de precios, no la calidad del producto."
+      "a": "Corrige PRIMERO con lo que leíste ese día: DIGEMID (portal; la consulta de registro sanitario: A VERIFICAR) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el precio cambia rápido (genéricos 2026) y un precio inventado rompe la confianza y el margen: la regla es 2 cotizaciones fechadas + fecha de verificación en LIVIANO_ACCESO_PERU. · Porque los precios de farmacia varían y la oferta usa un número público: dos fuentes fechadas evitan publicar un precio inventado o desactualizado. · El 'medicamento 3 m' del stack, el COGS por paciente-mes y el margen del tier; si el margen cae por debajo de lo aceptable se ajusta la escalera de precios, no la calidad del producto."
     },
     {
       "d": 41,
@@ -1146,7 +1146,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "ACCESO PERÚ",
       "deck": "APEX::LIVIANO::acceso_peru",
       "q": "RECALL · D41 · «Magistral (compounding): legalidad, certificado de análisis por lote y cotización Sterilelabs → COGS»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Portal público de registros sanitarios DIGEMID (URL A VERIFICAR) · cotizaciones fechadas de farmacia · QF/abogado de salud (A VERIFICAR) · LIVIANO_LOGISTICA (cadena de frío 2–8 °C) · la tarjeta, solo como resumen (la escribió el generador del plan): Está expuesto regulatoriamente (legalidad A VERIFICAR con QF/abogado) y su costo cambia con los genéricos; LIVIANO necesita plan B de marca y siempre certificado de análisis por lote. · 'Legalidad DIGEMID' y 'Cotización Sterilelabs' → filas de LIVIANO_ACCESO_PERU con fecha de verificación y dueño. · Aceptable: farmacia licenciada + certificado de análisis por lote + dictamen de legalidad. Inaceptable: cualquier producto sin trazabilidad de lote o temperatura ('mercado gris'), aunque sea más barato."
+      "a": "Corrige PRIMERO con lo que leíste ese día: DIGEMID (portal; la consulta de registro sanitario: A VERIFICAR) · la tarjeta, solo como resumen (la escribió el generador del plan): Está expuesto regulatoriamente (legalidad A VERIFICAR con QF/abogado) y su costo cambia con los genéricos; LIVIANO necesita plan B de marca y siempre certificado de análisis por lote. · 'Legalidad DIGEMID' y 'Cotización Sterilelabs' → filas de LIVIANO_ACCESO_PERU con fecha de verificación y dueño. · Aceptable: farmacia licenciada + certificado de análisis por lote + dictamen de legalidad. Inaceptable: cualquier producto sin trazabilidad de lote o temperatura ('mercado gris'), aunque sea más barato."
     },
     {
       "d": 42,
@@ -1164,7 +1164,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "ACCESO PERÚ",
       "deck": "APEX::LIVIANO::acceso_peru",
       "q": "RECALL · D43 · «Cadena de frío doméstica 2–8 °C: guion para el paciente + logging»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Portal público de registros sanitarios DIGEMID (URL A VERIFICAR) · cotizaciones fechadas de farmacia · QF/abogado de salud (A VERIFICAR) · LIVIANO_LOGISTICA (cadena de frío 2–8 °C) · la tarjeta, solo como resumen (la escribió el generador del plan): 2–8 °C extremo a extremo; (1) cómo transportarlo/almacenarlo en casa y (2) cuánto tiempo puede estar fuera de refrigeración (ficha técnica — A VERIFICAR por producto). · Es la zona con más oscilación de temperatura al abrir y cerrar; la pluma va en un estante interior a 2–8 °C, lejos del congelador (nunca congelar). · No usar ni desechar por su cuenta: anota tiempo y temperatura aproximada y consulta; el límite de tiempo fuera de frío se lee en la ficha técnica del producto (A VERIFICAR)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: DIGEMID (portal; la consulta de registro sanitario: A VERIFICAR) · la tarjeta, solo como resumen (la escribió el generador del plan): 2–8 °C extremo a extremo; (1) cómo transportarlo/almacenarlo en casa y (2) cuánto tiempo puede estar fuera de refrigeración (ficha técnica — A VERIFICAR por producto). · Es la zona con más oscilación de temperatura al abrir y cerrar; la pluma va en un estante interior a 2–8 °C, lejos del congelador (nunca congelar). · No usar ni desechar por su cuenta: anota tiempo y temperatura aproximada y consulta; el límite de tiempo fuera de frío se lee en la ficha técnica del producto (A VERIFICAR)."
     },
     {
       "d": 44,
@@ -1172,7 +1172,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "SÍNTESIS",
       "deck": "APEX::LIVIANO::sintesis",
       "q": "RECALL · D44 · «REVISIÓN TRIMESTRAL I de farmacoterapia y precios (fila fija ~D45)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Regla 3 del programa (revisión trimestral) · LIVIANO_REVISION_TRIMESTRAL (empresaData.ts) · la tarjeta, solo como resumen (la escribió el generador del plan): Aprobaciones nuevas · alertas de seguridad · recotización (2 farmacias + magistral) · genéricos LATAM · actualizar tabla de acceso + value stack · tarjetas Anki nuevas. · '¿Qué cambió desde la última fecha de verificación?' — aprobaciones, seguridad, precio, genéricos; cada respuesta con fuente y fecha o queda como PENDIENTE. · Porque el precio del fármaco es la variable que más se mueve (genéricos, nuevas vías): un número viejo publicado es una afirmación falsa."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Aprobaciones nuevas · alertas de seguridad · recotización (2 farmacias + magistral) · genéricos LATAM · actualizar tabla de acceso + value stack · tarjetas Anki nuevas. · '¿Qué cambió desde la última fecha de verificación?' — aprobaciones, seguridad, precio, genéricos; cada respuesta con fuente y fecha o queda como PENDIENTE. · Porque el precio del fármaco es la variable que más se mueve (genéricos, nuevas vías): un número viejo publicado es una afirmación falsa."
     },
     {
       "d": 45,
@@ -1180,7 +1180,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D45 · «El déficit calórico como mecanismo común»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Un balance energético negativo SOSTENIDO; el nombre de la dieta es el envoltorio, la adherencia es el mecanismo. · Porque el sistema regulador responde al déficit subiendo el hambre y bajando el gasto: crear el déficit es fácil, sostenerlo es lo difícil; la estrategia debe hacerlo sostenible (proteína, saciedad, fármaco). · Que reducen la ingesta total sostenida (por saciedad, por reglas o por restricción de horario): el mecanismo es el mismo, cambia el envoltorio."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Un balance energético negativo SOSTENIDO; el nombre de la dieta es el envoltorio, la adherencia es el mecanismo. · Porque el sistema regulador responde al déficit subiendo el hambre y bajando el gasto: crear el déficit es fácil, sostenerlo es lo difícil; la estrategia debe hacerlo sostenible (proteína, saciedad, fármaco). · Que reducen la ingesta total sostenida (por saciedad, por reglas o por restricción de horario): el mecanismo es el mismo, cambia el envoltorio."
     },
     {
       "d": 46,
@@ -1188,7 +1188,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D46 · «DIETFITS: low-fat vs low-carb no difieren si la calidad es alta»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Low-fat vs low-carb NO difieren en pérdida de peso al año cuando ambas son de alta calidad (comida real). · Da igual el nombre si la calidad es alta (DIETFITS): elige la que puedas sostener; lo innegociable es la proteína. · La calidad de la comida (mínimamente procesada, vegetales, sin azúcar añadido) y la adherencia: con esa base, low-fat y low-carb dieron resultados similares al año."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Low-fat vs low-carb NO difieren en pérdida de peso al año cuando ambas son de alta calidad (comida real). · Da igual el nombre si la calidad es alta (DIETFITS): elige la que puedas sostener; lo innegociable es la proteína. · La calidad de la comida (mínimamente procesada, vegetales, sin azúcar añadido) y la adherencia: con esa base, low-fat y low-carb dieron resultados similares al año."
     },
     {
       "d": 47,
@@ -1206,7 +1206,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D48 · «La adherencia predice el resultado — no el nombre de la dieta»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): La ADHERENCIA (no el nombre): se mide con automonitoreo (registro de comidas) y cumplimiento del plan pactado semana a semana. · Con una métrica pactada y observable (días con plato cumplido/semana, registro de comidas, proteína alcanzada) y preguntando qué la dificultó, no si 'se portó bien'. · Que quepa en la vida real del paciente: horarios, presupuesto, comida familiar y cultura; lo que se prescribe se diseña con él, no para él."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): La ADHERENCIA (no el nombre): se mide con automonitoreo (registro de comidas) y cumplimiento del plan pactado semana a semana. · Con una métrica pactada y observable (días con plato cumplido/semana, registro de comidas, proteína alcanzada) y preguntando qué la dificultó, no si 'se portó bien'. · Que quepa en la vida real del paciente: horarios, presupuesto, comida familiar y cultura; lo que se prescribe se diseña con él, no para él."
     },
     {
       "d": 49,
@@ -1214,7 +1214,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D49 · «Ayuno intermitente = restricción continua»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): 24 RCTs, n = 1.768: diferencia 0,26 kg, NO significativa — el AI es otra forma de crear déficit, no un mecanismo superior. · Que no es superior a la restricción continua (diferencia 0,26 kg, no significativa; 24 RCTs, n=1.768); NO concluye que sea inútil: es una herramienta más para crear déficit si al paciente le resulta fácil. · Cuando mejora la adherencia de ese paciente (p. ej., ya no desayuna) y no compromete la cuota proteica ni la fuerza; nunca como dogma ni como promesa de mecanismo especial."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): 24 RCTs, n = 1.768: diferencia 0,26 kg, NO significativa — el AI es otra forma de crear déficit, no un mecanismo superior. · Que no es superior a la restricción continua (diferencia 0,26 kg, no significativa; 24 RCTs, n=1.768); NO concluye que sea inútil: es una herramienta más para crear déficit si al paciente le resulta fácil. · Cuando mejora la adherencia de ese paciente (p. ej., ya no desayuna) y no compromete la cuota proteica ni la fuerza; nunca como dogma ni como promesa de mecanismo especial."
     },
     {
       "d": 50,
@@ -1222,7 +1222,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D50 · «Adherencia >80% solo en estudios <3 meses»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Adherencia > 80 % solo en estudios < 3 meses: el problema es SOSTENER; por eso el plan se diseña para el mes 6, no para la semana 2. · Que el plan debe diseñarse para el mes 6, no para la semana 1: metas pequeñas, revisiones programadas, automonitoreo y anticipar el momento de la caída. · Que su patrón es el de casi todos los estudios: no es un defecto suyo; ahora diseñamos el plan sabiendo dónde está el bache."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Adherencia > 80 % solo en estudios < 3 meses: el problema es SOSTENER; por eso el plan se diseña para el mes 6, no para la semana 2. · Que el plan debe diseñarse para el mes 6, no para la semana 1: metas pequeñas, revisiones programadas, automonitoreo y anticipar el momento de la caída. · Que su patrón es el de casi todos los estudios: no es un defecto suyo; ahora diseñamos el plan sabiendo dónde está el bache."
     },
     {
       "d": 51,
@@ -1230,7 +1230,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D51 · «Proteína 1,2-1,6 g/kg: saciedad y masa magra»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): 1,2-1,6 g/kg/día: saciedad + protección de masa magra cuando la ingesta cae mucho por el fármaco. · 1,2-1,6 g/kg → 96-128 g/día (aritmética del rango del currículo). · Aporta aminoácidos para la síntesis muscular y sacia más por caloría; la fuerza da la señal de que ese músculo se necesita: sin señal, el cuerpo lo sacrifica aunque haya proteína."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): 1,2-1,6 g/kg/día: saciedad + protección de masa magra cuando la ingesta cae mucho por el fármaco. · 1,2-1,6 g/kg → 96-128 g/día (aritmética del rango del currículo). · Aporta aminoácidos para la síntesis muscular y sacia más por caloría; la fuerza da la señal de que ese músculo se necesita: sin señal, el cuerpo lo sacrifica aunque haya proteína."
     },
     {
       "d": 52,
@@ -1248,7 +1248,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D53 · «Proteína en la práctica con GLP-1: poco apetito, cuota completa»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Proteína PRIMERO en cada comida · fraccionar en tomas pequeñas · líquidos/lácteos proteicos entre comidas. · Porque el fármaco reduce el apetito y el paciente se llena rápido: si empieza por carbohidratos no llega a la cuota; empezando por la proteína la cuota se completa aun con porciones pequeñas. · Ingesta proteica muy por debajo de 1,2 g/kg, hidratación insuficiente y pérdida de fuerza: no se escala la dosis mientras no coma; se rediseña el día en 3-4 tomas."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Proteína PRIMERO en cada comida · fraccionar en tomas pequeñas · líquidos/lácteos proteicos entre comidas. · Porque el fármaco reduce el apetito y el paciente se llena rápido: si empieza por carbohidratos no llega a la cuota; empezando por la proteína la cuota se completa aun con porciones pequeñas. · Ingesta proteica muy por debajo de 1,2 g/kg, hidratación insuficiente y pérdida de fuerza: no se escala la dosis mientras no coma; se rediseña el día en 3-4 tomas."
     },
     {
       "d": 54,
@@ -1256,7 +1256,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D54 · «Traducción local: el plato de Huancayo alto en proteína»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Mitad verdura · un cuarto proteína (huevo, trucha, pollo, atún, habas) · un cuarto almidón andino (papa, quinua). · Trucha, huevo, pollo, cuy, lácteos, quinua y habas/legumbres; la papa entra como carbohidrato controlado, no como plato completo. · Mitad vegetales, un cuarto proteína (se come primero), un cuarto carbohidrato de calidad; agua en lugar de bebida azucarada."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Mitad verdura · un cuarto proteína (huevo, trucha, pollo, atún, habas) · un cuarto almidón andino (papa, quinua). · Trucha, huevo, pollo, cuy, lácteos, quinua y habas/legumbres; la papa entra como carbohidrato controlado, no como plato completo. · Mitad vegetales, un cuarto proteína (se come primero), un cuarto carbohidrato de calidad; agua en lugar de bebida azucarada."
     },
     {
       "d": 55,
@@ -1264,7 +1264,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D55 · «Contra-argumentario: detox, fajas, \"metabolismo lento\", quemadores»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Validar la intención → dar el mecanismo real (déficit sostenido, adaptación metabólica) → ofrecer la alternativa que sí funciona; nunca 'eso es una tontería'. · Mito: no explica la obesidad de origen. Verdad: tras perder peso el gasto sí cae (adaptación metabólica). Se corrige el dato sin ridiculizar al paciente. · Pérdida de agua/contenido intestinal o restricción calórica encubierta: no cambia grasa ni set point; al parar, vuelve todo."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Meta-análisis ADF / 5:2 / TRE · Obesity 2023 (PMC10098946) · la tarjeta, solo como resumen (la escribió el generador del plan): Validar la intención → dar el mecanismo real (déficit sostenido, adaptación metabólica) → ofrecer la alternativa que sí funciona; nunca 'eso es una tontería'. · Mito: no explica la obesidad de origen. Verdad: tras perder peso el gasto sí cae (adaptación metabólica). Se corrige el dato sin ridiculizar al paciente. · Pérdida de agua/contenido intestinal o restricción calórica encubierta: no cambia grasa ni set point; al parar, vuelve todo."
     },
     {
       "d": 56,
@@ -1272,7 +1272,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "NUTRICIÓN",
       "deck": "APEX::LIVIANO::nutricion",
       "q": "RECALL · D56 · «Síntesis módulo 3 + drill de cifras (ciego) → política nutricional del protocolo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Meta-análisis AI vs restricción continua (PMC10098946) · Obesity Canada — nutrición · la tarjeta, solo como resumen (la escribió el generador del plan): Adherencia primero (la dieta que el paciente puede sostener) + proteína 1,2-1,6 g/kg innegociable + método del plato local. · 1) Adherencia primero (la dieta que el paciente puede sostener); 2) proteína innegociable 1,2-1,6 g/kg; 3) comida real local (método del plato), sin dogmas de nombre de dieta. · Adherencia: DIETFITS y 'adherencia >80 % solo <3 meses'; proteína: pérdida de masa magra con GLP-1; método del plato: la calidad de la comida como variable de DIETFITS."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Adherencia primero (la dieta que el paciente puede sostener) + proteína 1,2-1,6 g/kg innegociable + método del plato local. · 1) Adherencia primero (la dieta que el paciente puede sostener); 2) proteína innegociable 1,2-1,6 g/kg; 3) comida real local (método del plato), sin dogmas de nombre de dieta. · Adherencia: DIETFITS y 'adherencia >80 % solo <3 meses'; proteína: pérdida de masa magra con GLP-1; método del plato: la calidad de la comida como variable de DIETFITS."
     },
     {
       "d": 57,
@@ -1290,7 +1290,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D58 · «El ejercicio solo baja poco peso (~2-3 kg)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): ~2-3 kg: no se promete pérdida por esta vía; su papel es el MANTENIMIENTO y la composición corporal. · El gasto añadido es modesto frente a la ingesta y el cuerpo compensa (más hambre, menos actividad espontánea); su valor está en mantenimiento, composición y salud cardiometabólica, no en la balanza. · Diciendo para qué sirve: 'no es para bajar de peso, es para no volver a subirlo y para que lo que pierdas sea grasa y no músculo'."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): ~2-3 kg: no se promete pérdida por esta vía; su papel es el MANTENIMIENTO y la composición corporal. · El gasto añadido es modesto frente a la ingesta y el cuerpo compensa (más hambre, menos actividad espontánea); su valor está en mantenimiento, composición y salud cardiometabólica, no en la balanza. · Diciendo para qué sirve: 'no es para bajar de peso, es para no volver a subirlo y para que lo que pierdas sea grasa y no músculo'."
     },
     {
       "d": 59,
@@ -1298,7 +1298,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D59 · «NWCR: ~1 h/día de actividad (≈2.800 kcal/sem) — el mejor predictor de mantenimiento; guías clínicas: ≥250 min/sem»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): ~1 h/día de actividad (≈ 2.800 kcal/semana) — el mejor predictor de mantenimiento. · De las guías clínicas (ACSM), NO del NWCR — no mezclar las dos fuentes al citar. · Porque tras bajar de peso el gasto está reducido (adaptación metabólica): la actividad de ~1 h/día del NWCR compensa esa caída y estabiliza el balance sin restricción extrema."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): ~1 h/día de actividad (≈ 2.800 kcal/semana) — el mejor predictor de mantenimiento. · De las guías clínicas (ACSM), NO del NWCR — no mezclar las dos fuentes al citar. · Porque tras bajar de peso el gasto está reducido (adaptación metabólica): la actividad de ~1 h/día del NWCR compensa esa caída y estabiliza el balance sin restricción extrema."
     },
     {
       "d": 60,
@@ -1306,7 +1306,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D60 · «Fuerza 2x/semana preserva masa magra durante la farmacoterapia»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque preserva la masa magra que el déficit grande tiende a perder; sin fuerza, parte del peso perdido es músculo. · Se pierde una fracción relevante de masa magra: menos fuerza, menos gasto en reposo y peor mantenimiento; el paciente termina 'más flaco pero más débil'. · 2 sesiones/semana de fuerza (grandes grupos musculares, progresivas), con cualquier carga: pesas, bandas o peso corporal; lo importante es la señal, no el gimnasio."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque preserva la masa magra que el déficit grande tiende a perder; sin fuerza, parte del peso perdido es músculo. · Se pierde una fracción relevante de masa magra: menos fuerza, menos gasto en reposo y peor mantenimiento; el paciente termina 'más flaco pero más débil'. · 2 sesiones/semana de fuerza (grandes grupos musculares, progresivas), con cualquier carga: pesas, bandas o peso corporal; lo importante es la señal, no el gimnasio."
     },
     {
       "d": 61,
@@ -1314,7 +1314,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D61 · «\"Fitness vs fatness\": beneficio independiente del peso»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): El beneficio cardiometabólico del ejercicio es independiente del peso: la capacidad cardiorrespiratoria predice mortalidad aunque el IMC no cambie. · Que su capacidad cardiorrespiratoria ya lo protege aunque el IMC no cambie: el ejercicio 'cuenta' incluso con la balanza quieta; la meta se mide también en capacidad."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): El beneficio cardiometabólico del ejercicio es independiente del peso: la capacidad cardiorrespiratoria predice mortalidad aunque el IMC no cambie. · Que su capacidad cardiorrespiratoria ya lo protege aunque el IMC no cambie: el ejercicio 'cuenta' incluso con la balanza quieta; la meta se mide también en capacidad."
     },
     {
       "d": 62,
@@ -1332,7 +1332,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D63 · «Composición corporal, no solo balanza»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Cintura, fotos, fuerza (y bioimpedancia si hay): la balanza no distingue músculo de grasa; nosotros sí. · Cintura (cada 2-4 semanas), fotos estandarizadas (mensual), pruebas de fuerza (agarre, sentarse-levantarse) y cómo queda la ropa; la balanza se mira con esos datos al lado. · Estima la grasa visceral, la más ligada al riesgo cardiometabólico; puede bajar aunque el peso se estanque si se conserva músculo."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): Cintura, fotos, fuerza (y bioimpedancia si hay): la balanza no distingue músculo de grasa; nosotros sí. · Cintura (cada 2-4 semanas), fotos estandarizadas (mensual), pruebas de fuerza (agarre, sentarse-levantarse) y cómo queda la ropa; la balanza se mira con esos datos al lado. · Estima la grasa visceral, la más ligada al riesgo cardiometabólico; puede bajar aunque el peso se estanque si se conserva músculo."
     },
     {
       "d": 64,
@@ -1340,7 +1340,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D64 · «El estándar LIVIANO innegociable: proteína 1,2-1,6 g/kg + fuerza 2x/sem»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Proteína 1,2-1,6 g/kg + fuerza 2x/semana (+ actividad diaria para el mantenimiento). · Porque sin él el fármaco produce pérdida de músculo: es parte del tratamiento, se pacta y se mide, como la dosis. · Un plan mínimo en casa (sentadillas, empujes, remo con banda) 2 veces por semana de 20-30 min: lo que puede sostener, no lo ideal."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): Proteína 1,2-1,6 g/kg + fuerza 2x/semana (+ actividad diaria para el mantenimiento). · Porque sin él el fármaco produce pérdida de músculo: es parte del tratamiento, se pacta y se mide, como la dosis. · Un plan mínimo en casa (sentadillas, empujes, remo con banda) 2 veces por semana de 20-30 min: lo que puede sostener, no lo ideal."
     },
     {
       "d": 65,
@@ -1348,7 +1348,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D65 · «Prescripción de ejercicio en consulta»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Empezar ridículamente fácil (adherencia) y progresar cada 2 semanas; fuerza 2x/sem + caminata diaria; medir fuerza y cintura, no solo peso. · Una dosis que el paciente cumpla con seguridad (p. ej., 10 min de caminata o 1 serie), porque la primera meta es crear el hábito; la progresión viene cada 2 semanas. · Frecuencia y duración antes que intensidad: menos riesgo de lesión y de abandono; la intensidad sube cuando el hábito ya está."
+      "a": "Corrige PRIMERO con lo que leíste ese día: NWCR · Thomas 2014 Am J Prev Med (PubMed 24355667) · la tarjeta, solo como resumen (la escribió el generador del plan): Empezar ridículamente fácil (adherencia) y progresar cada 2 semanas; fuerza 2x/sem + caminata diaria; medir fuerza y cintura, no solo peso. · Una dosis que el paciente cumpla con seguridad (p. ej., 10 min de caminata o 1 serie), porque la primera meta es crear el hábito; la progresión viene cada 2 semanas. · Frecuencia y duración antes que intensidad: menos riesgo de lesión y de abandono; la intensidad sube cuando el hábito ya está."
     },
     {
       "d": 66,
@@ -1356,7 +1356,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "EJERCICIO",
       "deck": "APEX::LIVIANO::ejercicio",
       "q": "RECALL · D66 · «Síntesis módulo 4 → sección 'estándar proteína/fuerza + qué medir' del protocolo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): National Weight Control Registry · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Peso + cintura + fuerza (semanal/quincenal), fotos (mensual), labs (trimestral — panel A VERIFICAR); la meta se define en composición, no solo en kg. · Peso y cintura semanal/quincenal, fuerza cada 4 semanas, fotos mensuales, labs según cadencia a verificar; siempre en las mismas condiciones para poder comparar."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Peso + cintura + fuerza (semanal/quincenal), fotos (mensual), labs (trimestral — panel A VERIFICAR); la meta se define en composición, no solo en kg. · Peso y cintura semanal/quincenal, fuerza cada 4 semanas, fotos mensuales, labs según cadencia a verificar; siempre en las mismas condiciones para poder comparar."
     },
     {
       "d": 67,
@@ -1374,7 +1374,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D68 · «Fentermina/topiramato y naltrexona/bupropión: mecanismo y candidato»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Al comer emocional / craving (actúa en el circuito de recompensa), como alternativa cuando el GLP-1 no es opción (costo, tolerancia, disponibilidad). · Costo, intolerancia o falta de acceso al GLP-1 — siempre con registro sanitario verificado en Perú (A VERIFICAR) y expectativas honestas de eficacia. · Fentermina (simpaticomimético: menos apetito) + topiramato (efecto sobre saciedad/impulso); interacciones y contraindicaciones relevantes (cardiovasculares, embarazo — ficha técnica A VERIFICAR): solo con registro y screening."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): Al comer emocional / craving (actúa en el circuito de recompensa), como alternativa cuando el GLP-1 no es opción (costo, tolerancia, disponibilidad). · Costo, intolerancia o falta de acceso al GLP-1 — siempre con registro sanitario verificado en Perú (A VERIFICAR) y expectativas honestas de eficacia. · Fentermina (simpaticomimético: menos apetito) + topiramato (efecto sobre saciedad/impulso); interacciones y contraindicaciones relevantes (cardiovasculares, embarazo — ficha técnica A VERIFICAR): solo con registro y screening."
     },
     {
       "d": 69,
@@ -1382,7 +1382,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D69 · «Orlistat, metformina off-label y setmelanotida: papel real y límites»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Eficacia modesta; suman en casos concretos y son 'placebo caro' si se venden como solución principal. · Obesidad severa de inicio muy temprano + hiperfagia → estudio genético; setmelanotida solo para obesidad monogénica confirmada (derivación). · Obesidad severa de inicio muy temprano (primeros años) con hiperfagia intensa, a veces con antecedentes familiares: se deriva a estudio genético; setmelanotida es solo para variantes concretas (criterios A VERIFICAR)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): Eficacia modesta; suman en casos concretos y son 'placebo caro' si se venden como solución principal. · Obesidad severa de inicio muy temprano + hiperfagia → estudio genético; setmelanotida solo para obesidad monogénica confirmada (derivación). · Obesidad severa de inicio muy temprano (primeros años) con hiperfagia intensa, a veces con antecedentes familiares: se deriva a estudio genético; setmelanotida es solo para variantes concretas (criterios A VERIFICAR)."
     },
     {
       "d": 70,
@@ -1390,7 +1390,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D70 · «Criterios ASMBS/IFSO 2022: IMC ≥35 sin exigir comorbilidades»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): IMC ≥ 35 sin exigir comorbilidades (reemplaza NIH 1991). · Porque la obesidad severa por sí misma es enfermedad con riesgo y porque la cirugía demostró beneficio sostenido (25-30 %) y remisión metabólica; esperar a la comorbilidad retrasa un tratamiento eficaz. · 'Cumples criterios para una opción muy potente; no es obligación ni urgencia: es una puerta que ahora existe y decidimos juntos cuándo, si quieres, cruzarla'."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): IMC ≥ 35 sin exigir comorbilidades (reemplaza NIH 1991). · Porque la obesidad severa por sí misma es enfermedad con riesgo y porque la cirugía demostró beneficio sostenido (25-30 %) y remisión metabólica; esperar a la comorbilidad retrasa un tratamiento eficaz. · 'Cumples criterios para una opción muy potente; no es obligación ni urgencia: es una puerta que ahora existe y decidimos juntos cuándo, si quieres, cruzarla'."
     },
     {
       "d": 71,
@@ -1398,7 +1398,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D71 · «ASMBS/IFSO: IMC 30-34,9 refractario · asiáticos ≥27,5»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): IMC 30-34,9 con enfermedad metabólica refractaria; población asiática ≥ 27,5 (matiz étnico discutible en población peruana mestiza → juicio clínico). · Diabetes tipo 2 u otra enfermedad metabólica que no se controla pese a tratamiento médico óptimo: el fracaso médico documentado es lo que abre la indicación. · Porque la población peruana mestiza no es la de esos estudios; se usa como alerta de riesgo metabólico a menor IMC, no como regla automática."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): IMC 30-34,9 con enfermedad metabólica refractaria; población asiática ≥ 27,5 (matiz étnico discutible en población peruana mestiza → juicio clínico). · Diabetes tipo 2 u otra enfermedad metabólica que no se controla pese a tratamiento médico óptimo: el fracaso médico documentado es lo que abre la indicación. · Porque la población peruana mestiza no es la de esos estudios; se usa como alerta de riesgo metabólico a menor IMC, no como regla automática."
     },
     {
       "d": 72,
@@ -1416,7 +1416,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D73 · «Sleeve y bypass Y-Roux: pérdida sostenida 25-30% y remisión de diabetes»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Pérdida sostenida 25-30 % y remisión de diabetes. · Además de restringir volumen cambia las señales intestinales del hambre/saciedad (módulo 1) — por eso la pérdida se sostiene mejor que con dieta. · Cambios en las señales intestinales (más GLP-1/PYY postprandiales, menos grelina) antes de perder mucho peso: la cirugía reprograma el mismo eje intestino-cerebro del módulo 1."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): Pérdida sostenida 25-30 % y remisión de diabetes. · Además de restringir volumen cambia las señales intestinales del hambre/saciedad (módulo 1) — por eso la pérdida se sostiene mejor que con dieta. · Cambios en las señales intestinales (más GLP-1/PYY postprandiales, menos grelina) antes de perder mucho peso: la cirugía reprograma el mismo eje intestino-cerebro del módulo 1."
     },
     {
       "d": 74,
@@ -1424,7 +1424,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D74 · «Cuándo derivar (límite de competencia como fortaleza) + rol LIVIANO pre y post bariátrica»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Criterios ASMBS/IFSO 2022 (IMC ≥ 35; 30-34,9 refractario) + falla a farmacoterapia/comorbilidad refractaria → derivar es límite de competencia, no derrota. · Preparación (nutrición, proteína, hábitos), seguimiento post-operatorio y manejo de la recidiva (incluye GLP-1 post-cirugía — esquema A VERIFICAR). · Cardiología (paciente con ECV antes de fármaco/ejercicio), psiquiatría (fármacos no-GLP1 con tratamiento psiquiátrico), endocrinología (diabetes mal controlada), obstetricia (embarazo), emergencia (pancreatitis sospechada)."
+      "a": "Corrige PRIMERO con lo que leíste ese día: ASMBS/IFSO 2022 · indicaciones de cirugía (PMC9834364) · la tarjeta, solo como resumen (la escribió el generador del plan): Criterios ASMBS/IFSO 2022 (IMC ≥ 35; 30-34,9 refractario) + falla a farmacoterapia/comorbilidad refractaria → derivar es límite de competencia, no derrota. · Preparación (nutrición, proteína, hábitos), seguimiento post-operatorio y manejo de la recidiva (incluye GLP-1 post-cirugía — esquema A VERIFICAR). · Cardiología (paciente con ECV antes de fármaco/ejercicio), psiquiatría (fármacos no-GLP1 con tratamiento psiquiátrico), endocrinología (diabetes mal controlada), obstetricia (embarazo), emergencia (pancreatitis sospechada)."
     },
     {
       "d": 75,
@@ -1432,7 +1432,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "FARMACO+QX",
       "deck": "APEX::LIVIANO::farmaco_qx",
       "q": "RECALL · D75 · «Síntesis módulo 6 + escalera terapéutica + drill de cifras (ciego) → sección M6 del protocolo»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): ASMBS/IFSO 2022 (PMC9834364) · Obesity Algorithm 2026 (OMA) · la tarjeta, solo como resumen (la escribió el generador del plan): Estilo de vida estructurado (5As, automonitoreo) → farmacoterapia (GLP-1 primero; no-GLP1 si no hay acceso) → cirugía (criterios ASMBS/IFSO) con LIVIANO antes y después. · IMC + comorbilidad + historia de intentos previos + preferencia: no se sube de peldaño por ansiedad ni se baja por costo sin decirlo; cada peldaño tiene criterio de escalada escrito. · Gatillos a cirugía (ASMBS/IFSO 2022 + falla a farmacoterapia), otros límites (cardio, psiquiatría, endocrino, obstetricia, emergencia), no-GLP1 solo con registro, rol pre/post bariátrica, y la frase 'derivar es fortaleza'."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Estilo de vida estructurado (5As, automonitoreo) → farmacoterapia (GLP-1 primero; no-GLP1 si no hay acceso) → cirugía (criterios ASMBS/IFSO) con LIVIANO antes y después. · IMC + comorbilidad + historia de intentos previos + preferencia: no se sube de peldaño por ansiedad ni se baja por costo sin decirlo; cada peldaño tiene criterio de escalada escrito. · Gatillos a cirugía (ASMBS/IFSO 2022 + falla a farmacoterapia), otros límites (cardio, psiquiatría, endocrino, obstetricia, emergencia), no-GLP1 solo con registro, rol pre/post bariátrica, y la frase 'derivar es fortaleza'."
     },
     {
       "d": 76,
@@ -1440,7 +1440,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D76 · «Marco 5As I: Ask y Assess — pedir permiso y evaluar sin juicio»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): Ask = pedir permiso para hablar del peso; Assess = evaluar sin juicio (historia, comorbilidad, disposición al cambio). · '¿Te parece si hablamos hoy de tu peso?': el permiso devuelve control al paciente y baja la defensiva; sin permiso, la conversación se vive como juicio. · Historia del peso, intentos previos, comorbilidades, contexto (sueño, trabajo, familia), disposición al cambio y qué le importa al paciente: la raíz, no solo el número."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): Ask = pedir permiso para hablar del peso; Assess = evaluar sin juicio (historia, comorbilidad, disposición al cambio). · '¿Te parece si hablamos hoy de tu peso?': el permiso devuelve control al paciente y baja la defensiva; sin permiso, la conversación se vive como juicio. · Historia del peso, intentos previos, comorbilidades, contexto (sueño, trabajo, familia), disposición al cambio y qué le importa al paciente: la raíz, no solo el número."
     },
     {
       "d": 77,
@@ -1458,7 +1458,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D80 · «Entrevista motivacional II: provocar el \"cambio hablado\"»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el cambio que el paciente verbaliza con SUS razones se sostiene más que el que ordena el médico. · '¿Qué ganarías si esto cambiara?' o 'del 0 al 10, ¿cuánto te importa? ¿por qué no un número menor?': el paciente enumera SUS razones. · Verbalizar razones propias aumenta el compromiso (consistencia): las razones del médico se olvidan, las del paciente se defienden."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): Porque el cambio que el paciente verbaliza con SUS razones se sostiene más que el que ordena el médico. · '¿Qué ganarías si esto cambiara?' o 'del 0 al 10, ¿cuánto te importa? ¿por qué no un número menor?': el paciente enumera SUS razones. · Verbalizar razones propias aumenta el compromiso (consistencia): las razones del médico se olvidan, las del paciente se defienden."
     },
     {
       "d": 81,
@@ -1466,7 +1466,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D81 · «Automonitoreo: el predictor #1 de éxito»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): El automonitoreo (registro de comida, peso, pasos): 'no es castigo, es el GPS' — quien se monitorea, llega. · Hace visible lo automático: la retroalimentación inmediata corrige decisiones pequeñas y repetidas, y da datos objetivos para ajustar el plan sin culpa. · Comidas (foto o texto), peso semanal, actividad/pasos y, en titulación, náusea 0-3 y agua; en la app del paciente (VITALS) o en papel: lo que se sostenga."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): El automonitoreo (registro de comida, peso, pasos): 'no es castigo, es el GPS' — quien se monitorea, llega. · Hace visible lo automático: la retroalimentación inmediata corrige decisiones pequeñas y repetidas, y da datos objetivos para ajustar el plan sin culpa. · Comidas (foto o texto), peso semanal, actividad/pasos y, en titulación, náusea 0-3 y agua; en la app del paciente (VITALS) o en papel: lo que se sostenga."
     },
     {
       "d": 82,
@@ -1474,7 +1474,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D82 · «DPP: −58% de incidencia de diabetes con estilo de vida»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): −58 % de incidencia de diabetes con intervención de estilo de vida estructurada. · Un programa estructurado de estilo de vida (meta de pérdida modesta, actividad regular, sesiones educativas frecuentes y automonitoreo); superó a la metformina en ese estudio. · Como evidencia de que el programa conductual estructurado FUNCIONA por sí mismo: no tener el medicamento más caro no es quedarse sin tratamiento."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): −58 % de incidencia de diabetes con intervención de estilo de vida estructurada. · Un programa estructurado de estilo de vida (meta de pérdida modesta, actividad regular, sesiones educativas frecuentes y automonitoreo); superó a la metformina en ese estudio. · Como evidencia de que el programa conductual estructurado FUNCIONA por sí mismo: no tener el medicamento más caro no es quedarse sin tratamiento."
     },
     {
       "d": 83,
@@ -1482,7 +1482,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D83 · «Lenguaje people-first y estigma de peso como competencia clínica EVALUABLE»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): El estigma reduce adherencia y aumenta el abandono de consulta; 'persona con obesidad' + validación mantienen al paciente en tratamiento. · Obesity Canada cap. 1: comunicación sin estigma es contenido nuclear; por eso es ítem fijo de la rúbrica de cada caso. · Aumenta el abandono de consultas, el estrés, el comer emocional y la evitación del ejercicio; el paciente estigmatizado empeora, por eso la comunicación sin estigma es tratamiento."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): El estigma reduce adherencia y aumenta el abandono de consulta; 'persona con obesidad' + validación mantienen al paciente en tratamiento. · Obesity Canada cap. 1: comunicación sin estigma es contenido nuclear; por eso es ítem fijo de la rúbrica de cada caso. · Aumenta el abandono de consultas, el estrés, el comer emocional y la evitación del ejercicio; el paciente estigmatizado empeora, por eso la comunicación sin estigma es tratamiento."
     },
     {
       "d": 84,
@@ -1500,7 +1500,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D83 · «Lenguaje people-first y estigma de peso como competencia clínica EVALUABLE»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): El estigma reduce adherencia y aumenta el abandono de consulta; 'persona con obesidad' + validación mantienen al paciente en tratamiento. · Obesity Canada cap. 1: comunicación sin estigma es contenido nuclear; por eso es ítem fijo de la rúbrica de cada caso. · Aumenta el abandono de consultas, el estrés, el comer emocional y la evitación del ejercicio; el paciente estigmatizado empeora, por eso la comunicación sin estigma es tratamiento."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): El estigma reduce adherencia y aumenta el abandono de consulta; 'persona con obesidad' + validación mantienen al paciente en tratamiento. · Obesity Canada cap. 1: comunicación sin estigma es contenido nuclear; por eso es ítem fijo de la rúbrica de cada caso. · Aumenta el abandono de consultas, el estrés, el comer emocional y la evitación del ejercicio; el paciente estigmatizado empeora, por eso la comunicación sin estigma es tratamiento."
     },
     {
       "d": 84,
@@ -1516,7 +1516,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D85 · «Protocolo de consulta LIVIANO sin estigma»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): Balanza en privado · mobiliario adecuado · guion verbal (permiso, validación, people-first, promesa de la casa). · Balanza en espacio privado, sillas sin brazos y de carga adecuada, brazaletes de PA de talla grande, batas adecuadas: el ambiente también comunica. · Apertura: pedir permiso y preguntar qué le importa. Cierre: una meta elegida por el paciente, una métrica, una fecha y 'no estás sola/o en esto'."
+      "a": "Corrige PRIMERO con lo que leíste ese día: Obesity Canada · guía clínica de adultos + Obesity Canada · 5As Framework (PDF, 2026) · la tarjeta, solo como resumen (la escribió el generador del plan): Balanza en privado · mobiliario adecuado · guion verbal (permiso, validación, people-first, promesa de la casa). · Balanza en espacio privado, sillas sin brazos y de carga adecuada, brazaletes de PA de talla grande, batas adecuadas: el ambiente también comunica. · Apertura: pedir permiso y preguntar qué le importa. Cierre: una meta elegida por el paciente, una métrica, una fecha y 'no estás sola/o en esto'."
     },
     {
       "d": 86,
@@ -1524,7 +1524,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "CONDUCTA",
       "deck": "APEX::LIVIANO::conducta",
       "q": "RECALL · D86 · «Síntesis módulo 5 → sección M5 del protocolo (5As · automonitoreo · cadencia de check-in)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Obesity Canada — 5As y reducción de estigma · OMA recursos educativos · la tarjeta, solo como resumen (la escribió el generador del plan): Despegue 4 sesiones/mes · Progreso 2/mes · Consolidación 1/mes · Mantenimiento control trimestral (LIVIANO_OFERTA). · 1) titulación y EA; 2) proteína y método del plato; 3) fuerza y actividad; 4) automonitoreo y revisión de métricas — cada una con 5As. El contenido detallado se redacta en D86. · Náusea (0-3), vómitos, estreñimiento, hidratación, mareo, dolor abdominal (red flag) y adherencia a la dosis; decide mantener / escalar / suspender según protocolo."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Despegue 4 sesiones/mes · Progreso 2/mes · Consolidación 1/mes · Mantenimiento control trimestral (LIVIANO_OFERTA). · 1) titulación y EA; 2) proteína y método del plato; 3) fuerza y actividad; 4) automonitoreo y revisión de métricas — cada una con 5As. El contenido detallado se redacta en D86. · Náusea (0-3), vómitos, estreñimiento, hidratación, mareo, dolor abdominal (red flag) y adherencia a la dosis; decide mantener / escalar / suspender según protocolo."
     },
     {
       "d": 87,
@@ -1532,7 +1532,7 @@ export const LIV_RECALL: Record<number, LivAnkiCard[]> = {
       "modulo": "SÍNTESIS",
       "deck": "APEX::LIVIANO::sintesis",
       "q": "RECALL · D87 · «Repaso integral I: drill ciego de cifras + mecanismos (todos los módulos)»: el mecanismo (causa → efecto) en 1 línea, sin mirar",
-      "a": "Corrige PRIMERO con la fuente del día (la sección que leíste): Regla 3 del programa (revisión trimestral) · LIVIANO_REVISION_TRIMESTRAL (empresaData.ts) · la tarjeta, solo como resumen (la escribió el generador del plan): Termostato (M1) · ruido de comida (M2) · ladrillo (M3) · GPS (M5). · M1 adaptación persiste años · M2 STEP 1 −14,9 % / SURMOUNT-1 −20,9 % / 67 % / SELECT −20 % / 94 % · M3 AI 0,26 kg NS / proteína 1,2-1,6 g/kg · M4 NWCR ~1 h/día / fuerza 2x · M5 DPP −58 % · M6 ASMBS IMC ≥ 35 / 25-30 %. · Va a Anki el mismo día como tarjeta de mecanismo (no de dato) y se re-testea en el pre-test del lunes siguiente."
+      "a": "Ese día no hubo lectura nueva: corrige con su tarjeta · la tarjeta, solo como resumen (la escribió el generador del plan): Termostato (M1) · ruido de comida (M2) · ladrillo (M3) · GPS (M5). · M1 adaptación persiste años · M2 STEP 1 −14,9 % / SURMOUNT-1 −20,9 % / 67 % / SELECT −20 % / 94 % · M3 AI 0,26 kg NS / proteína 1,2-1,6 g/kg · M4 NWCR ~1 h/día / fuerza 2x · M5 DPP −58 % · M6 ASMBS IMC ≥ 35 / 25-30 %. · Va a Anki el mismo día como tarjeta de mecanismo (no de dato) y se re-testea en el pre-test del lunes siguiente."
     }
   ]
 };

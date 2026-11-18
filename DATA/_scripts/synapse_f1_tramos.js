@@ -343,7 +343,10 @@ function crear(MED, ctx) {
       let extra = { piezas: [], seg: 0 };
       if (minCap < 8.5) extra = tomarB((10 - minCap) * 60, f, (it) => it.vel !== 1); // el deep dive (1,0×) sigue en los comodines del sábado
       const partes = [`Lex #452 · cap. ${n} «${c.titulo}» desde ${ts(c.ini)} hasta ${ts(sig.ini)} (${ts(segCap)} a 1,0×)`];
-      const comoP = [`Auriculares. Lex a 1,0×: escucha SOLO el cap. ${n} (para a las ${ts(sig.ini)}: el cap. ${n + 1} es la sesión del ${n + 1 <= 7 ? 'miércoles que viene' : 'próximo miércoles'}).`];
+      // v6.10e (revisión del 18-nov · dias-1920-8): la próxima sesión de Lex con su FECHA de plan (la app la pinta en el día real: con el alias, el carril del
+      //   miércoles de plan cae el jueves real); antes «el miércoles que viene», que ni relativosReales ni fechasRealesEnTexto traducen
+      const sigLex = siguienteMismo(idx, 'B', /^Lex #452/);
+      const comoP = [`Auriculares, Lex a 1,0×: SOLO el cap. ${n}, hasta ${ts(sig.ini)}; el cap. ${n + 1} va el ${sigLex ? fS(sigLex.dia) : 'próximo miércoles de plan'}.`];
       for (const p of extra.piezas) {
         partes.push(`${p.it.id === 'deepDivePE' ? 'minutos' : 'min'} ${ts(p.a)}-${ts(p.b)} de ${p.it.titulo.replace(/^.*· /, '')} (cola de audio, ${velTxt(p.it.vel)}×)`);
         comoP.push(`Con los ${fmt1((10 - minCap))}′ que deja el capítulo, sigue la cola de audio: ${p.it.titulo} a ${velTxt(p.it.vel)}× (${ts(p.b - p.a)} de audio = ${fmt1((p.b - p.a) / p.it.vel / 60)}′); la dejaste el ${fC(prevSes[p.it.id] || p.it.origen)}.`);

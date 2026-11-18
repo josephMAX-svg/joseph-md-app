@@ -87,7 +87,10 @@ método vive en su artefacto; (2) el primer recurso que es **documento o guía**
 | C-4 | jue 17-dic → vie 18-dic | «Crossref · verificar DOI» | CARTA_1/refs_verified.json y la cabecera de `agentic/citation_verifier.py` |
 | C-5 | lun 21-dic → mar 22-dic | «Editorial Manager (Aries)» | las Author Guidelines de la revista diana y CARTA_1/cover_letter.md |
 
-En 2027 cambian 10 evaluaciones más por la misma regla (T-6, T-8, X-7, CR-7, CR-8, X-8, X-2, X-3, X-4, X-6). La tarjeta «Eval anclada» de la
+En 2027 cambian 13 evaluaciones más por la misma regla: 10 de la ruta (T-6, T-8, X-7, CR-7, CR-8, X-8, X-2, X-3, X-4, X-6) y 3 del ciclo 2 (R9b
+22-abr, R10 26-abr y K1 28-abr; antes contrastaban con «PROSPERO (registro, gratis)», un portal) — corregido en la revisión del 18-nov (decía «10»).
+La de X-6 (12-abr), que evalúa X-5 (campaña de cold emails), contrastaba con la Academic Phrasebank, que no tiene su método: ahora va contra su
+artefacto (regla 1: MENTORES.md §Campaña feb-2027, la tabla y la plantilla, y su objetivo). La tarjeta «Eval anclada» de la
 pantalla de Research (`ResearchTodayPlan.tsx`) decía todavía «2Q de auto-test del método»: ahora dice «Recall en blanco de los 2 puntos clave de su
 método (a papel, contrastado con su fuente)». Controles: `research_guia.js` aborta si un `src/components/study/Research*.tsx` pide «2Q de auto-test»;
 `gen_research_plan.js` comprueba en el texto generado que ninguna evaluación anclada contrasta con un portal o una herramienta (44 evaluaciones).

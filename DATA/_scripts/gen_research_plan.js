@@ -278,8 +278,10 @@ const C1 = [
     'DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)',
     'WhatsApp / presencial', ['ICMJE', 'CREDIT'], { apex: { id: 'mentor-ciro', t: 'Senior author local confirmado' }, hito: 'mentor',
       // v6.10 · tanda C (17-nov-2026 · decidido con Joseph en el chat Research): Research empieza por SR-1; de este M1 queda el WhatsApp (guía en research_guia.js)
-      chips: ['v6.10: Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; de este M1 queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1)', '⏸ plazo interno del 31-oct-2026 (caso + consentimiento + senior author del case report) VENCIDO: la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct → v6.06 lo hace en la 1.ª sesión Research, sin plazo nuevo: pide el caso EN este mensaje'],
-      chipsDyn: ({ f, fmt }) => [`antes de T-1 (${fmt(f('T-1'))}): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)`] }),
+      chips: ['v6.10: Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; de este M1 queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1)'],
+      // v6.10e (revisión del 18-nov · dias-1920-12): fuera la bitácora de la v6.06 («VENCIDO… sin plazo nuevo: pide el caso EN este mensaje»), que contradecía
+      //   el WhatsApp vigente (el caso se elige antes de CR-1: plazo nuevo, con fecha); el estado vigente lo dice el chip dinámico de abajo
+      chipsDyn: ({ f, fmt }) => [`antes de T-1 (${fmt(f('T-1'))}): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)`, `case report: el caso se elige con el asesor antes de CR-1 (${fmt(f('CR-1'))}), punto 3 del WhatsApp`] }),
   a('R0', 'R0', 'R', 'CRITICA', 'Infra académica: abrir las 10 cuentas que exige el circuito editorial (checklist marcable en Desk → Infra académica)',
     '10/10 cuentas: ORCID · Google Scholar · CTI Vitae/RENACYT · Editorial Manager · ScholarOne · eScholarship/DOJ · PROSPERO · Rayyan · Zotero · OpenAlex + NCBI keys',
     'Checklist "Infra académica" (app · clave research-infra) + IDs (ORCID iD, CTI Vitae) guardados en DATA/RESEARCH/MENTORES.md §Identificadores',
@@ -1383,7 +1385,9 @@ w('DATA/RESEARCH/daily-plan.md', MD);
 // Solo con los DOS ciclos en la misma corrida (con --ciclo N el otro ciclo se re-fecharía con su START por defecto).
 if (SOLO_CICLO === 0) {
   const { construirGuiasResearch, TS_BUILDER } = require('./research_guia');
-  const GR = construirGuiasResearch({ TODOS: TODOS.map((x) => ({ ...x, objetivo: x.obj, entregable: x.ent, artefacto: x.art })), rec: recLabel, fechaDe, fmt: fmtCorto, addDays, obsDe, SERUMS_INICIO, PAUSA });
+  // v6.10e (revisión del 18-nov · dias-1920-4): fechas REALES para textos que la app no traduce (el WhatsApp de M1: «21 de diciembre») = fechaRealDe de fechasV6.ts
+  const { fechaRealDe } = require('./usmle/cargar_ts').cargarModuloTS(path.join('src', 'lib', 'fechasV6.ts'), new Map());
+  const GR = construirGuiasResearch({ TODOS: TODOS.map((x) => ({ ...x, objetivo: x.obj, entregable: x.ent, artefacto: x.art })), rec: recLabel, fechaDe, fmt: fmtCorto, addDays, obsDe, SERUMS_INICIO, PAUSA, fechaReal: (iso) => fechaRealDe(iso, 'research-derma') });
   const GUIA_TS = `/**
  * researchGuia.ts — GUÍA «qué · cuánto · cómo» de CADA átomo de Research (ciclo 1 + ciclo 2, d 1-${TODOS.length}) en el formato común
  * \`GuiaBloque\` (src/lib/guia.ts): 45′ en 13:30–14:15 (Σ pasos = 45) · en F4 (desde el SERUMS ${SERUMS_INICIO}) 30′ con franja NOMINAL (sin hora fija).

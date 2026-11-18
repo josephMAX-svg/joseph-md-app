@@ -93,7 +93,7 @@ que el manual no deja claro → en el plan es el **Shopping List** del día + el
 |---|---|---|---|---|---|---|
 | **1 · BASE · nivel 1** | D1-D32 · **jue 19-nov → sáb 2-ene** (fechas de plan mié 18-nov → sáb 2-ene; alias de corrida_s1) | **línea base**: contesta las 5 aunque adivines; la regla del blanco va en la eval y el quiz | **LECTURA DE BASE** (§4b): las secciones que pregunta el MIR, **cada una entera** (nunca PARCIAL), en el orden del capítulo; ninguna de la lista se salta aunque aciertes su pregunta; el «cómo» declara la cobertura del día y manda el resto a la 2.ª vuelta | nivel 1 + proceso de respuesta de §3 | solo fallos de hoy (conceptos de nivel 1) | el **lun 4-ene (D33)** por calendario, si la media del neto de los 6 cierres de F1 (D4 Epidemiología · D5 Bioética · D12 Cardiología · D17 Neumología · D23 Nefrología · D31 Gastroenterología) es **≥ 55 %**; si no, el quiz sigue en nivel 1 hasta 2 cierres seguidos ≥ 55 % |
 | **2 · CONSOLIDACIÓN · niveles 1-2** | D33-D76 · lun 4-ene → jue 4-mar-2027 (Endocrinología → Psiquiatría) | con la **regla del blanco** | LECTURA DIRIGIDA a las secciones más citadas, en orden y sin saltar ninguna | + 1 línea de permutación · en los fallos, por qué es falsa cada opción | fallos + fallos tontos | el **vie 5-mar-2027 (D77)**: neto del mini-MIR **≥ 50 %** (mínimo on-track del hito); si no, el banqueo sigue en niveles 1-2 hasta 2 semanas seguidas ≥ 50 % |
-| **3 · DISCRIMINATIVA · nivel 3** | D77-D78 (vie 5 y lun 8-mar-2027) + banqueo (mar 9-mar-2027 → Step 1) | — | corrección Whole-Page del apartado | cara B: cada opción incorrecta, también en las acertadas con duda | + conceptos discriminativos de nivel 3-4/5 | 2.ª vuelta (fase principal, oct-2027) por calendario |
+| **3 · DISCRIMINATIVA · nivel 3** | D77-D78 (vie 5 y lun 8-mar-2027) + banqueo (mar 9-mar-2027 → Step 1) | — | corrección Whole-Page del apartado | cara B: cada opción incorrecta, también en las acertadas con duda | + conceptos discriminativos de nivel 3-4/5 | 2.ª vuelta (fase principal MIR, tras el handoff del vie 3-dic-2027) por calendario |
 
 Por qué así: el paso es **por calendario** (Ravi, §2.4) y la **puerta** se mide con instrumentos que el plan ya registra (cierres y mini-MIR, mismos
 umbrales del log: ≥ 70 % consolidada · 55-69 % intermedia · < 55 % a las anclas D-7; 50 % = hito on-track). Una puerta no cumplida **no mueve
@@ -102,35 +102,47 @@ fechas ni minutos**: solo mantiene el nivel del comentario.
 ### 4b. Lectura de base de F1: qué es y qué no (fix del 18-nov, revisión de los frentes)
 
 **Qué es:** en 16′ (14′ de secciones a 180 palabras/min + 1′ de recuadro; 14,4-18,1′ a 150, regla fija 0,85-1,15) no cabe un capítulo ProMIR de F1
-(**63′ de media**; Cardiología básica 96,5′, Hígado 215,5′). La lectura de base es una **selección**: las secciones con más preguntas MIR citadas
-(MED), **cada una entera**, leídas en el orden del capítulo. Es el criterio de la academia para la 1.ª vuelta (AST: lo que ha caído 2 o más veces) y
-**no** es «sin saltar ninguno» del capítulo: se leen de media **13,7′ de 63′ (≈ 22 %)** al día; el resto queda medido para la 2.ª vuelta (fase principal
-MIR, tras el handoff del vie 3-dic-2027).
+(**≈ 71′ de media a 150 palabras/min**; de 15,8′ —Clasificación de los estudios— a 239′ —Hígado—). La lectura de base es una **selección**: las
+secciones **más citadas por el MIR que caben ENTERAS en 14′** (MED; peso = preguntas citadas por recencia, +5 si cae una del pre-test; la que no cabe
+se salta y entra la siguiente entera), leídas en el orden del capítulo. Es el criterio de la academia para la 1.ª vuelta (AST: lo que ha caído 2 o más
+veces) y **no** es «sin saltar ninguno» del capítulo: se leen de media **16,2′ de 71′ (≈ 23 %)** al día, a 150 palabras/min; el resto queda medido y
+nombrado para la 2.ª vuelta (fase principal MIR, tras el handoff del vie 3-dic-2027). No es «las secciones con más preguntas»: en 23 de 31 días queda
+fuera una sección con más peso que alguna leída porque no cabe entera (D14: §1.1 Derrame pleural, 25 citas, 18′ a 150).
 
 **Qué cambió (antes → después):** la versión anterior leía en 12 días una sección «PARCIAL: solo los párrafos con chip MIR ≥2015» bajo un paso que
 prometía «cada apartado entero», y la reserva iba por peso bajo «sigue en orden». Ahora: (1) **ninguna sección PARCIAL en F1**: la que no cabe se salta
-y entra la siguiente entera que quepa; (2) la **reserva** va en el orden del capítulo (los 76 días); (3) el «cómo» **empieza** con la cobertura del día y
-el destino del resto («Hoy lees X′ de los Y′ del capítulo (P %) … el resto → 2.ª vuelta (tras el handoff del vie 3-dic-2027)»; antes «oct-2027», que
-ya no era la fecha); (4) el quiz de esos días se reparte con lo leído hoy delante (mismo conjunto de preguntas del capítulo; 2027 aislado con el
-pase 1 + veto de `gen_guia_lectura.js`); (5) `--check` (`gen_guia_lectura.js` y `gen_mir_guia.js`) exige 0 PARCIAL, el orden y la cobertura.
+y entra la siguiente entera que quepa; (2) la **reserva** va en el orden del capítulo (los 76 días) y, en F1, **no se lee a medias**: con lo que sobra
+solo entra lo que cabe entero (en los 28 días con reserva no cabe nada: repaso en blanco de lo leído; v6.10e); (3) el «cómo» **empieza** con la
+cobertura del día **a 150 palabras/min** (el mismo número que el «qué») y el destino del resto con su fecha **antes del carácter 100** (el Calendar
+corta el «cómo» a 110): «Hoy lees X′ de Y′ (P %) · resto → 2.ª vuelta MIR (tras el vie 3-dic-2027): Z′ en N secciones (…) [+ W′ de vídeos del
+capítulo]»; antes «oct-2027», que ya no era la fecha, y la cobertura iba a 180 (v6.10e); (4) el reparto de F1 **se rehace** con la lectura nueva: no es
+el mismo conjunto de preguntas (corregido en la v6.10e: cambiaron ids en 24 días de F1, incluidos los cierres del D23 y del D31) y en la **lectura de
+base las 6 primeras del quiz son de lo leído** (pool oficial o citadas de las secciones de hoy; si faltan, repaso de capítulos ya leídos) y lo del pool
+de secciones que hoy no se leen va al final (la lista llega a 11-13 en D6, D17, D19, D21, D24, D27, D29, D31 y D32; v6.10e); 2027 queda aislado con el
+pase 1 + veto de `gen_guia_lectura.js` salvo las anclas D-1/D-3/D-7 que vienen de días de F1 (evals de D33-D36 y D38) y lo que cambia por la regla
+de servibles (pre-tests del D46 y del D57 y sus anclas: D47, D58, D60, D64); (5) **ninguna pregunta no servible** (anulada o con la clave en duda en el
+pool oficial) en ningún paso: salen la 2025-208 (anulada) del cierre de Gastroenterología del D31, la 2024-208 (clave a verificar) del quiz del D7 y la
+2025-013 y la 2025-050 (anuladas) de los pre-tests del D46 y del D57 (v6.10e); (6) `--check` (`gen_guia_lectura.js` y `gen_mir_guia.js`) exige 0
+PARCIAL, el orden, la cobertura a 150 con la fecha antes del carácter 100, las 6 primeras del quiz de lo leído, 0 no servibles y 0 «oct-2027».
 
-| D | Fecha de plan → real | Antes | Después (enteras, en orden) | Cobertura |
+| D | Fecha de plan → real | Antes | Después (enteras, en orden) | Cobertura a 150 palabras/min |
 |---|---|---|---|---|
-| D6 | mié 25-nov → jue 26-nov | 3.2 (PARCIAL 14′ de 35′) | 2.1 · 2.5 · 2.6 · 5.1 · 5.2 | 13,5′ de 103′ (13 %) |
-| D7 | jue 26-nov → vie 27-nov | 3.6 (PARCIAL 14′ de 16′) | 1 · 2.1 · 3 · 3.1 · 3.2 · 3.4 · 3.5 | 14′ de 69′ (20 %) |
-| D8 | vie 27-nov → lun 30-nov | 6.2 (PARCIAL 14′ de 40′) | 2 · 4.1 · 5 · 6 | 12,5′ de 164,5′ (8 %) |
-| D14 | lun 7-dic → mar 8-dic | 1.1 (PARCIAL 14′ de 15,5′) | 1 · 1.2 · 1.3 · 2 · 2.1 · 2.2 · 3 · 3.1 | 13′ de 32,5′ (40 %) |
-| D15 | mar 8-dic → mié 9-dic | 7 · 8 (PARCIAL 5,5′ de 6′) · 8.9 | 3 · 4 · 7 · 8.5 · 8.6 · 8.8 · 8.9 · 9 | 13′ de 41,5′ (31 %) |
-| D18 | vie 11-dic → lun 14-dic | 4 (PARCIAL 5,5′ de 6′) · 4.2 · 7.2 | 1 · 3.2 · 4.1 · 4.2 · 7.1 · 7.2 | 12′ de 34′ (35 %) |
-| D20 | mar 15-dic → mié 16-dic | 1.1 (PARCIAL 9′ de 13,5′) · 1.2 · 2 | 1.2 · 2 · 3 · 5 | 12′ de 47,5′ (25 %) |
-| D23 | vie 18-dic → lun 21-dic | 10.2 (PARCIAL 14′ de 16′) | 9.1 · 9.8 · 11.2 | 14′ de 215,5′ (6 %) |
-| D25 | mar 22-dic → mié 23-dic | 2.1 (PARCIAL 14′ de 18,5′) | 3.1 · 7.1 | 14′ de 97,5′ (14 %) |
-| D29 | mar 29-dic → mié 30-dic | 3.1 (PARCIAL 14′ de 26′) | 2.2 · 3.2 · 3.4 · 5 | 13′ de 68,5′ (19 %) |
-| D30 | mié 30-dic → jue 31-dic | 4.3 (PARCIAL 8,5′ de 11,5′) · 4.4 | 2 · 3 · 4.4 · 4.5 · 5.1 | 13,5′ de 48′ (28 %) |
-| D32 | sáb 2-ene (07:15) | 5.4 (PARCIAL 9′ de 10,5′) · 6.1 · 8.2 | 6.1 · 8.1 · 8.2 (5.4 Graves-Basedow pasa a la reserva) | 13,5′ de 67,5′ (20 %) |
+| D6 | mié 25-nov → jue 26-nov | 3.2 (PARCIAL 14′ de 35′) | 2.1 · 2.5 · 2.6 · 5.1 · 5.2 | 16′ de 116,7′ (14 %) |
+| D7 | jue 26-nov → vie 27-nov | 3.6 (PARCIAL 14′ de 16′) | 1 · 2.1 (contexto) · 3 (contexto) · 3.1 · 3.4 · 3.5 (3.2 no cabe entera) | 16,7′ de 79,4′ (21 %) |
+| D8 | vie 27-nov → lun 30-nov | 6.2 (PARCIAL 14′ de 40′) | 2 · 4.1 · 5 · 6 | 15,1′ de 187,5′ (8 %) |
+| D14 | lun 7-dic → mar 8-dic | 1.1 (PARCIAL 14′ de 15,5′) | 1 · 1.2 · 1.3 · 2 · 2.1 · 2.2 · 3 · 3.1 | 14,8′ de 37′ (40 %) |
+| D15 | mar 8-dic → mié 9-dic | 7 · 8 (PARCIAL 5,5′ de 6′) · 8.9 | 3 · 4 · 7 · 8.5 · 8.6 · 8.8 · 8.9 · 9 | 15,1′ de 44,5′ (34 %) |
+| D18 | vie 11-dic → lun 14-dic | 4 (PARCIAL 5,5′ de 6′) · 4.2 · 7.2 | 1 · 3.2 · 4.1 · 4.2 · 7.1 · 7.2 | 14,4′ de 37′ (39 %) |
+| D20 | mar 15-dic → mié 16-dic | 1.1 (PARCIAL 9′ de 13,5′) · 1.2 · 2 | 1.2 · 2 · 3 · 5 | 14,8′ de 52,6′ (28 %) |
+| D23 | vie 18-dic → lun 21-dic | 10.2 (PARCIAL 14′ de 16′) | 9.1 · 9.8 · 11.2 | 17,1′ de 239′ (7 %) |
+| D25 | mar 22-dic → mié 23-dic | 2.1 (PARCIAL 14′ de 18,5′) | 3.1 · 7.1 | 16,5′ de 108,1′ (15 %) |
+| D29 | mar 29-dic → mié 30-dic | 3.1 (PARCIAL 14′ de 26′) | 2.2 · 3.2 · 3.4 · 5 | 15,7′ de 76,1′ (21 %) |
+| D30 | mié 30-dic → jue 31-dic | 4.3 (PARCIAL 8,5′ de 11,5′) · 4.4 | 2 · 3 · 4.4 · 4.5 · 5.1 | 15,8′ de 52,3′ (30 %) |
+| D32 | sáb 2-ene (07:15) | 5.4 (PARCIAL 9′ de 10,5′) · 6.1 · 8.2 | 6.1 · 8.1 · 8.2 (5.4 Graves-Basedow pasa a la reserva) | 16,1′ de 72,5′ (22 %) |
 
-Los otros 20 días de F1 leen las mismas secciones (cambia el orden de la reserva y la cobertura al principio del «cómo»). El D1 conserva su lista
-(decidida con Joseph el 17-nov) y gana la cobertura: 22′ de 49,5′ (44 %).
+Los otros 19 días de F1 (D2-D32) leen las mismas secciones (cambia el orden de la reserva y la cobertura al principio del «cómo»). El D1 conserva su
+lista (decidida con Joseph el 17-nov) y gana la cobertura, a 150 palabras/min y con lo opcional aparte: **19′ fijos + 6,5′ del §9 de 56′ (34-46 %)**;
+si el §9 o el 9.1 no entran, van con el resto a la 2.ª vuelta.
 
 **Tensión que queda (decide Joseph, §10):** Ravi (NLM-1 §2.1) desaconseja recortar el temario por los desgloses; la lectura de base recorta por las
 preguntas citadas porque la hora es fija. Alternativa: priorizar en F1 los **fundamentos** (anatomía y fisiología de cada capítulo cimiento) aunque
@@ -278,3 +290,6 @@ Nefrología (3,8 %).
 `node STUDY_HUB/_scrape/gen_mir_daily.js --check` · `node DATA/MIR/guia_lectura/gen_guia_lectura.js --check` ·
 `node DATA/MIR/guia_lectura/gen_mir_guia.js --check` (958 bloques; 78 días con su fase; 0 preguntas no oficiales; fix 18-nov: lectura de base de F1
 sin PARCIAL, en orden y con su cobertura declarada en los 32 días) · comparación antes → después de los 81 bloques: 0 minutos cambiados.
+v6.10e (revisión adversarial del 18-nov): + 0 preguntas no servibles (anuladas o con la clave en duda) en todo el plan · cobertura a 150 palabras/min con
+la fecha de la 2.ª vuelta antes del carácter 100 · las 6 primeras del quiz de F1 de lo leído (186 de 186) · 0 «oct-2027» en la guía, los avisos y el
+banqueo · mismas horas, fechas y minutos.

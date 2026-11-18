@@ -266,14 +266,15 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
   const ship = p1 ? `el SHIP del ${fCorta(p1.ship)}` : 'el SHIP del domingo'; // v6.07a: el SHIP es el domingo desde la v6.07 (antes «del sáb dom 15-nov»)
   switch (k) {
     case 1: return [
-      P(10, 'Test del parser (predice antes qué protege): `node scripts\\test_parser_multilinea.js` en D:\\agente_estudio', 'Antes de correrlo escribe: ¿qué protege y por qué en verde NO prueba que n8n funcione? → `cd /d D:\\agente_estudio` → `node scripts\\test_parser_multilinea.js` → «0 failed» (13/13). Si falla, anota el nombre del caso; hoy no se arregla.'),
+      // v6.10e (revisión del 18-nov · dias-1920-13): ruta absoluta (`cd /d` falla en PowerShell), como el kit v3 de S1
+      P(10, 'Test del parser (predice antes qué protege): `node D:\\agente_estudio\\scripts\\test_parser_multilinea.js`', 'Antes de correrlo escribe: ¿qué protege y por qué en verde NO prueba que n8n funcione? → `node D:\\agente_estudio\\scripts\\test_parser_multilinea.js` (vale en PowerShell y en cmd) → «0 failed» (13/13). Si falla, anota el nombre del caso; hoy no se arregla.'),
       P(15, 'Ubicar en el n8n VIVO los 2 nodos ★ (Parsear Tarjeta · Crear Nota Obsidian) + backup — no en n8n_flow_4_destinos.json (export viejo)', 'localhost:5678/workflow/APEX-MOTOR-FLOW-V2 («Motor APEX — Tarjetas Anki + Obsidian», 8 nodos; NO toques «Anki + Obsidian») → Version History: anota fecha e ID de la versión publicada → menú ⋯ › Download → mueve el JSON a D:\\agente_estudio\\backups\\ (lleva la clave de Supabase: nunca a un repo) → copia el código de cada ★ a backups\\live_parsear_tarjeta.js y live_crear_nota.js. Ctrl+F «v2.5.1» en los nodos vivos: NO aparece (= corre el código viejo).', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(10, 'Qué se pega en el paso 2: node_parsear_tarjeta_v2_3.js + node_crear_nota_v2_3.js (NO n8n_parser_v2_3.js: usa require(\'fs\'))', `El ${dia(4)} (paso 4) comparas lo PUBLICADO con estos 2 ficheros. Hoy: \`certutil -hashfile\` de los 2 → journal · Claude Code: «compara backups\\live_parsear_tarjeta.js con scripts\\node_parsear_tarjeta_v2_3.js ignorando finales de línea: ¿qué cambia?» → 3 líneas al journal.`),
     ];
     case 2: return [
       P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'VS Code: Ctrl+A, Ctrl+C del fichero → n8n: doble clic en el nodo → clic en el código → Ctrl+A, Ctrl+V. No toques «Anki + Obsidian» ni los modos (All Items / Each Item). Ctrl+F «v2.5.1» en cada nodo: tiene que aparecer.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
-      P(13, '1 APEX de prueba [TEST S1] y lectura de Executions: el verde solo NO basta (con Anki cerrado también sale verde)', 'Ctrl+A, Ctrl+C del .txt de prueba (PDF de GoodNotes › S01_APEX) → Ctrl+Shift+A → n8n › Executions → la primera, con la hora de ahora: el reverso del item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath.'),
+      P(13, '1 APEX de prueba [TEST S1] y lectura de Executions: el verde solo NO basta (con Anki cerrado también sale verde)', 'Ctrl+A, Ctrl+C del .txt de prueba (D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\S1_bloque_APEX_prueba_USMLE.txt; el mismo texto está en el PDF de GoodNotes › S01_APEX) → Ctrl+Shift+A → n8n › Executions → la primera, con la hora de ahora: el reverso del item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath.'),
       P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
     ];
     case 3: return [
@@ -431,8 +432,13 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     const pbTxt = domPB && pPB ? `Si el ${fCorta(domPB)} no hubo PC: primero el verify (10′) y lo rojo de S${pPB.s} (node DATA/_scripts/verify_vibecoding.js ${pPB.s}); hoy CONSTRUIR = 25′. ` : '';
     // v6.10 · base cero: con sub-pasos (S2/S3) y plan B del domingo, el verify va delante (en el «cómo» del 1.º) y el último sub-paso (10′) se salta
     const construir = cur ? cur.map((x, i, xs) => (pbTxt && dia.semana > 1 ? (i === 0 ? { ...x, como: `${pbTxt}${x.como}` } : i === xs.length - 1 ? { ...x, que: `${x.que} (se salta si hoy hiciste ese verify)` } : { ...x }) : { ...x })) : [P(35, `CONSTRUIR · ${dia.paso}`, `${pbTxt}${vibeComoTipoDe(dia, p, iso)}${p ? ` Repo: ${p.repoGit}.` : ''}`, docs ? { t: 'docs ↗', url: docs.url } : undefined)];
-    pasos = [objetivo, ...construir, P(5, 'CIERRE · 04:55 commit-or-stash + journal',
-      `A las 04:55: \`git commit\` (con [S${p ? p.s : dia.semana}] en el mensaje) o \`git stash\` — nunca se deja a medias. Journal: qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo. ${fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.'}`, journal)];
+    // v6.10e (revisión del 18-nov · dias-1920-13): en S1 no hay nada que commitear ni guardar con stash (el trabajo es en n8n; D:\\agente_estudio no es repo
+    //   git y un `git stash` en joseph-md-app se llevaría los cambios de otros chats): como el kit v3, nota de estado en el journal; el commit [S1] es el del paso 5
+    const s1SinGit = dia.semana === 1 && dia.k < 5;
+    pasos = [objetivo, ...construir, P(5, s1SinGit ? 'CIERRE · 04:55 nota de estado + journal (S1: sin commit ni stash)' : 'CIERRE · 04:55 commit-or-stash + journal',
+      s1SinGit
+        ? `A las 04:55 paras: SIN \`git commit\` ni \`git stash\` (D:\\agente_estudio no es repo git y en joseph-md-app hay cambios de otros chats; el commit [S1] es el del paso 5): deja en el journal dónde quedaste (paso, nodo, ejecución). Journal: qué construí · qué aprendí · % del código que entiendo · bloqueo. ${fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.'}`
+        : `A las 04:55: \`git commit\` (con [S${p ? p.s : dia.semana}] en el mensaje) o \`git stash\` — nunca se deja a medias. Journal: qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo. ${fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.'}`, journal)];
   } else if (dia.min >= 15) {
     // v6.09b lote 1-quater FX1 (revisión V2/V3): en F1 la hora de parada es la de ESTE paso (jue 31-dic: 04:27; antes «A las 04:55», fuera de su franja de 15′) y la
     //   franja es la del bloque (04:15-04:30): lo que queda hasta las 05:00 no es un bloque de estudio
@@ -444,7 +450,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     pasos = [P(dia.min, `JOURNAL 5′ · ${dia.paso}`, 'Solo journal (3 líneas) y, si quieres, el audio B del SYNAPSE. Semana de deload total: no se construye nada.', journal)];
   }
   return bloque(franja, 'vibecoding', `${nombre} — ${VIBE_TIPO_LABEL[dia.tipo]}`, pasos, recursos,
-    dia.min >= 45 ? 'paso del día hecho + commit [S…] o stash a las 04:55 + entrada del journal con los 6 campos' : 'entrada del journal del día',
+    dia.min >= 45 ? (dia.semana === 1 && dia.k < 5 ? 'paso del día hecho + nota de estado a las 04:55 (S1: sin commit ni stash) + entrada del journal' : 'paso del día hecho + commit [S…] o stash a las 04:55 + entrada del journal con los 6 campos') : 'entrada del journal del día',
     {
       flex: Math.max(0, pasos.length - 2),
       // v6.09b lote 1-quater (QS · e): en F1 el plan B dice a qué SHIP va el paso (el del proyecto en curso, con fecha); fuera de F1, sin cambio
@@ -916,8 +922,9 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     ? SYN_FASES_BC.flatMap((f) => (/^«/.test(f.gate) ? f.gateFechas.map((g) => ({ f, g, real: fechaRealDe(g, 'synapse') })) : []))
       .filter((x) => x.real < iso && x.real >= addDias(iso, -6) && (synDiaDe(x.g)?.bloques ?? []).some((b) => /quiz/i.test(b.leccion ?? '') && !/no trae quiz/i.test(b.leccion ?? ''))) // solo los gates cuyo día trae el quiz
     : [];
+  // v6.10e (revisión del 18-nov · regresiones-5): «fase n/6 del SYNAPSE» (en una guía de vibecoding, «fase 2» chocaba con sus fases PRIMM «fase 2/3»)
   const gateTxt = (min: number): string => (gatesQuiz.length
-    ? `0) SI el quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id} (${fCorta(x.g)})`).join(' o el ')} quedó suspendido: repítelo solo con las lecciones falladas (≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
+    ? `0) SI el quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id}/${SYN_FASES_BC.length} del SYNAPSE (${fCorta(x.g)})`).join(' o el ')} quedó suspendido: repítelo solo con las lecciones falladas (≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
     : '');
   if (main && (main.tipo === 'ship' || main.tipo === 'avance') && main.proyecto) {
     const p = main.proyecto;
@@ -1477,7 +1484,8 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
   if (f1Bc) {
     const bc = AURUM_BASE_CERO[a.faseId], fx = AURUM_DIAS.filter((x) => x.faseId === a.faseId);
     // v6.10 · fix 18-nov: «fase AURUM n/7 (An)» (antes «(F2, D16-D35)»: se confundía con la F2 del régimen) + qué pasa si no se llega al criterio
-    if (bc && fx.length) avisos.push(`BASE CERO · fase AURUM ${a.faseId.slice(1)}/${Object.keys(AURUM_BASE_CERO).length} (${bc.etapa}, D${fx[0]!.d}-D${fx[fx.length - 1]!.d}; orden: escucha y preguntas → objeciones → cierre): ${bc.que}. Pasas ${bc.pasa}. Si no llegas, las fechas no se mueven: lo que falte es la corrección única de tus próximos DRILL y se vuelve a puntuar en el PITCH siguiente; anota el gap en la nota ◆.`);
+    // v6.10e (revisión del 18-nov · regresiones-3, menor): el criterio de paso antes del orden de las etapas (el Calendar corta el aviso a 240: «Manifiesto» quedaba fuera)
+    if (bc && fx.length) avisos.push(`BASE CERO · fase AURUM ${a.faseId.slice(1)}/${Object.keys(AURUM_BASE_CERO).length} (${bc.etapa}, D${fx[0]!.d}-D${fx[fx.length - 1]!.d}): ${bc.que}. Pasas ${bc.pasa}. Orden de las etapas: escucha y preguntas → objeciones → cierre. Si no llegas, las fechas no se mueven: lo que falte es la corrección única de tus próximos DRILL y se vuelve a puntuar en el PITCH siguiente; anota el gap en la nota ◆.`);
   }
   return bloque(franja, 'aurum', `AURUM D${a.d} · ${a.titulo}`, pasos, recursos,
     a.pitch ? `PITCH v${a.pitch} grabado y puntuado con la rúbrica (/12) + nota ◆ del día` : 'vídeo visto con sus notas + drill hecho y guardado en la nota ◆ del día + ✓',
@@ -1569,6 +1577,20 @@ export function livFuentesDe(fuente: string): { recursos: GuiaRecurso[]; notas: 
   for (const f of LIV_FUENTES) if (f.re.test(fuente)) { recursos.push(R(f.t, f.url)); if (f.nota) notas.push(f.nota); }
   return { recursos, notas };
 }
+/** Días de LIVIANO sin lectura nueva (Palmerton de tarjetas, repasos, metáforas, síntesis, revisión trimestral). */
+const LIV_SIN_LECTURA = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de metáforas|Síntesis módulo|REVISIÓN TRIMESTRAL/i;
+/** v6.10e (revisión del 18-nov · regresiones-4): lo que se LEYÓ de verdad en una lección (la fuente LIBRE de su paso LECTURA, en corto), para corregir
+ *  contra ello el recall del lunes. Antes el paso decía «Schwartz 2017, PMC/PubMed del tema» todos los lunes (también los de GLP-1, Acceso o Nutrición) y
+ *  LIV_RECALL nombraba la fuente del plan aunque fuera el Obesity Algorithm de la OMA, de pago y que no se lee. null = día sin lectura (o caso sin lectura). */
+export function livFuenteLeidaDe(l: DiaLiviano): string | null {
+  if (livLectDe(l)) return 'Schwartz 2017 (PMC5546881)';
+  if (l.casoId != null || LIV_SIN_LECTURA.test(l.tema)) return null;
+  const f1 = l.fecha <= FECHAS_V6.transicion.hasta ? livLectF1De(l) : undefined;
+  const corta = (u: string): string => (u.includes('dailymed') ? `ficha FDA de ${u.includes('ee06186f') ? 'WEGOVY' : 'ZEPBOUND'} (DailyMed)` : u.includes('pubmed') ? `PubMed ${u.replace(/\D/g, '')}` : (/PMC\d+/.exec(u) ?? [u])[0] as string);
+  if (f1) return [...new Set(f1.map((x) => corta(x[2])))].join(' + ');
+  const libres = livFuentesDe(l.fuente).recursos.filter((r) => !/Obesity Algorithm/.test(r.t));
+  return libres.length ? libres.map((r) => r.t).join(' + ') : null;
+}
 export function guiaLivianoDe(iso: string): GuiaBloque | null {
   const l: DiaLiviano | undefined = livDiaDe(iso);
   if (!l) return null;
@@ -1591,10 +1613,15 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   //   real propio: el pool MIR oficial 2022-2026 no trae leptina / grelina / arcuato y sus preguntas de fármacos y cirugía de la obesidad son del plan MIR
   //   (anti-repetición); los bancos de obesidad (OMA, StatPearls, Rosh Review) son de pago → decisión de Joseph. Mismos 6′. El drill de cifras ancla pasa a
   //   TABLA EN BLANCO con la fuente de cada cifra en su respuesta (no son preguntas inventadas: son cifras de ensayos reales).
-  const nRec = pre ? LIV_DIAS.filter((x) => x.d >= l.d - 5 && x.d < l.d).length : 0;
-  if (pre) pasos.push(P(6, `RECALL EN BLANCO de la semana anterior (1 línea por lección, ${nRec} × ${Math.round(360 / Math.max(1, nRec))} s = 6′; sustituye al «pre-test 5Q»)`, `Empresa › LIVIANO › Academia › HOY › recall: con solo el TÍTULO de cada lección de D${Math.max(1, l.d - 5)}-D${l.d - 1} a la vista, escribe sin mirar el mecanismo en 1 línea (causa → efecto); después corrige PRIMERO contra la fuente de cada lección (la sección que leíste: Schwartz 2017, PMC/PubMed del tema; viene en el recall) y usa la tarjeta solo como resumen (la escribió el generador del plan); registra x/${nRec} (meta ≥ 80 %). Lo fallado → tarjeta de hoy. No es un test: LIVIANO no tiene banco real de preguntas propio (las del MIR oficial son del plan MIR y los bancos de obesidad son de pago).`));
+  const semRec = pre ? LIV_DIAS.filter((x) => x.d >= l.d - 5 && x.d < l.d) : [];
+  const nRec = semRec.length;
+  // v6.10e (revisión del 18-nov · regresiones-4): contra qué se corrige = lo que se leyó en CADA lección repasada (no «Schwartz 2017» fijo)
+  const leidoRec = [...new Set(semRec.flatMap((x) => (x.casoId == null ? (livFuenteLeidaDe(x) ?? '').split(' + ') : [])).filter((x) => !!x))];
+  const casosRec = semRec.filter((x) => x.casoId != null).map((x) => `D${x.d}`), sinLecRec = semRec.filter((x) => x.casoId == null && !livFuenteLeidaDe(x)).map((x) => `D${x.d}`);
+  const contraTxt = [leidoRec.length ? leidoRec.join(' · ') : '', casosRec.length ? `${casosRec.join(', ')}: el caso y su fuente` : '', sinLecRec.length ? `${sinLecRec.join(', ')}: sin lectura, con su tarjeta` : ''].filter(Boolean).join('; ');
+  if (pre) pasos.push(P(6, `RECALL EN BLANCO de la semana anterior (1 línea por lección, ${nRec} × ${Math.round(360 / Math.max(1, nRec))} s = 6′; sustituye al «pre-test 5Q»)`, `Empresa › LIVIANO › Academia › HOY › recall: con solo el TÍTULO de cada lección de D${Math.max(1, l.d - 5)}-D${l.d - 1} a la vista, escribe sin mirar el mecanismo en 1 línea (causa → efecto); después corrige PRIMERO contra lo que leíste en cada lección (${contraTxt}; cada ítem del recall trae la suya) y usa la tarjeta solo como resumen (la escribió el generador del plan); registra x/${nRec} (meta ≥ 80 %). Lo fallado → tarjeta de hoy. No es un test: LIVIANO no tiene banco real de preguntas propio (las del MIR oficial son del plan MIR y los bancos de obesidad son de pago).`));
   if (drill) pasos.push(P(6, `TABLA EN BLANCO de cifras ancla (${drill.qs.length} cifras de ensayos y guías reales)`, 'Empresa › LIVIANO › HOY › drill: escribe cada cifra sin mirar y corrige contra la fuente que trae su respuesta (PubMed / PMC / ficha FDA); registra el %. Una cifra marcada «A VERIFICAR» se comprueba en su fuente antes de darla por buena.'));
-  const sinLectura = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de metáforas|Síntesis módulo|REVISIÓN TRIMESTRAL/i.test(l.tema);
+  const sinLectura = LIV_SIN_LECTURA.test(l.tema);
   if (caso) {
     const prev = livCardsSemanaPrevia(l.d);
     // v6.09b lote 1-ter: en F1, los minutos enteros más cercanos a palabras/100 (339 palabras → 3′, ratio 1,13; con ⌈⌉ eran 4′ = 0,85); desde el 4-ene, ⌈⌉ como antes
@@ -2036,7 +2063,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     if (caido) avisos.push('Enlace del plan caído: regenera businessStudyPlan.ts con gen_business_plan.py (ya trae el sustituto verificado).');
   }
   pasos.push(P(25 - sumMin(pasos), `ACCIÓN + NOTA · ${r.accion}`, 'Nota de 3 líneas en Obsidian (01_PULSO) o 1 tarjeta de mecanismo (¿por qué?), no datos sueltos.', { t: '◆ 01_PULSO', url: PULSO_OBS }));
-  return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.materia} — ${r.lectura.split(':')[0]}`, pasos, recursos, `tramo escuchado/leído + «${r.accion.slice(0, 80)}» hecho`,
+  return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.materia} — ${r.lectura.split(':')[0]}`, pasos, recursos, `tramo escuchado/leído + «${r.accion.replace(/\.$/, '')}» hecho`, // v6.10e (revisión del 18-nov · dias-1920-17): la acción entera (≤ 113 car.; antes slice(0, 80) la cortaba a media frase)
     { aviso: [...avisos, minutosFranja(franja) === 25 && !h && !once && !fx ? 'Business ocupa 13:00-13:25 = «LECTURA DE LIBRO» del Calendar (13:00-13:15) + 10′ del hueco 13:15-13:30; en ÁMBAR baja a 13:00-13:15 y la siesta manda.' : '', bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') || undefined,
       planB: 'Sin datos/YouTube: el libro en papel o PDF, 20′ del capítulo indicado. Sin tiempo hoy: el tramo pasa al de mañana (Business es 1 tramo por día, en orden).' });
 }

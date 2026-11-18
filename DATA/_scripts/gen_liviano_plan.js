@@ -303,6 +303,10 @@ for (const c of cards) cardsPorSemana[semanaDe(c.d)] = (cardsPorSemana[semanaDe(
 // que consume cada pregunta oficial una sola vez; OMA / StatPearls / Rosh Review son de pago → decisión de Joseph). Ahora: 1 ítem por FILA de la semana
 // anterior (D-5…D-1) cuya única pista es el TÍTULO de la lección (o del caso) y cuya «respuesta» para corregir es la tarjeta de ese día (o las decisiones del
 // caso) + su fuente primaria. Mismos lunes, mismos 6′, mismo registro x/n en la UI.
+// v6.10e (revisión del 18-nov · regresiones-4): la «respuesta» de cada lección se corrige contra lo que se LEYÓ ese día (rutinaGuia.livFuenteLeidaDe: la fuente
+//   libre de su paso LECTURA; la misma función que pinta el paso del lunes), no contra la fuente del plan (que en GLP-1 es el Obesity Algorithm de la OMA, de
+//   pago, y no se lee); un día sin lectura se corrige con su tarjeta. Antes «la sección que leíste: <fuente del plan>».
+const { livFuenteLeidaDe } = require('./usmle/cargar_ts').cargarModuloTS(path.join('src', 'lib', 'rutinaGuia.ts'), new Map());
 const recallDe = {};
 for (const r of rows.filter((x) => x.pretest)) {
   recallDe[r.d] = rows.filter((x) => x.d >= r.d - 5 && x.d < r.d).map((x) => {
@@ -311,7 +315,8 @@ for (const r of rows.filter((x) => x.pretest)) {
       return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · CASO ${c.id}/${casos.length} «${c.titulo}»: mecanismo · metáfora · plan del caso, en 3 líneas y sin mirar`, a: `${(c.decisiones || []).join(' · ')} — corrige PRIMERO con el caso y su fuente (${c.fuente}); estas decisiones, solo como resumen` };
     }
     const cs = cards.filter((k) => k.d === x.d);
-    return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · «${x.tema}»: el mecanismo (causa → efecto) en 1 línea, sin mirar`, a: `Corrige PRIMERO con la fuente del día (la sección que leíste): ${x.fuente} · la tarjeta, solo como resumen (la escribió el generador del plan): ${cs.length ? cs.map((k) => k.a).join(' · ') : x.estudio}` };
+    const leido = livFuenteLeidaDe(x);
+    return { d: x.d, fecha: x.fecha, modulo: x.modulo, deck: decks[x.modulo], q: `RECALL · D${x.d} · «${x.tema}»: el mecanismo (causa → efecto) en 1 línea, sin mirar`, a: `${leido ? `Corrige PRIMERO con lo que leíste ese día: ${leido}` : 'Ese día no hubo lectura nueva: corrige con su tarjeta'} · la tarjeta, solo como resumen (la escribió el generador del plan): ${cs.length ? cs.map((k) => k.a).join(' · ') : x.estudio}` };
   });
 }
 

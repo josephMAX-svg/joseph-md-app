@@ -65,6 +65,12 @@
  *          disponibles (esas sesiones no se resuelven) y se prefieren los reales libres → reales del banco sustituido → nuevos.
  *          Export del runner → `--registrar <export.json> --append`: ronda `pretest` con preguntas[] por código (gen_encaps_semana.js
  *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v6.02: la del lun 26-oct (cierre del vie 23-oct) · v6.01: la del lun 19-oct (cierre del vie 16-oct) · v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
+ *   node DATA/_scripts/gen_encaps_minisim.js --check                   → (v6.10e) exit 1 si una salida vigente (eval/banco/mini-sim/pre-test) con fecha
+ *        ≥ BASE_CERO_DESDE (mié 18-nov-2026) lleva algún ítem que no sea de EXAMEN REAL (ids N- = redacción propia · BP- = espejo v1), o si una eval
+ *        anclada cuya sesión anterior fue el PRE-TEST DE ARRANQUE (sustituyó al banco) la declara como «banqueo1h». No escribe nada.
+ *   node DATA/_scripts/gen_encaps_minisim.js --sesion-pretest [--dry]  → (v6.10e) en las evals ancladas YA ARMADAS cuya sesión anterior fue el pre-test de
+ *        arranque, corrige _meta.sesion_anterior (tipo «pretest_arranque» + el fichero + el banco que sustituyó) y su texto (modo, tema, instrucciones) SIN
+ *        re-seleccionar (ids, orden y claves intactos) y re-emite su HTML. Después: sync_encaps_bp_web.js + gen_encaps_guia.js.
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -226,6 +232,18 @@ const enListaNegra = (it) => /2026-2\b|2026-II/i.test([it.verificado_contra, it.
 const LN_VIGENTE = 'VIGENTE: ningún ítem deriva del examen reservado como pre-test';
 const FP_LN_ARRANQUE = 'el examen reservado como pre-test de la intensiva queda fuera (lista negra)'; // cola de fuente_preguntas del pre-test de arranque
 const LN_MENCION = /2026[-_ ]?II(?![A-Za-z])|2026-2(?!\d)|examen de agosto(?: de)?[ -]?2026|comit[eé] (?:del? )?2026/i; // misma regla que sync_encaps_bp_web.js
+
+// ── v6.10e (revisión del 18-nov · dias-1920-1) · BASE CERO, regla de Joseph del 18-nov-2026: «toda pregunta de evaluación es REAL, de un banco real con su
+//   id/fuente; nada de preguntas generadas» ──
+// Desde el mié 18-nov-2026 las salidas del runner (eval anclada · banco del día · mini-sim) solo llevan ítems de EXAMEN REAL con clave oficial (origen
+// 'examen_real', ids R-…): ni N- (redacción propia a partir del Compendio López) ni BP- (espejos v1 sobre moldes reales). Si el stock real libre de un
+// código no llega, la cadena de fallback solo re-testea REALES (ya usados, retest: true); nunca rellena con N- ni BP-. El stock real son los 300 ítems
+// con clave de 2024-2A · 2025-1A · 2025-2 (2026-1 no tiene clave y 2026-II es el pre-test reservado): con los códigos críticos ya consumidos (II-3 y III-5
+// sin reales libres), lo que falte se re-testea — decisión de Joseph si quiere otro banco real (QX / Theomed). --check lo vigila.
+const BASE_CERO_DESDE = '2026-11-18';
+const esPreguntaReal = (it) => it.origen === 'examen_real' && /^R-/.test(String(it.id || ''));
+const poolBaseCero = (pool, fecha) => (fecha >= BASE_CERO_DESDE ? pool.filter(esPreguntaReal) : pool);
+const OVERRIDE_TXT = 'el override que propone el próximo mini-sim (gen_encaps_semana.js)'; // v6.10e (dias-1920-9): sin día fijo (con el alias de corrida_s1 el mini-sim del viernes de plan se hace el lunes)
 
 // ── pool del banco propio ──
 function cargarPool(pretestHecho) {
@@ -485,7 +503,8 @@ function modoMinisim(fecha) {
   const repuesto = !!(filaM && filaM.tipo === 'mini_sim' && filaM.carril_b); // v6.01: mini-sim F1 repuesto en el carril B 16:15 (no es viernes) · v6.06: o en el carril SÁBADO
   if (dowDe(fecha) !== 5 && !repuesto) console.warn(`⚠ ${fecha} no es viernes (${WD[dowDe(fecha)]})`);
   const { fallos, debiles, pretestHecho } = leerRegistro();
-  const { pool, rechazados } = cargarPool(pretestHecho);
+  const { pool: pool0, rechazados } = cargarPool(pretestHecho);
+  const pool = poolBaseCero(pool0, fecha); // v6.10e: solo examen real desde el 18-nov
   const usados = usadosPrevios(`minisim_${fecha}`);
   const cola = colaLargaDe(fecha);
   const { items, conteos, avisos } = armarSet(fecha, pool, usados, cola, fallos, debiles);
@@ -543,7 +562,8 @@ function modoBanco(fecha, ignorar) {
   const pa = pretestArranqueDe(fecha);
   if (pa && !has('--forzar')) throw new Error(`${fecha}: el contenido de esta sesión lo ocupa el PRE-TEST DE ARRANQUE (${pa}.html); banco_${fecha} queda sustituido y no se regenera (--forzar para ignorarlo)`);
   const { pretestHecho } = leerRegistro();
-  const { pool, rechazados } = cargarPool(pretestHecho);
+  const { pool: pool0, rechazados } = cargarPool(pretestHecho);
+  const pool = poolBaseCero(pool0, fecha); // v6.10e: solo examen real desde el 18-nov
   const usados = usadosPrevios(`banco_${fecha}`, ignorar);
   const r = rng(fecha + 'banco');
   const codigoPool = poolCode(fila.codigo);
@@ -603,8 +623,11 @@ function modoEval(fecha, ignorar) {
   // D1 del régimen: no hay sesión anterior en el SQL → la eval anclada arranca en modo «fallos previos»
   if (!filaAyer) { ayer = null; filaAyer = { fecha: null, tipo: 'inicio_regimen', codigo: null, subtema: null, secundarios: [], extra: {} }; }
   const { fallos, debiles, pretestHecho, reg } = leerRegistro();
-  const { pool } = cargarPool(pretestHecho);
+  const pool = poolBaseCero(cargarPool(pretestHecho).pool, fecha); // v6.10e: solo examen real desde el 18-nov
   const usados = usadosPrevios(`eval_${fecha}`, ignorar);
+  // v6.10e (dias-1920-1): si el banco de la sesión anterior lo SUSTITUYÓ el pre-test de arranque, esa sesión fue el pre-test (no hubo banqueo1h)
+  const paAyer = ayer ? pretestArranqueDe(ayer) : null;
+  const itemsPA = paAyer ? (readJSON(path.join(OUT_DIR, `${paAyer}.json`)).items || []) : [];
   const rec = fallosRecientes(reg, fecha); // P2
   const r = rng(fecha + 'eval');
   const cand = shuffle(pool.filter((it) => !usados.has(it.id)), r);
@@ -638,6 +661,16 @@ function modoEval(fecha, ignorar) {
     if (items.length < 3) items = items.concat(directas.slice(0, 3 - items.length));
     items = items.concat(vin.slice(0, 2));
     if (items.length < 5) items = items.concat(delCod.filter((x) => !items.includes(x)).slice(0, 5 - items.length));
+    // v6.10e (dias-1920-1): sesión anterior = pre-test de arranque y sin reales libres del código → las del PRE-TEST de ese código, rehechas en otro orden
+    //   (reales, retest) antes que la cadena de fallback
+    if (paAyer) {
+      const delPA = shuffle(itemsPA.filter((x) => poolCode(x.codigo) === poolCode(filaAyer.codigo) && !items.some((y) => y.id === x.id)), r);
+      const n0 = items.length;
+      if (n0 < 5 && delPA.length) {
+        items = items.concat(delPA.slice(0, 5 - n0).map((x) => { const { n, ...it } = pool.find((y) => y.id === x.id) || x; void n; return { ...it, retest: true, fallback: 'pre-test de ayer' }; }));
+        modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): ${n0 ? `${n0}Q reales nuevas de ${filaAyer.codigo} + ` : ''}${items.length - n0}Q de ${filaAyer.codigo} del pre-test, rehechas en otro orden (no quedan reales de ${filaAyer.codigo} sin usar)`;
+      } else modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): 5Q reales de ${filaAyer.codigo}`;
+    }
   }
   // v5.14 (19-sep): una eval NUNCA sale con 0Q → cadena de fallback (cabecera) cuando el pool libre no llega a 5Q
   let fallback = null;
@@ -653,8 +686,8 @@ function modoEval(fecha, ignorar) {
     id: `EVAL_${fecha}`, titulo: `Eval anclada ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${filaAyer.codigo || 'fallos previos'}`, tipoRonda: 'eval_anclada', fecha, codigo: filaAyer.codigo || 'MIX', sub_eje: filaAyer.extra.sub_eje || null,
     tema: `eval anclada · ${modo}`, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 72, umbral: 60, alerta: 60, mostrar_codigo: false,
-    instrucciones: `5 preguntas del tema de AYER (${modo}), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: filaAyer.tipo, codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
+    instrucciones: `5 preguntas del tema de AYER (${modo}), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para ${OVERRIDE_TXT}.`,
+    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: paAyer ? 'pretest_arranque' : filaAyer.tipo, ...(paAyer ? { archivo: paAyer, sustituyo: { tipo: filaAyer.tipo, codigo: filaAyer.codigo } } : {}), codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
   console.log(`EVAL ${fecha} · ${modo} · ${items.length}Q (${items.filter(esCifra).length} cifra · ${items.filter((x) => esVineta(x) && !esCifra(x)).length} viñeta · ${items.filter((x) => !esVineta(x) && !esCifra(x)).length} directa)${fallback ? ` · ${fallback.n_fallback}Q por fallback (${items.filter((x) => x.retest).length} re-test)` : ''}`);
@@ -1018,6 +1051,48 @@ function modoRefrescar() {
   for (const p of plan) escribir(p.base, p.doc);
   console.log(`OK — ${plan.length} salida(s) refrescadas. Siguiente: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js`);
 }
+// v6.10e (revisión del 18-nov · dias-1920-1): --check = ninguna salida vigente con fecha ≥ BASE_CERO_DESDE lleva ítems que no sean de examen real, y ninguna
+//   eval anclada cuya sesión anterior fue el pre-test de arranque la declara como banqueo1h. Solo lee.
+function erroresBaseCero() {
+  const errs = [];
+  for (const f of fs.readdirSync(OUT_DIR).filter((x) => USADOS_RE.test(x)).sort()) {
+    const fe = (f.match(/(\d{4}-\d\d-\d\d)\.json$/) || [])[1]; if (!fe || fe < BASE_CERO_DESDE) continue;
+    const doc = readJSON(path.join(OUT_DIR, f)); if (estaSustituida(doc)) continue;
+    const malos = (doc.items || []).filter((it) => !/^R-/.test(String(it.id || '')));
+    if (malos.length) errs.push(`${f}: ${malos.length} ítem(s) que no son de examen real (${malos.slice(0, 6).map((x) => x.id).join(', ')}${malos.length > 6 ? '…' : ''})`);
+    const sa = (doc._meta || {}).sesion_anterior;
+    if (sa && sa.fecha && pretestArranqueDe(sa.fecha) && sa.tipo !== 'pretest_arranque') errs.push(`${f}: su sesión anterior (${sa.fecha}) fue el pre-test de arranque y _meta.sesion_anterior dice «${sa.tipo}»`);
+  }
+  return errs;
+}
+function modoCheck() {
+  const errs = erroresBaseCero();
+  if (errs.length) { for (const e of errs) console.error('✗', e); console.error(`✗ gen_encaps_minisim --check: ${errs.length} salida(s) fuera de la regla de base cero (solo preguntas de examen real desde el ${BASE_CERO_DESDE})`); process.exit(1); }
+  console.log(`✓ gen_encaps_minisim --check: salidas desde el ${BASE_CERO_DESDE} solo con ítems de examen real (R-) y sesión anterior bien declarada`);
+}
+// v6.10e (dias-1920-1): evals ancladas YA ARMADAS cuya sesión anterior fue el pre-test de arranque (el lun 23-nov de plan ancla al banco del jue 19, que
+//   sustituyó el pre-test 2/2): se corrige el metadato y el texto sin re-seleccionar (como --refrescar)
+function modoSesionPretest() {
+  const hoy = new Date().toISOString().slice(0, 10); const plan = [];
+  for (const f of fs.readdirSync(OUT_DIR).filter((x) => /^eval_\d{4}-\d\d-\d\d\.json$/.test(x)).sort()) {
+    const base = f.replace(/\.json$/, ''); const doc = readJSON(path.join(OUT_DIR, f)); const m = doc._meta || {}; const sa = m.sesion_anterior;
+    if (!sa || !sa.fecha || sa.tipo === 'pretest_arranque') continue;
+    const pa = pretestArranqueDe(sa.fecha); if (!pa) continue;
+    const viejo = { tipo: sa.tipo, codigo: sa.codigo };
+    m.sesion_anterior = { fecha: sa.fecha, tipo: 'pretest_arranque', archivo: pa, sustituyo: viejo, codigo: sa.codigo, sub_eje: sa.sub_eje ?? null };
+    const pre = readJSON(path.join(OUT_DIR, `${pa}.json`)); const cods = ((pre._meta || {}).codigos || []).join(' · ');
+    const nota = `${sa.codigo} = el código del banco del ${sa.fecha}, que SUSTITUYÓ el pre-test de arranque (${pa}: ${cods}); ningún ítem de esta eval salió en ese pre-test`;
+    m.modo = String(m.modo || '').replace(/^código de la sesión anterior \([^)]*\) [^:]+:/, `${nota}:`);
+    doc.tema = `eval anclada · ${m.modo}`;
+    doc.instrucciones = String(doc.instrucciones || '').replace(/del tema de la sesión anterior, [^(]*\(código [^)]*\)/, `de ${sa.codigo} (${nota})`).replace(/para el override del viernes \(gen_encaps_semana\.js\)/, `para ${OVERRIDE_TXT}`);
+    m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [`_meta.sesion_anterior: «${viejo.tipo}» → «pretest_arranque» (${pa})`, 'modo · tema · instrucciones'], motivo: 'v6.10e (revisión del 18-nov · dias-1920-1): esa sesión fue el pre-test de arranque, no un banqueo1h; ids, orden, claves y selección intactos' }];
+    doc._meta = m; plan.push({ base, doc });
+  }
+  for (const p of plan) console.log(`${DRY ? '[dry] ' : ''}${p.base}: sesión anterior → pretest_arranque · ${p.doc._meta.modo.slice(0, 140)}`);
+  if (DRY) { console.log(`[dry] ${plan.length} eval(s); nada escrito`); return; }
+  for (const p of plan) escribir(p.base, p.doc);
+  console.log(`OK — ${plan.length} eval(s). Siguiente: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js`);
+}
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const j = path.join(OUT_DIR, base + '.json'), h = path.join(OUT_DIR, base + '.html');
@@ -1028,7 +1103,9 @@ function escribir(base, doc) {
 
 // ── main ──
 try {
-  if (has('--registrar')) modoRegistrar(opt('--registrar'), has('--append'));
+  if (has('--check')) modoCheck();
+  else if (has('--sesion-pretest')) modoSesionPretest();
+  else if (has('--registrar')) modoRegistrar(opt('--registrar'), has('--append'));
   else if (has('--pretest-arranque')) modoPretestArranque(opt('--pretest-arranque', null) && /^20\d\d-\d\d-\d\d$/.test(opt('--pretest-arranque')) ? opt('--pretest-arranque') : null);
   else if (has('--pretest')) modoPretest();
   else if (has('--sim100')) modoSim100(opt('--sim100'));

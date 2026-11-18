@@ -601,9 +601,15 @@ const CRITICOS = 'I-3 · V-2 · IV-1+IV-2 · I-4 · II-3 · III-5 · II-5 · II-
 /** «sábado 14:00» (F1 y transición, con la clase en vivo) o «sáb 9-ene 07:15» (F2): la revisión semanal que recoge el registro de `iso`. */
 // v6.09 (16-nov-2026): un sábado SIN SESIÓN (corrida_s1.sin_sesion; v6.09: sáb 21-nov, viaje) no tiene revisión → la del sábado siguiente, con su fecha
 //   («sáb 28-nov 14:00»: la revisión S01 va junto con la S02); antes «sábado 14:00» también la semana del 17 al 20-nov
+// v6.10e (revisión del 18-nov · dias-1920-10): un sábado sin sesión cuyo domingo es de LLEGADA (dom 22-nov) tiene su revisión ESE domingo, 30′ antes de la
+//   recuperación ENCAPS (= rutinaGuia.revisionDomingoDe: «revisión S01 del dom 22-nov 14:30»); antes se saltaba al sábado siguiente (sáb 28-nov = la S02)
 const revSab = (iso) => {
   let s = addDias(iso, ((6 - dow(iso)) + 7) % 7 || 7), salto = false;
-  while (SIN_SESION.has(s)) { s = addDias(s, 7); salto = true; }
+  while (SIN_SESION.has(s)) {
+    const dom = J.domingos.find((d) => d.fecha === addDias(s, 1) && d.llegada && d.recupera);
+    if (dom) { const [h, m] = dom.recupera.franja[0].split(':').map(Number), t = h * 60 + m - 30; return `${corta(dom.fecha)} ${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; }
+    s = addDias(s, 7); salto = true;
+  }
   return s <= F6.transicion.hasta ? (salto ? `${corta(s)} 14:00` : 'sábado 14:00') : `${corta(s)} 07:15`;
 };
 const VIGENCIA = 'Si dos fuentes no coinciden, manda la norma más reciente del campus Theomed 2027-I / MINSA.';

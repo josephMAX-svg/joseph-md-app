@@ -51,6 +51,10 @@ function validar(f) {
       if (LN.test(String(it[k] || ''))) aborta(`${f}: el ítem ${it.id} tiene ${k} del examen reservado como pre-test («${it[k]}») — LISTA NEGRA`);
     }
   }
+  // v6.10e (revisión del 18-nov · dias-1920-1): BASE CERO (regla de Joseph del 18-nov-2026): un runner con fecha ≥ 2026-11-18 que se va a hacer (no sustituido
+  //   por el pre-test de arranque) solo publica ítems de EXAMEN REAL (ids R-…): nada de N- (redacción propia) ni BP- (espejo); misma regla que gen_encaps_minisim.js --check
+  const fe = (PATRON.exec(f) || [])[2];
+  if (fe && fe >= '2026-11-18' && !(j._meta || {}).sustituido_por) { const malos = (j.items || []).filter((it) => !/^R-/.test(String(it.id || ''))); if (malos.length) aborta(`${f}: ${malos.length} ítem(s) que no son de examen real (${malos.slice(0, 5).map((x) => x.id).join(', ')}) — base cero: regenerar con gen_encaps_minisim.js`); }
   const men = txt.match(LN_MENCION) || fs.readFileSync(path.join(SRC, f), 'utf8').match(LN_MENCION);
   if (men) aborta(`${f}: nombra el examen reservado como pre-test («${men[0]}») — corregir el texto en su fuente y correr gen_encaps_minisim.js --refrescar`);
   return (j.items || []).length;

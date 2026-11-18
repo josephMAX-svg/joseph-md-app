@@ -259,7 +259,8 @@ const excepcionLunes = (fila, rEval) => {
   if (!rEval || new Date(fila.fecha + 'T12:00:00Z').getUTCDay() !== 1) return null;
   const sa = rEval.meta.sesion_anterior || {};
   const ms = sa.fecha ? FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha) : null;
-  return ms && sa.tipo === 'banqueo1h' && SIN_SESION_S1.has(addD(ms.fecha, 1)) ? { ms, sa } : null;
+  // v6.10e (dias-1920-1): esa sesión anterior pudo ser el pre-test de arranque que sustituyó al banco (jue 19-nov de plan): la excepción vale igual
+  return ms && (sa.tipo === 'banqueo1h' || sa.tipo === 'pretest_arranque') && SIN_SESION_S1.has(addD(ms.fecha, 1)) ? { ms, sa } : null;
 };
 const recursoRunner = (r, t) => (r ? [{ t, url: r.url || r.local, cantidad: `${r.n}Q` }] : []);
 const proyectoDe = (codigo) => CAT.PROYECTO[romano(codigo)] || CAT.PROYECTO.LOPEZ;
@@ -284,6 +285,13 @@ const evalDesc = (r, fila, prev) => {
   // v6.03: el código y la sesión anterior salen del propio runner (_meta.sesion_anterior); «AYER» solo si fue el día anterior
   const sa = r.meta.sesion_anterior || {}; const cod = r.j.codigo && r.j.codigo !== 'MIX' ? r.j.codigo : (prev ? prev.codigo : '');
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
+  // v6.10e (revisión del 18-nov · dias-1920-1): la sesión anterior fue el PRE-TEST DE ARRANQUE (sustituyó al banco): sin «código de AYER» ni banqueo inventado
+  if (sa.tipo === 'pretest_arranque') {
+    const nPre = (r.j.items || []).filter((x) => x.fallback === 'pre-test de ayer').length;
+    if (nPre) return `${r.n}Q de ${cod} del PRE-TEST de ${sa.fecha === ayer ? 'ayer' : corta(sa.fecha)}, rehechas en otro orden (examen real; no quedan preguntas reales de ${cod} sin usar)`;
+    const parte = (() => { try { return JSON.parse(fs.readFileSync(path.join(BP, `${sa.archivo}.json`), 'utf8'))._meta.parte; } catch (e) { return null; } })();
+    return `${r.n}Q reales de ${cod} = el código del banco del ${corta(sa.fecha)}, que sustituyó el pre-test ${parte ? `${parte}/2` : 'de arranque'} (ninguna salió en el pre-test)${excepcionLunes(fila, r) ? ` · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)` : ''}`;
+  }
   if (sa.fecha && sa.fecha !== ayer) {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
@@ -348,7 +356,9 @@ function construirGuia(fila, sab = null) {
       totalMin: 60,
       pasos: [
         PASO_ARRANQUE([r]),
-        { min: 30, que: `MINI-SIMULACRO 25Q mixtas (${recTxt}; ≥${e.criticos_min || 10} de los 8 críticos · ≥${e.fallos_previos_min || 5} de fallos previos · ${e.cola_larga_q || '5-6'}Q de ${cola.join(' + ')})${r ? ` — ${r.f}` : ' — runner POR GENERAR'}`,
+        // v6.10e (revisión del 18-nov · dias-1920-1): con runner, lo que TRAE (desde el 18-nov solo examen real: con el stock real no siempre llega a la receta
+        //   de fallos previos y cola larga); sin runner, la receta del SQL
+        { min: 30, que: `MINI-SIMULACRO 25Q mixtas (${recTxt}; ${r && r.meta.conteos ? `${r.meta.conteos.criticos} de los 8 críticos · ${r.meta.conteos.fallos_previos} de fallos previos · ${r.meta.conteos.cola_larga}Q de ${cola.join(' + ')}${(r.j.items || []).every((x) => /^R-/.test(x.id)) ? ' · todas de examen real' : ''}` : `≥${e.criticos_min || 10} de los 8 críticos · ≥${e.fallos_previos_min || 5} de fallos previos · ${e.cola_larga_q || '5-6'}Q de ${cola.join(' + ')}`})${r ? ` — ${r.f}` : ' — runner POR GENERAR'}`,
           como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos viernes seguidos.`,
           ...(r ? { enlace: enlaceRunner(r, 'Mini-sim') } : {}) },
         { min: rcM ? rcM.correccion : 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: rcM ? `${rcM.correccion}′ para las 25Q (≈0,8′ por pregunta: los aciertos «seguros» solo se leen; el tiempo va a fallos y dudosas). ${CAT.TECNICA_SIM.CORRECCION}` : CAT.TECNICA_SIM.CORRECCION },
@@ -395,7 +405,7 @@ function construirGuia(fila, sab = null) {
         totalMin: 60,
         pasos: [
           PASO_ARRANQUE([rEval, rPre]),
-          { min: rcP ? rcP.eval : 10, que: `EVAL ANCLADA · ${ePrev || '5Q'} — ${rEval ? rEval.f : 'sin runner'}`, como: `De memoria y sin material: 72 s/Q (6′) → al final lee la solución de cada fallo (${rcP ? rcP.eval - 6 : 4}′) y escribe la regla en 1 línea. Si fallas ≥2, ese código queda CALIENTE para el override del viernes (no cambia el tema de mañana).`, ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
+          { min: rcP ? rcP.eval : 10, que: `EVAL ANCLADA · ${ePrev || '5Q'} — ${rEval ? rEval.f : 'sin runner'}`, como: `De memoria y sin material: 72 s/Q (6′) → al final lee la solución de cada fallo (${rcP ? rcP.eval - 6 : 4}′) y escribe la regla en 1 línea. Si fallas ≥2, ese código queda CALIENTE para el override que propone el próximo mini-sim (no cambia el tema de mañana).`, ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
           { min: 24, que: `PRE-TEST DE ARRANQUE parte ${pm.parte}/${pm.de} · ${rPre.n}Q CIEGAS (${cods.map((c) => `${rPre.porCod[c] || 5} × ${c}`).join(' · ')}) · ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 — ${rPre.f}`,
             como: `MODO EXAMEN: 72 s/Q = 24′ sin pausa y sin material; la solución sale solo al final. Es tu LÍNEA BASE ciega por crítico: marca la confianza real (no «para quedar bien»). ${CAT.TECNICA_SIM.como(rPre.n, 24, 2, rPre.seg || 72)}`, enlace: enlaceRunner(rPre, 'Pre-test') },
           { min: rcP ? rcP.correccion : 15, que: 'Corrección del pre-test: cada fallo y cada «dudosa»', como: `${rcP ? `${rPre.n}Q × 0,85′ ≈ ${rcP.correccion}′. ` : ''}Lee la explicación y la fuente del runner; clasifica (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) y escribe la regla en 1 línea. Hoy NO abres material del Drive: cada código se trabaja en su propia sesión de banco (${prox.join(' · ')}).` },
@@ -457,7 +467,7 @@ function construirGuia(fila, sab = null) {
         pasos: [
           PASO_ARRANQUE([rEval, rBan]),
           { min: 8, que: `EVAL ANCLADA · ${evalTxt} — ${rEval ? rEval.f : 'runner POR GENERAR'}`, como: sab ? 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2 de un código, queda CALIENTE en el registro (temas calientes de ENCAPS → Plan): no cambia el banco de hoy.'
-            : 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2, ese código queda CALIENTE para el override del viernes (no cambia el tema de mañana).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
+            : 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2, ese código queda CALIENTE para el override que propone el próximo mini-sim (no cambia el tema de mañana).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
           { min: 30, que: `BANCO DEL DÍA · ${qPri} CIEGAS de ${codigo}${priReparto} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
             como: `Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
               : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLbl)} hasta ${rcB.principal}, mismo método.`
@@ -492,9 +502,11 @@ function construirGuia(fila, sab = null) {
           const exc = !sab && excepcionLunes(fila, rEval);
           // v6.10d (fix revisión 18-nov): con el alias el lunes de plan se hace el martes real y el mini-sim del viernes de plan, el lunes real: ya no hubo fin de
           //   semana entre los dos → «de hoy» y el motivo real (antes: «de este lunes» y «generarlas exigía el fin de semana, que fue sin sesión»)
+          // v6.10e (dias-1920-1): si esa «última sesión de banco» fue en realidad el pre-test de arranque que la sustituyó, el aviso lo dice
+          const excDe = exc && exc.sa.tipo === 'pretest_arranque' ? `del código del banco del ${corta(exc.sa.fecha)}, que sustituyó el pre-test de arranque (5Q reales que no salieron en él)` : exc ? `del ${corta(exc.sa.fecha)} (la última sesión de banco)` : '';
           if (exc) av.push(conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha)
-            ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
-            : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} del ${corta(exc.sa.fecha)} (la última sesión de banco; su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
+            ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} ${excDe}, no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
+            : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} ${excDe} (su runner ya está hecho), no las 5Q rehechas de los fallos del mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
           // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
           if (!pendiente && !sab) {
             const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 6)); // v6.10: hasta el domingo (dom 29-nov = D9, recupera el mar 17)

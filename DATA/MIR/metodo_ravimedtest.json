@@ -56,7 +56,7 @@
     { "n": 3, "id": "discriminativa", "nombre": "DISCRIMINATIVA · nivel 3 (cara B)", "dDesde": 77, "dHasta": 78, "banqueo": true, "tramo": "D77-D78 (vie 5 y lun 8-mar-2027) + banqueo (mar 9-mar-2027 → Step 1)",
       "quiz": "Nivel 3 (fase 3 · discriminativa): cada opción incorrecta desgranada y la «cara B» (cómo podrían subir el nivel para volver a pillarte aunque hoy aciertes), también en las acertadas con duda",
       "apex": "fallos tontos + conceptos discriminativos de nivel 3-4/5 vecinos de lo preguntado (Ravi)",
-      "avance": "se entra si el neto del mini-MIR (D77) es ≥ 50 %; si no, el banqueo sigue en niveles 1-2 hasta 2 semanas seguidas del log ≥ 50 % · después, la 2.ª vuelta (fase principal, oct-2027) por calendario" }
+      "avance": "se entra si el neto del mini-MIR (D77) es ≥ 50 %; si no, el banqueo sigue en niveles 1-2 hasta 2 semanas seguidas del log ≥ 50 % · después, la 2.ª vuelta (fase principal MIR, tras el handoff del vie 3-dic-2027) por calendario" }
   ],
   "asignaturas": {
     "8": { "asignatura": "Epidemiología", "vault": "17_Epidemiologia", "ravi": [] },

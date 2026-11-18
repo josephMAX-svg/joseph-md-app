@@ -80,6 +80,8 @@ const CONTRASTE_DE = {
   'C-2': 'CARTA_1/diana.md (deadline, límites y esqueleto) y las 5 letters modelo que leíste',
   'C-4': 'CARTA_1/refs_verified.json (status de cada cita) y la cabecera de DATA/RESEARCH/agentic/citation_verifier.py (reglas de verificación)',
   'C-5': 'las Author Guidelines de la revista diana y CARTA_1/cover_letter.md',
+  // v6.10e (revisión del 18-nov · regresiones-7): el método de X-5 (campaña de cold emails) vive en su artefacto (regla 1), no en la Academic Phrasebank
+  'X-5': 'MENTORES.md §Campaña feb-2027 —la tabla y la plantilla que escribiste en X-5— y su objetivo: una oferta concreta, nunca «quiero experiencia»',
 };
 
 /**
@@ -152,7 +154,7 @@ function rdFinde(fecha: string): string {
 }
 `;
 
-function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO, PAUSA }) {
+function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO, PAUSA, fechaReal = (iso) => iso }) {
   const R = (k) => { const r = rec(k); if (!r) throw new Error('research_guia: REC ' + k + ' no existe'); return { t: r.label, url: r.url }; };
   const f = (code) => fmt(fechaDe(code));
   const porCode = Object.fromEntries(TODOS.map((x) => [x.code, x]));
@@ -191,8 +193,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const cuentas = 'Cada cuenta la creas TÚ (Claude no crea cuentas ni escribe contraseñas). Una contraseña distinta por cuenta, guardada en el gestor.';
     if (!prev) return { min: 2, que: `Arranque: ${base}`, como: cuentas };
     // v6.10 · tanda C: tras M1 (SR-1 + WhatsApp), la express de R0 = 1Q de PRISMA-P / PRISMA 2020 / AMSTAR-2 + ¿respondió el asesor? (regístralo)
+    // v6.10e (revisión del 18-nov · dias-1920-5): el recall se COMPRUEBA con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy, PRISMA-P en GoodNotes)
     if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (${Q2.M1}) + ¿respondió el asesor? + arranque: ${base}`,
-      como: `El recall a papel, sin mirar (lo que falle va como deuda a la Mesa editorial); si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
+      como: `El recall a papel, sin mirar, y después compruébalo en 30 s con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy; PRISMA-P en GoodNotes, pág. 5): lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
     return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] || 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
       como: `El recall a papel, 1 línea por punto y sin mirar; lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };
@@ -217,8 +220,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       planB: 'Si una validación no llega hoy (correo de CTI Vitae u ORCID): márcala «en trámite» y sigue con la siguiente; se cierra en los 5′ de la eval anclada de R1 (' + f('R1') + ').',
       // v6.09b lote 1-quater FX1 (revisión V2): las fechas de destino al principio del aviso (el Calendar lo corta a 240; CR-9 iba en la pos. 335)
       aviso: 'Hoy 7 de las 10 cuentas (10-15′ c/u: las 10 no caben en 45′); las 3 de portal → Editorial Manager / ScholarOne en C-5 (' + f('C-5') + ') y eScholarship (Dermatology Online Journal) en CR-9 (' + f('CR-9') + '). Son POR REVISTA y su URL está «A VERIFICAR»: C-5 = formateo + cuenta activa en el portal del journal elegido.',
-      // v6.06 (fix): con M1 justo antes, + ICMJE y CRediT para contrastar las 2Q de la eval express (los mismos recursos de M1)
-      recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX'), ...(prev && prev.code === 'M1' ? [R('ICMJE'), R('CREDIT')] : [])],
+      // v6.06 (fix): con M1 justo antes, los recursos para contrastar la eval express · v6.10e (dias-1920-5): PRISMA 2020 y AMSTAR-2 (lo que pregunta la express
+      //   de M1 desde la v6.10 · tanda C), no ICMJE y CRediT (las 2Q de M1 hasta la v6.10)
+      recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX'), ...(prev && prev.code === 'M1' ? [R('PRISMA'), R('AMSTAR')] : [])],
     }),
     R1: (x, prev) => ({
       titulo: 'R1 · 3 PICO (terapia · diagnóstico · pronóstico) + 1 abstract clasificado con Greenhalgh (Taylor 2009, PMID 19807760)',
@@ -235,22 +239,29 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       recursos: [R('CIL1'), R('GREEN'), { t: 'PubMed · Taylor 2009 (PMID 19807760)', url: 'https://pubmed.ncbi.nlm.nih.gov/19807760/' }, { t: 'PubMed · Grimes 2009 (reserva, PMID 19735512)', url: 'https://pubmed.ncbi.nlm.nih.gov/19735512/' }, R('DELO')],
     }),
     // v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat Research): Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del
-    //   M1 original solo queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1). 7 pasos = 45′. Las fechas del WhatsApp salen del plan
-    //   (C-6 · T-8 · CR-1: si el plan corre, el mensaje se corrige solo). Repo público: el texto dice «Doctor» / «el asesor» (sin nombres nuevos).
+    //   M1 original solo queda el WhatsApp con las 3 coautorías (opción (a) del revisor #2 de SR-1). 7 pasos = 45′. Las fechas del WhatsApp son las REALES
+    //   (v6.10e, dias-1920-4: fechaReal = fechaRealDe del alias de corrida_s1 sobre la fecha de plan de C-6 · T-8 · CR-1; «21 de diciembre» no lo traduce la
+    //   app, que solo traduce «<día> <n>-<mes>», y con el alias el plan no se mueve: antes el mensaje prometía la fecha de PLAN, un día antes de la real).
+    //   Repo público: el texto dice «Doctor» / «el asesor» (sin nombres nuevos).
     M1: (x, prev) => ({
       titulo: 'M1 · SR-1 primero (protocolo del metaanálisis) + WhatsApp al asesor con las 3 coautorías',
       pasos: [
         { min: 2, que: 'Arranque (1.ª sesión Research): el evento del Calendar + el chat Research + Anki abierto', como: 'Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del M1 original solo queda el WhatsApp al asesor.' },
-        { min: 5, que: 'Pre-test = RECALL EN BLANCO de SR-1, a papel y con confianza (1-3): escribe (1) la pregunta de SR-1 en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems crees que tiene cada una', como: 'Sin mirar nada, con tu confianza (1-3) en cada punto; lo corriges con las FUENTES reales (las checklists oficiales de PRISMA-P 2015, PRISMA 2020 y AMSTAR-2), no con un chat: la corrección es la eval anclada de R0.' },
-        { min: 8, que: 'WhatsApp al asesor con las 3 coautorías (lo envías tú)', como: `Plan B: el mismo texto por correo o en persona. Texto: «Doctor, buenos días. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío: 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto: ${fLargo(fechaDe('T-8'))}. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor (unos 30 minutos de revisión); envío: ${fLargo(fechaDe('C-6'))}. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el caso antes del ${fLargo(fechaDe('CR-1'))}. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.» (Si prefieres 2 coautorías, borra el punto 2.)`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        // v6.10e (revisión del 18-nov · dias-1920-5): cada punto del pre-test tiene su fuente HOY y un paso con minutos para corregirlo: (1) el PICO del SR/MA
+        //   que lees a las 13:50 (el abstract; antes «la pregunta de SR-1», que no se fija hasta R6: no había contra qué corregirla) · (2) las checklists, en el
+        //   último paso (PRISMA-P en GoodNotes; PRISMA 2020 y AMSTAR-2 en los recursos). La eval anclada de R0 lo repite de memoria días después.
+        { min: 5, que: 'Pre-test = RECALL EN BLANCO, a papel y con confianza (1-3): escribe (1) qué crees que compara un metaanálisis de hialuronidasa en las complicaciones vasculares por ácido hialurónico, en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems crees que tiene cada una', como: `Sin mirar nada, con tu confianza (1-3) en cada punto; lo corriges HOY con las fuentes reales, no con un chat: (1) con el abstract de las 13:50 · (2) en el último paso, con las checklists oficiales (PRISMA-P 2015 en GoodNotes; PRISMA 2020 y AMSTAR-2 en los recursos). Días después, la eval anclada de R0 (la sesión de infraestructura académica, ${f('R0')}) lo repite de memoria.` },
+        { min: 8, que: 'WhatsApp al asesor con las 3 coautorías (lo envías tú)', como: `Plan B: el mismo texto por correo o en persona. Texto: «Doctor, buenos días. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío: 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto: ${fLargo(fechaReal(fechaDe('T-8')))}. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor (unos 30 minutos de revisión); envío: ${fLargo(fechaReal(fechaDe('C-6')))}. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el caso antes del ${fLargo(fechaReal(fechaDe('CR-1')))}. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.» (Si prefieres 2 coautorías, borra el punto 2.)`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'Lista tengo / falta de los 10 documentos de etica.md §1, ANTES de la reunión con el asesor', como: `Para T-1 (ética de la tesis, ${f('T-1')}): marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al asesor en la reunión.`, enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
-        { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa · nº de estudios y de pacientes. La clave es el propio abstract: relee y corrige en rojo (lo que el abstract no diga = «no consta», nunca inventado).', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
+        { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa · nº de estudios y de pacientes. La clave es el propio abstract: relee y corrige en rojo (lo que el abstract no diga = «no consta», nunca inventado) y corrige también el PICO (1) del pre-test.', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
         { min: 5, que: 'PRISMA-P 2015 (GoodNotes › Documentos › RESEARCH › SR-1_complicaciones_rellenos › 01_PRISMA-P_2015_checklist, pág. 5): marca qué ítems ya tiene SR-1', como: 'Solo marcar (✓ / falta) sobre la lista; lo que falte es el trabajo del protocolo de las próximas sesiones.' },
-        { min: 5, que: 'Free recall + ≤2 APEX', como: 'El mazo APEX::RESEARCH::01_Protocolo_SR nace hoy, con estas tarjetas (nada de mazos ni carpetas vacíos por adelantado).' },
+        { min: 5, que: 'Corrección del pre-test (2): para qué sirve cada checklist y cuántos ítems tiene (2′) + free recall (1′) + ≤2 APEX (2′)', como: 'Con las fuentes reales, en rojo sobre tu papel: PRISMA-P 2015 (GoodNotes, pág. 5, ya abierta) · PRISMA 2020 (su checklist, en «PRISMA statement» de los recursos) · AMSTAR-2 (amstar.ca, en los recursos). Después el free recall de la sesión y ≤2 APEX de lo que fallaste: el mazo APEX::RESEARCH::01_Protocolo_SR nace hoy, con estas tarjetas (nada de mazos ni carpetas vacíos por adelantado).', enlace: R('PRISMA') },
       ],
-      hecho: 'Pre-test + WhatsApp enviado + lista de los 10 documentos + abstract extraído + PRISMA-P marcado + ≤2 APEX.',
+      hecho: 'Pre-test + WhatsApp enviado + lista de los 10 documentos + abstract extraído + PRISMA-P marcado + pre-test corregido con el abstract y las 3 checklists + ≤2 APEX.',
       planB: 'Sin WhatsApp: el mismo texto por correo o en persona, el mismo día.',
-      recursos: [{ t: 'PubMed · 41249530 (SR/MA de hialuronidasa en complicaciones vasculares por ácido hialurónico)', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' }, { t: 'MENTORES.md (CRM + mensajes)', url: GH + 'DATA/RESEARCH/MENTORES.md' }, { t: 'TESIS_L0/etica.md', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' }, R('ICMJE'), R('CREDIT')],
+      // v6.10e (dias-1920-5): + PRISMA (la checklist de PRISMA 2020) y AMSTAR-2, las fuentes de la corrección del pre-test (PRISMA-P está en GoodNotes, paso 6);
+      //   no el recurso PRISMAC, cuya etiqueta da el nº de ítems que pregunta el pre-test
+      recursos: [{ t: 'PubMed · 41249530 (SR/MA de hialuronidasa en complicaciones vasculares por ácido hialurónico)', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' }, R('PRISMA'), R('AMSTAR'), { t: 'MENTORES.md (CRM + mensajes)', url: GH + 'DATA/RESEARCH/MENTORES.md' }, { t: 'TESIS_L0/etica.md', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' }, R('ICMJE'), R('CREDIT')],
     }),
     'C-1': (x, prev) => ({
       titulo: 'C-1 · Discovery: 5 artículos candidatos de los últimos 60 días (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg) + correo a IJD',
