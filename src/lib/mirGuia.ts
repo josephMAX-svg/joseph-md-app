@@ -35,6 +35,9 @@
  * v6.10j (18-nov-2026 · auditoría c14 del Calendar, solo TEXTO): Anki del plan = «Anki FSRS · …» + «solo Good/Again · ② > 60 vencidas 2 días seguidos →
  *   nuevas a 0 esa semana · sin repasos: …» (FSRS y Good/Again quedaban tras el corte de 110); Anki del banqueo abre con «FSRS · solo Good/Again»; banqueo:
  *   el ritmo pasa al «qué» y el «cómo» abre con ««Pool oficial» de la app (sin usar) → si faltan, MIR oficiales con año-número · en blanco si no descartas 2».
+ * v6.10l (19-nov-2026 · auditoría c15 del Calendar, solo TEXTO): banqueo = «NQ reales MIR cronometradas …» y el «cómo» abre con la regla del blanco ENTERA
+ *   («En blanco si no descartas 2; con 2, marca») y la fuente en corto; D77 = fuente, regla del blanco y «cronometradas» en el «qué» (lo único que se ve en
+ *   el evento de las 15:15) y el ritmo + tope delante del reloj; repaso relacional «(1.ª/2.ª de 2 pasadas)» y fichas de Ravi sin «Drive ·» en el texto.
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,
@@ -138,17 +141,24 @@ function rehorar(pasos: PasoOrig[], ini: string): GuiaPaso[] {
     return { ...p, que: `${hhmm(na)}–${hhmm(nb)} · ${mover(sinHora(p.que))}`, como: mover(p.como) };
   });
 }
-const fichasRavi = (a: MirMetodoAsig): string => `fichas relacionales de Ravi (Drive · ${M.raviCarpeta} › ${a.ravi.join(' + ')}: imágenes «concepto → concepto»; si la carpeta no abre o está vacía, sigue solo con tu hoja)`;
+// v6.10l (auditoría c15): la carpeta sin «Drive ·» delante (el botón del paso ya dice Drive): el Calendar quita los tramos con «Drive» y dejaba el «cómo»
+//   empezando en «TARJETAS RELACIONALES › CARDIOLOGÍA: imágenes …», sin el verbo
+// remate v6.10l (revisión adversarial · visibilidad): la RUTA delante («TARJETAS RELACIONALES › CARDIOLOGÍA (carpeta compartida de Ravi): lee sus fichas …»),
+//   dentro de los 110 del Calendar (con «Lee las fichas relacionales de Ravi (imágenes …» delante, la ruta quedaba tras el corte en los 16 repasos relacionales)
+const rutaRavi = (a: MirMetodoAsig): string => `${M.raviCarpeta} › ${a.ravi.join(' + ')} (carpeta compartida de Ravi)`;
+const fichasRavi = (a: MirMetodoAsig, verbo: string): string => `${rutaRavi(a)}: ${verbo} sus fichas «concepto → concepto» (si no abre o está vacía, sigue solo con tu hoja)`;
 /** Repaso relacional ANTES de empezar la asignatura (1.ª de las 2 pasadas por vuelta) + reactivar su parte del mazo de Ravi. */
 function pasoRelAntes(a: MirMetodoAsig, min: number): GuiaPaso {
   const leer = a.ravi.length
-    ? `Lee las ${fichasRavi(a)} y, en la nota madre de ${a.asignatura} (sección «${M.seccionNota}»), las flechas que ya apuntan aquí desde otras asignaturas`
+    ? `${fichasRavi(a, 'lee')} y, en la nota madre de ${a.asignatura} (sección «${M.seccionNota}»), las flechas que ya apuntan aquí desde otras asignaturas`
     : `En la carpeta compartida de relacionales de Ravi no hay ${a.asignatura}: lee en su nota madre (sección «${M.seccionNota}») las flechas que apuntaste hacia ${a.asignatura} desde las asignaturas anteriores (si aún no hay ninguna, recorre solo los títulos del capítulo de hoy)`;
   const segunda = a.dIni === a.dFin ? 'la 2.ª pasada es hoy, al final de la franja' : `la 2.ª pasada es el D${a.dFin}`;
   return {
     min,
     // v6.10 · tanda C (decidido con Joseph, 17-nov): el mazo de Ravi ya NO se reactiva por asignatura al empezarla: cada subtema, al terminarlo (paso APEX)
-    que: `REPASO RELACIONAL · ANTES de empezar ${a.asignatura} (1.ª de las 2 pasadas de la vuelta)`,
+    // v6.10l (auditoría c15, vetadas #31): «(1.ª de 2 pasadas)» en corto: los días de 5 pasos de 2027 pasaban del máximo del evento del Calendar y el
+    //   constructor recortaba el «cómo» del quiz («77 s/Q + 30 s …»)
+    que: `REPASO RELACIONAL · ANTES de empezar ${a.asignatura} (1.ª de 2 pasadas)`,
     como: `${leer}. Es un vistazo, no estudio: solo deja listos los ganchos entre asignaturas (${segunda}). Las tarjetas de Ravi de ${a.asignatura} se reactivan por subtema, al terminar cada día (no ahora).`,
     enlace: a.ravi.length ? { t: `Drive · ${M.raviCarpeta}`, url: M.raviBusca } : { t: `Nota madre · ${a.asignatura}`, url: a.nota },
   };
@@ -157,8 +167,9 @@ function pasoRelAntes(a: MirMetodoAsig, min: number): GuiaPaso {
 function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
   return {
     min,
-    que: `REPASO RELACIONAL · AL TERMINAR ${a.asignatura} (2.ª pasada de la vuelta) · ≥2 flechas «concepto → concepto» nuevas`,
-    como: `${a.ravi.length ? `Repasa otra vez las ${fichasRavi(a)}. ` : ''}Escribe en la nota madre de ${a.asignatura} (sección «${M.seccionNota}») ≥2 relaciones sacadas de tus fallos ${a.dIni === a.dFin ? `de hoy (D${a.dIni})` : `del bloque D${a.dIni}-D${a.dFin}`}, en formato «concepto (${a.asignatura}) → concepto (otra asignatura)», y copia cada línea en la nota de la otra asignatura (así la verás antes de empezarla). No van a Anki: Ravi mantiene relacionales y tarjetas sin un solo dato repetido. Próxima pasada: 2.ª vuelta.`,
+    // v6.10l: en corto (ver pasoRelAntes); el formato «concepto → concepto» lo dice el «cómo»
+    que: `REPASO RELACIONAL · AL TERMINAR ${a.asignatura} (2.ª de 2 pasadas) · ≥2 flechas nuevas`,
+    como: `${a.ravi.length ? `${fichasRavi(a, 'repasa otra vez')}. ` : ''}Escribe en la nota madre de ${a.asignatura} (sección «${M.seccionNota}») ≥2 relaciones sacadas de tus fallos ${a.dIni === a.dFin ? `de hoy (D${a.dIni})` : `del bloque D${a.dIni}-D${a.dFin}`}, en formato «concepto (${a.asignatura}) → concepto (otra asignatura)», y copia cada línea en la nota de la otra asignatura (así la verás antes de empezarla). No van a Anki: Ravi mantiene relacionales y tarjetas sin un solo dato repetido. Próxima pasada: 2.ª vuelta.`,
     enlace: { t: `Nota madre · ${a.asignatura}`, url: a.nota },
   };
 }
@@ -251,7 +262,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
   if (cierre) {
     pasos.push({
       min: 15,
-      que: `TEST DE CIERRE · 10Q reales MIR de ${cierre.asignatura} (bloque D${cierre.dIni}-D${cierre.dFin} cerrado)`,
+      que: `TEST DE CIERRE · 10Q reales MIR cronometradas de ${cierre.asignatura} (bloque D${cierre.dIni}-D${cierre.dFin} cerrado)`,
       como: `Fuente: pool oficial de la app sin usar (${poolAsig(cierre.num)} preguntas de ${cierre.asignatura} en el pool, menos las ya usadas) → si faltan, cuadernillos oficiales examenesmir · Cronómetro ${mirMinutos(10)} min (${MIR_SEG_POR_Q} s/Q), en blanco si no descartas 2 · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre).`,
       enlace: { t: 'Cuadernillos MIR (respaldo)', url: EXAMENESMIR },
     });
@@ -325,8 +336,11 @@ function guiaMiniMIR(dia: DiaMIR, ini: string): GuiaBloque {
     pasos: conHoras([
       {
         min: PASADA,
-        que: `mini-MIR 40Q mixtas cronometradas de las 14 asignaturas del plan · pasada única (objetivo ≈70 s/Q; tope ${PASADA + FORMAL}′ con la revisión ≈ 40 × ${MIR_SEG_POR_Q} s)`,
-        como: `Reloj cada 10Q: ${[10, 20, 30, 40].map(hito).join(' · ')} · si vas tarde, recupera en las siguientes, no al final (técnica de simulacro de Ravi adaptada a 40Q) · las 10 primeras con atención extra: los nervios del arranque dan los fallos tontos · preguntas con imagen: resuélvelas por el texto y usa la imagen solo para confirmar; si una te atasca, pásala al final de la pasada · una sola decisión por pregunta: con 2 opciones descartadas, marca (con −1/3, arriesgar entre 2 tiene esperanza positiva); si no descartas 2, en blanco · preguntas: lista «Pool oficial · mini-MIR mixto» de la app (mezcla determinista por fecha); si no llega a 40, cuadernillos examenesmir · sin corregir todavía.`,
+        // v6.10l (auditoría c15, cambios #15): el hito de más peso de la 1.ª vuelta dice en el «qué» (lo único que se ve en el evento de las 15:15 y lo
+        //   primero en el de las 15:30) de dónde salen las 40, la regla del blanco y que van con cronómetro, como el TEST DE CIERRE; el ritmo y el tope abren
+        //   el «cómo», delante del reloj cada 10Q (antes la fuente y el blanco iban al final del «cómo», detrás del corte de 110)
+        que: `mini-MIR 40Q mixtas cronometradas · Fuente: «Pool oficial» de la app (respaldo: cuadernillos examenesmir) · en blanco si no descartas 2`,
+        como: `Pasada única a ≈70 s/Q (tope ${PASADA + FORMAL}′ con la revisión) · reloj cada 10Q: ${[10, 20, 30, 40].map(hito).join(' · ')} · si vas tarde, recupera en las siguientes, no al final (técnica de simulacro de Ravi adaptada a 40Q; el tope = 40 × ${MIR_SEG_POR_Q} s, el ritmo del MIR) · las 10 primeras con atención extra: los nervios del arranque dan los fallos tontos · preguntas con imagen: resuélvelas por el texto y usa la imagen solo para confirmar; si una te atasca, pásala al final de la pasada · una sola decisión por pregunta: con 2 opciones descartadas, marca (con −1/3, arriesgar entre 2 tiene esperanza positiva); si no descartas 2, en blanco · preguntas: lista «Pool oficial · mini-MIR mixto» de la app, de las 14 asignaturas del plan (mezcla determinista por fecha); si no llega a 40, cuadernillos oficiales examenesmir · sin corregir todavía.`,
         enlace: { t: 'Cuadernillos MIR (respaldo)', url: EXAMENESMIR },
       },
       { min: FORMAL, que: 'REVISIÓN FORMAL de la plantilla, de la 1 a la 40', como: '¿Cada respuesta que pasaste a la app es la que elegiste? ¿Leíste bien los enunciados en negativo (FALSA · EXCEPTO · INCORRECTA)? Ravi cuenta que el día del MIR falló 4 preguntas por forma (marcó la verdadera cuando pedían la falsa) y que en simulacro la mayoría de fallos son de forma: aquí NUNCA cambias una respuesta por dudar del contenido, solo corriges la forma (si cambias algo, anótalo en «cambiadas»).' },
@@ -384,9 +398,14 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
       return {
         // v6.10j (auditoría c14, vetadas #2): el ritmo pasa al «qué» (cabe en los 136 en las 220 sesiones) y el «cómo» abre con la FUENTE de las preguntas
         //   reales y la regla del blanco, en los 110 caracteres del Calendar (antes el corte caía dentro de «la lista «Pool …»)
-        min, que: `${dia.nQ}Q reales MIR a ${MIR_SEG_POR_Q} s/Q (${dia.minQ} min) · ${asigs}`,
+        // v6.10l (auditoría c15, diffs #39): «cronometradas» vuelve al «qué»: cabe entero en las 35 sesiones con evento en el Calendar (M1-M35, hasta el
+        //   vie 30-abr); 6 de mayo en adelante con un Tier C de nombre largo (M39, M61, M111, M183, M207, M213) pasan de 136, pero desde el SERUMS el Calendar
+        //   no lleva el banqueo (solo lo invariante) y la app no corta
+        min, que: `${dia.nQ}Q reales MIR cronometradas a ${MIR_SEG_POR_Q} s/Q (${dia.minQ} min) · ${asigs}`,
         // v6.10 · base cero («las preguntas tienen que ser REALES»): el respaldo es solo MIR oficial con su año-número (antes «test por asignatura ProMIR», sin filtro)
-        como: `«Pool oficial» de la app (sin usar) → si faltan, MIR oficiales con año-número · en blanco si no descartas 2 (con 2 descartadas, marca) · el respaldo, solo MIR oficiales con su año-número: las citadas en los capítulos ProMIR de la asignatura (/pregunta/MIR/AAAA-NNN) o los cuadernillos oficiales (examenesmir)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
+        // v6.10l (auditoría c15, vetadas #22): la regla del blanco ENTERA abre el «cómo» («en blanco si no descartas 2; con 2, marca»: el corte de 110 la dejaba
+        //   en «… descartas 2 …», sin cuándo SÍ marcar) y la fuente, en corto, detrás
+        como: `En blanco si no descartas 2; con 2, marca · «Pool oficial» de la app sin usar → si faltan, solo MIR oficiales con su año-número: las citadas en los capítulos ProMIR de la asignatura (/pregunta/MIR/AAAA-NNN) o los cuadernillos oficiales (examenesmir)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
         enlace: dia.tierC ? { t: `ProMIR · ${dia.tierC.capitulo}`, url: capUrl(dia.tierC.capId) } : { t: 'Cuadernillos MIR', url: EXAMENESMIR },
       };
     }

@@ -32,7 +32,7 @@
 //   corre una ranura y el jue 31-dic es su día de recuperación) · velocidad de vídeo sin cambio (el Step 1 no cambia).
 // v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16): sin cambios en este generador ni en dermaGuiaDatos.ts — la 2.ª pasada de un
 //   B&B repetido (2× + recall 60 s, minutos liberados → 1-2Q) y los minutos B&B a la velocidad de reserva 1,25× viven en src/lib/dermaGuia.ts (solo F1
-//   y el jue 31-dic). Este --check valida además que esas sesiones cuadran y que el reparto de uWorld del plan B no se pasa del stock. La velocidad de
+//   y el jue 31-dic; en 2027 el paso B&B conserva sus minutos de 1,5× y el texto da también los de 1,25×). Este --check valida además que esas sesiones cuadran y que el reparto de uWorld del plan B no se pasa del stock. La velocidad de
 //   Derma sigue en sus cortes D5/D15 (el Step 1 adelanta su 1,25× al D3, pero el d3/d4 curados de Derma —mar 24 y jue 26-nov— van a 1,0× con su guion).
 // v6.09b · lote 1-bis (17-nov-2026, auditoría a2-9): DERMNET_MEDIDO (dermnet_medidas_f1.json: las 11 páginas DermNet del plan B de F1 medidas → minutos
 //   = palabras/120 + 0,25′/imagen con su alcance por secciones). El --check valida además que cada sesión de F1 con atlas DermNet lo lleva medido y con

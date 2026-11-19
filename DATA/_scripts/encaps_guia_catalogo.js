@@ -307,7 +307,9 @@ const AVISO_CODIGO = {
 //   depende de las rondas que registres → sin eval_retest.
 //   comp = [sin usar del código, del código en RE-TEST, de la cola larga del área] del principal (los mismos números de la nota): la guía los pone en el «qué»
 //   del BANCO DEL DÍA (remate v6.10j: el Calendar corta el aviso y la composición solo se veía en la app)
-const PREVISTO_ORIGEN = 'simulación del 18-nov';
+// v6.10l (auditoría c15 · dias-clave #4): el texto visible sin fecha ni procedencia («(previsto: simulación del 18-nov)» se leía como un simulacro el 18-nov,
+//   día sin sesión): «(composición prevista)». La simulación sigue siendo la del 18-nov (arriba).
+const PREVISTO_ORIGEN = 'composición prevista';
 const PREVISTO_SEMANA2 = {
   '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 16, secundario_n: 2, comp: [0, 8, 8], eval_retest: 'banco', nota: 'principal: 0Q de II-5 sin usar en el pool → 8 de II-5 en RE-TEST (las mismas preguntas reales, sin la clave) + 8 libres de la cola larga del área II · secundario II-10: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer III-5: 5Q en RE-TEST (las del banco del mar 24)' },
   '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, comp: [4, 7, 5], eval_retest: 'banco', nota: 'principal: 4Q de I-4 sin usar + 7 de I-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 5 libres de la cola larga del área I · tras este banco quedan 0Q libres de I-4', eval: 'código de ayer II-5: 5Q en RE-TEST (las del banco del mié 25)' },

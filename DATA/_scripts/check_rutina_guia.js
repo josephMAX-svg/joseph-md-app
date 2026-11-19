@@ -1465,6 +1465,43 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   for (const e of rErr) errores.push(e);
 }
 
+// ── v6.10l (rev. c15 · rutina-usmle-synapse-vibe) ──
+//   (a) SHIP «CERRAR»: cada criterio de aceptación de la lista es su cabeza entera (hasta la «→») o un corte en límite de palabra con « …» (nunca media palabra:
+//       «PRONOSTICO_WALKFO», «asignatu») y sin paréntesis / comillas «» abiertos; en F1 el plan B no deja «los A» antes del criterio (1)
+//   (b) vibecoding: el aviso de una semana deload dice la carga de sus minutos reales (S7 «2 días de 45′ + 3 de 15′» · S13-S16 «15′/día» · S17-S20 «journal 5′»)
+//   (c) SYNAPSE: ningún aviso le habla al Calendar («El Calendar debe …») · (d) taper: ningún PC de deload total (0′) dice «30' máx»
+{
+  const lErr = [];
+  for (let iso = '2026-11-18'; iso <= '2027-04-11'; iso = addDias(iso, 1)) {
+    if (dow(iso) === 0) {
+      const g = RG.guiaShipDe(iso); const p = g && g.pasos.find((x) => /^CERRAR lo que el verify/.test(x.que)); const pr = p && V.vibePCDomingo(iso).at(-1);
+      if (p && pr && pr.proyecto) {
+        const ac = pr.proyecto.aceptacion.map((a) => a.split('→')[0].trim());
+        const items = [...p.como.matchAll(/\((\d+)\) (.+?)(?= · \(\d+\) |\.? El plan B|\.? Si todo|\.?$)/g)].map((m) => [Number(m[1]), m[2]]);
+        if (items.length !== ac.length) lErr.push(`${iso} (v610l-a): SHIP con ${items.length} criterios en «CERRAR» (esperados ${ac.length})`);
+        for (const [n, t] of items) {
+          const full = ac[n - 1] || '', cut = /\s…$/.test(t), base = t.replace(/\s…$/, '');
+          if (!cut && t !== full) lErr.push(`${iso} (v610l-a): criterio (${n}) ≠ su cabeza entera: «${t.slice(0, 60)}…»`);
+          if (cut && !(full.startsWith(base) && /[\s,;:)»'"]/.test(full[base.length] || ' '))) lErr.push(`${iso} (v610l-a): criterio (${n}) cortado a media palabra: «${base.slice(-30)}»`);
+          if (cut && ((base.match(/\(/g) || []).length !== (base.match(/\)/g) || []).length || (base.match(/«/g) || []).length !== (base.match(/»/g) || []).length)) lErr.push(`${iso} (v610l-a): criterio (${n}) con un paréntesis o una comilla abiertos`);
+        }
+        if (/a cuenta de estos \d+′: los A/.test(p.como)) lErr.push(`${iso} (v610l-a): el plan B vuelve a ir delante del criterio (1) («… los A …»)`);
+      }
+    }
+    const v = V.vibeDiaDe(iso);
+    if (v && v.deload) {
+      const av = (RG.guiaVibeDe(iso) || {}).aviso || '', mins = V.VIBE_DIAS.filter((y) => y.semana === v.semana).map((y) => y.min);
+      const ok = mins.every((m) => m <= 5) ? /Deload total: journal 5′\./.test(av) : mins.every((m) => m === mins[0]) ? new RegExp(`Mantenimiento: ${mins[0]}′/día\\.`).test(av) : /carga al 50 % \(2 días de 45′ \+ 3 de 15′\)/.test(av);
+      if (!ok || (mins.every((m) => m === mins[0]) && /2 días de 45′/.test(av))) lErr.push(`${iso} (v610l-b): vibecoding S${v.semana}: el aviso de deload no sale de sus minutos (${[...new Set(mins)].join('/')}′): «${av.slice(0, 80)}»`);
+    }
+    const sy = RG.guiaSynapseDe(iso);
+    if (sy && /El Calendar (?:debe|ya está)/.test(sy.aviso || '')) lErr.push(`${iso} (v610l-c): el aviso del SYNAPSE le habla al Calendar`);
+  }
+  for (const t of V.VIBE_TAPER) if (t.tipo === 'deload' && /30' máx|PC dom OPCIONAL/.test(t.shipTxt)) lErr.push(`taper S${t.s} (v610l-d): PC de 0′ (deload total) con «30' máx»`);
+  console.log(`v6.10l · SHIP: criterios en límite de palabra · vibecoding: aviso de deload por minutos reales · SYNAPSE sin notas al Calendar · taper sin «30' máx» en los PC de 0′`);
+  for (const e of lErr) errores.push(e);
+}
+
 // ── salida ──
 if (INF) {
   const fmt = (g) => g.pasos.map((p) => `**${p.min}′** ${p.que.replace(/\|/g, '/')}`).join('<br>');

@@ -313,9 +313,12 @@ function crear(MED, ctx) {
     // v6.10j (rev. c14, cambios-v610i #9): «caben en los 15′» solo si el reloj (a una décima, como se escribe) no pasa de la franja; si pasa (24-dic: 15,4′ ·
     //   26-dic: 15,3′), dice cuánto se pasa y que se termina (margen del plan ±15 %), como ya hacía con más de 0,5′
     const reloj = Math.round(v.min * 10) / 10;
-    const cabeTxt = (cabe) => (reloj <= asig ? cabe : `, ${fmt1(reloj - asig)}′ más que los ${asig}′ de la franja: dentro del margen del plan (±15 %), termínalo`);
+    // v6.10l (rev. c15, vetadas #30 · diffs #38): el exceso, compacto y con su instrucción («(+0,4′: termínalo)»; dentro del margen del plan, ±15 %): con «, 0,4′ más
+    //   que los 15′ de la franja: …» el corte del Calendar (110) dejaba la cifra sola («≈ 14,1′, 0,1′ …») · «PAUSA por idea» (antes «PAUSA para anotar cada idea»)
+    //   para que la cifra y «termínalo» quepan en los 110
+    const cabeTxt = (cabe) => (reloj <= asig ? cabe : ` (+${fmt1(reloj - asig)}′: termínalo)`);
     const como = v.pausa
-      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA para anotar cada idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′${cabeTxt(`, cabe entero en los ${asig}′`)}.${compTxt}${auditTxt}`
+      ? `En el PC, 1,0× con subtítulos en inglés y PAUSA por idea (×1,2): ${ts(seg)} de vídeo ≈ ${fmt1(v.min)}′${cabeTxt(`, cabe entero en los ${asig}′`)}.${compTxt}${auditTxt}`
       : comp
         ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}).${compTxt} Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
       : sab && asig !== b.min

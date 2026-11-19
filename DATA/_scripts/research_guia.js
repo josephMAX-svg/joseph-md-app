@@ -372,7 +372,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     R1: { fuente: '01_PICO.md y el abstract PMID 19807760', check: '¿3 PICO en 01_PICO.md?', puntos: 'el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego', resto: 'Corrige en rojo con esas dos fuentes; si falta algo de R1, anótalo como deuda.' },
     // v6.10 · tanda C (decidido con Joseph en el chat Research, 17-nov): M1 = SR-1 primero → su eval anclada (R0, lun 23) = 1Q de PRISMA-P / PRISMA 2020 /
     //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
-    M1: { fuente: 'sus 3 checklists oficiales', check: '¿respondió el asesor?', puntos: 'para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene', resto: 'Corrige en rojo con las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
+    // v6.10l (auditoría c15, «dias-clave» BAJA): las 3 checklists por su nombre en el «qué» y DÓNDE comprobarlas dentro de los 110 del «cómo» (antes el
+    //   Calendar cortaba en «Compruébalo en 30 s …» y no se veía contra qué ni dónde)
+    M1: { fuente: 'PRISMA-P, PRISMA 2020 y AMSTAR-2', check: '¿respondió el asesor?', puntos: 'qué es y cuántos ítems tiene cada una', resto: 'Corrige en rojo con las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
     'C-1': { fuente: 'candidatos.md', check: '¿5 candidatos con DOI?', puntos: 'la regla de la ventana · por qué un dato verificable', resto: 'Corrige en rojo con candidatos.md.' },
   };
   /** v6.10j: la eval anclada paso a paso de un átomo con Q2: «qué» = recall + fuente + comprobación (≤ 150) · «cómo» = los 2 puntos a papel (≤ 110) + el resto (app). */
@@ -396,8 +398,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     // v6.10 · tanda C: tras M1 (SR-1 + WhatsApp), la express de R0 = 1Q de PRISMA-P / PRISMA 2020 / AMSTAR-2 + ¿respondió el asesor? (regístralo)
     // v6.10e (revisión del 18-nov · dias-1920-5): el recall se COMPRUEBA con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy, PRISMA-P en GoodNotes)
     // v6.10j (auditoría c14): «¿respondió el asesor?» y el arranque dentro de los 150 del «qué» (antes el corte los dejaba fuera) · los puntos del recall, en el «cómo»
-    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (recall en blanco contrastado con ${Q2.M1.fuente}) + ${Q2.M1.check} + abre «Infra académica» y tu gestor`,
-      como: `A papel: ${Q2.M1.puntos}. Compruébalo en 30 s con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy; PRISMA-P en GoodNotes, pág. 5): lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). La checklist: ${base.replace(/^abre /, '')}. ${cuentas}` }; }
+    // v6.10l (auditoría c15): «contra» las 3 checklists por su nombre (el «qué» cabe en 150) y la comprobación —PRISMA-P en GoodNotes, pág. 5; PRISMA 2020 y
+    //   AMSTAR-2 en los recursos de hoy— dentro de los 110 del «cómo»
+    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (recall en blanco contra ${Q2.M1.fuente}) + ${Q2.M1.check} + abre «Infra académica» y tu gestor`,
+      // remate v6.10l (revisión adversarial · visibilidad): dónde está CADA checklist, dentro de los 110 (antes «… con PRISMA-P (GoodNotes, pág. 5) y los recursos»)
+      como: `A papel: ${Q2.M1.puntos}. PRISMA-P: GoodNotes p. 5; las otras dos: recursos de hoy. Lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). La checklist: ${base.replace(/^abre /, '')}. ${cuentas}` }; }
     return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] ? `recall en blanco contrastado con ${Q2[prev.code].fuente}` : 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
       como: `${Q2[prev.code] ? `A papel: ${Q2[prev.code].puntos}. ` : 'El recall a papel, 1 línea por punto y sin mirar; '}lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };

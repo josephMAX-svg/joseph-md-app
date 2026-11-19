@@ -1491,7 +1491,8 @@ export const GUIA_RESEARCH_MINIMO: GuiaBloque = ${JSON.stringify(GR.minimo)};
       //   (el Calendar corta el «qué» a 150 y «corrige con la fuente» del «cómo» necesita verla)
       for (const p of g.pasos) {
         if (!/^Eval anclada/.test(p.que)) continue;
-        const ic = p.que.indexOf('contrastado con'), ie = p.que.search(/¿/);
+        // v6.10l: también «recall en blanco contra <fuente>» (la express de R0 nombra sus 3 checklists y con «contrastado con» pasaba de 150)
+        const ic = p.que.search(/contrastado con|recall en blanco contra /), ie = p.que.search(/¿/);
         if (ic < 0 || (ie >= 0 && ie < ic)) primero.push(`${x.fecha} ${x.code}`);
       }
     }

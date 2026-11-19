@@ -497,7 +497,9 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             <Text style={styles.recetaLine}>
               Cola larga del mini-sim ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
             </Text>
-            <Text style={styles.recetaHint}>Al terminar: CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress; también vale ▲ SIM). Alerta: &lt;{receta.alerta}/25 dos mini-sims seguidos → re-ponderar la semana siguiente.</Text>
+            {/* v6.10l (auditoría c15 · diffs #33): ▲ SIM solo guarda la nota; la RONDA entra al registro por UNA vía: --registrar <JSON> --append en el PC (con las 25
+                preguntas, preferida) o este CIERRE + --pull antes del cierre semanal (gen_encaps_semana.js). Antes: «también vale ▲ SIM», como si fueran equivalentes */}
+            <Text style={styles.recetaHint}>Al terminar: nota /25 en ▲ SIM (solo guarda la nota) y la RONDA por UNA vía: en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;JSON&gt; --append (preferida: guarda las 25 preguntas); o el CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress) y, en el PC, node DATA/_scripts/gen_encaps_semana.js --pull antes del cierre semanal. Alerta: &lt;{receta.alerta}/25 dos mini-sims seguidos → re-ponderar la semana siguiente.</Text>
           </View>
         )}
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}

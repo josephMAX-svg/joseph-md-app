@@ -428,7 +428,8 @@ const fS0 = (sl) => (filaF1(sl) || { fecha: 'sin fecha' }).fecha;
     if (typeof o === 'string') { if (x.bbCh !== 'Colchón' || !x.sub.startsWith(o + ' · COLCHÓN F1')) dif.push(`D${x.d} ≠ ${o}`); return; }
     const v = byD[o];
     for (const k of CAMPOS_CONT) {
-      const a = k === 'sub' && HORA.has(o) ? normSub(x[k]) : x[k], b = k === 'sub' && HORA.has(o) ? normSub(v[k]) : v[k];
+      // v6.10l: el sub de F1 sale sin «· setup Anki FSRS» (gen_usmle_v5.js › SUB_F1: el D3 ya no configura nada; la v5.20 congelada no cambia)
+      const a = k === 'sub' && HORA.has(o) ? normSub(x[k]) : x[k], b = k === 'sub' ? (HORA.has(o) ? normSub(v[k]) : v[k]).replace(/ · setup Anki FSRS$/, '') : v[k];
       if (!eq(a, b)) dif.push(`D${x.d}.${k} ≠ v5.20 D${o}`);
     }
     const kx = Object.keys(x).filter((k) => k !== 'franjaNota').sort().join(), kv = Object.keys(v).filter((k) => k !== 'franjaNota').sort().join();

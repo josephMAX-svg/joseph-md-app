@@ -409,9 +409,12 @@ const COLCHON_F1 = (n) => ({
   bbCh: 'Colchón', bbVid: '—', uw: 'uWorld incorrects (9 sistemas F1)', mat: 'uWorld + Anki', matType: 'clin', palm: null,
 });
 // v6.10b: la ranura 1 (UWSA1) no tiene fecha → fila d = i + 1 + OFF en la mañana F[i] (D2 jue 19-nov … D13 mar 29-dic)
+// v6.10l (rev. c15, dias-clave #7): el sub del D3 de F1 sin «· setup Anki FSRS» (el preset se guardó el jue 19 y el Save to All Subdecks va el vie 20; el
+//   D3 no configura nada). Solo el texto de la fila de F1: la secuencia v5.20 congelada (CONTENT ↔ ref_v6/dias_v520.json) no cambia.
+const SUB_F1 = (s) => s.replace(/ · setup Anki FSRS$/, '');
 const dias = F.map((fecha, i) => {
   const o = EN_F1[i + OFF];
-  return { d: i + 1 + OFF, fecha, ...(typeof o === 'number' ? SEQ_V520[o] : COLCHON_F1(o === 'C1' ? 1 : 2)) };
+  return { d: i + 1 + OFF, fecha, ...(typeof o === 'number' ? { ...SEQ_V520[o], sub: SUB_F1(SEQ_V520[o].sub) } : COLCHON_F1(o === 'C1' ? 1 : 2)) };
 });
 const noIdF1 = EN_F1.map((o, i) => [i + 1, o]).filter(([d, o]) => typeof o === 'number' && o !== d).map(([d, o]) => `D${d} = v5.20 D${o}`);
 console.log(`// F1: ${F.length} mañanas (${NSLOT} ranuras${OFF ? '; la 1.ª, el UWSA1, sale de F1 → tramo 2' : ''}) · temario D1-D${F1_FILAS_TEMARIO}${noIdF1.length ? ' (' + noIdF1.join(' · ') + ')' : ''}${EN_F1.some((o) => typeof o === 'string') ? ' · colchón ' + EN_F1.filter((o) => typeof o === 'string').join('/') : ''}`
@@ -505,7 +508,7 @@ console.log('// hitos F1:', dias.filter((x) => /🎯/.test(x.sub)).map((x) => `D
     if (typeof o !== 'number') return; // C1/C2
     const v = byDv[o];
     for (const k of CAMPOS_CONTENIDO) {
-      const a = k === 'sub' && HORA_V6.has(o) ? normSub(x[k]) : x[k], b = k === 'sub' && HORA_V6.has(o) ? normSub(v[k]) : v[k];
+      const a = k === 'sub' && HORA_V6.has(o) ? normSub(x[k]) : x[k], b = k === 'sub' ? SUB_F1(HORA_V6.has(o) ? normSub(v[k]) : v[k]) : v[k]; // v6.10l: el sub de F1 sin «· setup Anki FSRS» (SUB_F1)
       if (JSON.stringify(a) !== JSON.stringify(b)) dif.push(`D${x.d}.${k} ≠ v5.20 D${o}`);
     }
     if (HORA_V6.has(o) && !(x.sub.includes('(07:00-12:30)') && v.sub.includes('(07:15-11:00)'))) dif.push(`D${x.d}.hora`);

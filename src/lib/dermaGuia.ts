@@ -27,7 +27,8 @@
  * v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16; SOLO F1 y el jue 31-dic: LOTE1_HASTA, 2027 queda igual):
  *  · el mismo B&B por 2.ª vez o más (bbAparicion) = «2.ª PASADA a 2× + recall de 60 s»; los minutos que libera → 1-2Q de uWorld del System del átomo
  *    que el plan no reparte o, si el plan lo reparte entero (Inflammatory y Skin and soft tissue infections), 1-2Q de ProMIR Dermatología del capítulo afín;
- *  · el paso B&B «1,5× (si no, 1,25×)» lleva los minutos a 1,25× (bbMinReserva): lo que sobre a 1,5× pasa al proyecto Claude;
+ *  · el paso B&B «1,5× (si no, 1,25×)» lleva los minutos a 1,25× (bbMinReserva): lo que sobre a 1,5× pasa al proyecto Claude (2027: el paso sigue con los
+ *    minutos de 1,5× y el texto da los dos —a 1,25×, los minutos de más salen del paso de práctica real—);
  *  · el atlas DermNet sigue «sin medir» (medirlo pide red: queda pendiente con la regla de F1, palabras/120 + 0,25′/imagen).
  * v6.09b · lote 1-bis (17-nov-2026, auditoría a2-9; SOLO F1 y la transición, ≤ LOTE1_HASTA): el atlas DermNet del plan B lleva su MEDIDA (DERMNET_MEDIDO de
  *  dermaGuiaDatos.ts: alcance por secciones + palabras + imágenes → minutos = palabras/120 + 0,25′/imagen); lo que no usa de sus 8′ pasa al proyecto Claude
@@ -113,11 +114,15 @@ const bbMin = (id: number, fecha: string): number => { const v = BB_DERM[id]; co
 // ── v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16) — SOLO F1 + jue 31-dic (≤ LOTE1_HASTA); 2027 sigue igual (otro lote) ──
 /** Último día al que se aplican las reglas del lote 1 (F1 y la transición). */
 const LOTE1_HASTA = '2027-01-03';
-/** a2-16: el paso B&B «1,5× (si no, 1,25×)» lleva los minutos de la velocidad de RESERVA (1,25×) para que cuadre también si el free recall no deja subir. */
+/** a2-16: el paso B&B «1,5× (si no, 1,25×)» lleva los minutos de la velocidad de RESERVA (1,25×) para que cuadre también si el free recall no deja subir.
+ *  Solo F1 (≤ LOTE1_HASTA): en 2027 el paso conserva los minutos de 1,5× (y con ellos la cadena de casos DermNet del plan) y el TEXTO da los minutos a 1,25×
+ *  y de dónde salen (bbMin125). */
 const bbMinReserva = (id: number, fecha: string): number => {
   const v = BB_DERM[id]; const k = vel(fecha);
   return v && fecha <= LOTE1_HASTA && k.v === 1.5 ? Math.round((v.s / 60 / 1.25) * k.f) : bbMin(id, fecha);
 };
+/** Minutos del B&B a la velocidad de reserva (1,25×), con el mismo factor de pausas que la velocidad del día. */
+const bbMin125 = (id: number, fecha: string): number => { const v = BB_DERM[id]; const k = vel(fecha); return v ? Math.round((v.s / 60 / 1.25) * k.f) : 0; };
 /** v6.09b · lote 1-quater (revisión R2 · pendiente de U2): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q (la guía
  *  daba ~3′/Q: 4Q en 12′ = 0,78). Solo F1 (≤ LOTE1_HASTA); 2027 sigue con 4Q en 12′ (otro lote). */
 const TUTOR_MIN_Q = 1.5 + 0.85;
@@ -656,8 +661,12 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: res
       // remate v6.10j (revisión adversarial, visibilidad #3): la CONDICIÓN del 1,5× pegada a sus minutos, dentro de los 110 del Calendar (antes el 1,5× se leía
       //   incondicional y la reserva enseñaba solo «1,25× = 9′ … (1,25× es …»)
-      ? `Qbankly › Video Library › B&B Step 1 · 1,5× = ${bbMin(a.bb, dia.fecha)}′ si el último free recall dio ≥3 ideas; si no, 1,25× = ${m}′ · free recall de 60 s al terminar (con pausas; a 1,5×, lo que sobre pasa al paso de práctica real —casos DermNet / ProMIR—; ${k.subs}).`
-      : k.cond ? `Qbankly › Video Library › B&B Step 1 · ${k.x} = ${m}′ si el último free recall dio ≥3 ideas (si no, 1,25×) · free recall de 60 s al terminar (con pausas; ${k.subs}).`
+      // v6.10l (auditoría c15): los subtítulos delante, dentro de los 110 del Calendar (antes «; con subtítulos EN» iba al final y el corte lo dejaba fuera);
+      //   «› B&B Step 1» ya lo dice el «qué»
+      ? `Qbankly › Video Library (${k.subs.replace(/^con /, '')}) · 1,5× = ${bbMin(a.bb, dia.fecha)}′ si el último free recall dio ≥3 ideas; si no, 1,25× = ${m}′ · free recall de 60 s al terminar (con pausas; a 1,5×, lo que sobre pasa al paso de práctica real —casos DermNet / ProMIR—).`
+      // 2027 (sin la reserva del lote 1, remate v6.10l): los dos minutos y de dónde salen los de más a 1,25×, dentro de los 110 del Calendar (antes «(si no,
+      //   1,25×)» sin minutos, que no cuadraba con el paso); la ruta, detrás
+      : k.cond ? ((d) => `Qbankly (${k.subs.replace(/^con /, '')}) · ${k.x} = ${m}′ si el último free recall dio ≥3 ideas; si no, 1,25× = ${m + d}′${d > 0 ? ` (+${d}′ de la práctica real)` : ''} · Video Library › B&B Step 1 · free recall de 60 s al terminar (con pausas)${d > 0 ? `; a 1,25×, el paso de práctica real (casos DermNet / ProMIR) cede esos ${d}′` : ''}.`)(Math.max(0, bbMin125(a.bb, dia.fecha) - m))
       : `Qbankly › Video Library › B&B Step 1 · ${k.x} = ${m}′ con pausas · free recall de 60 s al terminar (${k.subs}).`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
   }
   // v6.09b · lote 1-bis (a2-9) → lote 1-ter (revisión R, hallazgos 4 · 5 · 8): en F1 el atlas lleva su medida POR FECHA (DERMNET_MEDIDO: lecturas + palabras +

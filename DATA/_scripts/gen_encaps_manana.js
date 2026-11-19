@@ -108,6 +108,10 @@
  *   (CI S2 → 18:00)» (y un rango partido se nombra por lo que queda: «SP S5-S7 + SP 1/11 (SP S8 → 18:00)»). (2) El TEXTO PRIMERO escribe una suma que cierra
  *   con los minutos del paso («25′ = PPT 10′ + Theoesencial ≈17 p en 15′»). (3) El banqueo grabado usa la duración real del vídeo si el JSON la trae
  *   (teoria[].video, mm:ss: Banqueo 1/19 = 27:37, THEOMED_Y_DRIVE §1.3) y, si el paso tiene ≥1′ más que la cuenta, el «qué» dice qué hacer con ella.
+ * v6.10l (19-nov-2026, auditoría del volcado c15): solo texto. (1) La REVISIÓN NORMATIVA escribe una suma que cierra («35′ = PDF 11 p en 22′ + 13′ de vídeo a
+ *   2×, solo para dudas»; antes «(35′: vídeo de 35′ + PDF de 11 p)») y su «cómo» dice su orden real (PDF → vídeo solo en lo que no aclare). (2) La cabecera del
+ *   día (RESUMEN) nombra la teoría como el título de la TEORÍA («… (CI S2 → 18:00)»). (3) El criterio de vigencia, corto y DELANTE en los pasos de verificación
+ *   en la norma («Si dos fuentes no coinciden, manda la más reciente: campus Theomed 2027-I / MINSA»; antes el Calendar cortaba en «manda la norma más …»).
  */
 'use strict';
 const fs = require('fs');
@@ -477,7 +481,16 @@ function unidades(it) {
   if (/^Revisión normativa/.test(it.item)) {
     const pdf = Number((/PDF (\d+) p/.exec(it.item) || [])[1] || 0);
     const ex = durJ / VEL_TEXTO + pdf * PDF_P; // v6.09b: PDF a 2′/página (antes 1′)
-    return [{ tipo: 'texto', min: Math.round(ex), exact: ex, codigos: it.codigos || [], que: (min) => `${it.item} · TEXTO PRIMERO (${min}′: vídeo de ${it.duracion}${pdf ? ` + PDF de ${pdf} p` : ''})${cod}`, como: `${cap(MODO.texto)}.${pdf ? ` El PDF, a ${PDF_P}′ por página.` : ''} Ruta: ${RUTA.adic} › revisiones normativas.`, enlace: L116 }];
+    // v6.10l (auditoría c15 · dias-clave #3): la suma escrita CIERRA con los minutos del paso, como en las sesiones en texto primero (antes «(35′: vídeo de 35′ +
+    //   PDF de 11 p)», que no suma 35, y un «cómo» que repartía PPT + Theoesencial sin minutos): PDF a 2′/p + el resto, el vídeo a 2× solo en lo que el PDF no
+    //   aclare (≈ vídeo ÷ texto_div); sin páginas en el JSON, los minutos son vídeo ÷ texto_div con el PDF en texto primero (remate v6.10l: sin el «÷ 3» a la
+    //   vista, que se leía como «el vídeo a 3×»: los minutos, el PDF a su ritmo por página y el vídeo a 2× solo para dudas)
+    const queRN = (min) => {
+      if (!pdf && Math.abs(min - durJ / VEL_TEXTO) >= 1) aborta(`«${it.item}» (${it.fecha}): ${min}′ ≠ vídeo de ${it.duracion} ÷ ${VEL_TEXTO} (la suma escrita no cerraría)`);
+      if (pdf && min - pdf * PDF_P < 1) aborta(`«${it.item}» (${it.fecha}): ${min}′ no dan para el PDF de ${pdf} p a ${PDF_P}′/p y algo de vídeo`);
+      return `${it.item} · TEXTO PRIMERO (${pdf ? `${min}′ = PDF ${pdf} p en ${pdf * PDF_P}′ + ${min - pdf * PDF_P}′ de vídeo a 2×, solo para dudas` : `${min}′: el PDF primero, a ${PDF_P}′/p; el vídeo de ${it.duracion} a 2×, solo para dudas`})${cod}`;
+    };
+    return [{ tipo: 'texto', min: Math.round(ex), exact: ex, codigos: it.codigos || [], que: queRN, como: `Primero el PDF de la revisión (la norma: definiciones de las primeras páginas, tablas, flujogramas, cifras)${pdf ? `, a ${PDF_P}′ por página` : ''}; después el vídeo (${it.duracion}) a 2×, solo en lo que el PDF no aclare. Ruta: ${RUTA.adic} › revisiones normativas.`, enlace: L116 }];
   }
   const v = /^(SP|CI|GES|INV|ET) (\d+)\/(\d+)\b(.*)$/.exec(it.item);
   if (v && it.modo === 'vivo_diferido') {
@@ -646,7 +659,12 @@ function hechoTeoria(dia) {
   return [ses ? 'sesiones vistas o leídas, con notas SOLO en forma de pregunta' : null, hoja ? 'hoja de reglas releída entera (las que no salieron, con ★)' : null,
     ...qs.map((q) => `las ${q.n}Q respondidas con su confianza y corregidas (cada fallo con su tipo y su regla de 1 línea)`)].filter(Boolean).join(' · ');
 }
-const VIGENCIA = 'Si dos fuentes no coinciden, manda la norma más reciente del campus Theomed 2027-I / MINSA.';
+// v6.10l (auditoría c15 · vetadas-cortes #25): el criterio entero y corto («manda la más reciente: campus Theomed 2027-I / MINSA»), y DELANTE en los pasos de
+//   verificación (el Calendar corta el «cómo» a 110: antes quedaba «… manda la norma más …» en las 19 mañanas)
+const VIGENCIA = 'Si dos fuentes no coinciden, manda la más reciente: campus Theomed 2027-I / MINSA.';
+// v6.10l (remate, revisión adversarial · visibilidad): en los pasos de verificación, QUÉ buscar y el criterio, los dos dentro de los 110 del Calendar (antes
+//   el criterio delante dejaba fuera «definición, tabla o flujograma»)
+const VERIF_NORMA = 'Busca definición, tabla o flujograma; si dos fuentes difieren, manda la más reciente (Theomed 2027-I / MINSA).';
 const WDL = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 /** v6.07 (fix lote 1b del Calendar): de qué mañana ENCAPS son las tarjetas y los errores del arranque de `hoy` (la anterior es `prev`):
  *  «de ayer» solo si fue el día anterior · «del viernes» / «del lunes» / «del miércoles» si es la mañana ENCAPS anterior de la rotación
@@ -714,6 +732,7 @@ const GA_FECHAS = [], GA_OCULTOS = [];
 for (const d of DIAS_GA) (usmleOcupaGA(d) ? GA_OCULTOS : GA_FECHAS).push(d);
 
 // ── guías de la MAÑANA ─────────────────────────────────────────────────────────────────────────────────────────
+const RES_T = {}; // v6.10l: nombres de la teoría de cada mañana como en su título (RESUMEN)
 const GM = {}, GT = {}, MD = {}, QUE_TRAMOS = {}; // v6.09 (fix 2): QUE_TRAMOS = qué lleva cada tramo de un domingo de plan en tramos
 const RB_INFO = {}, RB_DOM = {}; // v6.09b lote 1-quater FX1: reparto de la teoría de cada mañana · horario real de la rama B (clase del sábado NO vista en vivo)
 // v6.09b lote 1-bis (hallazgo 2): pasos de las 18:00 que no caben (lo pendiente de la mañana los desplaza) → se les da destino después de generar todas las tardes
@@ -744,7 +763,7 @@ for (const dia of J.mananas) {
     gs.push(guia(fr('09:45', '11:40'), `${tag} · CORRECCIÓN DEL SIMULACRO Y REGLAS`, [
       P(10, 'Nota y % por área', 'Con la versión con claves. Nota = aciertos × 0,2. Anota el % de cada área.'),
       P(85, 'Cada error y cada dudosa', `${cap(TIPOS_ERROR)}. Mira por qué es correcta la buena, no solo la tuya.`),
-      P(20, 'Verificación en la norma', `Las reglas de cifra o definición, contra la norma (definición, tabla o flujograma). ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99),
+      P(20, 'Verificación en la norma de las reglas de cifra o definición', `${VERIF_NORMA} Ruta: ${RUTA.normas}.`, L99), // v6.10l: qué buscar y el criterio, delante
     ], [R99], 'nota y % por área en el registro; cada error con su regla de 1 línea', { planB: `Si una norma no está en el campus: ${RUTA.drLopezNorm}.` }));
     gs.push(guia(fr('11:40', '12:00'), `${tag} · TARJETAS + CIERRE DEL AÑO`, [
       P(15, '5-10 tarjetas nuevas de lo que fallaste', 'Solo cifra o definición textual.'),
@@ -794,6 +813,9 @@ for (const dia of J.mananas) {
     };
     const resumenT = dia.teoria.filter((t, k) => t.modo !== 'theoesencial' && !fueraK.has(k)).map((t) => (t.modo === 'preguntas' ? `${t.n}Q cronometradas` : nombreT(t, dia.teoria.indexOf(t)))).join(' + ') + (dia.teoria.some((t) => t.modo === 'theoesencial') ? ' + Theoesencial' : '')
       + (fueraT.length ? ` (${fueraT.join(' + ')} → ${esDomPlan(dia.fecha) ? 'al terminar la mañana' : '18:00'})` : '');
+    // v6.10l (auditoría c15 · diffs #36): la cabecera del día (RESUMEN = tema.manana.resumen) nombra la teoría como este título: sin lo que va entero a las 18:00
+    //   y con el rango partido por lo que queda («Banqueo 4/19 + CI S1 (CI S2 → 18:00)»; antes «… + CI S1 + CI S2» bajo un título que ya lo sacaba)
+    RES_T[dia.fecha] = { fueraK, nombres: dia.teoria.map((t, k) => nombreT(t, k)), cola: fueraT.length ? ` (${fueraT.join(' + ')} → ${esDomPlan(dia.fecha) ? 'al terminar la mañana' : '18:00'})` : '' };
     // v6.09: en un domingo de plan lo pendiente va a sus cifras, normas y flashcards FLEXIBLES (a las 18:00 está el baile)
     // v6.09 (fix revisión 16-nov, joseph 3): ese bloque ya no es flexible: va a hora fija al terminar la mañana (sin la hora escrita: la mañana se desplaza)
     const a18Txt = esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00 de hoy';
@@ -842,7 +864,8 @@ for (const dia of J.mananas) {
     const verif = minC - minCorr;
     gs.push(guia(fr(finB, '11:40'), `${tag} · CORRECCIÓN Y REGLAS${normaHoy ? ' + NORMA' : ''}`, [
       P(minCorr, `Cada fallo y cada dudosa de las ${nMax === nQ ? nQ : `${nQ}-${nMax}`}Q de hoy → ${minCorr}′`, `${cap(TIPOS_ERROR)}. Mira por qué es correcta la buena, no solo la tuya. ${String(CORR_Q).replace('.', ',')}′ por pregunta${verif ? ': si hiciste menos, el tiempo que sobra va a la verificación.' : '; las reglas de cifra o definición, contra la hoja de reglas de esta mañana (hoy no hay franja aparte de verificación en la norma).'}${trampasSec(dia.banqueo.area, dia.fecha)}`),
-      ...(verif ? [P(verif, normaHoy ? `Verificación en la norma: ${normaHoy}` : 'Verificación en la norma de cada regla nueva', `Definición de las primeras páginas, tabla o flujograma. ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99)] : []),
+      // v6.10l (auditoría c15 · vetadas-cortes #25): el criterio de vigencia delante del corte del Calendar (antes «… manda la norma más …»)
+      ...(verif ? [P(verif, normaHoy ? `Verificación en la norma: ${normaHoy}` : 'Verificación en la norma de cada regla nueva', `${VERIF_NORMA} Ruta: ${RUTA.normas}.`, L99)] : []),
     ], [R99], verif ? 'cada fallo con su tipo y su regla de 1 línea en el registro; las reglas verificadas en la norma'
       // v6.10h (c11 · 5-ene): sin franja de verificación en la norma, el «Hecho» no la pide (las reglas de cifra o definición se contrastan con la hoja de reglas)
       : 'cada fallo con su tipo y su regla de 1 línea en el registro; las de cifra o definición, contrastadas con la hoja de reglas', { planB: verif ? `Si la norma no está en el campus: ${RUTA.drLopezNorm}.` : 'Si la hoja de reglas no está a mano: tus notas de Obsidian de cada código (la regla y la cifra exacta); hoy no hay verificación en la norma.' }));
@@ -1770,7 +1793,8 @@ if (ERR.length) aborta(`${ERR.length} error(es) de forma:\n  ` + ERR.slice(0, 40
 // ── emisión ───────────────────────────────────────────────────────────────────────────────────────────────────
 const RESUMEN = {};
 for (const dia of J.mananas) {
-  const t = dia.teoria.length ? dia.teoria.map((x) => (x.modo === 'preguntas' ? `${x.n}Q cronometradas` : x.item.replace(/\s*\(.*\)$/, ''))).join(' + ') : dia.banqueo.area.replace(/\s*\+ corrección$/, '');
+  const r = RES_T[dia.fecha] || null; // v6.10l: como el título de la TEORÍA (sin lo que va entero a las 18:00; el rango partido, por lo que queda)
+  const t = dia.teoria.length ? dia.teoria.map((x, k) => [x, k]).filter(([, k]) => !(r && r.fueraK.has(k))).map(([x, k]) => (x.modo === 'preguntas' ? `${x.n}Q cronometradas` : r ? r.nombres[k] : x.item.replace(/\s*\(.*\)$/, ''))).join(' + ') + (r ? r.cola : '') : dia.banqueo.area.replace(/\s*\+ corrección$/, '');
   RESUMEN[dia.fecha] = `${t} · ${dia.fase === 'cierre' ? 'simulacro 100Q' : `banqueo ${dia.banqueo.n}Q ${dia.banqueo.area}`}`;
 }
 const M = Object.fromEntries(J.mananas.map((d) => [d.fecha, { fecha: d.fecha, n: d.n, de: NM, fase: d.fase, teoria: d.teoria, banqueo: d.banqueo, norma: d.norma, extra: d.extra, resumen: RESUMEN[d.fecha], pendiente18: (MD[d.fecha] && MD[d.fecha].tarde.map((u) => u.postTest || u.que)) || [], ...(EXTRA.has(d.fecha) ? { diaExtra: EXTRA.get(d.fecha) } : {}), ...(DOM_PLAN.has(d.fecha) ? { domingoPlan: DOM_PLAN.get(d.fecha) } : {}), ...(DOM_PLAN_H.has(d.fecha) ? { domingoPlanHoras: { manana: DOM_PLAN_H.get(d.fecha).manana, que: QUE_TRAMOS[d.fecha], tarde: DOM_PLAN_H.get(d.fecha).tarde, compromiso: DOM_PLAN_H.get(d.fecha).compromiso } } : {}) }]));

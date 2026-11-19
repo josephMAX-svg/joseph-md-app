@@ -344,7 +344,7 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       //   (solo en la app) · la [TEST S1] es la 1.ª tarjeta de APEX::USMLE: crea el mazo raíz y ::Cardiology (suspendida); el preset va al cerrar el bloque Step de
       //   las 07:15 (usmleGuia) · v6.10j (rev. c14, vetadas #5): el corte del «cómo» dejaba «… → Ctrl+Shift+A → n8n › …» y se perdía QUÉ ejecución se mira →
       //   «(Ctrl+Shift+A) → n8n › Executions → la 1.ª» va en el «qué» (≤ 150, entero) y el «cómo» empieza por «El verde solo NO basta» (antes al final del «qué»)
-      P(13, 'APEX [TEST S1] (Ctrl+Shift+A) → n8n › Executions → la 1.ª: éxito = Parsear acaba en «murmur LOUDER.)» · anki-ok + ankiNoteId · success + filepath', 'El verde solo NO basta. Ctrl+A, Ctrl+C del .txt de D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\ → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El .txt es S1_bloque_APEX_prueba_USMLE.txt (el mismo texto está en el PDF de GoodNotes › S01_APEX). Con Anki cerrado también sale verde: mandan los items, no el color.'),
+      P(13, 'APEX [TEST S1] (Ctrl+Shift+A) → n8n › Executions → la 1.ª: éxito = Parsear acaba en «murmur LOUDER.)» · anki-ok + ankiNoteId · success + filepath', 'El verde NO basta. Copia D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\S1_bloque_APEX_prueba_USMLE.txt (Ctrl+A, Ctrl+C) → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El mismo texto está en el PDF de GoodNotes › S01_APEX. Con Anki cerrado también sale verde: mandan los items, no el color.'), // v6.10l (rev. c15, vetadas #32): el nombre del .txt dentro de la ruta (el corte del «cómo» a 110 dejaba la carpeta sin el fichero)
       P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas; APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
     ];
     case 3: return [
@@ -475,6 +475,17 @@ function vibeComoTipoDe(dia: DiaVibe, p: VibeProyecto | undefined, iso: string):
   if (dia.tipo !== 'ship-prep' || !p || !textosQSDe(iso)) return base;
   return `Lo que falle → SHIP S${p.s} del ${fCorta(p.ship)} (flexible). ${base.replace(' Lo que falle va al SHIP del domingo.', '').replace(/<n>/g, String(p.s))}`;
 }
+/** v6.10l (rev. c15, cambios #14): el aviso de una semana con flag deload sale de los minutos REALES de sus días (VIBE_DIAS): S7 = «carga al 50 % (2 días
+ *  de 45′ + 3 de 15′)» · S13-S16 (taper, todos de 15′) = «Mantenimiento: 15′/día» · S17-S20 (todos de 5′) = «Deload total: journal 5′». Antes el texto de
+ *  la S7 iba fijo en cualquier semana deload (falso en las 30 mañanas del taper). */
+function vibeDeloadTxt(semana: number): string {
+  const mins = VIBE_DIAS.filter((y) => y.semana === semana).map((y) => y.min);
+  if (!mins.length) return '';
+  if (mins.every((m) => m <= 5)) return `Deload total: journal ${Math.max(...mins)}′.`;
+  if (mins.every((m) => m === mins[0])) return `Mantenimiento: ${mins[0]}′/día.`;
+  const n = new Map<number, number>(); for (const m of mins) n.set(m, (n.get(m) ?? 0) + 1);
+  return `Semana DELOAD del vibecoding: carga al 50 % (${[...n].sort((a, b) => b[0] - a[0]).map(([m, k], i) => `${k}${i ? '' : ` día${k > 1 ? 's' : ''}`} de ${m}′`).join(' + ')}).`;
+}
 export function guiaVibeDe(iso: string): GuiaBloque | null {
   const dia: DiaVibe | undefined = vibeDiaDe(iso);
   if (!dia) return null;
@@ -526,7 +537,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
       // v6.09b lote 1-quater (QS · e): en F1 el plan B dice a qué SHIP va el paso (el del proyecto en curso, con fecha); fuera de F1, sin cambio
       planB: `Si el día se recorta: pierde el proyecto${fxV && faseV6(iso) === 'TRANSICION' ? '' : `, nunca el Anki${fxV ? ' (hoy, a las 21:30)' : ' de las 05:00'}`}. Sin PC: journal en el móvil (3 líneas) y el paso pasa al ${p && textosQSDe(iso) ? `SHIP S${p.s} del ${fCorta(p.ship)} (flexible)` : 'bloque PC de la semana'}.`,
       aviso: [
-        dia.deload ? 'Semana DELOAD del vibecoding: carga al 50 % (2 días de 45′ + 3 de 15′).' : '',
+        dia.deload ? vibeDeloadTxt(dia.semana) : '',
         iso === VIBE_META.inicio ? `Primer día: el journal de esta semana (${sem}.md) todavía no existe; lo crea el comando del paso 1.` : '',
         // v6.10c: la hora real del día extra (sáb 2-ene 04:15-04:30; v6.10: sáb 28-nov 05:00-05:45, «justo antes de la rutina»)
         fxV ? `Hoy ${dow(iso) === 0 ? 'domingo' : 'sábado'}, a hora fija (${fxV.ini}-${fxV.fin}${fxV.fin === '05:45' ? ', justo antes de la rutina de las 05:45' : ''}): el paso que toca en orden (el mar 17-nov fue sin sesión y cada paso de F1 corrió un día${faseV6(iso) === 'TRANSICION' ? ' hasta fin de año: hoy, el último de F1' : ''}; desde el lunes, las fechas de siempre).` : '',
@@ -606,7 +617,7 @@ const SYN_SERIES: Array<{ tag: 'B' | 'C'; primera: (b: SynBloque) => boolean; ca
       const tras = fin ? ' Con esto terminas el episodio.' : '';
       if (ses.tipo === 'primera') return { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: `${pre}Auriculares, 1,0×. Para a los 10:00 y anota el minuto.`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
       if (ses.tipo === 'comodin') return { que: `Comodín de audio · No Priors (Greg Brockman) → minutos ${mmTxt(desde)}-${mmTxt(hasta)}`, como: `${pre}Retoma donde paraste el ${prevTxt(prev, 'lunes')}. Nada nuevo.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
-      return { que: `No Priors · sigue el episodio de Greg Brockman → minutos ${mmTxt(desde)}-${mmTxt(hasta)}${fin ? ' (final)' : ''}`, como: `${pre}Auriculares, 1,0×. Retoma donde paraste el ${prevTxt(prev, 'lunes')}: el «episodio de esta semana» del plan es este mientras no lo termines.${tras}`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' };
+      return { que: `No Priors · sigue el episodio de Greg Brockman → minutos ${mmTxt(desde)}-${mmTxt(hasta)}${fin ? ' (final)' : ''}`, como: fin ? `Auriculares, 1,0×. Retoma donde paraste el ${prevTxt(prev, 'lunes')} y termina el episodio.` : `${pre}Auriculares, 1,0×. Retoma donde paraste el ${prevTxt(prev, 'lunes')}. Hasta acabarlo, ningún episodio nuevo («episodio de esta semana»).`, url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' }; // v6.10l (rev. c15, cambios #18): el dato delante (el corte del «cómo» a 110 dejaba «… del plan es …»)
     } },
   { tag: 'C', primera: ES_WILLISON_PI, carril: ES_WILLISON_PI, comodin: (b) => /^Comodín de lectura/.test(b.material), total: 1457, paso0: 500, paso: 500,
     txt: ({ desde, hasta, total, ses, prev, sig }) => {
@@ -805,7 +816,7 @@ export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: st
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
   if (h?.nbme) return { franja: franjaDesde('13:00', min), aviso: 'Día de NBME (07:00-12:30): almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (guía USMLE del hito).' };
-  if (encapsOnceATrece(iso)) return { franja: franjaDesde('13:00', min), aviso: `Hoy el ENCAPS va a la hora real del examen (${iso === D2_ENCAPS ? 'D-2 · DRESS REHEARSAL' : 'SIM 100Q'} 11:00-13:00): SYNAPSE 13:00-13:30, al terminar (como en los días de NBME); a las 12:30 no hay SYNAPSE. El Calendar debe mostrarlo a las 13:00.` };
+  if (encapsOnceATrece(iso)) return { franja: franjaDesde('13:00', min), aviso: `Hoy el ENCAPS va a la hora real del examen (${iso === D2_ENCAPS ? 'D-2 · DRESS REHEARSAL' : 'SIM 100Q'} 11:00-13:00): SYNAPSE 13:00-13:30, al terminar (como en los días de NBME); a las 12:30 no hay SYNAPSE.` };
   return { franja: franjaDesde('12:30', min) };
 }
 export function guiaSynapseDe(iso: string): GuiaBloque | null {
@@ -820,7 +831,8 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
   const min = abc.reduce((a, b) => a + b.min, 0);
   const rcTxt = (() => { const m = abc.map((b) => / · recupera el (.+)$/.exec(b.leccion)).find(Boolean); return m ? m[1] : null; })();
   const { franja, aviso } = lleg
-    ? { franja: franjaDesde(lleg.fin, min), aviso: `Domingo de llegada: este A/B/C recupera el ${rcTxt ?? 'día sin sesión'} y va a hora fija, al terminar la recuperación ENCAPS del viaje (${lleg.ini}-${lleg.fin}); nada de estudio desde las 17:00. El SHIP S1 del vibecoding es el domingo que viene.` }
+    // v6.10l (rev. c15, cambios #18): el dato delante y más corto (el Calendar corta el aviso en 240 y dejaba «El SHIP S1 del vibecoding es …»)
+    ? { franja: franjaDesde(lleg.fin, min), aviso: `Domingo de llegada: este A/B/C recupera el ${rcTxt ?? 'día sin sesión'} a hora fija, tras la recuperación ENCAPS del viaje (${lleg.ini}-${lleg.fin}); nada de estudio desde las 17:00. ${(() => { const p1 = vibeProyectoDe(1); return p1 ? `SHIP S1 del vibecoding: ${fCorta(p1.ship)}.` : 'El SHIP S1 del vibecoding, el domingo que viene.'; })()}` }
     : synFranjaDe(iso, min);
   const pasos = abc.map((b) => pasoSyn(b, iso));
   const recursos = abc.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min }));
@@ -882,7 +894,8 @@ function synFaseAvisoDe(iso: string): string {
   const n = SYN_FASES_BC.length;
   if (f.gateFechas.includes(iso)) {
     // sin fechas futuras: va al final del aviso y el Calendar lo corta en 240 (control 26j); «el PC del domingo» = el siguiente (SHIP, flexible)
-    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}${/^«/.test(f.gate) ? ' Si no lo apruebas: se repite en el PC del domingo solo con lo fallado; la fase siguiente empieza en su fecha.' : ''}`;
+    // v6.10l (rev. c15, cambios #18): «Suspendido → PC del domingo» delante y corto (el corte en 240 dejaba «Si no lo apruebas: se repite en el PC …»)
+    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}${/^«/.test(f.gate) ? ' Suspendido: al PC del domingo, solo lo fallado (la fase siguiente empieza en su fecha).' : ''}`;
   }
   return `Base cero · fase ${f.id}/${n}${f.desde === iso ? ' (empieza hoy)' : ''} · ${f.corto} · gate: ${f.gateCorto}.`;
 }
@@ -980,6 +993,35 @@ function shipPBDestDe(dom: string): string | null {
   //   el mar 1-dic, como en la v6.09 (sin esto caía en el ship-prep del lun 30 y su «cómo» corría la fecha del SHIP S2 más allá del carácter 100)
   return dom <= FECHAS_V6.transicion.hasta && p.fin <= addDias(dom, -5) && dSig && dSig.tipo === 'ship-prep' && dSig.semana !== p.s ? addDias(dom, 2) : lunSig;
 }
+/** v6.10l (rev. c15, cambios #13 · vetadas #23): un criterio de aceptación en la lista del paso «CERRAR» del SHIP = lo que se comprueba (hasta la «→») y,
+ *  si pasa de CRIT_MAX caracteres, cortado en el último fin de cláusula (o, si no hay, de palabra) con « …», sin conector colgando ni paréntesis / comillas
+ *  abiertos (antes .slice(0, 70) partía la palabra: «PRONOSTICO_WALKFO», «asignatu», «imprime l»). El criterio entero sigue en el journal y en Estudio. */
+const CRIT_MAX = 100;
+const COLG_CRIT = /\s(?:a|al|de|del|en|con|por|para|y|o|e|u|el|la|los|las|lo|que|se|sin|su|sus|un|una|ni|no|cada|como|si|ya|desde|tras|hasta|más|\+|·|—|=|→|›)$/u;
+const abiertoEn = (s: string, a: string, b: string): number => { const st: number[] = []; for (let i = 0; i < s.length; i++) { if (s[i] === a) st.push(i); else if (s[i] === b && st.length) st.pop(); } return st.length ? (st[0] as number) : -1; };
+function colaCriterio(x: string): string {
+  let r = x;
+  for (let k = 0; k < 8; k++) {
+    const y = r;
+    const p = abiertoEn(r, '(', ')'); if (p >= 0) r = r.slice(0, p).trimEnd();
+    const q = abiertoEn(r, '«', '»'); if (q >= 0) r = r.slice(0, q).trimEnd();
+    const sq = /(?:^|[\s(])'(?=[\p{L}\d][^']*$)/u.exec(r); if (sq) r = r.slice(0, sq.index).trimEnd(); // 'texto' abierto (no «5'» de minutos)
+    if ((r.match(/"/g) || []).length % 2) r = r.slice(0, r.lastIndexOf('"')).trimEnd();
+    r = r.replace(/[\s,;:·+(—=→›]+$/u, '');
+    const m = COLG_CRIT.exec(r); if (m) r = r.slice(0, m.index).trimEnd();
+    if (r === y) break;
+  }
+  return r;
+}
+function critCorto(a: string): string {
+  const x = (a.split('→')[0] ?? a).trim();
+  if (x.length <= CRIT_MAX) return x;
+  const c = x.slice(0, CRIT_MAX + 1);
+  const z = Math.max(c.lastIndexOf(', '), c.lastIndexOf('; '), c.lastIndexOf(' · '), c.lastIndexOf(' ('), c.lastIndexOf(' + '), c.lastIndexOf(': '));
+  let r = z >= CRIT_MAX * 0.5 ? colaCriterio(x.slice(0, z)) : '';
+  if (r.length < CRIT_MAX * 0.5) r = colaCriterio(x.slice(0, c.lastIndexOf(' ')));
+  return `${r} …`;
+}
 /** v6.07: PC del DOMINGO (SHIP · avance · PC opcional del taper; vibePCDomingo), flexible y sin hora fija: la franja de la guía es solo un ejemplo
  *  (shipEjemploIni; el bloque de plantillasV6 no tiene hora). Si ese día el SYNAPSE trajera A/B/C, van detrás (hoy el domingo solo trae R + PC). */
 export function guiaShipDe(iso: string): GuiaBloque | null {
@@ -1027,7 +1069,9 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       pasos.push(
         P(5, 'ABRIR el journal de la semana + leer los criterios de aceptación', `\`${JOURNAL_CMD}\` → cabecera «Criterios de aceptación» (${p.aceptacion.length}).`, journal),
         P(10, `VERIFY en seco: node DATA/_scripts/verify_vibecoding.js ${p.s} --dry`, 'Desde D:\\joseph-md-app. Lista los criterios ✓/✗ sin escribir nada.'),
-        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `${gateTxt(shipMin - 40)}${textosQSDe(iso) ? `Primero, si esta semana hubo días sin PC, lo que su plan B mandó aquí, a cuenta de estos ${shipMin - 40}′: los A del SYNAPSE (15′ c/u) y los pasos de vibecoding (35′ c/u). Después, e` : 'E'}n el orden de los criterios: ${p.aceptacion.map((a, i) => `(${i + 1}) ${a.split('→')[0].slice(0, 70).trim()}`).join(' · ')}. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
+        // v6.10l (rev. c15, cambios #17 · diffs #37): en F1 la prioridad del plan B va delante en una cláusula corta y su detalle (minutos de cada pendiente)
+        //   detrás de los criterios, para que el Calendar (corte del «cómo» a 110) enseñe el criterio (1) y no «… a cuenta de estos 80′: los A …»
+        P(shipMin - 40, 'CERRAR lo que el verify marque en rojo', `${gateTxt(shipMin - 40)}${textosQSDe(iso) ? 'Si hubo días sin PC, su plan B va primero. Luego, en orden' : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? ` El plan B sale de estos ${shipMin - 40}′: cada A del SYNAPSE, 15′; cada paso de vibecoding, 35′.` : ''} Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
         P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
           manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
             : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
@@ -2233,12 +2277,13 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const runnersS2 = sesS2.length
     ? pendS2.length ? `runners ENCAPS del ${yTxt(pendS2)} generados (eval + banco; E4${hechosS2.length ? `; los del ${yTxt(hechosS2)} ya existen` : ''})` : `runners ENCAPS de la semana ya generados (${yTxt(hechosS2)})`
     : `runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4)`;
+  // remate v6.10l: «NO gen_encaps_minisim.js --semana …» (el script nombrado, como el «Ojo» de los bancos: gen_encaps_semana.js --semana, el cierre, sí se corre)
   // v6.10j (rev. c14, dias-clave #1 y #8): con runners por generar, el paso 5 EMPIEZA por su receta —«NO --semana» delante (re-sortearía los ya armados) y
   //   la cadena gen_encaps_minisim --eval/--banco por día → sync → guía → deploy, la misma regla que la guía ENCAPS: los genera esta revisión; si no, antes del
   //   primero— y el journal de la semana 2 nace el día REAL en que journal_hoy.js lo crea (el lunes de PLAN: con el alias, el mar 24-nov; antes «el lunes»)
   const pendSes = sesS2.filter((s) => !s.principal);
   const cadenaS2 = pendSes.length ? `\`node DATA/_scripts/gen_encaps_minisim.js --eval ${pendSes[0]!.fecha}\` → \`--banco ${pendSes[0]!.fecha}\`${pendSes.slice(1).map((s) => ` → \`--eval ${s.fecha}\` → \`--banco ${s.fecha}\``).join('')} → \`node DATA/_scripts/sync_encaps_bp_web.js\` → \`node DATA/_scripts/gen_encaps_guia.js\` → deploy` : '';
-  const recetaS2 = pendSes.length ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}): NO --semana ${lun2}${hechosS2.length ? ` (re-sortearía los del ${yTxt(hechosS2)}, ya armados)` : ''} → ${cadenaS2} (--eval y --banco = el mismo gen_encaps_minisim.js). · ` : '';
+  const recetaS2 = pendSes.length ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}): NO gen_encaps_minisim.js --semana ${lun2}${hechosS2.length ? ` (re-sortearía los del ${yTxt(hechosS2)}, ya armados)` : ''} → ${cadenaS2} (--eval y --banco = el mismo gen_encaps_minisim.js). · ` : '';
   const prep = primera
     // remate v6.10j (revisión adversarial, visibilidad #4): la comprobación de AccessDerma va DELANTE de la receta (la cadena de comandos alarga el corte del
     //   Calendar hasta su «deploy» y empujaba fuera «Semana 2: AccessDerma renovado …»)
