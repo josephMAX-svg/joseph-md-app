@@ -90,8 +90,8 @@ const nombreBase = (n: string): string => {
  *    DATA/PROTOCOLO_MODO_MINIMO.md: cada bloque muestra su mínimo cuando el nivel no es VERDE.
  *  · chip "S N/STEP1_SEMANAS" (semana del Step 1) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
  * v5.10-b (12-sep-2026, gaps_v3b_synapse 2/4/5):
- *  · FRENO 04:55: cuenta atrás en la tarjeta 04:15 (solo mientras la hora está dentro del bloque): "commit-or-stash en
- *    m:ss" y, desde las 04:55, "COMMIT OR STASH · Anki 05:00 en m:ss". Regla: si el día se recorta pierde el proyecto, nunca el Anki.
+ *  · FRENO 04:55: cuenta atrás en la tarjeta 04:15 (solo mientras la hora está dentro del bloque): "commit selectivo / nota de estado en
+ *    m:ss" y, desde las 04:55, "COMMIT SELECTIVO · Anki 05:00 en m:ss". Regla: si el día se recorta pierde el proyecto, nunca el Anki.
  *  · botón "📓 journal" → D:/synapse-journal/journal/<semana ISO>.md (vscode://; node DATA/_scripts/journal_hoy.js lo crea).
  *  · S13-S20 (taper: mantenimiento ≤15' / deload total) se muestran desde VIBE_TAPER cuando ya no hay proyecto.
  * v6.00 (6-oct-2026 · V6_ESPEC §F):
@@ -268,7 +268,7 @@ function AhoraChip({ color }: { color: string }) {
 }
 
 function segundosDia(): number { try { const d = new Date(); return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds(); } catch { return 0; } }
-/** FRENO 04:55 (vacío 4 · gaps_v3b_synapse): cuenta atrás hasta el commit-or-stash y hasta el Anki de las 05:00.
+/** FRENO 04:55 (vacío 4 · gaps_v3b_synapse): cuenta atrás hasta el commit selectivo (o la nota de estado) y hasta el Anki de las 05:00.
  *  Tick de 1 s propio (como EncapsCockpit/ApexManualModal); fuera del bloque 04:15-05:00 no renderiza nada. */
 function Freno0455() {
   const [seg, setSeg] = useState<number>(() => segundosDia());
@@ -283,13 +283,13 @@ function Freno0455() {
     const falta = freno - seg; const urgente = falta <= 5 * 60; const c = urgente ? Colors.amber : OBS;
     return (
       <View style={[st.frenoChip, { borderColor: c + '88', backgroundColor: c + '18' }]}>
-        <Text style={[st.frenoTxt, { color: c }]}>⏱ commit-or-stash en {mmss(falta)} · Anki {VIBE_META.ankiInicio}</Text>
+        <Text style={[st.frenoTxt, { color: c }]}>⏱ commit selectivo / nota de estado en {mmss(falta)} · Anki {VIBE_META.ankiInicio}</Text>
       </View>
     );
   }
   return (
     <View style={[st.frenoChip, { borderColor: Colors.coral + 'AA', backgroundColor: Colors.coral + '22' }]}>
-      <Text style={[st.frenoTxt, { color: Colors.coral }]}>COMMIT OR STASH · Anki {VIBE_META.ankiInicio} en {mmss(anki - seg)}</Text>
+      <Text style={[st.frenoTxt, { color: Colors.coral }]}>COMMIT SELECTIVO (nunca git stash) · Anki {VIBE_META.ankiInicio} en {mmss(anki - seg)}</Text>
     </View>
   );
 }
@@ -905,7 +905,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           {usmleFuera.map((g, k) => <GuiaBloqueCard key={k} g={g} color={GREEN} compacto={!enFranja(g.franja, ahora)} ahora={enFranja(g.franja, ahora)} />)}
         </View>
       )}
-      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · revisión semanal = sáb 14:00-14:30 hasta el 2-ene (antes de la clase EN VIVO de Theomed 15:00-17:00; desde el 9-ene, sáb 07:15; DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · el SHIP del vibecoding (PC) es el DOMINGO, flexible · ENCAPS: mañana lun · mié · vie 07:15-12:00 (Step 1: mar · jue) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
+      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit selectivo o nota de estado (nunca git stash) → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · revisión semanal = sáb 14:00-14:30 hasta el 2-ene (antes de la clase EN VIVO de Theomed 15:00-17:00; desde el 9-ene, sáb 07:15; DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · el SHIP del vibecoding (PC) es el DOMINGO, flexible · ENCAPS: mañana lun · mié · vie 07:15-12:00 (Step 1: mar · jue) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
     </View>
   );
 }

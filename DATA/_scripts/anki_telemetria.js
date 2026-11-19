@@ -270,7 +270,7 @@ async function configDeck(prefijo) {
   if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - ESPERADO.retencion) > 0.001) avisos.push(`config: desired retention = ${cfg.desiredRetention} (esperado 0.90) → corregir en Anki`);
   if (cfg.nota) avisos.push('config: ' + cfg.nota);
   if (total === 0) avisos.push(`el patrón "${QUERY}" no devuelve tarjetas: ¿deck aún no creado (lazy) o nombre distinto? (deckNames: ${cfg.decks.join(', ') || 'ninguno con ese prefijo'})`);
-  if (pr.estado === 'ambar') avisos.push(`FRENO 04:55: 1ª review de Anki a las ${pr.hora} (> ${LIMITE_1A_REVIEW}) → el bloque 04:15 se comió el Anki; mañana commit-or-stash a las 04:55`);
+  if (pr.estado === 'ambar') avisos.push(`FRENO 04:55: 1ª review de Anki a las ${pr.hora} (> ${LIMITE_1A_REVIEW}) → el bloque 04:15 se comió el Anki; mañana commit selectivo o nota de estado a las 04:55 (nunca git stash)`);
   if (pr.estado === 'rojo') avisos.push('FRENO 04:55: sin review de Anki hoy (L-V, ya pasadas las 05:00) → ROJO: el Anki no se salta, se recorta el proyecto');
   if (sync.startsWith('fallo')) avisos.push('sync AnkiWeb ' + sync + ' (los números pueden ir por detrás del móvil)');
 

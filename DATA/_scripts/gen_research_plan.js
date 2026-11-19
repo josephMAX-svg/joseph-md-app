@@ -678,7 +678,8 @@ export const REC: Record<string, { label: string; url: string }> = {
   ROB2:   { label: 'RoB 2 (sesgo en ECA)', url: 'https://www.riskofbias.info/welcome/rob-2-0-tool' },
   ROBINS: { label: 'ROBINS-I (no-aleatorizados)', url: 'https://www.riskofbias.info/welcome/home' },
   GRADE:  { label: 'GRADEpro (certeza)', url: 'https://www.gradepro.org/' },
-  AMSTAR: { label: 'AMSTAR-2 (apreciar SR) · Shea, BMJ 2017 (PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 (amstar.ca caído: «temporarily unavailable», checklist 404)
+  // rótulo CORTO a propósito: el «cómo» del R9 lo cita («Trabaja con «…» MIENTRAS produces el artefacto: …», ≤110 en el Calendar) y uno largo saca el artefacto del corte
+  AMSTAR: { label: 'AMSTAR-2 (apreciar SR)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404)
   DMAR:   { label: 'Doing Meta-Analysis in R (libro gratis)', url: 'https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/' },
   METAFOR:{ label: 'metafor package (R)', url: 'https://www.metafor-project.org/' },
   EQ:     { label: 'EQUATOR Network', url: 'https://www.equator-network.org/' },

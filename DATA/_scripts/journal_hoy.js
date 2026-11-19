@@ -3,7 +3,7 @@
 // El journal es un repo local aparte: D:/synapse-journal (README con el ciclo 5/35/5; una nota por SEMANA ISO en
 // journal/<YYYY>-W<ww>.md; el remoto privado lo crea Joseph: gh repo create synapse-journal --private --source=D:/synapse-journal).
 // Cada día del vibecoding (04:15) cierra con 5' aquí: objetivo · qué construí · commit/URL · qué aprendí ·
-// % del código que entiendo · bloqueo · freno 04:55 (commit-or-stash) · hora de la 1ª review de Anki.
+// % del código que entiendo · bloqueo · freno 04:55 (commit selectivo o nota de estado; nunca git stash) · hora de la 1ª review de Anki.
 //
 // Qué hace:
 //   1) Calcula la semana ISO de la fecha (hoy o --fecha) y crea journal/<semana>.md desde la plantilla si no existe
@@ -85,7 +85,7 @@ if (!fs.existsSync(file)) {
     L.push('**Proyecto de la semana**: fuera del plan del vibecoding (src/lib/vibecodingPlan.ts) — semana libre o pre-D1.');
   }
   L.push('');
-  L.push("> Ciclo diario 04:15-05:00: 5' objetivo → 35' construir → 5' esta entrada. **04:55 commit-or-stash · 05:00 Anki sin excepción** (si el día se recorta pierde el proyecto, nunca el Anki). Commits `[S<n>] …`.");
+  L.push("> Ciclo diario 04:15-05:00: 5' objetivo → 35' construir → 5' esta entrada. **04:55 commit selectivo o nota de estado (nunca git stash) · 05:00 Anki sin excepción** (si el día se recorta pierde el proyecto, nunca el Anki). Commits `[S<n>] …`.");
   L.push('');
   L.push('## Cierre de semana (sábado, tras el verify)');
   L.push('');
@@ -112,7 +112,7 @@ if (!txt.includes(titulo)) {
   S.push('- qué aprendí: ');
   S.push('- % del código que entiendo: __ %');
   S.push('- bloqueo: ');
-  S.push('- freno 04:55 commit-or-stash: ☐ sí ☐ no · 1ª review Anki: __:__ (verde ≤05:10 · ámbar >05:10 · rojo sin review)');
+  S.push('- freno 04:55 commit selectivo o nota de estado (nunca git stash): ☐ sí ☐ no · 1ª review Anki: __:__ (verde ≤05:10 · ámbar >05:10 · rojo sin review)');
   S.push('');
   // insertar antes de "## Cierre de semana" para que el cierre quede al final
   const i = txt.indexOf('## Cierre de semana');

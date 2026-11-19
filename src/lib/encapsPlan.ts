@@ -680,7 +680,9 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
   return {
     modo: 'ayer', codigo: prev.codigo,
     label: `🎯 EVAL ANCLADA: 5Q ${deAyerTxt(day, prev)} ${prev.codigo} (D${prev.dia}) · 3 cifras + 2 viñetas`,
-    detail: `${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''} · preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de las de ese código que fallaste, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla}`, regla,
+    // v6.10o (auditoría c17 · vetadas-cortes #11): la fuente de las 5Q delante (el Calendar corta el detalle a 160 y dejaba «· preguntas reales: …» sin decir
+    //   cuáles); el subtema largo y el sub-eje, al final
+    detail: `preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de tus fallos de ese código, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla} · ${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''}`, regla,
   };
 }
 
@@ -1022,13 +1024,13 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
   });
   items.push(pre ? {
     key: `D${N}:m_log`, kind: 'material',
-    label: '📝 REGISTRO del pre-test: «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append + 1-3 APEX',
-    detail: 'La ronda «pretest» se reparte por código (n = 5 por crítico). Hoy NO uses el formulario CIERRE DE SESIÓN: guardaría las 20Q como MIX · los APEX caen en la nota Obsidian del código fallado',
+    label: '📝 REGISTRO del pre-test y de la eval: «Generar JSON» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<export.json>" --append (un comando por JSON) + 1-3 APEX',
+    detail: 'Las 2 rondas se reparten por código (pre-test: n = 5 por crítico; eval: ≥2 fallos de un código = CALIENTE). Hoy NO uses el formulario CIERRE DE SESIÓN: guardaría las 20Q como MIX · los APEX caen en la nota Obsidian del código fallado',
     dur: 9, hora: '17:06–17:15',
   } : {
     key: `D${N}:m_log`, kind: 'material',
     label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
-    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar <export.json> --append (UNA sola vía, nunca las dos)' : ''}`,
+    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar "<export.json>" --append (UNA sola vía, nunca las dos)' : ''}`,
     dur: 5, hora: '17:10–17:15',
   });
   return items;

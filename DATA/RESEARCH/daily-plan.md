@@ -296,7 +296,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `ROB2` | RoB 2 (sesgo en ECA) | https://www.riskofbias.info/welcome/rob-2-0-tool | repo (verificada jun-jul 2026) |
 | `ROBINS` | ROBINS-I (no-aleatorizados) | https://www.riskofbias.info/welcome/home | repo (verificada jun-jul 2026) |
 | `GRADE` | GRADEpro (certeza) | https://www.gradepro.org/ | repo (verificada jun-jul 2026) |
-| `AMSTAR` | AMSTAR-2 (apreciar SR) · Shea, BMJ 2017 (PMC) | https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/ | curl 19-nov-2026 (amstar.ca caído: «temporarily unavailable», checklist 404) |
+| `AMSTAR` | AMSTAR-2 (apreciar SR) | https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/ | curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404) |
 | `DMAR` | Doing Meta-Analysis in R (libro gratis) | https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/ | repo (verificada jun-jul 2026) |
 | `METAFOR` | metafor package (R) | https://www.metafor-project.org/ | repo (verificada jun-jul 2026) |
 | `EQ` | EQUATOR Network | https://www.equator-network.org/ | repo (verificada jun-jul 2026) |

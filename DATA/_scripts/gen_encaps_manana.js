@@ -112,6 +112,9 @@
  *   2×, solo para dudas»; antes «(35′: vídeo de 35′ + PDF de 11 p)») y su «cómo» dice su orden real (PDF → vídeo solo en lo que no aclare). (2) La cabecera del
  *   día (RESUMEN) nombra la teoría como el título de la TEORÍA («… (CI S2 → 18:00)»). (3) El criterio de vigencia, corto y DELANTE en los pasos de verificación
  *   en la norma («Si dos fuentes no coinciden, manda la norma más reciente (MINSA / campus Theomed 2027-I)»; antes el Calendar cortaba en «manda la norma más …»).
+ * v6.10o (19-nov-2026, auditoría del volcado c17 · diffs #17): solo texto. La consecuencia de DR LOPEZ («sin el mazo de DR LOPEZ: ENCAPS::Cifras») va también en
+ *   la viñeta del Anki 05:xx que manda minutos a ENCAPS::Flashcards (APEX sin vencidas, días de 25′; en los de 15′ ya iba en el «qué» de la misma viñeta) y en
+ *   las vencidas de ENCAPS::Flashcards del domingo, dentro del corte del Calendar.
  */
 'use strict';
 const fs = require('fs');
@@ -1124,11 +1127,15 @@ for (const d of DIAS_GA) {
     //   importaste el mazo de DR LOPEZ …» sin decir adónde van los minutos; «el mazo que más crece», al «qué»); en los días cortos va en el «qué», pegada a
     //   ENCAPS::Flashcards (su «cómo» lleva su destino con fecha)
     P(10, `ENCAPS::Flashcards (el mazo que más crece: las nuevas de cada 18:00) · vencidas${vencTxt}`, 'Sin el mazo de DR LOPEZ importado (decisión tuya), estos 10′ van a ENCAPS::Cifras.'),
-    P(minGA - 20, 'APEX::ENCAPS · vencidas', 'Las tarjetas APEX de las sesiones de las 16:15. Si hoy no hay vencidas, estos minutos van a ENCAPS::Flashcards.'),
+    // v6.10o (auditoría c17 · diffs #17): la consecuencia de DR LOPEZ también aquí (sus minutos iban a ENCAPS::Flashcards sin la condición), dentro de los 110
+    //   del Calendar: «las tarjetas APEX de las 16:15» pasa al «qué»
+    P(minGA - 20, 'APEX::ENCAPS · vencidas (las tarjetas APEX de las sesiones de las 16:15)', 'Si hoy no hay vencidas, estos minutos van a ENCAPS::Flashcards (sin el mazo de DR LOPEZ: a ENCAPS::Cifras).'),
   ] : [
     cif,
     // v6.09b lote 1-quater FX1 (revisión V1): lo que no acabes ya no va «al próximo Anki de 25′» (sus 10′ ya tienen sus vencidas): va a la próxima 18:00, que hace
     //   las vencidas PRIMERO (y ese día entran menos nuevas)
+    // v6.10o (auditoría c17 · diffs #17): sin cambio a propósito — la condición de DR LOPEZ ya va en el «qué» de ESTA misma viñeta, pegada a ENCAPS::Flashcards (y
+    //   pasarla al «cómo» llevaría la fecha de destino más allá del carácter 100: check_rutina_guia 26h)
     P(minGA - 10, `ENCAPS::Flashcards (sin el mazo de DR LOPEZ importado, decisión tuya: ENCAPS::Cifras) + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → la 18:00 del ${corta(GT_FECHAS.find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas).`),
   ], [], minGA >= 25 ? '0 vencidas en ENCAPS::Cifras, ENCAPS::Flashcards y APEX::ENCAPS' : '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: GT_FECHAS.includes(d) ? 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' : undefined }); // v6.09: el aviso, si ese día hay mañana ENCAPS (jue 31-dic: jueves sin Step); antes, si no era día de Step
 }
@@ -1186,7 +1193,7 @@ const condCorta = (x) => `si las 18:00 del ${corta(x.de)} no fueron las normales
     (SUN_AUTO[f] = SUN_AUTO[f] || []).push({ de: x.de, min, corto: `${x.faltan} flashcards del ${corta(x.de)}`, cond: x.cond ? condCorta(x) : null,
       desc: `las ${x.faltan} flashcards nuevas (${minN}′)${conVenc ? ` y las vencidas (${VENC_DOM}′)` : ''} que no cupieron a las 18:00 del ${corta(x.de)}${x.cond ? ' (solo si esas 18:00 no fueron las normales)' : ''}`,
       paso: P(min, `Flashcards ENCAPS::Flashcards · ${conVenc ? `vencidas (${VENC_DOM}′) + ` : ''}${x.faltan} nuevas (las que no cupieron a las 18:00 del ${corta(x.de)}) → ${conVenc ? `${minN}′ · ${min}′ en total` : `${min}′`} · NO opcional`,
-        `${x.cond ? `${condDe(x)}; si fueron las normales, ya las hiciste ese día: este paso no va y el bloque ${acortaDom(f, min)}. ` : ''}Anki, ≈50 s por tarjeta nueva: son las siguientes de la cola del mazo, en el orden del temario.${conVenc ? ` Primero las vencidas de ENCAPS::Flashcards (${VENC_DOM}′, ≈20 a 15 s); después, las nuevas.` : ''} Si aún no importaste el mazo de DR LOPEZ (decisión tuya), haz las nuevas de ENCAPS::Cifras.`) });
+        `${x.cond ? `${condDe(x)}; si fueron las normales, ya las hiciste ese día: este paso no va y el bloque ${acortaDom(f, min)}. ` : ''}Anki, ≈50 s por tarjeta nueva: son las siguientes de la cola del mazo, en el orden del temario.${conVenc ? ` Primero las vencidas de ENCAPS::Flashcards (sin el mazo de DR LOPEZ: ENCAPS::Cifras; ${VENC_DOM}′, ≈20 a 15 s); después, las nuevas del ${corta(x.de)}.` : ''} Si aún no importaste el mazo de DR LOPEZ (decisión tuya), haz las nuevas de ENCAPS::Cifras.`) }); // v6.10o (auditoría c17 · diffs #17): la condición de DR LOPEZ, también en las vencidas (la fecha de las nuevas alarga el corte del Calendar hasta ahí)
     if (x.paso) {
       // FX1: el destino al principio del «cómo» (en el «qué», tras «vencidas primero…», quedaba en la pos. 164 y el Calendar lo cortaba)
       const mNq = /^Las nuevas que no quepan → la 18:00 del ([^,]+), por delante de las de ese día \(esperan en la cola del mazo\)\. /.exec(x.paso.como);

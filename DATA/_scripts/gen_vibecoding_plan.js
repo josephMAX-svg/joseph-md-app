@@ -362,7 +362,7 @@ const ts = `/**
  * node DATA/_scripts/verify_vibecoding.js <n> (→ DATA/SYNAPSE/_vibecoding_ship.json, horneado aquí en VIBE_SHIP_LOG
  * y leído en vivo desde localStorage 'jmd-vibe-ship'); el ✓ manual (PlanKey 'vibecoding') solo cuenta días.
  * Ciclo diario: 5' objetivo → 35' construir → 5' commit + journal (D:/synapse-journal, node DATA/_scripts/journal_hoy.js).
- * FRENO 04:55: commit-or-stash obligatorio; 05:00 Anki sin excepción; si el día se recorta pierde el proyecto, nunca el Anki.
+ * FRENO 04:55: commit SELECTIVO de los ficheros del proyecto (nunca git add . ni git stash global) o, sin código, nota de estado; 05:00 Anki sin excepción; si el día se recorta pierde el proyecto, nunca el Anki.
  * Semana DELOAD del vibecoding: flag \`deload\` en ${P.filter((p) => p.deload).map((p) => { const w = semanas.find((x) => x.s === p.s); return `S${p.s} (${rangoTxt(w.ini, w.fin)})`; }).join(' · ') || '—'}, carga 50% (2 días de 45' + 3 de 15'),
  * fechas intactas. El flag sigue en S7 por el orden v5.10-b, sin mover contenido ni minutos (precedente v6.01; en v6.08 la semana post-NBME 25 —lun 14-dic— es S5 EXACTA
  * y S7 toca 2 de sus 5 días en la del lun 28-dic · en v6.06 —como en v6.05— la semana post-NBME 26 era S6 EXACTA y S7 no la tocaba —v6.03: S7 solapaba 3 de sus 5 días—).
@@ -403,7 +403,7 @@ export const VIBE_META = {
   /** v6.07: día de la semana del SHIP (0 = domingo; hasta v6.06 era el sábado 15:00-17:00, hoy clase EN VIVO de Theomed). */
   diaShip: ${DOW_SHIP},
   ciclo: "5' objetivo → 35' construir con Claude Code → 5' commit + journal (D:/synapse-journal)",
-  freno: "04:55 commit-or-stash obligatorio · 05:00 Anki sin excepción · si el día se recorta pierde el proyecto, nunca el Anki",
+  freno: "04:55 commit selectivo o nota de estado (nunca git stash) · 05:00 Anki sin excepción · si el día se recorta pierde el proyecto, nunca el Anki",
   freno0455: '04:55', ankiInicio: '05:00',
   commit: "[S<n>] … en el repo declarado (verify_vibecoding.js hace git log --grep)",
   journalRoot: 'D:/synapse-journal',

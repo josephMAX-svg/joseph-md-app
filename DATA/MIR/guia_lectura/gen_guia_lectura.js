@@ -109,6 +109,10 @@
  *    ritmo «77 s/Q (5Q ≈ 6,4′)» cierra el «qué» (en el «cómo» quedaba tras el corte de 110); (2) quiz del D1: «7Q ≈ 12,5′ (77 s/Q + 30 s de comentario =
  *    107 s/Q)» detrás de la regla del blanco y delante de la cola de mañana; (3) quiz con cola de mañana larga («Las 2 primeras …», el D2): el ritmo justo
  *    detrás de la cola. --check exige (1)-(3) (el ritmo del quiz EMPIEZA dentro de los 110; la cola del D1, antes del carácter 160).
+ *  · v6.10o (19-nov-2026 · ronda c17 del Calendar, área MIR; solo TEXTO: mismas secciones, preguntas, minutos y horas): quiz del D1 = «Desde aquí, en blanco
+ *    si no descartas 2; con 2, marca · tapa las opciones · Rule-In → Rule-Out · 7Q ≈ 12,5′ (…) · las 2 primeras que no entren abren la eval de mañana (…)»
+ *    (era el único quiz MIR sin «tapa las opciones» a la vista en el Calendar). --check: el ritmo del D1 EMPIEZA dentro de los 110 y su cola, antes del
+ *    carácter 200 y como única fecha del «cómo».
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -548,7 +552,10 @@ function pasosD1(d) {
       //   «… en blanco si no descartas 2 …», con la cifra sola al final
       // v6.10m (ronda c16, área MIR): el ritmo con su resultado («7Q ≈ 12,5′ (77 s/Q + 30 s de comentario = 107 s/Q)») va detrás de la regla y delante de la
       //   cola de mañana: el Calendar alarga el corte hasta la fecha de la cola y así se ven los tres (antes el ritmo iba tras «tapa las opciones» y se perdía)
-      como: `Desde aquí, en blanco si no descartas 2; con 2, marca · ${D1_QUIZ.obj}Q ≈ ${qS(D1_QUIZ.obj)}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q) · ${aMan ? aMan.charAt(0).toLowerCase() + aMan.slice(1) : ''}tapa las opciones · Rule-In → Rule-Out · ${D1_QUIZ.min}Q ≈ ${qS(D1_QUIZ.min)}′ y ${D1_QUIZ.max}Q ≈ ${qS(D1_QUIZ.max)}′; la ${D1_QUIZ.max + 1}.ª y la ${D1_QUIZ.tope}.ª solo si vas rápido · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · orden: el de la lista; a las ${D1_RELOJ[4]} paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo. Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` },
+      // v6.10o (ronda c17, área MIR · cambios-c17 #8): «tapa las opciones · Rule-In → Rule-Out» va detrás de la regla y delante del ritmo, como en el D3/D4
+      //   (con el ritmo delante de la cola, el D1 era el único quiz MIR sin «tapa las opciones» a la vista); el ritmo sigue empezando dentro de los 110 y la
+      //   cola de mañana, a la vista porque el Calendar alarga el corte hasta el final de la cláusula de su fecha
+      como: `Desde aquí, en blanco si no descartas 2; con 2, marca · tapa las opciones · Rule-In → Rule-Out · ${D1_QUIZ.obj}Q ≈ ${qS(D1_QUIZ.obj)}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q) · ${aMan ? aMan.charAt(0).toLowerCase() + aMan.slice(1) : ''}${D1_QUIZ.min}Q ≈ ${qS(D1_QUIZ.min)}′ y ${D1_QUIZ.max}Q ≈ ${qS(D1_QUIZ.max)}′; la ${D1_QUIZ.max + 1}.ª y la ${D1_QUIZ.tope}.ª solo si vas rápido · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · orden: el de la lista; a las ${D1_RELOJ[4]} paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo. Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` },
     { min: mins[4], hora: H(4), que: `≤4 APEX en ${deck}`, como: 'Solo de los fallos de hoy (pre-test y quiz), ≈2′ por tarjeta: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · creados directamente en Anki.' },
     { min: mins[5], hora: H(5), que: `REPASO EN BLANCO + reactivar las ${rv.n} tarjetas de Ravi del ${rv.tema} («${mazo}»)`,
       // v6.10j (auditoría c14, vetadas #6): los temas del repaso, fuera del paréntesis y antes del carácter 109 (el Calendar cortaba en «intención de tratar vs …»)
@@ -948,7 +955,10 @@ for (const x of salida) {
         else if (!qD || JSON.stringify(qD.preguntas.quiz.slice(QUIZ_HACER).map((q) => q.promir)) !== JSON.stringify(slot.preguntas.map((q) => q.promir))) errs.push(`D${x.d}: la cola no es la ${QUIZ_HACER + 1}.ª-10.ª del quiz del D${c[2]}`);
         // v6.10m (ronda c16, área MIR): en el D1 la regla del blanco y el ritmo van delante; la cola sigue a la vista porque el Calendar alarga el corte del
         //   «cómo» hasta el final de la cláusula de su fecha (cortarDest): basta con que empiece antes del carácter 160
-        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; if (i < 0 || i > (qD.d === 1 ? 160 : 100)) errs.push(`D${c[2]}: su quiz no anuncia en los primeros 100 caracteres que la cola abre la eval del ${x.dia}`); }
+        // v6.10o (ronda c17, área MIR · #8): con «tapa las opciones · Rule-In → Rule-Out» delante del ritmo, la cola del D1 empieza antes del carácter 200 (el
+        //   Calendar la sigue enseñando entera: el corte llega al final de la cláusula de su fecha, ≤ 450) y es la ÚNICA fecha del «cómo» (si hubiera otra
+        //   detrás, el corte se alargaría hasta ella)
+        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; const lim = qD.d === 1 ? 200 : 100; if (i < 0 || i > lim || (qD.d === 1 && (qz.como.match(/(?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/g) || []).length !== 1)) errs.push(`D${c[2]}: su quiz no anuncia en los primeros ${lim} caracteres que la cola abre la eval del ${x.dia}`); }
       } else if (n === 4) { if (!ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
       else errs.push(`D${x.d}: eval de ${n}Q en F1 sin la cola del quiz del D-1 (los minutos que sobran quedarían sin material)`);
     }
@@ -1022,7 +1032,8 @@ for (const x of salida) {
       const rq = `${QUIZ_HACER}Q ≈ 10,7′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q)`;
       // v6.10m (ronda c16, área MIR): el D1 sigue con su ritmo («7Q ≈ 12,5′ (77 s/Q + 30 s de comentario = 107 s/Q)») delante de la cola de mañana
       const rq1 = `${D1_QUIZ.obj}Q ≈ ${dec1((D1_QUIZ.obj * (SEG_POR_Q + SEG_COMENTARIO)) / 60)}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q)`;
-      if (x.lectura.d1) { if (!p.como.startsWith(`Desde aquí, en blanco si no descartas 2; con 2, marca · ${rq1} · `)) errs.push(`D${x.d}: el quiz del D1 no abre con la regla del blanco entera y su ritmo («${rq1}»)`); }
+      // v6.10o (ronda c17, área MIR · #8): el D1 abre con la regla del blanco, «tapa las opciones · Rule-In → Rule-Out» y el ritmo, que EMPIEZA dentro de los 110
+      if (x.lectura.d1) { const ab = `Desde aquí, en blanco si no descartas 2; con 2, marca · tapa las opciones · Rule-In → Rule-Out · `; if (!p.como.startsWith(`${ab}${rq1} · `) || ab.length > CORTE_COMO + 1) errs.push(`D${x.d}: el quiz del D1 no abre con la regla del blanco entera, «tapa las opciones · Rule-In → Rule-Out» y su ritmo («${rq1}») dentro de los ${CORTE_COMO} caracteres del Calendar`); }
       // v6.10m (ronda c16, área MIR): también con la cola de mañana delante, el ritmo EMPIEZA dentro de los 110 del Calendar (el corte se alarga hasta su final:
       //   tramo «expr»); antes la cola lo dejaba fuera (D2)
       else { const i = p.como.indexOf(rq); if (i < 0 || i > CORTE_COMO + 1) errs.push(`D${x.d}: el «cómo» del quiz no deja empezar «${rq}» dentro de los ${CORTE_COMO} caracteres del Calendar`); }

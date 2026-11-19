@@ -546,7 +546,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <Text style={styles.groupHdr}>🧭 GUÍA DE LA HORA · {guia.franja}</Text>
           <GuiaBloqueCard g={reemplazosCorrida(guia, fPlanHoy)} color={Colors.teal} ahora={esHoyLima && ahoraMin >= 16 * 60 + 15 && ahoraMin < 17 * 60 + 15} />
           {ses?.tipo === 'pretest' && (
-            <Text style={styles.groupHint}>Hoy el registro del pre-test es «Generar JSON» en el runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append. El formulario CIERRE DE SESIÓN de abajo lo guardaría como una ronda MIX: no lo uses hoy.</Text>
+            // v6.10o (auditoría c17 · dias-clave #1): el registro de hoy son 2 JSON, el del pre-test y el de la eval anclada (si no, sus fallos no cuentan como calientes)
+            <Text style={styles.groupHint}>Hoy el registro son 2 JSON, el del pre-test y el de la eval: «Generar JSON» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append, una vez por JSON. El formulario CIERRE DE SESIÓN de abajo guardaría el pre-test como una ronda MIX: no lo uses hoy.</Text>
           )}
         </View>
       )}

@@ -890,7 +890,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         </FadeUp>
       ))}
       <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta el Step 1 (→ 0,90 tras el handoff del ${MIR_MANT_META.handoff.split(' (')[0]}, fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
-      <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas (mini-simulacro)' : `${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
+      <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas (mini-simulacro)' : `${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub={`${FB_MIR_ASIG} · en blanco permitido`} color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (
         <>
@@ -903,7 +903,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🎯 TIER C EXPRESS · {tierC.asignatura} › {tierC.capitulo} · {tierC.nQ}Q</Text>
             <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff del vie 24-sep).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
-            {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → test del capítulo ProMIR` : ''}</Text>}
+            {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → ${FB_MIR_CAP}` : ''}</Text>}
             <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(tierC.capId))} style={[st.dChip, { borderColor: CORAL + '66', alignSelf: 'flex-start', marginTop: 6 }]}><Text style={[st.dChipTxt, { color: CORAL }]}>capítulo ProMIR ↗</Text></TouchableOpacity>
             {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} fallback={FB_MIR_CAP} />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: tierC.num }} kind="mantenimiento" total={tierC.nQ} asignatura={tierC.asignatura} tema={`Tier C express · ${tierC.capitulo}`} capId={tierC.capId} color={CORAL} titulo={`Registrar ${tierC.nQ}Q Tier C · ${tierC.asignatura}`} tactica qIds={pool.tierC} onSaved={bump} />

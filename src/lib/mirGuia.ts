@@ -41,6 +41,9 @@
  * v6.10m (19-nov-2026 · ronda c16 del Calendar, solo TEXTO): banqueo = «En blanco si no descartas 2; con 2, marca · MIR oficiales con año-número: «Pool
  *   oficial» de la app sin usar → si faltan, solo MIR oficiales: …» (el año-número vuelve a verse en los 110 del Calendar). En la guía medida
  *   (gen_guia_lectura.js): el ritmo del pre-test de F1 al final del «qué» y el del quiz del D1 y del D2 delante de la cola de mañana.
+ * v6.10o (19-nov-2026 · ronda c17 del Calendar, solo TEXTO): banqueo = «En blanco si no descartas 2; con 2, marca · año-número: Pool oficial sin usar → si
+ *   faltan, ProMIR/examenesmir (solo MIR oficiales: …)» (el respaldo vuelve a verse en los 110 del Calendar). En la guía medida: quiz del D1 con «tapa las
+ *   opciones · Rule-In → Rule-Out» delante del ritmo.
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,
@@ -411,7 +414,10 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
         // v6.10m (ronda c16, área MIR · diffs #23): la trazabilidad («MIR oficiales con año-número») va delante de la fuente principal y las dos caben en los
         //   110 del Calendar con la regla del blanco entera (antes el corte dejaba «→ si faltan, solo MIR oficiales …», sin el año-número); el respaldo
         //   («si faltan, solo MIR oficiales: …») sigue entero detrás
-        como: `En blanco si no descartas 2; con 2, marca · MIR oficiales con año-número: «Pool oficial» de la app sin usar → si faltan, solo MIR oficiales: las citadas en los capítulos ProMIR de la asignatura (/pregunta/MIR/AAAA-NNN) o los cuadernillos oficiales (examenesmir)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
+        // v6.10o (ronda c17, área MIR · diffs #18): la fuente en corto, CON su respaldo, cabe en los 110 del Calendar detrás de la regla del blanco entera
+        //   («año-número: Pool oficial sin usar → si faltan, ProMIR/examenesmir»; el «qué» ya dice «reales MIR»); antes el corte dejaba «… «Pool oficial» de la
+        //   app sin usar …», sin qué hacer cuando el pool se agota (25-30Q al día). El detalle de cada fuente, entre paréntesis detrás
+        como: `En blanco si no descartas 2; con 2, marca · año-número: Pool oficial sin usar → si faltan, ProMIR/examenesmir (solo MIR oficiales: el «Pool oficial» es el de la app; en ProMIR, las citadas en los capítulos de la asignatura, /pregunta/MIR/AAAA-NNN; en examenesmir, los cuadernillos oficiales)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
         enlace: dia.tierC ? { t: `ProMIR · ${dia.tierC.capitulo}`, url: capUrl(dia.tierC.capId) } : { t: 'Cuadernillos MIR', url: EXAMENESMIR },
       };
     }

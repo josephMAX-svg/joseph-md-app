@@ -338,7 +338,10 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
     case 2: return [
       // v6.10m (rev. c16, dias-clave #1 · vetadas #13): el corte del «cómo» a 110 dejaba «… Ctrl+A, Ctrl+V. No …» y escondía el aviso y la comprobación → como
       //   en el paso 1: lo que NO se toca y el Ctrl+F «v2.5.1» van delante (dentro de los 110); cómo pegar (VS Code → nodo), detrás (entero en la app)
-      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', '«Anki + Obsidian» y los modos (All Items / Each Item) NO se tocan · Ctrl+F «v2.5.1» en cada nodo: debe salir · Para pegar, en VS Code: Ctrl+A, Ctrl+C del fichero → n8n: doble clic en el nodo → clic en el código → Ctrl+A, Ctrl+V.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      // v6.10o (rev. c17, cambios #7): los 110 enseñaban «… Ctrl+F «v2.5.1» en cada nodo: debe salir …» (frase a medias) y ya no cómo pegar → las 3 cosas,
+      //   compactas y en el orden en que se hacen: lo que NO se toca · la cadena de teclas · «Ctrl+F «v2.5.1» = código nuevo»; el detalle (clic en el código
+      //   antes del Ctrl+A, los modos), detrás (entero en la app)
+      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'No toques «Anki + Obsidian» · VS Code: Ctrl+A, Ctrl+C → nodo: doble clic → clic en el código → Ctrl+A, Ctrl+V · Ctrl+F «v2.5.1» = código nuevo (debe salir en cada nodo). En VS Code, el Ctrl+A, Ctrl+C es del fichero; en n8n, sin ese clic en el código el Ctrl+A, Ctrl+V no lo reemplaza. Los modos (All Items / Each Item) tampoco se tocan.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
       // v6.10i (auditoría del volcado c12): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el «qué» lleva las marcas de éxito (Parsear acaba en «murmur
       //   LOUDER.)» · anki-ok + ankiNoteId · success + filepath) y el «cómo» EMPIEZA por la carpeta del .txt y la cadena de teclas (en la v6.10h la ruta iba al final
@@ -347,7 +350,10 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       //   las 07:15 (usmleGuia) · v6.10j (rev. c14, vetadas #5): el corte del «cómo» dejaba «… → Ctrl+Shift+A → n8n › …» y se perdía QUÉ ejecución se mira →
       //   «(Ctrl+Shift+A) → n8n › Executions → la 1.ª» va en el «qué» (≤ 150, entero) y el «cómo» empieza por «El verde solo NO basta» (antes al final del «qué»)
       P(13, 'APEX [TEST S1] (Ctrl+Shift+A) → n8n › Executions → la 1.ª: éxito = Parsear acaba en «murmur LOUDER.)» · anki-ok + ankiNoteId · success + filepath', 'El verde NO basta. Copia D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\S1_bloque_APEX_prueba_USMLE.txt (Ctrl+A, Ctrl+C) → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El mismo texto está en el PDF de GoodNotes › S01_APEX. Con Anki cerrado también sale verde: mandan los items, no el color.'), // v6.10l (rev. c15, vetadas #32): el nombre del .txt dentro de la ruta (el corte del «cómo» a 110 dejaba la carpeta sin el fichero)
-      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas; APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
+      // v6.10o (rev. c17, cambios #7): el Calendar alarga el corte hasta el final de la cláusula de la fecha («la versión anotada el …», ≤ 450) y la cortaba en
+      //   el «;» del paréntesis («Publish (la poda de n8n puede borrarla en minutos …») → el respaldo («si ya no está, pega backups\\live_*.js y publica») va
+      //   en la misma cláusula (con «:») y el porqué de los mazos de la [TEST S1], al final (entero en la app)
+      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos: si ya no está, pega backups\\live_*.js y publica). Al suspenderla, APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15.`),
     ];
     case 3: return [
       P(10, 'Anki: ¿la [TEST S1] cayó en APEX::USMLE::Cardiology (subdeck, no el mazo raíz)?', `Anki › Browse → \`deck:APEX::USMLE*\` → ordena por «Created»: la [TEST S1] del ${dia(2)} (amarilla = suspendida). Si el ${dia(2)} salió rojo, hoy va primero ese arreglo (fichero → test «0 failed» → repega + Publish → reenvía → suspende).`),
@@ -361,7 +367,7 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       P(10, 'Escribir DATA/USMLE/_apex_e2e_prueba.json (evidencia; debe contener "noteId")', `Claude Code en D:\\joseph-md-app: noteId (el ankiNoteId de la ejecución buena o Browse › Card Info), subdeck, ruta RELATIVA de la nota (desde 01_USMLE), SHA256 de los 2 ficheros (certutil), "is_test": true y fecha. Nada personal ni rutas absolutas: el repo es público. La [TEST S1] entró en Supabase (apex_blocks / apex_reports) sin is_test y cuenta como APEX real: anótalo en el journal (se marca en el SHIP, con OK).`),
     ];
     case 5: return [
-      P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy de 2 nodos + evidencia"`. D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
+      P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy de 2 nodos + evidencia" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo). D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
       P(10, 'node DATA/_scripts/verify_vibecoding.js 1', `Desde D:\\joseph-md-app. Esperado hoy: 3/4 (el 4.º es MANUAL: se acepta en ${ship} con --ok-manual 4 tras mirarlo). Anota en el journal qué criterio falla.`),
       P(15, 'Cerrar lo que el verify marque en rojo (no manual)', `Lo que no cierre → ${ship.replace(/^el /, '')} (flexible; nunca a S2) · Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso 4 (${dia(4)}).`), // v6.09b lote 1-quater (QS · c de R2): el destino, al principio del «cómo» (antes en el carácter 148: el Calendar lo cortaba)
     ];
@@ -412,7 +418,7 @@ function vibeS2(k: number): GuiaPaso[] | undefined {
       P(10, 'INVESTIGA: primeraReviewDe en CockpitStatusBar.tsx (l. ≈96-110) con Claude Code', `Si el color no coincide → ${ship} (captura + salida al journal). Pide la función en 5 líneas y anota el umbral exacto (05:10).`),
     ];
     case 5: return [
-      P(10, 'Commit [S2]: predice qué saldrá en `git status` y añade SOLO lo de S2', '`cd /d D:\\joseph-md-app` → `git status` (¿coincide con tu predicción?) → `git add DATA/USMLE/_anki_telemetria.json` (+ lo que tocaste de S2; nunca `git add .`: el repo es público) → `git commit -m "[S2] telemetría Anki v2 + KPI 1.ª review"`.'),
+      P(10, 'Commit [S2]: predice qué saldrá en `git status` y añade SOLO lo de S2', '`cd /d D:\\joseph-md-app` → `git status` (¿coincide con tu predicción?) → `git add DATA/USMLE/_anki_telemetria.json` (+ lo que tocaste de S2; nunca `git add .`: el repo es público) → `git commit -m "[S2] telemetría Anki v2 + KPI 1.ª review" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo).'),
       P(10, '`node DATA/_scripts/verify_vibecoding.js 2` → x/4', `${ship}: ahí se acepta el 3.º, que es MANUAL (ver el instrumento ANKI con la hora), con --ok-manual 3. Desde D:\\joseph-md-app; anota qué criterio falla.`),
       P(15, 'Cerrar lo rojo + enlazar la regla «Anki finde = due × 20 s» (DATA/SYNC_ANKI_OBSIDIAN_APP.md)', `Lo que no cierre → ${ship} (flexible; nunca a S3) · <5 entradas en el JSON → la tarea las irá sumando cada noche (es normal) · sin tarea → paso 3 (${vibeDiaTxt(2, 3)}).`),
     ];
@@ -444,7 +450,7 @@ function vibeS3(k: number): GuiaPaso[] | undefined {
       P(10, 'CORRE: `node DATA/_scripts/gen_revision_semanal.js --dry-run` → métricas 6, 7 y 9', `Lo que salga «sin dato» → ${ship} (flexible). ¿Leen de plan_checks? Anota cuáles sí y cuáles no.`),
     ];
     case 5: return [
-      P(10, 'Commit [S3]: predice `git status` y añade SOLO lo de S3', '`cd /d D:\\joseph-md-app` → `git status` → `git add` de lo que tocaste en S3 (nunca `git add .`) → `git commit -m "[S3] espejo plan_checks verificado + export/import"`. Si no tocaste código, el commit lleva la nota de la verificación (DATA/SYNAPSE).'),
+      P(10, 'Commit [S3]: predice `git status` y añade SOLO lo de S3', '`cd /d D:\\joseph-md-app` → `git status` → `git add` de lo que tocaste en S3 (nunca `git add .`) → `git commit -m "[S3] espejo plan_checks verificado + export/import" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo). Si no tocaste código, el commit lleva la nota de la verificación (DATA/SYNAPSE).'),
       P(10, '`node DATA/_scripts/verify_vibecoding.js 3` → x/4', `${ship}: ahí se aceptan el 2.º y el 3.º, MANUALES (los viste el ${vibeDiaTxt(3, 2)} y el ${vibeDiaTxt(3, 4)}), con --ok-manual 2,3. Desde D:\\joseph-md-app.`),
       P(15, 'Cerrar lo rojo (no manual)', `Lo que no cierre → ${ship} (flexible; nunca a S4) · <5 filas en plan_checks → marca en la app los días que hiciste · sin commit → repite con [S3].`),
     ];
@@ -488,6 +494,42 @@ function vibeDeloadTxt(semana: number): string {
   const n = new Map<number, number>(); for (const m of mins) n.set(m, (n.get(m) ?? 0) + 1);
   return `Semana DELOAD del vibecoding: carga al 50 % (${[...n].sort((a, b) => b[0] - a[0]).map(([m, k], i) => `${k}${i ? '' : ` día${k > 1 ? 's' : ''}`} de ${m}′`).join(' + ')}).`;
 }
+/** v6.10o (rev. c17, dias-clave #3): el CIERRE de las 04:55 de un día de 45′ y su «Hecho». Antes, fuera de S1 1-4, «`git commit` … o `git stash` — nunca se
+ *  deja a medias» y el Hecho pedía «commit o stash»; pero la terminal está en D:\\joseph-md-app, con cambios sin commit de OTROS chats, y un `git stash` global
+ *  se los llevaría (el motivo por el que S1 1-4 ya iba «sin commit ni stash»). Ahora, 4 casos: (1) S1 1-4, como estaba (v6.10e); (2) días con sub-pasos en los
+ *  que no se cambia código (S2 1-4: «Hoy no se cambia código» / «corrige EN ANKI»; S3 1, 2 y 4: solo lectura) → nota de estado, ni commit ni stash; (3) el
+ *  día del commit del proyecto (ship-prep) → ese commit ya es SELECTIVO, sin stash; (4) el resto (puede haber código) → commit SELECTIVO de los ficheros del
+ *  proyecto (`git add <ficheros>` + `git commit -m … -- <ficheros>`: con las rutas, el commit deja fuera lo que otro chat tenga en el índice —remate de la
+ *  revisión «verdad» #5—; a medias, «WIP» en el mensaje) y nunca `git add .` ni `git stash`. `conSubpasos` = el día trae los sub-pasos
+ *  de vibeS1/S2/S3 (S2 y S3 solo en F1). */
+function vibeCierre45(dia: DiaVibe, p: VibeProyecto | undefined, fxV: boolean, conSubpasos: boolean): { que: string; como: string; hecho: string } {
+  const sN = `S${p ? p.s : dia.semana}`;
+  const fin = fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.';
+  const jSin = 'Journal: qué construí · qué aprendí · % del código que entiendo · bloqueo.';
+  const jCon = 'Journal: qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo.';
+  // (1) v6.10e (revisión del 18-nov · dias-1920-13): en S1 no hay nada que commitear ni guardar con stash (el trabajo es en n8n; D:\\agente_estudio no es repo
+  //   git y un `git stash` en joseph-md-app se llevaría los cambios de otros chats): como el kit v3, nota de estado en el journal; el commit [S1] es el del paso 5
+  if (dia.semana === 1 && dia.k < 5) return {
+    que: 'CIERRE · 04:55 nota de estado + journal (S1: sin commit ni stash)',
+    como: `A las 04:55 paras: SIN \`git commit\` ni \`git stash\` (D:\\agente_estudio no es repo git y en joseph-md-app hay cambios de otros chats; el commit [S1] es el del paso 5): deja en el journal dónde quedaste (paso, nodo, ejecución). ${jSin} ${fin}`,
+    hecho: 'paso del día hecho + nota de estado a las 04:55 (S1: sin commit ni stash) + entrada del journal',
+  };
+  if (conSubpasos && ((dia.semana === 2 && dia.k < 5) || (dia.semana === 3 && [1, 2, 4].includes(dia.k)))) return {
+    que: 'CIERRE · 04:55 nota de estado + journal (hoy sin cambios de código: ni commit ni stash)',
+    como: `A las 04:55 paras: hoy no se cambia código, así que ni \`git commit\` ni \`git stash\` (en joseph-md-app hay cambios de otros chats y un \`git stash\` se los llevaría): deja en el journal dónde quedaste. ${jSin} ${fin}`,
+    hecho: 'paso del día hecho + nota de estado a las 04:55 (hoy sin cambios de código: ni commit ni stash) + entrada del journal',
+  };
+  if (dia.tipo === 'ship-prep') return {
+    que: `CIERRE · 04:55 journal (el commit [${sN}] es el de hoy, selectivo; nunca git stash)`,
+    como: `A las 04:55 paras. El commit [${sN}] de hoy ya es SELECTIVO (\`git add <ficheros>\` + \`git commit -m "[${sN}] <qué>" -- <ficheros>\`; nunca \`git add .\`); si después tocaste algo más, otro commit igual con [${sN}]. Nunca \`git stash\`: en joseph-md-app hay cambios de otros chats. ${jCon} ${fin}`,
+    hecho: `paso del día hecho (su commit [${sN}] selectivo) + entrada del journal con los 6 campos`,
+  };
+  return {
+    que: 'CIERRE · 04:55 commit SELECTIVO + journal (nunca git stash)',
+    como: `A las 04:55, solo lo del proyecto: \`git add <ficheros>\` + \`git commit -m "[${sN}] <qué>" -- <ficheros>\` (a medias: «WIP»). Nunca \`git add .\` ni \`git stash\`: en joseph-md-app hay cambios de otros chats (el «-- <ficheros>» deja fuera lo que otro chat tenga en el índice). Sin cambios de código, solo la nota de estado. ${jCon} ${fin}`,
+    hecho: `paso del día hecho + commit selectivo [${sN}] a las 04:55 (o nota de estado si no hubo código) + entrada del journal con los 6 campos`,
+  };
+}
 export function guiaVibeDe(iso: string): GuiaBloque | null {
   const dia: DiaVibe | undefined = vibeDiaDe(iso);
   if (!dia) return null;
@@ -515,13 +557,8 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     const pbTxt = domPB && pPB ? `Si el ${fCorta(domPB)} no hubo PC: primero el verify (10′) y lo rojo de S${pPB.s} (node DATA/_scripts/verify_vibecoding.js ${pPB.s}); hoy CONSTRUIR = 25′. ` : '';
     // v6.10 · base cero: con sub-pasos (S2/S3) y plan B del domingo, el verify va delante (en el «cómo» del 1.º) y el último sub-paso (10′) se salta
     const construir = cur ? cur.map((x, i, xs) => (pbTxt && dia.semana > 1 ? (i === 0 ? { ...x, como: `${pbTxt}${x.como}` } : i === xs.length - 1 ? { ...x, que: `${x.que} (se salta si hoy hiciste ese verify)` } : { ...x }) : { ...x })) : [P(35, `CONSTRUIR · ${dia.paso}`, `${pbTxt}${vibeComoTipoDe(dia, p, iso)}${p ? ` Repo: ${p.repoGit}.` : ''}`, docs ? { t: 'docs ↗', url: docs.url } : undefined)];
-    // v6.10e (revisión del 18-nov · dias-1920-13): en S1 no hay nada que commitear ni guardar con stash (el trabajo es en n8n; D:\\agente_estudio no es repo
-    //   git y un `git stash` en joseph-md-app se llevaría los cambios de otros chats): como el kit v3, nota de estado en el journal; el commit [S1] es el del paso 5
-    const s1SinGit = dia.semana === 1 && dia.k < 5;
-    pasos = [objetivo, ...construir, P(5, s1SinGit ? 'CIERRE · 04:55 nota de estado + journal (S1: sin commit ni stash)' : 'CIERRE · 04:55 commit-or-stash + journal',
-      s1SinGit
-        ? `A las 04:55 paras: SIN \`git commit\` ni \`git stash\` (D:\\agente_estudio no es repo git y en joseph-md-app hay cambios de otros chats; el commit [S1] es el del paso 5): deja en el journal dónde quedaste (paso, nodo, ejecución). Journal: qué construí · qué aprendí · % del código que entiendo · bloqueo. ${fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.'}`
-        : `A las 04:55: \`git commit\` (con [S${p ? p.s : dia.semana}] en el mensaje) o \`git stash\` — nunca se deja a medias. Journal: qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo. ${fxV ? 'El bloque termina a las 05:00, con la rutina (hoy el Anki es a las 21:30).' : '05:00 = Anki sin excepción.'}`, journal)];
+    const cierre = vibeCierre45(dia, p, !!fxV, !!cur);
+    pasos = [objetivo, ...construir, P(5, cierre.que, cierre.como, journal)];
   } else if (dia.min >= 15) {
     // v6.09b lote 1-quater FX1 (revisión V2/V3): en F1 la hora de parada es la de ESTE paso (jue 31-dic: 04:27; antes «A las 04:55», fuera de su franja de 15′) y la
     //   franja es la del bloque (04:15-04:30): lo que queda hasta las 05:00 no es un bloque de estudio
@@ -533,7 +570,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     pasos = [P(dia.min, `JOURNAL 5′ · ${dia.paso}`, 'Solo journal (3 líneas) y, si quieres, el audio B del SYNAPSE. Semana de deload total: no se construye nada.', journal)];
   }
   return bloque(franja, 'vibecoding', `${nombre} — ${VIBE_TIPO_LABEL[dia.tipo]}`, pasos, recursos,
-    dia.min >= 45 ? (dia.semana === 1 && dia.k < 5 ? 'paso del día hecho + nota de estado a las 04:55 (S1: sin commit ni stash) + entrada del journal' : 'paso del día hecho + commit [S…] o stash a las 04:55 + entrada del journal con los 6 campos') : 'entrada del journal del día',
+    dia.min >= 45 ? vibeCierre45(dia, p, !!fxV, dia.semana === 1 || ((dia.semana === 2 || dia.semana === 3) && textosQSDe(iso))).hecho : 'entrada del journal del día',
     {
       flex: Math.max(0, pasos.length - 2),
       // v6.09b lote 1-quater (QS · e): en F1 el plan B dice a qué SHIP va el paso (el del proyecto en curso, con fecha); fuera de F1, sin cambio
@@ -851,7 +888,9 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
       : `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)} (sin sesión, v6.09); así la numeración de 2027 no cambia.`) : '';
   return bloque(franja, 'synapse', `SYNAPSE S${s.semana} · ${s.fase.split('·')[0].trim()} — A pantalla · B audio · C lectura`, pasos, recursos,
     SYN_HECHO,
-    { aviso: [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', synFaseAvisoDe(iso)].filter(Boolean).join(' ') || undefined,
+    // v6.10o (rev. c17, cambios #6): el día de un GATE la línea de fase (fase n/6, su quiz oficial y la consecuencia) va DELANTE del recordatorio del horario
+    //   (el sáb 12-dic el corte en 240 dejaba «… Base cero · hoy, GATE de la fase …» tras el horario del sábado); los demás días, al final, como estaba
+    { aviso: ((fa) => (/GATE de la fase/.test(fa) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las 21:00), /, '$1 · '), s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
       planB: synPlanBDe(iso) });
 }
 /** v6.10 (17-nov-2026): SESIÓN DE RECUPERACIÓN del SYNAPSE a hora fija (synapseDailyPlan.SYN_REC_F1, gen_synapse_plan.js › REC_V610 = _fechas_v6.json ›
@@ -900,7 +939,16 @@ function synFaseAvisoDe(iso: string): string {
     // v6.10m (rev. c16, diffs #25): «Si no apruebas» (en Perú «suspendido» se lee como cancelado); corta para que «PC del domingo» quepa en los 240 del 10-dic
     // remate v6.10m (rev. c16 · verdad #3): sin el paréntesis final («(la fase siguiente empieza en su fecha)»), que el corte de 240 dejaba abierto el 27-nov
     //   («… solo lo fallado (la fase …»); esa regla la dicen el paso 0) del PC del domingo («la fase siguiente ya empezó en su fecha») y SYN_AVANCE_BC
-    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}${/^«/.test(f.gate) ? ' Si no apruebas: al PC del domingo, solo lo fallado.' : ''}`;
+    // v6.10o (rev. c17, cambios #4 · vetadas #12): el 10-dic (fase 3/6: quiz + los 5 workflows con su paréntesis) el aviso pasaba de 240 y el corte dejaba
+    //   «Si no apruebas: al PC del domingo, …» → con un 2.º requisito («quiz … aprobado + …»), la consecuencia va pegada al quiz, que es lo que se aprueba
+    //   («… quiz» oficial aprobado (si no apruebas: al PC del domingo, solo lo fallado) + los 5 workflows …»); con uno solo, al final, como estaba. El
+    //   paréntesis final del 2.º requisito («(recall en blanco; el ensayo no trae quiz)») no va en el aviso (con él pasaba de 240 y el corte lo dejaba
+    //   abierto): lo dicen el paso A del ensayo (sáb 12-dic) y la fase en la app (SYN_FASES_BC.gate)
+    if (/^«/.test(f.gate)) {
+      const m = /^(«[^»]+»[^+]*? aprobados?)( \+ [^()]*?)(?: \([^()]*\))?\.$/u.exec(f.gate);
+      return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${m ? `${m[1]} (si no apruebas: al PC del domingo, solo lo fallado)${m[2]}.` : `${f.gate} Si no apruebas: al PC del domingo, solo lo fallado.`}`;
+    }
+    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}`;
   }
   return `Base cero · fase ${f.id}/${n}${f.desde === iso ? ' (empieza hoy)' : ''} · ${f.corto} · gate: ${f.gateCorto}.`;
 }
@@ -1061,8 +1109,11 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
   // v6.10e (revisión del 18-nov · regresiones-5): «fase n/6 del SYNAPSE» (en una guía de vibecoding, «fase 2» chocaba con sus fases PRIMM «fase 2/3»)
   // v6.10m (rev. c16, diffs #25 · vetadas #18): «no aprobado» (en Perú «suspendido» se lee como cancelado) y «solo lo fallado» dentro del corte de 110 del
   //   Calendar (antes «quedó suspendido: repítelo solo …»); el detalle (las lecciones falladas, sus minutos), detrás
+  // v6.10o (rev. c17, diffs #16): la CONDICIÓN delante («0) Si no aprobaste el quiz oficial del SYNAPSE (GATE …): repite solo lo fallado»): con 2 gates (dom
+  //   13-dic) el corte de 110 caía antes de «no aprobado: repite solo lo fallado» y el paso 0 se leía como obligatorio; las fechas, dentro del paréntesis.
+  //   Más corto («(las lecciones, …)»): con 1 gate el criterio (1) del «CERRAR» vuelve a caer antes del carácter 250 y el Calendar lo enseña (limCerrar)
   const gateTxt = (min: number): string => (gatesQuiz.length
-    ? `0) Quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id}/${SYN_FASES_BC.length} del SYNAPSE (${fCorta(x.g)})`).join(' o el ')} no aprobado: repite solo lo fallado (las lecciones falladas, ≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
+    ? `0) Si no aprobaste el quiz oficial del SYNAPSE (GATE ${gatesQuiz.map((x) => `${x.f.id}/${SYN_FASES_BC.length}, ${fCorta(x.g)}`).join(', o ')}): repite solo lo fallado (las lecciones, ≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
     : '');
   if (main && (main.tipo === 'ship' || main.tipo === 'avance') && main.proyecto) {
     const p = main.proyecto;
@@ -1816,7 +1867,7 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
       const urls = [...new Set(lectF1.map((x) => x[2]))];
       recursos.unshift(...urls.map((u) => R(u.includes('dailymed') ? `Ficha técnica FDA (DailyMed) · ${u.includes('ee06186f') ? 'WEGOVY' : 'ZEPBOUND'}` : u.includes('pubmed') ? `PubMed ${u.replace(/\D/g, '')} (resumen)` : `PMC ${(/PMC\d+/.exec(u) || [''])[0]} (texto libre)`, u)));
     }
-    else if (lmin) pasos.push(P(lmin, `LECTURA · ${l.estudio} — fuente: ${l.fuente} (sección del tema, sin medir)`, `${lmin}′: busca en la fuente la sección del tema de hoy y léela activamente (causa → efecto). Si la fuente es de pago o no carga: la siguiente fuente libre de la lista.`, recursos[0] ? { t: 'fuente ↗', url: recursos[0].url } : undefined));
+    else if (lmin) pasos.push(P(lmin, `LECTURA en ${l.fuente} (sección del tema, sin medir): ${l.estudio}`, `${lmin}′: busca en la fuente la sección del tema de hoy y léela activamente (causa → efecto). Si la fuente es de pago o no carga: la siguiente fuente libre de la lista.`, recursos[0] ? { t: 'fuente ↗', url: recursos[0].url } : undefined));
     if (segunda) pasos.push(P(segunda, `2.ª PASADA (${segunda}′) · solo lo subrayado de la lectura de hoy, a 2× (≤ media lectura + 1′${segunda < Math.round((lect ? palabras : palF1) / PPM_EN / 2 + 1) ? `; acotada a ${segunda}′: lo más subrayado primero` : ''})`, 'Relee únicamente los párrafos que subrayaste (cifras y mecanismo) y con ellos escribe la tarjeta propia del «¿por qué?». Si no subrayaste nada, relee el apartado de resultados.'));
     pasos.push(P(tarj, sinLectura ? `ESTUDIO · ${l.estudio}` : `TARJETAS de MECANISMO de hoy (${cards.length} en ${deck})${extraProp ? ` + ${extraProp} propia${extraProp > 1 ? 's' : ''} más del subrayado (2′ c/u)` : ''}`,
       sinLectura ? `Hoy no hay lectura nueva: ${l.estudio}. Tarjetas en ${deck}.` : `Empresa › LIVIANO › Academia › HOY › «Anki de hoy» (o CSV DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv) → impórtalas a ${deck} + 1 propia si falta un «¿por qué?». Regla del frente: tu anverso, sin cloze.`));
