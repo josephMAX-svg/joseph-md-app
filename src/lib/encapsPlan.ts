@@ -644,10 +644,21 @@ export function fuenteRetestSim(sim: StudyScheduleDay | null | undefined): strin
   return s ? ` · en la plataforma del simulacro${lbl ? ` (${lbl})` : ''}` : '';
 }
 export interface EvalAnclada { modo: 'inicio' | 'lunes' | 'ayer' | 'ninguna'; codigo: string; label: string; detail: string; regla: string }
+/** v6.10j: «lun 23-nov» = el día REAL (alias de corrida_s1) de la fila de plan `d` · «viernes» si la fecha no es legible. */
+function diaRealTxt(d: StudyScheduleDay): string {
+  const f = typeof d.fecha === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d.fecha) ? fechaRealDe(d.fecha.slice(0, 10), 'encaps') : null;
+  return f ? `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][new Date(`${f}T12:00:00Z`).getUTCDay()]} ${Number(f.slice(8, 10))}-${MES_C[Number(f.slice(5, 7)) - 1]}` : 'viernes';
+}
+/** v6.10j: «lunes» solo si hoy es lunes y el mini-sim fue el viernes (días REALES); si no, «tras el mini-sim». */
+function trasMiniSimTxt(day: StudyScheduleDay, prev: StudyScheduleDay): string {
+  const r = (d: StudyScheduleDay) => (typeof d.fecha === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d.fecha) ? new Date(`${fechaRealDe(d.fecha.slice(0, 10), 'encaps')}T12:00:00Z`).getUTCDay() : -1);
+  return r(day) === 1 && r(prev) === 5 ? 'lunes' : 'tras el mini-sim';
+}
 export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | null | undefined): EvalAnclada {
   const regla = EVAL_ANCLADA_REGLA;
   if (day.tipo === 'mini_sim') {
-    return { modo: 'ninguna', codigo: 'MIX', label: 'Viernes: sin eval anclada (el mini-sim ya incluye ≥5Q de fallos previos)', detail: regla, regla };
+    // v6.10j (auditoría c14, dias-clave #8): «Hoy mini-sim» y no «Viernes»: con el alias de corrida_s1 (19-nov → 1-ene) el mini-sim de F1 se hace en lunes
+    return { modo: 'ninguna', codigo: 'MIX', label: 'Hoy mini-sim: sin eval anclada (el mini-sim ya incluye ≥5Q de fallos previos)', detail: regla, regla };
   }
   if (!prev) {
     return {
@@ -659,7 +670,9 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
   if (prev.tipo === 'mini_sim' || !prev.codigo) {
     return {
       modo: 'lunes', codigo: 'MIX',
-      label: `🎯 EVAL ANCLADA (lunes): 5Q REALES de los códigos que fallaste en el mini-sim del viernes (D${prev.dia})`,
+      // v6.10j (auditoría c14, dias-clave #8): el día REAL del mini-sim (alias de corrida_s1: hasta el 1-ene los mini-sims de F1 caen en lunes y esta eval, en
+      //   martes); «(lunes) … del viernes» solo si de verdad fue así
+      label: `🎯 EVAL ANCLADA (${trasMiniSimTxt(day, prev)}): 5Q REALES de los códigos que fallaste en el mini-sim del ${diaRealTxt(prev)} (D${prev.dia})`,
       detail: `Examen oficial con clave (runner); sin runner, re-test de 5 de las MISMAS preguntas que fallaste en el mini-sim, sin la clave a la vista · de memoria, sin material · ${regla}`, regla,
     };
   }
@@ -949,7 +962,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     items.push({
       key: `D${N}:msim_corr`, kind: 'eval',
       label: '📊 Corrección + CIERRE DE SESIÓN tipo mini_sim (nota /25 → study_sim_scores + % ciego → study_progress)',
-      detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
+      detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos mini-sims seguidos` : ''}`,
       dur: ses ? 28 : 30, hora: ses ? '16:47–17:15' : '16:45–17:15',
     });
     return items;

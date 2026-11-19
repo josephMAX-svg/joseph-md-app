@@ -530,7 +530,12 @@ const metDia = (r) => (!r.t ? PE.f1[String(r.d)] || null : null);
 const metSis = (r) => PE.sistemas[/bioestad|biostat|ética|ethic|comunicaci/i.test(r.sub) && /Psychiatry|Behavioral/.test(r.system) ? 'Biostat & Ethics' : r.system] || null;
 const faseTxtDe = (r) => { const m = metDia(r); return m ? (m.fase === 'N0' ? 'Fase 1 · SUBTEMA, nivel 0' : 'Fase 1 · SUBTEMA, nivel 1') : r.nivelUW === 1 ? 'Fase 1 · SUBTEMA, nivel 1' : r.nivelUW === 2 ? 'Fase 1 · SUBTEMA, nivel 2' : r.nivelUW === 3 ? 'Fase 2 · SISTEMA' : 'Fase 3 · MULTISISTEMA'; };
 /** «MÉTODO DEL DÍA / DEL SISTEMA (Palmerton): ancla · orden» para el paso de lectura */
-const metodoLeerTxt = (r) => { const m = metDia(r); if (m) return `MÉTODO DEL DÍA (Palmerton · ${faseTxtDe(r)}): ancla «${m.ancla}» · lee en este orden: ${m.leer}. `; const x = metSis(r); return x ? `MÉTODO DEL SISTEMA (Palmerton · ${x.nombre}): ancla «${x.ancla}» · trampas: ${x.trampas}. ` : ''; };
+// v6.10j (rev. c14, vetadas #8): el ancla va PRIMERO y con el rótulo corto («Ancla «…»») y el método/fase detrás: el Calendar corta el «cómo» a 110 y con
+//   «MÉTODO DEL DÍA (Palmerton · Fase 1 · SUBTEMA, nivel 0): ancla «» delante (64 caracteres) el corte caía dentro del ancla; así caben enteras las de ≤ 100
+//   (D3, D5-D13) y las largas quedan para la regla de comillas del constructor
+// remate v6.10j (revisión adversarial): «MÉTODO DEL DÍA — Palmerton · Fase 1 · …:» sin paréntesis (el corte del Calendar, tras un ancla larga, caía dentro de
+//   «(Palmerton · Fase 1 …» y lo dejaba abierto)
+const metodoLeerTxt = (r) => { const m = metDia(r); if (m) return `Ancla «${m.ancla}» · MÉTODO DEL DÍA — Palmerton · ${faseTxtDe(r)}: lee en este orden: ${m.leer}. `; const x = metSis(r); return x ? `Ancla «${x.ancla}» · MÉTODO DEL SISTEMA — Palmerton · ${x.nombre}: trampas: ${x.trampas}. ` : ''; };
 // v6.10 (fix revisión 18-nov · «preguntas primero, libro después»): el MÉTODO AL RESPONDER del día (trampas incluidas) ya no va en el paso de responder de las
 //   preguntas a fondo del nivel 0 ni del pre-test ciego: se lee DESPUÉS de responder (paso del Educational Objective · bitácora del bloque 1) y vale para el
 //   bloque 2 y la validación. Sin la etiqueta doble «Trampa del día: trampas:» (la etiqueta es «MÉTODO AL RESPONDER»; el texto ya dice «trampa: …»).
@@ -729,8 +734,11 @@ function B(fecha, franja, titulo, pasos, recursos, hecho, extra = {}) {
 }
 const P = (min, que, como, enlace) => (enlace ? { min, que, como, enlace } : { min, que, como });
 const TUTOR = 'Tutor (sin reloj)', TIMED = 'Timed (90 s/Q · tope 2 min)';
-const tcUW = (ids, n, modo) => `QBanks › «uWorld - USMLE Step 1» (ACTIVE QBANK) › New Test → System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} · Subjects: todos · Status: Unused · ${n} preguntas · Order: por defecto · ${modo} → BEGIN TEST`;
-const tcMH = (ids, n, modo) => `QBanks › «Mehlman - Step 1 QBank - 2026» (ACTIVE QBANK) › New Test → System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} · Status: Unused · ${n} preguntas · ${modo} → BEGIN TEST`;
+// v6.10j (rev. c14, vetadas #8): el modo (Tutor sin reloj / Timed), el nº de preguntas y Status: Unused van DELANTE de los Systems (el «qué» ya los nombra):
+//   el Calendar corta el «cómo» a 110 y antes caía dentro de «System «…»» y se perdía «Tutor (sin reloj)» · «1 pregunta» en singular
+const nPreg = (n) => `${n} pregunta${n === 1 ? '' : 's'}`;
+const tcUW = (ids, n, modo) => `QBanks › «uWorld - USMLE Step 1» (ACTIVE QBANK) › New Test → ${modo} · ${nPreg(n)} · Status: Unused · Subjects: todos · Order: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
+const tcMH = (ids, n, modo) => `QBanks › «Mehlman - Step 1 QBank - 2026» (ACTIVE QBANK) › New Test → ${modo} · ${nPreg(n)} · Status: Unused · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
 const L_UW = { t: 'Qbankly › QBanks', url: QBQ };
 const R_UW = { t: 'Qbankly › QBanks (Test Composer)', url: QBQ };
 const R_VID = { t: 'Qbankly › Video Library (B&B Step 1)', url: QBV };
@@ -766,7 +774,11 @@ const recLib = (d) => MF1[d].lib.map(([e, doc], i) => ({ t: `${libNom(e, doc)}${
 const pathomaTxt = (d) => (MF1[d].pathoma ? ` · Pathoma ${MF1[d].pathoma.map((c) => `cap. ${c} (${PATHOMA[c]})`).join(' + ')} SOLO si tienes cuenta` : '');
 
 // ANKI 05:00
-function anki0500(r) {
+// v6.10j (rev. c14, dias-clave #3): `restante` = el 07:15 de ese día tiene el paso «… + Anki restante» (el repaso del nivel 1 sin vídeo pendiente y el del
+//   tramo 2). Si no lo tiene (nivel 0 —D2-D4—, repaso con vídeo pendiente, Day-After), las vencidas que no caben van al próximo Anki AM y no a un «Anki
+//   restante (07:15)» que ese día no existe (vie 27-nov · mié 25-nov · mié 2-dic · vie 4-dic · mié 9-dic en el Calendar). Lo decide quien arma el día.
+const tieneAnkiRestante = (gs) => gs.some((g) => g && g.pasos.some((p) => /Anki restante/.test(p.que)));
+function anki0500(r, restante = true) {
   const d = r.d; const f = r.fecha; const rep = REP[d];
   const i = IDX.get(d); const prevPlan = i > 0 ? SEQ[i - 1] : null;
   const creadas = prevPlan ? (antesTxt(prevPlan.fecha, f) === 'ayer' ? 'ayer' : `el ${fd(prevPlan.fecha)}`) : 'ayer';
@@ -781,7 +793,7 @@ function anki0500(r) {
     P(f1 ? 20 : 33, 'VENCIDAS primero (reviews first) · sin tope (Maximum reviews/day 9999)', 'Lee el frente, responde EN VOZ ALTA y gira: Good si recordaste la lógica central (≈90 %, no palabra por palabra) · Again solo si la olvidaste (≈10 %) · nunca Hard/Easy · lee primero la línea «Summary:» (20-30 s por tarjeta).'),
     P(f1 ? 6 : 8, `NUEVAS: las APEX que creaste ${creadas} (preset ${AK.nuevasDia}/día)`, hito
       ? 'Solo si las vencidas llegaron a 0; si no, nuevas = 0 hoy (esperan en la cola). Hoy NO se crean tarjetas: el NBME se corrige desde las 18:00 (Day-After).'
-      : `Solo si las vencidas llegaron a 0. Si a las ${f1 ? '05:22' : '05:37'} aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van al primer «Anki restante» (07:15) o ${ankiAmSigTxt(f)}, siempre antes que nuevas.${f1 ? ' A las 05:30 pasas a los repasos ENCAPS (15′): no los recortes por el USMLE.' : ''}`),
+      : `Solo si las vencidas llegaron a 0. Si a las ${f1 ? '05:22' : '05:37'} aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van ${restante ? `al «Anki restante» de las 07:15 de hoy o ${ankiAmSigTxt(f)}` : ankiAmSigTxt(f)}, siempre antes que nuevas.${f1 ? ' A las 05:30 pasas a los repasos ENCAPS (15′): no los recortes por el USMLE.' : ''}`),
     P(2, 'Sync final + telemetría', 'Sync · node DATA/_scripts/anki_telemetria.js → due · backlog · retención 30 d · % Again (sano ≈10 %; > 20 % = tarjetas largas o perfeccionismo → divídelas; ≈0 % = no te estás examinando).'),
   ], [R_ANKI], '0 vencidas en APEX::USMLE (las nuevas solo después) y la telemetría registrada', { planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo (borra el historial del algoritmo).' });
 }
@@ -1011,7 +1023,9 @@ function hitoNBME(r) {
   const nom = `Self-Assessment - Form ${form}`;
   return [anki0500(r),
     B(f, '07:00–12:30', `HITO · NBME ${form} — 4 bloques de ${bloques.join('/')}Q (Timed)`, [
-      P(3, 'Armar el bloque 1', `QBanks › NBME - Comprehensive Basic Science (Step 1) › «${nom}» (${bloques.reduce((a, b) => a + b, 0)}Q) › Select QBank › New Test → Subject «Block 1» (${bloques[0]}) · System All Systems · Status Unused · ${bloques[0]} · Timed → BEGIN TEST`, L_UW),
+      // v6.10j (rev. c14, vetadas #5): la ruta de menús va en el «qué» (≤ 150, entero en el Calendar) y el «cómo» EMPIEZA por cómo se crea el bloque 1 (antes
+      //   el corte de 110 caía dentro de la ruta: «… › Select QBank › …» y se perdía «New Test → Subject «Block 1» (50) · … · Timed → BEGIN TEST»)
+      P(3, `Armar el bloque 1 · QBanks › NBME - Comprehensive Basic Science (Step 1) › «${nom}» (${bloques.reduce((a, b) => a + b, 0)}Q) › Select QBank`, `New Test → Subject «Block 1» (${bloques[0]}) · Timed · System All Systems · Status Unused · ${bloques[0]} → BEGIN TEST`, L_UW),
       P(75, `Bloque 1 · ${bloques[0]}Q · 75′ (ritmo NBME: 90 s/Q)`, 'Kit anti-pánico: tope 2 min · flag y sigue · sin cambiar respuestas salvo error de lectura.'),
       P(75, `Bloque 2 · ${bloques[1]}Q · 75′ (seguido)`, 'Sit-in 10-15 s en la silla → New Test «Block 2».'),
       P(12, 'Pausa fuera de la silla', 'Ziploc BREAK 1, agua, baño; no revises nada.'),
@@ -1123,7 +1137,8 @@ function colaPendienteTras(d, slot) {
 function preguntaAFondo(r, k, n, franja) {
   const d = r.d, m = MF1[d], ids = uwAFondo(d), conPulido = F1_N0[d].hora === 60, tj = conPulido ? '2-4' : '2-3';
   const pasos = [
-    P(1, `Armar la pregunta ${k}/${n}: 1Q de ${ids.map(uwNom).join(' + ')} (Tutor, sin reloj)`, `${tcUW(ids, 1, TUTOR)} · el cronómetro solo MIDE (no es para ir rápido): tope duro de 45′ desde aquí.`, L_UW),
+    P(1, `Armar la pregunta ${k}/${n} (1Q, Tutor sin reloj): ${ids.map(uwNom).join(' + ')}`, // v6.10j (rev. c14, vetadas #7): el modo delante (con 2 Systems el «qué» pasaba de 150 y se cortaba en «(Tutor, sin …»)
+      `${tcUW(ids, 1, TUTOR)} · el cronómetro solo MIDE (no es para ir rápido): tope duro de 45′ desde aquí.`, L_UW),
     P(13, 'Leer con las opciones tapadas + CCSN + SAQ + responder como juez', 'Lee la viñeta UNA vez, despacio y en orden (5′; marca sin traducir cada palabra que no entiendas y busca solo la que bloquee la frase) · CCSN por oración: Contexto, Cronología, Severidad y Noise (4′; la cronología en presente, frases cortas) · SAQ: la pregunta que respondería un panel sin opciones + tu respuesta (2′) · destapa y elige: rule-in ≈10 s por opción y luego rule-out; anota tu seguridad: seguro / dudo / adivino (2′).'),
     P(7, 'Educational Objective + auditar la viñeta', 'Lee las 1-3 frases del Educational Objective y contrástalas solo con tu opción (3′) · vuelve al enunciado: ¿para qué estaba cada oración, cada vital y cada laboratorio? (4′). Cada término nuevo, a la shopping list (vocabulary gap).' + trampaTrasTxt(r, k === 1 ? 'la 1.ª pregunta a fondo es un pre-test' : 'cada pregunta a fondo se responde a ciegas')),
     P(12, `Shopping list → First Aid 2026 › ${m.fa}: la sección completa (Whole Page Rule), acotado a 12′`, `${metodoLeerTxt(r)}No medible sin el libro abierto: acotado a 12′; marca dónde paras. La sección completa del subtema, no solo el dato que fallaste; lo que no llegue → la PÁGINA COMPLETA de las ${PC_INI[d]}.`),
@@ -1233,7 +1248,6 @@ function anki18(r) {
 /** v6.10b · el día de Step de F1 (no hito) en nivel 0-1. */
 function diaF1(r) {
   const d = r.d, th = trasHito(r), prev = contAtras(r, 1), out = [];
-  out.push(d === D2.d ? anki0500D2(r) : anki0500(r));
   if (nivel0(r)) {
     const { q: n, hora } = F1_N0[d]; let t = aMin('07:15');
     if (prev) { out.push(revalidacion(r, prev, frDe(t, 30))); t += 30; }
@@ -1248,6 +1262,7 @@ function diaF1(r) {
     out.push(validacion(r, '11:30–12:00'));
   }
   out.push(th && th.n <= 4 ? dayAfter18(r, th) : anki18(r));
+  out.unshift(d === D2.d ? anki0500D2(r) : anki0500(r, tieneAnkiRestante(out))); // v6.10j: el Anki AM sabe si hoy hay «Anki restante» a las 07:15
   return out;
 }
 
@@ -1329,7 +1344,9 @@ Object.assign(GUIA, findes());
 //   de las franjas USMLE de la plantilla F3
 for (const r of TG) {
   const th = trasHito(r);
-  GUIA[r.fecha] = esHito(r) ? hitoNBME(r) : [anki0500(r), th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), reentrada1615(r), eval18(r)].filter(Boolean);
+  if (esHito(r)) { GUIA[r.fecha] = hitoNBME(r); continue; }
+  const resto = [th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), reentrada1615(r), eval18(r)].filter(Boolean);
+  GUIA[r.fecha] = [anki0500(r, tieneAnkiRestante(resto)), ...resto]; // v6.10j: el Anki AM sabe si hoy hay «Anki restante» a las 07:15
 }
 for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
 // v6.10f (revisión 18-nov · regla de Joseph del 17-nov: la estructura nace el día que aprende algo que va ahí): la CONFIGURACIÓN ya no crea submazos vacíos →

@@ -52,6 +52,16 @@
  *   el DEEP WORK: 914 caracteres el 20-ene, y en el Calendar de 2027 empujaba la descripción por encima de su límite) · (4) el «cómo» de la eval anclada
  *   vuelve a decir «sin preguntas inventadas» · (5) el día del plan B de inglés, la comprobación del mentor de Rising Scholars va en el aviso (antes
  *   abría el «cómo» y el Calendar se quedaba sin «abre esa fuente y corrige en rojo»).
+ * v6.10j (auditoría c14 del Calendar, 18-nov ≈21:45): (1) eval anclada: en el «qué» (≤ 150 en el Calendar) van ENTERAS la fuente de contraste (nombre
+ *   corto: REC_CORTO o CONTRASTE_DE) y una comprobación COMPACTA del artefacto (ART_CHECK: el nombre del fichero o el estado, sin comillas que el corte
+ *   pueda dejar abiertas: antes «… su artefacto «TESIS_L0/research_letter_final.docx …» y 43 sesiones perdían el «¿existe …?»); el «cómo» cierra su
+ *   primera parte en ≤ 109 («… Sin artefacto → deuda en la Mesa editorial.»: antes quedaba «Sin artefacto …» colgando) y el recurso entero va en el enlace
+ *   del paso; las 4 evals paso a paso igual (los 2 puntos del recall, en el «cómo») · (2) la fuente según el átomo EVALUADO, real y verificable (antes la
+ *   del primer recurso: X-4 congresos ↔ «Writing in the Sciences», X-6/X-7 ↔ COPE/ICMJE, los SUBMIT ↔ ICMJE, las fotos ↔ CARE…): la web oficial de cada
+ *   congreso, la Mesa editorial, etica.md §1-§2, protocolo_fotos.md, las guías de autor de la revista, MENTORES.md §3, EQUATOR (R2) · (3) el título cabe
+ *   en el resumen del Calendar (≤ 75: «🔬 RESEARCH » + título) y acaba en un límite de cláusula real (antes ≤ 140 y el Calendar lo cortaba a 75 tras
+ *   «(», «:» o «,»: «R0 · Infra académica: 7 cuentas hoy (ORCID · Scholar · CTI Vitae · …»); sin incisos entre paréntesis si así cabe entero
+ *   («R10 · PROSPERO: rellenar el formulario completo y ENVIAR»).
  */
 'use strict';
 
@@ -85,18 +95,110 @@ const fLargo = (iso) => `${Number(iso.slice(8, 10))} de ${MES_NOMBRE[Number(iso.
 
 /** v6.10 · fix 18-nov: claves de REC que son documento o guía (se puede leer el método en ellas). Las que no están (PM, ZOT, PROS, RAY, OPENALEX, UNPAY,
  *  CROSSREF, METAFOR, EQ, ORCID, SCHOLAR, CTI, NCBIACC, RISING, revistas y Editorial Manager) son portales, registros o herramientas. */
-const REC_DOC = ['GREEN', 'STAT', 'STEPSR', 'CIL1', 'COCHB', 'PRISMA', 'AMSTAR', 'DMAR', 'DELO', 'BBR', 'GTS', 'ICMJE', 'COPE', 'CREDIT', 'SCIWRITE', 'REBUTTAL', 'PHRASE', 'CARE', 'STROBE'];
-/** v6.10 · fix 18-nov: fuente de contraste propia (el método del átomo está en su artefacto o en un documento que no es de REC). */
+// v6.10j: + EQ (la tabla de guías de reporte por tipo de estudio de EQUATOR es el método de R2: «elegir la guía de reporte ANTES de escribir»)
+const REC_DOC = ['GREEN', 'STAT', 'STEPSR', 'CIL1', 'COCHB', 'PRISMA', 'AMSTAR', 'DMAR', 'DELO', 'BBR', 'GTS', 'ICMJE', 'COPE', 'CREDIT', 'SCIWRITE', 'REBUTTAL', 'PHRASE', 'CARE', 'STROBE', 'EQ'];
+/** v6.10j: nombre CORTO de cada recurso de REC_DOC para el «qué» de la eval anclada (el Calendar lo corta a 150 y el nombre entero, con su
+ *  descripción, dejaba fuera la comprobación del artefacto); el recurso entero, con su URL, va en el enlace del paso. */
+const REC_CORTO = {
+  GREEN: 'How to Read a Paper (Greenhalgh)', STAT: 'StatQuest', STEPSR: 'Step-by-step SR+MA (Tawfik et al. 2019)', CIL1: 'Cochrane Interactive · Módulo 1',
+  COCHB: 'Cochrane Handbook v6.5', PRISMA: 'PRISMA statement', AMSTAR: 'AMSTAR-2', DMAR: 'Doing Meta-Analysis in R', DELO: 'DeLorenzi 2014 (PMID 24692598)',
+  BBR: 'Harrell · BBR', GTS: 'gtsummary', ICMJE: 'ICMJE Recommendations', COPE: 'COPE (integridad de publicación)', CREDIT: 'CRediT (NISO)',
+  SCIWRITE: 'Writing in the Sciences (Sainani)', REBUTTAL: 'PLOS · Responding to peer review', PHRASE: 'Academic Phrasebank', CARE: 'CARE checklist',
+  STROBE: 'STROBE (transversal)', EQ: 'EQUATOR Network',
+};
+/** v6.10 · fix 18-nov: fuente de contraste propia (el método del átomo está en su artefacto o en un documento que no es de REC).
+ *  v6.10j: nombres CORTOS (el «qué» de la eval anclada cabe entero en los 150 del Calendar) y la fuente según el átomo EVALUADO, real y verificable: antes los
+ *  SUBMIT (C-6, T-8, CR-9) y los cierres (X-6, X-7) se contrastaban con ICMJE o COPE, los congresos de X-4 con «Writing in the Sciences», las fotos de CR-3 con
+ *  CARE, el email de M3 con la Academic Phrasebank. Todas existen: los ficheros del repo (etica.md §1-§2, protocolo_fotos.md, MENTORES.md §3 «Mensaje 3»,
+ *  RUTA_PUBLICACION_2027.md §3.1, L4 §6, citation_verifier.py) o los que crea el propio átomo evaluado (diana.md, borrador_v2.md, MENTORES.md §Congresos /
+ *  §Campaña de cold emails), la Mesa editorial (RUTA §9) y las guías oficiales que el átomo leyó (Author Guidelines de la revista, web de cada congreso). */
 const CONTRASTE_DE = {
-  M2: 'MENTORES.md §3 (mensaje 2, Rising Scholars) y su fila de la tabla CRM',
-  'C-2': 'CARTA_1/diana.md (deadline, límites y esqueleto) y las 5 letters modelo que leíste',
-  // v6.10i: las reglas del verificador primero (son el método de C-4; el Calendar corta el «qué» a 150)
-  'C-4': 'las reglas de citation_verifier.py (cabecera de DATA/RESEARCH/agentic/citation_verifier.py) y CARTA_1/refs_verified.json (status de cada cita)',
-  'C-5': 'las Author Guidelines de la revista diana y CARTA_1/cover_letter.md',
+  M2: 'MENTORES.md §3 (mensaje 2)',
+  'C-2': 'CARTA_1/diana.md y las 5 letters modelo',
+  'T-1': 'TESIS_L0/etica.md §1-§2',
+  'C-3': 'CARTA_1/diana.md (límites y esqueleto)',
+  // v6.10i: las reglas del verificador primero (son el método de C-4) · v6.10j: corto (refs_verified.json va en la comprobación)
+  'C-4': 'la cabecera de citation_verifier.py',
+  'C-5': 'las Author Guidelines de la revista diana',
+  'C-6': 'CARTA_1/diana.md (deadline) y la Mesa editorial',
+  'T-7': 'la Guide for Authors de la revista',
+  'T-8': 'la Mesa editorial y CTI Vitae',
+  'X-7': 'la Mesa editorial (estado y próxima fecha)',
+  'CR-3': 'CASE_REPORT_1/protocolo_fotos.md',
+  'CR-6': 'los comentarios del senior y del mentor de inglés',
+  'CR-7': 'las guías de autor de DOJ',
+  'CR-8': 'las guías de autor de DOJ (qué se sube)',
+  'CR-9': 'la Mesa editorial',
+  M3: 'MENTORES.md §3 (mensaje 3, Prof. Finlay)',
+  'X-3': 'la nota de estado del corpus',
+  'X-4': 'la web oficial de AAD, CILAD y RADLA',
   // v6.10e (revisión del 18-nov · regresiones-7): el método de X-5 (campaña de cold emails) vive en su artefacto (regla 1), no en la Academic Phrasebank
   //   v6.10g (revisión 18-nov · c11): la sección es «§Campaña de cold emails» (antes «§Campaña feb-2027», un mes que la campaña ya no tiene: va en abr-may 2027)
-  'X-5': 'MENTORES.md §Campaña de cold emails —la tabla y la plantilla que escribiste en X-5— y su objetivo: una oferta concreta, nunca «quiero experiencia»',
+  'X-5': 'MENTORES.md §Campaña de cold emails',
+  'X-6': 'la Mesa editorial y la RUTA §3.1',
+  'R9b': 'la decisión de R9 en L4 §6',
+  R10: 'el PDF del registro PROSPERO',
+  K1: 'MENTORES.md §Campaña de cold emails',
 };
+/** v6.10j: comprobación COMPACTA del artefacto del átomo evaluado (va en el «qué» tras la fuente, entera en los 150 del Calendar). Cada fichero que nombra
+ *  está en el artefacto, el entregable o el objetivo de ese átomo (CONTROL abajo); el que no está aquí sale de artefactoCheck() (el 1.er fichero). */
+const ART_CHECK = {
+  M2: '¿fila Rising Scholars con fecha de solicitud?',
+  'C-2': '¿existe diana.md con su deadline?',
+  'T-1': '¿nº de CEI o de cargo en etica.md?',
+  R9: '¿decisión (a)/(b)/(c) en L4 §6?',
+  'C-3': '¿existe borrador_v1.md?',
+  'C-4': '¿refs_verified.json todo verified?',
+  'C-5': '¿existe carta_final.docx?',
+  'C-6': '¿carta-1 = enviado, con nº?',
+  'CR-1': '¿existe caso_candidatos.md?',
+  'CR-2': '¿existe consentimiento_firmado.pdf?',
+  'T-3': '¿existe research_letter_v1.md?',
+  'T-4': '¿existen tabla1.docx y figura1.tiff?',
+  'T-2': '¿existe STROBE_checklist.md?',
+  'T-5': '¿existe cascada_journals.md?',
+  'T-6': '¿existe autoria.md?',
+  'T-7': '¿existe research_letter_final.docx?',
+  'T-8': '¿tesis-L0 = enviado, con nº?',
+  'X-7': '¿checklist de pausa al 100 %?',
+  'CR-3': '¿set de fotos anonimizadas?',
+  'CR-4': '¿existe CARE_checklist_13.md?',
+  'CR-5': '¿existe borrador_v1.md?',
+  'CR-6': '¿existe borrador_v2.md?',
+  'CR-7': '¿existe case_report_final.docx?',
+  'CR-8': '¿_PAQUETE_ENVIO/ completo?',
+  'CR-9': '¿case-report-1 = enviado, con nº?',
+  'X-8': '¿Mesa editorial al día?',
+  M3: '¿fila Finlay con fecha?',
+  R6: '¿PICO de SR-1 en L4 §2?',
+  R7: '¿tabla PICOS en L4 §3?',
+  'X-1': '¿revisor #2 en L4 §9?',
+  'X-2': '¿existe rebuttal_plantilla.md?',
+  R3: '¿existe ejemplo_metafor.R?',
+  R8: '¿existe protocolo_PRISMA-P_v0.md?',
+  R2: '¿existe 02_disenos_guias.md?',
+  'X-3': '¿existe corpus_2026-06_inventario.csv?',
+  'X-4': '¿MENTORES.md §Congresos con fecha?',
+  'X-5': '¿20-30 nombres con su oferta?',
+  'X-6': '¿3 estados reales + presupuesto?',
+  R6b: '¿existe L4 §2-3 v2?',
+  R8b: '¿existe protocolo_PRISMA-P_v1.md?',
+  'X-9': '¿L4 §9 completo?',
+  R9b: '¿decisión final escrita en L4 §6?',
+  R10: '¿PROSPERO-SR1 = enviado?',
+  K1: '¿10 emails en la tabla de seguimiento?',
+};
+/** v6.10j: título de la guía genérica escrito a mano cuando el objetivo no tiene un límite de cláusula que quepa en 75 (el corte en la última palabra
+ *  dejaba «… PubMed registros y SR»); sale del objetivo, sin datos nuevos. */
+const TITULO_DE = {
+  R9b: 'Duplicidad final: SR y registros nuevos en PROSPERO + PubMed',
+};
+/** v6.10j: 1.ª parte del «cómo» de la eval anclada genérica: ≤ 109 caracteres y acabada en «.» (el Calendar corta el «cómo» a 110 en el último espacio). */
+const EVAL_COMO = 'A papel, sin preguntas inventadas; corrige en rojo con la fuente. Sin artefacto → deuda en la Mesa editorial.';
+/** v6.10j: longitud máxima del título de una guía Research (el resumen del Calendar es «🔬 RESEARCH » + el título cortado a 75). */
+const TITULO_MAX = 75;
+/** v6.10j: límites del corte del Calendar (lo que se ve de cada paso: «qué» ≤ 150, «cómo» ≤ 110). */
+const CAL_QUE = 150, CAL_COMO = 110;
 
 /**
  * Código TS que se emite en src/lib/researchGuia.ts: guía GENÉRICA (5 franjas del bloque) y F4 (30′, franja nominal), construida en tiempo de
@@ -113,41 +215,90 @@ export function faseResearchAviso(code: string): string {
 /** v6.10 · fix 18-nov: recursos de REC que son DOCUMENTO o GUÍA (texto con el método: un recall en blanco se corrige contra ellos); el resto de REC son
  *  portales, registros o herramientas (PubMed, Crossref, Rising Scholars, Editorial Manager, ORCID…) — fuente: DATA/_scripts/research_guia.js. */
 export const REC_DOC: ReadonlySet<string> = new Set(${JSON.stringify(REC_DOC)});
-/** v6.10 · fix 18-nov: fuente de contraste propia del átomo cuyo método está en su artefacto o en un documento que no es de REC. */
+/** v6.10j: nombre CORTO de cada recurso de REC_DOC (el «qué» de la eval anclada cabe entero en los 150 del Calendar; el recurso entero va en el enlace del paso). */
+export const REC_CORTO: Readonly<Record<string, string>> = ${JSON.stringify(REC_CORTO)};
+/** v6.10 · fix 18-nov: fuente de contraste propia del átomo cuyo método está en su artefacto o en un documento que no es de REC.
+ *  v6.10j: nombres cortos y la fuente según el átomo EVALUADO (los SUBMIT y los cierres → la Mesa editorial · X-4 → la web oficial de cada congreso…). */
 export const CONTRASTE_DE: Readonly<Record<string, string>> = ${JSON.stringify(CONTRASTE_DE)};
-/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA · su objetivo y su artefacto. */
+/** v6.10j: comprobación COMPACTA del artefacto del átomo evaluado (el nombre del fichero o el estado; cada fichero que nombra está en su artefacto, su
+ *  entregable o su objetivo: lo controla DATA/_scripts/research_guia.js). */
+export const ART_CHECK: Readonly<Record<string, string>> = ${JSON.stringify(ART_CHECK)};
+/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA (nombre corto) · su objetivo y su artefacto. */
 export function fuenteContraste(prev: DiaResearch): string {
   if (CONTRASTE_DE[prev.code]) return CONTRASTE_DE[prev.code]!;
   const k = prev.recs.find((r) => REC_DOC.has(r));
-  if (k && REC[k]) return \`«\${REC[k]!.label}»\`;
-  return \`su objetivo y su artefacto «\${prev.artefacto}»\`;
+  if (k && REC[k]) return \`«\${REC_CORTO[k] ?? REC[k]!.label}»\`;
+  return 'su objetivo y su artefacto';
 }
-/** v6.10i: «qué» de la eval anclada genérica — PRIMERO el recall en blanco contrastado con su fuente real (el Calendar corta el «qué» a 150: la fuente
- *  tiene que verse) y DESPUÉS «¿existe «artefacto»?» (si la fuente ya es el artefacto, «(¿existe?)»). */
-function evalAncladaQue(prev: DiaResearch): string {
-  const base = \`Eval anclada de \${prev.code}: recall en blanco de 2 puntos clave de su método, contrastado con \${fuenteContraste(prev)}\`;
+/** v6.10j: el recurso de REC contra el que se corrige (para el enlace del paso: nombre entero + URL); null si la fuente es propia. */
+function recContraste(prev: DiaResearch): { t: string; url: string } | null {
+  if (CONTRASTE_DE[prev.code]) return null;
   const k = prev.recs.find((r) => REC_DOC.has(r));
-  return CONTRASTE_DE[prev.code] || (k && REC[k]) ? \`\${base} + ¿existe «\${prev.artefacto}»?\` : \`\${base} (¿existe?)\`;
+  return k && REC[k] ? { t: REC[k]!.label, url: REC[k]!.url } : null;
 }
-/** v6.10i (remate): el objetivo del título hasta su último límite de cláusula que quepa en \`n\` (« — », «: », «; », «? », «. »; si no hay ninguno, « (» o
- *  « + »), siempre FUERA de paréntesis, corchetes y comillas, nunca tras una opción «(a) …:» a medias y sin «…»; el objetivo entero sigue en el DEEP WORK. */
-function tituloObjetivo(o: string, n = 140): string {
-  if (o.length <= n) return o;
-  const fuerte: number[] = [], debil: number[] = []; let dep = 0, q = 0;
+/** v6.10j: la comprobación compacta del artefacto del átomo previo: ART_CHECK o el 1.er fichero de su artefacto («¿existe X?», sin comillas que el corte del
+ *  Calendar pueda dejar abiertas: antes iba el artefacto ENTERO entre «»). */
+export function artefactoCheck(prev: DiaResearch): string {
+  if (ART_CHECK[prev.code]) return ART_CHECK[prev.code]!;
+  const m = /[\\w.-]+\\.(?:md|docx|json|csv|xlsx|pdf|R|py|tiff|png)\\b/.exec(prev.artefacto);
+  return \`¿existe \${m ? m[0] : prev.artefacto.split(/ \\+ | \\(|: | · /)[0]}?\`;
+}
+/** v6.10i → v6.10j: «qué» de la eval anclada genérica = el recall en blanco contrastado con su fuente (nombre corto) + la comprobación compacta del artefacto,
+ *  los dos ENTEROS en los 150 del Calendar (antes el artefacto entero entre comillas: el corte caía dentro o dejaba fuera el «¿existe …?»). */
+function evalAncladaQue(prev: DiaResearch): string {
+  return \`Eval anclada de \${prev.code}: recall en blanco de 2 puntos clave, contrastado con \${fuenteContraste(prev)} + \${artefactoCheck(prev)}\`;
+}
+/** v6.10j: «cómo» de la eval anclada genérica: su 1.ª parte (EVAL_COMO) cierra en ≤ 109 caracteres, porque el Calendar corta el «cómo» a 110 en el último
+ *  espacio (antes quedaba «Sin artefacto …» colgando); lo que sigue solo se ve en la app. */
+export const EVAL_COMO = ${JSON.stringify(EVAL_COMO)};
+/** v6.10j: el título entero de la guía cabe en el resumen del Calendar (\`🔬 RESEARCH \${cortar(titulo, 75)}\`). */
+export const TITULO_MAX = ${TITULO_MAX};
+/** v6.10j: títulos escritos a mano (objetivo sin límite de cláusula que quepa en TITULO_MAX). */
+const TITULO_DE: Readonly<Record<string, string>> = ${JSON.stringify(TITULO_DE)};
+/** remate v6.10j (revisión adversarial, verdad #3): la comprobación compacta del «qué» (artefactoCheck) nombra solo una pieza del artefacto → el artefacto
+ *  ENTERO va en el «cómo», detrás de EVAL_COMO (fuera del corte del Calendar: en la app), para que ninguna pieza del entregable desaparezca de la guía. */
+const evalAncladaComo = (prev: DiaResearch): string => \`\${EVAL_COMO} Artefacto entero: \${prev.artefacto.replace(/\\.\\s*$/, '')}. No se rehace hoy; lo que falló = 1 APEX.\`;
+/** v6.10j: límites de cláusula de un texto, FUERA de paréntesis, corchetes y comillas: fuertes (« — », «: », «; », «. », «? »), débiles (« (», « + » salvo
+ *  entre dos nombres propios: «PROSPERO + PubMed»), comas y frases (« con », « desde », « para », « sin », « hasta », « tras »). */
+function limitesClausula(o: string): { fuerte: number[]; debil: number[]; coma: number[]; frase: number[] } {
+  const L = { fuerte: [] as number[], debil: [] as number[], coma: [] as number[], frase: [] as number[] }; let dep = 0, q = 0, dosPuntos = false;
   for (let i = 0; i < o.length; i++) {
     const c = o[i]!;
     if (c === '(' || c === '[') dep++; else if (c === ')' || c === ']') dep = Math.max(0, dep - 1);
     else if (c === '«') q++; else if (c === '»') q = Math.max(0, q - 1); else if (c === '"') q = q ? 0 : 1;
     if (dep || q) continue;
     const r = o.slice(i);
-    if (/^ — /.test(r)) fuerte.push(i);
-    else if (/^[:;.] /.test(r) && !/\\([a-z]\\)\\s[^:;()]{0,40}$/.test(o.slice(0, i))) fuerte.push(i);
-    else if (/^\\? /.test(r)) fuerte.push(i + 1);
-    else if (/^ \\(/.test(r) || /^ \\+ /.test(r)) debil.push(i);
+    if (i > 0 && o[i - 1] === ':' && c === ' ') dosPuntos = true;
+    if (/^ — /.test(r)) L.fuerte.push(i);
+    else if (/^[:;.] /.test(r) && !/\\([a-z]\\)\\s[^:;()]{0,40}$/.test(o.slice(0, i))) L.fuerte.push(i);
+    else if (/^\\? /.test(r)) L.fuerte.push(i + 1);
+    else if (/^ \\(/.test(r)) L.debil.push(i);
+    else if (/^ \\+ /.test(r)) { if (!(/(?:^|\\s)\\p{Lu}\\S*$/u.test(o.slice(0, i)) && /^ \\+ \\p{Lu}/u.test(r))) L.debil.push(i); }
+    else if (/^, /.test(r)) { if (!dosPuntos) L.coma.push(i); } // tras «X: a, b, c» la coma parte una lista: no es un límite
+    else if (/^ (?:con|desde|para|sin|hasta|tras) /.test(r)) L.frase.push(i);
   }
-  const f = fuerte.filter((z) => z >= 25 && z <= n), d = debil.filter((z) => z >= 40 && z <= n);
-  const z = f.length ? Math.max(...f) : d.length ? Math.max(...d) : (fuerte.find((x) => x >= 25) ?? o.length);
-  return o.slice(0, z).replace(/[\\s,;:—–+·]+$/u, '');
+  return L;
+}
+/** v6.10i (remate) → v6.10j: el objetivo del título hasta su último límite de cláusula que quepa en \`n\` (el título entero cabe en el resumen del Calendar,
+ *  «🔬 RESEARCH » + 75: antes se cortaba ahí tras «(», «:» o «,»). Orden: límite fuerte · el objetivo sin sus incisos entre paréntesis (entero si cabe;
+ *  si no, sus límites) · límites débiles, comas y frases · la última palabra entera. Nunca «…»; el objetivo entero sigue en el DEEP WORK. */
+function tituloObjetivo(o: string, n: number): string {
+  if (o.length <= n) return o;
+  const fin = (s: string, z: number) => s.slice(0, z).replace(/[\\s,;:—–+·]+$/u, '');
+  const en = (a: number[]) => a.filter((z) => z >= 20 && z <= n);
+  const sp = o.replace(/\\s\\([^()]{4,}\\)/g, ''); // sin los incisos entre paréntesis (las opciones «(a)», «(b)» se quedan)
+  const mejor = (s: string, ks: Array<'fuerte' | 'debil' | 'coma' | 'frase'>): string => {
+    const L = limitesClausula(s); const z = ks.flatMap((k) => en(L[k]));
+    return z.length ? fin(s, Math.max(...z)) : '';
+  };
+  // 1) un límite fuerte que deje al menos medio título (del objetivo entero o del objetivo sin incisos) · 2) el objetivo sin incisos, entero ·
+  // 3) el corte más largo entre los fuertes y los débiles, comas y frases (de los dos) · 4) la última palabra entera, sin conector colgando
+  const f = [mejor(o, ['fuerte']), sp !== o ? mejor(sp, ['fuerte']) : ''].sort((a, b) => b.length - a.length)[0]!;
+  if (f.length >= n / 2) return f;
+  if (sp !== o && sp.length <= n) return sp;
+  const w = [f, mejor(o, ['debil', 'coma', 'frase']), sp !== o ? mejor(sp, ['debil', 'coma', 'frase']) : ''].sort((a, b) => b.length - a.length)[0]!;
+  if (w) return w;
+  return o.slice(0, o.lastIndexOf(' ', n)).replace(/(?:[\\s,;:—–+·(]+|\\s(?:de|del|el|la|los|las|a|al|y|e|o|u|en|con|por|para|sin))+$/u, '');
 }
 function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   const recs = x.recs.map((k) => ({ k, ...(REC[k] || { label: k, url: 'https://pubmed.ncbi.nlm.nih.gov/' }) }));
@@ -170,10 +321,12 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   }
   return {
     // v6.10i: el título = código + el objetivo hasta un límite de cláusula (antes se truncaba a 110 con «…» a mitad de cifra o de nombre: «reproducir 1…»;
-    //   después llevaba el objetivo ENTERO, que ya va en el DEEP WORK)
-    franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${tituloObjetivo(x.objetivo)}\`, totalMin: 45,
+    //   después llevaba el objetivo ENTERO, que ya va en el DEEP WORK) · v6.10j: el título entero ≤ 75 (lo que el Calendar deja en el resumen)
+    franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${TITULO_DE[x.code] ?? tituloObjetivo(x.objetivo, TITULO_MAX - x.code.length - 3)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? evalAncladaQue(prev) : 'Arranque: abre la carpeta del entregable y el recurso 1', como: prev ? 'A papel, sin mirar y sin preguntas inventadas; después abre esa fuente y corrige en rojo. Sin artefacto → deuda en la Mesa editorial (no se rehace hoy); lo que falló = 1 APEX.' : 'Sin átomo previo.' },
+      // v6.10j: la fuente (nombre corto) y la comprobación compacta del artefacto ENTERAS en el «qué»; el recurso entero, en el enlace del paso
+      prev ? { min: 5, que: evalAncladaQue(prev), como: evalAncladaComo(prev), ...(recContraste(prev) ? { enlace: recContraste(prev)! } : {}) }
+        : { min: 5, que: 'Arranque: abre la carpeta del entregable y el recurso 1', como: 'Sin átomo previo.' },
       { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
@@ -213,26 +366,25 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     // v6.10e (base cero · preguntas reales): sin banco real de Research → RECALL EN BLANCO de los 2 puntos clave, contrastados con su fuente
     // v6.10i (auditoría del volcado c12/c13): la FUENTE real va pegada al recall, al principio (antes «(fuente: …)» al final: el corte del Calendar a 150 se
     //   la comía y «compruébalo en la fuente» se quedaba sin referente)
-    R0: 'recall en blanco contrastado con la página de registro de PROSPERO y tu gestor, de 2 puntos clave: el identificador de autor que piden PROSPERO y Editorial Manager · dónde se guarda una API key y dónde nunca',
-    R1: 'recall en blanco contrastado con 01_PICO.md y el abstract PMID 19807760, de 2 puntos clave: el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego',
+    // v6.10j (auditoría c14): { fuente, check } enteros en el «qué» (≤ 150 en el Calendar: antes la comprobación del artefacto —«¿checklist «Infra académica» en
+    //   7/10?», «¿5 candidatos con DOI en candidatos.md?»— quedaba fuera del corte) y los 2 puntos del recall en el «cómo» (≤ 110)
+    R0: { fuente: 'el registro de PROSPERO y tu gestor', check: '¿«Infra académica» en 7/10?', puntos: 'el ID de autor que piden PROSPERO y Editorial Manager · dónde se guarda una API key y dónde nunca', resto: 'Corrige en rojo con esas dos fuentes; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
+    R1: { fuente: '01_PICO.md y el abstract PMID 19807760', check: '¿3 PICO en 01_PICO.md?', puntos: 'el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego', resto: 'Corrige en rojo con esas dos fuentes; si falta algo de R1, anótalo como deuda.' },
     // v6.10 · tanda C (decidido con Joseph en el chat Research, 17-nov): M1 = SR-1 primero → su eval anclada (R0, lun 23) = 1Q de PRISMA-P / PRISMA 2020 /
     //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
-    M1: 'recall en blanco contrastado con sus checklists oficiales: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene',
-    'C-1': 'recall en blanco contrastado con candidatos.md, de 2 puntos clave: la regla de la ventana · por qué un dato verificable',
+    M1: { fuente: 'sus 3 checklists oficiales', check: '¿respondió el asesor?', puntos: 'para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene', resto: 'Corrige en rojo con las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
+    'C-1': { fuente: 'candidatos.md', check: '¿5 candidatos con DOI?', puntos: 'la regla de la ventana · por qué un dato verificable', resto: 'Corrige en rojo con candidatos.md.' },
   };
+  /** v6.10j: la eval anclada paso a paso de un átomo con Q2: «qué» = recall + fuente + comprobación (≤ 150) · «cómo» = los 2 puntos a papel (≤ 110) + el resto (app). */
+  const evalQ2 = (code, q, ciroPend = '') => ({ que: `Eval anclada de ${code}: recall en blanco (sin preguntas inventadas), contrastado con ${q.fuente} + ${q.check}${ciroPend}`, como: `A papel: ${q.puntos}. ${q.resto}` });
   const evalAnclada = (prev, x) => {
     if (!prev) return { min: 5, que: 'Arranque (1.ª sesión Research): abre MENTORES.md §3 «Mensaje 1 — Dr. Ciro» y TESIS_L0/etica.md §1', como: '⏸ El plazo interno del 31-oct-2026 (caso + consentimiento + senior author) venció sin día-Research (la semana lun 26 → vie 30-oct no se estudió): este mensaje va PRIMERO; no se inventa un plazo nuevo.' };
     // la pregunta de seguimiento de M1 va SOLO en la primera eval anclada tras M1 (si su átomo previo no es M1, que ya la trae en su tabla)
     const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (regístralo en MENTORES.md §2)` : '';
     if (prev.code === 'M1' || ciroPend) ciroYa = true;
-    const T = {
-      // v6.10i: el recall con su fuente PRIMERO; la comprobación del artefacto (checklist, fichero) después
-      R0: { que: `Eval anclada de R0: ${Q2.R0} + ¿checklist «Infra académica» en 7/10?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en esas dos fuentes y corrige en rojo; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
-      R1: { que: `Eval anclada de R1: ${Q2.R1} + ¿existe 01_PICO.md con 3 PICO?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en esas dos fuentes; si falta algo de R1, anótalo como deuda.' },
-      M1: { que: `Eval anclada de M1: ${Q2.M1} + ¿respondió el asesor? (regístralo)`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
-      'C-1': { que: `Eval anclada de C-1: ${Q2['C-1']} + ¿5 candidatos con DOI en candidatos.md?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en candidatos.md.' },
-    }[prev.code] || { que: `Eval anclada de ${prev.code}: recall en blanco de los 2 puntos clave de su método + ¿existe su artefacto?`, como: 'A papel y sin mirar; después compruébalo en su recurso 1; lo que falte va como deuda a la Mesa editorial.' };
-    return { min: 5, que: T.que + ciroPend, como: T.como };
+    // v6.10i: el recall con su fuente PRIMERO; la comprobación del artefacto (checklist, fichero) después · v6.10j: los dos enteros en los 150 del Calendar
+    const T = Q2[prev.code] ? evalQ2(prev.code, Q2[prev.code], ciroPend) : { que: `Eval anclada de ${prev.code}: recall en blanco de 2 puntos clave, contrastado con su recurso 1 + ¿existe su artefacto?${ciroPend}`, como: `${EVAL_COMO} No se rehace hoy; lo que falló = 1 APEX.` };
+    return { min: 5, que: T.que, como: T.como };
   };
   /** v6.06 (fix): R0 abre con 2′ de arranque (sus 7 cuentas ocupan los otros 43′). Si R0 ya no es la 1.ª sesión (v6.06: M1 · R0 · …), esos 2′ llevan
    *  además la eval anclada EXPRESS del átomo previo = sus 2Q de memoria (antes R0 nunca llamaba a evalAnclada y las 2Q de M1 —ICMJE · CRediT— se
@@ -243,16 +395,17 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     if (!prev) return { min: 2, que: `Arranque: ${base}`, como: cuentas };
     // v6.10 · tanda C: tras M1 (SR-1 + WhatsApp), la express de R0 = 1Q de PRISMA-P / PRISMA 2020 / AMSTAR-2 + ¿respondió el asesor? (regístralo)
     // v6.10e (revisión del 18-nov · dias-1920-5): el recall se COMPRUEBA con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy, PRISMA-P en GoodNotes)
-    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (${Q2.M1}) + ¿respondió el asesor? + arranque: ${base}`,
-      como: `El recall a papel, sin mirar, y después compruébalo en 30 s con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy; PRISMA-P en GoodNotes, pág. 5): lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). ${cuentas}` }; }
-    return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] || 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
-      como: `El recall a papel, 1 línea por punto y sin mirar; lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
+    // v6.10j (auditoría c14): «¿respondió el asesor?» y el arranque dentro de los 150 del «qué» (antes el corte los dejaba fuera) · los puntos del recall, en el «cómo»
+    if (prev.code === 'M1') { ciroYa = true; return { min: 2, que: `Eval anclada express de M1 (recall en blanco contrastado con ${Q2.M1.fuente}) + ${Q2.M1.check} + abre «Infra académica» y tu gestor`,
+      como: `A papel: ${Q2.M1.puntos}. Compruébalo en 30 s con las checklists (PRISMA 2020 y AMSTAR-2 en los recursos de hoy; PRISMA-P en GoodNotes, pág. 5): lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). La checklist: ${base.replace(/^abre /, '')}. ${cuentas}` }; }
+    return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] ? `recall en blanco contrastado con ${Q2[prev.code].fuente}` : 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
+      como: `${Q2[prev.code] ? `A papel: ${Q2[prev.code].puntos}. ` : 'El recall a papel, 1 línea por punto y sin mirar; '}lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };
 
   /** Guías paso a paso (45′). `prev` = átomo anterior (eval anclada). */
   const DET = {
     R0: (x, prev) => ({
-      titulo: 'R0 · Infra académica: 7 cuentas hoy (ORCID · Scholar · CTI Vitae · PROSPERO · Rayyan · Zotero · keys NCBI + OpenAlex)',
+      titulo: 'R0 · Infra académica: 7 cuentas hoy (ORCID, Scholar, CTI Vitae y 4 más)', // v6.10j: ≤ 75 (el resumen del Calendar); la lista entera va en el «Hecho»
       pasos: [
         arranqueR0(prev),
         { min: 8, que: '1 · ORCID iD (identidad de autor: la exige Editorial Manager al autor de correspondencia y PROSPERO a todo el equipo)', como: 'orcid.org → Register: el nombre tal como firmarás los artículos, correo personal + institucional, visibilidad pública; verifica el correo y copia el iD (0000-…).', enlace: R('ORCID') },
@@ -274,12 +427,12 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX'), ...(prev && prev.code === 'M1' ? [R('PRISMA'), R('AMSTAR')] : [])],
     }),
     R1: (x, prev) => ({
-      titulo: 'R1 · 3 PICO (terapia · diagnóstico · pronóstico) + 1 abstract clasificado con Greenhalgh (Taylor 2009, PMID 19807760)',
+      titulo: 'R1 · 3 PICO (terapia · diagnóstico · pronóstico) + 1 abstract clasificado', // v6.10j: ≤ 75; Greenhalgh y el PMID, en sus pasos
       pasos: [
         evalAnclada(prev, x),
         { min: 5, que: 'Pre-test (free recall 60 s): qué es P · I · C · O y qué diseño responde mejor a terapia, a diagnóstico y a pronóstico', como: 'Escríbelo a papel sin mirar; lo compruebas en el paso 3.' },
         { min: 12, que: '3 PICO escritos en la nota nueva 01_PICO.md (vault: SR-1_complicaciones/01_protocolo_PICO) — una pregunta de cada tipo en el nicho rellenos · fototipos IV-VI', como: 'Plantilla por pregunta: P (pacientes) · I (intervención / exposición / prueba) · C (comparador) · O (desenlace medible) · tipo · diseño ideal (terapia → ECA · diagnóstico → transversal frente al patrón de oro · pronóstico → cohorte). Ejemplos de forma (no de contenido): terapia «relleno de ácido hialurónico en fototipo IV-VI vs otro producto → hiperpigmentación post-inflamatoria»; diagnóstico «ecografía Doppler vs diagnóstico clínico → oclusión vascular»; pronóstico «fototipo IV-VI tratado con relleno → PIH a 6 meses».', enlace: { t: '◆ 01_protocolo_PICO', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README') } },
-        { min: 15, que: 'Abstract: Taylor SC, Burgess CM, Callender VD. «Safety of nonanimal stabilized hyaluronic acid dermal fillers in patients with skin of color: a randomized, evaluator-blinded comparative trial». Dermatol Surg 2009;35 Suppl 2:1653-60 (PMID 19807760)', como: 'Método Greenhalgh («getting your bearings»): ¿por qué se hizo? · ¿estudio primario o secundario? · ¿diseño (el título dice aleatorizado y con evaluador ciego)? · ¿población? · ¿intervención y comparador? · ¿desenlace principal? → escribe su PICO y su diseño en 01_PICO.md.', enlace: { t: 'PubMed 19807760', url: 'https://pubmed.ncbi.nlm.nih.gov/19807760/' } },
+        { min: 15, que: 'Abstract PMID 19807760: Taylor SC, Burgess CM, Callender VD. «Safety of nonanimal stabilized hyaluronic acid dermal fillers in patients with skin of color: a randomized, evaluator-blinded comparative trial». Dermatol Surg 2009;35 Suppl 2:1653-60', como: 'Método Greenhalgh («getting your bearings»): ¿por qué se hizo? · ¿estudio primario o secundario? · ¿diseño (el título dice aleatorizado y con evaluador ciego)? · ¿población? · ¿intervención y comparador? · ¿desenlace principal? → escribe su PICO y su diseño en 01_PICO.md.', enlace: { t: 'PubMed 19807760', url: 'https://pubmed.ncbi.nlm.nih.gov/19807760/' } },
         { min: 3, que: 'Free recall a papel: 3 ideas del abstract + 1 duda de método', como: 'Sin mirar la nota; luego compáralo.' },
         { min: 5, que: '≤3 APEX-método + guardar 01_PICO.md y enlazarla desde SR-1/_hoja_de_ruta', como: 'APEX tipo «tipo de pregunta → diseño ideal» y «ciego del evaluador = ¿qué sesgo controla?».', enlace: { t: '◆ SR-1 · hoja de ruta', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta') } },
       ],
@@ -293,7 +446,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     //   app, que solo traduce «<día> <n>-<mes>», y con el alias el plan no se mueve: antes el mensaje prometía la fecha de PLAN, un día antes de la real).
     //   Repo público: el texto dice «Doctor» / «el asesor» (sin nombres nuevos).
     M1: (x, prev) => ({
-      titulo: 'M1 · SR-1 primero (protocolo del metaanálisis) + WhatsApp al asesor con las 3 coautorías',
+      titulo: 'M1 · SR-1 primero + WhatsApp al asesor con las 3 coautorías', // v6.10j: ≤ 75; «(protocolo del metaanálisis)», en el arranque
       pasos: [
         { min: 2, que: 'Arranque (1.ª sesión Research): el evento del Calendar + el chat Research + Anki abierto', como: 'Research empieza por SR-1 (protocolo del metaanálisis), no por la tesis; del M1 original solo queda el WhatsApp al asesor.' },
         // v6.10e (revisión del 18-nov · dias-1920-5): cada punto del pre-test tiene su fuente HOY y un paso con minutos para corregirlo: (1) el PICO del SR/MA
@@ -313,11 +466,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       recursos: [{ t: 'PubMed · 41249530 (SR/MA de hialuronidasa en complicaciones vasculares por ácido hialurónico)', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' }, R('PRISMA'), R('AMSTAR'), { t: 'MENTORES.md (CRM + mensajes)', url: GH + 'DATA/RESEARCH/MENTORES.md' }, { t: 'TESIS_L0/etica.md', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' }, R('ICMJE'), R('CREDIT')],
     }),
     'C-1': (x, prev) => ({
-      titulo: 'C-1 · Discovery: 5 artículos candidatos de los últimos 60 días (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg) + correo a IJD',
+      titulo: 'C-1 · Discovery: 5 candidatos de los últimos 60 días + correo a IJD', // v6.10j: ≤ 75; las 5 revistas, con su nombre, en el «cómo» del paso de Crossref
       pasos: [
         evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué hace a un artículo buen «diana» para una carta', como: 'Ventana ≤8 semanas desde la publicación online (regla de candidatos.md mientras la de cada revista esté «A VERIFICAR») + un ángulo con 1 dato verificable peruano/latino.' },
-        { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN', como: 'Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos.', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
+        { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN', como: 'Las 5 revistas: JAAD · JAAD Intl · IJD · JCD · Dermatol Surg. Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos.', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
         { min: 10, que: 'Tabla de 5 candidatos en DATA/RESEARCH/CARTA_1/candidatos.md (nueva sección «' + MES_LARGO[Number(C1H.slice(5, 7)) - 1] + '-' + C1H.slice(0, 4) + '»)', como: 'Por fila: journal · fecha online · DOI · ventana (URL de Author Guidelines) · límite de palabras/refs · coste · ángulo. Los candidatos del 5-sep publicados online en jul-ago ya pasan las 8 semanas: solo siguen si la guía de su revista admite una ventana mayor.', enlace: { t: 'candidatos.md', url: GH + 'DATA/RESEARCH/CARTA_1/candidatos.md' } },
         { min: 5, que: 'Correo a la Editorial Office de IJD pidiendo su política de correspondencia (pendiente desde el 27-ago)', como: '5 líneas; lo envías tú. La dirección se toma de la web de la revista (no está verificada en el repo: A VERIFICAR).', enlace: R('IJD') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + guarda candidatos.md', como: 'Cada DOI nuevo se verifica con DATA/RESEARCH/agentic/citation_verifier.py antes de C-2 (' + f('C-2') + ').' },
@@ -327,7 +480,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       recursos: [{ t: 'Crossref · consulta A (rellenos)', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) }, { t: 'Crossref · consulta B (skin of color)', url: CROSSREF('skin of color Fitzpatrick laser cosmetic', C1D, C1H) }, R('PM'), R('OPENALEX'), R('JAADINT'), R('IJD')],
     }),
     M2: (x, prev) => ({
-      titulo: 'M2 · Rising Scholars: cuenta + solicitud de mentor 1-a-1 (inglés del primer manuscrito) + plan B de inglés',
+      titulo: 'M2 · Rising Scholars: cuenta + solicitud de mentor 1-a-1 + plan B de inglés', // v6.10j: ≤ 75
       pasos: [
         evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
@@ -335,7 +488,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         // v6.10g (revisión 18-nov): sin «(v6.08)» (bitácora, y la versión vigente es otra): las fechas que cambiar las da el «cómo»
         { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente', como:`Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
         { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))}» + 1 línea en §2`, como: `Si a las 4 semanas no hay mentor asignado → plan B (editor profesional, RUTA §3.1).${M2.fechaPlanB && M2.fechaPlanB !== addDays(M2.fecha, 28) ? ` (4 semanas tras M2 = ${fmt(addDays(M2.fecha, 28))}, día sin sesión: la decisión va al siguiente día-Research.)` : ''}`, enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
-        { min: 5, que: 'Plan B de inglés listo: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
+        { min: 5, que: 'Plan B del inglés del primer manuscrito: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mentor de escritura: qué pedir · cuánto tiempo · con qué fecha».' },
       ],
       hecho: 'Cuenta en Rising Scholars + solicitud de mentor enviada + fila 2 de MENTORES.md con fecha y la fecha de decisión del plan B.',
@@ -365,7 +518,18 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     if (prev) {
       const p0 = g.pasos[0].que;
       if (!new RegExp(`^Eval anclada (express )?de ${prev.code.replace(/[-]/g, '\\-')}\\b`).test(p0)) throw new Error(`research_guia: ${x.code} (d${x.d}) no abre con la eval anclada de su átomo previo ${prev.code}: «${p0.slice(0, 80)}»`);
-      if (Q2[prev.code] && !p0.includes(Q2[prev.code])) throw new Error(`research_guia: ${x.code} (d${x.d}) pierde las 2Q de ${prev.code} (${Q2[prev.code]})`);
+      // v6.10j: Q2 = { fuente, check, puntos }: la fuente y la comprobación en el «qué», los 2 puntos del recall en el «cómo»
+      const q2 = Q2[prev.code], c0 = g.pasos[0].como;
+      if (q2 && !(p0.includes(q2.fuente) && p0.includes(q2.check) && c0.includes(q2.puntos))) throw new Error(`research_guia: ${x.code} (d${x.d}) pierde la fuente, la comprobación o los 2 puntos de ${prev.code} (${q2.fuente} · ${q2.check} · ${q2.puntos})`);
+      // v6.10j · CONTROL (corte del Calendar: «qué» ≤ 150 · «cómo» ≤ 110): la fuente y la comprobación ENTERAS en el «qué» (y la fuente antes del «¿…?») y,
+      //   en el «cómo», los 2 puntos del recall en una 1.ª frase que cierra antes del 110 (antes se perdían «¿checklist «Infra académica» en 7/10?» y
+      //   «¿5 candidatos con DOI en candidatos.md?»)
+      if (q2) {
+        if (p0.length > CAL_QUE) throw new Error(`research_guia: ${x.code} (d${x.d}) eval anclada de ${prev.code}: el «qué» pasa de ${CAL_QUE} (${p0.length}) y el Calendar cortaría la comprobación`);
+        if (p0.indexOf(q2.fuente) > p0.indexOf(q2.check)) throw new Error(`research_guia: ${x.code} (d${x.d}) la comprobación va antes que la fuente`);
+        const f1 = c0.indexOf(q2.puntos) + q2.puntos.length + 1; // la 1.ª frase del «cómo» acaba en «.» tras los 2 puntos
+        if (f1 > CAL_COMO - 1) throw new Error(`research_guia: ${x.code} (d${x.d}) eval anclada de ${prev.code}: los 2 puntos acaban en ${f1} > ${CAL_COMO - 1} y el Calendar los cortaría`);
+      }
     }
     const vistos = new Set();
     g.recursos = g.recursos.filter((r) => !vistos.has(r.url) && vistos.add(r.url));
@@ -390,6 +554,30 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   // v6.10 · fix 18-nov · CONTROL: el recall en blanco de cada eval anclada genérica se corrige contra un documento o guía (REC_DOC) o una fuente propia
   //   (CONTRASTE_DE), nunca contra un portal o una herramienta (Rising Scholars, PubMed, Crossref, Editorial Manager…)
   for (const k of REC_DOC) if (!rec(k)) throw new Error(`research_guia: REC_DOC ${k} no existe en REC`);
+  // v6.10j · CONTROL: cada recurso de REC_DOC tiene su nombre corto, y el nombre corto sale del nombre entero (no se inventa: es el nombre del recurso
+  //   o su autor y año) · la 1.ª parte del «cómo» de la eval anclada genérica cierra antes del corte del Calendar
+  for (const k of REC_DOC) {
+    const c = REC_CORTO[k], l = rec(k).label;
+    if (!c) throw new Error(`research_guia: REC_CORTO sin el nombre corto de ${k} («${l}»)`);
+    const pal = c.replace(/[()·&]/g, ' ').split(/\s+/).filter((w) => w.length > 2);
+    if (pal.some((w) => !l.includes(w))) throw new Error(`research_guia: REC_CORTO ${k} «${c}» no sale del nombre del recurso «${l}»`);
+  }
+  if (EVAL_COMO.length > CAL_COMO - 1 || !/\.$/.test(EVAL_COMO) || !/sin preguntas inventadas/.test(EVAL_COMO)) throw new Error(`research_guia: EVAL_COMO (${EVAL_COMO.length}) debe caber en ${CAL_COMO - 1}, acabar en «.» y decir «sin preguntas inventadas»`);
+  // v6.10j · CONTROL (anti-alucinación): cada fichero, sección o estado que nombra ART_CHECK está en el artefacto, el entregable o el objetivo de ese átomo
+  for (const [code, chk] of Object.entries(ART_CHECK)) {
+    const x = porCode[code]; if (!x) throw new Error(`research_guia: ART_CHECK ${code} no es un átomo`);
+    const fuente = `${x.artefacto} ${x.entregable} ${x.objetivo}`.toLowerCase();
+    for (const t of chk.match(/[\w§/.-]*[._§][\w§/.-]*|[\w-]+-(?:L0|SR1|\d)\b|\d+-\d+/gu) || []) if (!fuente.includes(t.toLowerCase())) throw new Error(`research_guia: ART_CHECK ${code} «${chk}» nombra «${t}», que no está en su artefacto, entregable ni objetivo`);
+  }
+  for (const code of Object.keys(CONTRASTE_DE)) if (!porCode[code]) throw new Error(`research_guia: CONTRASTE_DE ${code} no es un átomo`);
+  // v6.10j · CONTROL: un título escrito a mano cabe en TITULO_MAX y sale de su objetivo (cada palabra de más de 3 letras está en él)
+  for (const [code, t] of Object.entries(TITULO_DE)) {
+    const x = porCode[code]; if (!x) throw new Error(`research_guia: TITULO_DE ${code} no es un átomo`);
+    if (`${code} · ${t}`.length > TITULO_MAX) throw new Error(`research_guia: TITULO_DE ${code} pasa de ${TITULO_MAX}`);
+    const fuera = t.split(/[^\p{L}\d-]+/u).filter((w) => w.length > 3 && !x.objetivo.toLowerCase().includes(w.toLowerCase()));
+    if (fuera.length) throw new Error(`research_guia: TITULO_DE ${code} usa palabras que no están en su objetivo: ${fuera.join(', ')}`);
+  }
+  for (const [code, d] of Object.entries(DET)) { const t = d(porCode[code] || {}, null).titulo; if (t.length > TITULO_MAX) throw new Error(`research_guia: el título de ${code} pasa de ${TITULO_MAX} (${t.length}): ${t}`); }
   //   (la comprobación sobre el texto ya generado de cada guía genérica la hace gen_research_plan.js tras escribir src/lib/researchGuia.ts)
   const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
   if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el (Dr\. Ciro|asesor)/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el asesor');
@@ -420,4 +608,4 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   return { porD: out, minimo, conDetalle };
 }
 
-module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso, REC_DOC, CONTRASTE_DE };
+module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso, REC_DOC, CONTRASTE_DE, REC_CORTO, ART_CHECK, EVAL_COMO, TITULO_MAX };

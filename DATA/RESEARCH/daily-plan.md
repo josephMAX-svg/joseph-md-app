@@ -273,7 +273,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `GREEN` | How to Read a Paper — Greenhalgh (BMJ) | https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper | repo (verificada jun-jul 2026) |
 | `STAT` | StatQuest (bioestadística) | https://www.youtube.com/@statquest | repo (verificada jun-jul 2026) |
 | `ZED` | zedstatistics | https://www.youtube.com/@zedstatistics | repo (verificada jun-jul 2026) |
-| `STEPSR` | Step-by-step SR+MA (Ahn & Kang 2019) | https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/ | repo (verificada jun-jul 2026) |
+| `STEPSR` | Step-by-step SR+MA (Tawfik et al. 2019) | https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/ | repo (verificada jun-jul 2026) |
 | `CIL1` | Cochrane Interactive · Módulo 1 (gratis) | https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews | repo (verificada jun-jul 2026) |
 | `COCHB` | Cochrane Handbook v6.5 | https://training.cochrane.org/handbook | repo (verificada jun-jul 2026) |
 | `COCHYT` | Cochrane Training (YouTube) | https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA | repo (verificada jun-jul 2026) |

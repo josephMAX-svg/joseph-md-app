@@ -495,9 +495,9 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
               </View>
             </View>
             <Text style={styles.recetaLine}>
-              Cola larga del viernes ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
+              Cola larga del mini-sim ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
             </Text>
-            <Text style={styles.recetaHint}>Al terminar: CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress; también vale ▲ SIM). Alerta: &lt;{receta.alerta}/25 dos viernes seguidos → re-ponderar la semana siguiente.</Text>
+            <Text style={styles.recetaHint}>Al terminar: CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress; también vale ▲ SIM). Alerta: &lt;{receta.alerta}/25 dos mini-sims seguidos → re-ponderar la semana siguiente.</Text>
           </View>
         )}
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
@@ -858,8 +858,8 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <View style={styles.simHeaderBox}>
         <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''}{nCien ? ` (${nCien} sims /100 intensiva)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA SEMANA 16:15 (viernes de plan) ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha ? fechaRealDe(String(simDays[0].fecha).slice(0, 10), 'encaps').slice(5) : '—'}{/* v6.02d: fecha real visible (semana corrida) */}; examen ENCAPS 2027-I {exFecha ? fechaCorta(exFecha) : 'por confirmar'}{exProv ? ' PROVISIONAL' : ''}{exRendido ? ' · examen rendido' : ''}{intM.desde ? ` (fase intensiva ${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}: viernes = SIM 100Q, el mini-sim queda absorbido)` : ''}.
-          Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA SEMANA 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer mini-sim: {simDays[0]?.fecha ? fechaRealDe(String(simDays[0].fecha).slice(0, 10), 'encaps').slice(5) : '—'}{/* v6.02d: fecha real visible (semana corrida) */}; examen ENCAPS 2027-I {exFecha ? fechaCorta(exFecha) : 'por confirmar'}{exProv ? ' PROVISIONAL' : ''}{exRendido ? ' · examen rendido' : ''}{intM.desde ? ` (fase intensiva ${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}: viernes = SIM 100Q, el mini-sim queda absorbido)` : ''}.
+          Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos mini-sims seguidos.
         </Text>
       </View>
       {rows.map(r => (

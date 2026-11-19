@@ -237,7 +237,8 @@ const C = {
   caso: (pos) => { const c = CASES.casos[pos - 1]; return { titulo: `${c.area}. Case ${c.numero}`, url: casoUrl(c.gbosID), area: CORE[c.area] }; },
   cap,
   bb: (id) => { const v = BB.get(id); if (!v) aborta(`B&B ${id} no está en el catálogo`); return { nombre: v.nombre, dur: mmss(v.s), s: v.s, ruta: v.ruta }; },
-  bbMin: (id, fecha) => { const v = BB.get(id); const k = vel(fecha); return { min: Math.round((v.s / 60 / k.v) * k.f), txt: k.txt }; },
+  // v6.10j (auditoría c14): + x (la velocidad) y subs (los subtítulos) por separado: el paso B&B dice «1,0× = 13′ con pausas (con subtítulos …)»
+  bbMin: (id, fecha) => { const v = BB.get(id); const k = vel(fecha); return { min: Math.round((v.s / 60 / k.v) * k.f), txt: k.txt, x: k.txt.split(' ')[0], subs: k.txt.slice(k.txt.indexOf(' ') + 1) }; },
   uw: (id) => UW.get(id) || aborta(`uWorld ${id}`),
   temaN: (t) => temaN.get(t),
   pictorialDe: (d) => CAT.PICTORIAL_ASIGNACION[d] || aborta(`d${d} sin tema Pictorial`),

@@ -32,6 +32,9 @@
  *   banqueo). metodoRavi comenta el quiz al NIVEL de la fase (antes, en los 76 días, «por qué es falsa cada incorrecta + detalles de nivel 3-4/5») y el APEX
  *   lleva el criterio de su fase; la fase va primero en el aviso del día (también D77, D78 y el banqueo). El respaldo de preguntas del banqueo es solo MIR
  *   oficial con su año-número (antes «test por asignatura ProMIR», sin filtro). Mismas franjas, minutos y preguntas.
+ * v6.10j (18-nov-2026 · auditoría c14 del Calendar, solo TEXTO): Anki del plan = «Anki FSRS · …» + «solo Good/Again · ② > 60 vencidas 2 días seguidos →
+ *   nuevas a 0 esa semana · sin repasos: …» (FSRS y Good/Again quedaban tras el corte de 110); Anki del banqueo abre con «FSRS · solo Good/Again»; banqueo:
+ *   el ritmo pasa al «qué» y el «cómo» abre con ««Pool oficial» de la app (sin usar) → si faltan, MIR oficiales con año-número · en blanco si no descartas 2».
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,
@@ -161,9 +164,11 @@ function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
 }
 // El Calendar corta el «qué» a 150 (con la hora del paso delante) y el «cómo» a 110: el orden de los mazos, que del de Ravi solo salen los subtemas ya
 //   reactivados y el orden aleatorio van en el «qué»; la regla de las vencidas y la salida «sin repasos» abren el «cómo».
+// v6.10j (auditoría c14, diffs #9): «FSRS» va en el «qué» («Anki FSRS ·») y «solo Good/Again» abre el «cómo», con la regla de las vencidas en corto: los
+//   110 caracteres del Calendar dejan ver las dos cosas además de las reglas que ya se veían (antes «FSRS · solo Good/Again» quedaba detrás del corte)
 const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
-  que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (solo subtemas ya reactivados) · orden aleatorio, nunca por asignatura`,
-  como: `si ② pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: tu última sesión MIR · FSRS · solo Good/Again · ② hasta el final del paso · del mazo de Ravi solo salen los subtemas que ya terminaste (los reactivas en su último minuto; el resto sigue suspendido) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques) · Anki nunca le quita tiempo a las preguntas.`,
+  que: `Anki FSRS · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (solo subtemas ya reactivados) · orden aleatorio, nunca por asignatura`,
+  como: `solo Good/Again · ② > ${M.umbralVencidas} vencidas 2 días seguidos → nuevas a 0 esa semana · sin repasos: tu última sesión MIR · ② hasta el final del paso · del mazo de Ravi solo salen los subtemas que ya terminaste (los reactivas en su último minuto; el resto sigue suspendido) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques) · Anki nunca le quita tiempo a las preguntas.`,
 });
 /** v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles discriminativos de nivel 3-4/5 son de la fase 3). */
 const criterioApex = (f: MirFase | undefined): string => f?.apex ?? 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
@@ -368,16 +373,20 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     const t0 = tPaso; tPaso += min;
     // El Calendar corta el «qué» a 150 (con la hora delante) y el «cómo» a 110, alargado hasta el final de la cláusula de una fecha: los mazos, sus nuevas
     //   y el orden aleatorio en el «qué»; la regla de las vencidas y la retention con la fecha del handoff abren el «cómo».
-    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (las 14 asignaturas), ≤${M.nuevasBaseBanqueo} nuevas/día · orden aleatorio, nunca por asignatura`, como: `si ② pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · FSRS · solo Good/Again · ② hasta que acabe el paso: las 14 asignaturas del plan ya reactivadas (Anki no le quita tiempo a las preguntas) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques).` };
+    // v6.10j (auditoría c14, diffs #9): «FSRS · solo Good/Again» abre el «cómo» (antes iba detrás de la fecha del handoff y el corte lo escondía) y la regla de
+    //   las vencidas, en corto como en el plan; el «qué» (136, lleno) no cambia
+    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (las 14 asignaturas), ≤${M.nuevasBaseBanqueo} nuevas/día · orden aleatorio, nunca por asignatura`, como: `FSRS · solo Good/Again · ② > ${M.umbralVencidas} vencidas 2 días seguidos → nuevas a 0 esa semana · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · ② hasta que acabe el paso: las 14 asignaturas del plan ya reactivadas (Anki no le quita tiempo a las preguntas) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques).` };
     if (f.tipo === 'quiz') {
       // ≥20Q: pasada a ≈72 s/Q con el reloj cada 10 preguntas y los últimos minutos para la revisión FORMAL (Ravi); <20Q: sin cambios
       const pasada = dia.nQ >= 20 ? Math.min(min - 2, Math.round(dia.nQ * 1.2)) : 0;
       const marcas = pasada ? [...Array.from({ length: Math.floor(dia.nQ / 10) }, (_, i) => (i + 1) * 10), ...(dia.nQ % 10 ? [dia.nQ] : [])] : [];
       const reloj = pasada ? ` · Técnica de simulacro (Ravi): reloj cada 10Q (${marcas.map((q) => `Q${q} ≤ ${hhmm(t0 + Math.round((pasada * q) / dia.nQ))}`).join(' · ')}) y los últimos ${min - pasada}′ para la revisión FORMAL de lo que marcaste (enunciados en negativo, respuesta bien pasada) — nunca cambias una respuesta por dudar del contenido` : '';
       return {
-        min, que: `${dia.nQ}Q reales MIR cronometradas · ${asigs}`,
+        // v6.10j (auditoría c14, vetadas #2): el ritmo pasa al «qué» (cabe en los 136 en las 220 sesiones) y el «cómo» abre con la FUENTE de las preguntas
+        //   reales y la regla del blanco, en los 110 caracteres del Calendar (antes el corte caía dentro de «la lista «Pool …»)
+        min, que: `${dia.nQ}Q reales MIR a ${MIR_SEG_POR_Q} s/Q (${dia.minQ} min) · ${asigs}`,
         // v6.10 · base cero («las preguntas tienen que ser REALES»): el respaldo es solo MIR oficial con su año-número (antes «test por asignatura ProMIR», sin filtro)
-        como: `${MIR_SEG_POR_Q} s/Q (${dia.minQ} min) · en blanco si no descartas 2; con 2 descartadas, marca · preguntas: la lista «Pool oficial» de la app (sin usar) → si faltan, solo MIR oficiales con su año-número: las MIR citadas en los capítulos ProMIR de la asignatura (/pregunta/MIR/AAAA-NNN) o los cuadernillos oficiales (examenesmir)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
+        como: `«Pool oficial» de la app (sin usar) → si faltan, MIR oficiales con año-número · en blanco si no descartas 2 (con 2 descartadas, marca) · el respaldo, solo MIR oficiales con su año-número: las citadas en los capítulos ProMIR de la asignatura (/pregunta/MIR/AAAA-NNN) o los cuadernillos oficiales (examenesmir)${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}${reloj}.`,
         enlace: dia.tierC ? { t: `ProMIR · ${dia.tierC.capitulo}`, url: capUrl(dia.tierC.capId) } : { t: 'Cuadernillos MIR', url: EXAMENESMIR },
       };
     }

@@ -148,7 +148,7 @@ Solo si los estudios son suficientemente homogéneos clínica y metodológicamen
 
 | Paso | Lo que hacen los referentes | Recurso de referencia (real) | Átomo `daily-plan` |
 |---|---|---|---|
-| **1. Pregunta PICO + protocolo** | Congelar la pregunta y el método *antes* de buscar (PRISMA-P). | Cochrane Interactive Learning Módulo 1 (gratis) · *step-by-step guide* Ahn & Kang | R2, R6–R8 |
+| **1. Pregunta PICO + protocolo** | Congelar la pregunta y el método *antes* de buscar (PRISMA-P). | Cochrane Interactive Learning Módulo 1 (gratis) · *step-by-step guide* Tawfik et al. 2019 | R2, R6–R8 |
 | **2. Registro** | Registrar en PROSPERO antes de cerrar la extracción (o OSF si es scoping). | PROSPERO · OSF Registries | R9–R11 |
 | **3. Búsqueda reproducible** | Estrategia MeSH+booleana en ≥3–5 bases, documentada con **PRISMA-S**; idealmente revisada por bibliotecólogo (PRESS). | NLM PubMed training · PRISMA-S | R12–R16 |
 | **4. Screening 2 revisores** | Cribado T/A → texto completo con herramienta; medir **Kappa**; resolver conflictos. | **Rayyan** (canal oficial + help center) · ASReview | R17–R21 |
@@ -175,5 +175,5 @@ Solo si los estudios son suficientemente homogéneos clínica y metodológicamen
 
 > **Nota de verificación de esta ronda:** las URLs de arriba se corroboraron por búsqueda independiente
 > (jun-2026). El libro *Doing Meta-Analysis in R* es la versión bookdown gratuita (existe también edición
-> de pago en CRC Press, misma autoría). El paper Ahn & Kang es open-access en PMC. Los canales de YouTube
+> de pago en CRC Press, misma autoría). El paper de Tawfik et al. (2019) es open-access en PMC. Los canales de YouTube
 > se citan por identidad de canal, no por una URL de vídeo individual perecedera.

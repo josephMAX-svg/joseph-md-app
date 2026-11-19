@@ -342,7 +342,7 @@ fecha_creacion: ${HOY}
 - **Rayyan** (canal oficial + Help Center) — cribado hands-on.
 - **"Doing Meta-Analysis in R"** (Harrer, Cuijpers et al.) — libro online gratis (metafor).
 - **PRISMA 2020** (checklist 27 ítems PMC + flow Shiny) · **PROSPERO** (registro).
-- **Ahn & Kang 2019** — *A step-by-step guide for conducting a SR and meta-analysis* (PMC6670166).
+- **Tawfik et al. 2019** — *A step by step guide for conducting a systematic review and meta-analysis with simulation data* (Trop Med Health; PMC6670166).
 
 🏠 [[Dashboard_Research]]
 `);

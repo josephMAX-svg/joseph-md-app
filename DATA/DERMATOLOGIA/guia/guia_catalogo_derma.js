@@ -238,7 +238,7 @@ const bbVideo = (C, id, fecha, que) => {
   const v = C.bb(id); const m = C.bbMin(id, fecha);
   return {
     min: m.min, que: `B&B Step 1 › Dermatology › «${v.nombre}» (${v.dur})${que ? ' — ' + que : ''}`,
-    como: `Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › ${v.nombre} · ${m.txt} · ${m.min}′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.`,
+    como: `Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › ${v.nombre} · ${m.x} = ${m.min}′ con pausas · al terminar, free recall de 60 s en el cuaderno (${m.subs.replace(/ \((\w+)\)$/, ', $1')}; regla de velocidad del Step 1).`, // v6.10j: la velocidad y sus minutos juntos (el Calendar corta el «cómo» a 110: antes «… · 1,0× …» sin los minutos)
     enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS },
   };
 };

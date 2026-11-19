@@ -99,10 +99,13 @@ export function guardarAccessDermaOK(ok: boolean): void {
 }
 
 // ── velocidad de vídeo (misma regla que el Step 1) ──
-function vel(fecha: string): { v: number; f: number; txt: string } {
-  if (fecha <= DERMA_VELOCIDAD.s1Hasta) return { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' };
-  if (fecha <= DERMA_VELOCIDAD.s23Hasta) return { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' };
-  return { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' };
+// v6.10j (auditoría c14): + x (la velocidad) · subs (los subtítulos) · cond (la condición del 1,5×) por separado: el paso dice «1,25× = 19′ con pausas (con
+//   subtítulos EN)», con los minutos pegados a la velocidad (el Calendar corta el «cómo» a 110 y «1,5× con subtítulos EN (si el free recall del último vídeo
+//   recogió ≥3 ideas …» dejaba fuera los minutos)
+function vel(fecha: string): { v: number; f: number; txt: string; x: string; subs: string; cond?: string } {
+  if (fecha <= DERMA_VELOCIDAD.s1Hasta) return { v: 1, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)', x: '1,0×', subs: 'con subtítulos en inglés (CC)' };
+  if (fecha <= DERMA_VELOCIDAD.s23Hasta) return { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN', x: '1,25×', subs: 'con subtítulos EN' };
+  return { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)', x: '1,5×', subs: 'con subtítulos EN', cond: 'si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×' };
 }
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const bbMin = (id: number, fecha: string): number => { const v = BB_DERM[id]; const k = vel(fecha); return v ? Math.round((v.s / 60 / k.v) * k.f) : 0; };
@@ -429,11 +432,15 @@ export function subTitulo(sub: string, n = 80): string {
   if (sub.length <= n) return sub;
   // v6.10i (remate, revisión adversarial del 18-nov): tampoco termina en un conector («… del ledger de…», «… desde el…», «… de tus…»), y un paréntesis
   //   abierto al principio se cierra en su última cláusula entera («(mecanismo → tratamiento; puente futuro a…» → «(mecanismo → tratamiento)…»)
-  const COLA = /(?:[\s,;:·—+(-]+|\s(?:de|del|el|la|los|las|lo|a|al|y|e|o|u|en|con|por|para|sin|desde|hasta|entre|tu|tus|su|sus|un|una|que|se|ni))+$/u;
+  // v6.10j (auditoría c14): + «no» / «NO» (una negación colgando cambia el sentido: «… serotipos, unidades NO…»; el sub dice «unidades NO intercambiables
+  //   entre marcas») y, sin distinguir mayúsculas, los demás conectores
+  const COLA = /(?:[\s,;:·—+(-]+|\s(?:de|del|el|la|los|las|lo|a|al|y|e|o|u|en|con|por|para|sin|desde|hasta|entre|tu|tus|su|sus|un|una|que|se|ni|no))+$/iu;
   let t = sub.slice(0, n);
   const sp = t.lastIndexOf(' ');
   if (sp > n * 0.5) t = t.slice(0, sp);
   t = t.replace(COLA, '');
+  // v6.10j: tampoco un elemento nuevo cortado tras su 1.ª palabra («… + análisis…», «… — músculos…»): fuera, si queda un título de más de la mitad
+  { const m = /\s[+—]\s[^\s+—()]+$/u.exec(t); if (m && m.index > n * 0.5) t = t.slice(0, m.index).replace(COLA, ''); }
   const ab = t.lastIndexOf('(');
   if (ab > t.lastIndexOf(')')) { // paréntesis sin cerrar: tardío → fuera · temprano → cerrado tras su última cláusula entera
     if (ab > n * 0.4) t = t.slice(0, ab).replace(COLA, '');
@@ -628,7 +635,8 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     // v6.09 · lote 1 (a2-8): el mismo B&B por 2.ª (o 3.ª) vez → 2.ª pasada a 2× + recall de 60 s; los minutos que libera → 1-2Q del System de uWorld del
     //   átomo que el plan no reparte o, si el plan ya lo reparte entero, de ProMIR Dermatología del capítulo afín (el relleno de siempre)
     const v = BB_DERM[a.bb]!; const m2 = bb2aMin(a.bb); const libre = bbMinReserva(a.bb, dia.fecha) - m2;
-    pasos.push({ min: m2, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — 2.ª PASADA a 2× (${ap.n}.ª vez en el plan; la 1.ª, el ${fdc(ap.primera)})`, como: `Qbankly › Video Library › B&B Step 1 · 2× sin pausas (ya lo viste: solo lo que conecta con «${dia.sub.split(/[:(—·]/)[0]!.trim()}») · ${Math.round(v.s / 60 / 2)}′ + recall de 60 s: sin mirar, 3 ideas del vídeo aplicadas al átomo de hoy.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
+    // v6.10j (auditoría c14): «2× sin pausas = N′» primero (antes los minutos iban tras el tema entre comillas y el corte del Calendar a 110 los dejaba fuera)
+    pasos.push({ min: m2, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — 2.ª PASADA a 2× (${ap.n}.ª vez en el plan; la 1.ª, el ${fdc(ap.primera)})`, como: `Qbankly › Video Library › B&B Step 1 · 2× sin pausas = ${Math.round(v.s / 60 / 2)}′ + recall de 60 s: sin mirar, 3 ideas del vídeo aplicadas al átomo de hoy (ya lo viste: solo lo que conecta con «${dia.sub.split(/[:(—·]/)[0]!.trim()}»).`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
     const s = a.uw ? UW_DERM[a.uw] : undefined;
     // v6.09b · lote 1-quater: en F1 con la regla del Tutor (2,35′/Q); en F1 no ocurre (Inflammatory y Skin and soft tissue infections van repartidos enteros)
     const f1T = dia.fecha <= LOTE1_HASTA;
@@ -642,7 +650,15 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     }
   } else if (!corto && a.bb && BB_DERM[a.bb]) {
     const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
-    pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: `Qbankly › Video Library › B&B Step 1 · ${vel(dia.fecha).txt} · ${m}′ con pausas${res ? ' (minutos a 1,25×, la velocidad de reserva; si vas a 1,5×, lo que sobra pasa al paso de práctica real (casos DermNet / ProMIR))' : ''} · free recall de 60 s al terminar.`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
+    // v6.10j (auditoría c14): la velocidad y sus minutos juntos y primero («1,25× = 11′ con pausas»; antes «1,5× con subtítulos EN (si el free recall … ≥3 ideas …»
+    //   y el Calendar se quedaba sin los minutos); los subtítulos y la condición, detrás entre paréntesis
+    const k = vel(dia.fecha);
+    pasos.push({ min: m, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — afinidad por título (contenido no verificado)`, como: res
+      // remate v6.10j (revisión adversarial, visibilidad #3): la CONDICIÓN del 1,5× pegada a sus minutos, dentro de los 110 del Calendar (antes el 1,5× se leía
+      //   incondicional y la reserva enseñaba solo «1,25× = 9′ … (1,25× es …»)
+      ? `Qbankly › Video Library › B&B Step 1 · 1,5× = ${bbMin(a.bb, dia.fecha)}′ si el último free recall dio ≥3 ideas; si no, 1,25× = ${m}′ · free recall de 60 s al terminar (con pausas; a 1,5×, lo que sobre pasa al paso de práctica real —casos DermNet / ProMIR—; ${k.subs}).`
+      : k.cond ? `Qbankly › Video Library › B&B Step 1 · ${k.x} = ${m}′ si el último free recall dio ≥3 ideas (si no, 1,25×) · free recall de 60 s al terminar (con pausas; ${k.subs}).`
+      : `Qbankly › Video Library › B&B Step 1 · ${k.x} = ${m}′ con pausas · free recall de 60 s al terminar (${k.subs}).`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
   }
   // v6.09b · lote 1-bis (a2-9) → lote 1-ter (revisión R, hallazgos 4 · 5 · 8): en F1 el atlas lleva su medida POR FECHA (DERMNET_MEDIDO: lecturas + palabras +
   //   imágenes → minutos = palabras/100 + 0,25′/imagen); lo que no es del alcance «no forma parte del átomo» y lo del átomo que no cabe va a su fecha con sus

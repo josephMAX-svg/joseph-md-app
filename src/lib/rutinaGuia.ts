@@ -131,8 +131,9 @@ import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiD
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
-import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
-import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
+import { guiaUsmleDe } from './usmleGuia'; // remate v6.10j: la eval 10Q del DAY-AFTER 6/6 en la métrica 1 de la revisión
+import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe, encapsMananaDe, encapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
+import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De, ENCAPS_F2_FECHAS } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
 import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17)
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
@@ -164,22 +165,73 @@ export const sabadoLibre = (iso: string): boolean => dow(iso) === 6 && iso > FEC
  *  para el día real pero su plan se hace el jue 19 (alias): no es un día perdido del plan (los avisos «Primera sesión / Primera lectura» no lo cuentan). */
 const _ALIAS_PLAN = new Set<string>(Object.values(FECHAS_V6.corrida_s1.alias));
 const perdidoDelPlan = (f: string): boolean => corridaS1De(f)?.tipo === 'sin_sesion' && !_ALIAS_PLAN.has(f);
-/** v6.10d (18-nov-2026): la métrica del mini-sim en la revisión del sábado `sab`. Con el alias, el mini-sim del viernes de plan se hace el LUNES real
- *  siguiente (después de la revisión) → la revisión anota el anterior (el del viernes de plan de la semana pasada, hecho el lunes de esta) y el de esta semana
- *  va a la revisión siguiente. Fechas de PLAN en el texto: la guía las pinta con su día real (corridaTexto). Sin alias = «del viernes», como siempre. */
-const miniSimRevTxt = (sab: string): string => {
-  const vie = addDias(sab, -1);
-  return fechaRealDe(vie, 'encaps') > sab
-    ? (addDias(sab, -8) < FECHAS_V6.f1.inicio ? `mini-sim /25: aún ninguno (el del ${fCorta(vie)} se hace después de hoy: va a la revisión siguiente)`
-      : `mini-sim /25 del ${fCorta(addDias(sab, -8))} (el del ${fCorta(vie)} va a la revisión siguiente: se hace después de hoy)`)
-    : esMiniSimF1(vie) ? 'mini-sim /25 del viernes'
-      // v6.10i (remate, revisión adversarial del 18-nov): el mini-sim de la semana pasada que se hizo DESPUÉS de su revisión (alias) va a esta (sáb 26-dic: el
-      //   5/5 del CHECKPOINT; el vie 25-dic es SKIP) · F2: el viernes de la intensiva es SIM 100Q o el pre-test, y el carril del sábado puede traer un mini-sim
-      : esMiniSimF1(addDias(sab, -8)) && fechaRealDe(addDias(sab, -8), 'encaps') > addDias(sab, -7)
-        ? `mini-sim /25 del ${fCorta(addDias(sab, -8))} (${ordenMiniSimF1(addDias(sab, -8))}${sesionEncapsDe(addDias(sab, -8))?.dia === 23 ? ', CHECKPOINT' : ''})`
-        : [encapsF2De(vie)?.tipo === 'sim100' ? 'SIM 100Q del viernes (/100)' : encapsF2De(vie)?.tipo === 'pretest' ? 'pre-test del viernes (/100)' : '',
-          encapsSabadoDe(addDias(sab, -7))?.tipo === 'mini_sim' ? `mini-sim /25 del ${fCorta(addDias(sab, -7))}` : ''].filter(Boolean).join(' + ') || 'sin mini-sim ni SIM esta semana';
-};
+/** v6.10j (rev. c14, 18-nov-2026 noche): fecha REAL de la revisión del sábado `sab` (su domingo de llegada si el sábado fue sin sesión: dom 22-nov) y si
+ *  la hubo (no en un sábado PROTEGIDO —sáb 13-mar, D-1 ENCAPS: la plantilla no la pinta— ni en uno sin sesión y sin domingo de llegada, que va junto con
+ *  el siguiente). */
+const revisionRealDe = (sab: string): string => (sabadoLibre(sab) ? (revisionDomingoDe(sab)?.domingo ?? sab) : sab);
+const huboRevisionEl = (sab: string): boolean => sab > FECHAS_V6.f1.inicio && !motivoProtegido(sab) && (!sabadoLibre(sab) || !!revisionDomingoDe(sab));
+/** v6.10j: ventana REAL [desde, hasta) que mide la revisión del sábado `sab`: desde la revisión anterior que SÍ se hizo (lo de ese día va después de ella: el
+ *  carril ENCAPS del sábado de F2 a las 14:00, la clase en vivo de Theomed) hasta la de hoy, sin incluirla. Con el alias de corrida_s1 lo de un viernes de
+ *  PLAN se hace el lunes real siguiente: cuenta donde cae el día real. La del sáb 20-mar recoge también la semana del sáb 13-mar (sin revisión: D-1). */
+function ventanaRevision(sab: string): [string, string] {
+  let x = addDias(sab, -7);
+  for (let i = 0; i < 8 && x > FECHAS_V6.f1.inicio && !huboRevisionEl(x); i++) x = addDias(x, -7);
+  return [x > FECHAS_V6.f1.inicio ? revisionRealDe(x) : FECHAS_V6.f1.inicio, revisionRealDe(sab)];
+}
+/** v6.10j: SIM 100Q de la intensiva por orden (#1 = el primero tras el pre-test; = sim.num de _encaps_intensivo_2027.sql, check_rutina_guia lo compara). */
+const SIM100_F2: string[] = ENCAPS_F2_FECHAS.filter((f) => encapsF2De(f)?.tipo === 'sim100').sort();
+/** v6.10j (rev. c14: la S07 decía «sin mini-sim ni SIM» con el simulacro de cierre del jue 31-dic; la S16 contaba 1 SIM de 3 y 1 mini-sim de 2; la S05 no
+ *  nombraba el simulacro con RANKING del dom 13-dic): TODO lo que la métrica 4 ENCAPS mide en la ventana de la revisión, con su día (fechas de PLAN: la guía las
+ *  pinta con su día real) — F1: pre-tests de arranque y mini-sims /25 de las 16:15, el SIMULACRO DE CIERRE DE AÑO (mañana fase «cierre») y los simulacros del
+ *  domingo (con o sin RANKING; los opcionales, «si lo hiciste») · F2: el PRE-TEST 100Q, los SIM 100Q #n, el DRESS REHEARSAL, los mini-sims /25 del carril B
+ *  (reposición F1) y del carril del sábado · el EXAMEN. `proxima` = mini-sims de la semana de plan que se hacen DESPUÉS de la revisión (alias). */
+export function encapsRevDe(sab: string): { items: string[]; proxima: string[]; fechas: string[] } {
+  const [a, b] = ventanaRevision(sab);
+  const ev: [string, string][] = [], proxima: string[] = [];
+  const enV = (real: string): boolean => real >= a && real < b;
+  const pre: { p: string; parte: number; de: number; n: number }[] = [];
+  for (let p = addDias(a, -10); p < addDias(b, 4); p = addDias(p, 1)) { // F1: fechas de PLAN (el alias las lleva a su día real)
+    const real = fechaRealDe(p), s = sesionEncapsDe(p), m = encapsMananaDe(p);
+    if (!enV(real)) { if (s?.tipo === 'minisim' && p < sab && p > addDias(sab, -7) && real >= b) proxima.push(`el mini-sim del ${fCorta(p)}`); continue; }
+    if (s?.tipo === 'pretest' && s.pretest) pre.push({ p, parte: s.pretest.parte, de: s.pretest.de, n: s.pretest.n });
+    if (s?.tipo === 'minisim') ev.push([real, `mini-sim /25 del ${fCorta(p)} (${ordenMiniSimF1(p)}${s.dia === 23 ? ', CHECKPOINT' : ''})`]);
+    if (m?.fase === 'cierre') { const src = /\(([^()]+)\)/.exec(m.banqueo.area)?.[1]; ev.push([real, `SIMULACRO DE CIERRE DE AÑO 100Q del ${fCorta(p)} (${src ? `${src}, ` : ''}nota = aciertos × 0,2)`]); }
+  }
+  if (pre.length) ev.push([fechaRealDe(pre[0]!.p), `pre-test de arranque ${pre.map((x) => `${x.parte}/${x.de}`).join(' y ')} (${pre[0]!.n}Q${pre.length > 1 ? ' c/u' : ''}) del ${pre.map((x) => fCorta(x.p)).join(' y ')}`]);
+  for (let x = a; x < b; x = addDias(x, 1)) { // domingos, F2 y el examen: fecha real = fecha de plan
+    const d = encapsDomingoDe(x), f2 = encapsF2De(x), sb = encapsSabadoDe(x);
+    if (d && /simulacro/.test(d.modo)) { const opc = d.modo === 'simulacro'; ev.push([x, `simulacro 100Q${opc ? ' opcional' : ''}${d.ranking ? ' con RANKING' : ''} del ${fCorta(x)} (${opc ? 'si lo hiciste, ' : ''}nota = aciertos × 0,2)`]); }
+    if (f2?.tipo === 'pretest') ev.push([x, `PRE-TEST 100Q del ${fCorta(x)} (examen 2026-II, /100)`]);
+    if (f2?.tipo === 'sim100') ev.push([x, `SIM #${SIM100_F2.indexOf(x) + 1} 100Q del ${fCorta(x)} (/100)`]);
+    // remate v6.10j (revisión adversarial, verdad #4b): el examen ENCAPS (y su DRESS en D-2) sigue con fecha PROVISIONAL hasta la convocatoria → se dice
+    const prov = FECHAS_V6.encaps.provisional ? ', fecha provisional' : '';
+    if (f2?.tipo === 'dress_rehearsal') ev.push([x, `DRESS REHEARSAL 100Q del ${fCorta(x)} (/100${prov})`]);
+    if (f2?.carrilB?.pendiente === 'mini_sim') ev.push([x, `mini-sim /25 del ${fCorta(x)} (carril B, reposición F1)`]);
+    if (sb?.tipo === 'mini_sim') ev.push([x, `mini-sim /25 del ${fCorta(x)} (carril del sábado)`]);
+    if (x === FECHAS_V6.encaps.examen) ev.push([x, `EXAMEN ENCAPS del ${fCorta(x)} (${prov ? 'fecha provisional: la de la convocatoria; ' : ''}nota y puesto cuando salgan)`]);
+  }
+  ev.sort((u, v) => (u[0] < v[0] ? -1 : u[0] > v[0] ? 1 : 0));
+  // fechas REALES de cada cosa medida (los pre-tests de arranque, una a una): check_rutina_guia comprueba que cada una entra en UNA sola revisión
+  return { items: ev.map((e) => e[1]), proxima, fechas: [...ev.filter((e) => !/^pre-test de arranque/.test(e[1])).map((e) => e[0]), ...pre.map((x) => fechaRealDe(x.p))].sort() };
+}
+/** v6.10j: lo que la métrica 1 USMLE mide en la ventana de la revisión, según el plan de esa semana (no la plantilla genérica del tramo 2): F1 en nivel 0-1
+ *  (bloques de 5Q en Tutor + gate de 10 consecutivas; sin pre-test /10 ni eval) · F2 con el Step 1 en PAUSA (el STEP 1 VIVO de ese sábado, 04:15) · F3+
+ *  (pre-test /10 · consolidación · eval) · el hito (NBME / UWSA) que cae en la ventana, delante. */
+function usmleRevDe(sab: string): string {
+  const [a, b] = ventanaRevision(sab);
+  const enV = (f: string): boolean => fechaRealDe(f) >= a && fechaRealDe(f) < b;
+  // el hito primero: el Calendar corta el «cómo» al final de la cláusula de su fecha (≤ 450) y así se ve
+  const out: string[] = [...USMLE_DIAS, ...USMLE_DIAS_T2].filter((x) => esHito(x) && enV(x.fecha)).map((h) => `${hitoDeFila(h)?.nombre ?? 'hito'} del ${fCorta(h.fecha)} (% total y por bloque)`);
+  // remate v6.10j (revisión adversarial, verdad #4a): en F1 no hay eval CRONOMETRADA, pero la eval 10Q en Tutor del DAY-AFTER 6/6 (18:00) de un NBME sí da un %
+  //   → se nombra con su día (antes «sin pre-test /10 ni eval» dejaba fuera la del lun 28-dic de la S07)
+  if (USMLE_DIAS.some((x) => !esHito(x) && enV(x.fecha))) {
+    const da = USMLE_DIAS.filter((x) => enV(x.fecha) && guiaUsmleDe(x.fecha).some((g) => /^DAY-AFTER .*6\/6.*eval 10Q/.test(g.titulo))).map((x) => fCorta(x.fecha));
+    out.push(`% de lo hecho en Tutor (preguntas a fondo o bloques de 5Q · validación · revalidación) y el gate de 10 consecutivas (nivel 0-1: sin pre-test /10 ni eval cronometrada)${da.length ? ` + eval 10Q Tutor del Day-After del ${da.join(' y ')} (% de las 10 nuevas)` : ''}`);
+  }
+  if (faseV6(sab) === 'F2') out.push('STEP 1 VIVO de hoy (20Q timed mezcladas, %: el Step 1 está en pausa)');
+  if (USMLE_DIAS_T2.some((x) => !esHito(x) && enV(x.fecha))) out.push('pre-test /10, consolidación % y eval');
+  return out.join(' + ') || 'sin sesión de Step 1 esta semana (pausa: solo Anki)';
+}
 /** v6.10i: ¿el ENCAPS de la fecha de PLAN `f` es un mini-sim de F1? · su orden en F1 («3/5»), como lo titula la guía de las 16:15. */
 const esMiniSimF1 = (f: string): boolean => sesionEncapsDe(f)?.tipo === 'minisim';
 const ordenMiniSimF1 = (f: string): string => {
@@ -290,8 +342,9 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       //   LOUDER.)» · anki-ok + ankiNoteId · success + filepath) y el «cómo» EMPIEZA por la carpeta del .txt y la cadena de teclas (en la v6.10h la ruta iba al final
       //   y el corte la quitaba; antes de la v6.10h, la ruta completa con el nombre del fichero llenaba los 110). El nombre del .txt y el PDF de GoodNotes, detrás
       //   (solo en la app) · la [TEST S1] es la 1.ª tarjeta de APEX::USMLE: crea el mazo raíz y ::Cardiology (suspendida); el preset va al cerrar el bloque Step de
-      //   las 07:15 (usmleGuia)
-      P(13, 'APEX de prueba [TEST S1] + Executions: éxito = Parsear acaba en «murmur LOUDER.)» · anki-ok + ankiNoteId · success + filepath (el verde solo NO basta)', 'Ctrl+A, Ctrl+C del .txt de D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\ → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El .txt es S1_bloque_APEX_prueba_USMLE.txt (el mismo texto está en el PDF de GoodNotes › S01_APEX). Con Anki cerrado también sale verde: mandan los items, no el color.'),
+      //   las 07:15 (usmleGuia) · v6.10j (rev. c14, vetadas #5): el corte del «cómo» dejaba «… → Ctrl+Shift+A → n8n › …» y se perdía QUÉ ejecución se mira →
+      //   «(Ctrl+Shift+A) → n8n › Executions → la 1.ª» va en el «qué» (≤ 150, entero) y el «cómo» empieza por «El verde solo NO basta» (antes al final del «qué»)
+      P(13, 'APEX [TEST S1] (Ctrl+Shift+A) → n8n › Executions → la 1.ª: éxito = Parsear acaba en «murmur LOUDER.)» · anki-ok + ankiNoteId · success + filepath', 'El verde solo NO basta. Ctrl+A, Ctrl+C del .txt de D:\\JOSEPH\\SYNAPSE_iPad\\2026-11-18_S1_redeploy_n8n\\ → Ctrl+Shift+A → n8n › Executions → la 1.ª (hora de ahora): item 1 de Parsear acaba en «murmur LOUDER.)» (= código nuevo) · Anki + Obsidian item 1 = anki-ok + ankiNoteId · Crear Nota item 2 = success + filepath. Anota la ejecución, el ankiNoteId y el filepath. El .txt es S1_bloque_APEX_prueba_USMLE.txt (el mismo texto está en el PDF de GoodNotes › S01_APEX). Con Anki cerrado también sale verde: mandan los items, no el color.'),
       P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas; APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos; si ya no está, pega backups\\live_*.js y publica).`),
     ];
     case 3: return [
@@ -2093,7 +2146,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     //   antes «(21′ en total)» contra los 22,8′ del «cómo») · el «tema de hoy» es el de las piezas (tramoF1.tema), no el de la fila entera
     const minTxt = Math.abs(tot - m) >= 0.5 ? `${tot.toFixed(1).replace('.', ',')}′ de material en ${m}′` : `${m}′${tramoF1.piezas.length > 1 ? ' en total' : ''}`;
     pasos.push(P(m, `${lee ? 'LEER' : 'ESCUCHAR/VER'} · ${qp} (${minTxt}) · tema de hoy: ${tramoF1.tema ?? r.lectura}`,
-      `${tramoF1.nota} ${lee ? `Lectura a ${tramoF1.piezas.map((p) => `${p.ppm ?? 100}`).filter((x, i, a) => a.indexOf(x) === i).join(' / ')} palabras/min = ${tot.toFixed(1).replace('.', ',')}′.` : `1,0× con subtítulos en inglés (auto-traducción al español si pierdes el hilo) = ${tot.toFixed(1).replace('.', ',')}′.`}`,
+      `${tramoF1.nota} ${lee ? `Lectura a ${tramoF1.piezas.map((p) => `${p.ppm ?? 100}`).filter((x, i, a) => a.indexOf(x) === i).join(' / ')} palabras/min = ${tot.toFixed(1).replace('.', ',')}′.` : `1,0× = ${tot.toFixed(1).replace('.', ',')}′ con subtítulos en inglés (auto-traducción al español si pierdes el hilo).`}`, // remate v6.10j (visibilidad #2): la cifra pegada a la velocidad, para que el corte del Calendar la deje entera
       { t: tramoF1.piezas[0]!.seg ? `▶ desde ${mmss(tramoF1.piezas[0]!.seg[0])}` : '📄 abrir', url: tramoF1.piezas[0]!.url }));
     for (const p of tramoF1.piezas) recursos.push(R(p.t, p.url, { min: Math.round(minPiezaF1(p) * 10) / 10 }));
   } else if (tramo) {
@@ -2180,9 +2233,30 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const runnersS2 = sesS2.length
     ? pendS2.length ? `runners ENCAPS del ${yTxt(pendS2)} generados (eval + banco; E4${hechosS2.length ? `; los del ${yTxt(hechosS2)} ya existen` : ''})` : `runners ENCAPS de la semana ya generados (${yTxt(hechosS2)})`
     : `runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4)`;
+  // v6.10j (rev. c14, dias-clave #1 y #8): con runners por generar, el paso 5 EMPIEZA por su receta —«NO --semana» delante (re-sortearía los ya armados) y
+  //   la cadena gen_encaps_minisim --eval/--banco por día → sync → guía → deploy, la misma regla que la guía ENCAPS: los genera esta revisión; si no, antes del
+  //   primero— y el journal de la semana 2 nace el día REAL en que journal_hoy.js lo crea (el lunes de PLAN: con el alias, el mar 24-nov; antes «el lunes»)
+  const pendSes = sesS2.filter((s) => !s.principal);
+  const cadenaS2 = pendSes.length ? `\`node DATA/_scripts/gen_encaps_minisim.js --eval ${pendSes[0]!.fecha}\` → \`--banco ${pendSes[0]!.fecha}\`${pendSes.slice(1).map((s) => ` → \`--eval ${s.fecha}\` → \`--banco ${s.fecha}\``).join('')} → \`node DATA/_scripts/sync_encaps_bp_web.js\` → \`node DATA/_scripts/gen_encaps_guia.js\` → deploy` : '';
+  const recetaS2 = pendSes.length ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}): NO --semana ${lun2}${hechosS2.length ? ` (re-sortearía los del ${yTxt(hechosS2)}, ya armados)` : ''} → ${cadenaS2} (--eval y --banco = el mismo gen_encaps_minisim.js). · ` : '';
   const prep = primera
-    ? `Semana ${Number(fichero.slice(1, 3)) + 1}: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · ${runnersS2} · velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea el lunes journal_hoy.js.`
+    // remate v6.10j (revisión adversarial, visibilidad #4): la comprobación de AccessDerma va DELANTE de la receta (la cadena de comandos alarga el corte del
+    //   Calendar hasta su «deploy» y empujaba fuera «Semana 2: AccessDerma renovado …»)
+    ? `¿AccessDerma renovado? (si no, Derma sigue en PLAN B: selector en Derma › HOY) · ${recetaS2}Semana ${Number(fichero.slice(1, 3)) + 1}: ${pendSes.length ? '' : `${runnersS2} · `}velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea journal_hoy.js el ${fCorta(lun2)}.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
+  // v6.10j (rev. c14, diffs #0 y #7 · cambios-v610i #0, #2, #3 y #4): el «cómo» de RELLENAR empieza por los RÓTULOS de todas las métricas (el Calendar corta
+  //   a 110 y antes solo dejaba ver «4 ENCAPS …») y después el detalle de cada una, sacado del plan de ESA semana (encapsRevDe · usmleRevDe). ENCAPS va
+  //   primero hasta su examen; después, último y solo si su ventana trae algo (la S18 recoge el mini-sim, el dress rehearsal y el examen de la semana sin revisión)
+  const encR = encapsRevDe(sab), encActivo = ventanaRevision(sab)[1] <= FECHAS_V6.encaps.examen;
+  const rot = [...(encActivo ? ['4 ENCAPS'] : []), '1 USMLE', '2 uWorld', '5 MIR', '8 sueño', ...(!encActivo && encR.items.length ? ['4 ENCAPS'] : [])];
+  const detRev: Record<string, string> = {
+    '4 ENCAPS': `4 ENCAPS: ${encR.items.join(' + ') || 'sin mini-sim ni SIM esta semana'}${encR.proxima.length ? ` (${encR.proxima.join(' y ')}: en la próxima)` : ''}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota), banqueo de las mañanas (n y % ciego), errores nuevos y repetidos (misma regla)' : ''}`,
+    '1 USMLE': `1 USMLE: ${usmleRevDe(sab)}`,
+    '2 uWorld': `2 uWorld: % vs mínimo del próximo hito${primera ? ' (aún sin hito, sin juicio: la línea base es el NBME 25; el UWSA1 va en el tramo 2)' : ''}`,
+    '5 MIR': '5 MIR: eval D-1',
+    '8 sueño': '8 sueño (VITALS)',
+  };
+  const rellenar = `${rot.join(' · ')}; nunca se inventa: lo que no tengas queda «sin dato» → ${rot.map((k) => detRev[k]).join(' · ')}.`;
   const ini = enDomingo ? (revisionDomingoDe(sab)?.ini ?? revisionIniDe(sab)) : revisionIniDe(sab); // v6.07: 14:00 los sábados con la clase en vivo de Theomed (F1 y transición) · 07:15 en el resto · v6.09b: el domingo de llegada, 30′ antes de la recuperación ENCAPS
   const nomJ = ficheros.map((x) => x.replace('.md', '')).join(' + ');
   const forzar = (s: string): string => (sabadoLibre(s) ? ' --forzar' : '');
@@ -2190,7 +2264,7 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const cmdPrev = sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} se generó el ${fCorta(addDias(sabPrev, 1))} con \`node DATA/_scripts/gen_revision_semanal.js ${sabPrev} --forzar\`; si no llegaste a hacerla, córrelo ahora y deja sus métricas «sin dato»: las 4 decisiones van solo aquí)` : '';
   return bloque(franjaDesde(ini, 30), 'revision', `REVISIÓN SEMANAL · ${nomJ}${enDomingo ? ` (la del ${fCorta(sab)}, hoy domingo de llegada)` : sabPrev ? ` (la ${revisionFicheroDe(sabPrev).replace('.md', '')} fue el ${fCorta(addDias(sabPrev, 1))})` : ''}`, [
     P(3, juntas.length ? `GENERAR y abrir ${ficheros.join(' y ')} (el ${juntas.map(fCorta).join(', ')} no hubo sesión: van juntas)` : `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: ${cmdJ}\`node DATA/_scripts/gen_revision_semanal.js ${sab}${forzar(sab)}\` → crea DATA/USMLE/REVISIONES/${ficheros.join(' y ')} y actualiza _semanas.json${cmdPrev}.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
-    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', `4 ENCAPS: ${miniSimRevTxt(sab)}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota) · banqueo de las mañanas (n y % ciego) · simulacro del domingo · errores nuevos y repetidos (misma regla)' : ''} · 1 USMLE (pre-test /10 · consolidación % · eval) · 2 uWorld % vs mínimo del próximo hito${primera ? ' (aún sin hito, sin juicio: la línea base es el NBME 25; el UWSA1 va en el tramo 2)' : ''} · 5 MIR eval D-1 · 8 sueño. Nunca se inventa: lo que no tengas queda «sin dato».`),
+    P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', rellenar),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
     P(6, juntas.length ? `DECIDIR (4 líneas, solo en ${fichero.replace('.md', '')}: la semana que entra)` : 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),
     P(5, 'PREPARAR la semana siguiente', prep),

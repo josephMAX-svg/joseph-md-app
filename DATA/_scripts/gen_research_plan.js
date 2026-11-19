@@ -655,7 +655,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   GREEN:  { label: 'How to Read a Paper — Greenhalgh (BMJ)', url: 'https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper' },
   STAT:   { label: 'StatQuest (bioestadística)', url: 'https://www.youtube.com/@statquest' },
   ZED:    { label: 'zedstatistics', url: 'https://www.youtube.com/@zedstatistics' },
-  STEPSR: { label: 'Step-by-step SR+MA (Ahn & Kang 2019)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/' },
+  STEPSR: { label: 'Step-by-step SR+MA (Tawfik et al. 2019)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/' },
   CIL1:   { label: 'Cochrane Interactive · Módulo 1 (gratis)', url: 'https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews' },
   COCHB:  { label: 'Cochrane Handbook v6.5', url: 'https://training.cochrane.org/handbook' },
   COCHYT: { label: 'Cochrane Training (YouTube)', url: 'https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA' },
@@ -1465,31 +1465,43 @@ export const GUIA_RESEARCH_MINIMO: GuiaBloque = ${JSON.stringify(GR.minimo)};
     const { REC_DOC, CONTRASTE_DE } = require('./research_guia');
     const { cargarModuloTS } = require('./usmle/cargar_ts');
     const cache = new Map(); const RG = cargarModuloTS(path.join('src', 'lib', 'researchGuia.ts'), cache); const RD = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan.ts'), cache); const R27 = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan2027.ts'), cache);
-    const noDoc = new Set(Object.entries(RD.REC).filter(([k]) => !REC_DOC.includes(k)).map(([, r]) => r.label));
+    // v6.10j: la fuente de la eval anclada genérica es el nombre CORTO de un recurso de REC_DOC (RG.REC_CORTO), una fuente propia (CONTRASTE_DE) o
+    //   «su objetivo y su artefacto»; nunca un portal o una herramienta
+    const cortosDoc = new Set(REC_DOC.map((k) => RG.REC_CORTO[k] ?? (RD.REC[k] && RD.REC[k].label)));
     const propias = new Set(Object.values(CONTRASTE_DE));
-    const malos = []; let nEval = 0; const primero = []; const truncados = [];
+    const malos = []; let nEval = 0; const primero = []; const truncados = []; const largos = []; const corteQue = []; const corteComo = [];
+    const TOPE = RG.TITULO_MAX, CAL_QUE = 150, CAL_COMO = 110;
     for (const x of [...RD.DIAS, ...R27.DIAS_2027]) {
       const g = RG.guiaResearchDe(x);
       // v6.10i · CONTROL: la app no trunca el título con «…» (el Calendar lo corta con su propia función; «reproducir 1…» partía una cifra)
       if (/…/.test(g.titulo)) truncados.push(`${x.fecha} ${x.code}: «${g.titulo.slice(-40)}»`);
+      // v6.10j · CONTROL: el título entero cabe en el resumen del Calendar («🔬 RESEARCH » + 75) y no acaba en un conector ni con un paréntesis abierto
+      if (g.titulo.length > TOPE || /[\s(:,+·—]$|\s(?:de|del|el|la|los|las|a|al|y|e|o|u|en|con|por|para|sin)$/u.test(g.titulo) || (g.titulo.match(/\(/g) || []).length !== (g.titulo.match(/\)/g) || []).length) largos.push(`${x.fecha} ${x.code}: «${g.titulo}» (${g.titulo.length})`);
       for (const p of g.pasos) {
-        // v6.10i: «… de su método, contrastado con <fuente> + ¿existe «artefacto»?» (o «… con su objetivo y su artefacto «…» (¿existe?)»)
-        const m = /de su método, contrastado con (?:«([^»]+)»(?= \+ ¿existe «)|(.+?)(?= \+ ¿existe «| \(¿existe\?\)$))/.exec(p.que); if (!m) continue; nEval++;
-        if (m[1] ? noDoc.has(m[1]) : !(propias.has(m[2]) || /^su objetivo y su artefacto «/.test(m[2]))) malos.push(`${x.fecha} ${x.code}: «${(m[1] || m[2]).slice(0, 60)}»`);
+        // v6.10j: «Eval anclada de X: recall en blanco de 2 puntos clave, contrastado con <fuente> + ¿…?»
+        const m = /^Eval anclada de \S+: recall en blanco de 2 puntos clave, contrastado con (.+?) \+ (¿[^¿]+\?)$/.exec(p.que); if (!m) continue; nEval++;
+        const f = m[1], esRec = /^«[^«»]+»$/.test(f);
+        if (esRec ? !cortosDoc.has(f.slice(1, -1)) : !(propias.has(f) || f === 'su objetivo y su artefacto')) malos.push(`${x.fecha} ${x.code}: «${f.slice(0, 60)}»`);
+        // v6.10j · CONTROL (corte del Calendar: «qué» ≤ 150 · «cómo» ≤ 110): la fuente y la comprobación ENTERAS en el «qué», y la 1.ª parte del «cómo»
+        //   («… Sin artefacto → deuda en la Mesa editorial.») antes del corte (antes quedaban «… su artefacto «Vault …» y «Sin artefacto …»)
+        if (p.que.length > CAL_QUE) corteQue.push(`${x.fecha} ${x.code} (${p.que.length}): ${p.que.slice(0, 70)}…`);
+        if (p.como.indexOf('Mesa editorial.') + 'Mesa editorial.'.length > CAL_COMO - 1) corteComo.push(`${x.fecha} ${x.code}`);
       }
       // v6.10i · CONTROL: en toda eval anclada (genérica o paso a paso) el recall contrastado con su fuente va PRIMERO, antes de «¿existe…?» / «¿checklist…?»
-      //   (el Calendar corta el «qué» a 150 y «después abre esa fuente» del «cómo» necesita verla)
+      //   (el Calendar corta el «qué» a 150 y «corrige con la fuente» del «cómo» necesita verla)
       for (const p of g.pasos) {
         if (!/^Eval anclada/.test(p.que)) continue;
-        const ic = p.que.indexOf('contrastado con'), ie = p.que.search(/¿(existe|checklist|5 candidatos)/);
+        const ic = p.que.indexOf('contrastado con'), ie = p.que.search(/¿/);
         if (ic < 0 || (ie >= 0 && ie < ic)) primero.push(`${x.fecha} ${x.code}`);
       }
     }
     if (malos.length) { console.error(`✗ research: ${malos.length} eval(s) ancladas contrastan el recall con un portal o una herramienta (sin clave que leer): ${malos.slice(0, 6).join(' · ')}`); process.exit(1); }
     if (!nEval) { console.error('✗ research: ninguna eval anclada genérica reconocida (¿cambió la redacción de evalAncladaQue en research_guia.js?)'); process.exit(1); }
-    if (primero.length) { console.error(`✗ research: ${primero.length} eval(s) ancladas piden «¿existe…?» antes del recall con su fuente: ${primero.slice(0, 6).join(' · ')}`); process.exit(1); }
+    if (primero.length) { console.error(`✗ research: ${primero.length} eval(s) ancladas piden «¿…?» antes del recall con su fuente: ${primero.slice(0, 6).join(' · ')}`); process.exit(1); }
     if (truncados.length) { console.error(`✗ research: ${truncados.length} título(s) de guía truncados con «…» en la app: ${truncados.slice(0, 6).join(' · ')}`); process.exit(1); }
-    console.log(`✓ research: ${nEval} evals ancladas con recall en blanco contrastado PRIMERO con un documento o guía (REC_DOC) o con la fuente propia del átomo; 0 portales ni herramientas · 0 títulos truncados`);
+    if (largos.length) { console.error(`✗ research: ${largos.length} título(s) de guía que no caben en ${TOPE} o acaban a mitad de cláusula: ${largos.slice(0, 6).join(' · ')}`); process.exit(1); }
+    if (corteQue.length || corteComo.length) { console.error(`✗ research: evals ancladas que el Calendar cortaría: «qué» > ${CAL_QUE}: ${corteQue.slice(0, 4).join(' · ') || '—'} · «cómo» sin cerrar antes de ${CAL_COMO}: ${corteComo.slice(0, 4).join(' · ') || '—'}`); process.exit(1); }
+    console.log(`✓ research: ${nEval} evals ancladas con recall en blanco contrastado PRIMERO con un documento o guía (REC_DOC) o con la fuente propia del átomo, fuente y comprobación enteras en ≤ ${CAL_QUE}; 0 portales ni herramientas · títulos ≤ ${TOPE} sin «…»`);
   }
 } else console.warn('⚠ --ciclo ' + SOLO_CICLO + ': src/lib/researchGuia.ts NO se regenera (necesita los dos ciclos en la misma corrida)');
 if (CHECK && desactualizados.length) { console.error(`✗ --check: ${desactualizados.length} fichero(s) desactualizado(s): ${desactualizados.join(' · ')}`); process.exit(1); }

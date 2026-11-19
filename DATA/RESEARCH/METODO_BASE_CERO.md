@@ -100,7 +100,7 @@ método (a papel, contrastado con su fuente)». Controles: `research_guia.js` ab
 - **NLM** · cuaderno nuevo «RESEARCH · Método base cero (SR-1 + carta + case report)» (Gemini Notebook, creado el 18-nov-2026 en la cuenta de
   Joseph por Chrome). Fuentes cargadas: vídeo de Cochrane «What are systematic reviews?» (YouTube egJlW4vkb1Y) · Siau & El-Omar 2020
   (PMC7707868) · Greenhalgh 1997, «How to read a paper: getting your bearings» (BMJ 315:243) · CARE Checklist · Cochrane Handbook cap. 1. No
-  cargaron: Ahn & Kang 2019 (PMC6670166) y PRISMA-P 2015 (BMC Syst Rev). Pregunta del 18-nov: fases, Greenhalgh, carta, CARE y errores.
+  cargaron: Tawfik et al. 2019 (PMC6670166) y PRISMA-P 2015 (BMC Syst Rev). Pregunta del 18-nov: fases, Greenhalgh, carta, CARE y errores.
 - **Repo**: `DATA/RESEARCH/systematic-reviews.md` (recorrido de 8 pasos y recursos verificados) · `RUTA_PUBLICACION_2027.md` · `MENTORES.md` ·
   `CARTA_1/candidatos.md` · `TESIS_L0/etica.md`.
 - **Web**: https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews

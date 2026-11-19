@@ -1419,6 +1419,52 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   for (const e of nErr) errores.push(e);
 }
 
+// v6.10j (rev. c14, 18-nov-2026 noche) · REVISIÓN SEMANAL, paso RELLENAR: (a) el «cómo» empieza por los RÓTULOS de las métricas y «nunca se inventa … «sin
+//   dato»», todo dentro de los 110 caracteres que deja ver el Calendar; ENCAPS primero hasta su examen y, después, último (o fuera); (b) cada cosa medida de
+//   ENCAPS (pre-tests de arranque y mini-sims de F1, simulacro de cierre de año, simulacros del domingo, pre-test 100Q, SIM 100Q, dress rehearsal, mini-sims del
+//   carril B y del sábado, examen) entra en UNA sola revisión (encapsRevDe), también la semana del sáb 13-mar (PROTEGIDO: sin revisión); (c) el «SIM #n» de
+//   la revisión = sim.num del SQL de la intensiva
+{
+  const FV = cargarModuloTS(path.join('src', 'lib', 'fechasV6.ts'), cache);
+  const EG = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'), cache);
+  const EM = cargarModuloTS(path.join('src', 'lib', 'encapsManana.ts'), cache);
+  const fs = require('fs');
+  const F6 = FV.FECHAS_V6, EXA = F6.encaps.examen, HASTA = '2027-05-01';
+  const rErr = []; const vistas = new Map(); const itemsDe = new Map(); let nRev = 0;
+  const ROT = /^(4 ENCAPS · )?1 USMLE · 2 uWorld · 5 MIR · 8 sueño( · 4 ENCAPS)?; nunca se inventa: lo que no tengas queda «sin dato» → /;
+  for (let iso = F6.f1.inicio; iso <= HASTA; iso = addDias(iso, 1)) {
+    const g = RG.guiaRevisionDe(iso);
+    if (!g || FV.motivoProtegido(iso)) continue; // sáb 13-mar: la plantilla no pinta la revisión (D-1 ENCAPS)
+    nRev++;
+    const p = g.pasos.find((x) => /^RELLENAR/.test(x.que)), c = (p && p.como) || '', m = ROT.exec(c);
+    if (!m || m[0].length > 110) { rErr.push(`${iso} (v610j-a): RELLENAR sin los rótulos de las métricas delante (o pasan de 110): «${c.slice(0, 120)}»`); continue; }
+    if (!!m[1] !== (iso <= EXA)) rErr.push(`${iso} (v610j-a): ENCAPS ${m[1] ? 'primero tras su examen' : 'no va primero antes de su examen'} (${EXA})`);
+    const sab = RG.revisionSabadoDe(iso), r = RG.encapsRevDe(sab);
+    if (!!m[2] !== (iso > EXA && r.items.length > 0)) rErr.push(`${iso} (v610j-a): 4 ENCAPS al final ${m[2] ? 'sin nada que medir' : 'falta (su ventana trae ' + r.items.join(' + ') + ')'}`);
+    if (iso <= EXA && !/4 ENCAPS: /.test(c)) rErr.push(`${iso} (v610j-a): sin el detalle «4 ENCAPS: …»`);
+    for (const f of r.fechas) { if (vistas.has(f)) rErr.push(`${f} (v610j-b): medido en dos revisiones (${vistas.get(f)} y ${iso})`); vistas.set(f, iso); }
+    for (const f of r.fechas) itemsDe.set(f, r.items.join(' + '));
+  }
+  // lo que se espera medir (fechas REALES), de los datos de los generadores
+  const esp = new Set();
+  for (let p = addDias(F6.f1.inicio, -1); p <= '2027-01-10'; p = addDias(p, 1)) {
+    const s = EG.sesionEncapsDe(p), mm = EM.encapsMananaDe(p);
+    if (s && (s.tipo === 'minisim' || s.tipo === 'pretest')) esp.add(FV.fechaRealDe(p));
+    if (mm && mm.fase === 'cierre') esp.add(FV.fechaRealDe(p));
+  }
+  for (let x = F6.f1.inicio; x <= HASTA; x = addDias(x, 1)) {
+    const d = EM.encapsDomingoDe(x), f2 = EG.encapsF2De(x), sb = EG.encapsSabadoDe(x);
+    if ((d && /simulacro/.test(d.modo)) || (f2 && (['pretest', 'sim100', 'dress_rehearsal'].includes(f2.tipo) || (f2.carrilB && f2.carrilB.pendiente === 'mini_sim'))) || (sb && sb.tipo === 'mini_sim') || x === EXA) esp.add(x);
+  }
+  for (const f of esp) if (!vistas.has(f)) rErr.push(`${f} (v610j-b): lo ENCAPS medido ese día no entra en ninguna revisión`);
+  // (c) SIM #n = sim.num del SQL
+  const sims = fs.readFileSync(path.join(__dirname, '_encaps_intensivo_2027.sql'), 'utf8').split('\n').filter((l) => /^\('ENCAPS',\d+,'\d{4}-\d{2}-\d{2}','[^']+','sim100'/.test(l))
+    .map((l) => ({ f: /^\('ENCAPS',\d+,'(\d{4}-\d{2}-\d{2})'/.exec(l)[1], n: Number((/"num":(\d+)/.exec(l) || [])[1]) }));
+  for (const s of sims) if (!new RegExp(`SIM #${s.n} 100Q del `).test(itemsDe.get(s.f) || '')) rErr.push(`${s.f} (v610j-c): la revisión no lo nombra «SIM #${s.n} 100Q» (sim.num del SQL)`);
+  console.log(`v6.10j · revisión semanal: ${nRev} revisiones con los rótulos delante (≤ 110) · ${esp.size} mediciones ENCAPS, cada una en una sola revisión · ${sims.length} SIM 100Q con su #n del SQL`);
+  for (const e of rErr) errores.push(e);
+}
+
 // ── salida ──
 if (INF) {
   const fmt = (g) => g.pasos.map((p) => `**${p.min}′** ${p.que.replace(/\|/g, '/')}`).join('<br>');

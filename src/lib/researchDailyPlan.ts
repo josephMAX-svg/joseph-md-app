@@ -37,7 +37,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   GREEN:  { label: 'How to Read a Paper — Greenhalgh (BMJ)', url: 'https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper' },
   STAT:   { label: 'StatQuest (bioestadística)', url: 'https://www.youtube.com/@statquest' },
   ZED:    { label: 'zedstatistics', url: 'https://www.youtube.com/@zedstatistics' },
-  STEPSR: { label: 'Step-by-step SR+MA (Ahn & Kang 2019)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/' },
+  STEPSR: { label: 'Step-by-step SR+MA (Tawfik et al. 2019)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/' },
   CIL1:   { label: 'Cochrane Interactive · Módulo 1 (gratis)', url: 'https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews' },
   COCHB:  { label: 'Cochrane Handbook v6.5', url: 'https://training.cochrane.org/handbook' },
   COCHYT: { label: 'Cochrane Training (YouTube)', url: 'https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA' },

@@ -76,6 +76,12 @@
  *   REPASO sin EVAL en los repaso_final sin loop, corrección del SIM 100Q con su sim_n. Controles: modo INTENSIVO, fecha única, tipo del carril B,
  *   pendiente con código / cola larga y SIM de la quincena a las 11:00. v6.07 (fix 3): el índice lleva también el subtema del día de SEÑALES (lun
  *   4-ene, fila 38: la plantilla lo pinta como «ENCAPS · RE-SCAN DE SEÑALES», sin LOOP ni EVAL 18:00).
+ * v6.10j (18-nov-2026, auditoría del volcado c14): solo texto. (1) La EVAL ANCLADA cuyo código ya no tiene reales sin usar dice que es RE-TEST de las mismas
+ *   preguntas reales del banco de ayer (con runner: ítems retest + ids en banco_<ayer>; sin runner: CAT.PREVISTO_SEMANA2.eval_retest, re-simulado el 18-nov
+ *   con base cero) y la de un runner normal dice su composición REAL (antes «3 cifras + 2 viñetas» = la receta). (2) Una sola regla para los runners que
+ *   prepara la revisión del domingo de llegada (reglaRunnersLlegada), igual en el «Ojo» del mini-sim y de los bancos de esa semana, con «NO --semana».
+ *   (3) El registro del mini-sim abre con el comando del cierre semanal. (4) «dos mini-sims seguidos» (no «viernes»: hasta el 1-ene van en lunes). (5) El
+ *   carril SÁBADO sin «o --semana <lunes>». (6) La eval de fallos previos dice cuántas salieron del pool si el registro no traía 5.
  */
 'use strict';
 const fs = require('fs');
@@ -190,6 +196,8 @@ function ultimoDiaPlanAntes(iso) {
   return d.toISOString().slice(0, 10);
 }
 const romano = (c) => ((c || '').match(/^[IVX]+/) || [''])[0];
+// remate v6.10j: los códigos que el runner agrupa en un solo pool (copia de POOL_CODE de gen_encaps_minisim.js), para nombrar la composición del banco
+const POOL_CODE_RUNNER = { 'IV-1': 'IV-1+IV-2', 'IV-2': 'IV-1+IV-2', 'IV-6': 'IV-6+IV-7', 'IV-7': 'IV-6+IV-7', 'V-7': 'V-MED', 'V-10': 'V-MED', 'V-7+V-10': 'V-MED', 'I-5': 'I-5+I-6', 'I-6': 'I-5+I-6', 'I-11': 'I-11+I-12', 'I-12': 'I-11+I-12', 'V-RRHH': 'V-3' };
 const obsUrl = (file) => 'obsidian://open?vault=' + encodeURIComponent(OBS_VAULT) + '&file=' + encodeURIComponent(file);
 let vaultMontado = fs.existsSync(VAULT_DIR);
 function obsidianDe(codigo, subEje) {
@@ -253,6 +261,14 @@ const cmdRunnersDias = (fechas) => {
   const pasos = [!fs.existsSync(path.join(BP, `eval_${f0}.json`)) ? `--eval ${f0}` : null, !fs.existsSync(path.join(BP, `banco_${f0}.json`)) ? `--banco ${f0}` : null].filter(Boolean);
   return `node DATA/_scripts/gen_encaps_minisim.js ${pasos.join(' → ')}${resto.length ? ` (y lo mismo el ${resto.map((f) => Number(f.slice(8))).join(' y el ')})` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (o pídeselo a Claude)`;
 };
+/** v6.10j (auditoría c14, dias-clave #1): lunes de la semana de una fecha de plan. */
+const lunesDe = (iso) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+/** v6.10j: el DOMINGO DE LLEGADA (DOM_LLEGADA: dom 22-nov) que prepara los runners de `pend` (bancos de plan sin runner de la semana siguiente) · null si no hay. */
+const llegadaDe = (pend) => (pend.length ? DOM_LLEGADA.find((x) => x.fecha < pend[0] && x.fecha >= addD(pend[0], -7)) || null : null);
+/** v6.10j (auditoría c14, dias-clave #1): UNA sola regla, con las mismas palabras, para los runners que prepara la revisión del domingo de llegada (jue 26 y
+ *  vie 27-nov reales = plan 25 y 26): la dicen en el «Ojo» (aviso) el mini-sim, los bancos con runner de esa semana y los bancos sin runner. Antes cada día decía otra cosa: el mini-sim «los genera la revisión del dom 22», el mar 24 «si la revisión del domingo no los generó», el jue 26 y
+ *  el vie 27 «(regla: el lun 23-nov, tras el mini-sim)», y el «NO --semana» solo salía en los dos últimos. */
+const reglaRunnersLlegada = (pend, ll) => `Runners del ${corta(pend[0])}${pend.length > 1 ? ` al ${corta(pend.at(-1))}` : ''}: los genera la revisión del ${corta(ll.fecha)} ${ll.rev} (paso 5); si no, antes del ${corta(pend[0])}. NO --semana ${lunesDe(pend[0])} (re-sortearía los runners ya armados de la semana): ${cmdRunnersDias(pend)}.`;
 /** v6.09 (fix revisión 16-nov, datos 6): lunes cuya eval es la del código de la sesión de banco anterior y no la «regla de los lunes» (5Q rehechas del mini-sim
  *  del viernes) porque el fin de semana siguiente al mini-sim fue SIN SESIÓN (viaje: no había hueco para generarlas) → { ms, sa } · null si no aplica. */
 const excepcionLunes = (fila, rEval) => {
@@ -316,7 +332,12 @@ const evalDesc = (r, fila, prev) => {
   const modo = String(r.meta.modo || r.j.tema || '');
   // v6.10h (revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): el runner elige ítems de EXAMEN OFICIAL (R-…) por los fallos previos
   //   del registro (antes «5Q de FALLOS PREVIOS del registro», que podía leerse como preguntas propias)
-  if (/fallos previos/i.test(modo)) return `5Q REALES de tus fallos previos del registro (examen oficial con clave · hoy: ${Object.entries(r.porCod).map(([c, n]) => `${n} × ${c}`).join(' + ')})`;
+  // v6.10j (auditoría c14): si el registro no trae 5 fallos previos, el runner completa con ítems reales LIBRES del pool (fallback, «último recurso») → se dice
+  //   cuántos (simulación del 18-nov de la eval del día siguiente al mini-sim del 27-nov de plan: 1 de fallos previos + 4 del pool, con el registro de hoy)
+  if (/fallos previos/i.test(modo)) {
+    const nFb = (r.j.items || []).filter((x) => x.fallback != null).length, nFp = r.n - nFb;
+    return `${nFb ? `${r.n}Q REALES: ${nFp} de tus fallos previos del registro + ${nFb} sin usar del pool (el registro no traía más)` : `${r.n}Q REALES de tus fallos previos del registro`} (examen oficial con clave · hoy: ${Object.entries(r.porCod).map(([c, n]) => `${n} × ${c}`).join(' + ')})`;
+  }
   // v6.03: el código y la sesión anterior salen del propio runner (_meta.sesion_anterior); «AYER» solo si fue el día anterior
   const sa = r.meta.sesion_anterior || {}; const cod = r.j.codigo && r.j.codigo !== 'MIX' ? r.j.codigo : (prev ? prev.codigo : '');
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
@@ -336,11 +357,29 @@ const evalDesc = (r, fila, prev) => {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
-    { const exc = excepcionLunes(fila, r); if (exc) return `5Q de ${cod}, ${excepcionCorta(fila, exc, cod)} · ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas)`; } // v6.09 (fix revisión, datos 6) · v6.10i: la excepción, explicada al principio
-    return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
+    { const exc = excepcionLunes(fila, r); if (exc) return `5Q de ${cod}, ${excepcionCorta(fila, exc, cod)} · ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (${formatoEval(r)})`; } // v6.09 (fix revisión, datos 6) · v6.10i: la excepción, explicada al principio
+    return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (${formatoEval(r)})`;
   }
-  return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
+  // v6.10j (auditoría c14, dias-clave #0): el runner de AYER cuyo código ya no tiene reales sin usar trae sus 5Q en RE-TEST (gen_encaps_minisim.js, fallback
+  //   paso 1: las mismas preguntas reales de su banco) → la eval lo dice, como la del vie 20 (antes «(3 cifras + 2 viñetas)», que sugería preguntas nuevas)
+  const nRe = (r.j.items || []).filter((x) => x.retest).length;
+  if (nRe && nRe === r.n) return retestAyerTxt(r.n, cod, retestDelBanco(r, sa.fecha));
+  return `5Q del código de AYER ${cod} (${formatoEval(r)}${nRe ? `; ${nRe} en RE-TEST: las mismas preguntas reales ya vistas` : ''})`;
 };
+/** v6.10j (auditoría c14): composición REAL de una eval con runner (antes «3 cifras + 2 viñetas» = la receta, aunque el runner trajera 3 directas). */
+function formatoEval(r) {
+  const its = r.j.items || [];
+  const c = its.filter((x) => /cifra/i.test(x.formato || '')).length, v = its.filter((x) => /vi[ñn]eta/i.test(x.formato || '') && !/cifra/i.test(x.formato || '')).length, d = its.length - c - v;
+  return [c ? `${c} cifra${c > 1 ? 's' : ''}` : '', v ? `${v} viñeta${v > 1 ? 's' : ''}` : '', d ? `${d} directa${d > 1 ? 's' : ''}` : ''].filter(Boolean).join(' + ');
+}
+/** v6.10j: ¿las preguntas de la eval `r` son todas del banco de la sesión anterior (`fecha`, de plan)? Por ids de BANCO_PROPIO. */
+function retestDelBanco(r, fecha) {
+  try { const ids = new Set((JSON.parse(fs.readFileSync(path.join(BP, `banco_${fecha}.json`), 'utf8')).items || []).map((x) => x.id)); return (r.j.items || []).every((x) => ids.has(x.id)); } catch (e) { return false; }
+}
+/** v6.10j (auditoría c14, dias-clave #0): eval anclada del código de AYER en RE-TEST (el pool real del código está agotado). `delBanco` = sus 5Q salieron
+ *  todas en el banco de ayer (comprobado por ids; sin runner, por la simulación de CAT.PREVISTO_SEMANA2). */
+//   Corto a propósito: con «— runner POR GENERAR» / «— eval_<fecha>» cabe en los 150 del «qué» del Calendar (el orden distinto lo hace el runner).
+const retestAyerTxt = (n, cod, delBanco) => `${n}Q de ${cod} de AYER en RE-TEST: las mismas preguntas reales ${delBanco ? 'del banco de ayer' : 'que ya hiciste'} (no quedan de ${cod} sin usar)`;
 /** v6.07 (fix lote 1b): días L-V SKIP / protegidos estrictamente entre dos fechas (vie 25-dic entre el jue 24 y el lun 28-dic). */
 // v6.10d (fix revisión 18-nov): entre los días REALES de las dos sesiones (alias de corrida_s1) y sin las claves del alias (días de plan): antes el sáb 2-ene decía
 //   «(jue 31-dic; el vie 1-ene fue SKIP)» → visible «(vie 1-ene; el vie 1-ene fue SKIP)», y el mar 29-dic «(lun 28-dic; el vie 25-dic fue SKIP)»
@@ -356,6 +395,9 @@ function evalSinRunner(fila, prev) {
     return /^del mini-sim/.test(de) ? `5Q REALES de los códigos que fallaste en el mini-sim${de.replace(/^del mini-sim/, '')} (examen oficial con clave)` : `5Q REALES de tus fallos previos ${de} (examen oficial con clave)`;
   }
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
+  // v6.10j (auditoría c14, dias-clave #0): sin runner, la simulación (CAT.PREVISTO_SEMANA2, eval_retest) dice si el código de ayer ya no tiene reales sin usar
+  const pv = PREVISTO(fila.fecha);
+  if (prev.fecha === ayer && pv && pv.eval_retest) return retestAyerTxt(5, prev.codigo, pv.eval_retest === 'banco');
   if (prev.fecha === ayer) return `5Q del código de AYER ${prev.codigo} (3 cifras + 2 viñetas)`;
   const sk = saltadosEntre(prev.fecha, fila.fecha);
   return `5Q de ${prev.codigo} = código de la sesión anterior (${corta(prev.fecha)}${sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
@@ -403,6 +445,10 @@ function construirGuia(fila, sab = null) {
     const matCola = cola.flatMap((c) => materialDe(c, null).items.slice(0, 1).map((m) => ({ ...m, t: `${c} · ${m.t}` })));
     const lunesSem = e.semana || fila.fecha;
     const siguiente = FILAS.find((x) => x.dia > fila.dia);
+    // v6.10j (auditoría c14, dias-clave #1): runners de la semana siguiente que prepara el domingo de LLEGADA (dom 22-nov) → la regla única va en el «Ojo»
+    //   del mini-sim, como en los bancos de esa semana (el Calendar corta el «cómo» del registro antes de llegar a ella)
+    const pendMS = !sab && SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
+    const llMS = llegadaDe(pendMS);
     // v6.09b (lote 1-bis G): en F1 la corrección = 25Q × 0,85′ ≈ 21′ → 20′ (antes 18′: 1,18); registro + cierre 4′ y APEX + 1 cifra por código caliente 4′
     const rcM = !sab && fila.fecha >= RF1.desde ? RF1.minisim : null;
     g = {
@@ -415,19 +461,21 @@ function construirGuia(fila, sab = null) {
         // v6.10e (revisión del 18-nov · dias-1920-1): con runner, lo que TRAE (desde el 18-nov solo examen real: con el stock real no siempre llega a la receta
         //   de fallos previos y cola larga); sin runner, la receta del SQL
         { min: 30, que: `MINI-SIMULACRO 25Q mixtas (${recTxt}; ${r && r.meta.conteos ? `${r.meta.conteos.criticos} de los 8 críticos · ${r.meta.conteos.fallos_previos} de fallos previos · ${r.meta.conteos.cola_larga}Q de ${cola.join(' + ')}${(r.j.items || []).every((x) => /^R-/.test(x.id)) ? ' · todas de examen real' : ''}` : `≥${e.criticos_min || 10} de los 8 críticos · ≥${e.fallos_previos_min || 5} de fallos previos · ${e.cola_larga_q || '5-6'}Q de ${cola.join(' + ')}`})${r ? ` — ${r.f}` : ' — runner POR GENERAR'}`,
-          como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos viernes seguidos.`,
+          como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos mini-sims seguidos.`,
           ...(r ? { enlace: enlaceRunner(r, 'Mini-sim') } : {}) },
         { min: rcM ? rcM.correccion : 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: rcM ? `${rcM.correccion}′ para las 25Q (≈0,8′ por pregunta: los aciertos «seguros» solo se leen; el tiempo va a fallos y dudosas). ${CAT.TECNICA_SIM.CORRECCION}` : CAT.TECNICA_SIM.CORRECCION },
         sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN})`, como: `Nota /25 en ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
-          : { min: rcM ? rcM.registro : 5, que: `Registro: nota /25 + cierre semanal`, como: `${(() => {
-            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
-            const ll = pend.length ? DOM_LLEGADA.find((x) => x.fecha > fila.fecha && x.fecha <= addD(fila.fecha, 2)) : null;
-            return ll ? `Runners del ${corta(pend[0])} al ${corta(pend.at(-1))} → ${corta(ll.fecha)} ${ll.rev} (revisión semanal, paso 5). ` : '';
-          })()}Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}. ${CAT.TECNICA_SIM.COMPARA}${(() => {
+          // v6.10j (auditoría c14, dias-clave #2): el «Hecho» exige el cierre semanal y el Calendar corta el «cómo» a 110 → su comando va PRIMERO (con «Al final»:
+          //   se corre tras registrar la nota y la ronda); la regla de los runners de la semana siguiente va en el «Ojo», con las mismas palabras que los
+          //   bancos (reglaRunnersLlegada). Antes el «cómo» abría con «Runners del jue 26-nov al vie 27-nov: los genera la revisión del dom 22-nov…» (un parche de
+          //   corrida_s1.reemplazos) y el comando del cierre quedaba oculto en el Calendar.
+          //   Remate v6.10j (revisión adversarial, visibilidad #1): con el cierre primero, el corte escondía la vía de la nota /25 (▲ SIM / --registrar …
+          //   --append) → la nota va delante, en una frase, con su comando entero, y el cierre detrás: la fecha del override alarga el corte hasta ahí.
+          : { min: rcM ? rcM.registro : 5, que: `Registro: nota /25 + cierre semanal`, como: `Nota /25 en ENCAPS → Plan → ▲ SIM (o en el PC: node DATA/_scripts/gen_encaps_minisim.js --registrar <JSON> --append); después, cierre semanal en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → override del ${siguiente ? corta(siguiente.fecha) : 'lunes siguiente'}. ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} ${CAT.TECNICA_SIM.COMPARA}${(() => {
             // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
             const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
-            const ll = pend.length ? DOM_LLEGADA.find((x) => x.fecha > fila.fecha && x.fecha <= addD(fila.fecha, 2)) : null;
-            return !pend.length ? '' : ll ? ` Comandos de esos runners (los corre la revisión del ${corta(ll.fecha)}): ${cmdRunnersDias(pend)}.` : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}, ${cmdRunnersDias(pend)}.`;
+            const ll = llegadaDe(pend);
+            return !pend.length || ll ? '' : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}, ${cmdRunnersDias(pend)}.`; // v6.10j: con domingo de llegada, la regla va en el «Ojo»
           })()}` },
         { min: rcM ? rcM.apex : 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota${rcM ? ' (1 cifra por código, ≤1 p; el resto del código, en su próxima sesión de banco vía el override de la semana siguiente)' : ''}. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
       ],
@@ -435,8 +483,10 @@ function construirGuia(fila, sab = null) {
       hecho: sab ? `25/25 respondidas en ≤30′ con la revisión formal hecha · nota /25 registrada con sim_n ${sab.simN} (CIERRE DE SESIÓN del sábado o --registrar) · 1-3 APEX creados.`
         : `25/25 respondidas en ≤30′ con la revisión formal hecha · nota /25 registrada (▲ SIM o --registrar) · cierre semanal corrido (override de la semana siguiente) · 1-3 APEX creados.`,
       planB: r ? `Si el enlace web no abre: en el PC ${r.local} (es el mismo fichero). Sin runner: Theomed · SIMULACROS MEDICINA o QX · Simulacros Virtuales (25Q mixtas a 72 s/Q), anotando la nota como /25.` : 'Runner sin generar: node DATA/_scripts/gen_encaps_minisim.js ' + fila.fecha + ' → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy. Si no llega: QX · Simulacros Virtuales (25Q a 72 s/Q, nota /25).',
-      ...(sab ? { aviso: [sab.nota, !r ? `runner minisim_${fila.fecha} por generar (node DATA/_scripts/gen_encaps_minisim.js ${fila.fecha}, o --semana ${sab.lunesSem})` : null].filter(Boolean).join(' · ') }
-        : e.checkpoint || !r ? { aviso: [e.checkpoint, !r ? `runner minisim_${fila.fecha} por generar` : null].filter(Boolean).join(' · ') } : {}),
+      // v6.10j (auditoría c14, diffs #4): solo el comando del sábado (antes «…, o --semana <lunes>», que contradice el «NO --semana» de los bancos: con la
+      //   semana del carril B ya armada, --semana re-sortearía sus banco_/eval_)
+      ...(sab ? { aviso: [sab.nota, !r ? `runner minisim_${fila.fecha} por generar (node DATA/_scripts/gen_encaps_minisim.js ${fila.fecha})` : null].filter(Boolean).join(' · ') }
+        : e.checkpoint || !r || llMS ? { aviso: [llMS ? reglaRunnersLlegada(pendMS, llMS) : null, e.checkpoint, !r ? `runner minisim_${fila.fecha} por generar` : null].filter(Boolean).join(' · ') } : {}),
     };
     ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'minisim', codigo: null, subEje: null, secundarios: cola, eval: null, principal: r ? { f: r.f, url: r.url, local: r.local, n: r.n } : null, pretest: null, obsidian: obsCola[0] ? obsCola[0].url : null, proyecto: CAT.PROYECTO.LOPEZ };
     if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: 'MINI-SIM', principal: `25Q (${recTxt}) · cola ${cola.join(' + ')}`, eval: '—', runners: r ? r.f : 'POR GENERAR', material: matCola.map((m) => m.t).join(' · '), obs: obsCola.map((o) => o.t).join(' · '), proyecto: CAT.PROYECTO.LOPEZ.t });
@@ -509,6 +559,18 @@ function construirGuia(fila, sab = null) {
       const pendiente = !rBan;
       const runTxt = rBan ? rBan.f : `banco_${fila.fecha} POR GENERAR${prev2 ? ` (previsto: ${CAT.PREVISTO_ORIGEN})` : ''}`;
       const priReparto = !rcB || qxP === 0 ? '' : qxP == null ? ` (las del runner, 16-20; las que falten hasta ${rcB.principal}, de ${QXC})` : ` (${nPri} del runner + ${qxP} de ${QXC})`; // antes del sub-eje: el Calendar corta el rótulo a 150 car.
+      // remate v6.10j (revisión adversarial, verdad #1): la composición REAL del principal (sin usar del código · del código en RE-TEST · cola larga del área)
+      //   va en el «qué» del BANCO DEL DÍA y en el «hecho»: con «16 del runner + 4 de QX» solo el aviso (que el Calendar corta) decía que la mitad o más eran
+      //   RE-TEST o de otros códigos. Con runner, de sus ítems (fallback null = sin usar del código · 1-2 = del código en RE-TEST · 3-5 = cola larga del
+      //   área: gen_encaps_minisim.js completarConFallback); sin runner, CAT.PREVISTO_SEMANA2.comp (la misma simulación que su nota)
+      const compPri = rBan ? (() => { const it = (rBan.j.items || []).filter((x) => x.rol !== 'secundario'); const fb = (x) => (x.fallback == null ? 0 : Number(x.fallback) || 5);
+        return [it.filter((x) => fb(x) === 0).length, it.filter((x) => fb(x) === 1 || fb(x) === 2).length, it.filter((x) => fb(x) >= 3).length]; })()
+        : prev2 && Array.isArray(prev2.comp) ? prev2.comp : null;
+      const mixto = !!compPri && (compPri[1] > 0 || compPri[2] > 0);
+      const codPool = POOL_CODE_RUNNER[codigo] || codigo; // el runner toma el pool del código agrupado («IV-1+IV-2»), como su nota
+      const compTxt = (qx, qxLbl) => [compPri[0] ? `${compPri[0]} de ${codPool} sin usar` : '', compPri[1] ? `${compPri[1]} de ${codPool} en RE-TEST` : '',
+        compPri[2] ? `${compPri[2]} de la cola larga del área ${romano(codigo)}` : '', qx ? `${qx} de ${qxLbl}` : ''].filter(Boolean).join(' + ');
+      const priLbl = mixto ? `${qPri} CIEGAS (${compTxt(qxP, QXC)})` : `${qPri} CIEGAS de ${codigo}${priReparto}`;
       const secFuente = !rcB || qxS === 0 ? '' : qxS == null ? ` (las del runner; las que falten hasta ${rcB.secundario}, de ${QXC})` : nSec === 0 ? ` (las ${rcB.secundario} de ${QXC}: el runner no trae ninguna)` : ` (${nSec} del runner + ${qxS} de ${QXC})`;
       const nRun = nPri != null && nSec != null ? nPri + nSec : null;
       const nQx = rcB ? (qxP == null || (secCods.length && qxS == null) ? null : qxP + (qxS || 0)) : 0;
@@ -524,7 +586,7 @@ function construirGuia(fila, sab = null) {
           PASO_ARRANQUE([rEval, rBan]),
           { min: 8, que: `EVAL ANCLADA · ${evalTxt}${rEval ? ` — ${rEval.f}` : sab ? '' : ' — runner POR GENERAR'}`, como: sab ? 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2 de un código, queda CALIENTE en el registro (temas calientes de ENCAPS → Plan): no cambia el banco de hoy.'
             : 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2, ese código queda CALIENTE para el override que propone el próximo mini-sim (no cambia el tema de la próxima sesión).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
-          { min: 30, que: `BANCO DEL DÍA · ${qPri} CIEGAS de ${codigo}${priReparto} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
+          { min: 30, que: `BANCO DEL DÍA · ${priLbl} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
             como: `Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
               : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLbl)} hasta ${rcB.principal}, mismo método.`
               : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLbl)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t}.`
@@ -543,7 +605,7 @@ function construirGuia(fila, sab = null) {
           { min: 2, que: '1-3 APEX de los errores de CONOCIMIENTO', como: `A la nota Obsidian del código (${codigo}) y a Anki APEX::ENCAPS: la regla corregida + la cifra exacta, en una frase.`, ...(obs ? { enlace: obs } : {}) },
         ],
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rBan, `Banco ${rBan ? rBan.f : ''}`), ...mat.items.slice(0, 4), ...matSec, ...(obs ? [obs] : []), ...obsSec, proyecto, ...(area ? [area.videoclases] : [])],
-        hecho: `Eval 5/5 + ${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · sesión registrada por UNA vía (--registrar o CIERRE DE SESIÓN) · 1-3 APEX creados.`,
+        hecho: `Eval 5/5 + ${mixto ? `las ${qPri} del banco` /* remate v6.10j: su composición va en el «qué» (con ella el «hecho» pasaba de 180 y el Calendar escondía «1-3 APEX creados») */ : `${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}`}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · sesión registrada por UNA vía (--registrar o CIERRE DE SESIÓN) · 1-3 APEX creados.`,
         planB: pendiente
           ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio (preguntas reales, con su clave); (2) si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}. Nada de preguntas generadas: solo bancos reales.${!rEval ? (sab && sab.evalPB ? sab.evalPB : evalSinRunnerPB(fila, prev, sab, lunes)) : ''}`
           : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${CAT.POSTEST_DRLOPEZ.t} (preguntas reales, con su clave).`,
@@ -567,12 +629,19 @@ function construirGuia(fila, sab = null) {
           if (!pendiente && !sab) {
             const pendSem = bancosSinRunner(addD(fila.fecha, 1), addD(cmdSemana, 6)); // v6.10: hasta el domingo (dom 29-nov = D9, recupera el mar 17)
             // v6.09b lote 1-quater FX1 (revisión V2): el plazo va al PRINCIPIO del aviso (el Calendar corta el aviso a 240: tras la excepción del lunes quedaba en la pos. 371)
-            if (pendSem.length) av.unshift(`Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])} → ${cmdRunnersDias(pendSem)}.`);
+            // v6.10j (auditoría c14, dias-clave #1): la semana del domingo de LLEGADA (dom 22-nov) dice la regla única (reglaRunnersLlegada), con su «NO --semana»
+            const llS = llegadaDe(pendSem);
+            if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS) : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])} → ${cmdRunnersDias(pendSem)}.`);
           }
-          const primeraPend = bancosSinRunner(cmdSemana, addD(cmdSemana, 4))[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
+          const pendArm = bancosSinRunner(cmdSemana, addD(cmdSemana, 4));
+          const primeraPend = pendArm[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
+          const llArm = pendiente && !sab && semanaArmada ? llegadaDe(pendArm) : null; // v6.10j: semana del domingo de LLEGADA (dom 22-nov)
           if (pendiente && sab) av.push(semanaArmada // v6.06 (fix): el sábado se arma con su semana del carril B (--semana) o solo (--eval / --banco del sábado)
             ? `NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía. Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`
             : `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} (con el carril B lun-jue arma también el banco del sábado: banco_${fila.fecha}; la eval del sábado es el re-test de los fallos del simulacro, sin runner propio) → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
+          // v6.10j (auditoría c14, dias-clave #1): banco sin runner de la semana del domingo de LLEGADA → la misma regla que el mini-sim y los bancos con runner
+          //   (antes «(regla: el lun 23-nov, tras el mini-sim)», que contradecía al mini-sim y al mar 24)
+          else if (llArm) av.push(reglaRunnersLlegada(pendArm, llArm));
           else if (pendiente) av.push(semanaArmada
             // v6.10i (remate, revisión adversarial del 18-nov): «NO --semana» va DELANTE de la receta (el Calendar corta el aviso a 240 y, detrás de la cadena
             //   de comandos, se perdía el aviso que impide re-sortear los runners de la semana)

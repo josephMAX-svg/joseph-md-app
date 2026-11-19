@@ -9,7 +9,8 @@
  *     Claude del área (enlaces privados de Joseph: solo abren con su sesión) para generar preguntas extra.
  *   · OBSIDIAN = nota «_concepto_madre» del CÓDIGO v3 en el vault (06_ENCAPS/ENCAPS_2026/02_TEMARIO/<área>/<tema>); el generador
  *     comprueba en disco que cada nota existe (si el vault no está montado, solo avisa).
- *   · PREVISTO_SEMANA2 = composición simulada (16-nov, copia aislada, v6.09) de los 4 bancos siguientes SIN runner (II-5 · I-4 · IV-1 · II-4 = mar 24,
+ *   · PREVISTO_SEMANA2 = composición simulada (v6.10j: 18-nov, base cero, copia aislada; 6 bancos sin runner, 25-nov → 3-dic de plan; ver su comentario).
+ *     (⏸ 16-nov, copia aislada, v6.09) de los 4 bancos siguientes SIN runner (II-5 · I-4 · IV-1 · II-4 = mar 24,
  *     mié 25, jue 26 y lun 30-nov): en v6.09 los runners de la semana 1 se re-fecharon POR SESIÓN (−1 slot lun-jue: pre-test mar 17 / mié 18, eval +
  *     banco jue 19 V-2, mini-sim vie 20, eval + banco lun 23 III-5) → la semana del 23 ya tiene runners: mar 24 → jue 26 se arman con los comandos del
  *     día (--eval → --banco) y el lun 30 con `--semana 2026-11-30` + `--eval 2026-11-30`. (⏸ v6.08: simulación del 14-nov de `--semana 2026-11-23` +
@@ -297,14 +298,23 @@ const AVISO_CODIGO = {
  */
 // v6.10: sin cambio (las 4 sesiones se re-fecharon por sesión; las cifras son las mismas) · v6.10g (18-nov): sin la etiqueta de versión en el texto
 //   visible (antes «simulación del 16-nov, v6.09»: la simulación sigue valiendo con el alias de la v6.10d)
-const PREVISTO_ORIGEN = 'simulación del 16-nov';
+// v6.10j (18-nov-2026, auditoría c14 · dias-clave #0): RE-SIMULADO con la regla de base cero (v6.10e: desde el 18-nov solo ítems de EXAMEN REAL) en una
+//   copia aislada de BANCO_PROPIO (gen_encaps_minisim.js --eval/--banco 2026-11-25 y 2026-11-26 → --semana 2026-11-30 + --eval 2026-11-30, el orden de las
+//   recetas de la guía): la del 16-nov contaba ítems propios (N-/BP-) que ya no entran → el II-5 del 25 no trae 20 del código sino 8 de II-5 en RE-TEST +
+//   8 libres de la cola larga del área II, etc. Las EVAL del 25, 26, 1-dic, 2-dic y 3-dic salen 5/5 en RE-TEST y sus 5 ids están TODOS en el banco de la
+//   sesión anterior (comprobado por ids) → eval_retest: 'banco' (gen_encaps_guia.js: «5Q de X de AYER en RE-TEST: las mismas preguntas reales del banco de
+//   ayer …»). + 2-dic y 3-dic (la semana del lun 30 se arma entera con --semana). La eval del 30 (día siguiente al mini-sim: fallos previos del registro)
+//   depende de las rondas que registres → sin eval_retest.
+//   comp = [sin usar del código, del código en RE-TEST, de la cola larga del área] del principal (los mismos números de la nota): la guía los pone en el «qué»
+//   del BANCO DEL DÍA (remate v6.10j: el Calendar corta el aviso y la composición solo se veía en la app)
+const PREVISTO_ORIGEN = 'simulación del 18-nov';
 const PREVISTO_SEMANA2 = {
-  '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 20, secundario_n: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval (III-5, código de ayer) sale 5/5 re-test: el banco del mar 24 consume todo el pool libre de III-5', eval: 'código de ayer III-5: 3 cifras + 2 viñetas (5Q re-test)' },
-  '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mié 25 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
-  // v6.10c (17-nov-2026, corrimiento literal: el día extra ya no es el dom 29-nov): IV-1 corre al lun 30 (eval del lunes) y II-4 al mar 1-dic (eval = IV-1,
-  //   código de ayer, re-test: el banco del lun 30 agota IV-1+IV-2); mismas cifras de banco (mismo orden de bancos y mismo pool)
-  '2026-11-30': { codigo: 'IV-1', secundario: 'II-EMG', principal: 18, secundario_n: 2, nota: 'secundario II-EMG: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de IV-1+IV-2 · la eval de esta sesión (la del día siguiente al mini-sim: 5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-30 después de --semana 2026-11-30', eval: 'lunes: 5Q de fallos previos del registro (otro enfoque, P2), críticos primero' },
-  '2026-12-01': { codigo: 'II-4', secundario: 'I-OCC', principal: 16, secundario_n: 3, nota: 'principal: 15Q libres de II-4 + 1Q re-test (fallback paso 1) · secundario I-OCC: solo 3Q en el pool (receta 4-5) · la eval (IV-1, código de ayer) sale 5/5 re-test: el banco del lun 30 consume todo el pool libre de IV-1+IV-2', eval: 'código de ayer IV-1: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 16, secundario_n: 2, comp: [0, 8, 8], eval_retest: 'banco', nota: 'principal: 0Q de II-5 sin usar en el pool → 8 de II-5 en RE-TEST (las mismas preguntas reales, sin la clave) + 8 libres de la cola larga del área II · secundario II-10: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer III-5: 5Q en RE-TEST (las del banco del mar 24)' },
+  '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, comp: [4, 7, 5], eval_retest: 'banco', nota: 'principal: 4Q de I-4 sin usar + 7 de I-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 5 libres de la cola larga del área I · tras este banco quedan 0Q libres de I-4', eval: 'código de ayer II-5: 5Q en RE-TEST (las del banco del mié 25)' },
+  '2026-11-30': { codigo: 'IV-1', secundario: 'II-EMG', principal: 16, secundario_n: 2, comp: [10, 6, 0], nota: 'principal: 10Q de IV-1+IV-2 sin usar + 6 en RE-TEST (las mismas preguntas reales, sin la clave) · secundario II-EMG: solo 2Q en el pool (receta 4-5) · la eval de esta sesión (la del día siguiente al mini-sim: 5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-30 después de --semana 2026-11-30', eval: 'día siguiente al mini-sim: 5Q REALES de fallos previos del registro (depende de las rondas registradas)' },
+  '2026-12-01': { codigo: 'II-4', secundario: 'I-OCC', principal: 16, secundario_n: 2, comp: [0, 6, 10], eval_retest: 'banco', nota: 'principal: 0Q de II-4 sin usar en el pool → 6 de II-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 10 libres de la cola larga del área II · secundario I-OCC: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer IV-1: 5Q en RE-TEST (las del banco del lun 30)' },
+  '2026-12-02': { codigo: 'II-1', secundario: 'III-3', principal: 16, secundario_n: 2, comp: [1, 9, 6], eval_retest: 'banco', nota: 'principal: 1Q de II-1 sin usar + 9 de II-1 en RE-TEST (las mismas preguntas reales, sin la clave) + 6 libres de la cola larga del área II · secundario III-3: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer II-4: 5Q en RE-TEST (las del banco del mar 1-dic)' },
+  '2026-12-03': { codigo: 'I-3', secundario: 'I-11+I-12', principal: 16, secundario_n: 5, comp: [3, 13, 0], eval_retest: 'banco', nota: 'principal: 3Q de I-3 sin usar + 13 de I-3 en RE-TEST (las mismas preguntas reales, sin la clave)', eval: 'código de ayer II-1: 5Q en RE-TEST (las del banco del mié 2-dic)' },
 };
 
 /**
@@ -330,7 +340,7 @@ const TECNICA_SIM = {
   /** Corrección del mini-sim en el orden de Ravi, con la taxonomía del protocolo. */
   CORRECCION: 'Orden (RaviMedTest adaptado): ① fallos que marcaste «segura» (falsa certeza: el error más caro) → ② resto de fallos → ③ aciertos NO ciegos («dudosa» o «adivinada»: un acierto por suerte se corrige como un fallo) → ④ fallos de forma (LECTURA · CAMBIO). Por ítem: área → código → tipo de fallo (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) → la regla correcta en 1 línea + por qué es falso el distractor (suele ser el concepto vecino). Un código con ≥2 fallos queda CALIENTE: entra en el override de la semana siguiente (máx. 2 sustituciones; I-3 y V-2 nunca se ceden).',
   /** Lectura de la nota (Ravi: percentiles y comparaciones solo dentro del mismo instrumento). */
-  COMPARA: 'La nota se compara SOLO con tus mini-sims anteriores (misma receta), nunca con notas de QX, Theomed u otro instrumento; una bajada aislada no dice nada: manda la regla de dos viernes seguidos.',
+  COMPARA: 'La nota se compara SOLO con tus mini-sims anteriores (misma receta), nunca con notas de QX, Theomed u otro instrumento; una bajada aislada no dice nada: manda la regla de dos mini-sims seguidos.',
   /** Qué genera tarjeta (Ravi: pocas tarjetas, solo fallos «tontos» y detalles discriminativos; nunca la norma entera). */
   TARJETAS: 'Tarjeta solo de fallos «tontos» y de detalles discriminativos, en formato pregunta → respuesta breve (nunca un párrafo de la norma): OLVIDO de cifra/plazo → ENCAPS::Cifras (ANKI_COLA/ENCAPS_Cifras_2027-I.csv) · CONCEPTO/CCSN → el porqué a la nota Obsidian del código · fallos de proceso → regla de examen, sin tarjeta.',
   /** Envío de los APEX (flujo vigente). */

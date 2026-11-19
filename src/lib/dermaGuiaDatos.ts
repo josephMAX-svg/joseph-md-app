@@ -979,7 +979,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 13,
      "que": "B&B Step 1 › Dermatology › «06 - Vascular Lesions» (11:04) — color y distribución de las lesiones vasculares (por título; contenido no verificado)",
-     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 06 - Vascular Lesions · 1,0× con subtítulos en inglés (CC) · 13′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.",
+     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 06 - Vascular Lesions · 1,0× = 13′ con pausas · al terminar, free recall de 60 s en el cuaderno (con subtítulos en inglés, CC; regla de velocidad del Step 1).",
      "enlace": {
       "t": "B&B · 06 - Vascular Lesions",
       "url": "https://qbankly.app/videos"
@@ -1175,7 +1175,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 18,
      "que": "B&B Step 1 › Dermatology › «01 - Skin» (14:36) — capas de la piel (por título)",
-     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 01 - Skin · 1,0× con subtítulos en inglés (CC) · 18′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.",
+     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 01 - Skin · 1,0× = 18′ con pausas · al terminar, free recall de 60 s en el cuaderno (con subtítulos en inglés, CC; regla de velocidad del Step 1).",
      "enlace": {
       "t": "B&B · 01 - Skin",
       "url": "https://qbankly.app/videos"
@@ -1331,7 +1331,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 8,
      "que": "B&B Step 1 › Dermatology › «05 - Pigment Disorders» (6:42)",
-     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 05 - Pigment Disorders · 1,0× con subtítulos en inglés (CC) · 8′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.",
+     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 05 - Pigment Disorders · 1,0× = 8′ con pausas · al terminar, free recall de 60 s en el cuaderno (con subtítulos en inglés, CC; regla de velocidad del Step 1).",
      "enlace": {
       "t": "B&B · 05 - Pigment Disorders",
       "url": "https://qbankly.app/videos"

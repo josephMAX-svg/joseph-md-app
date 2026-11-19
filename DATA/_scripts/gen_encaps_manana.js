@@ -104,6 +104,10 @@
  *   ENCAPS de F1: Theoesencial «Resto (…) → <fecha> · …» al principio del «cómo» (teoria[].resto + resto_a), «lo que falta hasta el 60 % → dom X» justo detrás
  *   del %, el post-test de lo pendiente «Post-test al terminar (…→ banqueo del X 09:45)» al principio; lo controla check_rutina_guia (26h). (P6) el post-test
  *   de la clase en vivo del sábado tiene minutos propios: 15′ = hasta 12Q, justo después de su tramo en el domingo +7 (dom 27-dic: en el post-test de su mañana).
+ * v6.10j (18-nov-2026, auditoría del volcado c14): solo texto. (1) El título de la TEORÍA no promete lo que va a las 18:00: «Banqueo 4/19 + CI S1
+ *   (CI S2 → 18:00)» (y un rango partido se nombra por lo que queda: «SP S5-S7 + SP 1/11 (SP S8 → 18:00)»). (2) El TEXTO PRIMERO escribe una suma que cierra
+ *   con los minutos del paso («25′ = PPT 10′ + Theoesencial ≈17 p en 15′»). (3) El banqueo grabado usa la duración real del vídeo si el JSON la trae
+ *   (teoria[].video, mm:ss: Banqueo 1/19 = 27:37, THEOMED_Y_DRIVE §1.3) y, si el paso tiene ≥1′ más que la cuenta, el «qué» dice qué hacer con ella.
  */
 'use strict';
 const fs = require('fs');
@@ -431,16 +435,23 @@ function unidades(it) {
       //   (mMin: la mañana que no los tiene cede minutos o pone la clase densa a 2×, en el JSON); el --check aborta si el paso sale de [0,85; 1,15].
       const pT = THEO_P_AREA[a] / N_SES[a], exT = PPT_MIN + pT * THEO_P, mMin = Math.ceil(exT / 1.15 - 1e-9);
       const mat = (min) => { const k = Math.max(0, Math.floor((min - exT) / PDF_P)); return { k, ex: exT + k * PDF_P }; };
+      // v6.10j (auditoría c14, dias-clave #7): la suma escrita CIERRA con los minutos del paso. Las páginas del Theoesencial son una media (páginas del área ÷
+      //   sesiones) y el paso puede quedarse hasta un 15 % corto (mMin): entonces el texto dice en cuántos minutos van esas páginas («25′ = PPT 10′ +
+      //   Theoesencial ≈17 p en 15′»; antes «25′ = PPT 10′ + Theoesencial ≈17 p», que a 1′/p son 27′).
+      const theoTxt = (min, k, como = false) => {
+        const pR = Math.round(pT), tMin = min - PPT_MIN - k * PDF_P;
+        return tMin === pR * THEO_P ? (como ? `≈${pR} p a ${THEO_P}′/p` : `Theoesencial ≈${pR} p`) : `${como ? '' : 'Theoesencial '}≈${pR} p en ${tMin}′${como ? `, a ≈${String(Math.round((tMin / pR) * 10) / 10).replace('.', ',')}′/p` : ''}`;
+      };
       return {
         tipo: 'sesion', modo: it.modo, area: a, s: i, min: Math.max(mMin, Math.round(seg / 60 / VEL_TEXTO)), mMin, exact: exT, postTest: `${a} S${i}`, codigos: it.codigos || [],
         que: (min) => {
           const { k, ex } = mat(min);
           if (ex / min < 0.85 || ex / min > 1.15) aborta(`${a} S${i} (texto primero): ${ex.toFixed(1)}′ de material (PPT ${PPT_MIN}′ + Theoesencial ${pT.toFixed(1)} p${k ? ` + norma ${k} p` : ''}) en ${min}′ (ratio ${(ex / min).toFixed(2)}, fuera de [0,85; 1,15])`);
-          return `${a} S${i}${extra ? ' ' + extra : ''} · TEXTO PRIMERO (${min}′ = PPT ${PPT_MIN}′ + Theoesencial ≈${Math.round(pT)} p${k ? ` + norma ${k} p` : ''}; vídeo de ${segTxt(seg)}, solo para dudas)${cod}`;
+          return `${a} S${i}${extra ? ' ' + extra : ''} · TEXTO PRIMERO (${min}′ = PPT ${PPT_MIN}′ + ${theoTxt(min, k)}${k ? ` + norma ${k} p` : ''}; vídeo de ${segTxt(seg)}, solo para dudas)${cod}`;
         },
         como: null, comoDe: (min) => {
           const { k } = mat(min);
-          return `En este orden: PPT de la sesión (${PPT_MIN}′) → Theoesencial de sus temas (≈${Math.round(pT)} p a ${THEO_P}′/p) → ${k ? `la norma del tema, hasta ${k} p a ${PDF_P}′/p (definiciones → tablas → cifras)` : 'la norma del tema, en los pasos de norma y cifras de hoy (aquí no quedan minutos)'}. El vídeo, solo en lo que no entiendas${it.velocidad ? ` (${it.velocidad})` : ''} y dentro de estos minutos. Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.${metodoSec(a, it.fecha)}`;
+          return `En este orden: PPT de la sesión (${PPT_MIN}′) → Theoesencial de sus temas (${theoTxt(min, k, true)}) → ${k ? `la norma del tema, hasta ${k} p a ${PDF_P}′/p (definiciones → tablas → cifras)` : 'la norma del tema, en los pasos de norma y cifras de hoy (aquí no quedan minutos)'}. El vídeo, solo en lo que no entiendas${it.velocidad ? ` (${it.velocidad})` : ''} y dentro de estos minutos. Notas SOLO en forma de pregunta. Ruta: ${RUTA.asinc(AREA[a], i)}.${metodoSec(a, it.fecha)}`;
         },
         enlace: L99,
       };
@@ -449,9 +460,19 @@ function unidades(it) {
   const b = /^Banqueo (\d+)\/19/.exec(it.item);
   if (b && it.modo === 'activo') {
     // v6.09b: a 1,25× + la pausa antes de cada respuesta (×1,2): 1 h → 58′ (antes «activo = su duración»)
-    const ex = durJ / VEL_ACTIVO * PAUSA;
-    return [{ tipo: 'activo', min: Math.round(ex), exact: ex, que: (min) => `${it.item} · ${durTxt(durJ)} a ${vel(VEL_ACTIVO)} con pausa → ${min}′ · ACTIVO`,
-      como: `${cap(MODO.activo)} (${durTxt(durJ)} ÷ ${vel(VEL_ACTIVO)} × ${String(PAUSA).replace('.', ',')}). Ruta: ${RUTA.adic} › banqueo semanal grabado.`, enlace: L116 }];
+    // v6.10j (auditoría c14, dias-clave #7): «video» (mm:ss, THEOMED_Y_DRIVE §1.3) = la duración real cuando «duracion» la redondea (Banqueo 1/19: 27:37, no
+    //   28′) · y si el reparto de la franja le da al paso ≥1′ más (o menos) que la cuenta, el «cómo» escribe el resultado y qué hacer con la diferencia (antes
+    //   «28′ a 1,25× con pausa → 28′ … (28′ ÷ 1,25× × 1,2)», que da 26,9′, y «1 h 00′ → 59′»).
+    const segV = it.video ? (/^(\d+):(\d{2})$/.exec(it.video) || []).slice(1).reduce((a, x, i) => a + Number(x) * (i ? 1 : 60), 0) : null;
+    if (it.video && (!segV || Math.abs(segV / 60 - durJ) > 1)) aborta(`«${it.item}» (${it.fecha}): video «${it.video}» ilegible o lejos de su duración (${it.duracion})`);
+    const durV = segV ? segV / 60 : durJ, durS = segV ? segTxt(segV) : durTxt(durJ);
+    const ex = durV / VEL_ACTIVO * PAUSA;
+    const cuenta = `${durS} ÷ ${vel(VEL_ACTIVO)} × ${String(PAUSA).replace('.', ',')}`, dec = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+    //   La diferencia va en el «qué» (el Calendar corta el «cómo» a 110: «… = 26,5′ …» sin explicar los 28′ del paso).
+    return [{ tipo: 'activo', min: Math.round(ex), exact: ex,
+      que: (min) => `${it.item} · ${durS} a ${vel(VEL_ACTIVO)} con pausa${min - ex >= 0.95 ? ` = ${dec(ex)}′ + ${dec(min - ex)}′ para releer las que fallaste` : ''} → ${min}′ · ACTIVO`,
+      como: `${cap(MODO.activo)} (${cuenta}). Ruta: ${RUTA.adic} › banqueo semanal grabado.`,
+      comoDe: (min) => `${cap(MODO.activo)} (${cuenta}${Math.abs(min - ex) >= 0.95 ? ` = ${dec(ex)}′` : ''}${ex - min >= 0.95 ? `: en ${min}′, sin pausa en las que sepas seguro` : ''}). Ruta: ${RUTA.adic} › banqueo semanal grabado.`, enlace: L116 }];
   }
   if (/^Revisión normativa/.test(it.item)) {
     const pdf = Number((/PDF (\d+) p/.exec(it.item) || [])[1] || 0);
@@ -560,7 +581,7 @@ const CAP_TARDE = 45;
  *  105,1′ → 58 + 47). Lo que sobra (< 5′) se reparte 1′ a 1′ entre las unidades más largas; ≥ 5′ = la norma del día (si no hay norma, ABORTA: cada
  *  minuto de la teoría lleva material). */
 function repartir(dia) {
-  const us = dia.teoria.flatMap((t) => unidades({ ...t, fecha: dia.fecha }));
+  const us = dia.teoria.flatMap((t, k) => unidades({ ...t, fecha: dia.fecha }).map((u) => Object.assign(u, { item_k: k }))); // v6.10j: item_k → título de la TEORÍA
   // v6.08: `a_las_18` = teoría que va DIRECTAMENTE a las 18:00 (jue 31-dic: SP 6/11, que no cabe en ninguna mañana); va antes que lo que no cupo
   const manana = [], tarde = (dia.a_las_18 || []).flatMap((t) => unidades({ ...t, fecha: dia.fecha })).map((u) => ({ ...u, forzada: true }));
   let usado = 0;
@@ -760,8 +781,19 @@ for (const dia of J.mananas) {
     //   sus páginas. Lo que sobra (≥ 5′) va a la NORMA DEL DÍA (la regla de la auditoría: «su sobrante pasa a la norma del día»)
     if (rep.libre >= 5) pasosT.push(P(rep.libre, `Norma del día: ${normaTxt(dia)} → ${rep.libre}′`,
       `Lectura de VERIFICACIÓN de esa norma: definiciones de las primeras páginas, tablas, flujogramas, plazos y cifras (tapa y di). Lo que no salga → tarjeta a las 11:40. ${VIGENCIA} Ruta: ${RUTA.normas}.`, L99));
-    const resumenT = dia.teoria.filter((t) => t.modo !== 'theoesencial').map((t) => (t.modo === 'preguntas' ? `${t.n}Q cronometradas` : t.item.replace(/\s*\(.*\)$/, ''))).join(' + ') + (dia.teoria.some((t) => t.modo === 'theoesencial') ? ' + Theoesencial' : '');
     const noCabe = rep.tarde.filter((u) => !u.forzada), a18 = rep.tarde.filter((u) => u.forzada); // v6.08: + lo que va directo a las 18:00
+    // v6.10j (auditoría c14, dias-clave #6): el título no promete en la franja lo que no cabe en ella: un ítem cuyas unidades van TODAS a las 18:00 sale del
+    //   resumen y va al final, entre paréntesis, con su destino («Banqueo 4/19 + CI S1 (CI S2 → 18:00)»; antes «… + CI S1 + CI S2» y el Ojo decía «No cabe»)
+    const fueraK = new Set(dia.teoria.map((t, k) => k).filter((k) => { const uk = [...rep.manana, ...noCabe].filter((u) => u.item_k === k); return uk.length && uk.every((u) => noCabe.includes(u)); }));
+    const fueraT = noCabe.map((u) => u.postTest || dia.teoria[u.item_k].item.replace(/\s*\(.*\)$/, '')).filter((x, i, a) => a.indexOf(x) === i);
+    // …y un rango de sesiones que se parte («SP S5-S8» con la S8 a las 18:00) se nombra por lo que queda en la franja («SP S5-S7 + SP 1/11 (SP S8 → 18:00)»)
+    const nombreT = (t, k) => {
+      const nom = t.item.replace(/\s*\(.*\)$/, ''), m = /^(SP|CI|GES|INV|ET) S(\d)-S?(\d)$/.exec(nom);
+      const ss = rep.manana.filter((u) => u.item_k === k && u.s).map((u) => u.s);
+      return !m || !ss.length || !noCabe.some((u) => u.item_k === k) ? nom : `${m[1]} S${ss[0]}${ss.length > 1 ? `-S${ss.at(-1)}` : ''}`;
+    };
+    const resumenT = dia.teoria.filter((t, k) => t.modo !== 'theoesencial' && !fueraK.has(k)).map((t) => (t.modo === 'preguntas' ? `${t.n}Q cronometradas` : nombreT(t, dia.teoria.indexOf(t)))).join(' + ') + (dia.teoria.some((t) => t.modo === 'theoesencial') ? ' + Theoesencial' : '')
+      + (fueraT.length ? ` (${fueraT.join(' + ')} → ${esDomPlan(dia.fecha) ? 'al terminar la mañana' : '18:00'})` : '');
     // v6.09: en un domingo de plan lo pendiente va a sus cifras, normas y flashcards FLEXIBLES (a las 18:00 está el baile)
     // v6.09 (fix revisión 16-nov, joseph 3): ese bloque ya no es flexible: va a hora fija al terminar la mañana (sin la hora escrita: la mañana se desplaza)
     const a18Txt = esDomPlan(dia.fecha) ? 'a las cifras, normas y flashcards de hoy (al terminar la mañana)' : 'a las 18:00 de hoy';
@@ -1774,7 +1806,7 @@ import type { GuiaBloque } from './guia';
  *  v6.09b lote 1-ter: + lectura (normas de la semana acotadas a páginas; dp + fecha = DEEP PRIME de la intensiva al que va lo no leído) · si_en_vivo (clase del sábado
  *  vista en vivo: su tramo 17:00-17:30 + los minutos de otra clase con resto que se adelantan)
  *  v6.09b lote 1-quater: + resto_a (adónde va, con fecha y franja, lo que no cabe de un Theoesencial: el «cómo» empieza por «Resto (…) → …») */
-export interface EncapsTeoria { item: string; area: string; duracion: string; modo: string; velocidad?: string; codigos?: string[]; paginas?: number; de?: string; resto?: string; resto_a?: string; min?: number; alternativa?: string; resto_en?: string; n?: number; motivo?: string; lectura?: { norma: string; corto: string; dp?: string; fecha?: string }[]; si_en_vivo?: { sab: string; adelanta: string; min: number } }
+export interface EncapsTeoria { item: string; area: string; duracion: string; video?: string; modo: string; velocidad?: string; codigos?: string[]; paginas?: number; de?: string; resto?: string; resto_a?: string; min?: number; alternativa?: string; resto_en?: string; n?: number; motivo?: string; lectura?: { norma: string; corto: string; dp?: string; fecha?: string }[]; si_en_vivo?: { sab: string; adelanta: string; min: number } }
 export interface EncapsMananaDia {
   fecha: string; n: number; de: number; fase: 'recuperacion' | 'ciclo' | 'cierre'; teoria: EncapsTeoria[];
   banqueo: { area: string; n: number; cronometrado?: boolean; /** v6.09b: otra franja del banqueo (mar 5-ene: 09:45-10:57, la de la fila D34 ya sembrada) */ franja?: [string, string] }; norma: string | null; extra: string | null;

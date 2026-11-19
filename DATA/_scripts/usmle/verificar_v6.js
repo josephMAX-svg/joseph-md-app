@@ -1119,7 +1119,7 @@ const fS0 = (sl) => (filaF1(sl) || { fecha: 'sin fecha' }).fecha;
     if (/🎯/.test(r.sub)) continue;
     const gs = G10.guiaUsmleDe(r.fecha);
     for (const g of gs) for (const p of g.pasos) if (/\btimed\b/i.test(p.que)) timed.push(`${r.fecha} ${g.franja.slice(0, 5)} «${p.que.slice(0, 40)}»`);
-    if (!gs.some((g) => g.pasos.some((p) => /MÉTODO DEL DÍA \(Palmerton/.test(p.como || '')))) sinMetodo.push(`D${r.d} ${r.fecha}`);
+    if (!gs.some((g) => g.pasos.some((p) => /MÉTODO DEL DÍA (?:\(|— )Palmerton/.test(p.como || '')))) sinMetodo.push(`D${r.d} ${r.fecha}`);
   }
   ok(timed.length === 0 && sinMetodo.length === 0, 'v6.10 · F1 en nivel 0-1: 0 pasos cronometrados fuera del NBME 25 y el MÉTODO DEL DÍA (Palmerton) en cada mañana de contenido',
     [...timed, ...sinMetodo.map((x) => `sin método: ${x}`)].slice(0, 8).join(' · ') || `${DIAS.filter((r) => !/🎯/.test(r.sub)).length} mañanas`);

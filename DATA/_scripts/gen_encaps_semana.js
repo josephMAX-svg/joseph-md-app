@@ -555,7 +555,7 @@ for (const [c, x] of Object.entries(S.porCodigo).sort((a, b) => a[1].pct - b[1].
 L.push('');
 L.push(`## Mini-sims (/25) · umbral ${RECETA_MINISIM.umbral_25} · alerta <${RECETA_MINISIM.alerta_25} ×2`);
 L.push(minis.length ? minis.map((r) => `- ${r.fecha}: **${r.nota ?? r.correctas_seguras + r.correctas_dudosas}/25** (seguras ${r.correctas_seguras}, % ciego ${r.pct_ciego}%)`).join('\n') : '- sin mini-sims registrados (cierra el viernes con tipoRonda=mini_sim y nota=NN)');
-if (alertaMini) L.push('\n**⚠ ALERTA: dos viernes seguidos <15/25 → re-ponderar la semana siguiente (override abajo).**');
+if (alertaMini) L.push('\n**⚠ ALERTA: dos mini-sims seguidos <15/25 → re-ponderar la semana siguiente (override abajo).**');
 L.push('');
 L.push(`## Temas calientes (últimas 2 semanas, ordenados por peso v3 × brecha; n ≥ ${N_MIN} por código)`);
 L.push(calientes.length ? calientes.map((c) => `- **${c.codigo}**${c.esCrit ? ' ★' : ''} (área ${c.area} ${c.peso}%) · % ciego ${c.pct}% en ${c.n}Q · ${c.motivos.join(' · ')} · score ${c.score}`).join('\n') : `- ninguno (o sin datos suficientes: n ≥ ${N_MIN} por código)`);
