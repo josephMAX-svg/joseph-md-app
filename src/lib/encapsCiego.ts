@@ -6,6 +6,8 @@
  * el PRE-TEST 10Q CIEGAS, en el BANCO DEL DÍA y en el SECUNDARIO de cola larga. La fila (SQL / Supabase) no cambia: la app pinta este rótulo, que dice
  * QUÉ se pregunta sin dar el valor. Los valores siguen en el material del día (norma / NTS, CIFRAS_CRITICAS_2027-I.md, mazo ENCAPS::Cifras) y se ven
  * DESPUÉS de responder (corrección, explicación del runner, flashcards).
+ * v6.10t (auditoría c19): + las LISTAS que se preguntan (los servicios de la Ley 30421, los tipos de vigilancia, los ejemplos de muestreo no probabilístico,
+ * las precauciones, los instrumentos de recolección, los factores de riesgo ocupacional y el riesgo profesional, las claves obstétricas): «(cuáles son)».
  * Lo usan gen_encaps_guia.js (guía de la hora 16:15 de F1 y del carril SÁBADO), encapsPlan.ts (ítems del LOOP, del banco y del carril B; subtemaCompleto,
  * que también da el título del LOOP en el Calendar) y EncapsPlanView.tsx (cabeceras de la vista). Módulo hoja: sin imports.
  */
@@ -43,6 +45,31 @@ export const ENCAPS_SUBEJE_CIEGO: ReadonlyArray<readonly [string, string]> = [
   ['negativa/rechazo en emergencia → ministerio público', 'negativa/rechazo en emergencia (a quién se comunica)'],
   ['derechos laborales (licencia con goce)', 'derechos laborales (qué licencia)'],
   ['(sarampión: vitamina A, PEES)', '(sarampión: suplemento y estrategia)'],
+  // v6.10t (auditoría c19 · cambios-c19 #7, vetadas-cortes #15, diffs #21): la LISTA que se pregunta (los miembros de un grupo que la pregunta pide nombrar o
+  //   distinguir) también es respuesta → «(cuáles son)». Barrido con node de todos los rótulos de sub-eje (SQL de F1 e intensiva + _encaps_ciclo_v3.js): estas
+  //   son las listas-respuesta que quedaban a la vista en título, PRE-TEST 10Q, BANCO DEL DÍA, SECUNDARIO y CIERRE. El par largo va antes que su fragmento corto
+  //   (si un rótulo llega con otra cola, el corto lo tapa igual)
+  ['teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)', 'sus servicios (cuáles son y su definición textual)'],
+  ['teleconsulta / teleinterconsulta / telemonitoreo / teleorientación', 'sus servicios (cuáles son)'],
+  ['Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria)', 'Tipos de vigilancia (cuáles son)'],
+  ['(bola de nieve, cuotas, conveniencia)', '(ejemplos de cada uno)'],
+  ['Precauciones y EPP por patógeno (estándar, contacto, gotas, aéreas)', 'Precauciones y EPP por patógeno (cuáles son y para qué patógeno)'],
+  ['Instrumentos de recolección (encuesta, entrevista, observación)', 'Instrumentos de recolección (cuáles son)'],
+  ['riesgo profesional (vínculo laboral), factores físico / biológico / ergonómico / psicosocial', 'riesgo profesional (qué lo define) y tipos de factores de riesgo (cuáles son)'],
+  ['riesgo profesional (vínculo laboral)', 'riesgo profesional (qué lo define)'],
+  ['factores físico / biológico / ergonómico / psicosocial', 'tipos de factores de riesgo (cuáles son)'],
+  ['(claves roja/azul/amarilla)', '(claves: cuál va con cada emergencia)'],
+  // remate v6.10t (revisión de la c19, MEDIA): la lista que ES la respuesta («tiempo, lugar y persona» = pregunta real 7 del 2026-II) y el miembro que fija
+  //   la respuesta de una pregunta real del sub-eje (subclínico, hechos vitales, área usuaria, justicia: DATA/ENCAPS/_examen_2026-2_items.json) + los
+  //   diseños de estudio y las medidas de tendencia central (listas que se piden nombrar). El largo antes que su fragmento corto
+  ['Variables tiempo-lugar-persona y mediciones (razón/proporción/tasa, incidencia/prevalencia, letalidad)', 'Variables de la epidemiología descriptiva y medidas de frecuencia (cuáles son y de qué tipo es cada una)'],
+  ['Variables tiempo-lugar-persona', 'Variables de la epidemiología descriptiva (cuáles son)'],
+  ['cohorte / casos-controles / transversal', 'sus diseños (cuáles son)'],
+  ['(periodo subclínico, niveles de prevención)', '(sus periodos y niveles de prevención)'],
+  ['(hechos vitales)', '(cuáles son)'],
+  ['Contrataciones (área usuaria)', 'Contrataciones (cómo se llama quien hace el requerimiento)'],
+  ['(justicia/racionamiento)', '(racionamiento: qué principio)'],
+  ['moda / mediana / media, dispersión', 'medidas de tendencia central y de dispersión (cuáles son)'],
 ];
 
 /** El texto con cada fragmento-respuesta de ENCAPS_SUBEJE_CIEGO sustituido por su rótulo sin valor (idempotente; sin coincidencias, el texto tal cual). */

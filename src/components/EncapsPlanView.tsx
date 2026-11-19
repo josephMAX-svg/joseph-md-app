@@ -1141,7 +1141,7 @@ function bloquesIntensivoBase(day: StudyScheduleDay): HorarioBlock[] {
           { t: corr.ini, d: `Corrección por código v3 y por formato (viñeta / viñeta+cifra / directa / cifra) + CIERRE tipo ${sim.tipo === 'pretest' ? 'pretest' : 'simulacro'} → nota /${sim.n} en study_sim_scores (sim_n = ${sim.simN}) + % ciego en study_progress` },
           { t: corr.peoresDesde, d: `Los 2 códigos peores del ${sim.tipo === 'pretest' ? 'pre-test' : 'SIM'}: banco de esos 2 códigos (16-20Q ciegas, corrección inmediata)` },
         ] } : {}) },
-      ...(semanal ? [{ hora: `${semanal.ini}-${semanal.fin}`, titulo: '📈 CIERRE SEMANAL: node DATA/_scripts/gen_encaps_semana.js --pull → --semana (% ciego de la semana por código, temas calientes, alerta de mini-sims)' }] : []),
+      ...(semanal ? [{ hora: `${semanal.ini}-${semanal.fin}`, titulo: '📈 CIERRE SEMANAL: node DATA/_scripts/gen_encaps_semana.js --pull → node DATA/_scripts/gen_encaps_semana.js --semana (% ciego de la semana por código, temas calientes, alerta de mini-sims)' }] : []), // v6.10t (c19 · #14): las 2 órdenes enteras
     ];
   }
   const loop = loopDe(day);

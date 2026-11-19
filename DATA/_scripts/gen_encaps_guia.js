@@ -103,6 +103,15 @@
  *   así que la eval va por CIERRE tipo «Eval anclada», uno por código fallado) y el «Hecho» lo pide. (5) vetadas-cortes #11 / diffs #20: el sub-eje y la cola larga
  *   del título, del BANCO DEL DÍA (ciego), del SECUNDARIO y del plan B van SIN las cifras-respuesta (src/lib/encapsCiego.ts: «Suplementación por grupo (cifras:
  *   dosis, frecuencia y duración) en MEF, escolar y lactante»); QX se busca por el nombre del tema, que no las lleva.
+ * v6.10t (19-nov-2026, auditoría del volcado c19): solo texto (mismos pasos y minutos). (1) dias-clave #1 / vetadas-cortes #14: la receta de los runners
+ *   que faltan (cmdRunnersDias) escribe CADA orden entera («node DATA/_scripts/gen_encaps_minisim.js --eval F → node DATA/_scripts/gen_encaps_minisim.js --banco F
+ *   → … → sync → guía → deploy»: el script despacha UNA sola de --banco / --eval por llamada, comprobado con --dry); antes «--eval F → --banco F (y lo mismo el
+ *   26)», que tal como se veía no se podía pegar. La regla del domingo de llegada (reglaRunnersLlegada) abre con la condición y el plazo, en ≤ 76 caracteres, y
+ *   sigue con la cadena: así el Calendar la protege entera dentro del «Ojo» (240 + 200 de un comando); quién los arma y el «NO --semana» van detrás (en la
+ *   app, enteros). Cada día dice lo suyo: antes de la 1.ª sesión pendiente, «los de hoy y …, antes de esta sesión» el día de la 1.ª, y el último solo el suyo
+ *   (antes el jue 26 y el vie 27 decían «si no, antes del jue 26-nov»). (2) cambios-c19 #7 / vetadas-cortes #15 / diffs #21: encapsCiego.ts tapa también las
+ *   LISTAS que se preguntan (Ley 30421, tipos de vigilancia, muestreo, precauciones, instrumentos, factores de riesgo ocupacional, claves obstétricas): la
+ *   GUARDA de abajo las vigila igual que las cifras.
  */
 'use strict';
 const fs = require('fs');
@@ -281,11 +290,12 @@ const bancosSinRunner = (desde, hasta) => FILAS.filter((r) => r.fecha >= desde &
 /** «node … --eval 2026-11-24 → --banco 2026-11-24 (y lo mismo el 25 y el 26) → sync → guía → deploy (o pídeselo a Claude); --eval y --banco: …»
  *  remate v6.10p (revisión «verdad» BAJA): «→ --banco …» no se puede pegar tal cual en la consola → detrás de la cadena, que son DOS órdenes del mismo script
  *  (la cadena entera en órdenes separadas pasaba de 440 y el corte del «Ojo» la escondía entera del Calendar del lun 23-nov; así la cadena se ve como antes) */
-const cmdRunnersDias = (fechas) => {
-  const [f0, ...resto] = fechas;
-  const pasos = [!fs.existsSync(path.join(BP, `eval_${f0}.json`)) ? `--eval ${f0}` : null, !fs.existsSync(path.join(BP, `banco_${f0}.json`)) ? `--banco ${f0}` : null].filter(Boolean);
-  return `node DATA/_scripts/gen_encaps_minisim.js ${pasos.join(' → ')}${resto.length ? ` (y lo mismo el ${resto.map((f) => Number(f.slice(8))).join(' y el ')})` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (o pídeselo a Claude)${pasos.length > 1 ? '; --eval y --banco son 2 órdenes («node DATA/_scripts/gen_encaps_minisim.js» con cada una)' : ''}`;
-};
+//  v6.10t (auditoría c19 · dias-clave #1, vetadas-cortes #14): CADA orden entera, una por fecha y runner que falte (gen_encaps_minisim.js despacha UNA sola de
+//  --banco / --eval por llamada: con las dos solo corre --banco, comprobado con --dry), en cadena con «→» hasta sync → guía → deploy. Sin el «(o pídeselo a
+//  Claude)»: lo añade quien la usa, detrás (pegado a la cadena, el Calendar lo contaría como parte del comando)
+const cmdRunnersDias = (fechas) => [
+  ...fechas.flatMap((f) => [!fs.existsSync(path.join(BP, `eval_${f}.json`)) ? `--eval ${f}` : null, !fs.existsSync(path.join(BP, `banco_${f}.json`)) ? `--banco ${f}` : null].filter(Boolean)),
+].map((x) => `node DATA/_scripts/gen_encaps_minisim.js ${x}`).concat(['node DATA/_scripts/sync_encaps_bp_web.js', 'node DATA/_scripts/gen_encaps_guia.js', 'deploy']).join(' → ');
 /** v6.10j (auditoría c14, dias-clave #1): lunes de la semana de una fecha de plan. */
 const lunesDe = (iso) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
 /** v6.10j: el DOMINGO DE LLEGADA (DOM_LLEGADA: dom 22-nov) que prepara los runners de `pend` (bancos de plan sin runner de la semana siguiente) · null si no hay. */
@@ -295,7 +305,19 @@ const llegadaDe = (pend) => (pend.length ? DOM_LLEGADA.find((x) => x.fecha < pen
  *  el vie 27 «(regla: el lun 23-nov, tras el mini-sim)», y el «NO --semana» solo salía en los dos últimos. */
 // v6.10l (auditoría c15 · diffs #40): el «NO» nombra el script (gen_encaps_minisim.js): gen_encaps_semana.js --semana (el cierre semanal) sigue permitido y
 //   el registro del mini-sim lo manda correr con la misma fecha
-const reglaRunnersLlegada = (pend, ll) => `Runners del ${corta(pend[0])}${pend.length > 1 ? ` al ${corta(pend.at(-1))}` : ''}: los genera la revisión del ${corta(ll.fecha)} ${ll.rev} (paso 5); si no, antes del ${corta(pend[0])}. NO gen_encaps_minisim.js --semana ${lunesDe(pend[0])} (re-sortearía los runners ya armados de la semana): ${cmdRunnersDias(pend)}.`;
+// v6.10t (auditoría c19 · dias-clave #1, vetadas-cortes #14): (a) la cadena con CADA orden entera (cmdRunnersDias) va justo detrás de una cabeza corta (≤ 76
+//   caracteres: condición + plazo) → el Calendar corta el «Ojo» a 240 y alarga hasta 200 para no partir un comando: así la cadena entera (335 con 2 días) entra;
+//   con la cabeza de antes (≈ 215: quién, plazo y «NO --semana») la escondía o se veía «→ --banco …», que no se puede pegar. Quién los arma y el «NO --semana»
+//   van detrás (en la app, enteros). (b) Cada día, lo suyo (hoy = fecha de plan de la sesión): los runners de sesiones ya pasadas no se piden; el día de la
+//   1.ª pendiente, «los de hoy …, antes de esta sesión» (antes el jue 26 y el vie 27 decían «si no, antes del jue 26-nov», ya pasado)
+const reglaRunnersLlegada = (pend0, ll, hoy) => {
+  const pend = pend0.filter((f) => !hoy || f >= hoy);
+  if (!pend.length) return '';
+  const deHoy = pend[0] === hoy, mas = pend.slice(deHoy ? 1 : 0);
+  const cuales = deHoy ? `de hoy${mas.length ? ` y ${mas.length > 1 ? `los siguientes hasta el ${corta(mas.at(-1))}` : `del ${corta(mas[0])}`}` : ''}`
+    : `del ${corta(pend[0])}${pend.length > 1 ? ` ${pend.length > 2 ? 'al' : 'y'} ${corta(pend.at(-1))}` : ''}`;
+  return `Si faltan los runners ${cuales}, antes ${deHoy ? 'de esta sesión' : `del ${corta(pend[0])}`}: ${cmdRunnersDias(pend)} (o pídeselo a Claude). Los arma la revisión del ${corta(ll.fecha)} ${ll.rev} (paso 5). NO gen_encaps_minisim.js --semana ${lunesDe(pend[0])}: re-sortearía los runners ya armados de la semana.`;
+};
 /** v6.10m (auditoría c16 · dias-clave #0/#2): ¿el override que propone el cierre semanal del mini-sim `fila` llega a alguna sesión? Antes esta cuenta vivía
  *  dentro del mini-sim de construirGuia; ahora la usan el mini-sim (su registro) y el pre-test de arranque (a qué override va su ronda: antes decía «para el
  *  override del mar 24-nov», el que el mini-sim 1/5 deja sin efecto).
@@ -569,7 +591,7 @@ function construirGuia(fila, sab = null) {
             // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
             const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
             const ll = llegadaDe(pend);
-            return !pend.length || ll ? '' : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}, ${cmdRunnersDias(pend)}.`; // v6.10j: con domingo de llegada, la regla va en el «Ojo»
+            return !pend.length || ll ? '' : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}: ${cmdRunnersDias(pend)} (o pídeselo a Claude).`; // v6.10j: con domingo de llegada, la regla va en el «Ojo»
           })()}` },
         { min: rcM ? rcM.apex : 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota${rcM ? ' (1 cifra por código, ≤1 p; el resto del código, en su próxima sesión de banco vía el override de la semana siguiente)' : ''}. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
       ],
@@ -582,7 +604,7 @@ function construirGuia(fila, sab = null) {
       //   semana del carril B ya armada, --semana re-sortearía sus banco_/eval_)
       // remate v6.10l (revisión adversarial · visibilidad): la cadena entera del runner (como los bancos del carril) y DELANTE de la nota, que repite la cabecera
       ...(sab ? { aviso: [!r ? `Runner minisim_${fila.fecha} por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy` : null, sab.nota].filter(Boolean).join(' · ') }
-        : e.checkpoint || !r || llMS ? { aviso: [llMS ? reglaRunnersLlegada(pendMS, llMS) : null, e.checkpoint, !r ? `runner minisim_${fila.fecha} por generar` : null].filter(Boolean).join(' · ') } : {}),
+        : e.checkpoint || !r || llMS ? { aviso: [llMS ? reglaRunnersLlegada(pendMS, llMS, fila.fecha) : null, e.checkpoint, !r ? `runner minisim_${fila.fecha} por generar` : null].filter(Boolean).join(' · ') } : {}),
     };
     ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'minisim', codigo: null, subEje: null, secundarios: cola, eval: null, principal: r ? { f: r.f, url: r.url, local: r.local, n: r.n } : null, pretest: null, obsidian: obsCola[0] ? obsCola[0].url : null, proyecto: CAT.PROYECTO.LOPEZ };
     if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: 'MINI-SIM', principal: `25Q (${recTxt}) · cola ${cola.join(' + ')}`, eval: '—', runners: r ? r.f : 'POR GENERAR', material: matCola.map((m) => m.t).join(' · '), obs: obsCola.map((o) => o.t).join(' · '), proyecto: CAT.PROYECTO.LOPEZ.t });
@@ -767,7 +789,7 @@ function construirGuia(fila, sab = null) {
             // v6.09b lote 1-quater FX1 (revisión V2): el plazo va al PRINCIPIO del aviso (el Calendar corta el aviso a 240: tras la excepción del lunes quedaba en la pos. 371)
             // v6.10j (auditoría c14, dias-clave #1): la semana del domingo de LLEGADA (dom 22-nov) dice la regla única (reglaRunnersLlegada), con su «NO --semana»
             const llS = llegadaDe(pendSem);
-            if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS) : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])} → ${cmdRunnersDias(pendSem)}.`);
+            if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS, fila.fecha) || null : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])}: ${cmdRunnersDias(pendSem)} (o pídeselo a Claude).`);
           }
           const pendArm = bancosSinRunner(cmdSemana, addD(cmdSemana, 4));
           const primeraPend = pendArm[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
@@ -779,7 +801,7 @@ function construirGuia(fila, sab = null) {
             : `Runners ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (con el carril B lun-jue, --semana arma también el banco del sábado: banco_${fila.fecha}; la eval del sábado es el re-test de los fallos del simulacro, sin runner propio).`);
           // v6.10j (auditoría c14, dias-clave #1): banco sin runner de la semana del domingo de LLEGADA → la misma regla que el mini-sim y los bancos con runner
           //   (antes «(regla: el lun 23-nov, tras el mini-sim)», que contradecía al mini-sim y al mar 24)
-          else if (llArm) av.push(reglaRunnersLlegada(pendArm, llArm));
+          else if (llArm) av.push(reglaRunnersLlegada(pendArm, llArm, fila.fecha) || null);
           else if (pendiente) av.push(semanaArmada
             // v6.10i (remate, revisión adversarial del 18-nov): «NO --semana» va DELANTE de la receta (el Calendar corta el aviso a 240 y, detrás de la cadena
             //   de comandos, se perdía el aviso que impide re-sortear los runners de la semana)
@@ -789,7 +811,7 @@ function construirGuia(fila, sab = null) {
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map((x) => String(x).replace(/re-test con otro enfoque/g, 're-test de las mismas preguntas reales, sin la clave'))); // v6.10h: el re-test es de las MISMAS preguntas
           for (const c of [codigo, ...secCods]) if (CAT.AVISO_CODIGO[c]) av.push(CAT.AVISO_CODIGO[c]);
           if (mat.fuente !== 'drive') av.push(`${codigo} · ${subEje}: sin fichero del Drive inventariado para este sub-eje → material = ${mat.fuente === 'fichas' ? 'fichas MINSA del sub-eje + compendio del área' : 'compendio + videoclases del área (ninguna ficha MINSA del código trata este sub-eje)'}.`);
-          return av.length ? { aviso: av.join(' · ') } : {};
+          return av.filter(Boolean).length ? { aviso: av.filter(Boolean).join(' · ') } : {};
         })()),
       };
       ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'banco', codigo, subEje, secundarios: secCods, eval: rEval ? { f: rEval.f, url: rEval.url, local: rEval.local, n: rEval.n, codigo: rEval.j.codigo || null } : null, principal: rBan ? { f: rBan.f, url: rBan.url, local: rBan.local, n: rBan.n } : null, pretest: null, obsidian: obs ? obs.url : null, proyecto };
@@ -912,7 +934,7 @@ const META = {
 { const RESP = [...ENCAPS_SUBEJE_CIEGO.map(([a]) => a), 'P-II ≤10 min', 'P-III ≤30 min'], VIS = new Set(['titulo', 'que', 'como', 'aviso', 'planB', 'hecho', 't']), fugas = [];
   const vis = (v, k, ruta) => { if (typeof v === 'string') { if (VIS.has(k)) for (const a of RESP) if (v.includes(a)) fugas.push(`${ruta}: «${a}»`); } else if (Array.isArray(v)) v.forEach((x) => vis(x, k, ruta)); else if (v && typeof v === 'object') for (const [kk, x] of Object.entries(v)) vis(x, kk, `${ruta}.${kk}`); };
   vis(GUIA, '', 'GUIA'); vis(GUIA_SAB, '', 'GUIA_SAB');
-  if (fugas.length) aborta(`cifras-respuesta a la vista en la guía (encapsCiego.ts): ${fugas.slice(0, 5).join(' · ')}${fugas.length > 5 ? ` (+${fugas.length - 5})` : ''}`); }
+  if (fugas.length) aborta(`cifras o listas-respuesta a la vista en la guía (encapsCiego.ts): ${fugas.slice(0, 5).join(' · ')}${fugas.length > 5 ? ` (+${fugas.length - 5})` : ''}`); }
 // tabla de textos repetidos (≥24 caracteres y ≥2 apariciones) → el .ts pesa la mitad
 const _cnt = new Map();
 const _walk = (v) => { if (typeof v === 'string') { if (v.length >= 24) _cnt.set(v, (_cnt.get(v) || 0) + 1); } else if (Array.isArray(v)) v.forEach(_walk); else if (v && typeof v === 'object') Object.values(v).forEach(_walk); };

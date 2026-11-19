@@ -1098,7 +1098,9 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
         const fcs = franjaCierreSemanalDe(sim.hora, cb);
         items.push({
           key: `D${N}:i_semana`, kind: 'eval',
-          label: '📈 CIERRE SEMANAL del ENCAPS: node DATA/_scripts/gen_encaps_semana.js --pull → --semana',
+          // v6.10t (auditoría c19 · vetadas-cortes #14): las 2 órdenes enteras (gen_encaps_semana.js con --pull solo hace el pull: --semana va en otra llamada;
+          //   sin fecha, la semana de hoy); antes «--pull → --semana», que tal como se veía no se podía pegar
+          label: '📈 CIERRE SEMANAL del ENCAPS: node DATA/_scripts/gen_encaps_semana.js --pull → node DATA/_scripts/gen_encaps_semana.js --semana',
           detail: '--pull trae las rondas de la semana de la app (study_progress, fuente app:cierre) al registro v3 sin duplicar; --semana: % ciego por código vs vector v3, temas calientes y alerta de mini-sims → TRACKING_ERRORES/SEMANAS/semana_<lunes>.md, para la revisión del sábado · hoy no hay EVAL 20Q: la evaluación del día es el simulacro',
           dur: fcs.min, hora: `${fcs.ini}–${fcs.fin}`,
         });

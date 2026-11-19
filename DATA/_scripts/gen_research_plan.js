@@ -307,7 +307,9 @@ const C1 = [
   //   hace a un artículo buen diana»: «la ventana de letters», «ángulo de la carta (dato peruano/latino …)» y el chip «ventana de letters típica 4-12 semanas»
   //   eran su respuesta → objetivo y entregable sin ella; las columnas, la regla y el chip, en el paso de la tabla de la guía (research_guia.js › C-1), tras el
   //   pre-test. Igual el M2: «la carta (C), la tesis (T-7) y el case report (CR-6)» respondía su pre-test «qué 3 cosas pides al mentor» → en su «Terminado cuando»
-  a('C-1', 'C', 'C', 'CRITICA', 'Discovery de 5 artículos 2026 (últimos 30-60 días) en JAAD / JAAD Intl / IJD / JCD / Dermatol Surg sobre derma estética · fototipos IV-VI · complicaciones de fillers, con los datos de envío de cada journal',
+  // v6.10t (auditoría c19 #4/#17 · barrido de cabeceras): «(últimos 30-60 días)» fijaba la ventana en la cabecera (y la fila del pre-test pinta el objetivo)
+  //   → «recientes»; los 30-60 días, en el paso de Crossref de la guía (tras el pre-test)
+  a('C-1', 'C', 'C', 'CRITICA', 'Discovery de 5 artículos 2026 recientes en JAAD / JAAD Intl / IJD / JCD / Dermatol Surg sobre derma estética · fototipos IV-VI · complicaciones de fillers, con los datos de envío de cada journal',
     'Tabla de 5 candidatos con las 7 columnas del paso de la tabla (guía del bloque: journal, fecha de publicación, DOI y 4 más)',
     'DATA/RESEARCH/CARTA_1/candidatos.md (tabla de 5) + correo a IJD Editorial Office pidiendo su política de correspondencia (pendiente desde 27-ago)',
     'research-discovery · PubMed', ['PM', 'OPENALEX', 'JAADINT', 'IJD']),

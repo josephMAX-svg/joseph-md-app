@@ -797,7 +797,10 @@ const TUTOR1 = 'Tutor (sin tiempo por pregunta)';
 const nQ1 = (n) => `Number of Questions: ${n} (no 20)`;
 // remate v6.10r (revisión «verdad-calendar» MEDIA #2): «Status: Unused» DELANTE del número de preguntas: con el Select del banco delante, el corte de 110 del
 //   Calendar lo dejaba fuera en los 48 pasos de armar (y desde el mié 25 los Systems ya tienen preguntas usadas: sin el filtro puede salir una repetida)
-const tcUW1 = (ids, n) => `${QB_UW} → New Test → Status: Unused · ${nQ1(n)} · Tutor (por defecto) · Subjects: todos · Order: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
+// v6.10t (auditoría c19 · cambios-c19 #9): «Tutor» junto a «New Test» y lo que va por defecto, detrás del número de preguntas: el corte de 110 del Calendar
+//   caía tras la palabra suelta «Tutor» («… (no 20) · Tutor …»); ahora acaba en «(no 20) …» con banco, Select, Unused y N a la vista. Mehlman (tcMH1) ya
+//   cortaba en «(no 20) …» y su banco es más largo: queda igual
+const tcUW1 = (ids, n) => `${QB_UW} → New Test (Tutor) → Status: Unused · ${nQ1(n)} · Subjects: todos · Order y Tutor: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
 const tcMH1 = (ids, n) => `${QB_MH} → New Test → Status: Unused · ${nQ1(n)} · Tutor (por defecto) · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
 const L_UW = { t: 'Qbankly › QBanks', url: QBQ };
 const R_UW = { t: 'Qbankly › QBanks (Test Composer)', url: QBQ };
@@ -1222,8 +1225,10 @@ function anki0500D2(r) {
   ], [R_ANKI, { t: 'Manual de Anki › Deck Options (FSRS)', url: 'https://docs.ankiweb.net/deck-options.html' }, ...recVideo(rep.s0500)], `preset «APEX USMLE» en APEX::USMLE y sus submazos (Save to All Subdecks, comprobado) y «The ONLY Video…» hasta ${hms(it0.fin)} con 5 ideas anotadas`,
     // remate v6.10r (revisión BAJA #4): «al cerrar el bloque de las 07:15, antes de la 1.ª tarjeta» se contradecía (la 1.ª tarjeta se dicta DENTRO de ese bloque) y
     //   sin Anki escritorio tampoco hay AnkiConnect (la ruta de dictado de hoy) → el preset en cuanto abra, y las tarjetas dictadas esperan en el chat
-    { planB: `Anki escritorio no abre: el preset, en cuanto abra (antes de que el chat escriba la 1.ª tarjeta; AnkiWeb no edita presets); mientras no abra, el chat USMLE guarda las tarjetas que le dictes y las escribe en Anki al abrirlo (AnkiConnect necesita Anki escritorio abierto); el vídeo, en el móvil (YouTube, ${AUDIO_EN}).`,
-      aviso: `${pend.length ? `${pend.join(' · ')} (no se recorta). ` : ''}«Anki Almost Broke Me…» (Anki + FSRS) va entero, por capítulos, en lo que sobre de las vencidas del Anki AM desde el ${fd(amSig)}. A las 05:30, los 15′ de repasos ENCAPS (su guía).` });
+    // v6.10t (auditoría c19 · cambios-c19 #10 y diffs #26): fuera del «Ojo» «A las 05:30, los 15′ de repasos ENCAPS (su guía).» (lo dice el sub-bloque de las 05:30,
+    //   justo debajo, y el Calendar lo cortaba en «A las 05:30, …») · plan B por si APEX::USMLE no existiera (el chat USMLE lo vio existir; nada vacío por adelantado)
+    { planB: `Anki escritorio no abre: el preset, en cuanto abra (antes de que el chat escriba la 1.ª tarjeta; AnkiWeb no edita presets); mientras no abra, el chat USMLE guarda las tarjetas que le dictes y las escribe en Anki al abrirlo (AnkiConnect necesita Anki escritorio abierto); el vídeo, en el móvil (YouTube, ${AUDIO_EN}). Si APEX::USMLE no existe: no lo crees vacío; el preset, desde las Deck Options de otro mazo y sin asignar (antes de Save, vuelve a elegir el preset de ese mazo); APEX::USMLE nace con la 1.ª tarjeta de las 07:15 y, al cerrar ese bloque, Save to All Subdecks.`,
+      aviso: `${pend.length ? `${pend.join(' · ')} (no se recorta). ` : ''}«Anki Almost Broke Me…» (Anki + FSRS) va entero, por capítulos, en lo que sobre de las vencidas del Anki AM desde el ${fd(amSig)}.` });
 }
 /** v6.10b: los tramos de la cola que siguen pendientes tras la franja `slot` del día d (para el aviso «lo que no cabe → …») */
 function colaPendienteTras(d, slot) {
@@ -1298,7 +1303,9 @@ function pretestN1(r) {
   const d = r.d, m = MF1[d], hoy = uwDe(d), q = QS[d];
   return B(r.fecha, '08:15–09:00', tit85('BLOQUE 1 · PRE-TEST · 5Q ciegas · ', txtSub(r), ' (Tutor, sin tiempo por pregunta)'), [
     P(1, `Armar: ${hoy.map(uwNom).join(' + ')}`, tcUW1(hoy, 5), L_UW),
-    P(tutMin(5), '5Q ciegas del tema NUEVO (sin haber visto nada de hoy)', `${faseTxtDe(r)} (Palmerton: un solo subtema, Tutor, sin tiempo por pregunta). SAQ (pregunta autónoma) antes de mirar las opciones + CCSN; después, la explicación entera (Tutor: ${TUTOR_TXT}).`),
+    // v6.10t (auditoría c19 · cambios-c19 #6): la regla SAQ DELANTE del «cómo» (el Calendar lo corta a 110 y, con «sin tiempo por pregunta», caía detrás de «SAQ»)
+    //   (remate v6.10t, revisión BAJA/MEDIA: el paréntesis de Palmerton, corto —«1 subtema, Tutor, sin reloj»—, para que el corte no lo deje abierto)
+    P(tutMin(5), '5Q ciegas del tema NUEVO (sin haber visto nada de hoy)', `SAQ (pregunta autónoma) antes de mirar las opciones + CCSN · ${faseTxtDe(r)} (Palmerton: 1 subtema, Tutor, sin reloj); después, la explicación entera (Tutor: ${TUTOR_TXT}).`),
     faAcotado(27, m.fa, 'revisión a fondo de cada incorrecta y de cada duda: Educational Objective → la página completa (Whole Page Rule)', 'el DEEP PRIME de las 09:00 (misma sección)'),
     P(5, 'Bitácora + shopping list (pre-test /5 en 📏 Medición)', `Cada duda, también en los aciertos, a la shopping list; 40-60 % es normal: es diagnóstico, no gate.${trampaTrasTxt(r, 'el bloque 1 es ciego')}${metDia(r) ? ' Lo aplicas en el bloque 2 y en la validación.' : ''}`),
   ], [R_UW], 'nota /5 en 📏 Medición y la shopping list escrita', { planB: respaldo1(d, 5), aviso: q && q.deficit ? `Según este plan, a estos Systems de uWorld les quedan ~${q.dispAntes} Unused antes de hoy: cuando el composer se quede corto, usa el respaldo de abajo (Mehlman).` : undefined });
@@ -1495,13 +1502,27 @@ const HOLGURA_ANKI = [];
   }
   if (quedan.length) aborta(`HOLGURA_ANKI: «${p.t}» no termina dentro de F1 (quedan ${quedan.length} capítulos)`);
   if (!HOLGURA_ANKI.length || HOLGURA_ANKI[0].fe !== ankiAmSig(D2.fecha)) aborta(`HOLGURA_ANKI: el reparto no empieza en el Anki AM siguiente al D2 (${ankiAmSig(D2.fecha)})`);
+  // remate v6.10t (revisión de la c19, BAJA): la regla de puntuar, ENTERA dentro de los 110 del Calendar. Sin Step: lo que va antes de « · lee primero »; con Step
+  //   (anki0500, compartido con el tramo 2 y 2027: NO se toca), su forma corta delante y lo que ella no dice («la lógica central, no palabra por palabra»,
+  //   «≈10 %») en «En las vencidas, además: …» (antes el corte caía en «(≈90 %, no palabra …»). Mismo contenido, en otro orden
+  const REGLA_STEP = 'Lee el frente, responde EN VOZ ALTA y gira: Good si recordaste la lógica central (≈90 %, no palabra por palabra) · Again solo si la olvidaste (≈10 %) · nunca Hard/Easy';
+  const partirVencidas = (c0, step, fe) => {
+    const iL = c0.indexOf(' · lee primero ');
+    if (iL < 0) aborta(`HOLGURA_ANKI ${fe}: las instrucciones de vencidas no tienen « · lee primero …» (se parten ahí para dejar la regla delante)`);
+    if (!step) return { cab: c0.slice(0, iL), resto: c0.slice(iL + 3) };
+    if (c0.slice(0, iL) !== REGLA_STEP) aborta(`HOLGURA_ANKI ${fe}: la regla de vencidas del día de Step (anki0500) cambió: revisa su forma corta (REGLA_STEP)`);
+    return { cab: 'Lee el frente, responde EN VOZ ALTA y gira · Good ≈90 % / Again solo si la olvidaste · nunca Hard/Easy', resto: `Good = recordaste la lógica central (no palabra por palabra) · Again ≈10 % · ${c0.slice(iL + 3)}` };
+  };
   HOLGURA_ANKI.forEach((h, k) => {
     const ult = k === HOLGURA_ANKI.length - 1, sig = HOLGURA_ANKI[k + 1];
     const c0 = h.pv.como; const step = /^VENCIDAS primero \(reviews first\)/.test(h.pv.que); // el Anki AM de un día de Step (anki0500)
     h.pv.que = `VENCIDAS primero, sin tope · en lo que sobre de los ${h.pv.min}′: Palmerton «Anki Almost Broke Me…» desde ${hms(h.ini)} (o desde donde quedaste) hasta ${hms(h.fin)}`;
-    // el vídeo va DELANTE de las instrucciones de vencidas (sin quitar ninguna) y con la fecha del siguiente Anki AM en la misma cláusula: el Calendar enseña el «cómo»
-    //   hasta el final de esa cláusula (corte.js alarga el corte de 110 para no partir una fecha); el resto (audio, capítulos), en la app
-    h.pv.como = `Primero las vencidas; en lo que sobre de los ${h.pv.min}′, antes del sync final: «Anki Almost Broke Me…» desde ${hms(h.ini)} (o desde donde quedaste) hasta ${hms(h.fin)} (${ult ? `el FAQ, ${hms(p.faq)}-${hms(p.s)}, es opcional; si no llegas, sigue desde el ${fd(ankiAmSig(h.fe))}, en lo que sobre de las vencidas, hasta terminarlo` : `lo que no quepa, el ${fd(sig.fe)}, desde donde quedaste`}) · YouTube a 1,0× · CC: inglés (automáticos) · si arranca doblado, ${AUDIO_EN} · pausa y anota cada cambio en 1 línea (son 8) · corta solo en un fin de capítulo (${capsTxt}), nunca a mitad. Vencidas: ${c0}${step ? ' Reviews first · Maximum reviews/day 9999.' : ''}`;
+    // v6.10t (auditoría c19 · cambios-c19 #8 y diffs #20): la regla de puntuar las vencidas va DELANTE del «cómo» —el Calendar lo corta a 110 y la dejaba fuera— y
+    //   el tramo del vídeo ya no se repite aquí (está en el «qué»). Detrás de la regla, la fecha del siguiente Anki AM (corte.js alarga el corte hasta ella: así el
+    //   Calendar enseña regla + «lo que no quepa, el …» y nada más); después audio y capítulos, y al final el resto de las instrucciones de vencidas (desde «lee
+    //   primero la línea «Summary:»»). Mismo texto que antes, en otro orden
+    const { cab, resto } = partirVencidas(c0, step, h.fe);
+    h.pv.como = `${cab}. Después, el vídeo, antes del sync final (${ult ? `el FAQ, ${hms(p.faq)}-${hms(p.s)}, es opcional; si no llegas, sigue desde el ${fd(ankiAmSig(h.fe))}, en lo que sobre de las vencidas, hasta terminarlo` : `lo que no quepa, el ${fd(sig.fe)}, desde donde quedaste`}) · YouTube a 1,0× · CC: inglés (automáticos) · si arranca doblado, ${AUDIO_EN} · pausa y anota cada cambio en 1 línea (son 8) · corta solo en un fin de capítulo (${capsTxt}), nunca a mitad. En las vencidas, además: ${resto}${step ? ' Reviews first · Maximum reviews/day 9999.' : ''}`;
     h.pv.enlace = { t: 'YouTube (desde ese minuto)', url: yt(id, h.ini) };
     h.g.recursos = dedupe([...h.g.recursos, { t: `Palmerton · ${p.t} (YouTube)`, url: yt(id, h.ini), min: Math.round(p.s / 60) }]);
     h.g.hecho = `${h.g.hecho} · «Anki Almost Broke Me…»: anota el minuto donde paraste`;
@@ -1520,7 +1541,10 @@ const HOLGURA_ANKI = [];
   sigue.forEach((h, k) => {
     const ult = k === sigue.length - 1, c0 = h.pv.como, step = /^VENCIDAS primero \(reviews first\)/.test(h.pv.que);
     h.pv.que = `VENCIDAS primero, sin tope · si no terminaste «Anki Almost Broke Me…»: en lo que sobre de los ${h.pv.min}′, desde donde quedaste`;
-    h.pv.como = `Primero las vencidas; si «Anki Almost Broke Me…» no está terminado, en lo que sobre de los ${h.pv.min}′, antes del sync final: desde donde quedaste, hasta un fin de capítulo (${capsTxt}; el FAQ, ${hms(p.faq)}-${hms(p.s)}, es opcional)${ult ? '; si aún no lo terminas, sigue en los Anki AM siguientes, en lo que sobre de las vencidas, hasta terminarlo' : ''} · YouTube a 1,0× · CC: inglés (automáticos) · si arranca doblado, ${AUDIO_EN}. Vencidas: ${c0}${step ? ' Reviews first · Maximum reviews/day 9999.' : ''}`;
+    // v6.10t (auditoría c19 · cambios-c19 #8 y diffs #20): como arriba, la regla de las vencidas (c0) delante y la condición del vídeo, detrás
+    //   (remate v6.10t: partida como arriba —antes el corte dejaba «· lee primero …» o «(≈90 %, no palabra …»— y «Después, el vídeo si …», sin «si» colgando)
+    const { cab, resto } = partirVencidas(c0, step, h.fe);
+    h.pv.como = `${cab}. Después, el vídeo si «Anki Almost Broke Me…» no está terminado: en lo que sobre de los ${h.pv.min}′, antes del sync final, desde donde quedaste, hasta un fin de capítulo (${capsTxt}; el FAQ, ${hms(p.faq)}-${hms(p.s)}, es opcional)${ult ? '; si aún no lo terminas, sigue en los Anki AM siguientes, en lo que sobre de las vencidas, hasta terminarlo' : ''} · YouTube a 1,0× · CC: inglés (automáticos) · si arranca doblado, ${AUDIO_EN}. En las vencidas, además: ${resto}${step ? ' Reviews first · Maximum reviews/day 9999.' : ''}`;
     h.g.recursos = dedupe([...h.g.recursos, { t: `Palmerton · ${p.t} (YouTube)`, url: yt(id, 0), min: Math.round(p.s / 60) }]);
   });
   HOLGURA_ANKI.sigue = sigue.map((h) => h.fe);
