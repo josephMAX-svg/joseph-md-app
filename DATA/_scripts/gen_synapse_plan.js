@@ -237,13 +237,6 @@ try {
   VIBE_FECHAS = [...vp.matchAll(/\{s:(\d+),id:"[^"]*",nombre:"[^"]*"[\s\S]*?ini:"(20\d\d-\d\d-\d\d)",fin:"(20\d\d-\d\d-\d\d)",ship:"(20\d\d-\d\d-\d\d)"(?:,pcSab:"((?:20\d\d-\d\d-\d\d)?)")?/g)]
     .map((m) => ({ s: +m[1], ini: m[2], fin: m[3], ship: sabTras(m[3]), shipTs: m[4], pcSab: m[5] === undefined ? null : m[5] }));
 } catch { /* aún no generado: se cae al comportamiento por semana */ }
-// remate v6.10q (19-nov-2026): los pasos (semana, k) de cada fecha de PLAN del vibecoding, para el SHIP que ABSORBE un paso de su proyecto
-//   (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = el paso 5/5 de S1, que va PRIMERO dentro del SHIP) → bloquePC
-let VIBE_PASOS = [];
-try {
-  VIBE_PASOS = [...fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8').matchAll(/\{d:\d+,fecha:"(20\d\d-\d\d-\d\d)",wd:"[^"]*",semana:(\d+),proyecto:"[^"]*",k:(\d+),tipo:"([^"]+)"/g)]
-    .map((m) => ({ fecha: m[1], semana: +m[2], k: +m[3], tipo: m[4] }));
-} catch { /* aún no generado */ }
 const vibeDe = (fecha) => VIBE_FECHAS.find((x) => x.ship === fecha) || null;
 const vibeEnCurso = (fecha) => VIBE_FECHAS.find((x) => x.ini <= fecha && fecha <= x.ship) || null;
 const cur = (id) => {
@@ -370,7 +363,9 @@ function buildAUnits() {
   push('Claude Platform 101', 'Módulo "Teaching your Agent": The agent loop explained · What is tool use? · What is thinking?', U.cp101);
   push('Claude Platform 101', '"Extending your Agent" (built-in tools · skills · MCP · context) + "Managed Agents" + "Building with Claude Code" (lección nueva de la Academy) + «Claude Platform 101 quiz» oficial = GATE de la fase 3 → serie 101 COMPLETA', U.cp101);
   push('Building Effective AI Agents (ensayo)', 'Parte I: "What are agents?" · "When (and when not) to use agents" · "When and how to use frameworks" · "The augmented LLM"', U.ensayo);
-  push('Building Effective AI Agents (ensayo)', 'Parte II: los 5 workflows — Prompt chaining · Routing · Parallelization · Orchestrator-workers · Evaluator-optimizer — + "Agents" + "Summary". Apréndelos con nombre: al cerrar, los 5 de memoria en el journal (recall en blanco; el ensayo no trae quiz).', U.ensayo);
+  // v6.10u (auditoría c19 · vetadas #16 y diffs #19): sin enumerar los 5 workflows (son la respuesta del recall en blanco de la 2.ª parte del GATE 3/6, que
+  //   va en este mismo evento) y con sus minutos: 11′ de lectura + 4′ de recall al cerrar el A (antes «Parte II: los 5 workflows — Prompt chaining · …»)
+  push('Building Effective AI Agents (ensayo)', 'Parte II: los 5 workflows (nombre y cuándo usar cada uno) + "Agents" + "Summary" (11′). Al cerrar, 4′: los 5 de memoria en el journal (recall en blanco, sin mirar el ensayo; no trae quiz) y después corrígelo contra él.', U.ensayo);
   push('Karpathy — [1hr Talk] Intro to LLMs', 'Part 1: LLMs (00:00 → 25:43): inference · training · LLM dreams · finetuning into an Assistant', tUrl(U.kIntro, '00:00:00'), { dur: '~26 min (2 huecos)' });
   push('Karpathy — [1hr Talk] Intro to LLMs', 'Part 2: Future of LLMs (25:43 → 45:43): scaling laws · tool use · multimodality · System 1/2 · LLM OS', tUrl(U.kIntro, '00:25:43'), { dur: '~20 min' });
   push('Karpathy — [1hr Talk] Intro to LLMs', 'Part 3: LLM Security (45:43 → fin): jailbreaks · prompt injection · data poisoning', tUrl(U.kIntro, '00:45:43'), { dur: '~14 min' });
@@ -658,11 +653,7 @@ function bloquePC(semana, fecha) {
   const material = vs || !vc
     ? `SHIP proyecto S${p.s} · ${p.nombre}${dl}`
     : `Avance del proyecto S${p.s} · ${p.nombre}${dl} — SHIP el ${vc.ship}`;
-  // remate v6.10q: el SHIP que absorbe un paso de su proyecto (en_ship) lo dice delante (la guía del SHIP, rutinaGuia.guiaShipDe, lo detalla)
-  const enS = vs ? require('./gen_fechas_v6').enShipDe(f, require('./gen_fechas_v6').cargarFechasV6()) : null;
-  const dS = enS ? VIBE_PASOS.find((x) => x.fecha === enS && x.semana === p.s) : null;
-  const pre = dS ? `Primero el paso ${dS.k}/${VIBE_PASOS.filter((x) => x.semana === p.s).length} de S${p.s} (commit [S${p.s}] + verify ${p.s}); después, ` : '';
-  const leccion = `${pre}${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
+  const leccion = `${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
   return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
 }
 // ─── Domingo = Feynman del proyecto (10', opcional; no rompe la racha si se salta) ───
@@ -991,7 +982,9 @@ const FASES_BC_DEF = [
   { id: '3', corto: 'La API y los agentes (concepto)', a: [17, 21], gates: [19, 21], gateCorto: '«Claude Platform 101 quiz» oficial + los 5 workflows de memoria',
     que: 'Claude Platform 101 (primera llamada a la API, modelos, bucle del agente, tool use) y «Building Effective Agents» (5 workflows y cuándo NO usar agentes).',
     gate: '«Claude Platform 101 quiz» oficial aprobado + los 5 workflows de memoria (recall en blanco) en el journal (el ensayo no trae quiz).',
-    gate1: { hoy: '«Claude Platform 101 quiz» oficial aprobado', quiz: true, resto: 'los 5 workflows de memoria (recall en blanco)' } },
+    gate1: { hoy: '«Claude Platform 101 quiz» oficial aprobado', quiz: true, resto: 'los 5 workflows de memoria (recall en blanco)' },
+    // v6.10u (auditoría c19 · diffs #19): la 2.ª fecha pide SOLO lo que falta, con sus minutos (antes el gate entero: volvía a pedir el quiz)
+    gate2: { hoy: 'los 5 workflows de memoria en el journal (recall en blanco: 4′ al cerrar el A, sin mirarlo)', previo: 'el «Claude Platform 101 quiz»' } },
   { id: '4', corto: 'Cómo funciona un LLM por dentro', a: [22, 45], gates: [35, 45], gateCorto: 'recall en blanco del pipeline del LLM vs el «grand summary» de Karpathy (sin quiz oficial)',
     que: 'Karpathy (Intro to LLMs + Deep Dive: datos → tokens → preentrenamiento → SFT → RL/RLHF → alucinaciones y herramientas) y 3Blue1Brown (redes, gradiente, transformers, atención).',
     gate: 'Sin quiz oficial (nada inventado): recall en blanco del pipeline del LLM contrastado con el «grand summary» de Karpathy (tramo 11/11) y, al cierre de F0, explicarlo en voz alta.',
@@ -1005,7 +998,8 @@ const SYN_FASES_BC = FASES_BC_DEF.map((f) => {
   for (let i = f.a[0]; i <= f.a[1]; i++) if (!fechas.includes(fechaA(i))) fechas.push(fechaA(i));
   fechas.sort((x, y) => (realDe(x) < realDe(y) ? -1 : realDe(x) > realDe(y) ? 1 : 0));
   if (f.gate1 && f.gates.length !== 2) throw new Error(`v6.10p: la fase ${f.id} trae gate1 sin 2 fechas de gate`);
-  return { id: f.id, corto: f.corto, desde: fechas[0], hasta: fechas[fechas.length - 1], fechas, gateFechas: f.gates.map(fechaA), que: f.que, gate: f.gate, gateCorto: f.gateCorto, ...(f.gate1 ? { gate1: f.gate1 } : {}) };
+  if (f.gate2 && !f.gate1) throw new Error(`v6.10u: la fase ${f.id} trae gate2 sin gate1`);
+  return { id: f.id, corto: f.corto, desde: fechas[0], hasta: fechas[fechas.length - 1], fechas, gateFechas: f.gates.map(fechaA), que: f.que, gate: f.gate, gateCorto: f.gateCorto, ...(f.gate1 ? { gate1: f.gate1 } : {}), ...(f.gate2 ? { gate2: f.gate2 } : {}) };
 });
 {
   // fases 5 y 6 = F1 y F2 del motor (2027): fechas = primer / último día con A; gate = el día con el quiz final / el simulacro de la Academy
@@ -1134,7 +1128,9 @@ export function synRecDe(fechaISO: string): SynRecSesion | undefined { return SY
  *  SYN_AVANCE_BC. Método y fuentes: DATA/SYNAPSE/METODO_BASE_CERO.md. rutinaGuia › guiaSynapseDe lo pone en el aviso de cada sesión. */
 export interface SynFaseBC { id: string; corto: string; desde: string; hasta: string; fechas: string[]; gateFechas: string[]; que: string; gate: string; gateCorto: string;
   /** v6.10p: gate con 2 fechas → lo que se aprueba en la 1.ª (\`hoy\`; \`quiz\` = es un quiz oficial) y lo que queda para la 2.ª (\`resto\`); en la 2.ª, \`gate\` entero */
-  gate1?: { hoy: string; quiz: boolean; resto: string } }
+  gate1?: { hoy: string; quiz: boolean; resto: string };
+  /** v6.10u: si está, la 2.ª fecha pide solo esto (\`hoy\`) y recuerda cuándo fue la 1.ª parte (\`previo\`), en vez del \`gate\` entero */
+  gate2?: { hoy: string; previo: string } }
 export const SYN_FASES_BC: SynFaseBC[] = ${JSON.stringify(SYN_FASES_BC)};
 /** v6.10 · base cero: criterio de avance común a todas las fases (las fechas no se mueven) */
 export const SYN_AVANCE_BC = 'Las fechas no se mueven: la fase siguiente empieza en su fecha. Un quiz oficial no aprobado se repite en el PC del domingo siguiente (SHIP, flexible) hasta aprobarlo, solo con las lecciones falladas.';

@@ -298,7 +298,7 @@ export function vibeSemanaISO(fechaISO: string): string {
     return d.getUTCFullYear() + '-W' + String(w).padStart(2, '0');
   } catch { return fechaISO.slice(0, 4) + '-W00'; }
 }
-/** v6.10q (19-nov-2026): semana del journal de un PROYECTO que no va en la de cada fecha (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal). */
+/** v6.10q (19-nov-2026): semana del journal de un PROYECTO que no va en la de cada fecha (gen_vibecoding_plan.js › JOURNAL_SEM: S1 entero en 2026-W47, kit v5). */
 const VIBE_JOURNAL_SEMANA: Record<number, string> = {"1":"2026-W47"};
 /** v6.10q: semana del journal (fichero <semana>.md) de una fecha del vibecoding — la de PLAN de un día L-V o el domingo del SHIP / Feynman: la de su
  *  proyecto si VIBE_JOURNAL_SEMANA la fija (S1 entero en 2026-W47); si no, su semana ISO (vibeSemanaISO, que sigue siendo la semana ISO pura). */

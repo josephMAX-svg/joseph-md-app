@@ -577,7 +577,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
             if (t !== '12:00') errores.push(`${tag}: la mañana ENCAPS no cubre 07:15-12:00 (termina ${t})`);
           }
           if (!B_('encaps') || hora('encaps') !== '16:15–17:15') errores.push(`${tag}: falta el ENCAPS 16:15 de la rotación F1`);
-          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-19' ? !/preset «APEX USMLE».*vídeo de método/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.10: la CONFIGURACIÓN (45′) va el mié 18 · v6.10b (decisión 4 de Joseph): jue 19 = D2 en nivel 0, mazo USMLE vacío → vídeos de método (sin UWSA1 ni triaje) · v6.10r: el D2 hace el preset «APEX USMLE» (la configuración no se hizo) + el vídeo de método */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
+          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-19' ? !/sin tarjetas que repasar → vídeos de método/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.10: la CONFIGURACIÓN (45′) va el mié 18 · v6.10b (decisión 4 de Joseph): jue 19 = D2 en nivel 0, mazo USMLE vacío → vídeos de método (sin UWSA1 ni triaje) · v6.10u: el preset vuelve a la configuración (mié 18 de plan); el D2, solo vídeos de método */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
         }
         if (w === 6 && RG2.sabadoTheomed(iso) && bs.length) {
           const viv = EM2.theomedSabadoDe(iso);
@@ -1390,7 +1390,9 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     //   con la fecha de PLAN; diaActual(día real) = el dia de su fecha de plan (fechaPlanDe): jue 19 = 1 · vie 20 = 2 · lun 23 = 3 (mini-sim del vie 20) …
     //   vie 1-ene = 31 (el del jue 31-dic) · sáb 2-ene = 32 · desde el lun 4-ene, por fecha. El mié 18 (sin sesión) y el fin de semana sin sesión
     //   enseñan la próxima sesión (la del día real siguiente con plan).
-    const ESPd = { '2026-11-18': 1, '2026-11-19': 1, '2026-11-20': 2, '2026-11-21': 3, '2026-11-23': 3, '2026-11-27': 7, '2026-11-30': 8, '2026-12-01': 9, '2026-12-04': 12, '2026-12-11': 17, '2026-12-14': 18, '2026-12-18': 22, '2026-12-21': 23, '2026-12-28': 27, '2026-12-31': 30, '2027-01-01': 31, '2027-01-02': 32, '2027-01-04': 33, '2027-03-12': 82 };
+    // v6.10u (jue 19-nov · el jue 19 sin sesión; del vie 20-nov al vie 25-dic cada día real hace el plan de su hábil real anterior): vie 20 = 1 · lun 23 = 2 (D2) ·
+    //   mar 24 = 3 (mini-sim del vie 20) … vie 25-dic = 26 (el del mié 23-dic) · lun 28-dic = 27 y desde ahí, como en la v6.10d
+    const ESPd = { '2026-11-18': 1, '2026-11-19': 1, '2026-11-20': 1, '2026-11-21': 2, '2026-11-23': 2, '2026-11-27': 6, '2026-11-30': 7, '2026-12-01': 8, '2026-12-04': 11, '2026-12-11': 16, '2026-12-14': 17, '2026-12-18': 21, '2026-12-21': 22, '2026-12-25': 26, '2026-12-28': 27, '2026-12-31': 30, '2027-01-01': 31, '2027-01-02': 32, '2027-01-04': 33, '2027-03-12': 82 };
     for (const [iso, d] of Object.entries(ESPd)) { const v = EPn.diaActual('ENCAPS', F6j.f1.inicio, 82, iso); if (v !== d) nErr.push(`(v610-e) diaActual(${iso}) = ${v} (se espera ${d})`); }
     // v6.10d: cada día real del 18-nov al 4-ene → el dia de la fila del SQL con su fecha de PLAN (fechaPlanDe), y cada fila del SQL se pinta en su día real
     //   (fechaRealDe) con el bloque ENCAPS de esa fecha de plan

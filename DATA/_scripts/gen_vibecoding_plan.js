@@ -181,10 +181,10 @@ const isHabil = (s) => EXTRA_VIBE.has(s) || (dow(s) !== 0 && dow(s) !== 6 && !SK
 //   ningún SHIP puede caer en uno (se comprueba abajo). Los L-V sin sesión anteriores al START no cuentan.
 // v6.10d (18-nov-2026): sin los días cuyo plan hace otro día real por ALIAS (mié 18-nov → jue 19): gen_fechas_v6.sinSesionPlan
 const SIN_SESION_VIBE = require('./gen_fechas_v6').sinSesionPlan(require('./gen_fechas_v6').cargarFechasV6()).filter((f) => f >= START).sort();
-// v6.10q (19-nov-2026): semana ISO del journal de un proyecto que no va en la de cada fecha (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal:
-//   S1 corrió una sesión dentro de su semana y se anota entero en 2026-W47, también el mié 25 —plan del lun 23— y el SHIP del dom 29) → VIBE_JOURNAL_SEMANA
-const JOURNAL_SEM = Object.fromEntries(Object.entries(((((require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).alias_frente || {}).vibecoding || {}).journal) || {})
-  .map(([s, w]) => [Number(s.replace(/^S/, '')), w]));
+// v6.10q (19-nov-2026): semana ISO del journal de un proyecto que no va en la de cada fecha → VIBE_JOURNAL_SEMANA. S1 se anota entero en 2026-W47, como
+//   manda el kit v5 de GoodNotes (S01_APEX), aunque sus días crucen de semana (v6.10u: paso 1 vie 20 → paso 5 jue 26-nov y SHIP el dom 29). v6.10u: la tabla vive
+//   aquí (antes, en _fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal, retirado con el alias propio del vibecoding); journal_hoy.js la lee del .ts
+const JOURNAL_SEM = { 1: '2026-W47' };
 // 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
@@ -535,7 +535,7 @@ export function vibeSemanaISO(fechaISO: string): string {
     return d.getUTCFullYear() + '-W' + String(w).padStart(2, '0');
   } catch { return fechaISO.slice(0, 4) + '-W00'; }
 }
-/** v6.10q (19-nov-2026): semana del journal de un PROYECTO que no va en la de cada fecha (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal). */
+/** v6.10q (19-nov-2026): semana del journal de un PROYECTO que no va en la de cada fecha (gen_vibecoding_plan.js › JOURNAL_SEM: S1 entero en 2026-W47, kit v5). */
 const VIBE_JOURNAL_SEMANA: Record<number, string> = ${JSON.stringify(JOURNAL_SEM)};
 /** v6.10q: semana del journal (fichero <semana>.md) de una fecha del vibecoding — la de PLAN de un día L-V o el domingo del SHIP / Feynman: la de su
  *  proyecto si VIBE_JOURNAL_SEMANA la fija (S1 entero en 2026-W47); si no, su semana ISO (vibeSemanaISO, que sigue siendo la semana ISO pura). */

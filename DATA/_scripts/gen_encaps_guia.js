@@ -953,7 +953,7 @@ const ts = `/**
  * Fuentes: filas del SQL vigente (_encaps_mantenimiento_2027.sql = Supabase; no cambia fechas, dia ni códigos del régimen ${META.version}) · runners de
  * DATA/ENCAPS/BANCO_PROPIO publicados en ${WEB} (public/encaps/bp) · material del Drive del 18-oct por código · nota Obsidian del CÓDIGO ·
  * proyecto de Claude del área. Una sesión cuya fila de Supabase no cuadre (dia/código) con la de aquí NO usa la guía (sesionEncapsCuadra).
- * v6.02c (18-oct-2026, E4): nuevo. · ${META.version} (generado ${META.generado}): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)}${ALIAS_S1.length ? ` (${CORR ? CORR.version : 'corrida_s1'}: SIN re-fecha — alias de corrida_s1: cada sesión se hace el hábil siguiente, ${corta(ALIAS_S1[0])} → ${corta(ALIAS_S1[ALIAS_S1.length - 1])}; las fechas de aquí, las de Supabase y las de los runners son de PLAN y la app las muestra con su día real)` : CORR ? ` (corrimiento D1 ${corta(CORR.d1_previo)} → ${corta(CORR.d1)}: ${CORR.perdidos.length} hábiles sin estudio; runners re-fechados por sesión)` : ''}.
+ * v6.02c (18-oct-2026, E4): nuevo. · ${META.version} (generado ${META.generado}): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)}${ALIAS_S1.length ? ` (${CORR ? CORR.version : 'corrida_s1'}: SIN re-fecha — alias de corrida_s1: cada sesión se hace en su día real (fechaRealDe), ${corta(ALIAS_S1[0])} → ${corta(ALIAS_S1[ALIAS_S1.length - 1])}; las fechas de aquí, las de Supabase y las de los runners son de PLAN y la app las muestra con su día real)` : CORR ? ` (corrimiento D1 ${corta(CORR.d1_previo)} → ${corta(CORR.d1)}: ${CORR.perdidos.length} hábiles sin estudio; runners re-fechados por sesión)` : ''}.
  */
 import type { GuiaBloque } from './guia';
 
