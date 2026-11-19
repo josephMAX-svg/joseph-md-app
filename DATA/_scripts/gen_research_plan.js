@@ -663,6 +663,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   PRISMAS:{ label: 'PRISMA-S (búsqueda, 16 ítems)', url: 'https://www.prisma-statement.org/prisma-search' },
   PRISMAF:{ label: 'PRISMA 2020 flow (plantilla + Shiny)', url: 'https://www.prisma-statement.org/prisma-2020-flow-diagram' },
   PRISMAC:{ label: 'PRISMA 2020 checklist 27 ítems (PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/' },
+  PRISMAPDF:{ label: 'PRISMA 2020 · checklist (PDF oficial)', url: 'https://www.prisma-statement.org/s/PRISMA_2020_checklist-ab3g.pdf' }, // verif: curl 19-nov-2026 (200 application/pdf, enlazado desde «PRISMA 2020 checklist» del sitio oficial)
   PROS:   { label: 'PROSPERO (registro, gratis)', url: 'https://www.crd.york.ac.uk/PROSPERO/help/register' },
   OSF:    { label: 'OSF Registries (scoping)', url: 'https://osf.io/registries' },
   EPMC:   { label: 'Europe PMC (Embase parcial)', url: 'https://europepmc.org/' },

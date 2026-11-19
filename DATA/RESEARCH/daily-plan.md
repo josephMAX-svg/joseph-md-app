@@ -281,6 +281,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `PRISMAS` | PRISMA-S (búsqueda, 16 ítems) | https://www.prisma-statement.org/prisma-search | repo (verificada jun-jul 2026) |
 | `PRISMAF` | PRISMA 2020 flow (plantilla + Shiny) | https://www.prisma-statement.org/prisma-2020-flow-diagram | repo (verificada jun-jul 2026) |
 | `PRISMAC` | PRISMA 2020 checklist 27 ítems (PMC) | https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/ | repo (verificada jun-jul 2026) |
+| `PRISMAPDF` | PRISMA 2020 · checklist (PDF oficial) | https://www.prisma-statement.org/s/PRISMA_2020_checklist-ab3g.pdf | curl 19-nov-2026 (200 application/pdf, enlazado desde «PRISMA 2020 checklist» del sitio oficial) |
 | `PROS` | PROSPERO (registro, gratis) | https://www.crd.york.ac.uk/PROSPERO/help/register | repo (verificada jun-jul 2026) |
 | `OSF` | OSF Registries (scoping) | https://osf.io/registries | repo (verificada jun-jul 2026) |
 | `EPMC` | Europe PMC (Embase parcial) | https://europepmc.org/ | repo (verificada jun-jul 2026) |
