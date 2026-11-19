@@ -44,6 +44,8 @@
  * v6.10o (19-nov-2026 · ronda c17 del Calendar, solo TEXTO): banqueo = «En blanco si no descartas 2; con 2, marca · año-número: Pool oficial sin usar → si
  *   faltan, ProMIR/examenesmir (solo MIR oficiales: …)» (el respaldo vuelve a verse en los 110 del Calendar). En la guía medida: quiz del D1 con «tapa las
  *   opciones · Rule-In → Rule-Out» delante del ritmo.
+ * v6.10p (19-nov-2026 · ronda c18 del Calendar, solo TEXTO): en la guía medida, el quiz del D2 abre como el del D1 («Tapa las opciones · Rule-In → Rule-Out
+ *   · 6Q ≈ 10,7′ (…) · las 2 primeras que no entren abren la eval de mañana (…)»): el par ya no queda partido por el ritmo ni tras el corte del Calendar.
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,

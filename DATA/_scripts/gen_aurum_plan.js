@@ -178,6 +178,28 @@ function formatoLectura(tipo) {
   return tipo === 'audiolibro' ? 'audio' : 'lectura';
 }
 
+// ─── v6.10p (auditoría c18 #14, 19-nov-2026): drills cuya SECUENCIA quedaba partida por el corte del Calendar ───
+// El Calendar corta el «qué» del paso DRILL («DRILL · <texto>») a 150 caracteres; en el D55 y el D104 la secuencia que define el ejercicio quedaba a medias
+// con una flecha colgando («(Situacion -> Problema -> Implicacion -> …», «validar -> aislar ('¿que exactamente …?') -> resolver -> …»). Se REORDENA el texto
+// del currículo (la secuencia entera delante, sus ejemplos detrás; el currículo no se toca): exige el tramo original EXACTO (si el currículo cambia, aborta) y
+// que cada palabra del original siga en el texto nuevo (nada se pierde; solo se añaden los rótulos «Banco maestro SPIN», «Aislar:» y «recerrar:»).
+// Remate v6.10p (revisión «visibilidad» BAJA): en el D104 las frases de ejemplo, entre «» (con '…' el corte dejaba la comilla y el «¿» abiertos; el corte trata «…» entero).
+const DRILL_ORDEN = {
+  55: ["Consolida TODA la Fase 3 en un solo banco maestro de 20+ preguntas ordenadas por etapa (Situacion -> Problema -> Implicacion -> Necesidad-beneficio),",
+    "Banco maestro SPIN (Situacion -> Problema -> Implicacion -> Necesidad-beneficio): consolida TODA la Fase 3 en un solo banco de 20+ preguntas ordenadas por etapa,"],
+  104: ["validar -> aislar ('¿que exactamente quieres pensar, el precio o la zona?') -> resolver -> recerrar por resumen ('me dijiste que querias seguridad de titulo y un pago comodo; lo tienes; ¿avanzamos?').",
+    "validar -> aislar -> resolver -> recerrar por resumen. Aislar: «¿que exactamente quieres pensar, el precio o la zona?» · recerrar: «me dijiste que querias seguridad de titulo y un pago comodo; lo tienes; ¿avanzamos?»."],
+};
+const palabras = (s) => { const m = new Map(); for (const w of String(s).toLowerCase().match(/[\p{L}\d]+/gu) || []) m.set(w, (m.get(w) || 0) + 1); return m; };
+function drillOrdenado(d, texto) {
+  const r = DRILL_ORDEN[d]; if (!r) return texto;
+  if (!texto.includes(r[0])) throw new Error(`DRILL_ORDEN D${d}: el currículo ya no trae el tramo a reordenar («${r[0].slice(0, 60)}…») — revisa el mapa`);
+  const nuevo = texto.replace(r[0], r[1]);
+  const a = palabras(texto), b = palabras(nuevo);
+  for (const [w, n] of a) if ((b.get(w) || 0) < n) throw new Error(`DRILL_ORDEN D${d}: el texto reordenado pierde «${w}»`);
+  return nuevo;
+}
+
 // ─── Construir los 130 DiaAurum ───
 const dias = [];
 let date = new Date(cursor);
@@ -208,7 +230,7 @@ for (let i = 0; i < lecciones.length; i++) {
   const p = L.practica || {};
   bloques.push({
     tag: 'PRAC', slot: 'core', min: p.min || 0, formato: 'practica',
-    material: 'Drill del día', leccion: p.texto || '', real: true,
+    material: 'Drill del día', leccion: drillOrdenado(d, p.texto || ''), real: true,
   });
   // L — lectura: libro/audiolibro (audio|lectura · slot 'lectura', en huecos de viaje)
   const lc = L.lectura;

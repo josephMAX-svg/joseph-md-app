@@ -67,7 +67,7 @@
       "objetivo": "Que un APEX multilínea de USMLE enviado desde el atajo llegue ÍNTEGRO a Anki (subdeck correcto) y a Obsidian (nota con caso_clinico + fisio_expandida), con evidencia guardada.",
       "entregable": "Redeploy en n8n de node_parsear_tarjeta_v2_3.js (nodo «Parsear Tarjeta») y node_crear_nota_v2_3.js (nodo «Crear Nota Obsidian») + Publish (n8n 2.x) + DATA/USMLE/_apex_e2e_prueba.json (noteId, subdeck, ruta de la nota, hash de los 2 ficheros) + commit [S1] en joseph-md-app.",
       "aceptacion": [
-        "node scripts/test_parser_multilinea.js en D:/agente_estudio → \"0 failed\" (13/13 passed: REVERSO, CASO_CLINICO, FISIO_EXPANDIDA íntegros; test ya existente, debe seguir verde)",
+        "node D:/agente_estudio/scripts/test_parser_multilinea.js → \"0 failed\" (13/13 passed: REVERSO, CASO_CLINICO, FISIO_EXPANDIDA íntegros; test ya existente, debe seguir verde)",
         "Commit [S1] en joseph-md-app con la evidencia + doc del redeploy (fecha + hash de los 2 ficheros pegados en n8n)",
         "DATA/USMLE/_apex_e2e_prueba.json con la evidencia del APEX de prueba ([TEST S1], is_test: true en el JSON): noteId de Anki, subdeck APEX::USMLE::<sistema>, ruta de la nota en 01_USMLE, hash de los 2 ficheros",
         "Comprobado en vivo que los 2 nodos Code publicados en n8n corren los ficheros actuales (iguales ignorando finales de línea) y que la tarjeta muestra el REVERSO completo en Anki — captura pegada en el journal"

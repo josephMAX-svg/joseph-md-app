@@ -341,7 +341,9 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       // v6.10o (rev. c17, cambios #7): los 110 enseñaban «… Ctrl+F «v2.5.1» en cada nodo: debe salir …» (frase a medias) y ya no cómo pegar → las 3 cosas,
       //   compactas y en el orden en que se hacen: lo que NO se toca · la cadena de teclas · «Ctrl+F «v2.5.1» = código nuevo»; el detalle (clic en el código
       //   antes del Ctrl+A, los modos), detrás (entero en la app)
-      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'No toques «Anki + Obsidian» · VS Code: Ctrl+A, Ctrl+C → nodo: doble clic → clic en el código → Ctrl+A, Ctrl+V · Ctrl+F «v2.5.1» = código nuevo (debe salir en cada nodo). En VS Code, el Ctrl+A, Ctrl+C es del fichero; en n8n, sin ese clic en el código el Ctrl+A, Ctrl+V no lo reemplaza. Los modos (All Items / Each Item) tampoco se tocan.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      // v6.10p (rev. c18, cambios #6): con la cadena de teclas el aviso de los modos caía tras el corte (130) → los 2 avisos juntos delante («No toques
+      //   «Anki + Obsidian» ni los modos») y la cadena del nodo con comas (cabe entera con el Ctrl+F «v2.5.1»); qué modos son, detrás (entero en la app)
+      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'No toques «Anki + Obsidian» ni los modos · VS Code: Ctrl+A, Ctrl+C → nodo: doble clic, clic en el código, Ctrl+A, Ctrl+V · Ctrl+F «v2.5.1» = código nuevo (debe salir en cada nodo). En VS Code, el Ctrl+A, Ctrl+C es del fichero; en n8n, sin ese clic en el código el Ctrl+A, Ctrl+V no lo reemplaza. Los modos (Run Once for All Items / Each Item) de los 2 nodos se quedan como están.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
       // v6.10i (auditoría del volcado c12): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el «qué» lleva las marcas de éxito (Parsear acaba en «murmur
       //   LOUDER.)» · anki-ok + ankiNoteId · success + filepath) y el «cómo» EMPIEZA por la carpeta del .txt y la cadena de teclas (en la v6.10h la ruta iba al final
@@ -480,8 +482,15 @@ const textosQSDe = (iso: string): boolean => iso >= '2026-11-18' && iso <= FECHA
  *  en el carácter ≈150, que el Calendar corta) y pone el número del proyecto en el commit y el verify; fuera de F1, sin cambio (2027 idéntico). */
 function vibeComoTipoDe(dia: DiaVibe, p: VibeProyecto | undefined, iso: string): string {
   const base = VIBE_COMO_TIPO[dia.tipo] ?? VIBE_COMO_TIPO.construir;
-  if (dia.tipo !== 'ship-prep' || !p || !textosQSDe(iso)) return base;
-  return `Lo que falle → SHIP S${p.s} del ${fCorta(p.ship)} (flexible). ${base.replace(' Lo que falle va al SHIP del domingo.', '').replace(/<n>/g, String(p.s))}`;
+  if (dia.tipo !== 'ship-prep') return base;
+  // v6.10p (rev. c18, diffs #21): también fuera de F1 (2027) el commit y el verify llevan el número real de la semana («Commit [S<n>]» y
+  //   «verify_vibecoding.js <n>» quedaban sin sustituir y en cmd «<n>» es una redirección); en el taper (S13+, sin proyecto) el plan pide el
+  //   verify con --sensores, sin --ok-manual
+  const t = !p && dia.semana > 12 ? vibeTaperDe(dia.semana) : undefined;
+  const nS = String(p ? p.s : dia.semana);
+  const cuerpo = (t?.sensores.length ? base.replace('node DATA/_scripts/verify_vibecoding.js <n> (+ --ok-manual <i> si ya viste el criterio manual)', 'node DATA/_scripts/verify_vibecoding.js --sensores') : base).replace(/<n>/g, nS);
+  if (!p || !textosQSDe(iso)) return cuerpo;
+  return `Lo que falle → SHIP S${p.s} del ${fCorta(p.ship)} (flexible). ${cuerpo.replace(' Lo que falle va al SHIP del domingo.', '')}`;
 }
 /** v6.10l (rev. c15, cambios #14): el aviso de una semana con flag deload sale de los minutos REALES de sus días (VIBE_DIAS): S7 = «carga al 50 % (2 días
  *  de 45′ + 3 de 15′)» · S13-S16 (taper, todos de 15′) = «Mantenimiento: 15′/día» · S17-S20 (todos de 5′) = «Deload total: journal 5′». Antes el texto de
@@ -565,7 +574,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     const finPaso = `04:${String(15 + (dia.min >= 15 ? 2 : 1) + dia.min - 5).padStart(2, '0')}`;
     pasos = textosQSDe(iso)
       ? [objetivo, P(dia.min - 5, `${VIBE_TIPO_LABEL[dia.tipo]} · ${dia.paso}`, (VIBE_COMO_TIPO[dia.tipo] ?? VIBE_COMO_TIPO.construir).replace('A las 04:55 paras aunque falte.', `A las ${finPaso} paras aunque falte.`)), P(3, 'CIERRE · journal (3 líneas)', `Qué hice · qué quedó · semáforo de sensores. El bloque termina a las ${franja.split('–')[1]}; ${fxV ? 'a esa hora sigue el siguiente bloque fijo de hoy (sábado que recupera, sin Anki).' : 'hasta las 05:00 (Anki), libre: no es estudio.'}`, journal)]
-      : [objetivo, P(dia.min - 5, `${VIBE_TIPO_LABEL[dia.tipo]} · ${dia.paso}`, VIBE_COMO_TIPO[dia.tipo] ?? VIBE_COMO_TIPO.construir), P(3, 'CIERRE · journal (3 líneas)', 'Qué hice · qué quedó · semáforo de sensores. El resto de la franja (hasta las 05:00) queda libre: no se rellena.', journal)];
+      : [objetivo, P(dia.min - 5, `${VIBE_TIPO_LABEL[dia.tipo]} · ${dia.paso}`, vibeComoTipoDe(dia, p, iso)), P(3, 'CIERRE · journal (3 líneas)', 'Qué hice · qué quedó · semáforo de sensores. El resto de la franja (hasta las 05:00) queda libre: no se rellena.', journal)];
   } else {
     pasos = [P(dia.min, `JOURNAL 5′ · ${dia.paso}`, 'Solo journal (3 líneas) y, si quieres, el audio B del SYNAPSE. Semana de deload total: no se construye nada.', journal)];
   }
@@ -890,7 +899,11 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     SYN_HECHO,
     // v6.10o (rev. c17, cambios #6): el día de un GATE la línea de fase (fase n/6, su quiz oficial y la consecuencia) va DELANTE del recordatorio del horario
     //   (el sáb 12-dic el corte en 240 dejaba «… Base cero · hoy, GATE de la fase …» tras el horario del sábado); los demás días, al final, como estaba
-    { aviso: ((fa) => (/GATE de la fase/.test(fa) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las 21:00), /, '$1 · '), s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
+    // v6.10p (rev. c18, vetadas #14): también los SÁBADOS de F1 sin gate (sáb 5 y 26-dic: el horario del sábado llenaba el corte y la línea de fase
+    //   quedaba en «· Usar …» / «· gate: …») y la 1.ª parte de un gate con 2 fechas. Tras la línea de fase, el sábado va con lo esencial delante (A/B/C a
+    //   las 21:00, el Anki de las 21:30), luego el horario del día («Hoy: gimnasio …»; antes, entre paréntesis en medio: el corte lo dejaba abierto) y
+    //   al final el recordatorio del domingo («El SHIP del vibecoding es el domingo.»: el corte lo dejaba sin verbo)
+    { aviso: ((fa) => (/GATE de la fase|parte del GATE/.test(fa) || (fa && w === 6 && textosQSDe(iso)) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las 21:00, al volver del baile) \(([^()]+)\)([^.]*\.)(.*)$/u, '$1$3 Hoy: $2.$4'), s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
       planB: synPlanBDe(iso) });
 }
 /** v6.10 (17-nov-2026): SESIÓN DE RECUPERACIÓN del SYNAPSE a hora fija (synapseDailyPlan.SYN_REC_F1, gen_synapse_plan.js › REC_V610 = _fechas_v6.json ›
@@ -933,6 +946,11 @@ function synFaseAvisoDe(iso: string): string {
   const f = synFaseBCDe(iso);
   if (!f) return '';
   const n = SYN_FASES_BC.length;
+  // v6.10p (rev. c18, diffs #17/#18): gate en 2 fechas → en la 1.ª solo lo de hoy (el quiz oficial, con su consecuencia) y lo que falta con la fecha de
+  //   la 2.ª (de PLAN: corridaTexto la pasa al día real); en la 2.ª, el gate entero (abajo). Antes las 2 fechas pedían el gate entero: el jue 10-dic, «los
+  //   5 workflows de memoria» antes del ensayo que los enseña; el 2-dic, el quiz de Claude Code 101 antes de su curso
+  const g1 = f.gate1 && f.gateFechas.length === 2 && f.gateFechas[0] === iso ? f.gate1 : undefined;
+  if (g1) return `Base cero · hoy, 1.ª parte del GATE ${f.id}/${n} · ${f.corto}: ${g1.hoy}${g1.quiz ? ' (si no apruebas: al PC del domingo, solo lo fallado)' : ''}; el ${fCorta(f.gateFechas[1]!)}, ${g1.resto}.`; // la fecha antes del carácter 230 (control 26j)
   if (f.gateFechas.includes(iso)) {
     // sin fechas futuras: va al final del aviso y el Calendar lo corta en 240 (control 26j); «el PC del domingo» = el siguiente (SHIP, flexible)
     // v6.10l (rev. c15, cambios #18): la regla del suspenso delante y corta (el corte en 240 dejaba «Si no lo apruebas: se repite en el PC …»)
@@ -944,8 +962,10 @@ function synFaseAvisoDe(iso: string): string {
     //   («… quiz» oficial aprobado (si no apruebas: al PC del domingo, solo lo fallado) + los 5 workflows …»); con uno solo, al final, como estaba. El
     //   paréntesis final del 2.º requisito («(recall en blanco; el ensayo no trae quiz)») no va en el aviso (con él pasaba de 240 y el corte lo dejaba
     //   abierto): lo dicen el paso A del ensayo (sáb 12-dic) y la fase en la app (SYN_FASES_BC.gate)
+    // v6.10p (rev. c18, diffs #17): el 2.º requisito puede llevar su paréntesis corto dentro («+ los 5 workflows de memoria (recall en blanco) en el
+    //   journal»); el paréntesis FINAL sigue fuera del aviso
     if (/^«/.test(f.gate)) {
-      const m = /^(«[^»]+»[^+]*? aprobados?)( \+ [^()]*?)(?: \([^()]*\))?\.$/u.exec(f.gate);
+      const m = /^(«[^»]+»[^+]*? aprobados?)( \+ (?:[^()]|\([^()]{1,30}\))*?)(?: \([^()]*\))?\.$/u.exec(f.gate);
       return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${m ? `${m[1]} (si no apruebas: al PC del domingo, solo lo fallado)${m[2]}.` : `${f.gate} Si no apruebas: al PC del domingo, solo lo fallado.`}`;
     }
     return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}`;
@@ -1777,6 +1797,28 @@ export function livFuentesDe(fuente: string): { recursos: GuiaRecurso[]; notas: 
   for (const f of LIV_FUENTES) if (f.re.test(fuente)) { recursos.push(R(f.t, f.url)); if (f.nota) notas.push(f.nota); }
   return { recursos, notas };
 }
+/** v6.10p (rev. c18, cambios #3/#4 · vetadas #13): pertinencia de cada fuente de la lista del módulo («A · B · C» de `l.fuente`) con el tema del día, para
+ *  la LECTURA sin medir de 2027: `tema` = de qué trata (cuenta las veces que aparece en tema + estudio del día); `solo` = fuente específica (un estudio o
+ *  una guía de otro subtema: sin su tema hoy, no se elige). Sin datos de pertinencia, la 1.ª de la lista. */
+const LIV_PERTINENCIA: Array<{ re: RegExp; tema: RegExp; solo?: boolean }> = [
+  { re: /^fichas semaglutida/, tema: /semaglutida|tirzepatida|orforglipron|STEP|SELECT|SURMOUNT|ACHIEVE|cifras/gi },
+  { re: /^Meta-análisis AI/, tema: /ayuno|intermitente|meta-?an[aá]lisis|restricci[oó]n/gi, solo: true },
+  { re: /^National Weight Control Registry/, tema: /NWCR|National Weight Control|mantien/gi },
+  { re: /^ASMBS\/IFSO/, tema: /cirug|bari[aá]tr|sleeve|bypass|Y-Roux|deriva|ASMBS|IFSO|NIH 1991|califica/gi, solo: true },
+  { re: /^Portal público de registros sanitarios DIGEMID/, tema: /registro|DIGEMID|condici[oó]n de venta|receta/gi },
+  { re: /^cotizaciones fechadas/, tema: /cotiza|precio/gi },
+  { re: /^QF\/abogado/, tema: /legal|magistral|abogado|\bQF\b/gi },
+  { re: /^LIVIANO_LOGISTICA/, tema: /fr[ií]o|refrigera|LIVIANO_LOGISTICA/gi },
+];
+/** v6.10p: la fuente CORTA de la LECTURA sin medir (una sola: la más pertinente; un paréntesis largo —> 30— fuera del nombre) y si el módulo trae más */
+export function livFuenteCortaDe(l: DiaLiviano): { corta: string; varias: boolean } {
+  const piezas = l.fuente.split(' · ').map((x) => x.trim()).filter(Boolean);
+  const txt = `${l.tema} ${l.estudio}`;
+  const puntos = (p: string): number => { const r = LIV_PERTINENCIA.find((x) => x.re.test(p)); if (!r) return 0; const k = (txt.match(r.tema) ?? []).length; return k ? 2 * k : r.solo ? -1 : 0; };
+  let mejor = piezas[0] ?? l.fuente, pm = puntos(mejor);
+  for (const p of piezas.slice(1)) { const x = puntos(p); if (x > pm) { mejor = p; pm = x; } }
+  return { corta: mejor.replace(/\s*\([^()]{31,}\)$/u, ''), varias: piezas.length > 1 };
+}
 /** Días de LIVIANO sin lectura nueva (Palmerton de tarjetas, repasos, metáforas, síntesis, revisión trimestral). */
 const LIV_SIN_LECTURA = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de metáforas|Síntesis módulo|REVISIÓN TRIMESTRAL/i;
 /** v6.10e (revisión del 18-nov · regresiones-4): lo que se LEYÓ de verdad en una lección (la fuente LIBRE de su paso LECTURA, en corto), para corregir
@@ -1867,7 +1909,28 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
       const urls = [...new Set(lectF1.map((x) => x[2]))];
       recursos.unshift(...urls.map((u) => R(u.includes('dailymed') ? `Ficha técnica FDA (DailyMed) · ${u.includes('ee06186f') ? 'WEGOVY' : 'ZEPBOUND'}` : u.includes('pubmed') ? `PubMed ${u.replace(/\D/g, '')} (resumen)` : `PMC ${(/PMC\d+/.exec(u) || [''])[0]} (texto libre)`, u)));
     }
-    else if (lmin) pasos.push(P(lmin, `LECTURA en ${l.fuente} (sección del tema, sin medir): ${l.estudio}`, `${lmin}′: busca en la fuente la sección del tema de hoy y léela activamente (causa → efecto). Si la fuente es de pago o no carga: la siguiente fuente libre de la lista.`, recursos[0] ? { t: 'fuente ↗', url: recursos[0].url } : undefined));
+    // v6.10p (rev. c18, cambios #3/#4 · vetadas #13): el CONTENIDO DEL DÍA delante (tema o «TAREA: …») y UNA fuente corta, la más pertinente, al principio
+    //   del «cómo» (livFuenteCortaDe; la lista entera del módulo, al final). En la v6.10o la lista del módulo iba delante (la misma todos los días) y el corte
+    //   del Calendar (150) no dejaba ver el tema en 7 lecturas (ACCESO PERÚ perdía su TAREA) y en 6 dejaba un rótulo colgando. Un drill de cifras ciego del
+    //   mismo día (D35) no enseña sus cifras en la lectura: sus respuestas, con su fuente, están en el drill (se corrigen tras escribirlas)
+    else if (lmin) {
+      const { corta, varias } = livFuenteCortaDe(l);
+      const num = (s: string): string[] => s.match(/\d+(?:,\d+)?/g) ?? [];
+      const resp = new Set((drill?.qs ?? []).flatMap((q) => num(q.a)));
+      const revela = num(l.estudio).filter((x) => resp.has(x)).length >= 2;
+      const queL = revela ? 'LECTURA (sin medir), DESPUÉS de la tabla en blanco: en la fuente, solo las cifras ancla que fallaste (las respuestas, con su fuente, están en el drill)' : `LECTURA (sin medir): ${l.estudio}`;
+      // remate v6.10p (revisión «verdad» MEDIA): (1) un día de TAREA (registro, cotizaciones, consulta a QF/abogado) no se «lee»: el «cómo» dice con qué se
+      //   hace y que cada dato va con su fecha; (2) el enlace del paso es el 1.er recurso del bloque (la URL no cambia): si no es el de la fuente nombrada,
+      //   su rótulo dice adónde lleva (antes «fuente ↗» llevaba, p. ej., al índice de la OMA en un día de «Fuente: ASMBS/IFSO 2022») y el «cómo» lo aclara
+      const tarea = /\bTAREA:/.test(l.estudio);
+      const rF = LIV_FUENTES.find((f) => f.re.test(corta));
+      const otroEnlace = !!recursos[0] && (!rF || rF.url !== recursos[0].url);
+      const cola = `Si ${tarea ? 'no está disponible' : 'es de pago o no carga'}: la siguiente ${tarea ? '' : 'libre '}de la lista del módulo${varias ? ` (${l.fuente})` : ''}.${otroEnlace ? ` El enlace de este paso abre ${recursos[0]!.t}${rF ? `; el de ${corta}, en los recursos del bloque` : ''}.` : ''}`;
+      pasos.push(P(lmin, queL, tarea
+        ? `Fuente de la TAREA: ${corta}. ${lmin}′: haz la TAREA y anota cada dato con su fecha y su fuente (lo que no encuentres, tal cual: no se supone). ${cola}`
+        : `Fuente: ${corta}. ${lmin}′: busca en ella la sección del tema de hoy y léela activamente (causa → efecto). ${cola}`,
+      recursos[0] ? { t: otroEnlace ? `${recursos[0].t} ↗` : 'fuente ↗', url: recursos[0].url } : undefined));
+    }
     if (segunda) pasos.push(P(segunda, `2.ª PASADA (${segunda}′) · solo lo subrayado de la lectura de hoy, a 2× (≤ media lectura + 1′${segunda < Math.round((lect ? palabras : palF1) / PPM_EN / 2 + 1) ? `; acotada a ${segunda}′: lo más subrayado primero` : ''})`, 'Relee únicamente los párrafos que subrayaste (cifras y mecanismo) y con ellos escribe la tarjeta propia del «¿por qué?». Si no subrayaste nada, relee el apartado de resultados.'));
     pasos.push(P(tarj, sinLectura ? `ESTUDIO · ${l.estudio}` : `TARJETAS de MECANISMO de hoy (${cards.length} en ${deck})${extraProp ? ` + ${extraProp} propia${extraProp > 1 ? 's' : ''} más del subrayado (2′ c/u)` : ''}`,
       sinLectura ? `Hoy no hay lectura nueva: ${l.estudio}. Tarjetas en ${deck}.` : `Empresa › LIVIANO › Academia › HOY › «Anki de hoy» (o CSV DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv) → impórtalas a ${deck} + 1 propia si falta un «¿por qué?». Regla del frente: tu anverso, sin cloze.`));
@@ -2056,6 +2119,10 @@ function bizTrackerSoloDe(sab: string): string[] {
  *  v6.09 (rev. datos 7): con la clase en vivo (sabadoTheomed) el cierre NUNCA va a las 14:00 (revisión 14:00-14:30 + preparar la clase 14:45): ≤ 15′ →
  *  14:30 · 16-40′ → 07:45 (antes del gimnasio) · > 40′ → no cabe en ningún hueco del sábado: se deja en 07:45 con `excede: true` y check_rutina_guia.js
  *  ABORTA con un error explícito (hay que partirlo a mano). */
+/** remate v6.10p (revisión «verdad»/«visibilidad» BAJA): nombre de una lectura/OUTPUT de Business = el texto hasta el primer «:» FUERA de paréntesis. Antes,
+ *  hasta el primer «:» a secas: en el OUTPUT S7 y el S10 caía dentro de un paréntesis («(1 página», «(sin testimonios de pacientes») y el título, el paso de
+ *  1′ y el TRACKER lo dejaban abierto (el sáb 6-feb, pegado a los ítems del tracker). Sin «:» fuera de paréntesis, el texto entero. */
+const nomLecturaDe = (s: string): string => { let d = 0; for (let i = 0; i < s.length; i++) { const ch = s[i]; if (ch === '(') d++; else if (ch === ')' && d) d--; else if (ch === ':' && !d) return s.slice(0, i); } return s; };
 export function bizCierreDe(sab: string): { fecha: string; ini: string; fin: string; outs: Array<{ r: DiaBiz; entero: boolean }>; motivo: string | null; soloTracker: string[]; excede?: true } | null {
   if (sabadoLibre(sab)) return null; // v6.09: sábado sin sesión (viaje) → su cierre va con el del sábado siguiente (bizOutputsDeSemana)
   const outs = bizOutputsDeSemana(sab);
@@ -2152,7 +2219,9 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
         `El ${fCorta(x)} no hubo sesión (viaje) y esa semana no tuvo OUTPUT${sigOut ? ` (el ${sigOut.lectura.split(':')[0].split(' · ')[0]} corrió al ${fCorta(sigOut.fecha)}, tras su última lectura)` : ''}: la fila de ESA semana se llena hoy, con los datos de su revisión ${revisionFicheroDe(x).replace('.md', '')}${revisionDomingoDe(x) ? ` (hecha el ${fCorta(revisionDomingoDe(x)!.domingo)} a la vuelta del viaje)` : ', que también se hace hoy'}.`, { t: '◆ 01_PULSO', url: PULSO_OBS }));
     }
     for (const { r, entero } of c ? c.outs : bizOutputsDeSemana(sab)) {
-      const nom = r.lectura.split(':')[0];
+      // remate v6.10p: en el TRACKER y el «Releer», el nombre corto («OUTPUT S10») cuando el de antes del «:» dejaba un paréntesis abierto (S7, S10): con el
+      //   nombre entero (≈130) el corte del Calendar escondía los ítems del tracker; el nombre entero va en el título y en el paso de 1′ del día del OUTPUT
+      const nom = nomLecturaDe(r.lectura) === r.lectura.split(':')[0] ? r.lectura.split(':')[0] : (/^OUTPUT (?:S\d+|extra)/.exec(r.lectura)?.[0] ?? nomLecturaDe(r.lectura));
       if (!entero && arrastrado(r)) { pasos.push(
         P(10, `TRACKER semanal (1 fila) del ${nom} — semana del ${fCorta(lunesDeIso(r.fecha))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, `Del OUTPUT del ${r.wd.toLowerCase()} ${Number(r.fecha.slice(8))}: el ${fCorta(addDias(r.fecha, 6 - dow(r.fecha)))} no hubo sesión (viaje) → la fila de ESA semana se llena hoy (mismos datos que su revisión ${revisionFicheroDe(addDias(r.fecha, 6 - dow(r.fecha))).replace('.md', '')}${revisionDomingoDe(addDias(r.fecha, 6 - dow(r.fecha))) ? `, hecha el ${fCorta(revisionDomingoDe(addDias(r.fecha, 6 - dow(r.fecha)))!.domingo)} a la vuelta del viaje` : ', que también se hace hoy'}).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
         P(5, `Releer la página del ${nom} y cerrarla`, 'Corrige 1 cosa; ✓ en Empresa › Business › HOY.'),
@@ -2225,7 +2294,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   }
   if (modo === 'OUTPUT') {
     const pasos = [
-      P(1, `${/^OUTPUT/.test(r.lectura) ? r.lectura.split(':')[0] : `OUTPUT · ${r.lectura.split(':')[0]}`}`, 'Lee el entregable y la acción.'),
+      P(1, `${/^OUTPUT/.test(r.lectura) ? nomLecturaDe(r.lectura) : `OUTPUT · ${nomLecturaDe(r.lectura)}`}`, 'Lee el entregable y la acción.'),
       P(22, `Escribir: ${r.lectura}`, `Página nueva en Obsidian › 02_EMPRESA FINANZAS › 01_PULSO. ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00). Terminado > perfecto.`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
       P(2, 'Guardar', (() => { // v6.07 (fix H5): el cierre va donde diga bizCierreDe (sábado tras la revisión, o el día hábil si el sábado es protegido)
         const sabO = addDias(iso, 6 - dow(iso)), cO = bizCierreDe(sabO);
@@ -2234,7 +2303,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
           : `El sábado ${cO ? cO.ini : bizSabIni(sabO)} (${cO && aMin(cO.ini) < aMin(revisionIniDe(sabO)) ? `antes del gimnasio; la revisión semanal es a las ${revisionIniDe(sabO)}` : 'tras la revisión semanal'}): tracker semanal + cierre (15′).`; // v6.09: el cierre de 2 semanas del sáb 28-nov va a las 07:45
       })()),
     ];
-    return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.lectura.split(':')[0]} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
+    return bloque(franja, 'business', `BUSINESS D${r.d} · ${nomLecturaDe(r.lectura)} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
       { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ ${cierreOutput(iso)} (tracker + cierre).`, bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') });
   }
   const tramo = bizTramoDe(r); // v6.03: por fila del plan (libro + nº de lectura), no por fecha

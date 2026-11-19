@@ -93,12 +93,24 @@
  *   («la eval, siempre por PC»). La eval anclada lo dice sin condición. El carril SÁBADO (eval sin runner) no cambia.
  *   Remate: la eval de un código también por el móvil (su CIERRE lleva el código; solo la MIX va siempre por PC) · rutas de --registrar entre comillas · el
  *   sáb 2-ene (F1 en sábado: --semana no arma su eval) añade «+ --eval 2027-01-02» a la receta de runners.
+ * v6.10p (19-nov-2026, auditoría del volcado c18): solo texto (mismos pasos y minutos). (1) dias-clave #0: la eval es MIX o de UN código por los códigos de su
+ *   runner (rEval.j.codigo; sin runner, la regla de gen_encaps_minisim.js --eval: tras un mini-sim o sin código = MIX), no por ir tras un mini-sim: el mar 24-nov
+ *   (EXCEPCIÓN de I-3) también vale por el CIERRE «Eval anclada» con su código. (2) vetadas-cortes #9: el Registro de F1 dice DELANTE del corte del Calendar lo que
+ *   no puede faltar: «qué» con las 2 rondas, «cada uno por UNA vía» y qué hacer con las de QX; «cómo» con la vía (b) del móvil (CIERRE del banco + CIERRE «Eval
+ *   anclada» con el código, o «la eval MIX, solo por PC») y DESPUÉS los 2 comandos --registrar enteros (la cadena se ve entera). (3) diffs #16: la receta de runners
+ *   ya no junta «--semana X + --eval Y» (gen_encaps_minisim.js despacha --eval antes que --semana: pegada en una línea solo corría --eval): 2 comandos con «→».
+ *   (4) diffs #15: el CARRIL SÁBADO registra 2 rondas, banco y eval (RE-TEST de un simulacro ya registrado: su runner no se puede volver a registrar —mismo id—,
+ *   así que la eval va por CIERRE tipo «Eval anclada», uno por código fallado) y el «Hecho» lo pide. (5) vetadas-cortes #11 / diffs #20: el sub-eje y la cola larga
+ *   del título, del BANCO DEL DÍA (ciego), del SECUNDARIO y del plan B van SIN las cifras-respuesta (src/lib/encapsCiego.ts: «Suplementación por grupo (cifras:
+ *   dosis, frecuencia y duración) en MEF, escolar y lactante»); QX se busca por el nombre del tema, que no las lleva.
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const { ROOT, cargarModuloTS } = require('./usmle/cargar_ts');
 const CAT = require('./encaps_guia_catalogo');
+// v6.10p (auditoría c18 · vetadas-cortes #11): el rótulo del sub-eje SIN las cifras-respuesta, el mismo que pinta la app (src/lib/encapsCiego.ts)
+const { subtemaCiego, ENCAPS_SUBEJE_CIEGO } = cargarModuloTS(path.join('src', 'lib', 'encapsCiego.ts'));
 const RF1 = CAT.RECETA_F1; // v6.09b (lote 1-bis G): reparto medido de la hora 16:15 en F1 (desde el mié 18-nov; el carril SÁBADO de 2027, sin cambio)
 
 const argv = process.argv.slice(2);
@@ -266,11 +278,13 @@ const DOM_LLEGADA = (JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'ENCA
 /** Bancos de F1 (lun-jue) en [desde, hasta] sin su eval o sin su banco generados (los mini-sims, aparte). */
 const bancosSinRunner = (desde, hasta) => FILAS.filter((r) => r.fecha >= desde && r.fecha <= hasta && r.tipo === 'banqueo1h' && !PRETEST_FECHAS.has(r.fecha)
   && (!fs.existsSync(path.join(BP, `eval_${r.fecha}.json`)) || !fs.existsSync(path.join(BP, `banco_${r.fecha}.json`)))).map((r) => r.fecha);
-/** «node … --eval 2026-11-24 → --banco 2026-11-24 (y lo mismo el 25 y el 26) → sync → guía → deploy (o pídeselo a Claude)» */
+/** «node … --eval 2026-11-24 → --banco 2026-11-24 (y lo mismo el 25 y el 26) → sync → guía → deploy (o pídeselo a Claude); --eval y --banco: …»
+ *  remate v6.10p (revisión «verdad» BAJA): «→ --banco …» no se puede pegar tal cual en la consola → detrás de la cadena, que son DOS órdenes del mismo script
+ *  (la cadena entera en órdenes separadas pasaba de 440 y el corte del «Ojo» la escondía entera del Calendar del lun 23-nov; así la cadena se ve como antes) */
 const cmdRunnersDias = (fechas) => {
   const [f0, ...resto] = fechas;
   const pasos = [!fs.existsSync(path.join(BP, `eval_${f0}.json`)) ? `--eval ${f0}` : null, !fs.existsSync(path.join(BP, `banco_${f0}.json`)) ? `--banco ${f0}` : null].filter(Boolean);
-  return `node DATA/_scripts/gen_encaps_minisim.js ${pasos.join(' → ')}${resto.length ? ` (y lo mismo el ${resto.map((f) => Number(f.slice(8))).join(' y el ')})` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (o pídeselo a Claude)`;
+  return `node DATA/_scripts/gen_encaps_minisim.js ${pasos.join(' → ')}${resto.length ? ` (y lo mismo el ${resto.map((f) => Number(f.slice(8))).join(' y el ')})` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (o pídeselo a Claude)${pasos.length > 1 ? '; --eval y --banco son 2 órdenes («node DATA/_scripts/gen_encaps_minisim.js» con cada una)' : ''}`;
 };
 /** v6.10j (auditoría c14, dias-clave #1): lunes de la semana de una fecha de plan. */
 const lunesDe = (iso) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
@@ -373,11 +387,24 @@ const PASO_ARRANQUE = (runners, sinRunner = '') => ({
 //   Remate v6.10o (revisión «verdad» #3/#7): conEval = 'mix' (eval tras un mini-sim o sin código: su CIERRE es MIX → la eval solo por PC) o true (eval del código
 //   de la sesión anterior: su CIERRE tipo «Eval anclada» lleva ese código y gen_encaps_semana la cuenta → también vale por el móvil). Las rutas, entre comillas:
 //   la carpeta de descargas lleva espacios y --registrar solo toma el argumento siguiente
-const REGISTRO_RUNNER = (r, tipo, sab = null, conEval = false) => sab
-  ? `Una sola vía (nunca las dos): (a) en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (guarda las preguntas en TRACKING_ERRORES) — preferida; o (b) en el móvil, CIERRE DE SESIÓN ${tipo} desde la fila D${sab.host.dia} del ${corta(sab.host.fecha)} + en el PC node DATA/_scripts/gen_encaps_semana.js --pull (el del cierre semanal), que la trae al registro. ${sab.filaCierre}; el cierre guarda n · seguras · dudosas · fallos por subtipo · t medio.`
-  : conEval
-    ? `Una sola vía por ronda (nunca las dos): (a) en el PC, «Generar JSON» en los 2 runners → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON del banco>" --append → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON de la eval>" --append (guardan las preguntas en TRACKING_ERRORES) — preferida; o (b) en el móvil, el banco con ENCAPS → Plan → HOY → CIERRE DE SESIÓN tipo ${tipo} con n · seguras · dudosas · fallos por subtipo · t medio (el --pull del cierre semanal lo trae al registro); ${conEval === 'mix' ? 'la eval de hoy es MIX (tras el mini-sim): solo por PC con su JSON (su CIERRE no se reparte por código).' : 'la eval, igual: su JSON por PC (preferida) o, en el móvil, su CIERRE tipo «Eval anclada» (lleva su código).'}`
+// v6.10p (auditoría c18 · dias-clave #0 / vetadas-cortes #9): en F1 `evalCod` = el código de la eval (string) o null = MIX, por los códigos de su runner
+//   (evalCodigoDe), no por ir tras un mini-sim · el «cómo» abre con la vía (b) del móvil (lo que el Calendar escondía tras los 2 comandos) y sigue con la vía (a)
+//   y sus 2 comandos --registrar en cadena (el corte del Calendar alarga hasta el final de la cadena: se ven enteros). Las de QX, en el «qué» y, enteras, al final.
+//   (diffs #15) En el CARRIL SÁBADO, «Banco» por una vía y «Eval» por CIERRE «Eval anclada», uno por código fallado: es un RE-TEST de un simulacro ya registrado
+//   (su runner exporta el mismo id y --registrar no lo duplica) o de un simulacro de plataforma (sin JSON)
+const CMD_REG2 = 'node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON del banco>" --append → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON de la eval>" --append';
+const EVAL_SAB_CIERRE = 'un CIERRE tipo «Eval anclada» por código fallado (n = sus preguntas de las 5; el código, a mano: el formulario propone MIX), y el mismo --pull lo trae al registro; su JSON no: el runner del simulacro ya está registrado con ese id (--registrar no lo duplica) y el de plataforma no lo tiene';
+//   El cuerpo del sábado en el Calendar va al límite (2400): lo que va DETRÁS de la vía (b) del banco («--registrar guarda …», «el del cierre semanal») sale de su
+//   cláusula visible para que la eval quepa sin que el corte esconda esa vía
+const REGISTRO_RUNNER = (r, tipo, sab = null, evalCod) => sab
+  ? `Banco, una vía (nunca las dos): (a) en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append — preferida; o (b) en el móvil, CIERRE DE SESIÓN ${tipo} desde la fila D${sab.host.dia} del ${corta(sab.host.fecha)} + en el PC node DATA/_scripts/gen_encaps_semana.js --pull, que la trae al registro. --registrar guarda las preguntas en TRACKING_ERRORES; el --pull es el del cierre semanal. Eval: ${EVAL_SAB_CIERRE}. ${sab.filaCierre}; el cierre guarda n · seguras · dudosas · fallos por subtipo · t medio.`
+  : evalCod !== undefined
+    ? `${evalCod ? `(b) móvil: CIERRE tipo ${tipo} + CIERRE «Eval anclada» con el código ${evalCod}` : `(b) móvil: solo el banco (CIERRE tipo ${tipo}); la eval MIX, solo por PC`} · (a) PC, preferida: «Generar JSON» en los 2 runners → ${CMD_REG2} (guardan las preguntas en TRACKING_ERRORES). Nunca las dos vías para la misma ronda. Con (b), ${evalCod ? 'cada CIERRE' : 'el CIERRE'} (ENCAPS → Plan → HOY → CIERRE DE SESIÓN) lleva n · seguras · dudosas · fallos por subtipo · t medio y el --pull del cierre semanal lo trae al registro${evalCod ? '' : '; la eval MIX no va por CIERRE: no se reparte por código'}.`
     : `Una sola vía (nunca las dos): (a) en el PC, botón «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (guarda las preguntas en TRACKING_ERRORES) — preferida; o (b) en el móvil, ENCAPS → Plan → HOY → CIERRE DE SESIÓN tipo ${tipo} con n · seguras · dudosas · fallos por subtipo · t medio (el --pull del cierre semanal la trae al registro).`;
+/** v6.10p (auditoría c18 · dias-clave #0): código de la eval anclada de una sesión de banco de F1 (string) o null = MIX. Con runner, el suyo (su JSON lleva
+ *  `codigo`: un código o «MIX»); sin runner, la regla de gen_encaps_minisim.js --eval (la sesión anterior es un mini-sim o no tiene código → MIX). Antes se
+ *  decidía por la posición (tras un mini-sim = MIX) y el mar 24-nov (EXCEPCIÓN: la eval es de I-3) salía como MIX. */
+const evalCodigoDe = (rEval, prev) => (rEval ? (rEval.j.codigo && rEval.j.codigo !== 'MIX' ? rEval.j.codigo : null) : (!prev || prev.tipo === 'mini_sim' || !prev.codigo ? null : prev.codigo));
 const evalDesc = (r, fila, prev) => {
   if (!r) return null;
   const modo = String(r.meta.modo || r.j.tema || '');
@@ -560,7 +587,10 @@ function construirGuia(fila, sab = null) {
     ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'minisim', codigo: null, subEje: null, secundarios: cola, eval: null, principal: r ? { f: r.f, url: r.url, local: r.local, n: r.n } : null, pretest: null, obsidian: obsCola[0] ? obsCola[0].url : null, proyecto: CAT.PROYECTO.LOPEZ };
     if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: 'MINI-SIM', principal: `25Q (${recTxt}) · cola ${cola.join(' + ')}`, eval: '—', runners: r ? r.f : 'POR GENERAR', material: matCola.map((m) => m.t).join(' · '), obs: obsCola.map((o) => o.t).join(' · '), proyecto: CAT.PROYECTO.LOPEZ.t });
   } else {
-    const codigo = fila.codigo; const subEje = e.sub_eje || null; const subLbl = e.sub_eje_label || fila.subtema;
+    const codigo = fila.codigo; const subEje = e.sub_eje || null; const subLblRaw = e.sub_eje_label || fila.subtema;
+    // v6.10p (auditoría c18 · vetadas-cortes #11): el sub-eje del título, del BANCO DEL DÍA (ciego) y del plan B, SIN las cifras-respuesta (subtemaCiego); QX
+    //   se sigue buscando por el nombre del tema de la etiqueta original (temaCorto: lo que va antes de «:» o «(», sin cifras)
+    const subLbl = subtemaCiego(subLblRaw);
     const area = CAT.AREA[romano(codigo)];
     const obs = obsidianDe(codigo, subEje);
     const proyecto = proyectoDe(codigo);
@@ -612,7 +642,7 @@ function construirGuia(fila, sab = null) {
         planB: `Si el enlace web no abre: en el PC ${rPre.local}${rEval ? ` y ${rEval.local}` : ''} (son los mismos ficheros). El pre-test NO se sustituye por QX: es la línea base con clave oficial.`,
         aviso: `Hoy NO hay «banco ${codigo} + ${sec.map((s) => s.codigo).join(' + ')}»: el pre-test de arranque SUSTITUYE el banco del día (BANCO_PROPIO, _meta.sustituye; el horario no cambia). ${sec.map((s) => s.codigo).join(' + ')} (cola larga) entra en el mini-sim del ${corta((FILAS.find((x) => x.dia > fila.dia && x.tipo === 'mini_sim') || fila).fecha)}.`,
       };
-      ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'pretest', codigo, subEje, secundarios: sec.map((s) => s.codigo), eval: rEval ? { f: rEval.f, url: rEval.url, local: rEval.local, n: rEval.n } : null, principal: { f: rPre.f, url: rPre.url, local: rPre.local, n: rPre.n }, pretest: { parte: pm.parte, de: pm.de, codigos: cods, n: rPre.n }, obsidian: obsCods[0] ? obsCods[0].url : null, proyecto };
+      ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'pretest', codigo, subEje, secundarios: sec.map((s) => s.codigo), eval: rEval ? { f: rEval.f, url: rEval.url, local: rEval.local, n: rEval.n, codigo: rEval.j.codigo || null } : null, principal: { f: rPre.f, url: rPre.url, local: rPre.local, n: rPre.n }, pretest: { parte: pm.parte, de: pm.de, codigos: cods, n: rPre.n }, obsidian: obsCods[0] ? obsCods[0].url : null, proyecto };
       if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: `PRE-TEST ${pm.parte}/${pm.de}`, principal: `${rPre.n}Q ${cods.join(' · ')} (sustituye ${codigo} · ${subEje})`, eval: ePrev || '—', runners: [rEval && rEval.f, rPre.f].filter(Boolean).join(' + '), material: matCods.map((m) => m.t).join(' · '), obs: obsCods.map((o) => o.t).join(' · '), proyecto: '—' });
     } else {
       const rBan = runner(`banco_${fila.fecha}`);
@@ -667,6 +697,9 @@ function construirGuia(fila, sab = null) {
       // v6.05 (fix 24-oct): el día de la regla = el ÚLTIMO DÍA DE PLAN antes del lunes (antes lunes − 3 fijo: para el lun 28-dic decía «el vie
       //   25-dic», que es SKIP → ahora jue 24-dic)
       const vieAnt = ultimoDiaPlanAntes(cmdSemana);
+      // v6.10p (auditoría c18 · dias-clave #0): la eval es MIX o de un código por su runner (evalCodigoDe), no por ir tras un mini-sim · n del Registro
+      const evalCod = sab ? null : evalCodigoDe(rEval, prev);
+      const nTxtReg = !rcB ? (nRun != null ? nRun : 'las del runner') : nQx == null ? `${rcB.principal + (secCods.length ? rcB.secundario : 0)}: las del runner + las de QX` : nQx ? `${nRun} del runner + ${nQx} de QX` : nRun;
       g = {
         franja: sab ? sab.franja : FRANJA, plan: 'encaps',
         titulo: `${sab ? sab.etq : `D${fila.dia}`} · 🎯 BANCO ${codigo} · ${subLbl}${secCods.length ? ` + cola larga ${secCods.join(' + ')}` : ''}`,
@@ -687,10 +720,10 @@ function construirGuia(fila, sab = null) {
           { min: 30, que: pendiente && prev2 && mixto ? `BANCO DEL DÍA · ${qPri} CIEGAS, ${CAT.PREVISTO_ORIGEN} (${compTxt(qxP, QXC)}) — banco_${fila.fecha} POR GENERAR · sub-eje «${subLbl}»${subTxt}`
             : `BANCO DEL DÍA · ${priLbl} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
             como: `Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
-              : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLbl)} hasta ${rcB.principal}, mismo método.`
-              : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLbl)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t}.`
+              : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLblRaw)} hasta ${rcB.principal}, mismo método.`
+              : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLblRaw)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t}.`
               : ` ${rcB.principal}Q × 90 s = 30′.`}`, ...(rBan ? { enlace: enlaceRunner(rBan, 'Banco') } : {}) },
-          { min: 8, que: secCods.length ? `SECUNDARIO de cola larga · ${qSec} de ${secCods.join(' + ')}${secFuente} — ${sec.map((s) => s.subtema).join(' / ').slice(0, 160)}` : 'Sin secundario: 8′ más del banco principal (sub-ejes distintos)',
+          { min: 8, que: secCods.length ? `SECUNDARIO de cola larga · ${qSec} de ${secCods.join(' + ')}${secFuente} — ${sec.map((s) => subtemaCiego(s.subtema)).join(' / ').slice(0, 160)}` : 'Sin secundario: 8′ más del banco principal (sub-ejes distintos)',
             como: !secCods.length ? 'Mismo método.' : !rcB ? 'Las últimas preguntas del mismo runner, mismo método (corrección inmediata + confianza). Si el runner trae menos de 4, completa con el banco de respaldo (plan B) hasta 5.'
               : `${qxS == null ? `Las últimas del mismo runner; si trae menos de ${rcB.secundario}, completa con ${qxDe(secCods[0], sec[0].subtema)} hasta ${rcB.secundario}.`
                 : qxS === 0 ? `${ultimasDe(rcB.secundario)} del mismo runner.`
@@ -700,12 +733,15 @@ function construirGuia(fila, sab = null) {
             como: rcB ? `Busca en el PDF SOLO la sección de tus fallos, ≤${rcB.material.paginas} p a 2′/p (empieza por los que marcaste «segura»), y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).`
               : 'Busca en el PDF SOLO la sección de tus fallos y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).', ...(mat1 ? { enlace: { t: `${mat1.tipo === 'mp4' ? 'Vídeo' : mat1.tipo === 'carpeta' ? 'Carpeta' : 'PDF'}`, url: mat1.url } } : {}) },
           // v6.10o (auditoría c17 · dias-clave #2): en F1, los 2 JSON (banco y eval) en el «qué», delante del corte del Calendar; el carril SÁBADO, como estaba
-          { min: 3, que: `Registro de la sesión${sab ? '' : ': 2 JSON, el del banco'} (n = ${!rcB ? (nRun != null ? nRun : 'las del runner') : nQx == null ? `${rcB.principal + (secCods.length ? rcB.secundario : 0)}: las del runner + las de QX` : nQx ? `${nRun} del runner + ${nQx} de QX` : nRun})${sab ? '' : ' y el de la eval (5Q)'}`,
-            como: `${REGISTRO_RUNNER(rBan, sab ? '«Carril B 16:15»' : 'banco del día', sab, !sab && (!prev || prev.tipo === 'mini_sim' || !prev.codigo ? 'mix' : true))}${rcB && nQx !== 0 ? ` Las${nQx ? ` ${nQx}` : ''} de QX no están en el runner: con (a), anota sus fallos en la nota del código; con (b), súmalas a n.` : ''}` },
+          // v6.10p (auditoría c18 · vetadas-cortes #9 · diffs #15): delante del corte del Calendar, las 2 rondas, «cada uno por UNA vía» y las de QX (F1) o el CIERRE
+          //   «Eval anclada» de la eval (carril SÁBADO); en el «cómo», la vía (b) del móvil y después los comandos --registrar enteros
+          { min: 3, que: sab ? `Registro: banco (n = ${nTxtReg}) y eval (CIERRE «Eval anclada», uno por código, a mano: no MIX)` // remate v6.10p (revisión «visibilidad» BAJA): el formulario del sábado propone MIX
+            : `Registro: banco (n = ${nTxtReg}) y eval${evalCod ? '' : ' MIX'} (5Q), cada uno por UNA vía${rcB && nQx !== 0 ? ' · QX: fallos → nota del código (PC) o súmalas a n (móvil)' : ''}`,
+            como: `${REGISTRO_RUNNER(rBan, sab ? '«Carril B 16:15»' : 'banco del día', sab, evalCod)}${rcB && nQx !== 0 ? ` Las${nQx ? ` ${nQx}` : ''} de QX no están en el runner: con (a), anota sus fallos en la nota del código; con (b), súmalas a n.` : ''}` },
           { min: 2, que: '1-3 APEX de los errores de CONOCIMIENTO', como: `A la nota Obsidian del código (${codigo}) y a Anki APEX::ENCAPS: la regla corregida + la cifra exacta, en una frase.`, ...(obs ? { enlace: obs } : {}) },
         ],
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rBan, `Banco ${rBan ? rBan.f : ''}`), ...mat.items.slice(0, 4), ...matSec, ...(obs ? [obs] : []), ...obsSec, proyecto, ...(area ? [area.videoclases] : [])],
-        hecho: `Eval 5/5 + ${mixto ? `las ${qPri} del banco` /* remate v6.10j: su composición va en el «qué» (con ella el «hecho» pasaba de 180 y el Calendar escondía «1-3 APEX creados») */ : `${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}`}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · ${sab ? 'sesión registrada por UNA vía (--registrar o CIERRE DE SESIÓN)' : !prev || prev.tipo === 'mini_sim' || !prev.codigo ? 'banco (UNA vía: --registrar o CIERRE) y eval (--registrar) registrados' : 'banco y eval registrados (cada uno por UNA vía: --registrar o CIERRE)'} · 1-3 APEX creados.`,
+        hecho: `Eval 5/5 + ${mixto ? `las ${qPri} del banco` /* remate v6.10j: su composición va en el «qué» (con ella el «hecho» pasaba de 180 y el Calendar escondía «1-3 APEX creados») */ : `${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}`}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · ${sab ? 'banco (--registrar o CIERRE) y eval (CIERRE «Eval anclada») registrados' : !evalCod ? 'banco (UNA vía: --registrar o CIERRE) y eval MIX (--registrar) registrados' : 'banco y eval registrados (cada uno por UNA vía: --registrar o CIERRE)'} · 1-3 APEX creados.`, // v6.10p (c18 #0/#15): por el código de la eval, no por ir tras un mini-sim · sábado: + la eval
         planB: pendiente
           ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio (preguntas reales, con su clave); (2) si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}. Nada de preguntas generadas: solo bancos reales.${!rEval ? (sab && sab.evalPB ? sab.evalPB : evalSinRunnerPB(fila, prev, sab, lunes)) : ''}`
           : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${CAT.POSTEST_DRLOPEZ.t} (preguntas reales, con su clave).`,
@@ -748,7 +784,7 @@ function construirGuia(fila, sab = null) {
             // v6.10i (remate, revisión adversarial del 18-nov): «NO --semana» va DELANTE de la receta (el Calendar corta el aviso a 240 y, detrás de la cadena
             //   de comandos, se perdía el aviso que impide re-sortear los runners de la semana)
             ? `NO gen_encaps_minisim.js --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía. Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`
-            : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes || finde(fila) ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
+            : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes || finde(fila) ? ` → node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           if (prev2 && prev2.nota) av.push(prev2.nota);
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map((x) => String(x).replace(/re-test con otro enfoque/g, 're-test de las mismas preguntas reales, sin la clave'))); // v6.10h: el re-test es de las MISMAS preguntas
           for (const c of [codigo, ...secCods]) if (CAT.AVISO_CODIGO[c]) av.push(CAT.AVISO_CODIGO[c]);
@@ -756,7 +792,7 @@ function construirGuia(fila, sab = null) {
           return av.length ? { aviso: av.join(' · ') } : {};
         })()),
       };
-      ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'banco', codigo, subEje, secundarios: secCods, eval: rEval ? { f: rEval.f, url: rEval.url, local: rEval.local, n: rEval.n } : null, principal: rBan ? { f: rBan.f, url: rBan.url, local: rBan.local, n: rBan.n } : null, pretest: null, obsidian: obs ? obs.url : null, proyecto };
+      ses = { fecha: fila.fecha, dia: fila.dia, tipo: 'banco', codigo, subEje, secundarios: secCods, eval: rEval ? { f: rEval.f, url: rEval.url, local: rEval.local, n: rEval.n, codigo: rEval.j.codigo || null } : null, principal: rBan ? { f: rBan.f, url: rBan.url, local: rBan.local, n: rBan.n } : null, pretest: null, obsidian: obs ? obs.url : null, proyecto };
       if (!sab) TABLA.push({ fecha: fila.fecha, dia: fila.dia, tipo: 'BANCO', principal: `${qPri} ${codigo} · ${subEje} + ${qSec} ${secCods.join(' + ')}`, eval: evalTxt, runners: [rEval ? rEval.f : 'eval POR GENERAR', rBan ? rBan.f : 'banco POR GENERAR'].join(' + '), material: [mat1 && mat1.t, ...matSec.map((m) => m.t)].filter(Boolean).join(' · '), obs: obs ? obs.t : '—', proyecto: proyecto.t });
     }
   }
@@ -871,6 +907,12 @@ const META = {
     f1: { desde: RF1.desde, pretest: `2 arranque · ${RF1.pretest.eval} eval 5Q · 24 pre-test 20Q · ${RF1.pretest.correccion} corrección · 5 registro · 4 APEX`, banco: `2 arranque · 8 eval 5Q · 30 banco ${RF1.banco.principal}Q · 8 secundario ${RF1.banco.secundario}Q (lo que falte del runner, de QX) · 7 material (≤${RF1.banco.material.paginas} p, solo si ≥2 fallos) · 3 registro · 2 APEX`, minisim: `2 arranque · 30 mini-sim 25Q · ${RF1.minisim.correccion} corrección · ${RF1.minisim.registro} registro + cierre semanal · ${RF1.minisim.apex} APEX + 1 cifra por código caliente` } },
   tecnicaSimulacro: CAT.TECNICA_SIM.doc,
 };
+// remate v6.10p (revisión «verdad» ALTA): GUARDA — ningún texto VISIBLE de la guía (título, pasos, aviso, plan B, hecho, rótulos) trae un fragmento-respuesta
+//   de encapsCiego.ts ni los tiempos del triaje: el aviso de II-EMG los daba ENCIMA de las 5Q ciegas de su secundario (la app pinta el aviso sobre los pasos)
+{ const RESP = [...ENCAPS_SUBEJE_CIEGO.map(([a]) => a), 'P-II ≤10 min', 'P-III ≤30 min'], VIS = new Set(['titulo', 'que', 'como', 'aviso', 'planB', 'hecho', 't']), fugas = [];
+  const vis = (v, k, ruta) => { if (typeof v === 'string') { if (VIS.has(k)) for (const a of RESP) if (v.includes(a)) fugas.push(`${ruta}: «${a}»`); } else if (Array.isArray(v)) v.forEach((x) => vis(x, k, ruta)); else if (v && typeof v === 'object') for (const [kk, x] of Object.entries(v)) vis(x, kk, `${ruta}.${kk}`); };
+  vis(GUIA, '', 'GUIA'); vis(GUIA_SAB, '', 'GUIA_SAB');
+  if (fugas.length) aborta(`cifras-respuesta a la vista en la guía (encapsCiego.ts): ${fugas.slice(0, 5).join(' · ')}${fugas.length > 5 ? ` (+${fugas.length - 5})` : ''}`); }
 // tabla de textos repetidos (≥24 caracteres y ≥2 apariciones) → el .ts pesa la mitad
 const _cnt = new Map();
 const _walk = (v) => { if (typeof v === 'string') { if (v.length >= 24) _cnt.set(v, (_cnt.get(v) || 0) + 1); } else if (Array.isArray(v)) v.forEach(_walk); else if (v && typeof v === 'object') Object.values(v).forEach(_walk); };
@@ -893,7 +935,9 @@ const ts = `/**
  */
 import type { GuiaBloque } from './guia';
 
-export interface EncapsRunnerRef { f: string; url: string | null; local: string; n: number }
+// v6.10p (auditoría c18 · dias-clave #0): + codigo de la eval (el de su runner: un código o «MIX»), para que ENCAPS → Plan y el CIERRE «Eval anclada» no la
+//   deduzcan de la posición (tras un mini-sim = MIX) cuando es la EXCEPCIÓN de un código
+export interface EncapsRunnerRef { f: string; url: string | null; local: string; n: number; codigo?: string | null }
 export interface EncapsSesionGuia {
   fecha: string; dia: number; tipo: 'pretest' | 'banco' | 'minisim'; codigo: string | null; subEje: string | null; secundarios: string[];
   eval: EncapsRunnerRef | null; principal: EncapsRunnerRef | null;

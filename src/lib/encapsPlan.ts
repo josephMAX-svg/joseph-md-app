@@ -120,6 +120,8 @@ import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, typ
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): hora y duración de la corrección de los simulacros y del cierre semanal de F2 (= Home = Horario)
 import { sesionEncapsDe, sesionEncapsCuadra, guiaEncapsDe, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque · v6.09b: + minutos del pre-test desde su guía
 import { ENCAPS_COBERTURA } from './encapsCobertura'; // v6.10i: etiqueta ENTERA del subtema que el SQL de la intensiva trae cortada (subtemaCompleto)
+import { subtemaCiego } from './encapsCiego'; // v6.10p (auditoría c18 · vetadas-cortes #11): rótulo del sub-eje SIN las cifras que pregunta el pre-test / banco CIEGO
+export { subtemaCiego };
 
 // ── D1 por examen (para calcular el día actual) ──
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
@@ -667,6 +669,16 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
       detail: `Arranque del régimen: no hay tema de ayer → 5Q de examen oficial con clave, elegidas por el registro de errores · de memoria, sin material · ${regla}`, regla,
     };
   }
+  // v6.10p (auditoría c18 · dias-clave #0): tras un mini-sim la eval puede ser la EXCEPCIÓN de UN código (mar 24-nov: la de I-3, cuyo runner ya estaba hecho):
+  //   manda el código del runner de la sesión (encapsGuia), no la posición; así el CIERRE «Eval anclada» lleva ese código (antes proponía MIX)
+  const evRun = prev.tipo === 'mini_sim' && typeof day.fecha === 'string' ? sesionEncapsDe(day.fecha.slice(0, 10))?.eval ?? null : null;
+  if (evRun && evRun.codigo && evRun.codigo !== 'MIX') {
+    return {
+      modo: 'ayer', codigo: evRun.codigo,
+      label: `🎯 EVAL ANCLADA: 5Q reales de ${evRun.codigo} (EXCEPCIÓN: no los fallos del mini-sim del ${diaRealTxt(prev)}; su runner ya estaba hecho)`,
+      detail: `preguntas reales: las del runner ${evRun.f} (examen oficial con clave) · de memoria, sin material, recall + corrección · ${regla}`, regla,
+    };
+  }
   if (prev.tipo === 'mini_sim' || !prev.codigo) {
     return {
       modo: 'lunes', codigo: 'MIX',
@@ -682,7 +694,7 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
     label: `🎯 EVAL ANCLADA: 5Q ${deAyerTxt(day, prev)} ${prev.codigo} (D${prev.dia}) · 3 cifras + 2 viñetas`,
     // v6.10o (auditoría c17 · vetadas-cortes #11): la fuente de las 5Q delante (el Calendar corta el detalle a 160 y dejaba «· preguntas reales: …» sin decir
     //   cuáles); el subtema largo y el sub-eje, al final
-    detail: `preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de tus fallos de ese código, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla} · ${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''}`, regla,
+    detail: `preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de tus fallos de ese código, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla} · ${subtemaCiego(prev.subtema) || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''}`, regla,
   };
 }
 
@@ -1000,7 +1012,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     const runBanco = runnerUrl(ses?.principal);
     items.push({
       key: `D${N}:m_banco`, kind: 'theomed',
-      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${ses?.principal ? `${ses.principal.n}Q con el secundario` : secCL ? '16-20Q' : '20-25Q'} ciegas)`,
+      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${subtemaCiego(day.subtema)} (${ses?.principal ? `${ses.principal.n}Q con el secundario` : secCL ? '16-20Q' : '20-25Q'} ciegas)`,
       detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ` · fuente: ${FUENTE_REAL_F2}`}${ses ? ' · 20Q en 30′ (90 s/Q): las que el runner no traiga, de QX App Banqueo, mismo tema (la guía de la hora dice cuántas)' : ''}`,
       url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: day.codigo,
       dur: ses ? 30 : (secCL ? 32 : 40), hora: ses ? '16:25–16:55' : (secCL ? '16:30–17:02' : '16:30–17:10'),
@@ -1008,7 +1020,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     if (secCL) {
       items.push({
         key: `D${N}:m_sec`, kind: 'theomed',
-        label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
+        label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${subtemaCiego(secCL.subtema)} (${(secCL as { q?: string }).q || '4-5Q'})`,
         detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · ${ses ? '5Q ciegas en 8′ (90 s/Q)' : '4-5Q ciegas'} dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}${ses ? ' · si trae menos de 5, las que falten de QX App Banqueo (la guía de la hora dice cuántas)' : ' · fuente: QX · App Banqueo, mismo tema (preguntas reales, con su clave)'}`,
         url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: secCL.codigo, dur: 8, hora: ses ? '16:55–17:03' : '17:02–17:10',
       });
@@ -1152,7 +1164,7 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
     const secs = (day.temas_secundarios || []) as { codigo: string; subtema?: string; rol?: string; q?: string }[];
     const paraguas = secs.filter(x => x.rol === 'paraguas');
     const colaLarga = secs.filter(x => x.rol !== 'paraguas');
-    const temaTxt = `${day.codigo || ''} — ${day.subtema || ''}`.trim();
+    const temaTxt = `${day.codigo || ''} — ${subtemaCiego(day.subtema)}`.trim(); // v6.10p (c18 #11): PRE-TEST 10Q CIEGAS y DEEP PRIME van en el mismo evento: sin las cifras-respuesta
     const horaDe = (h: string, min: number) => {
       const m = /^(\d{1,2}):(\d{2})$/.exec(h);
       if (!m) return undefined;
@@ -1201,7 +1213,7 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
       if (/consolidaci/.test(t)) {
         colaLarga.forEach((c, j) => items.push({
           key: `D${N}:i_sec:${j}`, kind: 'theomed',
-          label: `▶ SECUNDARIO (${c.rol || 'cola_larga'}): ${c.codigo} — ${c.subtema || ''} (${c.q || '5-6Q'})`,
+          label: `▶ SECUNDARIO (${c.rol || 'cola_larga'}): ${c.codigo} — ${subtemaCiego(c.subtema)} (${c.q || '5-6Q'})`,
           detail: 'Código fuera de la rotación principal · ciegas dentro del bloque de consolidación',
           url: banco?.url, source: banco?.fuente || 'Banco', code: c.codigo, dur: 8,
         }));
@@ -1413,7 +1425,7 @@ function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, p
     const areaS = ENCAPS_AREA_PREFIJO[(cod.match(/^[IVX]+/) || [''])[0]];
     items.push({
       key: `D${N}:sec${si}`, kind: 'material',
-      label: `▶ TEMA ${cod} · ${sec.subtema}`,
+      label: `▶ TEMA ${cod} · ${subtemaCiego(sec.subtema)}`,
       detail: `Tema adicional del día (${sec.prioridad}) · cobertura Fase 1 · inicia su cadena de vueltas hoy`,
       source: 'Tema del día',
     });
@@ -1640,13 +1652,16 @@ export function itemsForDay(day0: StudyScheduleDay, focusByCode: Record<string, 
  * gen_encaps_intensivo_2027.js corta la etiqueta del temario a 70 caracteres (67 + «…»: «Esquema nacional: 18 vacunas / 28 enfermedades; 15 vacunas hasta lo…»).
  * La app la pinta ENTERA: la etiqueta de encapsCobertura.ts (temario, sin su paréntesis) cuyo corte coincide con el final del subtema, solo si es una. La fila
  * no cambia (ni Supabase ni el SQL); sin coincidencia única, el texto tal cual.
+ * v6.10p (auditoría c18 · vetadas-cortes #11 / diffs #20): y SIN las cifras-respuesta del sub-eje (encapsCiego.subtemaCiego: «Suplementación por grupo (cifras:
+ * dosis, frecuencia y duración) en MEF, escolar y lactante», no «MEF 60 mg + 400 µg 2×/sem × 3 m …»): el subtema del día va en el título del LOOP, en el
+ * PRE-TEST 10Q CIEGAS y en el DEEP PRIME del mismo evento, todos a la vista antes de responder. Los valores siguen en el material y en la corrección.
  */
 const TEMARIO_LARGO: string[] = [...new Set(Object.values(ENCAPS_COBERTURA).flatMap(t => (t.temario || []).map(x => x.split('(')[0].trim()).filter(x => x.length > 70)))];
 export function subtemaCompleto(s: string | null | undefined): string {
   const x = String(s ?? '');
-  if (!x.endsWith('…')) return x;
+  if (!x.endsWith('…')) return subtemaCiego(x);
   const c = TEMARIO_LARGO.filter(l => x.endsWith(l.slice(0, 67) + '…'));
-  return c.length === 1 ? x.slice(0, x.length - 68) + c[0] : x;
+  return subtemaCiego(c.length === 1 ? x.slice(0, x.length - 68) + c[0] : x);
 }
 function conSubtemaCompleto(d: StudyScheduleDay): StudyScheduleDay {
   if (!d || typeof d.subtema !== 'string') return d;

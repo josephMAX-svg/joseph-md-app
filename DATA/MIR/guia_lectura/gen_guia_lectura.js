@@ -113,6 +113,10 @@
  *    si no descartas 2; con 2, marca · tapa las opciones · Rule-In → Rule-Out · 7Q ≈ 12,5′ (…) · las 2 primeras que no entren abren la eval de mañana (…)»
  *    (era el único quiz MIR sin «tapa las opciones» a la vista en el Calendar). --check: el ritmo del D1 EMPIEZA dentro de los 110 y su cola, antes del
  *    carácter 200 y como única fecha del «cómo».
+ *  · v6.10p (19-nov-2026 · ronda c18 del Calendar, área usmle-mir · #2; solo TEXTO): el quiz cuya cola de mañana no deja sitio delante al par y al ritmo (el
+ *    D2) abre como el del D1: «Tapa las opciones · Rule-In → Rule-Out · 6Q ≈ 10,7′ (…) · las 2 primeras que no entren abren la eval de mañana (…)» (antes
+ *    «… · tapa las opciones · 6Q ≈ … · Rule-In → Rule-Out», y el corte se llevaba «Rule-In → Rule-Out»). --check: en los 76 quizzes el par va junto, justo
+ *    delante del ritmo y dentro de los 110; la cola del D2, antes del carácter 200 y como única fecha del «cómo» (como la del D1).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -789,9 +793,13 @@ function pasosDia(d) {
   //   que no entren abren …», el D2), el ritmo va justo detrás de la cola (antes el corte lo escondía); con «La primera que no entre …» cabe todo como antes
   // remate v6.10m (rev. c16 · visibilidad #2): con el ritmo delante, «tapa las opciones» va antes que él si así el ritmo sigue empezando dentro de los 110 (el D2
   //   perdía «tapa las opciones»); «Rule-In → Rule-Out», detrás del ritmo
-  const ritmoDelante = aMan && (aMan + tapa + ' · ').length > CORTE_COMO;
-  const tapaAntes = ritmoDelante && (aMan + tapaO + ' · ').length <= CORTE_COMO;
-  pasos.push({ min: 12, hora: '15:53–16:05', que: queQuiz, como: `${aMan}${tapaAntes ? `${tapaO} · ${ritmoQ} · ${ruleIO}` : ritmoDelante ? `${ritmoQ} · ${tapa}` : `${tapa} · ${ritmoQ}`} · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª, solo si vas rápido · ${ordenTxt}; a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${poolTxt} Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` });
+  // v6.10p (ronda c18, área usmle-mir · #2): si la cola de mañana no deja sitio delante a «tapa las opciones · Rule-In → Rule-Out» + el ritmo (el D2: «Las 2
+  //   primeras que no entren …», y en el día real «… de la próxima sesión (lun 23-nov 15:15)»), el quiz abre como el D1: «Tapa las opciones · Rule-In →
+  //   Rule-Out · 6Q ≈ 10,7′ (…) · las 2 primeras que no entren abren la eval de mañana (…)»; la cola sigue a la vista porque el Calendar alarga el corte del
+  //   «cómo» hasta el final de la cláusula de su fecha (cortarDest, ≤ 450), que es la ÚNICA del «cómo» (lo exige --check). Antes «Rule-In → Rule-Out» iba
+  //   detrás del ritmo y el corte se lo llevaba
+  const colaDetras = aMan && (aMan + tapa + ' · ').length > CORTE_COMO;
+  pasos.push({ min: 12, hora: '15:53–16:05', que: queQuiz, como: `${colaDetras ? `T${tapa.slice(1)} · ${ritmoQ} · ${aMan.charAt(0).toLowerCase()}${aMan.slice(1)}` : `${aMan}${tapa} · ${ritmoQ} · `}registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª, solo si vas rápido · ${ordenTxt}; a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${poolTxt} Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` });
   pasos.push({ min: 10, hora: '16:05–16:15', que: `≤4 APEX en ${deck}`, como: 'Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · 1 de cada 4 con imagen · creados directamente en Anki.' });
   const totalMin = pasos.reduce((s, p) => s + p.min, 0);
   const vidLargos = us.flatMap((u) => u.largos.map((v) => `${v.leyenda ? v.leyenda.replace(/^(Vídeo [\d-]+)/, '$1 · ') : 'vídeo'} (${v.dur})`));
@@ -958,7 +966,9 @@ for (const x of salida) {
         // v6.10o (ronda c17, área MIR · #8): con «tapa las opciones · Rule-In → Rule-Out» delante del ritmo, la cola del D1 empieza antes del carácter 200 (el
         //   Calendar la sigue enseñando entera: el corte llega al final de la cláusula de su fecha, ≤ 450) y es la ÚNICA fecha del «cómo» (si hubiera otra
         //   detrás, el corte se alargaría hasta ella)
-        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; const lim = qD.d === 1 ? 200 : 100; if (i < 0 || i > lim || (qD.d === 1 && (qz.como.match(/(?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/g) || []).length !== 1)) errs.push(`D${c[2]}: su quiz no anuncia en los primeros ${lim} caracteres que la cola abre la eval del ${x.dia}`); }
+        // v6.10p (ronda c18, área usmle-mir · #2): el D2 abre como el D1 («Tapa las opciones · Rule-In → Rule-Out · <ritmo> · las 2 primeras …»): su cola, igual,
+        //   antes del carácter 200 y como única fecha del «cómo»
+        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; const tras = qD.d === 1 || /^Tapa las opciones · Rule-In → Rule-Out · /.test(qz ? qz.como : ''); const lim = tras ? 200 : 100; if (i < 0 || i > lim || (tras && (qz.como.match(/(?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/g) || []).length !== 1)) errs.push(`D${c[2]}: su quiz no anuncia en los primeros ${lim} caracteres que la cola abre la eval del ${x.dia}`); }
       } else if (n === 4) { if (!ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
       else errs.push(`D${x.d}: eval de ${n}Q en F1 sin la cola del quiz del D-1 (los minutos que sobran quedarían sin material)`);
     }
@@ -1037,6 +1047,9 @@ for (const x of salida) {
       // v6.10m (ronda c16, área MIR): también con la cola de mañana delante, el ritmo EMPIEZA dentro de los 110 del Calendar (el corte se alarga hasta su final:
       //   tramo «expr»); antes la cola lo dejaba fuera (D2)
       else { const i = p.como.indexOf(rq); if (i < 0 || i > CORTE_COMO + 1) errs.push(`D${x.d}: el «cómo» del quiz no deja empezar «${rq}» dentro de los ${CORTE_COMO} caracteres del Calendar`); }
+      // v6.10p (ronda c18, área usmle-mir · #2): en TODOS los quizzes (D1-D76), «tapa las opciones · Rule-In → Rule-Out» va JUNTO, justo delante del ritmo, y
+      //   acaba dentro de los 110 del Calendar (antes el D2 lo tenía partido: «tapa las opciones · <ritmo> · Rule-In → Rule-Out», y el corte se llevaba el par)
+      { const par = /[Tt]apa las opciones · Rule-In → Rule-Out · /.exec(p.como); const r = x.lectura.d1 ? rq1 : rq; if (!par || p.como.indexOf(r) !== par.index + par[0].length || par.index + par[0].length > CORTE_COMO + 1) errs.push(`D${x.d}: el «cómo» del quiz no lleva «tapa las opciones · Rule-In → Rule-Out» junto, delante del ritmo y dentro de los ${CORTE_COMO} caracteres del Calendar`); }
     }
     // v6.10l (auditoría c15): en la fase 1 el pre-test dice ENTERA, en los 110 del Calendar, dónde empieza la regla del blanco
     if (/^PRE-TEST 5Q/.test(p.que) && faseDe(x.d).n === 1) { const k = p.como.search(/la regla del blanco (?:empieza en el quiz|va en la eval y el quiz)/); if (k < 0 || p.como.indexOf(' · ', k) > CORTE_COMO + 1) errs.push(`D${x.d}: el pre-test de la fase 1 no deja ver entera dónde empieza la regla del blanco`); }

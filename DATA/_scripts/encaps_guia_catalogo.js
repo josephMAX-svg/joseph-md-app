@@ -267,7 +267,9 @@ const FICHA_SUBEJE = {
 /** Avisos de contenido por código (S2 §3/§7). */
 const AVISO_CODIGO = {
   'II-2': 'Ninguna academia trae AIEPI/IRA (bronquiolitis) como tema propio: para esa parte usa la ficha MINSA del paquete del niño.',
-  'II-EMG': 'Las fichas de triaje son de may-jul 2026: las cifras P-I inmediato · P-II ≤10 min · P-III ≤30 min se cotejan con la RM de jul-2026 antes de anotarlas.',
+  // v6.10p (remate · revisión «verdad» ALTA): sin los valores (el aviso va ENCIMA de los pasos, también en el Home, y el SECUNDARIO de II-EMG son 5Q ciegas que los
+  //   preguntan: regla de Joseph, nunca a la vista las cifras que se preguntan antes de responder); los valores, en la ficha y en la RM de jul-2026
+  'II-EMG': 'Las fichas de triaje son de may-jul 2026: los tiempos de P-I a P-III se cotejan con la RM de jul-2026 antes de anotarlos.',
 };
 
 /**

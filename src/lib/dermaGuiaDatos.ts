@@ -952,7 +952,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 9,
      "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 4Q · Tutor (18 preguntas en el System)",
-     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 4 preguntas → Tutor → BEGIN TEST · antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
+     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 4 preguntas → Tutor → BEGIN TEST · antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
       "t": "Qbankly › QBanks (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
@@ -970,7 +970,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 7,
      "que": "DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = 6,71′ medidos)",
-     "como": "~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés.",
+     "como": "~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés y su ejemplo clásico (anular = tiña, herpetiforme = HSV, dermatomal = zóster).",
      "enlace": {
       "t": "DermNet · Terminology",
       "url": "https://dermnetnz.org/topics/terminology"
@@ -997,7 +997,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 2,
      "que": "IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)",
-     "como": "Tapa el título y los pies: describe la red antes de leer · registra ✓/✗ en ①b. · si Dermoscopedia no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.",
+     "como": "Tapa título y pies: describe la red antes de leer · registra ✓/✗ en ①b · si no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.",
      "enlace": {
       "t": "Dermoscopedia · Pigment network",
       "url": "https://dermoscopedia.org/Pigment_network"

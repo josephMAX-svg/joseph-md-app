@@ -336,13 +336,18 @@ function curadas(C) {
       planB: B(2, `DERMA d2 · Color, distribución y configuración — PLAN B (AccessDerma caducado)`, [
         anki(C, 2),
         // v6.09b · lote 1-quater: 3Q → 4Q en los mismos 9′ (regla del Tutor: 4 × 2,35′ = 9,4′); el total de F1 de este System no cambia (UW_TUTOR_F1)
-        uworld(C, 1031, 4, 9, `antes de las opciones nombra la configuración (anular = tiña, herpetiforme = HSV, dermatomal = zóster) y el color · ${TUTOR(4)}`),
+        // v6.10p (auditoría c18 · barrido de quizzes): «anular = tiña, herpetiforme = HSV, dermatomal = zóster» daba, ANTES de las 4Q de «Skin and soft tissue
+        //   infections», el diagnóstico que esas preguntas piden → aquí solo el vocabulario de la configuración; las equivalencias, en el paso DermNet «Terminology»
+        //   (después de las 4Q), detrás del corte del Calendar
+        uworld(C, 1031, 4, 9, `antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · ${TUTOR(4)}`),
         { min: 6, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${PMD_TXT(pmd)} · tabla 1-1 de signos)`, como: 'Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
-        { min: DN_MIN(381 + 97 + 193), que: `DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = ${DN_TXT(DN_NEC(671))})`, como: '~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés.', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
+        { min: DN_MIN(381 + 97 + 193), que: `DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = ${DN_TXT(DN_NEC(671))})`, como: '~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés y su ejemplo clásico (anular = tiña, herpetiforme = HSV, dermatomal = zóster).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
         bbVideo(C, 74, x.fecha, 'color y distribución de las lesiones vasculares (por título; contenido no verificado)'),
         // v6.09b · lote 1-quater: el total (lectura + figuras + dibujo) va primero en el paréntesis «(N′ medidos: …)» para que cualquier medidor lo lea entero
         { min: 0, que: `DermNet › «Blaschko lines» › «What are the Blaschko lines?» + «What is the distribution of Blaschko lines?» + dibujo del patrón (${DN_TXT(DN_NEC(94, 2) + 1.5)}: 94 palabras + 2 figuras = ${String(DN_NEC(94, 2)).replace('.', ',')}′ + dibujo ≈1,5′)`, como: 'Lee esos 2 apartados y mira sus 2 figuras (tronco y extremidad); después dibuja el patrón en V/S sobre una silueta · «History…» y «Which skin conditions…» (164 palabras + 9 imágenes, el catálogo de enfermedades blaschkoides) no forman parte del átomo: el átomo es la configuración.', enlace: { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` } },
-        { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa el título y los pies: describe la red antes de leer · registra ✓/✗ en ①b.' + DSC_RESPALDO, enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
+        // v6.10p (auditoría c18 #14): el respaldo («si no carga: DermNet …») quedaba detrás del corte del Calendar («… · si Dermoscopedia no carga: …») → texto
+        //   compacto (sin artículos; «si no carga» = Dermoscopedia, que nombra el «qué»): orden y respaldo enteros, la consecuencia dentro de los 110
+        { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa título y pies: describe la red antes de leer · registra ✓/✗ en ①b · si no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.', enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
         cierre(2, `≤3 tarjetas en ${C.deck('A')}.`), // v6.09b · lote 1-ter: 3′ → 2′ (como todas las sesiones): el minuto lo pide el «Terminology» a 100 palabras/min
       ], [
         { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '4Q' },

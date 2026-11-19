@@ -42,7 +42,7 @@ import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de la hora 16:15 (formato común) + runners BANCO_PROPIO + nota Obsidian del CÓDIGO
 import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
-import { sesionGuiaDe } from '../lib/encapsPlan';
+import { sesionGuiaDe, subtemaCiego } from '../lib/encapsPlan'; // v6.10p (auditoría c18 · #11): subtemaCiego = el sub-eje sin las cifras-respuesta del pre-test / banco ciego
 import { fechaPlanDe, fechaRealDe, extraCorridaDe } from '../lib/fechasV6';
 import { fechasRealesEnTexto, reemplazosCorrida } from '../lib/corridaTexto'; // v6.10d: los textos del Horario (study_metrics.extra.horarios) citan fechas de PLAN → día real
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from '../lib/encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de TODO simulacro + cierre semanal = Home (plantillasV6.bloqueCorrSim / bloqueCierreSemanal) = ítems
@@ -408,7 +408,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
     return <Text style={styles.empty}>Sin datos del cronograma para hoy. Corré el sync (encaps_supabase_sync.py).</Text>;
   }
   const pct = totalToday > 0 ? Math.round((doneToday / totalToday) * 100) : 0;
-  const tema = `${today.codigo || ''} ${today.subtema || ''}`.trim() || (today.extra?.theme as string) || '—';
+  const tema = `${today.codigo || ''} ${subtemaCiego(today.subtema)}`.trim() || (today.extra?.theme as string) || '—';
   const vueltas = (today.extra as Record<string, unknown> | undefined)?.vueltas as string | undefined;
   // v6.5 MANTENIMIENTO: sub-eje de la sesión (rotación por instancia) + receta del mini-sim del viernes
   const subEje = subEjeDe(today);
@@ -467,7 +467,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         {!!today.temas_secundarios?.length && !receta && !prePlan && (
           <Text style={styles.secLine}>
             {esMant ? '▶ Secundario de cola larga (4-5Q dentro de la hora): ' : '+ Tema liviano extra: '}
-            {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}${(s as { q?: string }).q && (s as { q?: string }).q !== 'incluido' ? ` (${(s as { q?: string }).q})` : ''}`).join(' · ')}
+            {today.temas_secundarios.map(s => `${s.codigo} ${subtemaCiego(s.subtema)}${(s as { q?: string }).q && (s as { q?: string }).q !== 'incluido' ? ` (${(s as { q?: string }).q})` : ''}`).join(' · ')}
           </Text>
         )}
         {/* Viernes de MANTENIMIENTO: receta fija del mini-sim (vector v3) + 2 códigos de cola larga */}
@@ -495,7 +495,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
               </View>
             </View>
             <Text style={styles.recetaLine}>
-              Cola larga del mini-sim ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
+              Cola larga del mini-sim ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${subtemaCiego(s.subtema)}`).join(' · ') || receta.colaLarga.join(' + ')}
             </Text>
             {/* v6.10l (auditoría c15 · diffs #33): ▲ SIM solo guarda la nota; la RONDA entra al registro por UNA vía: --registrar <JSON> --append en el PC (con las 25
                 preguntas, preferida) o este CIERRE + --pull antes del cierre semanal (gen_encaps_semana.js). Antes: «también vale ▲ SIM», como si fueran equivalentes */}
@@ -504,7 +504,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         )}
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
         {!!subEje && (
-          <Text style={styles.subEjeLine}>◈ Sub-eje de hoy ({subEje.n}/{subEje.total}): {subEje.label}</Text>
+          <Text style={styles.subEjeLine}>◈ Sub-eje de hoy ({subEje.n}/{subEje.total}): {subtemaCiego(subEje.label)}</Text>
         )}
         {/* v6.00: CARRIL B 16:15-17:15 (sus ítems van en la checklist con claves D{dia}:b_*; cierre tipo «Carril B 16:15»)
             v6.01: reposición con pendiente F1 (fila de la F1 v6.00 que no cupo tras el corrimiento) → se pinta como banqueo «REPOSICIÓN F1»;
@@ -516,8 +516,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
               ? `REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q · cola larga ${carrilB.colaLarga.join(' + ')}${carrilB.diaMant ? ' (sesión de F1 que no cupo → se REPONE hoy)' : ''}${recetaCB ? ` · receta ${miniSimRecetaTexto(recetaCB)} · 16:15-16:45 mini-sim + 16:45-17:15 corrección → CIERRE tipo mini_sim (nota /25 → study_sim_scores sim_n = ${recetaCB.simN})` : ''}`
               : carrilB.tipo === 'banqueo1h'
               ? carrilB.reposicionF1
-                ? `REPOSICIÓN F1 · ${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ' (sesión de F1 que no cupo)' : ''}`
-                : `${carrilB.codigo || ''} ${carrilB.subtema}`
+                ? `REPOSICIÓN F1 · ${carrilB.codigo || ''} ${subtemaCiego(carrilB.subtema)}${carrilB.diaMant ? ' (sesión de F1 que no cupo)' : ''}`
+                : `${carrilB.codigo || ''} ${subtemaCiego(carrilB.subtema)}`
               : CARRIL_B_REPOSICION_LABEL}
           </Text>
         )}
@@ -531,7 +531,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <Text style={styles.subEjeLine}>
             ◈ SÁB {fechaCorta(carrilSab.fecha).replace(/-\d{4}$/, '')} {carrilSab.ini}-{carrilSab.fin} · CARRIL SÁBADO · REPOSICIÓN F1 · {carrilSab.cb.tipo === 'mini_sim'
               ? `🔥 MINI-SIMULACRO 25Q · cola larga ${carrilSab.cb.colaLarga.join(' + ')} · nota /25 → study_sim_scores sim_n = ${carrilSab.simN ?? today.dia}`
-              : `${carrilSab.cb.codigo || ''} ${carrilSab.cb.subtema}`}{carrilSab.cb.diaMant ? ' (sesión de F1 que no cupo en la F1 ni en el carril B lun-jue)' : ''}
+              : `${carrilSab.cb.codigo || ''} ${subtemaCiego(carrilSab.cb.subtema)}`}{carrilSab.cb.diaMant ? ' (sesión de F1 que no cupo en la F1 ni en el carril B lun-jue)' : ''}
           </Text>
         )}
         {!!today.primer_finde_estudio && (
@@ -617,7 +617,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
               <TouchableOpacity key={r.codigo} style={styles.repasoRow} onPress={() => toggleCheck(key, !done)} activeOpacity={0.7}>
                 <Text style={[styles.repasoCheck, done && styles.repasoCheckOn]}>{done ? '☑' : '☐'}</Text>
                 <Text style={[styles.repasoVuelta, NUM]}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
-                <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema}</Text>
+                <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {subtemaCiego(r.subtema)}</Text>
                 <Text style={[styles.repasoAgo, NUM]}>✓{vh.hechas}/{vh.total} · {r.delta}d</Text>
               </TouchableOpacity>
             );
@@ -979,7 +979,7 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
         <Text style={styles.empty}>Sin próximos días.</Text>
       ) : next.map(d => {
         const isToday = d.dia === dia;
-        const tema = `${d.codigo || ''} ${d.subtema || ''}`.trim() || (d.extra?.theme as string) || d.tipo || '—';
+        const tema = `${d.codigo || ''} ${subtemaCiego(d.subtema)}`.trim() || (d.extra?.theme as string) || d.tipo || '—';
         const fPlan = String(d.fecha).slice(0, 10), fReal = fechaRealDe(fPlan, 'encaps'); // v6.02d: fecha real visible (semana corrida)
         return (
           <TouchableOpacity key={d.dia} style={[styles.semRow, isToday && styles.semRowToday]}
@@ -1091,7 +1091,7 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
   const sab = carrilSabadoDe(day);
   const bloqueSab: HorarioBlock[] = sab ? [{
     hora: `SÁB ${sab.ini}-${sab.fin}`,
-    titulo: `◈ ${fechaCorta(sab.fecha).replace(/-\d{4}$/, '')} · CARRIL SÁBADO · REPOSICIÓN F1 · ${sab.cb.tipo === 'mini_sim' ? `🔥 MINI-SIMULACRO 25Q · cola larga ${sab.cb.colaLarga.join(' + ')}` : `${sab.cb.codigo || ''} ${sab.cb.subtema}`}`.replace(/\s+/g, ' '),
+    titulo: `◈ ${fechaCorta(sab.fecha).replace(/-\d{4}$/, '')} · CARRIL SÁBADO · REPOSICIÓN F1 · ${sab.cb.tipo === 'mini_sim' ? `🔥 MINI-SIMULACRO 25Q · cola larga ${sab.cb.colaLarga.join(' + ')}` : `${sab.cb.codigo || ''} ${subtemaCiego(sab.cb.subtema)}`}`.replace(/\s+/g, ' '),
     pasos: sab.cb.tipo === 'mini_sim'
       ? [{ t: sab.ini, d: 'Mini-simulacro 25Q mixto cronometrado (72 s/Q), modo examen sin pausa' }, { t: hhmmMas(sab.ini, 30), d: `Corrección + CIERRE tipo mini_sim → nota /25 en study_sim_scores (sim_n = ${sab.simN ?? day.dia})` }]
       : [{ t: sab.ini, d: 'Eval 5Q (fallos del SIM 100Q / pre-test del viernes)' }, { t: hhmmMas(sab.ini, 15), d: `Banco ${sab.cb.codigo || ''} 16-20Q ciegas + secundario de cola larga` }, { t: hhmmMas(sab.ini, 55), d: 'Cierre tipo «Carril B 16:15» con la fecha del sábado + 1-3 APEX' }],
@@ -1106,7 +1106,7 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
     titulo: cb.tipo === 'mini_sim'
       ? `◈ CARRIL B · REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q (${recCB?.segPorQ ?? 72} s/Q) · cola larga ${cb.colaLarga.join(' + ')}${cb.diaMant ? ' · sesión de F1 que no cupo' : ''}`
       : cb.tipo === 'banqueo1h'
-      ? `◈ CARRIL B · ${cb.reposicionF1 ? 'REPOSICIÓN F1 · ' : ''}${cb.codigo || ''} ${cb.subtema}`.replace(/\s+/g, ' ') // v6.01: + reposición F1
+      ? `◈ CARRIL B · ${cb.reposicionF1 ? 'REPOSICIÓN F1 · ' : ''}${cb.codigo || ''} ${subtemaCiego(cb.subtema)}`.replace(/\s+/g, ' ') // v6.01: + reposición F1
       : `◈ CARRIL B · ${CARRIL_B_REPOSICION_LABEL}`,
     pasos: cb.tipo === 'mini_sim'
       ? [{ t: '16:15', d: `Mini-simulacro 25Q mixto cronometrado, modo examen sin pausa${recCB ? ` · receta ${miniSimRecetaTexto(recCB)}` : ''}` }, { t: '16:45', d: `Corrección (área · tipo de fallo) + CIERRE tipo mini_sim → nota /25 en study_sim_scores (sim_n = ${recCB?.simN ?? day.dia}) + % ciego en study_progress` }]
@@ -1196,7 +1196,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // v6.00: fechas del texto de cabecera leídas de study_metrics.extra (exam_date PROVISIONAL / intensiva), no escritas a mano
   const exFecha = examDateDe(metrics), exProv = examenProvisionalDe(metrics), exRendido = examenRendidoDe(metrics), intM = intensivaMetaDe(metrics);
 
-  const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
+  const tema = today ? `${today.codigo || ''} ${subtemaCiego(today.subtema)}`.trim() : '';
 
   // Micro-horario: reparte los videos del día dentro del bloque deep-prime, hora exacta.
   const apexBlock = blocks.find(b => b.apex);
@@ -1312,16 +1312,17 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   const [verExport, setVerExport] = useState(false);
 
   // Prellenado desde la fila del día: tipo (mini_sim los viernes) · código · sub-eje · tema. Se rehace al cambiar de día o de tipo.
+  // remate v6.10p (revisión «verdad» MEDIA): el «tema» prellenado, SIN las cifras-respuesta (subtemaCiego): el CIERRE se ve en HOY antes del banco ciego
   const prefill = (tp: TipoRonda) => {
     const se = today ? subEjeDe(today) : null;
     const sePrev = prevDay ? subEjeDe(prevDay) : null;
-    if (tp === 'mini_sim') { const cbm = carrilBDe(today) ?? (today?.tipo !== 'mini_sim' ? carrilSabadoDe(today)?.cb ?? null : null); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${cbm.subtema}` : today?.subtema || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
-    else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
+    if (tp === 'mini_sim') { const cbm = carrilBDe(today) ?? (today?.tipo !== 'mini_sim' ? carrilSabadoDe(today)?.cb ?? null : null); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${subtemaCiego(cbm.subtema)}` : subtemaCiego(today?.subtema) || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
+    else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? subtemaCiego(evalHoy.label.replace(/^🎯 /, '')) : 'eval anclada'); }
     else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
     // v6.00: cierre del CARRIL B 16:15 (fila MANTENIMIENTO 61-92 de v5.20 embebida) → id APP_CARRIL_B_<fecha>_<codigo>
     // v6.06: o el carril SÁBADO (fila del viernes host, sin carril B)
-    else if (tp === 'carril_b') { const cb = carrilBDe(today) ?? carrilSabadoDe(today)?.cb ?? null; setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? (cb.subEjeLabel || cb.subtema) : 'carril B'); }
-    else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(se?.label || today?.subtema || ''); }
+    else if (tp === 'carril_b') { const cb = carrilBDe(today) ?? carrilSabadoDe(today)?.cb ?? null; setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? subtemaCiego(cb.subEjeLabel || cb.subtema) : 'carril B'); }
+    else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(subtemaCiego(se?.label || today?.subtema)); }
     setNota('');
   };
   const cambiarTipo = (tp: TipoRonda) => { setTipo(tp); prefill(tp); };

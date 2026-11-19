@@ -965,19 +965,26 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
 //   fases de dificultad creciente (fluidez → usar Claude/Claude Code → plataforma y agentes → el LLM por dentro) y F1/F2 del motor son las fases 5 y 6.
 //   Cada fase dice qué se hace, su GATE (preguntas SOLO reales: el «Course quiz» oficial de la Academy; donde no hay quiz oficial, recall en blanco /
 //   Feynman, nunca preguntas inventadas) y el criterio de avance. Las fechas salen del recorrido (aDia: fecha de cada A-unit); nada de horas ni minutos.
+// v6.10p (rev. c18, diffs #17/#18): un GATE con 2 fechas lleva `gate1` = lo que se aprueba en la 1.ª (hoy · si es un quiz oficial · lo que falta, que va
+//   a la 2.ª fecha): el jue 10-dic pedía «los 5 workflows de memoria» antes del ensayo que los enseña (vie 11 y sáb 12-dic) y el 1-dic, el quiz de Claude
+//   Code 101 antes de su curso. En la 2.ª fecha, el gate completo (`gate`). Fase 3: «(recall en blanco)» dentro del 2.º requisito, delante de «en el journal»
+//   (el aviso lo dejaba fuera para no pasar de 240 y ningún evento del Calendar decía ya cómo se hace)
 const FASES_BC_DEF = [
   { id: '1', corto: 'Fluidez con la IA (AI Fluency · marco 4D)', a: [0, 8], gates: [8], gateCorto: '«Course quiz» oficial de AI Fluency',
     que: 'AI Fluency (Dakan · Feller · Anthropic): qué es la IA generativa, qué puede y qué no, y las 4D (Delegation · Description · Discernment · Diligence).',
     gate: '«Course quiz» oficial de AI Fluency (preguntas reales de la Academy) aprobado → insignia.' },
   { id: '2', corto: 'Usar Claude y Claude Code (sin programar aún)', a: [9, 16], gates: [12, 16], gateCorto: '«Course quiz» oficial de Claude 101 y de Claude Code 101',
     que: 'Claude 101 (proyectos, artefactos, skills, conectores) y Claude Code 101 (instalar, primer prompt, explorar → planificar → codificar → commit, CLAUDE.md).',
-    gate: '«Course quiz» oficial de Claude 101 (1.er gate) y de Claude Code 101 (2.º gate) aprobados → 2 insignias.' },
+    gate: '«Course quiz» oficial de Claude 101 (1.er gate) y de Claude Code 101 (2.º gate) aprobados → 2 insignias.',
+    gate1: { hoy: '«Course quiz» oficial de Claude 101 aprobado → insignia', quiz: true, resto: 'el de Claude Code 101' } },
   { id: '3', corto: 'La API y los agentes (concepto)', a: [17, 21], gates: [19, 21], gateCorto: '«Claude Platform 101 quiz» oficial + los 5 workflows de memoria',
     que: 'Claude Platform 101 (primera llamada a la API, modelos, bucle del agente, tool use) y «Building Effective Agents» (5 workflows y cuándo NO usar agentes).',
-    gate: '«Claude Platform 101 quiz» oficial aprobado + los 5 workflows de memoria en el journal (recall en blanco; el ensayo no trae quiz).' },
+    gate: '«Claude Platform 101 quiz» oficial aprobado + los 5 workflows de memoria (recall en blanco) en el journal (el ensayo no trae quiz).',
+    gate1: { hoy: '«Claude Platform 101 quiz» oficial aprobado', quiz: true, resto: 'los 5 workflows de memoria (recall en blanco)' } },
   { id: '4', corto: 'Cómo funciona un LLM por dentro', a: [22, 45], gates: [35, 45], gateCorto: 'recall en blanco del pipeline del LLM vs el «grand summary» de Karpathy (sin quiz oficial)',
     que: 'Karpathy (Intro to LLMs + Deep Dive: datos → tokens → preentrenamiento → SFT → RL/RLHF → alucinaciones y herramientas) y 3Blue1Brown (redes, gradiente, transformers, atención).',
-    gate: 'Sin quiz oficial (nada inventado): recall en blanco del pipeline del LLM contrastado con el «grand summary» de Karpathy (tramo 11/11) y, al cierre de F0, explicarlo en voz alta.' },
+    gate: 'Sin quiz oficial (nada inventado): recall en blanco del pipeline del LLM contrastado con el «grand summary» de Karpathy (tramo 11/11) y, al cierre de F0, explicarlo en voz alta.',
+    gate1: { hoy: 'recall en blanco del pipeline del LLM vs el «grand summary» de Karpathy (tramo 11/11; sin quiz oficial)', quiz: false, resto: 'explicarlo en voz alta (cierre de F0)' } },
 ];
 const SYN_FASES_BC = FASES_BC_DEF.map((f) => {
   const fechaA = (i) => (i === 0 && REC ? AUDIT_F0_V610.fecha : aDia[i]);
@@ -986,7 +993,8 @@ const SYN_FASES_BC = FASES_BC_DEF.map((f) => {
   const fechas = [];
   for (let i = f.a[0]; i <= f.a[1]; i++) if (!fechas.includes(fechaA(i))) fechas.push(fechaA(i));
   fechas.sort((x, y) => (realDe(x) < realDe(y) ? -1 : realDe(x) > realDe(y) ? 1 : 0));
-  return { id: f.id, corto: f.corto, desde: fechas[0], hasta: fechas[fechas.length - 1], fechas, gateFechas: f.gates.map(fechaA), que: f.que, gate: f.gate, gateCorto: f.gateCorto };
+  if (f.gate1 && f.gates.length !== 2) throw new Error(`v6.10p: la fase ${f.id} trae gate1 sin 2 fechas de gate`);
+  return { id: f.id, corto: f.corto, desde: fechas[0], hasta: fechas[fechas.length - 1], fechas, gateFechas: f.gates.map(fechaA), que: f.que, gate: f.gate, gateCorto: f.gateCorto, ...(f.gate1 ? { gate1: f.gate1 } : {}) };
 });
 {
   // fases 5 y 6 = F1 y F2 del motor (2027): fechas = primer / último día con A; gate = el día con el quiz final / el simulacro de la Academy
@@ -1113,7 +1121,9 @@ export function synRecDe(fechaISO: string): SynRecSesion | undefined { return SY
 /** v6.10 · BASE CERO (18-nov-2026): fases explícitas del SYNAPSE (1-4 = F0 partida por dificultad · 5 = F1 · 6 = F2). Cada fase: qué se hace, su GATE
  *  (preguntas solo REALES: «Course quiz» oficial de la Academy; sin quiz oficial, recall en blanco / Feynman) y sus fechas de plan. Criterio de avance:
  *  SYN_AVANCE_BC. Método y fuentes: DATA/SYNAPSE/METODO_BASE_CERO.md. rutinaGuia › guiaSynapseDe lo pone en el aviso de cada sesión. */
-export interface SynFaseBC { id: string; corto: string; desde: string; hasta: string; fechas: string[]; gateFechas: string[]; que: string; gate: string; gateCorto: string }
+export interface SynFaseBC { id: string; corto: string; desde: string; hasta: string; fechas: string[]; gateFechas: string[]; que: string; gate: string; gateCorto: string;
+  /** v6.10p: gate con 2 fechas → lo que se aprueba en la 1.ª (\`hoy\`; \`quiz\` = es un quiz oficial) y lo que queda para la 2.ª (\`resto\`); en la 2.ª, \`gate\` entero */
+  gate1?: { hoy: string; quiz: boolean; resto: string } }
 export const SYN_FASES_BC: SynFaseBC[] = ${JSON.stringify(SYN_FASES_BC)};
 /** v6.10 · base cero: criterio de avance común a todas las fases (las fechas no se mueven) */
 export const SYN_AVANCE_BC = 'Las fechas no se mueven: la fase siguiente empieza en su fecha. Un quiz oficial no aprobado se repite en el PC del domingo siguiente (SHIP, flexible) hasta aprobarlo, solo con las lecciones falladas.';
