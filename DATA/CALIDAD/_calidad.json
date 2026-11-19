@@ -394,7 +394,7 @@
      "confianza": "verificado",
      "nivel": "avanzado",
      "tipo": "herramientas de evaluacion de sesgo",
-     "por_que": "Hub oficial de las herramientas de referencia para riesgo de sesgo: RoB 2 (ensayos, plantilla Excel) y ROBINS-I v2 (no aleatorizados, actualizado 2025 con algoritmos de juicio). Combinar con AMSTAR-2 (amstar.ca, calidad de RS) y GRADEpro (certeza de la evidencia).",
+     "por_que": "Hub oficial de las herramientas de referencia para riesgo de sesgo: RoB 2 (ensayos, plantilla Excel) y ROBINS-I v2 (no aleatorizados, actualizado 2025 con algoritmos de juicio). Combinar con AMSTAR-2 (Shea, BMJ 2017, texto completo en PMC: pmc.ncbi.nlm.nih.gov/articles/PMC5833365; amstar.ca caído desde nov-2026; calidad de RS) y GRADEpro (certeza de la evidencia).",
      "autor_canal": "Cochrane Bias Methods Group"
     }
    ],

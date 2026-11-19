@@ -1,6 +1,6 @@
 # Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de publicación 2027
 
-> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-18) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
+> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-19) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
 > (`src/lib/researchDailyPlan.ts` ciclo 1 · `src/lib/researchDailyPlan2027.ts` ciclo 2 · `src/lib/obsidianResearchMap.ts`).
 > Este doc es la MISMA data en tablas. Se re-fecha con el pipeline de corrimiento (`gen_research_plan.js <fecha>`).
 
@@ -295,7 +295,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `ROB2` | RoB 2 (sesgo en ECA) | https://www.riskofbias.info/welcome/rob-2-0-tool | repo (verificada jun-jul 2026) |
 | `ROBINS` | ROBINS-I (no-aleatorizados) | https://www.riskofbias.info/welcome/home | repo (verificada jun-jul 2026) |
 | `GRADE` | GRADEpro (certeza) | https://www.gradepro.org/ | repo (verificada jun-jul 2026) |
-| `AMSTAR` | AMSTAR-2 (apreciar SR) | https://amstar.ca/ | repo (verificada jun-jul 2026) |
+| `AMSTAR` | AMSTAR-2 (apreciar SR) · Shea, BMJ 2017 (PMC) | https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/ | curl 19-nov-2026 (amstar.ca caído: «temporarily unavailable», checklist 404) |
 | `DMAR` | Doing Meta-Analysis in R (libro gratis) | https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/ | repo (verificada jun-jul 2026) |
 | `METAFOR` | metafor package (R) | https://www.metafor-project.org/ | repo (verificada jun-jul 2026) |
 | `EQ` | EQUATOR Network | https://www.equator-network.org/ | repo (verificada jun-jul 2026) |

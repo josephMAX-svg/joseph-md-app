@@ -88,7 +88,7 @@ GAPS PRINCIPALES a cerrar en el plan: (a) practica guiada con datasets clinicos 
   - El mejor canal gratuito para intuicion visual de estadistica y machine learning (p-valores, regresion, PCA, redes neuronales). Ideal para entender el 'por que' antes de codificar. Doble uso Research + Synapse (AI engineer).
 - **riskofbias.info — RoB 2, ROBINS-I v2 + AMSTAR-2 / GRADE** — Cochrane Bias Methods Group (avanzado, verificado)
   - https://www.riskofbias.info/
-  - Hub oficial de las herramientas de referencia para riesgo de sesgo: RoB 2 (ensayos, plantilla Excel) y ROBINS-I v2 (no aleatorizados, actualizado 2025 con algoritmos de juicio). Combinar con AMSTAR-2 (amstar.ca, calidad de RS) y GRADEpro (certeza de la evidencia).
+  - Hub oficial de las herramientas de referencia para riesgo de sesgo: RoB 2 (ensayos, plantilla Excel) y ROBINS-I v2 (no aleatorizados, actualizado 2025 con algoritmos de juicio). Combinar con AMSTAR-2 (Shea, BMJ 2017, texto completo en PMC: pmc.ncbi.nlm.nih.gov/articles/PMC5833365; amstar.ca caído desde nov-2026; calidad de RS) y GRADEpro (certeza de la evidencia).
 
 ## Acciones
 - [ ] FUNDAMENTO (semanas 1-4): empezar 'Writing in the Sciences' de Stanford (audit gratis) en paralelo con 'R for Data Science 2e' + The Epidemiologist R Handbook. Meta: poder leer/escribir un paper y manipular datos de salud en R. Anclar al bloque diario de Research del Calendar.

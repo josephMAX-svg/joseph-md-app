@@ -1,6 +1,6 @@
 /**
  * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.7 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
- * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-18) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
+ * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-19) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  *
  * 42 átomos · D1 = Jue 2026-11-19 → D42 = Lun 2027-04-12 · 1 átomo por DÍA-RESEARCH
  * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres (v6.00: desde el SERUMS 2027-05-03 el sábado es día de plan) · salta los SKIP
@@ -59,7 +59,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   ROB2:   { label: 'RoB 2 (sesgo en ECA)', url: 'https://www.riskofbias.info/welcome/rob-2-0-tool' },
   ROBINS: { label: 'ROBINS-I (no-aleatorizados)', url: 'https://www.riskofbias.info/welcome/home' },
   GRADE:  { label: 'GRADEpro (certeza)', url: 'https://www.gradepro.org/' },
-  AMSTAR: { label: 'AMSTAR-2 (apreciar SR)', url: 'https://amstar.ca/' },
+  AMSTAR: { label: 'AMSTAR-2 (apreciar SR) · Shea, BMJ 2017 (PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 (amstar.ca caído: «temporarily unavailable», checklist 404)
   DMAR:   { label: 'Doing Meta-Analysis in R (libro gratis)', url: 'https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/' },
   METAFOR:{ label: 'metafor package (R)', url: 'https://www.metafor-project.org/' },
   EQ:     { label: 'EQUATOR Network', url: 'https://www.equator-network.org/' },
