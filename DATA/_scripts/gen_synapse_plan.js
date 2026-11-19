@@ -431,7 +431,7 @@ function buildAUnits() {
 
   // v5.10-b · cierre de la sem 12 (v6.07: lun 1 → mié 3-feb, ya en la sem 13 por fecha; SHIP S12 = dom 7-feb · v6.06: mar 26 + mié 27-ene, ya en la sem 13 por fecha; SHIP S12 = sáb 30-ene · v6.05: mar 19 + mié 20-ene, ya en la sem 13 por fecha; SHIP S12 = sáb 23-ene · v6.03: jue 14 + vie 15-ene, ya en la sem 13 por fecha; SHIP S12 = sáb 16-ene · v6.02: mar 12 + mié 13-ene, ya en la sem 13 por fecha; SHIP S12 = sáb 16-ene · v6.01: mar 5 + mié 6-ene, ya en la sem 13 por fecha; SHIP S12 = sáb 9-ene · v5.20: mar 29 + mié 30-dic, ambas ya en la sem 13 por fecha; v5.19: lun 28 + mar 29-dic, ambas ya en la sem 13 por fecha; v5.18: sáb 26-dic + lun 28-dic, la 2.ª ya en la sem 13 por fecha; v5.17: mar 22 + mié 23-dic; v5.16: vie 18-dic + sáb 19-dic; en v5.10-b vie 4 + sáb 5-dic, antes fuera del plan): 2 A-units F1 con lecciones reales aún no usadas
   push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 5).titulo}" · "${acad('academy-cc-in-action', 6).titulo}" — cierra S12: el capstone se VERIFICA (verify_vibecoding.js), no se recuerda.`, cur('academy-cc-in-action').url);
-  push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 en el PC del domingo (v6.08: dom 14-feb · v6.07: dom 7-feb; desde la v6.07 el SHIP es el domingo · v6.06: sáb 30-ene · v6.05: sáb 23-ene · v6.03 = v6.02: sáb 16-ene · v6.01: sáb 9-ene · v6.00 = v5.20: sáb 2-ene, igual que v5.18-v5.19 · v5.17: sáb 26-dic).', ccDoc(4).url);
+  push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 en el PC del domingo 14-feb.', ccDoc(4).url);
   if (A.length !== 72) throw new Error('Total A-units F0+F1 (+cierre sem 12) debe ser 72, hay ' + A.length);
 
   // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v6.00 = v5.20 en fechas, taper por el ENCAPS · v5.20: lun 28-dic → lun 15-feb; v5.19: lun 28-dic → sáb 13-feb; v5.18: lun 28-dic → vie 12-feb; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb · 38 A-units · 30'/día · taper del Step 1)
@@ -492,7 +492,7 @@ function buildAUnits() {
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
   push('Prep CCA-F · dominio 5 (repaso) + Claude Code docs — ' + ccDoc(14).modulo, `Context Management (15%) = memoria (CLAUDE.md, /compact) + el ensayo de context engineering · ${ccDoc(14).modulo} + ${ccDoc(15).modulo} (páginas reales, contenido por leer).`, ccDoc(14).url);
   push('Prep CCA-F · simulacro', `Repite en modo examen (sin apuntes) el "${api(11).modulo}" de Building with the Claude API y el "${acad('academy-cc-in-action', 14).titulo}" de Claude Code in Action; anota % por dominio en el journal.`, apiU);
-  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (dic-2027 desde v6.07: el Step 1 es el lun 6-dic-2027 · v6.04-v6.06: nov-2027, con el Step 1 el lun 25-oct-2027; v6.00-v6.03: oct-2027, con el Step 1 el lun 27-sep). CIERRE F2 (último día del motor: jue 1-abr en v6.08 —F3, tras el ENCAPS y la Semana Santa— · mar 23-mar en v6.07 —F3, tras el ENCAPS— · mar 16-mar en v6.06 —ya tras el ENCAPS: los PROTEGIDOS vie 12 → lun 15-mar no tienen SYNAPSE— · vie 5-mar en v6.05 · lun 1-mar en v6.03 · vie 26-feb en v6.02 · vie 19-feb en v6.01 · lun 15-feb en v6.00 = v5.20 · sáb 13-feb en v5.19 · v5.18: vie 12-feb): relee el journal S13-S19 y escribe 3 líneas para la fase post-ENCAPS (qué vuelve a la franja 12:30 tras el ENCAPS). Desde mañana la franja 12:30 queda libre (v6.06: ya en F3, el Step 1 tiempo completo; hasta v6.05 pasaba a la intensiva ENCAPS).', U.academy, { real: false });
+  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (dic-2027: el Step 1 es el lun 6-dic-2027). CIERRE F2 (último día del motor: jue 1-abr —F3, tras el ENCAPS y la Semana Santa—): relee el journal S13-S19 y escribe 3 líneas para la fase post-ENCAPS. Desde mañana la franja 12:30 queda libre.', U.academy, { real: false });
   if (A.length !== 110) throw new Error('Total A-units (F0 46 + F1 26 + F2 38) debe ser 110, hay ' + A.length);
   return A;
 }
@@ -598,7 +598,7 @@ function bloquePCTaper(tp) {
   return {
     tag: 'PC', min: tp.tipo === 'mantenimiento' ? 30 : 0, formato: 'pc',
     material: `PC opcional · taper S${tp.s} · ${tp.nombre}`,
-    leccion: `${tp.ship} Sensores: ${(tp.sensores || []).join(' · ') || 'ninguno (deload total)'}. Sin proyecto nuevo: la intensiva ENCAPS manda (v6.00).`,
+    leccion: `${tp.ship} Sensores: ${(tp.sensores || []).join(' · ') || 'ninguno (deload total)'}. Sin proyecto nuevo.`,
     url: assertUrl(ccDoc(13).url), real: true,
   };
 }
@@ -678,7 +678,7 @@ function bloqueDom(semana, fecha) {
   return {
     tag: 'R', min: 10, formato: 'repaso',
     material: `Feynman · proyecto S${p.s}: ${p.nombre}`,
-    leccion: `Explica en voz alta, 5', ${queTxt} y CÓMO funciona (sin mirar el código); 5' más: la línea "qué falta" en synapse-journal. Opcional: si descansas, márcalo ✓ igual — el domingo es libre (v5 sáb/dom libres).`,
+    leccion: `Explica en voz alta, 5', ${queTxt} y CÓMO funciona (sin mirar el código); 5' más: la línea "qué falta" en synapse-journal. Opcional: si descansas, márcalo ✓ igual.`,
     url: assertUrl(p.docs[0].url), real: true,
   };
 }
@@ -1080,7 +1080,7 @@ export const SYN_PLAN_META = {
   bloque: "A 15' pantalla · B 10' audio · C 5' lectura · DOMINGO PC 2h flexible = SHIP del proyecto (S13-S16: PC opcional 30') + Feynman 10' opcional",
   /** v6.07: día del bloque PC (SHIP del vibecoding): 'Dom' (hasta v6.06 'Sáb' 15:00-17:00). */
   diaPC: '${DIA_PC}',
-  fases: { f0: 'F0 · Fundamentos desde cero (sem 1-8; base cero: se cursa entera, v6.10)', f1: 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n (sem 9-12)', f2: 'F2 · Academy restante + prep CCA-F (sem 13-19, taper por el ENCAPS; 17-19 deload)' },
+  fases: { f0: 'F0 · Fundamentos desde cero (sem 1-8; base cero: se cursa entera)', f1: 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n (sem 9-12)', f2: 'F2 · Academy restante + prep CCA-F (sem 13-19, taper por el ENCAPS; 17-19 deload)' },
   deloadDesde: 17,
 } as const;
 
@@ -1134,7 +1134,7 @@ export const SYN_FORMATO_ICON: Record<SynFormato, string> = {
   pantalla: '📱', audio: '🎧', lectura: '📖', pc: '⌨️', repaso: '🌿',
 };
 export const SYN_TAG_LABEL: Record<SynBloque['tag'], string> = {
-  A: "A · 15' lección", B: "B · 10' audio", C: "C · 5' lectura", PC: "PC · sáb 2h · SHIP", R: "Feynman · 10' (opcional)",
+  A: "A · 15' lección", B: "B · 10' audio", C: "C · 5' lectura", PC: "PC · dom 2h · SHIP", R: "Feynman · 10' (opcional)",
 };
 `;
 
