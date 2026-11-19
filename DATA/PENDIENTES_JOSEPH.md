@@ -80,6 +80,14 @@ Decisiones nuevas de la v6.10o (19-nov, madrugada: arreglos de las auditorías c
 - [ ] **LIVIANO 2027 (lecturas «sin medir», 40 días desde el 4-ene)**: el Calendar enseña primero la FUENTE («LECTURA en <fuente> (sección del tema, sin medir): <tema>») y el tema queda casi siempre detrás del corte (sigue en el título y en la app). En los 5 días de ACCESO PERÚ, la «TAREA: consultar el portal DIGEMID» también queda detrás. ¿Te vale así, con la fuente visible en 38 de 40 días, o prefieres ver antes el tema, aunque 14 días queden sin fuente visible?
 - [ ] **Sábados con GATE (sáb 12-dic)**: el Calendar enseña el GATE entero y «Sábado: A/B/C a las 21:00 …»; «al volver del baile … Anki 21:30» queda solo en la app. ¿De acuerdo?
 
+Decisiones nuevas de la v6.10p (19-nov, mañana: arreglos de las auditorías c18):
+- [ ] **Rótulos sin respuesta (ENCAPS)**: los sub-ejes que llevaban la respuesta en el nombre (cifras, o colas como «definición y atributos …») ahora salen con un rótulo neutro en el título, el PRE-TEST, el BANCO ciego y el CIERRE. Ejemplos: «Suplementación por grupo (cifras: dosis, frecuencia y duración)», «ATRIBUTOS (cuáles son)», «(a quién se comunica)», «(qué licencia)». Las cifras solo aparecen después de responder. ¿Te valen? ¿«claves roja/azul/amarilla» también sin nombrarlas?
+- [ ] **App: la respuesta de un pre-test sigue más abajo en la misma tarjeta** (Research M1, C-1 y M2, Derma d2). En el Calendar ya queda tapada. ¿Quieres que la app pliegue los pasos posteriores al pre-test? Es un cambio de interfaz.
+- [ ] **Carril sábado 2027**: la eval re-test se registra con un CIERRE «Eval anclada» por cada código fallado (n = las preguntas de ese código entre las 5; el código, a mano). ¿Te sirve?
+- [ ] **LIVIANO 2027**: ahora se ve primero el contenido del día y después una fuente pertinente. En d68 y d69 esa fuente es el OMA, que es de pago (el respaldo libre es Obesity Canada). ¿Compras el OMA, mostramos Obesity Canada o se queda así? ¿Y el enlace «fuente ↗» debe apuntar a la fuente elegida y no a la 1.ª del módulo? Solo cambia qué URL ya verificada se usa.
+- [ ] **MIR banqueo de mantenimiento 2027 (≈41 eventos)**: nunca ha llevado «tapa las opciones · Rule-In → Rule-Out». ¿Se añade? Sacaría del corte parte de la regla del blanco o de la fuente.
+- [ ] **Research M2 (mié 2-dic) y C-1 (lun 30-nov)**: los datos que pregunta el pre-test (meses de la solicitud, ventana, ángulo, los 3 manuscritos) ahora van después del pre-test. ¿De acuerdo? **Derma d2 (lun 23-nov)**: las equivalencias (anular = tiña, herpetiforme = HSV, dermatomal = zóster) pasan a después de las 4 preguntas de uWorld. ¿Lo confirmas?
+
 
 **⚡ v6.09 (lun 16-nov ≈16:00, VIGENTE, encima de la v6.08) — TODO ARRANCA EL MAR 17-NOV; SÁB 21 Y DOM 22 LIBRES (viaje).** Orden de Joseph: «el día de hoy no avancé, así que todo empieza a partir de mañana; el sábado y el domingo viajaré, déjalos libres; reestructura de la manera más simple, tal vez alargando días».
 

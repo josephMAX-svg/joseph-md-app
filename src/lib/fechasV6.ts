@@ -17,6 +17,7 @@
  * v6.10 (mar 17-nov-2026): corrimiento rígido del D1 mar 17-nov-2026 → mié 18-nov-2026 (perdidos: mar 17-nov).
  * v6.10d (mié 18-nov-2026): SIN re-fecha — alias de corrida_s1 (el plan del mié 18-nov lo hace el jue 19-nov y cada hábil hasta el vie 1-ene hace el del anterior; las filas conservan su fecha de plan).
  * v6.10d (mié 18-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · sáb 21-nov · dom 22-nov · jue 19-nov = plan del mié 18-nov · vie 20-nov = plan del jue 19-nov · lun 23-nov = plan del vie 20-nov · mar 24-nov = plan del lun 23-nov · mié 25-nov = plan del mar 24-nov · jue 26-nov = plan del mié 25-nov · vie 27-nov = plan del jue 26-nov · lun 30-nov = plan del vie 27-nov · mar 1-dic = plan del lun 30-nov · mié 2-dic = plan del mar 1-dic · jue 3-dic = plan del mié 2-dic · vie 4-dic = plan del jue 3-dic · lun 7-dic = plan del vie 4-dic · mar 8-dic = plan del lun 7-dic · mié 9-dic = plan del mar 8-dic · jue 10-dic = plan del mié 9-dic · vie 11-dic = plan del jue 10-dic · lun 14-dic = plan del vie 11-dic · mar 15-dic = plan del lun 14-dic · mié 16-dic = plan del mar 15-dic · jue 17-dic = plan del mié 16-dic · vie 18-dic = plan del jue 17-dic · lun 21-dic = plan del vie 18-dic · mar 22-dic = plan del lun 21-dic · mié 23-dic = plan del mar 22-dic · jue 24-dic = plan del mié 23-dic · lun 28-dic = plan del jue 24-dic · mar 29-dic = plan del lun 28-dic · mié 30-dic = plan del mar 29-dic · jue 31-dic = plan del mié 30-dic · vie 1-ene = plan del jue 31-dic; ningún plan cambia de fecha.
+ * jue 19-nov-2026 · alias propio de «vibecoding» (manda sobre el global en su consulta): vie 20-nov = plan del mié 18-nov · lun 23-nov = plan del jue 19-nov · mar 24-nov = plan del vie 20-nov · mié 25-nov = plan del lun 23-nov · dom 29-nov = el plan del mar 24-nov dentro del SHIP · journal de S1 = 2026-W47.
  * Versión vigente del JSON: v6.10.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -73,6 +74,9 @@ export interface FechasV6 {
     /** v6.10: día de fin de semana → { frente (clave de BLOQUES_POR_FRENTE): 'HH:MM-HH:MM' } = el bloque L-V de ese frente que recupera, a hora fija,
      *  el día perdido (plantillasV6 lo pinta con bloqueCorrido; cada generador tiene su fila ese día) */
     extra?: Record<string, Record<string, string>>;
+    /** v6.10q: alias PROPIO de un frente que manda sobre el global en su consulta (fechaPlanDe / fechaRealDe con `frente`): alias = día real L-V → plan ·
+     *  en_ship = domingo → fecha de plan del paso que su SHIP absorbe (primero) · journal = «S<n>» → semana ISO del journal de ese proyecto */
+    alias_frente?: Record<string, { decidido: string; motivo: string; alias: Record<string, string>; en_ship?: Record<string, string>; journal?: Record<string, string> }>;
   };
 }
 export const FECHAS_V6: FechasV6 = {
@@ -631,6 +635,24 @@ export const FECHAS_V6: FechasV6 = {
       "2027-01-03": {
         "synapse": "05:00-05:30"
       }
+    },
+    "alias_frente": {
+      "vibecoding": {
+        "decidido": "2026-11-19",
+        "motivo": "Jue 19-nov-2026 (chat de plan, tras comprobarlo el chat de Vibe Coding a las 06:10 y 06:33): el paso 1 de S1 (plan del mié 18: test del parser, respaldo del n8n vivo —fecha e ID de la versión publicada, JSON del workflow en backups y live_*.js de los 2 nodos— y hashes con certutil) no se hizo el jue 19, y sin ese respaldo el redeploy del paso 2 no tiene vuelta atrás (la poda de n8n borra versiones viejas al publicar). Solo el vibecoding S1 corre una sesión más, dentro de su semana: paso 1 el vie 20 (ese día no se pega ni se publica), paso 2 el lun 23 (redeploy + Publish + [TEST S1], con el respaldo comprobado antes de pegar y el Publish como tarde a las 04:40), paso 3 el mar 24, paso 4 el mié 25 y el paso 5 (commit [S1] selectivo + verify 1 + cerrar lo rojo) PRIMERO dentro del SHIP S1 del dom 29 (en_ship: domingo → fecha de plan del paso que absorbe su SHIP). El jue 19 real hizo el plan del mié 18 por el alias global y su texto no se reescribe. Desde el jue 26 (S2 paso 1 = plan del mié 25) manda el alias global: de S2 en adelante no cambia nada; los demás frentes siguen siempre con el alias global. journal: proyecto → semana ISO del journal (todo S1, también el lun 23, el mié 25 y el dom 29, se anota en 2026-W47, como manda el kit v5 de GoodNotes).",
+        "alias": {
+          "2026-11-20": "2026-11-18",
+          "2026-11-23": "2026-11-19",
+          "2026-11-24": "2026-11-20",
+          "2026-11-25": "2026-11-23"
+        },
+        "en_ship": {
+          "2026-11-29": "2026-11-24"
+        },
+        "journal": {
+          "S1": "2026-W47"
+        }
+      }
     }
   }
 };
@@ -905,6 +927,9 @@ export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
  * si ese día no tiene bloque del frente, la propia fecha (v6.06d) · día sin sesión → la fila del próximo día con sesión (v6.06e) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
+  // v6.10q: el alias propio del frente manda sobre el global (corrida_s1.alias_frente)
+  const af = frente ? FECHAS_V6.corrida_s1.alias_frente?.[frente] : undefined;
+  if (af && af.alias[iso]) return af.alias[iso] as string;
   const c = corridaS1De(iso);
   if (!c) return iso;
   // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
@@ -934,6 +959,12 @@ export function fechaPlanDe(iso: string, frente?: string): string {
  */
 export function fechaRealDe(plan: string, frente?: string): string {
   const c = FECHAS_V6.corrida_s1;
+  // v6.10q: el alias propio del frente (y el domingo cuyo SHIP absorbe ese paso) manda sobre el global
+  const af = frente ? c.alias_frente?.[frente] : undefined;
+  if (af) {
+    for (const [r, de] of Object.entries(af.alias)) if (de === plan) return r;
+    for (const [r, de] of Object.entries(af.en_ship ?? {})) if (de === plan) return r;
+  }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
@@ -949,4 +980,8 @@ export function extraCorridaDe(iso: string): { frente: string; ini: string; fin:
   const x = FECHAS_V6.corrida_s1.extra?.[iso];
   if (!x) return [];
   return Object.entries(x).map(([frente, v]) => { const [ini, fin] = v.split('-') as [string, string]; return { frente, ini, fin }; }).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0));
+}
+/** v6.10q · fecha de PLAN del paso del `frente` que el SHIP del domingo `dom` absorbe y hace PRIMERO (corrida_s1.alias_frente[frente].en_ship); null si ninguno. */
+export function enShipDe(dom: string, frente: string = 'vibecoding'): string | null {
+  return FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom] ?? null;
 }

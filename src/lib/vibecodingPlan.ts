@@ -298,8 +298,17 @@ export function vibeSemanaISO(fechaISO: string): string {
     return d.getUTCFullYear() + '-W' + String(w).padStart(2, '0');
   } catch { return fechaISO.slice(0, 4) + '-W00'; }
 }
-/** Ruta del journal de la semana y su URL vscode:// (VS Code instalado en el PC de Joseph; en móvil no abre). */
-export function vibeJournalPath(fechaISO: string): string { return VIBE_META.journalRoot + '/journal/' + vibeSemanaISO(fechaISO) + '.md'; }
+/** v6.10q (19-nov-2026): semana del journal de un PROYECTO que no va en la de cada fecha (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal). */
+const VIBE_JOURNAL_SEMANA: Record<number, string> = {"1":"2026-W47"};
+/** v6.10q: semana del journal (fichero <semana>.md) de una fecha del vibecoding — la de PLAN de un día L-V o el domingo del SHIP / Feynman: la de su
+ *  proyecto si VIBE_JOURNAL_SEMANA la fija (S1 entero en 2026-W47); si no, su semana ISO (vibeSemanaISO, que sigue siendo la semana ISO pura). */
+export function vibeJournalSemanaDe(fechaISO: string): string {
+  const pc = vibePCDomingo(fechaISO);
+  const s = vibeDiaDe(fechaISO)?.semana ?? (pc.length ? pc[pc.length - 1].s : undefined);
+  return (s !== undefined ? VIBE_JOURNAL_SEMANA[s] : undefined) ?? vibeSemanaISO(fechaISO);
+}
+/** Ruta del journal de la semana y su URL vscode:// (VS Code instalado en el PC de Joseph; en móvil no abre). v6.10q: semana = vibeJournalSemanaDe. */
+export function vibeJournalPath(fechaISO: string): string { return VIBE_META.journalRoot + '/journal/' + vibeJournalSemanaDe(fechaISO) + '.md'; }
 export function vibeJournalUrl(fechaISO: string): string { return 'vscode://file/' + vibeJournalPath(fechaISO); }
 function addDiasISO(fechaISO: string, n: number): string {
   try { const d = new Date(fechaISO + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return fechaISO; }

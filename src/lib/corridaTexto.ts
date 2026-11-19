@@ -117,7 +117,7 @@ export function fechasRealesEnTexto(t: string, frente?: string): string {
 export function reemplazosCorrida(g: GuiaBloque, fechaPlan: string): GuiaBloque {
   const xs = (_C.reemplazos?.[fechaPlan] ?? []).filter((x) => !x.frente || x.frente === g.plan);
   // v6.10d: + «ayer» / «mañana a las HH:MM» / «el lunes a las HH:MM» del día de PLAN → el día que de verdad nombran (relativosReales)
-  const real = fechaRealDe(fechaPlan);
+  const real = fechaRealDe(fechaPlan, g.plan); // v6.10q: con el frente (alias propio del vibecoding: el plan del mié 18 → vie 20)
   if (!xs.length && real === fechaPlan) return g;
   const f = (t: string): string => relativosReales(xs.reduce((acc, x) => acc.split(x.a).join(x.por), t), fechaPlan, real, g.plan);
   return {
@@ -162,7 +162,7 @@ export function relativosReales(t: string, plan: string, real: string, frente?: 
   // «de ayer» → «del <día>»; si el día nombrado y el ayer real fueron los dos sin sesión (1.er día), «ayer» sigue valiendo
   let o = t.replace(/(^|[^\p{L}])(de )?(ayer)(?![\p{L}])/giu, (m, pre: string, de: string | undefined, w: string) => {
     const ref = _add(plan, -1);
-    if (fechaRealDe(ref) === ayerR || (sinSes.has(ref) && sinSes.has(ayerR))) return m;
+    if (fechaRealDe(ref, frente) === ayerR || (sinSes.has(ref) && sinSes.has(ayerR))) return m;
     return de ? `${pre}${_cap('del ' + _corta(ref), de)}` : `${pre}${_cap('el ' + _corta(ref), w)}`;
   });
   o = o.replace(/(^|[^\p{L}])(mañana)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
@@ -173,7 +173,7 @@ export function relativosReales(t: string, plan: string, real: string, frente?: 
     //   recupera la transición) ES la sesión de «mañana a las HH:MM»: no se salta el sábado (antes iba al «lun 4-ene»)
     if (frente && extraCorridaDe(mananaR).some((x) => x.frente === frente && x.ini === h.slice(-5))) return m;
     if (_SKIP.has(ref)) while (_SKIP.has(ref) || dowDe(ref) === 0 || dowDe(ref) === 6) ref = _add(ref, 1);
-    return fechaRealDe(ref) === mananaR ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
+    return fechaRealDe(ref, frente) === mananaR ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
   });
   // v6.10f (revisión 18-nov · relativos): «mañana (<día> <n>[-<mes>] …)» y «mañana <día> <n>[-<mes>]» llevan la FECHA DE PLAN del día que nombran: si su día
   //   real no es el siguiente al real, «mañana» es falso («la eval de mañana (vie 20-nov 15:15)» del plan del jue 19 pintado el vie 20 real = lun 23 real) →
@@ -186,14 +186,14 @@ export function relativosReales(t: string, plan: string, real: string, frente?: 
     if (/(?:^|[^\p{L}])(?:la|las|una|esa|cada|esta|toda|su|sus|tu|tus|mi|mis|nuestra|nuestras)\s$/iu.test(antes)) return m;
     const trasPrep = /(?:^|[^\p{L}])(?:a|al|para|desde|hasta|por|en|hacia|tras|sin|con|sobre|entre|antes de|después de)\s$/iu.test(antes);
     const ref = fechaCitada(plan, dow, Number(dd), mes);
-    if (!ref || fechaRealDe(ref) === mananaR) return m;
+    if (!ref || fechaRealDe(ref, frente) === mananaR) return m;
     const fecha = `${dow}${resto}`;
     if (sep === ' ') return `${pre}${de ? _cap('del', de) : _cap('el', w)} ${fecha}`;
     return `${pre}${de ? de + 'la próxima sesión' : _cap(trasPrep ? 'la próxima sesión' : 'en la próxima sesión', w)} (${fecha}`;
   });
   o = o.replace(/(^|[^\p{L}])(el lunes)( a las \d\d:\d\d)/giu, (m, pre: string, w: string, h: string) => {
     let ref = _add(plan, 1); while (dowDe(ref) !== 1) ref = _add(ref, 1);
-    const r = fechaRealDe(ref);
+    const r = fechaRealDe(ref, frente);
     return r === mananaR ? `${pre}${_cap('mañana', w)}${h}` : dowDe(r) === 1 && r > real && r <= _add(real, 7) ? m : `${pre}${_cap('el ' + _corta(ref), w)}${h}`;
   });
   // v6.10d (fix revisión 18-nov): «hoy <día>» con el día de la semana del PLAN → el del día REAL («Hoy viernes no va el OUTPUT» pintado el lunes real). Red de

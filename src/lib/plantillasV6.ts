@@ -140,7 +140,7 @@
  *  transición: case 'TRANSICION'); sáb 28-nov, dom 29-nov y dom 6-dic sin bloques de recuperación. extrasSabado no pinta el Business del sábado que
  *  ya trae bloquesExtraDe.
  */
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, corridaS1De, fechaRealDe, esDiaStepF1, extraCorridaDe, fechaPlanDe, PRINCIPAL_POR_FRENTE } from './fechasV6'; // v6.10: + extraCorridaDe · v6.10q: + fechaPlanDe, PRINCIPAL_POR_FRENTE (alias propio de un frente)
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
 import { fechasRealesEnTexto, relativosReales } from './corridaTexto'; // v6.10d: títulos, notas y nombres de bloque con fechas de PLAN → su día real (como las guías)
 import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2, DIAS_TODOS } from './usmleStep1Daily'; // v6.09b: sin diaPorD (el domingo de llegada ya no lleva Anki) · v6.10b: + DIAS_TODOS (nombres de los bloques de Step del nivel 0-1)
@@ -1140,10 +1140,22 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
   }
   if (c.tipo === 'alias') {
     const p = conFechasReales(plantillaBase(c.de, turno), c.de, iso); // v6.10d: sus textos citan fechas de plan → día real
+    // v6.10q (19-nov): un frente con alias PROPIO (corrida_s1.alias_frente: el vibecoding S1 corre una sesión, vie 20 = plan del mié 18 … mié 25 = plan del lun 23)
+    //   hace ese día OTRA fecha de plan: su bloque principal sale de la plantilla de esa fecha, a la misma hora, con su fechaPlan (TodayMission y el export del
+    //   Calendar piden la guía con ella); los demás bloques siguen el alias global
+    const propio = new Map<string, { de: string; b: BloqueV6 }>();
+    for (const fr of Object.keys(FECHAS_V6.corrida_s1.alias_frente ?? {})) {
+      const de = fechaPlanDe(iso, fr);
+      if (de === c.de) continue;
+      const ids = PRINCIPAL_POR_FRENTE[fr] ?? [];
+      for (const b of conFechasReales(plantillaBase(de, turno), de, iso).bloques) if (ids.includes(b.id)) propio.set(b.id, { de, b });
+    }
     return {
-      ...p, fecha: iso, corrida: 'alias', bloques: p.bloques.map((b) => bloqueCorrido(b, c.de, 0)),
+      ...p, fecha: iso, corrida: 'alias', bloques: p.bloques.map((b) => { const x = propio.get(b.id); return x ? bloqueCorrido(x.b, x.de, 0) : bloqueCorrido(b, c.de, 0); }),
       titulo: `${p.titulo} · plan del ${fCorta(c.de)}`, // v6.07a: un martes con «mañana ENCAPS (lun · mié · vie)» tiene que decir de qué día es
-      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas (las fechas que citan las guías ya salen con su día real).`, NOTA_CORRIDA, ...p.notas],
+      // remate v6.10q (revisión «consumidores» BAJA #8): la nota nombra la excepción del frente con alias propio («salvo el vibecoding de las 04:15, que hace
+      //   el plan del mié 18-nov»); fecha de PLAN, como la del alias global de la misma frase (la nota no pasa por conFechasReales)
+      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas${propio.size ? `, salvo ${[...propio.values()].map((x) => `${x.b.id === 'vibe' ? 'el vibecoding' : `«${x.b.nombre}»`}${x.b.ini ? ` de las ${x.b.ini}` : ''}, que hace el plan del ${fCorta(x.de)}`).join(' y ')}` : ''} (las fechas que citan las guías ya salen con su día real).`, NOTA_CORRIDA, ...p.notas],
     };
   }
   const bs: BloqueV6[] = [];

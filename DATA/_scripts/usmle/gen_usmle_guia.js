@@ -507,6 +507,18 @@ if (!CONF_DIA) aborta(`v6.10b: F1 (${FV6.f1.inicio}) no tiene un día hábil ant
 const TEST_S1 = (() => { try { const v = cargarModuloTS(path.join('src', 'lib', 'vibecodingPlan.ts')).VIBE_DIAS.find((x) => x.semana === 1 && x.k === 2); return v ? v.fecha : null; } catch { return null; } })();
 if (!TEST_S1) aborta('vibecodingPlan.ts: sin el paso 2 de S1 (la [TEST S1] del vibecoding)');
 const TEST_S1_MISMO_DIA = TEST_S1 === D2.fecha;
+// v6.10q (19-nov-2026): el vibecoding S1 corre una sesión con su alias PROPIO (_fechas_v6.json › corrida_s1.alias_frente.vibecoding): la [TEST S1] (paso 2,
+//   plan del jue 19 = el D2) va el lun 23 REAL y el D2 el vie 20 → el «Sync» de las 05:00 del D2 ya no la anuncia «a las 04:15» de hoy: la nombra con su día
+//   real. La configuración (jue 19 real, ya pasada) no se reescribe. Su fecha se escribe como la fecha de PLAN global de ese día real (corridaTexto la pinta
+//   con su día real en la guía USMLE: vie 20-nov de plan → lun 23-nov).
+const TEST_S1_REAL = V6.fechaRealDe(TEST_S1, FV6, 'vibecoding');
+const TEST_S1_HOY_D2 = TEST_S1_REAL === V6.fechaRealDe(D2.fecha, FV6, 'usmle');
+const fdTestS1 = () => fd(V6.fechaPlanDe(TEST_S1_REAL, FV6));
+// remate v6.10q (revisión «consumidores» ALTA #2): un día USMLE cuyo día REAL va ANTES del de la [TEST S1] (= el redeploy del parser en n8n, paso 2 del
+//   vibecoding S1: lun 23-nov real con su alias propio; el D2 es el vie 20) no manda tarjetas por el motor APEX —corre aún el parser viejo, que trunca los
+//   campos de varias líneas y deja casi vacía la nota de Obsidian (P0-2/P0-3)—: van directas en Anki, como las de MIR y ENCAPS mientras el redeploy no esté
+//   verificado. Desde el día de la prueba, el envío de siempre. (En la v6.10p el redeploy iba a las 04:15 del mismo día del D2, antes de las 07:15.)
+const antesRedeploy = (r) => V6.fechaRealDe(r.fecha, FV6, 'usmle') < TEST_S1_REAL;
 /** cuándo nace APEX::USMLE, en texto: «el jue 19-nov con su 1.ª tarjeta (la [TEST S1] de las 04:15 o la de las 07:15)» (prueba el mismo día que el D2) · si no, con la fecha de la prueba */
 const nacePrimeraTxt = () => (TEST_S1_MISMO_DIA ? `el ${fd(D2.fecha)} con su 1.ª tarjeta (la [TEST S1] de las 04:15 o la de las 07:15)` : `con su 1.ª tarjeta (la [TEST S1] del vibecoding, ${fd(TEST_S1)} 04:15, o la de las 07:15 del ${fd(D2.fecha)})`);
 const CONF_REP = [];
@@ -1146,7 +1158,8 @@ function anki0500D2(r) {
   const V = vids.reduce((a, p) => a + p.min, 0); const resto = 30 - 2 - V;
   const pend = [...colaPendienteTras(r.d, 's0500')].map((it) => `«${PALM[it.id] ? PALM[it.id].t.split(' You Need')[0] : bbRuta(it.id)}…» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
   return B(f, '05:00–05:30', 'ANKI (aún sin tarjetas USMLE que repasar: nacen hoy) + VÍDEOS DE MÉTODO', [
-    P(2, TEST_S1_MISMO_DIA ? `Sync · APEX::USMLE nace hoy con su 1.ª tarjeta: la [TEST S1] de las 04:15 (::Cardiology, suspendida) o la de las 07:15 (::${espApex(r)})` : `Sync · APEX::USMLE nace ${nacePrimeraTxt()}; la del plan, con ::${espApex(r)}`, `Al cerrar el bloque de las 07:15: Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks» (incluye ::Cardiology si la [TEST S1] lo creó). Anki escritorio · el preset quedó guardado ${antesTxt(CONF_DIA, f)} (${fd(CONF_DIA)} 05:00), sin asignar; si a la configuración le faltó algo, complétalo aquí.`),
+    // v6.10q: con la [TEST S1] otro día real (lun 23), hoy APEX::USMLE nace con la 1.ª de las 07:15 y el Save to All Subdecks no incluye aún ::Cardiology
+    P(2, TEST_S1_MISMO_DIA && !TEST_S1_HOY_D2 ? `Sync · APEX::USMLE nace hoy con su 1.ª tarjeta, la de las 07:15 (::${espApex(r)}); la [TEST S1] del vibecoding, el ${fdTestS1()} (a ::Cardiology)` : TEST_S1_MISMO_DIA ? `Sync · APEX::USMLE nace hoy con su 1.ª tarjeta: la [TEST S1] de las 04:15 (::Cardiology, suspendida) o la de las 07:15 (::${espApex(r)})` : `Sync · APEX::USMLE nace ${nacePrimeraTxt()}; la del plan, con ::${espApex(r)}`, `Al cerrar el bloque de las 07:15: Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks»${TEST_S1_MISMO_DIA && !TEST_S1_HOY_D2 ? '' : ' (incluye ::Cardiology si la [TEST S1] lo creó)'}. Anki escritorio · el preset quedó guardado ${antesTxt(CONF_DIA, f)} (${fd(CONF_DIA)} 05:00), sin asignar; si a la configuración le faltó algo, complétalo aquí.`),
     ...vids,
     ...(resto > 0 ? [P(resto, 'Free recall del vídeo (sin mirar)', '3 ideas de cada vídeo en 1 línea; lo que no salga, a la shopping list.')] : []),
   ], [R_ANKI, ...recVideo(rep.s0500)], 'sync hecho y los vídeos de método vistos con sus notas', { aviso: `${pend.length ? `Lo que no cabe (no se recorta): ${pend.join(' · ')}. ` : ''}Regla del ${fd(f)} (chat USMLE, decisión de Joseph del 17-nov): 05:00-05:30 Anki y vídeos de método — hoy no hay tarjetas USMLE que repasar (nacen hoy), así que esos minutos van al método de Palmerton (minutos = duración × 1,2 a 1,0×). A las 05:30, los 15′ de repasos ENCAPS (su guía).` });
@@ -1409,11 +1422,36 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
     //   hasta el preset y el «Hecho» del bloque dice «(Save to All Subdecks)»); los demás (D4), la lista sin el rótulo (el «qué» ya dice «Clasificar el error»)
     //   y «si nació ::X: Deck Options de APEX::USMLE › Save to All Subdecks», todo dentro de los 110
     const cl = /^(Clasifica: (knowledge \/ transfer \/ unforced)) \((«no conocía la palabra» = knowledge de vocabulario)\) · /.exec(p.como);
-    const finPrimero = primero ? ` Hoy nace ::${deck} con la 1.ª tarjeta del plan (y APEX::USMLE, si la [TEST S1] del vibecoding no lo creó antes); Save to All Subdecks incluye ::Cardiology si la prueba lo creó.` : '';
+    // remate v6.10q (revisión «consumidores» BAJA #5): con la [TEST S1] DESPUÉS de este día real (antesRedeploy) la prueba aún no creó nada → sin condiciones
+    const rFe = filas.find((x) => x.fecha === fe);
+    const finPrimero = !primero ? '' : rFe && antesRedeploy(rFe)
+      ? ` Hoy nacen APEX::USMLE y ::${deck} con la 1.ª tarjeta del plan (directa en Anki: crea el mazo APEX::USMLE::${deck} al añadirla); ::Cardiology nace con la [TEST S1] del ${fdTestS1()} y ese día recibe el preset.`
+      : ` Hoy nace ::${deck} con la 1.ª tarjeta del plan (y APEX::USMLE, si la [TEST S1] del vibecoding no lo creó antes); Save to All Subdecks incluye ::Cardiology si la prueba lo creó.`;
     p.como = cl
       ? `${primero ? `${cl[1]} · al cerrar: Deck Options de APEX::USMLE › preset «APEX USMLE» › ` : `${cl[2]} · si nació ::${deck}: Deck Options de APEX::USMLE › `}Save to All Subdecks · ${cl[3]} · ${p.como.slice(cl[0].length)}${finPrimero}`
       : `${primero ? 'Al cerrar' : `Al cerrar, si nació ::${deck}`}: Deck Options de APEX::USMLE › ${primero ? 'preset «APEX USMLE» › ' : ''}Save to All Subdecks · ${p.como}${finPrimero}`;
     if (primero) g.hecho = `${g.hecho} y el preset «APEX USMLE» en APEX::USMLE (Save to All Subdecks)`;
+  }
+}
+// remate v6.10q (revisión «consumidores» ALTA #2): los días antes del redeploy (antesRedeploy: el D2, vie 20-nov real) mandan sus tarjetas directas a Anki, no
+//   por el motor APEX: el envío (R_ENVIO) se cambia en el «cómo», el «toast ✓» sale del «Hecho» y el aviso lo dice DELANTE (el Calendar enseña el aviso hasta
+//   240; el «cómo» de los pasos de tarjetas, solo hasta 110)
+{
+  const dir = (r) => `directa en Anki escritorio (Add › mazo APEX::USMLE::${espApex(r)}), sin Ctrl+Shift+A: el motor APEX corre el parser viejo hasta el redeploy del ${fdTestS1()}`;
+  for (const r of [...F1, ...TG]) {
+    if (esHito(r) || !antesRedeploy(r) || !GUIA[r.fecha]) continue;
+    for (const g of GUIA[r.fecha]) {
+      let toca = false;
+      for (const p of g.pasos) {
+        const c0 = p.como;
+        p.como = p.como.split(mayus(R_ENVIO)).join(`Cada tarjeta, ${dir(r)}`).split(R_ENVIO).join(`cada tarjeta, ${dir(r)}`)
+          .replace('Corrige y reenvía si hace falta (toast ✓)', 'Corrige en Anki (Browse) si hace falta');
+        if (p.como !== c0) toca = true;
+      }
+      if (!toca) continue;
+      g.hecho = g.hecho.replace(/ confirmadas \(toast ✓\)/g, ' en Anki (directas)'); // corto: el Calendar corta el «Hecho» a 180
+      g.aviso = `Hoy las tarjetas van directas a Anki, sin Ctrl+Shift+A (el redeploy del parser es el ${fdTestS1()}).${g.aviso ? ` ${g.aviso}` : ''}`;
+    }
   }
 }
 for (const r of [...TG, ...COLA_DIAS]) for (const g of GUIA[r.fecha]) if (!dentroF3(r, g)) ERR.push(`${etq(r)} ${r.fecha} ${g.franja} «${g.titulo}»: fuera de las franjas USMLE de la plantilla F3 (plantillasV6.ts › bloquesF3)`);

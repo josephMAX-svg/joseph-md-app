@@ -237,6 +237,13 @@ try {
   VIBE_FECHAS = [...vp.matchAll(/\{s:(\d+),id:"[^"]*",nombre:"[^"]*"[\s\S]*?ini:"(20\d\d-\d\d-\d\d)",fin:"(20\d\d-\d\d-\d\d)",ship:"(20\d\d-\d\d-\d\d)"(?:,pcSab:"((?:20\d\d-\d\d-\d\d)?)")?/g)]
     .map((m) => ({ s: +m[1], ini: m[2], fin: m[3], ship: sabTras(m[3]), shipTs: m[4], pcSab: m[5] === undefined ? null : m[5] }));
 } catch { /* aún no generado: se cae al comportamiento por semana */ }
+// remate v6.10q (19-nov-2026): los pasos (semana, k) de cada fecha de PLAN del vibecoding, para el SHIP que ABSORBE un paso de su proyecto
+//   (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = el paso 5/5 de S1, que va PRIMERO dentro del SHIP) → bloquePC
+let VIBE_PASOS = [];
+try {
+  VIBE_PASOS = [...fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8').matchAll(/\{d:\d+,fecha:"(20\d\d-\d\d-\d\d)",wd:"[^"]*",semana:(\d+),proyecto:"[^"]*",k:(\d+),tipo:"([^"]+)"/g)]
+    .map((m) => ({ fecha: m[1], semana: +m[2], k: +m[3], tipo: m[4] }));
+} catch { /* aún no generado */ }
 const vibeDe = (fecha) => VIBE_FECHAS.find((x) => x.ship === fecha) || null;
 const vibeEnCurso = (fecha) => VIBE_FECHAS.find((x) => x.ini <= fecha && fecha <= x.ship) || null;
 const cur = (id) => {
@@ -651,7 +658,11 @@ function bloquePC(semana, fecha) {
   const material = vs || !vc
     ? `SHIP proyecto S${p.s} · ${p.nombre}${dl}`
     : `Avance del proyecto S${p.s} · ${p.nombre}${dl} — SHIP el ${vc.ship}`;
-  const leccion = `${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
+  // remate v6.10q: el SHIP que absorbe un paso de su proyecto (en_ship) lo dice delante (la guía del SHIP, rutinaGuia.guiaShipDe, lo detalla)
+  const enS = vs ? require('./gen_fechas_v6').enShipDe(f, require('./gen_fechas_v6').cargarFechasV6()) : null;
+  const dS = enS ? VIBE_PASOS.find((x) => x.fecha === enS && x.semana === p.s) : null;
+  const pre = dS ? `Primero el paso ${dS.k}/${VIBE_PASOS.filter((x) => x.semana === p.s).length} de S${p.s} (commit [S${p.s}] + verify ${p.s}); después, ` : '';
+  const leccion = `${pre}${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
   return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
 }
 // ─── Domingo = Feynman del proyecto (10', opcional; no rompe la racha si se salta) ───

@@ -33,7 +33,10 @@ const REAL = arg('--fecha', `${hoy.getFullYear()}-${pad(hoy.getMonth() + 1)}-${p
 if (!/^20\d\d-\d\d-\d\d$/.test(REAL)) throw new Error('--fecha inválida (YYYY-MM-DD): ' + REAL);
 // v6.06e: la guía y el botón 📓 usan la fecha de plan → el fichero, el proyecto y el paso del día salen de ella
 const _V6 = require('./gen_fechas_v6');
-const FECHA = _V6.fechaPlanDe(REAL, _V6.cargarFechasV6(), 'vibecoding');
+// v6.10q (19-nov-2026): + el alias PROPIO del vibecoding (corrida_s1.alias_frente: S1 corre una sesión, vie 20 = plan del mié 18 … mié 25 = plan del lun 23) y
+//   el domingo cuyo SHIP absorbe un paso (en_ship: dom 29-nov = el paso 5 de S1, que va primero dentro del SHIP) → su sección es la de ese paso
+const _F6 = _V6.cargarFechasV6();
+const FECHA = _V6.enShipDe(REAL, _F6, 'vibecoding') || _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
 // v6.07d: la cabecera del journal dice los días REALES del proyecto y de su SHIP (con la semana corrida no son los de plan)
 const _REAL = (f) => _V6.fechaRealDe(f, _V6.cargarFechasV6(), 'vibecoding');
 
@@ -50,10 +53,6 @@ function semanaISO(s) {
   const w = 1 + Math.round(((d - fy) / 86400000 - 3 + ((fy.getUTCDay() + 6) % 7)) / 7);
   return d.getUTCFullYear() + '-W' + pad(w);
 }
-const SEM = semanaISO(FECHA);
-const LUNES = addDays(FECHA, -((dow(FECHA) + 6) % 7));
-const DOMINGO = addDays(LUNES, 6);
-
 // ─── plan del vibecoding (regex sobre el TS generado; sin importar TS) ───
 let VP = '';
 try { VP = fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8'); } catch { /* sin plan: journal genérico */ }
@@ -65,7 +64,16 @@ const PROY = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",
 const TAPER = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",tipo:"(mantenimiento|deload)",ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"/g)]
   .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), tipo: m[4], ini: m[5], fin: m[6], ship: m[7], aceptacion: [] }));
 const diaHoy = DIAS.find((x) => x.fecha === FECHA) || null;
-const semanaDias = DIAS.filter((x) => LUNES <= x.fecha && x.fecha <= addDays(LUNES, 4));
+// v6.10q: la semana del journal = la del PROYECTO si el plan la fija (corrida_s1.alias_frente.vibecoding.journal: S1 entero en 2026-W47, también el mié 25 y el
+//   dom 29; = vibecodingPlan.vibeJournalSemanaDe de la app); si no, la semana ISO de la fecha de plan. El lunes y el domingo de la cabecera, los de esa semana.
+const _JSEM = ((((_F6.corrida_s1 || {}).alias_frente || {}).vibecoding || {}).journal) || {};
+const _sHoy = diaHoy ? diaHoy.semana : (PROY.find((p) => p.ship === FECHA) || {}).s;
+const SEM = (_sHoy != null && _JSEM[`S${_sHoy}`]) || semanaISO(FECHA);
+const lunesDeSemana = (w) => { const [y, n] = w.split('-W').map(Number); const e4 = `${y}-01-04`; return addDays(addDays(e4, -((dow(e4) + 6) % 7)), (n - 1) * 7); };
+const LUNES = SEM === semanaISO(FECHA) ? addDays(FECHA, -((dow(FECHA) + 6) % 7)) : lunesDeSemana(SEM);
+const DOMINGO = addDays(LUNES, 6);
+// v6.10q: sin los días de un proyecto cuyo journal va en OTRA semana (S1 en 2026-W47: la cabecera del 2026-W48 es la de S2, no la de S1)
+const semanaDias = DIAS.filter((x) => LUNES <= x.fecha && x.fecha <= addDays(LUNES, 4) && (!_JSEM[`S${x.semana}`] || _JSEM[`S${x.semana}`] === SEM));
 const proySemana = semanaDias.length ? (PROY.find((p) => p.s === semanaDias[0].semana) || TAPER.find((t) => t.s === semanaDias[0].semana) || null) : null;
 const nStep1 = D1 ? Math.floor((fromISO(LUNES) - fromISO(D1)) / 86400000 / 7) + 1 : null;
 

@@ -554,6 +554,24 @@
    "2027-01-03": {
     "synapse": "05:00-05:30"
    }
+  },
+  "alias_frente": {
+   "vibecoding": {
+    "decidido": "2026-11-19",
+    "motivo": "Jue 19-nov-2026 (chat de plan, tras comprobarlo el chat de Vibe Coding a las 06:10 y 06:33): el paso 1 de S1 (plan del mié 18: test del parser, respaldo del n8n vivo —fecha e ID de la versión publicada, JSON del workflow en backups y live_*.js de los 2 nodos— y hashes con certutil) no se hizo el jue 19, y sin ese respaldo el redeploy del paso 2 no tiene vuelta atrás (la poda de n8n borra versiones viejas al publicar). Solo el vibecoding S1 corre una sesión más, dentro de su semana: paso 1 el vie 20 (ese día no se pega ni se publica), paso 2 el lun 23 (redeploy + Publish + [TEST S1], con el respaldo comprobado antes de pegar y el Publish como tarde a las 04:40), paso 3 el mar 24, paso 4 el mié 25 y el paso 5 (commit [S1] selectivo + verify 1 + cerrar lo rojo) PRIMERO dentro del SHIP S1 del dom 29 (en_ship: domingo → fecha de plan del paso que absorbe su SHIP). El jue 19 real hizo el plan del mié 18 por el alias global y su texto no se reescribe. Desde el jue 26 (S2 paso 1 = plan del mié 25) manda el alias global: de S2 en adelante no cambia nada; los demás frentes siguen siempre con el alias global. journal: proyecto → semana ISO del journal (todo S1, también el lun 23, el mié 25 y el dom 29, se anota en 2026-W47, como manda el kit v5 de GoodNotes).",
+    "alias": {
+     "2026-11-20": "2026-11-18",
+     "2026-11-23": "2026-11-19",
+     "2026-11-24": "2026-11-20",
+     "2026-11-25": "2026-11-23"
+    },
+    "en_ship": {
+     "2026-11-29": "2026-11-24"
+    },
+    "journal": {
+     "S1": "2026-W47"
+    }
+   }
   }
  }
 }

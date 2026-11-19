@@ -118,6 +118,7 @@ import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { minutosFranja } from './guia';
 import {
   VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCDomingo, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
+  vibeJournalSemanaDe, // v6.10q: semana del journal por proyecto (S1 entero en 2026-W47)
   VIBE_FASES_BC, vibeFaseBCDe, // v6.10 · base cero: fases PRIMM del vibecoding
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
@@ -134,7 +135,7 @@ import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from
 import { guiaUsmleDe } from './usmleGuia'; // remate v6.10j: la eval 10Q del DAY-AFTER 6/6 en la métrica 1 de la revisión
 import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe, encapsMananaDe, encapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De, ENCAPS_F2_FECHAS } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17)
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De, extraCorridaDe, enShipDe } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10q: + enShipDe (el paso que absorbe un SHIP del domingo)
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -318,6 +319,8 @@ const DOC_N8N_CODE = 'https://docs.n8n.io/build/code-in-n8n/using-the-code-node'
 const DOC_N8N_PUBLISH = 'https://docs.n8n.io/build/understand-workflows/save-and-publish-workflows'; // v6.10 (chat Vibe Coding, 17-nov): n8n 2.x, guardar ≠ publicar
 const DOC_BEST = 'https://code.claude.com/docs/en/best-practices';
 const JOURNAL_CMD = 'node DATA/_scripts/journal_hoy.js --abrir';
+/** remate v6.10q (revisión «calendar» #5): en S1 el 1.er comando del día va con ruta absoluta (el script usa __dirname: vale desde cualquier carpeta y unidad) */
+const JOURNAL_CMD_ABS = 'node D:\\joseph-md-app\\DATA\\_scripts\\journal_hoy.js --abrir';
 /** Semana 1 (S1 · APEX end-to-end): los 35′ de «construir» de cada PASO k (1-5) de S1, partidos en sub-pasos con comandos exactos (ficheros
  *  comprobados en disco el 18-oct). v6.03 (20-oct-2026): la clave es el PASO del proyecto, no la fecha (antes '2026-10-19' … '2026-10-23'): con el
  *  D1 en el mié 21-oct S1 va del mié 21 al mar 27-oct y hace SHIP el sáb 31-oct (el sáb 24 es AVANCE); los días que citan los textos («el día del
@@ -332,8 +335,14 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
     case 1: return [
       // v6.10e (revisión del 18-nov · dias-1920-13): ruta absoluta (`cd /d` falla en PowerShell), como el kit v3 de S1
       P(10, 'Test del parser (predice antes qué protege): `node D:\\agente_estudio\\scripts\\test_parser_multilinea.js`', 'Antes de correrlo escribe: ¿qué protege y por qué en verde NO prueba que n8n funcione? → `node D:\\agente_estudio\\scripts\\test_parser_multilinea.js` (vale en PowerShell y en cmd) → «0 failed» (13/13). Si falla, anota el nombre del caso; hoy no se arregla.'),
-      P(15, 'Ubicar los 2 nodos ★ en el n8n VIVO («Anki + Obsidian» NO se toca) + backup: el JSON lleva la clave de Supabase → solo a backups\\, nunca a un repo', 'localhost:5678/workflow/APEX-MOTOR-FLOW-V2 → Version History: anota fecha e ID de la versión publicada (la usa el rollback de la próxima sesión) → menú ⋯ › Download → mueve el JSON a D:\\agente_estudio\\backups\\ · es el workflow «Motor APEX — Tarjetas Anki + Obsidian» (8 nodos), no el export viejo n8n_flow_4_destinos.json; el otro workflow, «Anki + Obsidian», NO se toca → copia el código de cada ★ a backups\\live_parsear_tarjeta.js y live_crear_nota.js. Ctrl+F «v2.5.1» en los nodos vivos: NO aparece (= corre el código viejo).', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
-      P(10, 'Qué se pega en el paso 2: node_parsear_tarjeta_v2_3.js + node_crear_nota_v2_3.js (NO n8n_parser_v2_3.js: usa require(\'fs\'))', `Hoy: \`certutil -hashfile\` de los 2 ficheros → journal (el ${dia(4)}, paso 4, comparas lo PUBLICADO con ellos) · Claude Code: «compara backups\\live_parsear_tarjeta.js con scripts\\node_parsear_tarjeta_v2_3.js ignorando finales de línea: ¿qué cambia?» → 3 líneas al journal.`),
+      // v6.10q (remate 19-nov · revisión «calendar» #3): el redeploy del paso 2 exige este respaldo y el Calendar cortaba con «…» justo el Download y los
+      //   live_*.js → las 3 piezas del respaldo y «sin él, el <paso 2> no se pega» van en el «qué» (≤ 150, entero); en el «cómo», delante, lo que NO se toca y
+      //   adónde va el JSON (lleva la clave de Supabase); el recorrido por n8n, detrás (entero en la app)
+      P(15, `Respaldo del n8n VIVO (sin él, el ${dia(2)} no se pega): fecha + ID de la versión publicada · JSON del workflow · live_*.js de los 2 ★, en backups\\`, '«Anki + Obsidian» NO se toca · el JSON lleva la clave de Supabase: solo a backups\\, nunca a un repo → localhost:5678/workflow/APEX-MOTOR-FLOW-V2 → Version History: anota fecha e ID de la versión publicada (la usa la vuelta atrás de la próxima sesión) → menú ⋯ › Download → mueve el JSON a D:\\agente_estudio\\backups\\ · es el workflow «Motor APEX — Tarjetas Anki + Obsidian» (8 nodos), no el export viejo n8n_flow_4_destinos.json → localiza los 2 nodos ★ y copia el código de cada uno a backups\\live_parsear_tarjeta.js y live_crear_nota.js. Ctrl+F «v2.5.1» en los nodos vivos: NO aparece (= corre el código viejo).', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      // v6.10q (19-nov): el paso 1 no se hizo el jue 19 y va el vie 20 (alias propio del vibecoding, _fechas_v6.json › corrida_s1.alias_frente): delante,
+      //   que hoy NO se pega ni se publica y cuándo va el redeploy (dia(2), con su día real; la fecha ANTES de «se publica»: detrás, corridaTexto.EXTERNA la
+      //   tomaría por una fecha externa y no la traduciría); certutil, igual; la comparación del paso 4, sin fecha (dentro de los 100 del «cómo» no cabía)
+      P(10, 'Qué se pega en el paso 2: node_parsear_tarjeta_v2_3.js + node_crear_nota_v2_3.js (NO n8n_parser_v2_3.js: usa require(\'fs\'))', `El redeploy es el ${dia(2)}: hoy NO se pega ni se publica. \`certutil -hashfile D:\\agente_estudio\\scripts\\node_parsear_tarjeta_v2_3.js SHA256\` (y lo mismo con node_crear_nota_v2_3.js) → journal (en el paso 4 comparas lo PUBLICADO con ellos) · Claude Code: «compara backups\\live_parsear_tarjeta.js con scripts\\node_parsear_tarjeta_v2_3.js ignorando finales de línea: ¿qué cambia?» → 3 líneas al journal.`),
     ];
     case 2: return [
       // v6.10m (rev. c16, dias-clave #1 · vetadas #13): el corte del «cómo» a 110 dejaba «… Ctrl+A, Ctrl+V. No …» y escondía el aviso y la comprobación → como
@@ -343,8 +352,14 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       //   antes del Ctrl+A, los modos), detrás (entero en la app)
       // v6.10p (rev. c18, cambios #6): con la cadena de teclas el aviso de los modos caía tras el corte (130) → los 2 avisos juntos delante («No toques
       //   «Anki + Obsidian» ni los modos») y la cadena del nodo con comas (cabe entera con el Ctrl+F «v2.5.1»); qué modos son, detrás (entero en la app)
-      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'No toques «Anki + Obsidian» ni los modos · VS Code: Ctrl+A, Ctrl+C → nodo: doble clic, clic en el código, Ctrl+A, Ctrl+V · Ctrl+F «v2.5.1» = código nuevo (debe salir en cada nodo). En VS Code, el Ctrl+A, Ctrl+C es del fichero; en n8n, sin ese clic en el código el Ctrl+A, Ctrl+V no lo reemplaza. Los modos (Run Once for All Items / Each Item) de los 2 nodos se quedan como están.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
-      P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
+      // v6.10q (19-nov · el paso 1 va el vie 20 y este, el lun 23): sin el respaldo del paso 1 un rojo no tiene vuelta atrás (la poda de n8n borra versiones
+      //   viejas al publicar) → 1.º se comprueba el respaldo (3′, sacados del Redeploy 10 → 7: pegar y publicar acaban a las 04:32, como en el kit v5 de
+      //   GoodNotes); el Publish, como tarde a las 04:40; sin publicar a esa hora, cuándo va el redeploy lo decide el chat de plan (kit v5)
+      // remate v6.10q (revisión «calendar» #4): la prohibición, delante del «cómo» (dentro del corte de 110 del Calendar); el caso «solo falta anotar», detrás
+      P(3, `ANTES de pegar: ¿está el respaldo del ${dia(1)}? backups\\: JSON + live_parsear_tarjeta.js + live_crear_nota.js · versión anotada en el journal`, 'Sin respaldo no se pega ni se publica: si falta el JSON o un live_*.js, primero ese respaldo (paso 1). Si solo falta anotar la versión publicada, anótala ahora y sigue.'),
+      P(7, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'No toques «Anki + Obsidian» ni los modos · VS Code: Ctrl+A, Ctrl+C → nodo: doble clic, clic en el código, Ctrl+A, Ctrl+V · Ctrl+F «v2.5.1» = código nuevo (debe salir en cada nodo). En VS Code, el Ctrl+A, Ctrl+C es del fichero; en n8n, sin ese clic en el código el Ctrl+A, Ctrl+V no lo reemplaza. Los modos (Run Once for All Items / Each Item) de los 2 nodos se quedan como están.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      // remate v6.10q (revisión «calendar» #4): «ni se manda la [TEST S1]» en el «qué» (≤ 150, entero): el paso siguiente (la prueba) depende del Publish
+      P(2, 'PUBLISH → Publish, como tarde a las 04:40 (si no llegas, hoy ni se publica ni se manda la [TEST S1]): en n8n 2.x guardar no basta', `Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso. Pasadas las 04:40, no publiques ni mandes la [TEST S1]: lo pegado queda en borrador (el atajo sigue con la versión publicada); anótalo en el journal: cuándo va el redeploy lo decide el chat de plan.`, { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
       // v6.10i (auditoría del volcado c12): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el «qué» lleva las marcas de éxito (Parsear acaba en «murmur
       //   LOUDER.)» · anki-ok + ankiNoteId · success + filepath) y el «cómo» EMPIEZA por la carpeta del .txt y la cadena de teclas (en la v6.10h la ruta iba al final
       //   y el corte la quitaba; antes de la v6.10h, la ruta completa con el nombre del fichero llenaba los 110). El nombre del .txt y el PDF de GoodNotes, detrás
@@ -355,7 +370,9 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       // v6.10o (rev. c17, cambios #7): el Calendar alarga el corte hasta el final de la cláusula de la fecha («la versión anotada el …», ≤ 450) y la cortaba en
       //   el «;» del paréntesis («Publish (la poda de n8n puede borrarla en minutos …») → el respaldo («si ya no está, pega backups\\live_*.js y publica») va
       //   en la misma cláusula (con «:») y el porqué de los mazos de la [TEST S1], al final (entero en la app)
-      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: capturar y volver a la versión anterior', `Si sale rojo, el ${dia(3)} (paso 3) se corrige primero. Bien → suspende (así el Anki USMLE de las 05:00 sigue con 0 nuevas). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Rojo (Error en Executions) → nodo + mensaje al journal → Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (la poda de n8n puede borrarla en minutos: si ya no está, pega backups\\live_*.js y publica). Al suspenderla, APEX::USMLE y ::Cardiology quedan creados y el preset se les pone al cerrar el bloque Step de las 07:15.`),
+      // v6.10q: si sale rojo, PRIMERO se vuelve atrás (versión anotada o backups\\live_*.js) y DESPUÉS se anota; el arreglo, al día siguiente (paso 3) —antes
+      //   «nodo + mensaje al journal → Version History …» (primero anotar)—. El rojo y su vuelta atrás, delante (el Calendar enseña el «cómo» hasta esa fecha)
+      P(10, 'Suspender la [TEST S1] (Browse: "TEST S1" -is:suspended → Ctrl+J) · si sale ROJO: primero volver a la versión anterior, después anotar', `Rojo (Error en Executions) → PRIMERO vuelve atrás, DESPUÉS anota; el arreglo, el ${dia(3)} (paso 3; hoy no se reenvía). Volver atrás: Version History → la versión anotada el ${dia(1)} → Actions › Publish version → Publish (si la poda de n8n ya la borró: pega backups\\live_*.js y publica). Anotar: nodo + mensaje en el journal. Bien → suspende (así el Anki USMLE de las 05:00 no la ve como nueva). anki-error → abre Anki y reenvía SOLO el bloque ::ANKI. Al suspenderla, ::Cardiology ya existe (y APEX::USMLE, si no nació antes): Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks» (sin esto ::Cardiology se queda en Default).`), // v6.10q: hoy no hay bloque Step a las 07:15 (antes «el preset se les pone al cerrar el bloque Step de las 07:15»: valía con la prueba el día del D2)
     ];
     case 3: return [
       P(10, 'Anki: ¿la [TEST S1] cayó en APEX::USMLE::Cardiology (subdeck, no el mazo raíz)?', `Anki › Browse → \`deck:APEX::USMLE*\` → ordena por «Created»: la [TEST S1] del ${dia(2)} (amarilla = suspendida). Si el ${dia(2)} salió rojo, hoy va primero ese arreglo (fichero → test «0 failed» → repega + Publish → reenvía → suspende).`),
@@ -366,10 +383,13 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       P(10, 'Anki: Preview de la [TEST S1]: REVERSO completo (3 líneas) + CCSN (la tarjeta no lleva caso ni fisio)', 'Browse → "TEST S1" → Preview (funciona aunque esté suspendida) → captura al journal (criterio 4 del SHIP).'),
       P(5, 'Vault: «Source clinical case» (5 líneas) y «Expanded pathophysiology» (4) completos', 'Abre la nota [TEST S1] en modo lectura → captura.'),
       P(10, 'Lo PUBLICADO = node_parsear_tarjeta_v2_3.js y node_crear_nota_v2_3.js (no n8n_parser_v2_3.js)', 'El botón debe decir «Published» (si dice «Publish», hay cambios sin publicar). Copia el código de cada ★ a un .js temporal fuera del repo → Claude Code: compáralo con su fichero ignorando finales de línea → «idéntico» o la diferencia, al journal.'),
-      P(10, 'Escribir DATA/USMLE/_apex_e2e_prueba.json (evidencia; debe contener "noteId")', `Claude Code en D:\\joseph-md-app: noteId (el ankiNoteId de la ejecución buena o Browse › Card Info), subdeck, ruta RELATIVA de la nota (desde 01_USMLE), SHA256 de los 2 ficheros (certutil), "is_test": true y fecha. Nada personal ni rutas absolutas: el repo es público. La [TEST S1] entró en Supabase (apex_blocks / apex_reports) sin is_test y cuenta como APEX real: anótalo en el journal (se marca en el SHIP, con OK).`),
+      P(10, 'Escribir DATA/USMLE/_apex_e2e_prueba.json (evidencia; debe contener "noteId")', `Nada personal ni rutas absolutas: el repo es público · Claude Code en D:\\joseph-md-app: noteId (el ankiNoteId de la ejecución buena o Browse › Card Info), subdeck, ruta RELATIVA de la nota (desde 01_USMLE), SHA256 de los 2 ficheros (certutil), "is_test": true y fecha. La [TEST S1] entró en Supabase (apex_blocks / apex_reports) sin is_test y cuenta como APEX real: anótalo en el journal (se marca en el SHIP, con OK).`),
     ];
     case 5: return [
-      P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy de 2 nodos + evidencia" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo). D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
+      // v6.10q: este paso va PRIMERO dentro del SHIP del dom 29 (guiaShipDe › enShipDe) · remate v6.10q (revisión «calendar» #5 y #7): «pushd» (cambia de
+      //   carpeta Y de unidad en PowerShell y en cmd; «cd /d» falla en PowerShell y «cd D:\…» no cambia de unidad en cmd) y la ruta del fichero en el
+      //   «git commit -- …» («<lo añadido>» tecleado tal cual falla: «<» es un operador en PowerShell y una redirección en cmd)
+      P(10, 'Commit [S1] en joseph-md-app', '`pushd D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy de 2 nodos + evidencia" -- DATA/USMLE/_apex_e2e_prueba.json` (+ la ruta de la nota, si la añadiste: con el «--» el commit lleva solo lo tuyo). D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
       P(10, 'node DATA/_scripts/verify_vibecoding.js 1', `Desde D:\\joseph-md-app. Esperado hoy: 3/4 (el 4.º es MANUAL: se acepta en ${ship} con --ok-manual 4 tras mirarlo). Anota en el journal qué criterio falla.`),
       P(15, 'Cerrar lo que el verify marque en rojo (no manual)', `Lo que no cierre → ${ship.replace(/^el /, '')} (flexible; nunca a S2) · Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso 4 (${dia(4)}).`), // v6.09b lote 1-quater (QS · c de R2): el destino, al principio del «cómo» (antes en el carácter 148: el Calendar lo cortaba)
     ];
@@ -401,7 +421,7 @@ function vibeS2(k: number): GuiaPaso[] | undefined {
   switch (k) {
     case 1: return [
       P(10, 'PREDICE: due · backlog · revisadas hoy · hora de la 1.ª review de APEX::USMLE (antes de correr nada)', 'Anki → Stats de APEX::USMLE → escribe tus 4 números previstos en el journal. VS Code: anki_telemetria.js (en DATA\\_scripts), lee solo su cabecera (l. 1-35: qué mide, uso, requisitos). AnkiConnect = el add-on 2055492159 que deja a un programa hablar con Anki (localhost:8765).'),
-      P(10, 'CORRE: `node DATA/_scripts/anki_telemetria.js` con Anki abierto', 'Terminal → `cd /d D:\\joseph-md-app` → el comando. Copia al journal los 4 números de la salida. «Anki cerrado» = abre Anki y repite (sin Anki no escribe nada).'),
+      P(10, 'CORRE: `node DATA/_scripts/anki_telemetria.js` con Anki abierto', 'Terminal → `pushd D:\\joseph-md-app` → el comando. Copia al journal los 4 números de la salida. «Anki cerrado» = abre Anki y repite (sin Anki no escribe nada).'),
       P(15, 'INVESTIGA: predicción ↔ salida ↔ Stats de Anki (±5 %)', 'Por cada número que no cuadre, Claude Code: «¿de qué línea de anki_telemetria.js sale <número> y qué consulta de AnkiConnect usa?» → línea + consulta al journal (deck:APEX::USMLE* vs AnKing). Hoy no se cambia código.'),
     ];
     case 2: return [
@@ -420,7 +440,7 @@ function vibeS2(k: number): GuiaPaso[] | undefined {
       P(10, 'INVESTIGA: primeraReviewDe en CockpitStatusBar.tsx (l. ≈96-110) con Claude Code', `Si el color no coincide → ${ship} (captura + salida al journal). Pide la función en 5 líneas y anota el umbral exacto (05:10).`),
     ];
     case 5: return [
-      P(10, 'Commit [S2]: predice qué saldrá en `git status` y añade SOLO lo de S2', '`cd /d D:\\joseph-md-app` → `git status` (¿coincide con tu predicción?) → `git add DATA/USMLE/_anki_telemetria.json` (+ lo que tocaste de S2; nunca `git add .`: el repo es público) → `git commit -m "[S2] telemetría Anki v2 + KPI 1.ª review" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo).'),
+      P(10, 'Commit [S2]: predice qué saldrá en `git status` y añade SOLO lo de S2', '`pushd D:\\joseph-md-app` → `git status` (¿coincide con tu predicción?) → `git add DATA/USMLE/_anki_telemetria.json` (+ lo que tocaste de S2; nunca `git add .`: el repo es público) → `git commit -m "[S2] telemetría Anki v2 + KPI 1.ª review" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo).'),
       P(10, '`node DATA/_scripts/verify_vibecoding.js 2` → x/4', `${ship}: ahí se acepta el 3.º, que es MANUAL (ver el instrumento ANKI con la hora), con --ok-manual 3. Desde D:\\joseph-md-app; anota qué criterio falla.`),
       P(15, 'Cerrar lo rojo + enlazar la regla «Anki finde = due × 20 s» (DATA/SYNC_ANKI_OBSIDIAN_APP.md)', `Lo que no cierre → ${ship} (flexible; nunca a S3) · <5 entradas en el JSON → la tarea las irá sumando cada noche (es normal) · sin tarea → paso 3 (${vibeDiaTxt(2, 3)}).`),
     ];
@@ -452,7 +472,7 @@ function vibeS3(k: number): GuiaPaso[] | undefined {
       P(10, 'CORRE: `node DATA/_scripts/gen_revision_semanal.js --dry-run` → métricas 6, 7 y 9', `Lo que salga «sin dato» → ${ship} (flexible). ¿Leen de plan_checks? Anota cuáles sí y cuáles no.`),
     ];
     case 5: return [
-      P(10, 'Commit [S3]: predice `git status` y añade SOLO lo de S3', '`cd /d D:\\joseph-md-app` → `git status` → `git add` de lo que tocaste en S3 (nunca `git add .`) → `git commit -m "[S3] espejo plan_checks verificado + export/import" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo). Si no tocaste código, el commit lleva la nota de la verificación (DATA/SYNAPSE).'),
+      P(10, 'Commit [S3]: predice `git status` y añade SOLO lo de S3', '`pushd D:\\joseph-md-app` → `git status` → `git add` de lo que tocaste en S3 (nunca `git add .`) → `git commit -m "[S3] espejo plan_checks verificado + export/import" -- <lo añadido>` (con «-- <lo añadido>» el commit lleva solo lo tuyo). Si no tocaste código, el commit lleva la nota de la verificación (DATA/SYNAPSE).'),
       P(10, '`node DATA/_scripts/verify_vibecoding.js 3` → x/4', `${ship}: ahí se aceptan el 2.º y el 3.º, MANUALES (los viste el ${vibeDiaTxt(3, 2)} y el ${vibeDiaTxt(3, 4)}), con --ok-manual 2,3. Desde D:\\joseph-md-app.`),
       P(15, 'Cerrar lo rojo (no manual)', `Lo que no cierre → ${ship} (flexible; nunca a S4) · <5 filas en plan_checks → marca en la app los días que hiciste · sin commit → repite con [S3].`),
     ];
@@ -550,12 +570,12 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
   //   franja de PLAN (04:15-05:00): plantillasV6 › bloqueCorrido + moverGuia la llevan a su hora real; los textos con hora dentro de esa franja se mueven
   //   con ella (04:55 → 05:40, 05:00 → 05:45) y los demás nombran la rutina y el Anki del sábado (21:30), que no se mueven.
   const fxV = dow(iso) === 0 || dow(iso) === 6 ? franjaExtraDe(iso, 'vibecoding') : null;
-  const sem = vibeSemanaISO(iso);
+  const sem = vibeJournalSemanaDe(iso); // v6.10q: la del proyecto si la fija el plan (S1 entero en 2026-W47; antes la semana ISO de la fecha de plan)
   const journal = { t: `📓 journal ${sem}`, url: vibeJournalUrl(iso) };
   const docs = p?.docs?.[0];
   const recursos: GuiaRecurso[] = [R(`journal ${sem}.md (D:/synapse-journal)`, vibeJournalUrl(iso)), ...(p ? p.docs.map((d) => R(d.label, d.url)) : [])];
   const objetivo = P(dia.min >= 45 ? 5 : dia.min >= 15 ? 2 : 1, `OBJETIVO del día (${VIBE_TIPO_LABEL[dia.tipo]})`,
-    `\`${JOURNAL_CMD}\` (crea ${vibeJournalPath(iso)} con la sección de hoy si no existe y la abre) → escribe en 1 línea el objetivo = el paso de hoy.`, journal);
+    `\`${dia.semana === 1 ? JOURNAL_CMD_ABS : JOURNAL_CMD}\` (crea ${vibeJournalPath(iso)} con la sección de hoy si no existe y la abre) → escribe en 1 línea el objetivo = el paso de hoy.`, journal);
   let pasos: GuiaPaso[];
   if (dia.min >= 45) {
     // v6.03: por PASO de S1, no por fecha · v6.10 · BASE CERO: + S2 y S3 (fase 1 «guiado», PRIMM predice → corre → investiga), solo en F1
@@ -587,6 +607,8 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
       aviso: [
         dia.deload ? vibeDeloadTxt(dia.semana) : '',
         iso === VIBE_META.inicio ? `Primer día: el journal de esta semana (${sem}.md) todavía no existe; lo crea el comando del paso 1.` : '',
+        // remate v6.10q (revisión «calendar» #3, kit v5 de GoodNotes): el respaldo del paso 1 de S1 es lo que no puede faltar (el paso 2 no pega sin él)
+        dia.semana === 1 && dia.k === 1 ? 'Si vas tarde, el respaldo (15′) va antes que el test y los hashes: sin él, en el paso 2 no se pega ni se publica.' : '',
         // v6.10c: la hora real del día extra (sáb 2-ene 04:15-04:30; v6.10: sáb 28-nov 05:00-05:45, «justo antes de la rutina»)
         fxV ? `Hoy ${dow(iso) === 0 ? 'domingo' : 'sábado'}, a hora fija (${fxV.ini}-${fxV.fin}${fxV.fin === '05:45' ? ', justo antes de la rutina de las 05:45' : ''}): el paso que toca en orden (el mar 17-nov fue sin sesión y cada paso de F1 corrió un día${faseV6(iso) === 'TRANSICION' ? ' hasta fin de año: hoy, el último de F1' : ''}; desde el lunes, las fechas de siempre).` : '',
         vibeFaseAvisoDe(iso), // v6.10 · BASE CERO: fase PRIMM (1 guiado · 2 modificar · 3 crear), al final (el Calendar corta el aviso en 240)
@@ -1108,7 +1130,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
   const abcMin = abc.reduce((a, b) => a + b.min, 0);
   const main = pcs[pcs.length - 1];
   const pasos: GuiaPaso[] = [];
-  const recursos: GuiaRecurso[] = [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))];
+  const recursos: GuiaRecurso[] = [R(`journal ${vibeJournalSemanaDe(iso)}.md`, vibeJournalUrl(iso))]; // v6.10q: semana del journal del proyecto (SHIP S1 → 2026-W47)
   const masABC = abc.length ? ' + SYNAPSE A/B/C' : '';
   let titulo = 'SYNAPSE del domingo';
   let hecho = 'A/B/C del SYNAPSE hechos';
@@ -1141,9 +1163,36 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     //   PC y el A/B/C compartían la franja fija del sábado 15:00-17:00; desde la v6.07 ningún domingo traía A/B/C)
     const shipMin = pcMin >= 120 ? 120 : pcMin || 120;
     const manual = p.verificacion.map((v, i) => (v.tipo === 'manual' ? i + 1 : 0)).filter(Boolean);
-    titulo = `${main.tipo === 'ship' ? `SHIP S${p.s} · ${p.nombre}` : `AVANCE S${p.s} (aún no termina)`}${masABC} · domingo, sin hora fija`;
+    // v6.10q (19-nov-2026): un SHIP que ABSORBE un paso del proyecto (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = el paso 5/5 de
+    //   S1, «commit [S1] + verify 1 + cerrar lo rojo», porque S1 corrió una sesión) lo hace PRIMERO y en sus mismos 120′: el objetivo del paso va en el ABRIR
+    //   del journal, su verify (que escribe) sustituye al verify en seco y sus 15′ de «cerrar lo rojo» van dentro del CERRAR (80 → 70′). Paso 45′ + SHIP 120′ → 120′:
+    //   salen el objetivo y el cierre de 04:55 del paso (van en el ABRIR y en el JOURNAL), el verify en seco y 25′ de margen del CERRAR
+    const fPaso = main.tipo === 'ship' ? enShipDe(iso) : null;
+    const dPaso = fPaso ? vibeDiaDe(fPaso) : undefined;
+    const pasoEn = dPaso && dPaso.semana === p.s ? dPaso : undefined;
+    const nDiasP = VIBE_DIAS.filter((y) => y.semana === p.s).length;
+    titulo = `${main.tipo === 'ship' ? `${pasoEn ? `S${p.s} ${pasoEn.k}/${nDiasP} + ` : ''}SHIP S${p.s} · ${p.nombre}` : `AVANCE S${p.s} (aún no termina)`}${masABC} · domingo, sin hora fija`;
     p.docs.forEach((d) => recursos.push(R(d.label, d.url)));
-    if (main.tipo === 'ship') {
+    if (main.tipo === 'ship' && pasoEn) {
+      const etq = `PASO ${pasoEn.k}/${nDiasP}`;
+      const commit = (p.s === 1 ? vibeS1(pasoEn.k)?.[0] : undefined) ?? P(10, `Commit [S${p.s}] en ${p.repoGit}`, (VIBE_COMO_TIPO['ship-prep'] ?? '').replace(/<n>/g, String(p.s)));
+      const mC = shipMin - 50;
+      pasos.push(
+        P(5, `${etq} · ABRIR el journal ${vibeJournalSemanaDe(iso)} + leer los criterios de aceptación`, `\`${p.s === 1 ? JOURNAL_CMD_ABS : JOURNAL_CMD}\` (hoy abre la sección del paso ${pasoEn.k}) → cabecera «Criterios de aceptación» (${p.aceptacion.length}).`, journal),
+        { ...commit, que: `${etq} · ${commit.que}` },
+        P(10, `${etq} · VERIFY: node DATA/_scripts/verify_vibecoding.js ${p.s} → x/${p.verificacion.length}`, `Desde D:\\joseph-md-app. Esperado: ${p.verificacion.length - manual.length}/${p.verificacion.length}${manual.length ? ` (el ${manual.join(' y el ')}.º es MANUAL: se acepta al final de este SHIP con --ok-manual ${manual.join(',')}, tras mirarlo)` : ''}. Anota en el journal qué criterio falla.`),
+        P(mC, 'CERRAR lo que el verify marque en rojo', `${gateTxt(mC)}${textosQSDe(iso) ? 'Si hubo días sin PC, su plan B va primero. Luego, en orden' : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? ` El plan B sale de estos ${mC}′: cada A del SYNAPSE, 15′; cada paso de vibecoding, 35′.` : ''} Del paso ${pasoEn.k}: sin commit → repite el commit con [S${p.s}]; test rojo → mira el nombre del caso. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
+        P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
+          manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
+            : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
+        P(15, 'JOURNAL · «Cierre de semana»', `shipped sí/no · criterios x/${p.verificacion.length} · evidencia (commit/URL/test) · lección de la semana (1 línea). Lo que no cerró NO pasa a S${p.s + 1}.`, journal),
+      );
+      hecho = `commit [S${p.s}] del paso ${pasoEn.k} + verify_vibecoding.js ${p.s} con SHIPPED ${p.verificacion.length}/${p.verificacion.length} (o el fallo escrito en el journal)${masABC}`;
+      aviso = `Hoy el SHIP empieza por el paso ${pasoEn.k}/${nDiasP} de S${p.s} (journal, commit [S${p.s}] y verify ${p.s}), dentro de sus ${shipMin}′.`;
+      // remate v6.10q (revisión «consumidores» BAJA #6): sin PC el domingo, el commit [S<n>] del paso absorbido también queda pendiente → el plan B lo nombra
+      //   (antes solo «empieza con el verify (10′) y cierra lo rojo»); mismo destino que el plan B de siempre (el día siguiente a las 04:15, en F1 con fecha)
+      planB = `Sin PC el domingo: ${textosQSDe(iso) ? `el ${fCorta(addDias(iso, 1))} a las 04:15` : 'el lunes 04:15'} empieza por el commit [S${p.s}] del paso ${pasoEn.k}/${nDiasP} y el verify (10′), y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
+    } else if (main.tipo === 'ship') {
       pasos.push(
         P(5, 'ABRIR el journal de la semana + leer los criterios de aceptación', `\`${JOURNAL_CMD}\` → cabecera «Criterios de aceptación» (${p.aceptacion.length}).`, journal),
         P(10, `VERIFY en seco: node DATA/_scripts/verify_vibecoding.js ${p.s} --dry`, 'Desde D:\\joseph-md-app. Lista los criterios ✓/✗ sin escribir nada.'),
@@ -1176,7 +1225,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       );
       hecho = `avance del proyecto escrito en el journal${masABC}`;
     }
-    if (abcMin) aviso = `Hoy, además del ${main.tipo === 'ship' ? 'SHIP' : 'avance'} (${shipMin}′), el SYNAPSE trae ${abcMin}′ de A/B/C${(() => { const m = abc.map((b) => /· recupera el (.+)$/.exec(b.leccion)).find(Boolean); return m ? ` (recupera el ${m[1]})` : ''; })()}: van al final y por separado (el domingo es flexible). Si el verify da verde antes, el resto es libre.`;
+    if (abcMin) aviso = (aviso ? `${aviso} ` : '') + `Hoy, además del ${main.tipo === 'ship' ? 'SHIP' : 'avance'} (${shipMin}′), el SYNAPSE trae ${abcMin}′ de A/B/C${(() => { const m = abc.map((b) => /· recupera el (.+)$/.exec(b.leccion)).find(Boolean); return m ? ` (recupera el ${m[1]})` : ''; })()}: van al final y por separado (el domingo es flexible). Si el verify da verde antes, el resto es libre.`;
   } else if (pcs.length) {
     // taper: PC opcional (30′ mantenimiento · 0′ deload) — pueden ser 2 (S16 desplazado + S17).
     // v6.05 (fix 24-oct): la guía nombra TODAS las piezas PC del sábado (sáb 20-feb-2027: S16 30′ + S17 0′); antes la de 0′ no aparecía en
@@ -1228,7 +1277,7 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   return bloque(franjaDesde(feyIni, r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
     P(Math.ceil(r.min / 2), `Explica en voz alta ${quePy} y CÓMO funciona (sin mirar el código)`, 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
     P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
-  ], [R(`journal ${vibeSemanaISO(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
+  ], [R(`journal ${vibeJournalSemanaDe(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
     aviso: `Opcional y sin hora fija (${franjaDesde(feyIni, r.min).replace('–', '-')} es solo un ejemplo): ${alEmpezar ? 'mejor al empezar el SHIP' : 'mejor justo antes del SHIP'} del vibecoding, porque lo que no sabes explicar es lo que falta.`,
   });
 }
@@ -2396,6 +2445,10 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const primera = (juntas[0] ?? sab) === sab1;
   // v6.05: la semana 2 (lunes → jueves de los runners ENCAPS y la semana ISO del journal) sale de la fecha, no de un texto fijo (v6.02c/v6.03: lun 26 → jue 29-oct, 2026-W44)
   const lun2 = addDias(sab, 2);
+  // v6.10q (19-nov): el journal de la semana 2 nace el 1.er día del vibecoding que lo escribe (fecha de PLAN, la traduce corridaTexto): S1 corrió una sesión
+  //   y se anota entero en 2026-W47 (vibeJournalSemanaDe), así que el 2026-W48 lo crea el S2 paso 1 (plan mié 25 → jue 26 real), no el lunes de plan (mar 24 real)
+  const jSem2 = vibeSemanaISO(lun2);
+  const jDia2 = VIBE_DIAS.find((x) => x.fecha >= lun2 && vibeJournalSemanaDe(x.fecha) === jSem2)?.fecha ?? lun2;
   // v6.10 (17-nov-2026): los runners ENCAPS de la semana 2 salen de encapsGuia (bancos SIN runner de lun → dom; v6.10: mié 25, jue 26 y dom 29-nov, que
   //   recupera el mar 17; los del lun 23 y mar 24 ya existen). Antes «del lun 23 al jue 26» fijo.
   const sesS2 = Array.from({ length: 7 }, (_, k) => sesionEncapsDe(addDias(lun2, k))).filter((s): s is NonNullable<typeof s> => !!s && s.tipo === 'banco');
@@ -2414,7 +2467,7 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const prep = primera
     // remate v6.10j (revisión adversarial, visibilidad #4): la comprobación de AccessDerma va DELANTE de la receta (la cadena de comandos alarga el corte del
     //   Calendar hasta su «deploy» y empujaba fuera «Semana 2: AccessDerma renovado …»)
-    ? `¿AccessDerma renovado? (si no, Derma sigue en PLAN B: selector en Derma › HOY) · ${recetaS2}Semana ${Number(fichero.slice(1, 3)) + 1}: ${pendSes.length ? '' : `${runnersS2} · `}velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea journal_hoy.js el ${fCorta(lun2)}.`
+    ? `¿AccessDerma renovado? (si no, Derma sigue en PLAN B: selector en Derma › HOY) · ${recetaS2}Semana ${Number(fichero.slice(1, 3)) + 1}: ${pendSes.length ? '' : `${runnersS2} · `}velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${jSem2} lo crea journal_hoy.js el ${fCorta(jDia2)}.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
   // v6.10j (rev. c14, diffs #0 y #7 · cambios-v610i #0, #2, #3 y #4): el «cómo» de RELLENAR empieza por los RÓTULOS de todas las métricas (el Calendar corta
   //   a 110 y antes solo dejaba ver «4 ENCAPS …») y después el detalle de cada una, sacado del plan de ESA semana (encapsRevDe · usmleRevDe). ENCAPS va
