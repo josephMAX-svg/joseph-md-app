@@ -7,17 +7,17 @@
   "colorId": "6",
   "availability": "FREE/transparent",
   "regla": "tras cada corrimiento: node gen_research_plan.js <D1> → node gen_research_calendar.js → update_event (o delete+create) de los `recrear` con su payload → --set hito=eventId",
-  "actualizado": "2026-11-18",
+  "actualizado": "2026-11-19",
   "nHitos": 12
  },
  "overlays": {
   "mentor": {
    "eventId": "shkul14j3o1bs1a5044u8ge1kk",
-   "fechaCreada": "2026-11-17",
-   "hash": "1368bc57cc8a",
+   "fechaCreada": "2026-11-20",
+   "hash": "5aa28081ff42",
    "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "M1",
     "d": 1,
@@ -36,11 +36,11 @@
   },
   "carta-diana": {
    "eventId": "iduh7fhst9uhl0t54hhk535ff4",
-   "fechaCreada": "2026-12-01",
-   "hash": "e6b3d9286d54",
+   "fechaCreada": "2026-12-04",
+   "hash": "9e1bb6e76a25",
    "summary": "🔬 RESEARCH · C-2 Artículo DIANA + deadline de la carta #1",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "C-2",
     "d": 6,
@@ -59,11 +59,11 @@
   },
   "tesis-etica": {
    "eventId": "95aglmlk9qi32m4bv6v28rv5b0",
-   "fechaCreada": "2026-12-03",
-   "hash": "5696265ef280",
+   "fechaCreada": "2026-12-08",
+   "hash": "a6c72c9fb15d",
    "summary": "🔬 RESEARCH · T-1 Ética/CEI de la tesis L0 archivada",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "T-1",
     "d": 7,
@@ -82,11 +82,11 @@
   },
   "carta-1": {
    "eventId": "k2oov1tk0jalt5f45ekemej4k0",
-   "fechaCreada": "2026-12-17",
-   "hash": "68614353125d",
+   "fechaCreada": "2026-12-22",
+   "hash": "b9f502f453f3",
    "summary": "🔬 RESEARCH · C-6 SUBMIT carta al editor #1",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "C-6",
     "d": 12,
@@ -105,11 +105,11 @@
   },
   "cr-caso": {
    "eventId": "36tp7b995jnoi844d5uvgm58t0",
-   "fechaCreada": "2026-12-21",
-   "hash": "d4e40ab27b2c",
+   "fechaCreada": "2026-12-24",
+   "hash": "9bca21aa2301",
    "summary": "🔬 RESEARCH · CR-1 Caso + senior author del case report #1",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-1",
     "d": 13,
@@ -129,10 +129,10 @@
   "tesis-L0": {
    "eventId": "ahl0tbimefcq8u7ps2qasjb708",
    "fechaCreada": "2027-01-18",
-   "hash": "9b09327fd9cd",
+   "hash": "5ea9d9ee86e5",
    "summary": "🔬 RESEARCH · T-8 SUBMIT research letter tesis L0",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "T-8",
     "d": 21,
@@ -151,10 +151,10 @@
   "cr-paquete": {
    "eventId": "f2mn20ok30kl5k2t1s6tci7n7c",
    "fechaCreada": "2027-02-25",
-   "hash": "910e5ada2d4c",
+   "hash": "2a6258bde688",
    "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-8",
     "d": 28,
@@ -173,10 +173,10 @@
   "case-report-1": {
    "eventId": "t136recadd6vnv0iebrmmqiv48",
    "fechaCreada": "2027-03-01",
-   "hash": "d4e3dd348de6",
+   "hash": "f1dfb50da53b",
    "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-9",
     "d": 29,
@@ -195,10 +195,10 @@
   "revisor2": {
    "eventId": "9hhe6q10da1ltbpk23h171gf9c",
    "fechaCreada": "2027-03-17",
-   "hash": "fc89b2a62bca",
+   "hash": "80cf0e725784",
    "summary": "🔬 RESEARCH · X-1 Revisor humano #2 de SR-1 nombrado",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "X-1",
     "d": 34,
@@ -239,10 +239,10 @@
   "PROSPERO-SR1": {
    "eventId": "2k9idr3f3th6hj1e4r8ugj4iqk",
    "fechaCreada": "2027-04-26",
-   "hash": "2af1d7764498",
+   "hash": "20b4123d2b7b",
    "summary": "🔬 RESEARCH · R10 REGISTRO PROSPERO de SR-1",
-   "registrado": "2026-11-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-11-19",
+   "accionPendiente": null,
    "payload": {
     "code": "R10",
     "d": 47,
