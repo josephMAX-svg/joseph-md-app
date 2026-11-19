@@ -154,7 +154,7 @@
 - **Entregable verificable**: Migración aplicada con Joseph + DATA/_scripts/test_rls_anon.js verde + DATA/_scripts/_migrations/_auditoria_rls.md (inventario de tablas sin RLS, decisión por tabla) + commit [S6] en joseph-md-app (D:/agente_estudio no es repo git).
 - **Dónde**: D:/agente_estudio (SECURITY_AUDIT.md · SECURITY_AUDIT_PHASE_A_C.sql; sin git) · Supabase qacynpqdrorpuegsmtcy · DATA/_scripts/test_rls_anon.js (nuevo) · DATA/_scripts/_migrations/_auditoria_rls.md (nuevo)
 - **Criterio de aceptación (definition of done)** — `node DATA/_scripts/verify_vibecoding.js 6`:
-  - [ ] node DATA/_scripts/test_rls_anon.js (joseph-md-app) → "OK": SELECT con anon key sobre datos_tesis y kappa_piloto devuelve 0 filas o 401 _(verify: test)_
+  - [ ] node DATA/_scripts/test_rls_anon.js imprime "OK": la anon key no lee datos_tesis ni kappa_piloto (su SELECT devuelve 0 filas o 401; se corre en joseph-md-app) _(verify: test)_
   - [ ] DATA/_scripts/_migrations/_auditoria_rls.md existe con el inventario de pg_class (relrowsecurity) y 0 tablas de datos sensibles pendientes; get_advisors (security) ya no lista datos_tesis ni kappa_piloto _(verify: fichero)_
   - [ ] El pipeline Python de agente_estudio sigue escribiendo (SUPABASE_SERVICE_ROLE_KEY en .env, gitignored; nunca en el repo) _(verify: manual — correr el pipeline con service_role y ver la fila nueva en datos_tesis)_
   - [ ] Commit [S6] en joseph-md-app (SECURITY_AUDIT.md de agente_estudio actualizado con fecha y hash de la migración) _(verify: git)_

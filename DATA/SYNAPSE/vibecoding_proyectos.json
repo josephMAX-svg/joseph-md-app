@@ -374,7 +374,7 @@
       "objetivo": "Que la anon key NO pueda leer datos_tesis ni kappa_piloto (el pipeline usa service_role desde .env local) y que no quede ninguna tabla con datos sensibles sin RLS.",
       "entregable": "Migración aplicada con Joseph + DATA/_scripts/test_rls_anon.js verde + DATA/_scripts/_migrations/_auditoria_rls.md (inventario de tablas sin RLS, decisión por tabla) + commit [S6] en joseph-md-app (D:/agente_estudio no es repo git).",
       "aceptacion": [
-        "node DATA/_scripts/test_rls_anon.js (joseph-md-app) → \"OK\": SELECT con anon key sobre datos_tesis y kappa_piloto devuelve 0 filas o 401",
+        "node DATA/_scripts/test_rls_anon.js imprime \"OK\": la anon key no lee datos_tesis ni kappa_piloto (su SELECT devuelve 0 filas o 401; se corre en joseph-md-app)",
         "DATA/_scripts/_migrations/_auditoria_rls.md existe con el inventario de pg_class (relrowsecurity) y 0 tablas de datos sensibles pendientes; get_advisors (security) ya no lista datos_tesis ni kappa_piloto",
         "El pipeline Python de agente_estudio sigue escribiendo (SUPABASE_SERVICE_ROLE_KEY en .env, gitignored; nunca en el repo)",
         "Commit [S6] en joseph-md-app (SECURITY_AUDIT.md de agente_estudio actualizado con fecha y hash de la migración)"

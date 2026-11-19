@@ -211,8 +211,10 @@ const libNom = (e, doc) => `${e === 1 ? 'uWorld Medical Library' : e === 3 ? 'Pa
  *  v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a1-15): desde el D3 (antes desde el D6) 1,25× si el free recall de 90 s del último vídeo
  *  recoge ≥3 ideas (la regla de subida que ya regía para S2 y S4) — absorbe la cola que antes se veía a las 05:00 (el Anki AM ya no lleva vídeo).
  *  Es la regla de S2 (1,25× × 1,15 por las pausas) adelantada al D3. Si el free recall no llega a 3 ideas: 1,0× (× 1,2) y lo que no quepa en la
- *  franja pasa a la cola (el «vídeo pendiente» de las 07:15 del siguiente día de Step). */
-const vel = (d) => (d <= 2 ? { v: 1.0, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : d <= 5 ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos en inglés (CC) (solo si el free recall de 90 s del último vídeo recogió ≥3 ideas; si no, 1,0× y lo que no quepa pasa a la cola: «vídeo pendiente» de las 07:15 del siguiente día de Step)' } : d <= 15 ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (solo si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
+ *  franja pasa a la cola (el «vídeo pendiente» de las 07:15 del siguiente día de Step).
+ *  v6.10m (rev. c16, cambios #8 · diffs #20): sin segundos en la condición («si el free recall del último vídeo dio ≥3 ideas»): el paso de free recall da 60 o
+ *  90 s por vídeo según sus minutos reales (frVideoTxt); «si no, 1,0×» queda dentro del corte de 110 del Calendar. */
+const vel = (d) => (d <= 2 ? { v: 1.0, f: 1.2, txt: '1,0× con subtítulos en inglés (CC)' } : d <= 5 ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos en inglés (CC) (si el free recall del último vídeo dio ≥3 ideas; si no, 1,0× y lo que no quepa pasa a la cola: «vídeo pendiente» de las 07:15 del siguiente día de Step)' } : d <= 15 ? { v: 1.25, f: 1.15, txt: '1,25× con subtítulos EN' } : { v: 1.5, f: 1.15, txt: '1,5× con subtítulos EN (solo si el free recall del último vídeo recogió ≥3 ideas; si no, 1,25×)' });
 // v6.09b lote 1-quater FX1 (revisión V1 · mar 22-dic, «03 - Antihypertensives I de 22:00 a 25:25» en 4′ = 0,82): en F1 (d < 100), si el redondeo hacia arriba deja
 //   el tramo por debajo de 0,85, se redondea al minuto más cercano (3,28′ → 3′ = 1,09); el tramo 2 (2027) sigue igual
 const realMin = (s, d) => { const { v, f } = vel(d); const x = (s / 60 / v) * f, c = Math.ceil(x); return d < 100 && x / c < 0.85 ? Math.max(1, Math.round(x)) : c; };
@@ -1150,7 +1152,9 @@ function preguntaAFondo(r, k, n, franja) {
   const pasos = [
     P(1, `Armar la pregunta ${k}/${n} (1Q, Tutor sin reloj): ${ids.map(uwNom).join(' + ')}`, // v6.10j (rev. c14, vetadas #7): el modo delante (con 2 Systems el «qué» pasaba de 150 y se cortaba en «(Tutor, sin …»)
       `${tcUW(ids, 1, TUTOR)} · el cronómetro solo MIDE (no es para ir rápido): tope duro de 45′ desde aquí.`, L_UW),
-    P(13, 'Leer con las opciones tapadas + CCSN + SAQ + responder como juez', 'Lee la viñeta UNA vez, despacio y en orden (5′; marca sin traducir cada palabra que no entiendas y busca solo la que bloquee la frase) · CCSN por oración: Contexto, Cronología, Severidad y Noise (4′; la cronología en presente, frases cortas) · SAQ: la pregunta que respondería un panel sin opciones + tu respuesta (2′) · destapa y elige: rule-in ≈10 s por opción y luego rule-out; anota tu seguridad: seguro / dudo / adivino (2′).'),
+    // v6.10m (rev. c16, vetadas #15): «UNA vez, despacio y en orden» pasa al «qué» para que el «cómo» enseñe en sus 110 QUÉ se busca («solo la que bloquee la
+    //   frase»; antes el corte dejaba «y busca solo …» con el paréntesis abierto). El «qué» sigue empezando por «Leer con las opciones tapadas» (verificar_v6)
+    P(13, 'Leer con las opciones tapadas (la viñeta UNA vez, despacio y en orden) + CCSN + SAQ + responder como juez', 'Lee la viñeta (5′): marca sin traducir cada palabra que no entiendas y busca solo la que bloquee la frase · CCSN por oración: Contexto, Cronología, Severidad y Noise (4′; la cronología en presente, frases cortas) · SAQ: la pregunta que respondería un panel sin opciones + tu respuesta (2′) · destapa y elige: rule-in ≈10 s por opción y luego rule-out; anota tu seguridad: seguro / dudo / adivino (2′).'),
     P(7, 'Educational Objective + auditar la viñeta', 'Lee las 1-3 frases del Educational Objective y contrástalas solo con tu opción (3′) · vuelve al enunciado: ¿para qué estaba cada oración, cada vital y cada laboratorio? (4′). Cada término nuevo, a la shopping list (vocabulary gap).' + trampaTrasTxt(r, k === 1 ? 'la 1.ª pregunta a fondo es un pre-test' : 'cada pregunta a fondo se responde a ciegas')),
     P(12, `Shopping list → First Aid 2026 › ${m.fa}: la sección completa (Whole Page Rule), acotado a 12′`, `${metodoLeerTxt(r)}No medible sin el libro abierto: acotado a 12′; marca dónde paras. La sección completa del subtema, no solo el dato que fallaste; lo que no llegue → la PÁGINA COMPLETA de las ${PC_INI[d]}.`),
     P(5, '5 preguntas de verificación, en voz alta y en inglés sencillo', '¿Cuál es la SAQ? · ¿por qué es correcta la correcta? · ¿por qué cada incorrecta no lo es AQUÍ? · ¿en qué escenario sería correcta cada incorrecta? · ¿qué dato cambiaría la respuesta?'),
@@ -1387,10 +1391,14 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
     // v6.10l (rev. c15, vetadas #26): si el paso es «Clasificar el error» (preguntas a fondo del nivel 0: D2, D4), «Clasifica: knowledge / transfer / unforced»
     //   va PRIMERO y la orden del preset detrás, corta («al cerrar: … Save to All Subdecks (Deck Options de APEX::USMLE)»): los dos dentro del corte de 110 del
     //   Calendar (antes la orden llenaba los 110 y quedaba «Clasifica: knowledge / …»); el «no conocía la palabra» sigue después. Los demás pasos, como antes.
-    const cl = /^(Clasifica: knowledge \/ transfer \/ unforced) \((«no conocía la palabra» = knowledge de vocabulario)\) · /.exec(p.como);
+    // v6.10m (rev. c16, diffs #19): la ruta «Deck Options de APEX::USMLE» vuelve a verse en el Calendar (en la v6.10l iba detrás, entre paréntesis, y el corte de
+    //   110 la quitaba): el 1.er día (D2) «Clasifica: … · al cerrar: Deck Options de APEX::USMLE › preset «APEX USMLE» › Save to All Subdecks» (el corte deja ver
+    //   hasta el preset y el «Hecho» del bloque dice «(Save to All Subdecks)»); los demás (D4), la lista sin el rótulo (el «qué» ya dice «Clasificar el error»)
+    //   y «si nació ::X: Deck Options de APEX::USMLE › Save to All Subdecks», todo dentro de los 110
+    const cl = /^(Clasifica: (knowledge \/ transfer \/ unforced)) \((«no conocía la palabra» = knowledge de vocabulario)\) · /.exec(p.como);
     const finPrimero = primero ? ` Hoy nace ::${deck} con la 1.ª tarjeta del plan (y APEX::USMLE, si la [TEST S1] del vibecoding no lo creó antes); Save to All Subdecks incluye ::Cardiology si la prueba lo creó.` : '';
     p.como = cl
-      ? `${cl[1]} · ${primero ? 'al cerrar: preset «APEX USMLE» › ' : `si nació ::${deck}, al cerrar: `}Save to All Subdecks (Deck Options de APEX::USMLE) · ${cl[2]} · ${p.como.slice(cl[0].length)}${finPrimero}`
+      ? `${primero ? `${cl[1]} · al cerrar: Deck Options de APEX::USMLE › preset «APEX USMLE» › ` : `${cl[2]} · si nació ::${deck}: Deck Options de APEX::USMLE › `}Save to All Subdecks · ${cl[3]} · ${p.como.slice(cl[0].length)}${finPrimero}`
       : `${primero ? 'Al cerrar' : `Al cerrar, si nació ::${deck}`}: Deck Options de APEX::USMLE › ${primero ? 'preset «APEX USMLE» › ' : ''}Save to All Subdecks · ${p.como}${finPrimero}`;
     if (primero) g.hecho = `${g.hecho} y el preset «APEX USMLE» en APEX::USMLE (Save to All Subdecks)`;
   }

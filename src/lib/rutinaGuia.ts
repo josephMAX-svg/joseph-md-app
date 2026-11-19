@@ -336,7 +336,9 @@ function vibeS1(k: number): GuiaPaso[] | undefined {
       P(10, 'Qué se pega en el paso 2: node_parsear_tarjeta_v2_3.js + node_crear_nota_v2_3.js (NO n8n_parser_v2_3.js: usa require(\'fs\'))', `Hoy: \`certutil -hashfile\` de los 2 ficheros → journal (el ${dia(4)}, paso 4, comparas lo PUBLICADO con ellos) · Claude Code: «compara backups\\live_parsear_tarjeta.js con scripts\\node_parsear_tarjeta_v2_3.js ignorando finales de línea: ¿qué cambia?» → 3 líneas al journal.`),
     ];
     case 2: return [
-      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', 'VS Code: Ctrl+A, Ctrl+C del fichero → n8n: doble clic en el nodo → clic en el código → Ctrl+A, Ctrl+V. No toques «Anki + Obsidian» ni los modos (All Items / Each Item). Ctrl+F «v2.5.1» en cada nodo: tiene que aparecer.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      // v6.10m (rev. c16, dias-clave #1 · vetadas #13): el corte del «cómo» a 110 dejaba «… Ctrl+A, Ctrl+V. No …» y escondía el aviso y la comprobación → como
+      //   en el paso 1: lo que NO se toca y el Ctrl+F «v2.5.1» van delante (dentro de los 110); cómo pegar (VS Code → nodo), detrás (entero en la app)
+      P(10, 'Redeploy: node_parsear_tarjeta_v2_3.js → ★ Parsear Tarjeta · node_crear_nota_v2_3.js → ★ Crear Nota Obsidian (NO n8n_parser_v2_3.js)', '«Anki + Obsidian» y los modos (All Items / Each Item) NO se tocan · Ctrl+F «v2.5.1» en cada nodo: debe salir · Para pegar, en VS Code: Ctrl+A, Ctrl+C del fichero → n8n: doble clic en el nodo → clic en el código → Ctrl+A, Ctrl+V.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
       P(2, 'PUBLISH → Publish: en n8n 2.x guardar no basta (el atajo usa la versión publicada)', 'Botón Publish (arriba a la derecha) → en la ventana «Publish workflow», Publish otra vez → el botón queda en «Published» (gris). No sale ningún aviso.', { t: 'n8n · Save and publish', url: DOC_N8N_PUBLISH }),
       // v6.10i (auditoría del volcado c12): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el «qué» lleva las marcas de éxito (Parsear acaba en «murmur
       //   LOUDER.)» · anki-ok + ankiNoteId · success + filepath) y el «cómo» EMPIEZA por la carpeta del .txt y la cadena de teclas (en la v6.10h la ruta iba al final
@@ -390,7 +392,7 @@ function vibeS2(k: number): GuiaPaso[] | undefined {
   const ship = p ? `SHIP S2 del ${fCorta(p.ship)}` : 'SHIP S2 del domingo';
   switch (k) {
     case 1: return [
-      P(10, 'PREDICE: due · backlog · revisadas hoy · hora de la 1.ª review de APEX::USMLE (antes de correr nada)', 'Anki → Stats del mazo APEX::USMLE → escribe tus 4 números previstos en el journal. VS Code: lee solo la cabecera de DATA\\_scripts\\anki_telemetria.js (l. 1-35: qué mide, uso, requisitos). AnkiConnect = el add-on 2055492159 que deja a un programa hablar con Anki (localhost:8765).'),
+      P(10, 'PREDICE: due · backlog · revisadas hoy · hora de la 1.ª review de APEX::USMLE (antes de correr nada)', 'Anki → Stats de APEX::USMLE → escribe tus 4 números previstos en el journal. VS Code: anki_telemetria.js (en DATA\\_scripts), lee solo su cabecera (l. 1-35: qué mide, uso, requisitos). AnkiConnect = el add-on 2055492159 que deja a un programa hablar con Anki (localhost:8765).'),
       P(10, 'CORRE: `node DATA/_scripts/anki_telemetria.js` con Anki abierto', 'Terminal → `cd /d D:\\joseph-md-app` → el comando. Copia al journal los 4 números de la salida. «Anki cerrado» = abre Anki y repite (sin Anki no escribe nada).'),
       P(15, 'INVESTIGA: predicción ↔ salida ↔ Stats de Anki (±5 %)', 'Por cada número que no cuadre, Claude Code: «¿de qué línea de anki_telemetria.js sale <número> y qué consulta de AnkiConnect usa?» → línea + consulta al journal (deck:APEX::USMLE* vs AnKing). Hoy no se cambia código.'),
     ];
@@ -894,8 +896,11 @@ function synFaseAvisoDe(iso: string): string {
   const n = SYN_FASES_BC.length;
   if (f.gateFechas.includes(iso)) {
     // sin fechas futuras: va al final del aviso y el Calendar lo corta en 240 (control 26j); «el PC del domingo» = el siguiente (SHIP, flexible)
-    // v6.10l (rev. c15, cambios #18): «Suspendido → PC del domingo» delante y corto (el corte en 240 dejaba «Si no lo apruebas: se repite en el PC …»)
-    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}${/^«/.test(f.gate) ? ' Suspendido: al PC del domingo, solo lo fallado (la fase siguiente empieza en su fecha).' : ''}`;
+    // v6.10l (rev. c15, cambios #18): la regla del suspenso delante y corta (el corte en 240 dejaba «Si no lo apruebas: se repite en el PC …»)
+    // v6.10m (rev. c16, diffs #25): «Si no apruebas» (en Perú «suspendido» se lee como cancelado); corta para que «PC del domingo» quepa en los 240 del 10-dic
+    // remate v6.10m (rev. c16 · verdad #3): sin el paréntesis final («(la fase siguiente empieza en su fecha)»), que el corte de 240 dejaba abierto el 27-nov
+    //   («… solo lo fallado (la fase …»); esa regla la dicen el paso 0) del PC del domingo («la fase siguiente ya empezó en su fecha») y SYN_AVANCE_BC
+    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}${/^«/.test(f.gate) ? ' Si no apruebas: al PC del domingo, solo lo fallado.' : ''}`;
   }
   return `Base cero · fase ${f.id}/${n}${f.desde === iso ? ' (empieza hoy)' : ''} · ${f.corto} · gate: ${f.gateCorto}.`;
 }
@@ -1054,8 +1059,10 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       .filter((x) => x.real < iso && x.real >= addDias(iso, -6) && (synDiaDe(x.g)?.bloques ?? []).some((b) => /quiz/i.test(b.leccion ?? '') && !/no trae quiz/i.test(b.leccion ?? ''))) // solo los gates cuyo día trae el quiz
     : [];
   // v6.10e (revisión del 18-nov · regresiones-5): «fase n/6 del SYNAPSE» (en una guía de vibecoding, «fase 2» chocaba con sus fases PRIMM «fase 2/3»)
+  // v6.10m (rev. c16, diffs #25 · vetadas #18): «no aprobado» (en Perú «suspendido» se lee como cancelado) y «solo lo fallado» dentro del corte de 110 del
+  //   Calendar (antes «quedó suspendido: repítelo solo …»); el detalle (las lecciones falladas, sus minutos), detrás
   const gateTxt = (min: number): string => (gatesQuiz.length
-    ? `0) SI el quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id}/${SYN_FASES_BC.length} del SYNAPSE (${fCorta(x.g)})`).join(' o el ')} quedó suspendido: repítelo solo con las lecciones falladas (≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
+    ? `0) Quiz oficial del GATE ${gatesQuiz.map((x) => `de la fase ${x.f.id}/${SYN_FASES_BC.length} del SYNAPSE (${fCorta(x.g)})`).join(' o el ')} no aprobado: repite solo lo fallado (las lecciones falladas, ≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
     : '');
   if (main && (main.tipo === 'ship' || main.tipo === 'avance') && main.proyecto) {
     const p = main.proyecto;

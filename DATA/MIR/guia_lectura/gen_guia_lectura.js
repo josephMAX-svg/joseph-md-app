@@ -105,6 +105,10 @@
  *    comentario = 107 s/Q)» (la cuenta con su resultado, en un solo tramo) y, fuera de F1, el «qué» en corto («N del pool oficial + MIR citadas en lo leído»)
  *    para que el nivel del comentario se vea y los días de 5 pasos de 2027 no pasen del máximo del evento; pre-test «(N del pool oficial + M citadas en
  *    ProMIR)». --check exige (1)-(4).
+ *  · v6.10m (19-nov-2026 · ronda c16 del Calendar, área MIR; solo TEXTO: mismas secciones, preguntas, minutos y horas): (1) pre-test de F1 (D1-D32): el
+ *    ritmo «77 s/Q (5Q ≈ 6,4′)» cierra el «qué» (en el «cómo» quedaba tras el corte de 110); (2) quiz del D1: «7Q ≈ 12,5′ (77 s/Q + 30 s de comentario =
+ *    107 s/Q)» detrás de la regla del blanco y delante de la cola de mañana; (3) quiz con cola de mañana larga («Las 2 primeras …», el D2): el ritmo justo
+ *    detrás de la cola. --check exige (1)-(3) (el ritmo del quiz EMPIEZA dentro de los 110; la cola del D1, antes del carácter 160).
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -528,8 +532,10 @@ function pasosD1(d) {
   const pasos = [
     // v6.10l (auditoría c15): «es la línea base, no la nota» ya lo dice el «qué»; sin repetirlo, la regla del blanco entra entera en los 110 del Calendar
     //   (antes el corte dejaba «…; la regla del blanco …»)
-    { min: mins[0], hora: H(0), que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial) · línea base, no nota`,
-      como: `Contesta las 5 aunque adivines (si no sabes, marca A); la regla del blanco empieza en el quiz · sin leer nada · ${SEG_POR_Q} s/Q (5Q ≈ ${dec1((5 * SEG_POR_Q) / 60)}′) + registrar las 5 en la app (kind pretest, ≈${D1_MIN_REGISTRO}′) = ${dec1((5 * SEG_POR_Q) / 60 + D1_MIN_REGISTRO)}′ · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).` },
+    // v6.10m (ronda c16, área MIR): el ritmo («77 s/Q (5Q ≈ 6,4′)») pasa al final del «qué» (cabe en los 150 del Calendar con la hora); en el «cómo» quedaba
+    //   detrás de la regla del blanco y el corte de 110 lo escondía. La cuenta del paso sigue en el «cómo» (6,4′ + 1′ de registro = 7,4′)
+    { min: mins[0], hora: H(0), que: `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial) · línea base, no nota · ${SEG_POR_Q} s/Q (5Q ≈ ${dec1((5 * SEG_POR_Q) / 60)}′)`,
+      como: `Contesta las 5 aunque adivines (si no sabes, marca A); la regla del blanco empieza en el quiz · sin leer nada · las 5Q (≈ ${dec1((5 * SEG_POR_Q) / 60)}′) + registrarlas en la app (kind pretest, ≈${D1_MIN_REGISTRO}′) = ${dec1((5 * SEG_POR_Q) / 60 + D1_MIN_REGISTRO)}′ · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).` },
     { min: mins[1], hora: H(1), que: `Orientación MIR + títulos de las ${nSec} secciones (sin leer el texto)`,
       como: `Lee el recuadro «Orientación MIR» (≈${ORIENT_MIN}′) y recorre en orden los ${nSec} títulos del capítulo (≈${D1_SEG_TITULO} s cada uno ≈ ${dec1((nSec * D1_SEG_TITULO) / 60)}′): solo títulos, sin leer el texto.`, enlace: { t: 'Capítulo ProMIR', url: capUrl(x.capId) } },
     // la lista entera dentro de los 150 caracteres del «qué» del Calendar (con la hora delante); los minutos medidos, en el «cómo»
@@ -540,7 +546,9 @@ function pasosD1(d) {
       // v6.10l (auditoría c15, vetadas #22): la regla entera ABRE el «cómo» («Desde aquí, en blanco si no descartas 2; con 2, marca»: también cuándo SÍ se
       //   marca) y detrás la cola de la eval de mañana, con su fecha (el Calendar alarga el corte hasta el final de esa cláusula); antes el corte dejaba
       //   «… en blanco si no descartas 2 …», con la cifra sola al final
-      como: `Desde aquí, en blanco si no descartas 2; con 2, marca · ${aMan ? aMan.charAt(0).toLowerCase() + aMan.slice(1) : ''}tapa las opciones · Rule-In → Rule-Out · ${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario (${SEG_POR_Q + SEG_COMENTARIO} s/Q: ${D1_QUIZ.obj}Q ≈ ${qS(D1_QUIZ.obj)}′; ${D1_QUIZ.min}Q ≈ ${qS(D1_QUIZ.min)}′ y ${D1_QUIZ.max}Q ≈ ${qS(D1_QUIZ.max)}′; la ${D1_QUIZ.max + 1}.ª y la ${D1_QUIZ.tope}.ª solo si vas rápido) · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · orden: el de la lista; a las ${D1_RELOJ[4]} paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo. Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` },
+      // v6.10m (ronda c16, área MIR): el ritmo con su resultado («7Q ≈ 12,5′ (77 s/Q + 30 s de comentario = 107 s/Q)») va detrás de la regla y delante de la
+      //   cola de mañana: el Calendar alarga el corte hasta la fecha de la cola y así se ven los tres (antes el ritmo iba tras «tapa las opciones» y se perdía)
+      como: `Desde aquí, en blanco si no descartas 2; con 2, marca · ${D1_QUIZ.obj}Q ≈ ${qS(D1_QUIZ.obj)}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q) · ${aMan ? aMan.charAt(0).toLowerCase() + aMan.slice(1) : ''}tapa las opciones · Rule-In → Rule-Out · ${D1_QUIZ.min}Q ≈ ${qS(D1_QUIZ.min)}′ y ${D1_QUIZ.max}Q ≈ ${qS(D1_QUIZ.max)}′; la ${D1_QUIZ.max + 1}.ª y la ${D1_QUIZ.tope}.ª solo si vas rápido · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · orden: el de la lista; a las ${D1_RELOJ[4]} paras donde estés: las de la lista que no entren siguen en la cola del capítulo (y abren la eval de mañana). Pool oficial de la app para este capítulo: ${pool.length}Q (todas en el pre-test) → el quiz sale de las ${med.totCitas} preguntas MIR citadas en el capítulo. Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` },
     { min: mins[4], hora: H(4), que: `≤4 APEX en ${deck}`, como: 'Solo de los fallos de hoy (pre-test y quiz), ≈2′ por tarjeta: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · creados directamente en Anki.' },
     { min: mins[5], hora: H(5), que: `REPASO EN BLANCO + reactivar las ${rv.n} tarjetas de Ravi del ${rv.tema} («${mazo}»)`,
       // v6.10j (auditoría c14, vetadas #6): los temas del repaso, fuera del paréntesis y antes del carácter 109 (el Calendar cortaba en «intención de tratar vs …»)
@@ -674,11 +682,13 @@ function pasosDia(d) {
   // v6.10l (auditoría c15, vetadas #31): «del pool oficial» sin «de la app» y el singular «1 citada»: los días de 5 pasos de 2027 pasaban del máximo del
   //   evento del Calendar y el constructor recortaba el «cómo» del quiz
   const nPreCit = pre.filter((p) => p.fuente !== 'pool app').length;
-  const preQue = `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial${nPreCit ? ` + ${nPreCit} ${nPreCit === 1 ? 'citada' : 'citadas'} en ProMIR` : ''})${fz.n === 1 ? ' · línea base, no nota' : ''}`;
+  // v6.10m (ronda c16, área MIR): en la fase 1 el ritmo («77 s/Q (5Q ≈ 6,4′)») va al final del «qué» (cabe en los 150 del Calendar con la hora); en el
+  //   «cómo» iba detrás de la regla del blanco y el corte de 110 lo escondía (en la fase 2 el «cómo» ya abre con él)
+  const preQue = `PRE-TEST 5Q ciegas del capítulo nuevo (${pre.filter((p) => p.fuente === 'pool app').length} del pool oficial${nPreCit ? ` + ${nPreCit} ${nPreCit === 1 ? 'citada' : 'citadas'} en ProMIR` : ''})${fz.n === 1 ? ` · línea base, no nota · ${SEG_POR_Q} s/Q (5Q ≈ ${dec1((5 * SEG_POR_Q) / 60)}′)` : ''}`;
   const preComo = fz.n === 1
     // v6.10l (auditoría c15): sin repetir «es la línea base, no la nota» (lo dice el «qué»), la regla del blanco cabe entera en los 110 del Calendar (antes
     //   el corte dejaba «…; la regla …»)
-    ? `Base cero: contesta las 5 aunque adivines (si no sabes, marca A); la regla del blanco va en la eval y el quiz · sin leer nada · 77 s/Q (5Q ≈ 6,4′) · registra en la app (kind pretest) · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`
+    ? `Base cero: contesta las 5 aunque adivines (si no sabes, marca A); la regla del blanco va en la eval y el quiz · sin leer nada · registra en la app (kind pretest) · la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`
     : `${LP ? 'Sin leer nada · 77 s/Q (5Q ≈ 6,4′)' : 'Sin leer nada · 77 s/Q'} · fase 2: en blanco si no descartas 2 (la táctica −1/3 ya se entrena desde la primera pregunta) · registra en la app (kind pretest) · cada fallo marca la sección que lees con más atención (no se salta ninguna): la sección de cada pregunta la miras DESPUÉS de contestar las 5 (antes no: con la lista de lectura delataría la clave).`;
   pasos.push({ min: preMin, hora: `15:30–${hPre}`, que: preQue, como: preComo }); // v6.10 · tanda C (regla D) · base cero (fases)
   preguntas.pretest = pre;
@@ -765,8 +775,16 @@ function pasosDia(d) {
   //   el Calendar tiene que acortar el «cómo» (2027, días de 5 pasos), corta ANTES de la cuenta, nunca en «77 s/Q + 30 s …»; «Tapa las opciones · Rule-In →
   //   Rule-Out» (= «tapa las opciones y contesta antes de verlas») deja sitio para que la cuenta entera quepa en los 110 y, detrás de la cola de mañana,
   //   el corte deje «tapa las opciones» entero
-  const tapa = `${aMan ? 't' : 'T'}apa las opciones · Rule-In → Rule-Out`;
-  pasos.push({ min: 12, hora: '15:53–16:05', que: queQuiz, como: `${aMan}${tapa} · ${QUIZ_HACER}Q ≈ ${String(Math.round((QUIZ_HACER * (SEG_POR_Q + SEG_COMENTARIO)) / 6) / 10).replace(".", ",")}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q) · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª, solo si vas rápido · ${ordenTxt}; a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${poolTxt} Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` });
+  const tapaO = `${aMan ? 't' : 'T'}apa las opciones`, ruleIO = 'Rule-In → Rule-Out';
+  const tapa = `${tapaO} · ${ruleIO}`;
+  const ritmoQ = `${QUIZ_HACER}Q ≈ ${String(Math.round((QUIZ_HACER * (SEG_POR_Q + SEG_COMENTARIO)) / 6) / 10).replace(".", ",")}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q)`;
+  // v6.10m (ronda c16, área MIR): si la cola de mañana + «tapa las opciones …» no dejan que el ritmo empiece dentro de los 110 del Calendar («Las 2 primeras
+  //   que no entren abren …», el D2), el ritmo va justo detrás de la cola (antes el corte lo escondía); con «La primera que no entre …» cabe todo como antes
+  // remate v6.10m (rev. c16 · visibilidad #2): con el ritmo delante, «tapa las opciones» va antes que él si así el ritmo sigue empezando dentro de los 110 (el D2
+  //   perdía «tapa las opciones»); «Rule-In → Rule-Out», detrás del ritmo
+  const ritmoDelante = aMan && (aMan + tapa + ' · ').length > CORTE_COMO;
+  const tapaAntes = ritmoDelante && (aMan + tapaO + ' · ').length <= CORTE_COMO;
+  pasos.push({ min: 12, hora: '15:53–16:05', que: queQuiz, como: `${aMan}${tapaAntes ? `${tapaO} · ${ritmoQ} · ${ruleIO}` : ritmoDelante ? `${ritmoQ} · ${tapa}` : `${tapa} · ${ritmoQ}`} · registra en la app (kind quiz): <60 % = tema caliente en la próxima sesión · la ${QUIZ_HACER + 1}.ª y la ${QUIZ_HACER_MAX}.ª, solo si vas rápido · ${ordenTxt}; a las 16:05 paras donde estés: las de la lista que no entren no se pierden, siguen en la cola del capítulo (esta lista, en este orden) para la 2.ª vuelta y como reserva de su EVAL anclada D-3/D-7. ${poolTxt} Lista, en orden: ${quiz.map((q) => q.promir).join(' · ')} (${DONDE_IDS}).` });
   pasos.push({ min: 10, hora: '16:05–16:15', que: `≤4 APEX en ${deck}`, como: 'Desde el Shopping List: pregunta SAQ + por qué + 🇪🇸 delta si aplica + tag sys:: del sistema USMLE · 1 de cada 4 con imagen · creados directamente en Anki.' });
   const totalMin = pasos.reduce((s, p) => s + p.min, 0);
   const vidLargos = us.flatMap((u) => u.largos.map((v) => `${v.leyenda ? v.leyenda.replace(/^(Vídeo [\d-]+)/, '$1 · ') : 'vídeo'} (${v.dur})`));
@@ -928,7 +946,9 @@ for (const x of salida) {
         if (tot !== +c[3] || tot !== EVAL_Q_F1 || !ok((tot * SEG_EVAL_COMENTADA) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q + ${c[1]}Q de cola = ${c[3]}Q comentadas en ${ev.min}′ (fuera de 0,85-1,15 o ≠ ${EVAL_Q_F1}Q)`);
         if (!slot || slot.dia !== +c[2] || slot.preguntas.length - (QUIZ_HACER_MAX - QUIZ_HACER) < +c[1]) errs.push(`D${x.d}: la cola del quiz del D${c[2]} no está en preguntas.eval o no llega a ${c[1]}Q aunque ayer pararas en la ${QUIZ_HACER_MAX}.ª`);
         else if (!qD || JSON.stringify(qD.preguntas.quiz.slice(QUIZ_HACER).map((q) => q.promir)) !== JSON.stringify(slot.preguntas.map((q) => q.promir))) errs.push(`D${x.d}: la cola no es la ${QUIZ_HACER + 1}.ª-10.ª del quiz del D${c[2]}`);
-        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; if (i < 0 || i > 100) errs.push(`D${c[2]}: su quiz no anuncia en los primeros 100 caracteres que la cola abre la eval del ${x.dia}`); }
+        // v6.10m (ronda c16, área MIR): en el D1 la regla del blanco y el ritmo van delante; la cola sigue a la vista porque el Calendar alarga el corte del
+        //   «cómo» hasta el final de la cláusula de su fecha (cortarDest): basta con que empiece antes del carácter 160
+        if (qD && (enLote1t(qD) || qD.d === 1)) { const qz = qD.bloque.pasos.find((p) => /Q comentadas \(máx\./.test(p.que)); const i = qz ? qz.como.indexOf(`la eval de mañana (${x.dia} 15:15)`) : -1; if (i < 0 || i > (qD.d === 1 ? 160 : 100)) errs.push(`D${c[2]}: su quiz no anuncia en los primeros 100 caracteres que la cola abre la eval del ${x.dia}`); }
       } else if (n === 4) { if (!ok((n * SEG_POR_Q) / 60, ev.min)) errs.push(`D${x.d}: eval ${n}Q en ${ev.min}′`); }
       else errs.push(`D${x.d}: eval de ${n}Q en F1 sin la cola del quiz del D-1 (los minutos que sobran quedarían sin material)`);
     }
@@ -1000,11 +1020,17 @@ for (const x of salida) {
     //   de mañana delante); el D1 abre con la regla del blanco ENTERA (cuándo en blanco y cuándo marcar)
     if (/Q comentadas \(máx\./.test(p.que)) {
       const rq = `${QUIZ_HACER}Q ≈ 10,7′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q)`;
-      if (x.lectura.d1) { if (!p.como.startsWith('Desde aquí, en blanco si no descartas 2; con 2, marca · ')) errs.push(`D${x.d}: el quiz del D1 no abre con la regla del blanco entera`); }
-      else { const i = p.como.indexOf(rq); if (i < 0 || (!/^(?:La primera que no entre|Las \d+ primeras que no entren) abre/.test(p.como) && i + rq.length > CORTE_COMO)) errs.push(`D${x.d}: el «cómo» del quiz no lleva «${rq}» dentro de los ${CORTE_COMO} caracteres del Calendar`); }
+      // v6.10m (ronda c16, área MIR): el D1 sigue con su ritmo («7Q ≈ 12,5′ (77 s/Q + 30 s de comentario = 107 s/Q)») delante de la cola de mañana
+      const rq1 = `${D1_QUIZ.obj}Q ≈ ${dec1((D1_QUIZ.obj * (SEG_POR_Q + SEG_COMENTARIO)) / 60)}′ (${SEG_POR_Q} s/Q + ${SEG_COMENTARIO} s de comentario = ${SEG_POR_Q + SEG_COMENTARIO} s/Q)`;
+      if (x.lectura.d1) { if (!p.como.startsWith(`Desde aquí, en blanco si no descartas 2; con 2, marca · ${rq1} · `)) errs.push(`D${x.d}: el quiz del D1 no abre con la regla del blanco entera y su ritmo («${rq1}»)`); }
+      // v6.10m (ronda c16, área MIR): también con la cola de mañana delante, el ritmo EMPIEZA dentro de los 110 del Calendar (el corte se alarga hasta su final:
+      //   tramo «expr»); antes la cola lo dejaba fuera (D2)
+      else { const i = p.como.indexOf(rq); if (i < 0 || i > CORTE_COMO + 1) errs.push(`D${x.d}: el «cómo» del quiz no deja empezar «${rq}» dentro de los ${CORTE_COMO} caracteres del Calendar`); }
     }
     // v6.10l (auditoría c15): en la fase 1 el pre-test dice ENTERA, en los 110 del Calendar, dónde empieza la regla del blanco
     if (/^PRE-TEST 5Q/.test(p.que) && faseDe(x.d).n === 1) { const k = p.como.search(/la regla del blanco (?:empieza en el quiz|va en la eval y el quiz)/); if (k < 0 || p.como.indexOf(' · ', k) > CORTE_COMO + 1) errs.push(`D${x.d}: el pre-test de la fase 1 no deja ver entera dónde empieza la regla del blanco`); }
+    // v6.10m (ronda c16, área MIR): y su ritmo cierra el «qué», que cabe entero en el corte del Calendar
+    if (/^PRE-TEST 5Q/.test(p.que) && faseDe(x.d).n === 1 && (!p.que.endsWith(` · ${SEG_POR_Q} s/Q (5Q ≈ ${dec1((5 * SEG_POR_Q) / 60)}′)`) || p.que.length > CORTE_QUE)) errs.push(`D${x.d}: el «qué» del pre-test de la fase 1 no acaba con su ritmo o no cabe en ${CORTE_QUE} caracteres`);
   }
   // v6.10l (auditoría c15, cambios #16): una sola regla para el exceso de la LECTURA DE BASE: la cabecera lleva «(+X′)» si y solo si el «cómo» dice «X′ más que el paso»
   { const le = x.bloque.pasos.find((p) => /^LECTURA DE BASE \d+′/.test(p.que)); if (le && !x.lectura.d1) { const cab = /^LECTURA DE BASE \d+′ \(\+(\d+,\d|\d+)′\)/.exec(le.que), co = /la lista suma [\d,]+′ medidos, ([\d,]+)′ más que el paso/.exec(le.como); if ((!!cab !== !!co && !(co && !cab && EXCESO_OMITIDO.has(x.d))) || (cab && co && cab[1] !== co[1])) errs.push(`D${x.d}: la cabecera de la LECTURA DE BASE y su «cómo» no dicen el mismo exceso`); } }

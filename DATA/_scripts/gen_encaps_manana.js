@@ -111,7 +111,7 @@
  * v6.10l (19-nov-2026, auditoría del volcado c15): solo texto. (1) La REVISIÓN NORMATIVA escribe una suma que cierra («35′ = PDF 11 p en 22′ + 13′ de vídeo a
  *   2×, solo para dudas»; antes «(35′: vídeo de 35′ + PDF de 11 p)») y su «cómo» dice su orden real (PDF → vídeo solo en lo que no aclare). (2) La cabecera del
  *   día (RESUMEN) nombra la teoría como el título de la TEORÍA («… (CI S2 → 18:00)»). (3) El criterio de vigencia, corto y DELANTE en los pasos de verificación
- *   en la norma («Si dos fuentes no coinciden, manda la más reciente: campus Theomed 2027-I / MINSA»; antes el Calendar cortaba en «manda la norma más …»).
+ *   en la norma («Si dos fuentes no coinciden, manda la norma más reciente (MINSA / campus Theomed 2027-I)»; antes el Calendar cortaba en «manda la norma más …»).
  */
 'use strict';
 const fs = require('fs');
@@ -488,9 +488,15 @@ function unidades(it) {
     const queRN = (min) => {
       if (!pdf && Math.abs(min - durJ / VEL_TEXTO) >= 1) aborta(`«${it.item}» (${it.fecha}): ${min}′ ≠ vídeo de ${it.duracion} ÷ ${VEL_TEXTO} (la suma escrita no cerraría)`);
       if (pdf && min - pdf * PDF_P < 1) aborta(`«${it.item}» (${it.fecha}): ${min}′ no dan para el PDF de ${pdf} p a ${PDF_P}′/p y algo de vídeo`);
-      return `${it.item} · TEXTO PRIMERO (${pdf ? `${min}′ = PDF ${pdf} p en ${pdf * PDF_P}′ + ${min - pdf * PDF_P}′ de vídeo a 2×, solo para dudas` : `${min}′: el PDF primero, a ${PDF_P}′/p; el vídeo de ${it.duracion} a 2×, solo para dudas`})${cod}`;
+      return `${it.item} · TEXTO PRIMERO (${pdf ? `${min}′ = PDF ${pdf} p en ${pdf * PDF_P}′ + ${min - pdf * PDF_P}′ de vídeo a 2×, solo para dudas` : `${min}′ = ${ppSin(min) * PDF_P}′ de PDF —sus páginas clave, a ${PDF_P}′/p— + ${min - ppSin(min) * PDF_P}′ de vídeo a 2×, solo para dudas`})${cod}`;
     };
-    return [{ tipo: 'texto', min: Math.round(ex), exact: ex, codigos: it.codigos || [], que: queRN, como: `Primero el PDF de la revisión (la norma: definiciones de las primeras páginas, tablas, flujogramas, cifras)${pdf ? `, a ${PDF_P}′ por página` : ''}; después el vídeo (${it.duracion}) a 2×, solo en lo que el PDF no aclare. Ruta: ${RUTA.adic} › revisiones normativas.`, enlace: L116 }];
+    // v6.10m (auditoría c16 · cambios-c16 #14): sin páginas en el JSON (N°2, ITS: el PDF del campus no tiene su nº de páginas en el repo), la cuenta CIERRA con los
+    //   minutos del paso (vídeo ÷ texto_div, sin cambio): las ≈N páginas clave del PDF a 2′/p + 2′ de vídeo a 2× solo para dudas (antes «10′: el PDF primero, a
+    //   2′/p; el vídeo de 31′ …», que con un PDF de más de 5 p no cabía en 10′). Lo que el PDF no cubra de ITS/VIH lo leen las normas de la semana de esa mañana
+    // remate v6.10m (rev. c16 · verdad #2 y visibilidad #3): «8′ de PDF —sus páginas clave, a 2′/p—» = un tope de tiempo, no un dato del PDF (antes «las ≈4 p clave
+    //   del PDF», que parecía su nº de páginas); el «cómo», sin «de la revisión (la norma: …» (el «qué» ya la nombra), para que el paréntesis cierre dentro del corte
+    const ppSin = (min) => Math.max(1, Math.floor((min - 2) / PDF_P));
+    return [{ tipo: 'texto', min: Math.round(ex), exact: ex, codigos: it.codigos || [], que: queRN, como: `Primero ${pdf ? 'el PDF' : 'las páginas clave del PDF'} (definiciones de las primeras páginas, tablas, flujogramas, cifras), a ${PDF_P}′ por página; después el vídeo (${it.duracion}) a 2×, solo en lo que el PDF no aclare. Ruta: ${RUTA.adic} › revisiones normativas.`, enlace: L116 }];
   }
   const v = /^(SP|CI|GES|INV|ET) (\d+)\/(\d+)\b(.*)$/.exec(it.item);
   if (v && it.modo === 'vivo_diferido') {
@@ -661,10 +667,12 @@ function hechoTeoria(dia) {
 }
 // v6.10l (auditoría c15 · vetadas-cortes #25): el criterio entero y corto («manda la más reciente: campus Theomed 2027-I / MINSA»), y DELANTE en los pasos de
 //   verificación (el Calendar corta el «cómo» a 110: antes quedaba «… manda la norma más …» en las 19 mañanas)
-const VIGENCIA = 'Si dos fuentes no coinciden, manda la más reciente: campus Theomed 2027-I / MINSA.';
+// v6.10m (auditoría c16 · diffs #24): manda la NORMA más reciente (MINSA o la del campus Theomed 2027-I), no «la más reciente» de las dos fuentes: así se leía
+//   como que el material de la academia, por ser más nuevo, prevalece sobre la norma oficial (y el corte del Calendar dejaba solo «(Theomed 2027-I …»)
+const VIGENCIA = 'Si dos fuentes no coinciden, manda la norma más reciente (MINSA / campus Theomed 2027-I).';
 // v6.10l (remate, revisión adversarial · visibilidad): en los pasos de verificación, QUÉ buscar y el criterio, los dos dentro de los 110 del Calendar (antes
-//   el criterio delante dejaba fuera «definición, tabla o flujograma»)
-const VERIF_NORMA = 'Busca definición, tabla o flujograma; si dos fuentes difieren, manda la más reciente (Theomed 2027-I / MINSA).';
+//   el criterio delante dejaba fuera «definición, tabla o flujograma») · v6.10m: «manda la norma más reciente» dentro del corte, con MINSA delante
+const VERIF_NORMA = 'Busca definición, tabla o flujograma; si 2 fuentes difieren, manda la norma más reciente (MINSA / Theomed 2027-I).';
 const WDL = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 /** v6.07 (fix lote 1b del Calendar): de qué mañana ENCAPS son las tarjetas y los errores del arranque de `hoy` (la anterior es `prev`):
  *  «de ayer» solo si fue el día anterior · «del viernes» / «del lunes» / «del miércoles» si es la mañana ENCAPS anterior de la rotación
@@ -1000,7 +1008,7 @@ for (const dia of J.mananas) {
     // v6.09b: las nuevas que caben en los minutos (≈50 s por tarjeta nueva, máx. 30); antes «15 nuevas» también en 10′ (12,5′ de material)
     // v6.09b lote 1-quater FX1 (revisión V1 · flashcards): «30 nuevas + vencidas» en 25′ dejaba 0′ a las vencidas (30 × 0,83′ = 25′) → VENCIDAS PRIMERO y las nuevas
     //   hasta llenar los minutos (≈30 si no hay vencidas); las nuevas que no quepan esperan en la cola del mazo y abren la próxima 18:00 (la misma regla que APEX::USMLE)
-    : dia.n === 1 || dia.fecha >= F6.encaps.intensiva_desde ? P(m, `Flashcards ENCAPS::Flashcards · ${Math.min(30, Math.floor(m * 60 / 50))} nuevas del tema de hoy ${dia.n === 1 ? '(aún no hay vencidas)' : '+ vencidas'}`, 'Anki. Las nuevas del área de hoy, en el orden del temario. Si aún no importaste el mazo de DR LOPEZ (decisión tuya), haz las nuevas de ENCAPS::Cifras.')
+    : dia.n === 1 || dia.fecha >= F6.encaps.intensiva_desde ? P(m, `Flashcards ENCAPS::Flashcards · ${Math.min(30, Math.floor(m * 60 / 50))} nuevas del tema de hoy ${dia.n === 1 ? '(aún no hay vencidas)' : '+ vencidas'}`, 'Anki, en el orden del temario. Sin el mazo de DR LOPEZ importado (decisión tuya): nuevas de ENCAPS::Cifras.') // remate v6.10m (rev. c16 · visibilidad #1): la regla de DR LOPEZ entera dentro de los 110 del Calendar (antes «Si aún no importaste el mazo de DR LOPEZ …», sin su consecuencia); «del área de hoy» ya va en el «qué» («nuevas del tema de hoy»)
       : P(m, `Flashcards ENCAPS::Flashcards · vencidas primero; después nuevas del tema de hoy hasta los ${m}′ (≈${Math.min(30, Math.floor(m * 60 / 50))} si no hay vencidas · 0,83′ por nueva)`,
         `Las nuevas que no quepan → la 18:00 del ${corta(sigF)}, por delante de las de ese día (esperan en la cola del mazo). Anki, en el orden del temario. Si aún no importaste el mazo de DR LOPEZ (decisión tuya), haz las nuevas de ENCAPS::Cifras.`));
   const cifras = (m) => (cierre
@@ -1112,13 +1120,16 @@ for (const d of DIAS_GA) {
   const vencTxt = vencX.length ? ` (con las del ${vencX.map((x) => corta(x.de)).join(' y ')}, ${vencX.every((x) => x.cond) ? 'si sus 18:00 no fueron las normales' : 'que no se hicieron a sus 18:00'})` : '';
   GA[d] = guia(fr(ini, '05:45'), `ANKI · repasos ENCAPS ${minGA}′ (después del USMLE)`, minGA >= 25 ? [
     cif,
-    P(10, `ENCAPS::Flashcards · vencidas${vencTxt}`, 'El mazo que más crece (las nuevas de cada tarde de las 18:00). Si aún no importaste el mazo de DR LOPEZ (decisión tuya), estos 10′ van a ENCAPS::Cifras.'),
+    // remate v6.10m (rev. c16 · visibilidad #1): la regla de DR LOPEZ, con su consecuencia, entera en el «cómo» (el Calendar lo corta a 110 y dejaba «Si aún no
+    //   importaste el mazo de DR LOPEZ …» sin decir adónde van los minutos; «el mazo que más crece», al «qué»); en los días cortos va en el «qué», pegada a
+    //   ENCAPS::Flashcards (su «cómo» lleva su destino con fecha)
+    P(10, `ENCAPS::Flashcards (el mazo que más crece: las nuevas de cada 18:00) · vencidas${vencTxt}`, 'Sin el mazo de DR LOPEZ importado (decisión tuya), estos 10′ van a ENCAPS::Cifras.'),
     P(minGA - 20, 'APEX::ENCAPS · vencidas', 'Las tarjetas APEX de las sesiones de las 16:15. Si hoy no hay vencidas, estos minutos van a ENCAPS::Flashcards.'),
   ] : [
     cif,
     // v6.09b lote 1-quater FX1 (revisión V1): lo que no acabes ya no va «al próximo Anki de 25′» (sus 10′ ya tienen sus vencidas): va a la próxima 18:00, que hace
     //   las vencidas PRIMERO (y ese día entran menos nuevas)
-    P(minGA - 10, `ENCAPS::Flashcards + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → la 18:00 del ${corta(GT_FECHAS.find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas). Si aún no importaste el mazo de DR LOPEZ (decisión tuya), estos minutos van a ENCAPS::Cifras.`),
+    P(minGA - 10, `ENCAPS::Flashcards (sin el mazo de DR LOPEZ importado, decisión tuya: ENCAPS::Cifras) + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → la 18:00 del ${corta(GT_FECHAS.find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas).`),
   ], [], minGA >= 25 ? '0 vencidas en ENCAPS::Cifras, ENCAPS::Flashcards y APEX::ENCAPS' : '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: GT_FECHAS.includes(d) ? 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' : undefined }); // v6.09: el aviso, si ese día hay mañana ENCAPS (jue 31-dic: jueves sin Step); antes, si no era día de Step
 }
 
