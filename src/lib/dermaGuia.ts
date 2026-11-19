@@ -427,11 +427,19 @@ const franjaDe = (ini: string, min: number) => { const f = aMinutos(ini) + min; 
  *  `sub.slice(0, 80)`: «… (3 de los 4 módulos CORE la preguntan t», «… (p — PLAN B») → «…» tras la última palabra entera. */
 export function subTitulo(sub: string, n = 80): string {
   if (sub.length <= n) return sub;
+  // v6.10i (remate, revisión adversarial del 18-nov): tampoco termina en un conector («… del ledger de…», «… desde el…», «… de tus…»), y un paréntesis
+  //   abierto al principio se cierra en su última cláusula entera («(mecanismo → tratamiento; puente futuro a…» → «(mecanismo → tratamiento)…»)
+  const COLA = /(?:[\s,;:·—+(-]+|\s(?:de|del|el|la|los|las|lo|a|al|y|e|o|u|en|con|por|para|sin|desde|hasta|entre|tu|tus|su|sus|un|una|que|se|ni))+$/u;
   let t = sub.slice(0, n);
   const sp = t.lastIndexOf(' ');
   if (sp > n * 0.5) t = t.slice(0, sp);
-  const ab = t.lastIndexOf('('); if (ab > t.lastIndexOf(')') && ab > n * 0.4) t = t.slice(0, ab); // paréntesis sin cerrar → fuera
-  return t.replace(/[\s,;:·—+(-]+$/u, '') + '…';
+  t = t.replace(COLA, '');
+  const ab = t.lastIndexOf('(');
+  if (ab > t.lastIndexOf(')')) { // paréntesis sin cerrar: tardío → fuera · temprano → cerrado tras su última cláusula entera
+    if (ab > n * 0.4) t = t.slice(0, ab).replace(COLA, '');
+    else { const sep = Math.max(t.lastIndexOf(';'), t.lastIndexOf(',')); t = (sep > ab ? t.slice(0, sep) : t).replace(COLA, '') + ')'; }
+  }
+  return t + '…';
 }
 /** Reparte el sobrante en el paso «relleno» (min 0) para que Σ pasos = total. */
 function cuadrar(pasos: GuiaPaso[], total: number): GuiaPaso[] {

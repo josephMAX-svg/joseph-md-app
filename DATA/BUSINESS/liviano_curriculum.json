@@ -185,6 +185,7 @@
           "tema": "Palmerton: 10 tarjetas Anki de MECANISMO del módulo (deck APEX::LIVIANO::fisiologia)",
           "estudio": "Importar/depurar las tarjetas del módulo (LIVIANO_mecanismo.csv) y crear las 3 propias que falten: ¿por qué? encadenado, no datos sueltos",
           "aplicacion": "Auto-examen ciego: responde 10 tarjetas en voz alta como si cada una la preguntara un paciente; anota % correcto",
+          "hechoEstudio": "tarjetas del módulo importadas y depuradas + las 3 propias que faltaban",
           "anki": [
             { "q": "¿Qué distingue una tarjeta de MECANISMO de un dato suelto?", "a": "Pregunta '¿por qué?' y encadena causa→efecto (dieta → leptina↓ → AgRP↑ → hambre↑), no 'STEP 1 = 14,9 %' aislado." },
             { "q": "¿Cómo se redacta una buena tarjeta de mecanismo (formato Palmerton)?", "a": "Pregunta '¿por qué / cómo?' → respuesta que encadena causa → efecto → consecuencia clínica en 1-3 frases; sin listas de datos sueltos; una idea por tarjeta." },
@@ -195,6 +196,7 @@
           "tema": "Repaso del eje completo: leptina → arcuato → intestino → adaptación",
           "estudio": "Recorrido inverso del mapa: desde la recuperación de peso hasta las señales que la causan",
           "aplicacion": "Explícale el eje a un \"paciente escéptico\" que insiste en que todo es cuestión de disciplina",
+          "hechoEstudio": "recorrido inverso del eje escrito (de la recuperación de peso a las señales que la causan)",
           "anki": [
             { "q": "Recorrido inverso: la recuperación de peso tras una dieta ← ¿qué cadena?", "a": "← hambre↑ y gasto↓ ← leptina↓ / grelina↑ ← pérdida de peso leída por el hipotálamo como amenaza al set point." },
             { "q": "Explica en 4 pasos hacia atrás por qué la semana 8 de dieta es más difícil que la semana 1", "a": "Peso ↓ → leptina ↓ y grelina ↑ → AgRP más activo y POMC menos → más hambre y menos gasto: cada semana el sistema empuja más fuerte contra el déficit." }
@@ -204,6 +206,7 @@
           "tema": "Biblioteca de metáforas del módulo: termostato · timbre · acelerador/freno",
           "estudio": "Pulir las 3 metáforas nucleares del módulo y cuándo usar cada una",
           "aplicacion": "Ensaya las 3 metáforas seguidas; elige LA tuya y púlela hasta que dure 60 segundos exactos",
+          "hechoEstudio": "las 3 metáforas pulidas, con cuándo usar cada una",
           "anki": [
             { "q": "¿Cuándo usar termostato, timbre y acelerador/freno?", "a": "Termostato = por qué se recupera el peso (set point); timbre = resistencia leptínica; acelerador/freno = hambre vs saciedad (AgRP vs POMC)." },
             { "q": "¿Qué metáfora eliges para el paciente que dice 'tengo hambre todo el tiempo'?", "a": "Timbre: la grelina toca el timbre antes de comer y en dieta el timbre suena más veces y más fuerte; no es 'ansiedad', es una señal biológica a la que el tratamiento puede bajarle el volumen." }
@@ -213,6 +216,7 @@
           "tema": "Síntesis módulo 1 → sección 'por qué tratamiento crónico' del protocolo",
           "estudio": "Repaso espaciado de todas las tarjetas del módulo + huecos detectados en los casos ya hechos del módulo; redacta 10 líneas para LIVIANO_PROTOCOLO_CLINICO_v1 §1 (fundamento)",
           "aplicacion": "Monólogo de 5 min: \"por qué tu cuerpo defiende su peso\" — como si abrieras una charla LIVIANO",
+          "hechoEstudio": "repaso espaciado de las tarjetas del módulo + 10 líneas del §1 (fundamento) redactadas",
           "sintesis": true,
           "anki": [
             { "q": "Resume en una frase por qué el cuerpo defiende su peso.", "a": "Un sistema hipotalámico lee reservas (leptina), estómago (grelina) e intestino (GLP-1/PYY/CCK) y, ante la pérdida, sube el hambre y baja el gasto de forma persistente." },
@@ -388,6 +392,7 @@
           "tema": "Síntesis módulo 2: protocolo de prescripción LIVIANO → sección M2 del protocolo",
           "estudio": "Candidato ideal, contraindicaciones, inicio, escalada, seguimiento y criterios de suspensión — redacta la sección 'Elegibilidad + titulación' de LIVIANO_PROTOCOLO_CLINICO_v1 (dosis: solo con ficha técnica; si no, 'A VERIFICAR')",
           "aplicacion": "Presenta el protocolo en 5 min como se lo contarías a un paciente candidato ideal",
+          "hechoEstudio": "sección «Elegibilidad + titulación» del protocolo redactada (dosis solo con ficha técnica o «A VERIFICAR»)",
           "sintesis": true,
           "anki": [
             { "q": "Estructura mínima del protocolo de prescripción LIVIANO", "a": "Candidato (IMC/comorbilidad) → screening de contraindicaciones (MEN2/CMT, embarazo, pancreatitis) → labs basales → inicio y escalada lenta (ficha técnica) → check-in de EA → criterios de escalada/suspensión/derivación." },
@@ -471,6 +476,7 @@
           "tema": "REVISIÓN TRIMESTRAL I de farmacoterapia y precios (fila fija ~D45)",
           "estudio": "Checklist LIVIANO_REVISION_TRIMESTRAL: (1) aprobaciones nuevas FDA/EMA/DIGEMID desde sep; (2) alertas de seguridad; (3) recotizar 2 farmacias + 1 magistral; (4) genéricos en LATAM; (5) actualizar LIVIANO_ACCESO_PERU (fecha) y el value stack; (6) 3 tarjetas Anki nuevas con lo que cambió",
           "aplicacion": "Graba 3 min: 'qué cambió este trimestre en GLP-1 y qué significa para tu tratamiento' — versión paciente",
+          "hechoEstudio": "checklist trimestral completo (6 puntos, cada dato con fuente y fecha) con sus 3 tarjetas de lo que cambió",
           "revision": true,
           "anki": [
             { "q": "¿Qué 6 puntos cubre la revisión trimestral de farmacoterapia de LIVIANO?", "a": "Aprobaciones nuevas · alertas de seguridad · recotización (2 farmacias + magistral) · genéricos LATAM · actualizar tabla de acceso + value stack · tarjetas Anki nuevas." },
@@ -583,6 +589,7 @@
           "tema": "Síntesis módulo 3 + drill de cifras (ciego) → política nutricional del protocolo",
           "estudio": "Repaso Anki del módulo + la política nutricional LIVIANO en una página (para LIVIANO_PROTOCOLO_CLINICO_v1 §3) + drill de cifras de los módulos 2-3-7",
           "aplicacion": "Discurso de 3 min: la política nutricional LIVIANO (adherencia primero + proteína innegociable)",
+          "hechoEstudio": "repaso Anki del módulo + la política nutricional en 1 página (§3)",
           "sintesis": true,
           "drill": true,
           "drillQs": [
@@ -684,6 +691,7 @@
           "tema": "Síntesis módulo 4 → sección 'estándar proteína/fuerza + qué medir' del protocolo",
           "estudio": "Repaso Anki del módulo + checklist de prescripción de actividad; redacta §3-4 de LIVIANO_PROTOCOLO_CLINICO_v1 (estándar + métricas + cadencia de medición)",
           "aplicacion": "Monólogo de 3 min: \"la balanza no distingue músculo de grasa; nosotros sí\"",
+          "hechoEstudio": "repaso Anki del módulo + checklist de actividad + §3-4 del protocolo redactadas (estándar, métricas y cadencia)",
           "sintesis": true,
           "anki": [
             { "q": "Métricas del protocolo LIVIANO (M3-4) y su cadencia", "a": "Peso + cintura + fuerza (semanal/quincenal), fotos (mensual), labs (trimestral — panel A VERIFICAR); la meta se define en composición, no solo en kg." },
@@ -765,6 +773,7 @@
           "tema": "Síntesis módulo 6 + escalera terapéutica + drill de cifras (ciego) → sección M6 del protocolo",
           "estudio": "Estilo de vida → fármacos → cirugía: el mapa completo de opciones y criterios; redacta §6 'Derivación y límites' de LIVIANO_PROTOCOLO_CLINICO_v1 + drill de cifras módulos 4-6",
           "aplicacion": "Dibuja y narra la escalera terapéutica completa en 5 min como cierre de una charla",
+          "hechoEstudio": "mapa de la escalera terapéutica + §6 «Derivación y límites» redactada",
           "sintesis": true,
           "drill": true,
           "drillQs": [
@@ -878,6 +887,7 @@
           "tema": "Síntesis módulo 5 → sección M5 del protocolo (5As · automonitoreo · cadencia de check-in)",
           "estudio": "Repaso Anki del módulo + redacta §5 de LIVIANO_PROTOCOLO_CLINICO_v1: guion 5As, qué registra el paciente, cadencia de check-in por fase (4 sesiones/mes en Despegue) y check-in de EA",
           "aplicacion": "Role-play integrador: primera consulta completa de 5 min usando 5As + lenguaje people-first",
+          "hechoEstudio": "repaso Anki del módulo + §5 del protocolo redactada (guion 5As, registro del paciente, cadencia de check-in)",
           "sintesis": true,
           "anki": [
             { "q": "Cadencia de acompañamiento LIVIANO por fase (oferta)", "a": "Despegue 4 sesiones/mes · Progreso 2/mes · Consolidación 1/mes · Mantenimiento control trimestral (LIVIANO_OFERTA)." },
@@ -937,6 +947,7 @@
           "tema": "REVISIÓN TRIMESTRAL II (el cierre de la Academia es el caso integral del vie 2-abr)",
           "estudio": "Checklist LIVIANO_REVISION_TRIMESTRAL (segunda pasada: aprobaciones, seguridad, recotización, genéricos, tabla de acceso, value stack, Anki) + regla anti-alucinación: todo dato publicado se verifica contra fuente primaria",
           "aplicacion": "Grábate la charla completa LIVIANO de 10 min: \"por qué tu peso no es tu culpa y qué vamos a hacer al respecto\"",
+          "hechoEstudio": "checklist trimestral (2.ª pasada) completo, cada dato contra su fuente primaria",
           "revision": true,
           "anki": [
             { "q": "Regla anti-alucinación de LIVIANO en una línea", "a": "Ningún dato clínico, regulatorio o de precio se publica sin verificarlo contra la fuente primaria; lo no verificado se escribe 'A VERIFICAR (fecha)'." },

@@ -182,8 +182,18 @@ function crear(MED, ctx) {
       //   cadena del carril del martes, el resto de «Prompt injection…» del mar 1-dic dejaba ≈80 palabras al sáb 12-dic: 241 palabras en 3′ = 0,80)
       if (v.b < it.b && quedan - v.w < 100 && obj - falta + quedan <= obj * RAT[1]) v = { a: it.a, b: it.b, w: quedan };
       if (v.b <= v.a) break;
-      piezas.push({ it, a: v.a, b: v.b, w: v.w });
-      addDest(it.k, fecha, `≈${r10(v.w)} palabras`, horaSes(fecha));
+      // v6.10i (auditoría del volcado c12 · sáb 26-dic): la ventana se para al final de una sección y, si aún faltan > 60 palabras, la vuelta siguiente toma la
+      //   MISMA pieza justo donde quedó → era un 2.º tramo del mismo artículo («… hasta el final de «Results from automated evaluations» (≈430) + «CC» → desde «How
+      //   it works» hasta el párrafo 1 (≈70)», con «(la dejaste el sáb 26-dic)» para la parte que empieza hoy). Un tramo contiguo de la misma pieza se SUMA al
+      //   anterior (un solo «desde … hasta …», una sola mención y un solo destino en la cola); las palabras y los minutos, idénticos
+      const ult = piezas[piezas.length - 1];
+      if (ult && ult.it === it && ult.b === v.a) {
+        ult.b = v.b; ult.w += v.w;
+        const ds = destinos.get(it.k); ds[ds.length - 1].det = `≈${r10(ult.w)} palabras`;
+      } else {
+        piezas.push({ it, a: v.a, b: v.b, w: v.w });
+        addDest(it.k, fecha, `≈${r10(v.w)} palabras`, horaSes(fecha));
+      }
       falta -= v.w;
       it.a = v.b;
       if (it.a >= it.b) colaC.shift();
@@ -349,7 +359,8 @@ function crear(MED, ctx) {
       const comoP = [`Auriculares, Lex a 1,0×: SOLO el cap. ${n}, hasta ${ts(sig.ini)}; el cap. ${n + 1} va el ${sigLex ? fS(sigLex.dia) : 'próximo miércoles de plan'}.`];
       for (const p of extra.piezas) {
         partes.push(`${p.it.id === 'deepDivePE' ? 'minutos' : 'min'} ${ts(p.a)}-${ts(p.b)} de ${p.it.titulo.replace(/^.*· /, '')} (cola de audio, ${velTxt(p.it.vel)}×)`);
-        comoP.push(`Con los ${fmt1((10 - minCap))}′ que deja el capítulo, sigue la cola de audio: ${p.it.titulo} a ${velTxt(p.it.vel)}× (${ts(p.b - p.a)} de audio = ${fmt1((p.b - p.a) / p.it.vel / 60)}′); la dejaste el ${fC(prevSes[p.it.id] || p.it.origen)}.`);
+        // v6.10i (remate): con 2 piezas de audio, la frase «Con los N′ que deja el capítulo…» solo abre la 1.ª (10-dic: salía dos veces seguidas)
+        comoP.push(`${p === extra.piezas[0] ? `Con los ${fmt1((10 - minCap))}′ que deja el capítulo, sigue la cola de audio: ` : 'Después, '}${p.it.titulo} a ${velTxt(p.it.vel)}× (${ts(p.b - p.a)} de audio = ${fmt1((p.b - p.a) / p.it.vel / 60)}′); la dejaste el ${fC(prevSes[p.it.id] || p.it.origen)}.`);
         prevSes[p.it.id] = f;
       }
       const med = minCap + extra.seg / 60;
@@ -496,11 +507,18 @@ function crear(MED, ctx) {
     if (/^Comodín de lectura/.test(m)) {
       const t = tomarC(minC * PPM, f);
       if (!t.piezas.length) return;
-      const que = 'Comodín de lectura · ' + t.piezas.map((p) => `${tituloDe(p.it.L, p.a)} → ${loc(p.it.L, p.a, p.b)} (≈${r10(p.w)} palabras)`).join(' + ');
+      // v6.10i: dos tramos seguidos del MISMO título lo nombran una vez («T → desde … (≈n) + desde … (≈m)»)
+      const que = 'Comodín de lectura · ' + t.piezas.map((p, i) => `${i && tituloDe(t.piezas[i - 1].it.L, t.piezas[i - 1].a) === tituloDe(p.it.L, p.a) ? '' : `${tituloDe(p.it.L, p.a)} → `}${loc(p.it.L, p.a, p.b)} (≈${r10(p.w)} palabras)`).join(' + ');
       // v6.09b lote 1-quater (QS · e): «lo que no leas sigue en la cola de lectura» no decía cuándo → remite a las fechas de «Lo que queda» (§QUEDA§ se
       //   resuelve al final, cuando ya se conocen los destinos; si no queda nada, la frase se va)
       const sabTxt = minC !== b.min ? ` Sábado: hoy el C tiene ${minC}′ (el A medido ocupa ${b.min + 15 - minC}′)§QUEDA§.` : '';
-      const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + t.piezas.map((p) => { const pv = pvA(p.it.id, p.it.origen, f); const r = t.piezas.length > 1 ? `«${p.it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste ${pv}).` : `Retoma donde quedaste ${pv}.`; prevSes[p.it.id] = f; return r; }).join(' ') + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
+      // v6.10i (auditoría del volcado c12 · sáb 26-dic): «la dejaste …» = la última sesión REAL de cada artículo, leída ANTES de marcar la de hoy (antes la 2.ª
+      //   pieza del mismo artículo decía «la dejaste el <hoy>»), y una sola mención por artículo
+      const pvs = new Map();
+      for (const p of t.piezas) if (!pvs.has(p.it.id)) pvs.set(p.it.id, pvA(p.it.id, p.it.origen, f));
+      const menc = [...pvs].map(([id, pv]) => `«${t.piezas.find((p) => p.it.id === id).it.L.titulo.replace(/^.*«|».*$/g, '')}» (la dejaste ${pv}).`);
+      const como = `${minC}′ a 100 palabras/min (${t.w} palabras ≈ ${fmt1(t.w / PPM)}′). ` + (pvs.size > 1 ? menc.join(' ') : `Retoma donde quedaste ${[...pvs.values()][0]}.`) + ' Nada nuevo: la cola de lectura de F1 (lo que no cupo en su día).' + sabTxt;
+      for (const p of t.piezas) prevSes[p.it.id] = f;
       pendTxt.push({ fecha: f, key: K(f), tag: 'C', piezas: t.piezas.map((p) => ({ k: p.it.k, fin: p.b })), base: { leccion: 'Cola de lectura: ' + t.piezas.map((p) => `${p.it.L.titulo.replace(/^.*«|».*$/g, '')} (≈${r10(p.w)} palabras)`).join(' + '), guia: { que, como, url: urlSec(t.piezas[0].it.L, t.piezas[0].it.L.flat[t.piezas[0].a].si), t: 'C ↗' }, med: t.w / PPM, ...minO } });
       return;
     }

@@ -44,6 +44,14 @@
  *   (fechaReal: plan vie 27-nov → lun 30-nov · 1-oct → 30-nov, texto y URLs) · (2) la eval anclada genérica nombra PRIMERO el artefacto a comprobar
  *   («¿existe «…»? + recall en blanco …»; antes quedaba fuera del corte) · (3) Research mínimo (DJ-4): las fechas de CR-3 → CR-8 y del SUBMIT CR-9 al principio
  *   del «qué» y del «cómo» · (4) CONTRASTE_DE['X-5'] = «MENTORES.md §Campaña de cold emails» (la sección ya no lleva «feb-2027»).
+ * v6.10i (auditoría del volcado c12/c13, 18-nov): (1) eval anclada (genérica y paso a paso): PRIMERO el recall en blanco contrastado con su fuente real
+ *   (ICMJE, AMSTAR-2, Academic Phrasebank, CARE…) y DESPUÉS «¿existe «artefacto»?»; el «cómo» dice «abre esa fuente» (antes «ábrelo», sin referente cuando
+ *   el corte del Calendar se comía la fuente) · (2) la guía genérica ya no trunca nada con «…» («Dónde queda» entero; el Calendar corta con su propia
+ *   función). Remate (revisión adversarial del 18-nov): (3) el título = código + el objetivo hasta su último límite de cláusula (« — », «: », «; », «? »,
+ *   «. », « (» o « + », fuera de paréntesis y comillas) que quepa en 140, nunca a mitad de un dato y sin «…» (el objetivo ENTERO iba en el título y en
+ *   el DEEP WORK: 914 caracteres el 20-ene, y en el Calendar de 2027 empujaba la descripción por encima de su límite) · (4) el «cómo» de la eval anclada
+ *   vuelve a decir «sin preguntas inventadas» · (5) el día del plan B de inglés, la comprobación del mentor de Rising Scholars va en el aviso (antes
+ *   abría el «cómo» y el Calendar se quedaba sin «abre esa fuente y corrige en rojo»).
  */
 'use strict';
 
@@ -82,7 +90,8 @@ const REC_DOC = ['GREEN', 'STAT', 'STEPSR', 'CIL1', 'COCHB', 'PRISMA', 'AMSTAR',
 const CONTRASTE_DE = {
   M2: 'MENTORES.md §3 (mensaje 2, Rising Scholars) y su fila de la tabla CRM',
   'C-2': 'CARTA_1/diana.md (deadline, límites y esqueleto) y las 5 letters modelo que leíste',
-  'C-4': 'CARTA_1/refs_verified.json (status de cada cita) y la cabecera de DATA/RESEARCH/agentic/citation_verifier.py (reglas de verificación)',
+  // v6.10i: las reglas del verificador primero (son el método de C-4; el Calendar corta el «qué» a 150)
+  'C-4': 'las reglas de citation_verifier.py (cabecera de DATA/RESEARCH/agentic/citation_verifier.py) y CARTA_1/refs_verified.json (status de cada cita)',
   'C-5': 'las Author Guidelines de la revista diana y CARTA_1/cover_letter.md',
   // v6.10e (revisión del 18-nov · regresiones-7): el método de X-5 (campaña de cold emails) vive en su artefacto (regla 1), no en la Academic Phrasebank
   //   v6.10g (revisión 18-nov · c11): la sección es «§Campaña de cold emails» (antes «§Campaña feb-2027», un mes que la campaña ya no tiene: va en abr-may 2027)
@@ -101,18 +110,44 @@ export function faseResearchAviso(code: string): string {
   const f = FASES_RESEARCH.find((x) => new RegExp(x.re).test(code)) ?? FASES_RESEARCH[FASES_RESEARCH.length - 1]!; const sig = FASES_RESEARCH.find((x) => x.n === f.n + 1);
   return \`FASE \${f.n}/\${FASES_RESEARCH.length} (base cero) · \${f.nombre}: \${f.que} · \${sig ? \`pasa a la fase \${sig.n} cuando: \${f.criterio}\` : \`cierre: \${f.criterio}\`}\`;
 }
-const corto = (s: string, n: number): string => (s.length > n ? s.slice(0, Math.max(s.lastIndexOf(' ', n - 3), 20)) + '…' : s);
 /** v6.10 · fix 18-nov: recursos de REC que son DOCUMENTO o GUÍA (texto con el método: un recall en blanco se corrige contra ellos); el resto de REC son
  *  portales, registros o herramientas (PubMed, Crossref, Rising Scholars, Editorial Manager, ORCID…) — fuente: DATA/_scripts/research_guia.js. */
 export const REC_DOC: ReadonlySet<string> = new Set(${JSON.stringify(REC_DOC)});
 /** v6.10 · fix 18-nov: fuente de contraste propia del átomo cuyo método está en su artefacto o en un documento que no es de REC. */
 export const CONTRASTE_DE: Readonly<Record<string, string>> = ${JSON.stringify(CONTRASTE_DE)};
-/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA · su artefacto y su objetivo. */
+/** Contra qué se corrige el recall en blanco del átomo previo: su fuente propia · el primer recurso DOCUMENTO o GUÍA · su objetivo y su artefacto. */
 export function fuenteContraste(prev: DiaResearch): string {
   if (CONTRASTE_DE[prev.code]) return CONTRASTE_DE[prev.code]!;
   const k = prev.recs.find((r) => REC_DOC.has(r));
   if (k && REC[k]) return \`«\${REC[k]!.label}»\`;
-  return \`su artefacto («\${corto(prev.artefacto, 100)}») y su objetivo\`;
+  return \`su objetivo y su artefacto «\${prev.artefacto}»\`;
+}
+/** v6.10i: «qué» de la eval anclada genérica — PRIMERO el recall en blanco contrastado con su fuente real (el Calendar corta el «qué» a 150: la fuente
+ *  tiene que verse) y DESPUÉS «¿existe «artefacto»?» (si la fuente ya es el artefacto, «(¿existe?)»). */
+function evalAncladaQue(prev: DiaResearch): string {
+  const base = \`Eval anclada de \${prev.code}: recall en blanco de 2 puntos clave de su método, contrastado con \${fuenteContraste(prev)}\`;
+  const k = prev.recs.find((r) => REC_DOC.has(r));
+  return CONTRASTE_DE[prev.code] || (k && REC[k]) ? \`\${base} + ¿existe «\${prev.artefacto}»?\` : \`\${base} (¿existe?)\`;
+}
+/** v6.10i (remate): el objetivo del título hasta su último límite de cláusula que quepa en \`n\` (« — », «: », «; », «? », «. »; si no hay ninguno, « (» o
+ *  « + »), siempre FUERA de paréntesis, corchetes y comillas, nunca tras una opción «(a) …:» a medias y sin «…»; el objetivo entero sigue en el DEEP WORK. */
+function tituloObjetivo(o: string, n = 140): string {
+  if (o.length <= n) return o;
+  const fuerte: number[] = [], debil: number[] = []; let dep = 0, q = 0;
+  for (let i = 0; i < o.length; i++) {
+    const c = o[i]!;
+    if (c === '(' || c === '[') dep++; else if (c === ')' || c === ']') dep = Math.max(0, dep - 1);
+    else if (c === '«') q++; else if (c === '»') q = Math.max(0, q - 1); else if (c === '"') q = q ? 0 : 1;
+    if (dep || q) continue;
+    const r = o.slice(i);
+    if (/^ — /.test(r)) fuerte.push(i);
+    else if (/^[:;.] /.test(r) && !/\\([a-z]\\)\\s[^:;()]{0,40}$/.test(o.slice(0, i))) fuerte.push(i);
+    else if (/^\\? /.test(r)) fuerte.push(i + 1);
+    else if (/^ \\(/.test(r) || /^ \\+ /.test(r)) debil.push(i);
+  }
+  const f = fuerte.filter((z) => z >= 25 && z <= n), d = debil.filter((z) => z >= 40 && z <= n);
+  const z = f.length ? Math.max(...f) : d.length ? Math.max(...d) : (fuerte.find((x) => x >= 25) ?? o.length);
+  return o.slice(0, z).replace(/[\\s,;:—–+·]+$/u, '');
 }
 function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
   const recs = x.recs.map((k) => ({ k, ...(REC[k] || { label: k, url: 'https://pubmed.ncbi.nlm.nih.gov/' }) }));
@@ -126,7 +161,7 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
         { min: 2, que: 'Pre-test 60 s: el objetivo de hoy en 1 frase', como: 'A papel o en el móvil.' },
         { min: 23, que: \`NÚCLEO: \${x.entregable}\`, como: \`Recurso: «\${r0.label}». Produce solo el entregable atómico; lo demás del átomo queda opcional (DJ-4).\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
         { min: 3, que: 'Free recall + log del gap', como: 'Una línea.' },
-        { min: 2, que: 'Guardar el artefacto (≤1 APEX)', como: \`Dónde: \${corto(x.artefacto, 140)}\`, ...(obs ? { enlace: { t: '◆ Obsidian', url: obs } } : {}) },
+        { min: 2, que: 'Guardar el artefacto (≤1 APEX)', como: \`Dónde: \${x.artefacto}\`, ...(obs ? { enlace: { t: '◆ Obsidian', url: obs } } : {}) },
       ],
       recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
       hecho: x.entregable,
@@ -134,18 +169,21 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
     };
   }
   return {
-    franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${corto(x.objetivo, 110)}\`, totalMin: 45,
+    // v6.10i: el título = código + el objetivo hasta un límite de cláusula (antes se truncaba a 110 con «…» a mitad de cifra o de nombre: «reproducir 1…»;
+    //   después llevaba el objetivo ENTERO, que ya va en el DEEP WORK)
+    franja: '13:30–14:15', plan: 'research-derma', titulo: \`\${x.code} · \${tituloObjetivo(x.objetivo)}\`, totalMin: 45,
     pasos: [
-      { min: 5, que: prev ? \`Eval anclada de \${prev.code}: ¿existe «\${prev.artefacto}»? + recall en blanco de 2 puntos clave de su método (sin preguntas inventadas: los contrastas con \${fuenteContraste(prev)})\` : 'Arranque: abre la carpeta del entregable y el recurso 1', como:\`\${x.fecha === PLANB_INGLES ? '¿Mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila (≤ 2′, dentro de estos 5′). ' : ''}\${prev ? 'A papel y sin mirar; después ábrelo y corrige en rojo (lo que falló = 1 APEX). Si el artefacto de la sesión anterior no existe, apúntalo como deuda en la Mesa editorial (no se rehace hoy).' : 'Sin átomo previo.'}\` },
+      { min: 5, que: prev ? evalAncladaQue(prev) : 'Arranque: abre la carpeta del entregable y el recurso 1', como: prev ? 'A papel, sin mirar y sin preguntas inventadas; después abre esa fuente y corrige en rojo. Sin artefacto → deuda en la Mesa editorial (no se rehace hoy); lo que falló = 1 APEX.' : 'Sin átomo previo.' },
       { min: 5, que: 'Pre-test = recall en blanco 60 s (sin preguntas): ¿qué sé ya de este paso? + el objetivo de hoy en 1 frase', como: 'A papel, sin mirar; lo contrastas al final con el recurso del día.' },
       { min: 25, que: \`DEEP WORK: \${x.objetivo}\`, como: \`Trabaja con «\${r0.label}» MIENTRAS produces el artefacto: \${x.artefacto}\${recs.length > 1 ? \` (apoyo: \${recs.slice(1).map((r) => r.label).join(' · ')})\` : ''}.\${x.tool && x.tool !== '—' ? \` Herramienta: \${x.tool}.\` : ''}\`, enlace: { t: \`\${r0.k}\`, url: r0.url } },
       { min: 5, que: 'Free recall a papel + log del gap (método / razonamiento / herramienta)', como: 'Compara con el pre-test del inicio.' },
-      { min: 5, que: '≤3 APEX-método (Palmerton) + guardar el artefacto', como: \`Dónde queda: \${corto(x.artefacto, 160)}\`, ...(obs ? { enlace: { t: '◆ Obsidian', url: obs } } : {}) },
+      { min: 5, que: '≤3 APEX-método (Palmerton) + guardar el artefacto', como: \`Dónde queda: \${x.artefacto}\`, ...(obs ? { enlace: { t: '◆ Obsidian', url: obs } } : {}) },
     ],
     recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
     hecho: x.entregable,
     ...(recs.length > 1 ? { planB: \`Si «\${r0.label}» no abre o no basta: «\${recs[1].label}».\` } : {}),
-    aviso: [faseResearchAviso(x.code), rdFinde(x.fecha), ...chips].filter(Boolean).join(' · '),
+    // v6.10i (remate): el día del plan B de inglés, la comprobación del mentor va PRIMERO en el aviso (antes abría el «cómo» de la eval anclada)
+    aviso: [x.fecha === PLANB_INGLES ? 'Dentro de los 5′ de la eval anclada (≤ 2′): ¿mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila.' : '', faseResearchAviso(x.code), rdFinde(x.fecha), ...chips].filter(Boolean).join(' · '),
   };
 }
 /** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: v6.10c sáb 2-ene 15:30-16:15, el T-3 · v6.10 dom 6-dic 05:00-05:45; el
@@ -173,12 +211,14 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   /** v6.06 (fix): las 2Q de auto-test de cada átomo paso a paso (fuente única: la eval anclada de 5′ y la «express» de 2′ de R0 las citan igual). */
   const Q2 = {
     // v6.10e (base cero · preguntas reales): sin banco real de Research → RECALL EN BLANCO de los 2 puntos clave, contrastados con su fuente
-    R0: 'recall en blanco de 2 puntos clave: el identificador de autor que piden PROSPERO y Editorial Manager · dónde se guarda una API key y dónde nunca (fuente: la página de registro de PROSPERO y tu gestor)',
-    R1: 'recall en blanco de 2 puntos clave: el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego (fuente: 01_PICO.md y el abstract PMID 19807760)',
+    // v6.10i (auditoría del volcado c12/c13): la FUENTE real va pegada al recall, al principio (antes «(fuente: …)» al final: el corte del Calendar a 150 se
+    //   la comía y «compruébalo en la fuente» se quedaba sin referente)
+    R0: 'recall en blanco contrastado con la página de registro de PROSPERO y tu gestor, de 2 puntos clave: el identificador de autor que piden PROSPERO y Editorial Manager · dónde se guarda una API key y dónde nunca',
+    R1: 'recall en blanco contrastado con 01_PICO.md y el abstract PMID 19807760, de 2 puntos clave: el diseño ideal para una pregunta de terapia · el diseño de Taylor 2009 y quién estaba ciego',
     // v6.10 · tanda C (decidido con Joseph en el chat Research, 17-nov): M1 = SR-1 primero → su eval anclada (R0, lun 23) = 1Q de PRISMA-P / PRISMA 2020 /
     //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
-    M1: 'recall en blanco: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene (fuente: sus checklists oficiales)',
-    'C-1': 'recall en blanco de 2 puntos clave: la regla de la ventana · por qué un dato verificable (fuente: candidatos.md)',
+    M1: 'recall en blanco contrastado con sus checklists oficiales: para qué sirve cada una de PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems tiene',
+    'C-1': 'recall en blanco contrastado con candidatos.md, de 2 puntos clave: la regla de la ventana · por qué un dato verificable',
   };
   const evalAnclada = (prev, x) => {
     if (!prev) return { min: 5, que: 'Arranque (1.ª sesión Research): abre MENTORES.md §3 «Mensaje 1 — Dr. Ciro» y TESIS_L0/etica.md §1', como: '⏸ El plazo interno del 31-oct-2026 (caso + consentimiento + senior author) venció sin día-Research (la semana lun 26 → vie 30-oct no se estudió): este mensaje va PRIMERO; no se inventa un plazo nuevo.' };
@@ -186,10 +226,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (regístralo en MENTORES.md §2)` : '';
     if (prev.code === 'M1' || ciroPend) ciroYa = true;
     const T = {
-      R0: { que: `Eval anclada de R0: ¿checklist «Infra académica» en 7/10? + ${Q2.R0}`, como: 'A papel y sin mirar; después compruébalo en la fuente y corrige en rojo; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
-      R1: { que: `Eval anclada de R1: ¿existe 01_PICO.md con 3 PICO? + ${Q2.R1}`, como: 'A papel y sin mirar; después compruébalo en la fuente; si falta algo de R1, anótalo como deuda.' },
-      M1: { que: `Eval anclada de M1: ¿respondió el asesor? (regístralo) + ${Q2.M1}`, como: 'A papel y sin mirar; después compruébalo en las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
-      'C-1': { que: `Eval anclada de C-1: ¿5 candidatos con DOI en candidatos.md? + ${Q2['C-1']}`, como: 'A papel y sin mirar; después compruébalo en candidatos.md.' },
+      // v6.10i: el recall con su fuente PRIMERO; la comprobación del artefacto (checklist, fichero) después
+      R0: { que: `Eval anclada de R0: ${Q2.R0} + ¿checklist «Infra académica» en 7/10?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en esas dos fuentes y corrige en rojo; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
+      R1: { que: `Eval anclada de R1: ${Q2.R1} + ¿existe 01_PICO.md con 3 PICO?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en esas dos fuentes; si falta algo de R1, anótalo como deuda.' },
+      M1: { que: `Eval anclada de M1: ${Q2.M1} + ¿respondió el asesor? (regístralo)`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
+      'C-1': { que: `Eval anclada de C-1: ${Q2['C-1']} + ¿5 candidatos con DOI en candidatos.md?`, como: 'A papel, sin mirar y sin preguntas inventadas; después compruébalo en candidatos.md.' },
     }[prev.code] || { que: `Eval anclada de ${prev.code}: recall en blanco de los 2 puntos clave de su método + ¿existe su artefacto?`, como: 'A papel y sin mirar; después compruébalo en su recurso 1; lo que falte va como deuda a la Mesa editorial.' };
     return { min: 5, que: T.que + ciroPend, como: T.como };
   };

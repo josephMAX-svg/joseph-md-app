@@ -499,7 +499,9 @@ const C1 = [
     'Mesa editorial', ['COPE', 'ICMJE'], { recortable: true }),
   // v6.10g (revisión 18-nov · c11): la checklist PRIMERO (el Calendar corta el DEEP WORK a 150 caracteres y la bitácora v5.18 → v6.08 del paréntesis inicial
   //   tapaba la tarea) y sin bitácora: la pausa y lo que va tras ella, con sus fechas, al final
-  a('X-7', 'X', 'X', 'CRITICA', 'CIERRE ANTES DE LA PAUSA: nada que venza en enero — rebuttals respondidos o programados, PROSPERO aún NO registrado, revisor #2: candidatos identificados (X-1 lo invita y lo nombra tras la pausa, {{F:X-1}}, antes de X-9 y de PROSPERO), {{CR_PAUSA}}; tras la pausa van también X-2 —plantilla de rebuttal de la carta— ({{F:X-2}}){{DESPLAZADOS_REGLA}}; la cola del ciclo 1 arranca el {{COLA}}; pausa {{PAUSA}} = 0 átomos (núcleo de la intensiva ENCAPS: los días-Research llevan 30′ «Research mínimo»); el ciclo 2 sigue tras d42',
+  // v6.10i (auditoría del volcado c13): la VENTANA de la pausa vuelve al principio («CIERRE ANTES DE LA PAUSA (jue 21-ene → mié 10-feb: 0 átomos): …»): es
+  //   el único sitio del bloque con sus fechas y el corte del título (75) y del DEEP WORK (150) la había dejado fuera
+  a('X-7', 'X', 'X', 'CRITICA', 'CIERRE ANTES DE LA PAUSA ({{PAUSA}}: 0 átomos): nada que venza en enero — rebuttals respondidos o programados, PROSPERO aún NO registrado, revisor #2: candidatos identificados (X-1 lo invita y lo nombra tras la pausa, {{F:X-1}}, antes de X-9 y de PROSPERO), {{CR_PAUSA}}; tras la pausa van también X-2 —plantilla de rebuttal de la carta— ({{F:X-2}}){{DESPLAZADOS_REGLA}}; la cola del ciclo 1 arranca el {{COLA}}; en la pausa (núcleo de la intensiva ENCAPS) los días-Research llevan 30′ «Research mínimo»; el ciclo 2 sigue tras d42',
     'Checklist de pausa 100 % + primer átomo del ciclo 2 leído',
     'Mesa editorial: cada entregable con estado y próxima fecha · Vault Dashboard_Research',
     'Mesa editorial', ['ICMJE'], { apex: { id: 'cierre-c1', t: 'Ciclo 1 cerrado · pausa (intensiva ENCAPS)' } }),
@@ -932,7 +934,9 @@ if (fechaDe('M3') > fechaDe('C-3')) {
   const res = (t) => String(t).replace(/\{\{F:([\w-]+)\}\}/g, (_, c) => fmtCorto(fechaDe(c))).replace(/\{\{D:([\w-]+)\}\}/g, (_, c) => String(byCode[c] ? byCode[c].d : (() => { throw new Error('marcador D: ' + c); })()))
     .replace(/\{\{CTX:([\w-]+)\}\}/g, (_, c) => ctxDia(fechaDe(c))).replace(/\{\{VER\}\}/g, VER_TXT).replace(/\{\{CR_TRAS\}\}/g, CR_TRAS)
     .replace(/\{\{CR_PAUSA\}\}/g, CR_PAUSA).replace(/\{\{COLA\}\}/g, COLA)
-    .replace(/\{\{PAUSA\}\}/g, `${fmtCorto(PAUSA.desde).slice(4, -5)}→${fmtCorto(PAUSA.hasta).slice(4, -5)}`) // v6.08: fechas de la pausa (antes «15-ene→10-feb» escrito)
+    // v6.08: fechas de la pausa (antes «15-ene→10-feb» escrito) · v6.10i: con el día de la semana, «jue 21-ene → mié 10-feb» (el corte del Calendar protege
+    //   la fecha «<día> N-mes» entera; «21-ene→10-feb» pegado no lo era)
+    .replace(/\{\{PAUSA\}\}/g, `${fmtCorto(PAUSA.desde).slice(0, -5)} → ${fmtCorto(PAUSA.hasta).slice(0, -5)}`)
     // v6.10g (revisión 18-nov · c11): {{MESES:a:b}} = meses de los átomos a → b («abr-may 2027»; la campaña de cold emails X-5 → K2)
     .replace(/\{\{MESES:([\w-]+):([\w-]+)\}\}/g, (_, a, b) => {
       const fa = fechaDe(a), fb = fechaDe(b), ma = MES[Number(fa.slice(5, 7)) - 1], mb = MES[Number(fb.slice(5, 7)) - 1];
@@ -1463,15 +1467,29 @@ export const GUIA_RESEARCH_MINIMO: GuiaBloque = ${JSON.stringify(GR.minimo)};
     const cache = new Map(); const RG = cargarModuloTS(path.join('src', 'lib', 'researchGuia.ts'), cache); const RD = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan.ts'), cache); const R27 = cargarModuloTS(path.join('src', 'lib', 'researchDailyPlan2027.ts'), cache);
     const noDoc = new Set(Object.entries(RD.REC).filter(([k]) => !REC_DOC.includes(k)).map(([, r]) => r.label));
     const propias = new Set(Object.values(CONTRASTE_DE));
-    const malos = []; let nEval = 0;
+    const malos = []; let nEval = 0; const primero = []; const truncados = [];
     for (const x of [...RD.DIAS, ...R27.DIAS_2027]) {
-      for (const p of RG.guiaResearchDe(x).pasos) {
-        const m = /los contrastas con (?:«([^»]+)»|(.+?)\)(?: \+|$))/.exec(p.que); if (!m) continue; nEval++;
-        if (m[1] ? noDoc.has(m[1]) : !(propias.has(m[2]) || /^su artefacto/.test(m[2]))) malos.push(`${x.fecha} ${x.code}: «${(m[1] || m[2]).slice(0, 60)}»`);
+      const g = RG.guiaResearchDe(x);
+      // v6.10i · CONTROL: la app no trunca el título con «…» (el Calendar lo corta con su propia función; «reproducir 1…» partía una cifra)
+      if (/…/.test(g.titulo)) truncados.push(`${x.fecha} ${x.code}: «${g.titulo.slice(-40)}»`);
+      for (const p of g.pasos) {
+        // v6.10i: «… de su método, contrastado con <fuente> + ¿existe «artefacto»?» (o «… con su objetivo y su artefacto «…» (¿existe?)»)
+        const m = /de su método, contrastado con (?:«([^»]+)»(?= \+ ¿existe «)|(.+?)(?= \+ ¿existe «| \(¿existe\?\)$))/.exec(p.que); if (!m) continue; nEval++;
+        if (m[1] ? noDoc.has(m[1]) : !(propias.has(m[2]) || /^su objetivo y su artefacto «/.test(m[2]))) malos.push(`${x.fecha} ${x.code}: «${(m[1] || m[2]).slice(0, 60)}»`);
+      }
+      // v6.10i · CONTROL: en toda eval anclada (genérica o paso a paso) el recall contrastado con su fuente va PRIMERO, antes de «¿existe…?» / «¿checklist…?»
+      //   (el Calendar corta el «qué» a 150 y «después abre esa fuente» del «cómo» necesita verla)
+      for (const p of g.pasos) {
+        if (!/^Eval anclada/.test(p.que)) continue;
+        const ic = p.que.indexOf('contrastado con'), ie = p.que.search(/¿(existe|checklist|5 candidatos)/);
+        if (ic < 0 || (ie >= 0 && ie < ic)) primero.push(`${x.fecha} ${x.code}`);
       }
     }
     if (malos.length) { console.error(`✗ research: ${malos.length} eval(s) ancladas contrastan el recall con un portal o una herramienta (sin clave que leer): ${malos.slice(0, 6).join(' · ')}`); process.exit(1); }
-    console.log(`✓ research: ${nEval} evals ancladas con recall en blanco contrastado con un documento o guía (REC_DOC) o con la fuente propia del átomo; 0 portales ni herramientas`);
+    if (!nEval) { console.error('✗ research: ninguna eval anclada genérica reconocida (¿cambió la redacción de evalAncladaQue en research_guia.js?)'); process.exit(1); }
+    if (primero.length) { console.error(`✗ research: ${primero.length} eval(s) ancladas piden «¿existe…?» antes del recall con su fuente: ${primero.slice(0, 6).join(' · ')}`); process.exit(1); }
+    if (truncados.length) { console.error(`✗ research: ${truncados.length} título(s) de guía truncados con «…» en la app: ${truncados.slice(0, 6).join(' · ')}`); process.exit(1); }
+    console.log(`✓ research: ${nEval} evals ancladas con recall en blanco contrastado PRIMERO con un documento o guía (REC_DOC) o con la fuente propia del átomo; 0 portales ni herramientas · 0 títulos truncados`);
   }
 } else console.warn('⚠ --ciclo ' + SOLO_CICLO + ': src/lib/researchGuia.ts NO se regenera (necesita los dos ciclos en la misma corrida)');
 if (CHECK && desactualizados.length) { console.error(`✗ --check: ${desactualizados.length} fichero(s) desactualizado(s): ${desactualizados.join(' · ')}`); process.exit(1); }

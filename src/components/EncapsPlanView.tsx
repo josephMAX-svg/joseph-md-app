@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../theme/tokens';
 import {
-  useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
+  useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto, miniSimOrdenF1,
   simIntensivoDe, encapsSim100Zone, tipoRondaDe,  // v5.14 (19-sep): sims de la FASE INTENSIVA (/100) + tipo de ronda del cierre
   loopDe, diasAExamenDe,                           // v5.20 (6-oct): Horario de la INTENSIVA desde el loop de la fila · cuenta atrás viva desde extra.exam_date
   carrilBDe, minisimAbsorbidoDe, examDateDe, examenProvisionalDe, examenRendidoDe, intensivaMetaDe, // v6.00: carril B 16:15 + examen PROVISIONAL / rendido
@@ -448,7 +448,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.blue} />}
           {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.green} />}
           {!!subEje && <Pill text={`sub-eje ${subEje.n}/${subEje.total} · sesión ${subEje.instancia}/${subEje.de}`} color={Colors.teal} />}
-          {!!receta && <Pill text={`mini-sim #${receta.simN} · /25`} color={Colors.gold} />}
+          {/* v6.10i: el orden del mini-sim en F1 («1/5»), como el título de su guía; sim_n (= dia) sigue siendo la clave de la nota */}
+          {!!receta && <Pill text={`mini-sim ${(() => { const o = miniSimOrdenF1(plan.days, today); return o ? `${o.n}/${o.de}` : `#${receta.simN}`; })()} · /25`} color={Colors.gold} />}
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
           {diasAExamenDe(metrics) != null && <Pill text={`examen ${diasAExamenDe(metrics)}d`} color={Colors.muted} />}
           <TouchableOpacity activeOpacity={0.8}

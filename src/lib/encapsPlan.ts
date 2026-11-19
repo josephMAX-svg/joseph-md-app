@@ -119,6 +119,7 @@ import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENC
 import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion, type TipoRonda } from './encapsProgressSync';
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): hora y duración de la corrección de los simulacros y del cierre semanal de F2 (= Home = Horario)
 import { sesionEncapsDe, sesionEncapsCuadra, guiaEncapsDe, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque · v6.09b: + minutos del pre-test desde su guía
+import { ENCAPS_COBERTURA } from './encapsCobertura'; // v6.10i: etiqueta ENTERA del subtema que el SQL de la intensiva trae cortada (subtemaCompleto)
 
 // ── D1 por examen (para calcular el día actual) ──
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
@@ -231,6 +232,16 @@ export function miniSimRecetaTexto(r: MiniSimReceta): string {
 // Serie de mini-sims (viernes) con su nota /25 si existe en study_sim_scores (sim_n = dia).
 // v6.01: + los mini-sims F1 REPUESTOS en el carril B de la intensiva (pseudo-fila de pendiente_f1 tipo 'mini_sim'; reposicion = true).
 export interface MiniSimPunto { dia: number; fecha: string; simN: number; nota: number | null; semana: number; reposicion?: boolean }
+/**
+ * v6.10i (auditoría del volcado c12, hallazgo 1): ORDEN del mini-sim de F1 (filas MANTENIMIENTO tipo mini_sim por dia: el 1.º = lun 23-nov real · el 5.º = el
+ * CHECKPOINT) → «MINI-SIM 1/5», como el título de su guía (gen_encaps_guia.js). sim_n (= dia) sigue siendo la clave de study_sim_scores. null si no es de F1.
+ */
+export function miniSimOrdenF1(days: StudyScheduleDay[], day: StudyScheduleDay | null | undefined): { n: number; de: number } | null {
+  if (!day || day.tipo !== 'mini_sim' || day.modo !== 'MANTENIMIENTO') return null;
+  const f1 = days.filter(d => d.tipo === 'mini_sim' && d.modo === 'MANTENIMIENTO').map(d => d.dia).sort((a, b) => a - b);
+  const i = f1.indexOf(day.dia);
+  return i < 0 ? null : { n: i + 1, de: f1.length };
+}
 export function miniSimDias(days: StudyScheduleDay[]): StudyScheduleDay[] {
   return days.flatMap(d => {
     if (d.tipo === 'mini_sim') return [d];
@@ -1604,8 +1615,28 @@ function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): Pla
 // Enumera los items chequeables de un día (debe coincidir con el daemon): base del día + carril B 16:15 (v6.00).
 // `metrics` (v6.00, opcional) → «faltan N d» calculado con study_metrics.extra.exam_date desde la fecha de la fila.
 // v6.06: + el CARRIL SÁBADO (09:30, claves D{dia}:s_*) en la fila del viernes host: el sábado la vista abre ese mismo dia (diaActual).
-export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev: StudyScheduleDay | null = null, metrics: StudyMetrics | null = null): PlanItem[] {
+export function itemsForDay(day0: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev0: StudyScheduleDay | null = null, metrics: StudyMetrics | null = null): PlanItem[] {
+  // v6.10i: con el subtema ENTERO (el SQL de la intensiva lo trae cortado: «… hasta lo…»); solo cambia el texto, nunca las claves
+  const day = conSubtemaCompleto(day0), prev = prev0 ? conSubtemaCompleto(prev0) : null;
   return [...itemsBase(day, focusByCode, prev, metrics), ...itemsCarrilB(day, prev), ...itemsCarrilSabado(day)];
+}
+/**
+ * v6.10i (auditoría del volcado c13, hallazgo 4): el subtema de una fila de la intensiva sale del SQL sembrado (= Supabase), donde
+ * gen_encaps_intensivo_2027.js corta la etiqueta del temario a 70 caracteres (67 + «…»: «Esquema nacional: 18 vacunas / 28 enfermedades; 15 vacunas hasta lo…»).
+ * La app la pinta ENTERA: la etiqueta de encapsCobertura.ts (temario, sin su paréntesis) cuyo corte coincide con el final del subtema, solo si es una. La fila
+ * no cambia (ni Supabase ni el SQL); sin coincidencia única, el texto tal cual.
+ */
+const TEMARIO_LARGO: string[] = [...new Set(Object.values(ENCAPS_COBERTURA).flatMap(t => (t.temario || []).map(x => x.split('(')[0].trim()).filter(x => x.length > 70)))];
+export function subtemaCompleto(s: string | null | undefined): string {
+  const x = String(s ?? '');
+  if (!x.endsWith('…')) return x;
+  const c = TEMARIO_LARGO.filter(l => x.endsWith(l.slice(0, 67) + '…'));
+  return c.length === 1 ? x.slice(0, x.length - 68) + c[0] : x;
+}
+function conSubtemaCompleto(d: StudyScheduleDay): StudyScheduleDay {
+  if (!d || typeof d.subtema !== 'string') return d;
+  const s = subtemaCompleto(d.subtema);
+  return s === d.subtema ? d : { ...d, subtema: s };
 }
 /** v6.06 (fix): ¿la clave es del CARRIL SÁBADO (D{dia del viernes host}:s_*)? */
 export const esClaveSabado = (key: string): boolean => /^D\d+:s_/.test(key);
@@ -1628,7 +1659,7 @@ async function fetchSchedule(examen: string): Promise<StudyScheduleDay[]> {
     .eq('examen', examen)
     .order('dia', { ascending: true });
   if (error || !data) return [];
-  return data as StudyScheduleDay[];
+  return (data as StudyScheduleDay[]).map(conSubtemaCompleto); // v6.10i: subtema ENTERO en toda la vista (HOY, semana); solo lectura, no se escribe
 }
 async function fetchMetrics(examen: string): Promise<StudyMetrics | null> {
   const { data, error } = await supabase

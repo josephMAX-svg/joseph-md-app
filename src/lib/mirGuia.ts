@@ -159,11 +159,11 @@ function pasoRelFin(a: MirMetodoAsig, min: number): GuiaPaso {
     enlace: { t: `Nota madre · ${a.asignatura}`, url: a.nota },
   };
 }
-// v6.10h · c12 (18-nov, auditoría c10): el Calendar corta el «qué» a 150 y el «cómo» a 110 → el orden de los mazos y la salida «sin repasos» van en el
-//   «qué» y la regla de saturación del mazo de Ravi abre el «cómo» (antes iba al final y no se veía en ningún evento MIR del Calendar)
+// El Calendar corta el «qué» a 150 (con la hora del paso delante) y el «cómo» a 110: el orden de los mazos, que del de Ravi solo salen los subtemas ya
+//   reactivados y el orden aleatorio van en el «qué»; la regla de las vencidas y la salida «sin repasos» abren el «cómo».
 const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
-  que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» hasta el final del paso · sin repasos: las tarjetas de tu última sesión MIR`,
-  como: `si el mazo de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · FSRS · solo Good/Again · orden aleatorio, nunca por asignatura: tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques) · del de Ravi solo salen los subtemas ya reactivados (los terminados) · Anki nunca le quita tiempo a las preguntas.`,
+  que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (solo subtemas ya reactivados) · orden aleatorio, nunca por asignatura`,
+  como: `si ② pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · sin repasos: tu última sesión MIR · FSRS · solo Good/Again · ② hasta el final del paso · del mazo de Ravi solo salen los subtemas que ya terminaste (los reactivas en su último minuto; el resto sigue suspendido) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques) · Anki nunca le quita tiempo a las preguntas.`,
 });
 /** v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles discriminativos de nivel 3-4/5 son de la fase 3). */
 const criterioApex = (f: MirFase | undefined): string => f?.apex ?? 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
@@ -247,7 +247,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     pasos.push({
       min: 15,
       que: `TEST DE CIERRE · 10Q reales MIR de ${cierre.asignatura} (bloque D${cierre.dIni}-D${cierre.dFin} cerrado)`,
-      como: `Cronómetro ${mirMinutos(10)} min (${MIR_SEG_POR_Q} s/Q), en blanco si no descartas 2 · fuente: pool oficial de la app sin usar (${poolAsig(cierre.num)} preguntas de ${cierre.asignatura} en el pool, menos las ya usadas) → si faltan, cuadernillos oficiales examenesmir · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre).`,
+      como: `Fuente: pool oficial de la app sin usar (${poolAsig(cierre.num)} preguntas de ${cierre.asignatura} en el pool, menos las ya usadas) → si faltan, cuadernillos oficiales examenesmir · Cronómetro ${mirMinutos(10)} min (${MIR_SEG_POR_Q} s/Q), en blanco si no descartas 2 · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre).`,
       enlace: { t: 'Cuadernillos MIR (respaldo)', url: EXAMENESMIR },
     });
   } else {
@@ -366,8 +366,9 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     const [a, b] = f.hora.split('–');
     const min = aMinutos(b ?? '') - aMinutos(a ?? '');
     const t0 = tPaso; tPaso += min;
-    // v6.10h · c12 (auditoría c11): la retention y la fecha del handoff, dentro de los 110 caracteres del «cómo» que copia el Calendar
-    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos, todas las asignaturas mezcladas) → ② mazo Ravi «${M.mazoBase}» (las 14 asignaturas del plan ya reactivadas)`, como: `FSRS · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · solo Good/Again · orden aleatorio, nunca por asignatura (Ravi) · tu mazo de fallos primero y a cero; el de Ravi después, ≤${M.nuevasBaseBanqueo} nuevas/día en el banqueo, hasta que acabe el paso (Anki no le quita tiempo a las preguntas) · si el de Ravi pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana.` };
+    // El Calendar corta el «qué» a 150 (con la hora delante) y el «cómo» a 110, alargado hasta el final de la cláusula de una fecha: los mazos, sus nuevas
+    //   y el orden aleatorio en el «qué»; la regla de las vencidas y la retention con la fecha del handoff abren el «cómo».
+    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (las 14 asignaturas), ≤${M.nuevasBaseBanqueo} nuevas/día · orden aleatorio, nunca por asignatura`, como: `si ② pasa de ${M.umbralVencidas} vencidas dos días seguidos, sus nuevas a 0 esa semana · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · FSRS · solo Good/Again · ② hasta que acabe el paso: las 14 asignaturas del plan ya reactivadas (Anki no le quita tiempo a las preguntas) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques).` };
     if (f.tipo === 'quiz') {
       // ≥20Q: pasada a ≈72 s/Q con el reloj cada 10 preguntas y los últimos minutos para la revisión FORMAL (Ravi); <20Q: sin cambios
       const pasada = dia.nQ >= 20 ? Math.min(min - 2, Math.round(dia.nQ * 1.2)) : 0;

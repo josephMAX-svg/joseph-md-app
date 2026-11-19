@@ -262,6 +262,37 @@ const excepcionLunes = (fila, rEval) => {
   // v6.10e (dias-1920-1): esa sesión anterior pudo ser el pre-test de arranque que sustituyó al banco (jue 19-nov de plan): la excepción vale igual
   return ms && (sa.tipo === 'banqueo1h' || sa.tipo === 'pretest_arranque') && SIN_SESION_S1.has(addD(ms.fecha, 1)) ? { ms, sa } : null;
 };
+/** v6.10i (hallazgos 0/18): la EXCEPCIÓN del lunes en una frase corta (va al principio del paso de la eval: el Calendar corta el «qué» a 150). El mini-sim se
+ *  nombra por su fecha de PLAN (la app la traduce a su día real; «ayer» no: en un texto de plan, «ayer» es el día de plan anterior). Con el alias, el mini-sim
+ *  fue el día REAL anterior y el runner de la eval ya estaba hecho; sin alias, el fin de semana sin sesión no dejaba generarla. */
+function excepcionCorta(fila, exc, cod) {
+  const diaAntes = conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha);
+  return `no los fallos del mini-sim del ${corta(exc.ms.fecha)} (EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'}: ${diaAntes ? `el runner de ${cod} ya estaba hecho` : 'el fin de semana fue sin sesión'})`;
+}
+/** v6.10i (hallazgos 0/18): ¿alguna pregunta del runner `r` salió ya en una ronda anterior? Por ids de BANCO_PROPIO: las rondas anteriores a `fila` (fecha de
+ *  plan) con preguntas de `cod` (pre-test de arranque · evals · mini-sims · bancos) → { txt: «ninguna de estas 5 salió en el pre-test de arranque ni en la eval
+ *  del …» | «2 de estas 5 ya salieron en …», rondas, repetidas }. `msExc` = el mini-sim que ya nombra la excepción (se cita sin fecha). Nada inventado: si no
+ *  hay ronda anterior con ese código, txt = ''. */
+function rondasPreviasDe(r, fila, cod, msExc = null) {
+  const ids = new Set((r.j.items || []).map((x) => x.id));
+  const ROTULO = { eval: 'la eval', minisim: 'el mini-sim', banco: 'el banco' };
+  let pre = false; const otras = []; const rep = new Set();
+  const fs0 = fs.readdirSync(BP).map((f) => /^(pretest_arranque|eval|minisim|banco)_(\d{4}-\d\d-\d\d)\.json$/.exec(f)).filter((m) => m && m[2] < fila.fecha)
+    .sort((a, b) => a[2].localeCompare(b[2]) || a[1].localeCompare(b[1]));
+  for (const m of fs0) {
+    let j; try { j = JSON.parse(fs.readFileSync(path.join(BP, m[0]), 'utf8')); } catch (e) { aborta(`rondasPreviasDe: ${m[0]} no es JSON`); }
+    const its = (Array.isArray(j.items) ? j.items : []).filter((x) => String(x.codigo) === cod);
+    if (!its.length) continue;
+    for (const x of its) if (ids.has(x.id)) rep.add(x.id);
+    if (m[1] === 'pretest_arranque') pre = true;
+    else otras.push(m[1] === 'minisim' && m[2] === msExc ? 'el mini-sim' : `${ROTULO[m[1]]} del ${corta(m[2])}`);
+  }
+  const rondas = [...(pre ? ['el pre-test de arranque'] : []), ...otras], repetidas = rep.size;
+  if (!rondas.length) return { txt: '', rondas, repetidas };
+  const enLista = rondas[0] + rondas.slice(1).map((x) => ` ni en ${x}`).join('');
+  const n = ids.size;
+  return { txt: repetidas ? `${repetidas} de estas ${n} ya salieron antes (${rondas.join(', ')}): re-test sin la clave` : `ninguna de estas ${n} salió en ${enLista}`, rondas, repetidas };
+}
 /** v6.10h (c10 · mar 24-nov): «La última» con n = 1 (antes «Las 1 últimas») */
 const ultimasDe = (n) => (n === 1 ? 'La última' : `Las ${n} últimas`);
 const recursoRunner = (r, t) => (r ? [{ t, url: r.url || r.local, cantidad: `${r.n}Q` }] : []);
@@ -294,13 +325,18 @@ const evalDesc = (r, fila, prev) => {
     const nPre = (r.j.items || []).filter((x) => x.fallback === 'pre-test de ayer').length;
     if (nPre) return `${r.n}Q de ${cod} del PRE-TEST de ${sa.fecha === ayer ? 'ayer' : corta(sa.fecha)} en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de ${cod} sin usar)`;
     const parte = (() => { try { return JSON.parse(fs.readFileSync(path.join(BP, `${sa.archivo}.json`), 'utf8'))._meta.parte; } catch (e) { return null; } })();
-    return `${r.n}Q reales de ${cod} = el código del banco que el pre-test ${parte ? `${parte}/2` : 'de arranque'} del ${corta(sa.fecha)} sustituyó (ninguna de ${cod} salió en el pre-test)${excepcionLunes(fila, r) ? ` · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)` : ''}`;
+    // v6.10i (auditoría del volcado c12, hallazgos 0/18): «(ninguna de I-3 salió en el pre-test)» era falso (el pre-test 1/2 y la eval del D1 traían 5 × I-3):
+    //   lo cierto sale de los ids de BANCO_PROPIO (rondasPreviasDe) · y la EXCEPCIÓN se explica en una frase corta al principio del paso (el Calendar corta el
+    //   «qué» a 150 y el Ojo a 240: antes quedaba «EXCEPCIÓN …» sin explicar)
+    const exc = excepcionLunes(fila, r);
+    const pv = rondasPreviasDe(r, fila, cod, exc ? exc.ms.fecha : null);
+    return `${r.n}Q reales de ${cod}${exc ? `, ${excepcionCorta(fila, exc, cod)}` : ''}${pv.txt ? ` · ${pv.txt}` : ''} · ${cod} = el código del banco que el pre-test ${parte ? `${parte}/2` : 'de arranque'} del ${corta(sa.fecha)} sustituyó`;
   }
   if (sa.fecha && sa.fecha !== ayer) {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
-    if (excepcionLunes(fila, r)) return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas) · EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'} (ver el aviso)`; // v6.09 (fix revisión, datos 6)
+    { const exc = excepcionLunes(fila, r); if (exc) return `5Q de ${cod}, ${excepcionCorta(fila, exc, cod)} · ${cod} = código de la sesión anterior (${corta(sa.fecha)}) (3 cifras + 2 viñetas)`; } // v6.09 (fix revisión, datos 6) · v6.10i: la excepción, explicada al principio
     return `5Q de ${cod} = código de la sesión anterior (${corta(sa.fecha)}${ms ? `; tras el mini-sim del ${corta(ms.fecha)}: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave` : sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
   }
   return `5Q del código de AYER ${cod} (3 cifras + 2 viñetas)`;
@@ -335,6 +371,10 @@ function evalSinRunnerPB(fila, prev, sab, lunes) {
   return ` Eval sin runner: re-test de las preguntas reales de ${prev && prev.codigo ? prev.codigo : 'la sesión anterior'} que fallaste el ${prev ? corta(prev.fecha) : 'último día'} (las guarda su runner), ${reTest}.`;
 }
 
+// v6.10i (auditoría del volcado c12, hallazgo 1): el título del mini-sim de F1 dice su ORDEN en F1 («MINI-SIM 1/5» = el 1.º, lun 23-nov real · «5/5» = el
+//   CHECKPOINT); antes «MINI-SIM #3» = el dia del mantenimiento, que hacía buscar un #1 y un #2 que no existen. sim_n (= dia: la clave de study_sim_scores),
+//   los runners minisim_<fecha> y los ids no cambian
+const MS_F1 = FILAS.filter((r) => r.tipo === 'mini_sim').map((r) => r.dia).sort((a, b) => a - b);
 // ── construcción por sesión ───────────────────────────────────────────────────────────────────────────────────
 const SES = {}; const GUIA = {}; const TABLA = [];
 /**
@@ -368,7 +408,7 @@ function construirGuia(fila, sab = null) {
     g = {
       franja: sab ? sab.franja : FRANJA, plan: 'encaps',
       titulo: sab ? `${sab.etq} · 🔥 MINI-SIM 25Q (${recTxt}) · cola larga ${cola.join(' + ')} · sim_n ${sab.simN}`
-        : `D${fila.dia} · 🔥 MINI-SIM #${e.sim_n || fila.dia} · 25Q (${recTxt}) · cola larga ${cola.join(' + ')}${e.checkpoint ? ' · CHECKPOINT DEL AÑO' : ''}`,
+        : `D${fila.dia} · 🔥 MINI-SIM ${MS_F1.includes(fila.dia) ? `${MS_F1.indexOf(fila.dia) + 1}/${MS_F1.length}` : `#${e.sim_n || fila.dia}`} · 25Q (${recTxt}) · cola larga ${cola.join(' + ')}${e.checkpoint ? ' · CHECKPOINT DEL AÑO' : ''}`,
       totalMin: 60,
       pasos: [
         PASO_ARRANQUE([r]),
@@ -531,10 +571,12 @@ function construirGuia(fila, sab = null) {
           }
           const primeraPend = bancosSinRunner(cmdSemana, addD(cmdSemana, 4))[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner
           if (pendiente && sab) av.push(semanaArmada // v6.06 (fix): el sábado se arma con su semana del carril B (--semana) o solo (--eval / --banco del sábado)
-            ? `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía).`
+            ? `NO --semana ${cmdSemana}: la semana del carril B ya tiene runners armados y los re-sortearía. Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --banco ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`
             : `Runners por generar ANTES del ${corta(fila.fecha)}: node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana} (con el carril B lun-jue arma también el banco del sábado: banco_${fila.fecha}; la eval del sábado es el re-test de los fallos del simulacro, sin runner propio) → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           else if (pendiente) av.push(semanaArmada
-            ? `Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
+            // v6.10i (remate, revisión adversarial del 18-nov): «NO --semana» va DELANTE de la receta (el Calendar corta el aviso a 240 y, detrás de la cadena
+            //   de comandos, se perdía el aviso que impide re-sortear los runners de la semana)
+            ? `NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía. Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`
             : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           if (prev2 && prev2.nota) av.push(prev2.nota);
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map((x) => String(x).replace(/re-test con otro enfoque/g, 're-test de las mismas preguntas reales, sin la clave'))); // v6.10h: el re-test es de las MISMAS preguntas

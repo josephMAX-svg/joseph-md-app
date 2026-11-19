@@ -256,6 +256,9 @@ for (let idx = 0; idx < fechas.length; idx++) {
       d, fecha, wd, modulo: t.modulo, tema: t.tema, estudio: t.estudio, aplicacion: t.aplicacion,
       fuente: t.fuente || CUR.modulos.find((m) => m.id === t.modulo && m.slug === t.slug).fuente, min: t.min || 45,
     };
+    // v6.10i (auditoría del volcado c12 · LIVIANO D19): días SIN lectura nueva (síntesis, repasos, metáforas, revisión trimestral): lo que deja hecho su ESTUDIO,
+    //   para el «Hecho» de la guía (rutinaGuia › guiaLivianoDe), que antes pedía «lectura hecha + N tarjetas» aunque ningún paso las tuviera
+    if (t.hechoEstudio) row.hechoEstudio = t.hechoEstudio;
     if (wd === 'Lun' && idx > 0) row.pretest = true;
     if (t.drill) { row.drill = true; drillsPorD.push({ d, fecha, modulo: t.modulo, titulo: t.tema, qs: (t.drillQs || []).map(conFuenteDrill) }); }
     rows.push(row);
@@ -347,6 +350,8 @@ export interface DiaLiviano {
   pretest?: boolean;
   /** tabla en blanco de cifras ancla de ensayos reales, cada respuesta con su fuente (LIV_DRILLS por d) */
   drill?: boolean;
+  /** día SIN lectura nueva (síntesis, repasos, metáforas, revisión trimestral): lo que deja hecho su ESTUDIO (va al «Hecho» de la guía) */
+  hechoEstudio?: string;
 }
 
 export const LIV_META = {

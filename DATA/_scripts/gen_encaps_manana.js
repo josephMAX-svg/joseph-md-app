@@ -735,7 +735,6 @@ for (const dia of J.mananas) {
     // 07:15 arranque en frío
     const primera = dia.n === 1;
     const pv = primera ? null : prevMananaTxt(prevM.fecha, dia.fecha);
-    const porSkip = pv && pv.saltadas.length ? ` —${pv.saltadas.map((x) => 'el ' + corta(x)).join(' y ')} ${pv.saltadas.length > 1 ? 'fueron' : 'fue'} SKIP, sin mañana ENCAPS—` : '';
     // v6.08 (fix revisión 14-nov, dia9): el lunes, las tarjetas del ENCAPS del domingo según su modo: los domingos de banqueos grabados (dom 6-dic:
     //   N°08-N°09 · dom 20-dic: N°10-N°11 + corrección) no tienen simulacro (antes: «y las del simulacro del domingo» también esos lunes)
     const domAyer = lunes ? J.domingos.find((x) => x.fecha === addDias(dia.fecha, -1)) : null;
@@ -748,9 +747,13 @@ for (const dia of J.mananas) {
       ]
       : [
         // v6.09 (fix revisión 16-nov, joseph 3): la hora de las tarjetas de la mañana anterior es la REAL (dom 27-dic, domingo de plan: 10:10 — fix 2)
-        P(8, `10 tarjetas ${pv.de}, de memoria`, `Las de las ${horaProt(prevM.fecha, '11:40')} del ${corta(prevM.fecha)}${porSkip}${delDomingo}. Tapa la respuesta, dila en voz alta, comprueba.`),
+        // v6.10i (auditoría del volcado c12, hallazgo 2): las tarjetas de la mañana anterior son las «5-10 tarjetas nuevas» de sus 11:40 (antes pedía «10»: si
+        //   hizo 5, el paso no cuadraba) y la hora con su fecha van en el «qué» («de las 11:40 del jue 24-dic»: el desplazamiento de horas del domingo de plan no
+        //   toca una hora seguida de «del <día>»; «(las de las 11:40)» suelta pasaba a 10:10 el dom 27-dic)
+        P(8, `Las 5-10 tarjetas de las ${horaProt(prevM.fecha, '11:40')} del ${corta(prevM.fecha)}${/último día ENCAPS/.test(pv.de) ? ' (el último día ENCAPS)' : /la última mañana ENCAPS/.test(pv.de) ? ' (la última mañana ENCAPS)' : ''}, de memoria`,
+          `${pv.saltadas.length ? `${cap(pv.saltadas.map((x) => 'el ' + corta(x)).join(' y '))} ${pv.saltadas.length > 1 ? 'fueron' : 'fue'} SKIP, sin mañana ENCAPS. ` : ''}${delDomingo ? `${cap(delDomingo.replace(/^ \(|\)$/g, ''))}. ` : ''}Tapa la respuesta, dila en voz alta, comprueba.`),
         P(7, `Reglas de los errores ${pv.de}, sin mirar`, 'Lee solo el error en el registro y di la regla. Si no sale, márcala ★: va primero en el banqueo de hoy.'),
-      ], [R99], primera ? 'sabes dónde está cada cosa del campus' : 'las 10 tarjetas dichas y las reglas repasadas (las que no salieron, con ★)', { aviso: dia.extra || undefined }));
+      ], [R99], primera ? 'sabes dónde está cada cosa del campus' : 'las 5-10 tarjetas dichas y las reglas repasadas (las que no salieron, con ★)', { aviso: dia.extra || undefined }));
     // 07:30 teoría
     const pasosT = rep.manana.map((u) => P(u.min, typeof u.que === 'function' ? u.que(u.min) : u.que, `${u.como}${u.alt ? ` ${u.alt}` : ''}`, u.enlace));
     // v6.09b (a1-6): el Theoesencial ya no es «el resto de la franja» (iba al revés de sus páginas: SP 127 p con 0′, GES 40 p con 95′): es un ítem con

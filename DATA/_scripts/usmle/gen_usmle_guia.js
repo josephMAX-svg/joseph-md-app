@@ -753,9 +753,11 @@ function pasosVideo(d, arr) {
     const coma = (x) => (Number.isInteger(x) ? `${x},0` : String(x).replace('.', ','));
     const minTxt = `${it.min}′ = ${Math.round((it.fin - it.ini) / 60)} min de vídeo ÷ ${coma(vv.v)} × ${coma(vv.f)} por las pausas`;
     const sigue = it.ini ? (it.dOrig !== d ? ` · PENDIENTE del ${etqD(it.dOrig)}: sigue desde el minuto ${hms(it.ini)}` : ` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`) : '';
-    if (METODO[it.id]) return P(it.min, `Palmerton · «${p.t}» ${tramo}`, `YouTube · ${vv.txt}${sigue} · ${METODO[it.id].como} · ${minTxt}`, { t: it.ini ? 'YouTube (desde ese minuto)' : 'YouTube', url: yt(it.id, it.ini) });
+    // v6.10i (auditoría c12): entre comillas SOLO el título real de YouTube; el nombre con el que lo lista la app (PALM.app), fuera de ellas
+    const enApp = p.app ? ` (en la app: «${p.app}»)` : '';
+    if (METODO[it.id]) return P(it.min, `Palmerton · «${p.t}»${enApp} ${tramo}`, `YouTube · ${vv.txt}${sigue} · ${METODO[it.id].como} · ${minTxt}`, { t: it.ini ? 'YouTube (desde ese minuto)' : 'YouTube', url: yt(it.id, it.ini) });
     // v6.09b · lote 1-bis: en F1 (d < 100) el texto dice las pausas que ya llevan los minutos (÷ velocidad × 1,15); el tramo 2 (2027) queda igual (otro lote)
-    return P(it.min, `Palmerton · «${p.t}» de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (${etqD(it.dOrig)}): ${d < 100 ? `escucha, pausa y anota 3 ideas (${minTxt}); sin tarjetas` : 'escucha y anota 3 ideas; sin tarjetas'}`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
+    return P(it.min, `Palmerton · «${p.t}»${enApp} de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (${etqD(it.dOrig)}): ${d < 100 ? `escucha, pausa y anota 3 ideas (${minTxt}); sin tarjetas` : 'escucha y anota 3 ideas; sin tarjetas'}`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
   });
 }
 const recVideo = (arr) => arr.map((it) => (it.tipo === 'bb' ? { t: bbRuta(it.id), url: QBV, min: Math.round(BB.get(it.id).s / 60) } : { t: `Palmerton · ${PALM[it.id].t}`, url: yt(it.id, it.ini), min: Math.round(PALM[it.id].s / 60) }));
@@ -1087,7 +1089,7 @@ function bloqueConfigAnki(f) {
   // v6.10g (revisión 18-nov · la misma regla, sin excepción): tampoco el mazo RAÍZ se crea vacío → hoy NINGÚN mazo USMLE; el preset «APEX USMLE» se guarda SIN
   //   asignar (desde las Deck Options de un mazo que ya existe: Add Preset → ajustes → vuelve al preset de ese mazo → Save; Anki guarda los presets nuevos aunque no
   //   sean el elegido) y APEX::USMLE nace con la 1.ª tarjeta del D2 (07:15, junto con ::Pathology), que al cerrar ese bloque recibe el preset (Save to All
-  //   Subdecks: el bucle de F1_DECKS lo dice al principio del «cómo», dentro del corte del Calendar). La comprobación de hoy es a mano (la telemetría lee el preset
+  //   Subdecks: el bucle de los submazos, tras COLA_DIAS, lo dice al principio del «cómo», dentro del corte del Calendar). La comprobación de hoy es a mano (la telemetría lee el preset
   //   de APEX::USMLE: con el mazo, en el «Sync final + telemetría» del Anki siguiente). Mismos pasos y minutos (1 + vídeo + 3 + preset + 2).
   const DOC_FSRS = { t: 'Manual de Anki › Deck Options (FSRS)', url: 'https://docs.ankiweb.net/deck-options.html' };
   return B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN sin mazo USMLE (nace con la 1.ª tarjeta): preset «APEX USMLE» (FSRS)', [
@@ -1104,7 +1106,7 @@ function anki0500D2(r) {
   const f = r.fecha; const rep = REP[r.d];
   const vids = pasosVideo(r.d, rep.s0500).map((p) => ({ ...p, como: p.como.replace('(lo empezaste antes, hoy)', `(lo empezaste ${antesTxt(CONF_DIA, f)}, en la configuración de las 05:00)`) }));
   const V = vids.reduce((a, p) => a + p.min, 0); const resto = 30 - 2 - V;
-  const pend = [...colaPendienteTras(r.d, 's0500')].map((it) => `«${PALM[it.id] ? PALM[it.id].t.split(' (en la app')[0].split(' You Need')[0] : bbRuta(it.id)}…» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
+  const pend = [...colaPendienteTras(r.d, 's0500')].map((it) => `«${PALM[it.id] ? PALM[it.id].t.split(' You Need')[0] : bbRuta(it.id)}…» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
   return B(f, '05:00–05:30', 'ANKI (aún sin tarjetas USMLE que repasar: nacen hoy) + VÍDEOS DE MÉTODO', [
     P(2, TEST_S1_MISMO_DIA ? `Sync · APEX::USMLE nace hoy con su 1.ª tarjeta: la [TEST S1] de las 04:15 (::Cardiology, suspendida) o la de las 07:15 (::${espApex(r)})` : `Sync · APEX::USMLE nace ${nacePrimeraTxt()}; la del plan, con ::${espApex(r)}`, `Al cerrar el bloque de las 07:15: Deck Options de APEX::USMLE › preset «APEX USMLE» › Save ▾ «Save to All Subdecks» (incluye ::Cardiology si la [TEST S1] lo creó). Anki escritorio · el preset quedó guardado ${antesTxt(CONF_DIA, f)} (${fd(CONF_DIA)} 05:00), sin asignar; si a la configuración le faltó algo, complétalo aquí.`),
     ...vids,
@@ -1322,26 +1324,6 @@ function transicionTxt(iso) {
 const GUIA = {};
 for (const r of F1) GUIA[r.fecha] = esHito(r) ? hitoNBME(r) : diaF1(r); // v6.10b: F1 en nivel 0-1 (diaF1) · el NBME 25 con su Day-After, como estaba
 Object.assign(GUIA, findes());
-// v6.10f (revisión 18-nov · regla de Joseph del 17-nov: la estructura nace el día que aprende algo que va ahí): la CONFIGURACIÓN ya no crea submazos vacíos →
-//   el PRIMER paso del F1 que manda tarjetas a cada submazo del plan (::Pathology el D2…) dice que ese submazo puede nacer ahí (el motor APEX lo crea con el
-//   preset Default) y que, si es nuevo, recibe el preset del padre al terminar el bloque. Solo texto: franjas, pasos y minutos intactos. Condicional («si es
-//   nuevo»): otro plan pudo crearlo antes (la [TEST S1] del vibecoding va a ::Cardiology) y el Day-After de un NBME crea los de cada sistema (el sábado los repasa).
-const PRIMER_DIA_TARJETA = F1.filter((r) => !esHito(r)).map((r) => r.fecha).sort().find((x) => (GUIA[x] || []).some((g) => g.pasos.some((p) => /ESPECIALIDAD \w/.test(p.que))));
-for (const deck of F1_DECKS) {
-  const rx = new RegExp(`ESPECIALIDAD ${deck}\\b`);
-  const fe = F1.filter((r) => !esHito(r)).map((r) => r.fecha).sort().find((x) => (GUIA[x] || []).some((g) => g.pasos.some((p) => rx.test(p.que))));
-  if (!fe) aborta(`submazo ::${deck}: ningún paso del F1 le manda tarjetas (F1_DECKS sin día)`);
-  const g = GUIA[fe].find((x) => x.pasos.some((p) => rx.test(p.que))); const p = g.pasos.find((y) => rx.test(y.que));
-  // v6.10h (revisión 18-nov · c10): la nota va al FINAL del «cómo» (al principio tapaba la instrucción principal del paso en el corte de 110 del Calendar:
-  //   «→ Clasifica: knowledge / transfer / unforced…», «→ Copia el BLOQUE APEX → Ctrl+Shift+A…»). El 1.er día con tarjetas del plan (D2) el preset de
-  //   APEX::USMLE va además en el «Hecho» del bloque (≤ 180 en el Calendar), así se ve también allí; los submazos nuevos de los días siguientes los cubre la
-  //   comprobación del sábado (Anki 21:30 · «Preset en los submazos nuevos»). APEX::USMLE puede existir ya: la [TEST S1] del vibecoding (TEST_S1) lo crea con
-  //   ::Cardiology si se envía antes de las 07:15.
-  const nota = fe === PRIMER_DIA_TARJETA ? `1.ª tarjeta del plan: nace ::${deck} (y APEX::USMLE, si la [TEST S1] del vibecoding no lo creó antes) → al cerrar este bloque, Deck Options de APEX::USMLE › preset «APEX USMLE» › Save to All Subdecks (incluye ::Cardiology si la prueba lo creó).`
-    : `1.ª tarjeta en ::${deck} (si es nuevo: al cerrar, Deck Options de APEX::USMLE › Save to All Subdecks).`;
-  p.como = `${p.como.replace(/.?$/, '.')} ${nota}`;
-  if (fe === PRIMER_DIA_TARJETA) g.hecho = `${g.hecho} y el preset «APEX USMLE» en APEX::USMLE (Save to All Subdecks)`;
-}
 // v6.05 (24-oct): TRAMO 2 — las desplazadas con el guion de F1 por D# (07:15 · 08:15 · 09:00 · 11:00 · 16:15 REENTRADA · 18:00) + el hito cuyo
 //   Day-After cae en ellas (NBME 29: 05:00 · hito 07:00-12:30 · 18:00 Day-After 1/6) + los días de cola de vídeo (07:15-07:45); todo dentro
 //   de las franjas USMLE de la plantilla F3
@@ -1350,6 +1332,30 @@ for (const r of TG) {
   GUIA[r.fecha] = esHito(r) ? hitoNBME(r) : [anki0500(r), th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), reentrada1615(r), eval18(r)].filter(Boolean);
 }
 for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
+// v6.10f (revisión 18-nov · regla de Joseph del 17-nov: la estructura nace el día que aprende algo que va ahí): la CONFIGURACIÓN ya no crea submazos vacíos →
+//   el PRIMER paso que manda tarjetas a cada submazo del plan (::Pathology el D2…) dice que ese submazo puede nacer ahí (el motor APEX lo crea con el
+//   preset Default) y que, si es nuevo, recibe el preset del padre. Solo texto: franjas, pasos y minutos intactos. Condicional («si nace»): otro plan pudo
+//   crearlo antes (la [TEST S1] del vibecoding va a ::Cardiology) y el Day-After de un NBME crea los de cada sistema (el sábado de F1 los repasa).
+// v6.10i (auditoría del volcado c12 · submazos): la orden va al PRINCIPIO del «cómo» y corta («Si nace ::X: Deck Options de APEX::USMLE › Save to All
+//   Subdecks · …»), dentro del corte de 110 del Calendar (en la v6.10h iba al final y el corte la quitaba: ::Pharmacology nacía el lun 28-dic sin preset y sin
+//   sábado de F1 que lo arreglara) · también los submazos que nacen en el tramo 2 con las filas desplazadas (::Pulmonology, ::Nephrology…), que no tienen
+//   sábado de Anki. El 1.er día con tarjetas del plan (D2) el preset de APEX::USMLE va además en el «Hecho» del bloque, y el detalle (APEX::USMLE nace con la
+//   1.ª tarjeta si la [TEST S1] no lo creó; Save to All Subdecks incluye ::Cardiology) al final del «cómo», solo en la app.
+{
+  const filas = [...F1, ...TG].filter((r) => !esHito(r)).sort((x, y) => (x.fecha < y.fecha ? -1 : x.fecha > y.fecha ? 1 : 0));
+  const decks = [...new Set(filas.map(espApex))];
+  const pasoDe = (rx) => { for (const r of filas) { const g = (GUIA[r.fecha] || []).find((x) => x.pasos.some((p) => rx.test(p.que))); if (g) return { fe: r.fecha, g, p: g.pasos.find((y) => rx.test(y.que)) }; } return null; };
+  const PRIMER_DIA_TARJETA = (pasoDe(/ESPECIALIDAD \w/) || {}).fe;
+  for (const deck of decks) {
+    const hit = pasoDe(new RegExp(`ESPECIALIDAD ${deck}\\b`));
+    if (!hit) { if (F1_DECKS.includes(deck)) aborta(`submazo ::${deck}: ningún paso del F1 le manda tarjetas (F1_DECKS sin día)`); continue; }
+    const { fe, g, p } = hit; const primero = fe === PRIMER_DIA_TARJETA;
+    // v6.10i (remate, revisión adversarial del 18-nov): la orden dice CUÁNDO («Al cerrar»: Save to All Subdecks solo alcanza a los submazos que ya existen y el
+    //   submazo nace con el envío de este paso); el 1.er día no es condicional (ese submazo nace hoy seguro: lo dice la frase final)
+    p.como = `${primero ? 'Al cerrar' : `Al cerrar, si nació ::${deck}`}: Deck Options de APEX::USMLE › ${primero ? 'preset «APEX USMLE» › ' : ''}Save to All Subdecks · ${p.como}${primero ? ` Hoy nace ::${deck} con la 1.ª tarjeta del plan (y APEX::USMLE, si la [TEST S1] del vibecoding no lo creó antes); Save to All Subdecks incluye ::Cardiology si la prueba lo creó.` : ''}`;
+    if (primero) g.hecho = `${g.hecho} y el preset «APEX USMLE» en APEX::USMLE (Save to All Subdecks)`;
+  }
+}
 for (const r of [...TG, ...COLA_DIAS]) for (const g of GUIA[r.fecha]) if (!dentroF3(r, g)) ERR.push(`${etq(r)} ${r.fecha} ${g.franja} «${g.titulo}»: fuera de las franjas USMLE de la plantilla F3 (plantillasV6.ts › bloquesF3)`);
 // v6.03b: el presupuesto de tarjetas nuevas de cada día de contenido no pasa del tope (Palmerton: la única palanca es crear menos)
 for (const r of [...F1, ...TG]) if (!esHito(r) && presupuesto(r).total > AK.topeDia) ERR.push(`${etq(r)} ${r.fecha}: presupuesto de tarjetas ${presupuesto(r).total} > ${AK.topeDia}`);
