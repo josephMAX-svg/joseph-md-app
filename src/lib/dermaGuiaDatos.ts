@@ -517,7 +517,7 @@ export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: 
   "quiz": "acne-16-cases",
   "desde": 1,
   "k": 5,
-  "foco": "casos 1-5 = lesiones PRIMARIAS (comedón, pápula, pústula, nódulo): nombra la lesión elemental y descríbela con los 8 ejes ANTES de «Show Answers»"
+  "foco": "nombra la lesión elemental de cada caso y descríbela con los 8 ejes ANTES de «Show Answers»"
  },
  "4": {
   "quiz": "brown-skin-lesions-12-cases",
@@ -796,7 +796,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 10,
      "que": "DermNet Quizzes › «Acne – 16 cases» · casos 1-5 (5 casos REALES × ~2′ = 10′, el tiempo por caso que declara el quiz)",
-     "como": "dermnetnz.org/quizzes (gratis, sin cuenta) → «Acne – 16 cases» → caso 1: casos 1-5 = lesiones PRIMARIAS (comedón, pápula, pústula, nódulo): nombra la lesión elemental y descríbela con los 8 ejes ANTES de «Show Answers» · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).",
+     "como": "dermnetnz.org/quizzes (gratis, sin cuenta) → «Acne – 16 cases» → caso 1: nombra la lesión elemental de cada caso y descríbela con los 8 ejes ANTES de «Show Answers» · después «Show Answers» y corrige · cada fallo → tarjeta de MECANISMO + ✓/✗ en el ledger («DermNet · caso N»).",
      "enlace": {
       "t": "DermNet Quiz · Acne – 16 cases",
       "url": "https://dermnetnz.org/quizzes/acne-16-cases/case/1"

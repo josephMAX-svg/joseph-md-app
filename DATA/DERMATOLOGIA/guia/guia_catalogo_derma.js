@@ -94,7 +94,7 @@ const DERMA_QUIZ_F1 = {
   // k = nº de casos (minutos del hueco / ~2′ por caso; el generador comprueba que cuadra con los minutos del paso en 0,85-1,15)
   // v6.10g (revisión 18-nov · c11): k = floor(min/2) para que la aritmética del paso cuadre (d4 15′ → 7 · d9 9′ → 4 · d10 y d11 15′ → 7 · d14 11′ → 5, antes
   //   8 · 5 · 8 · 8 · 6: «8 casos × ~2′ = 16′» en un paso de 15′); el minuto que sobra es para el ledger (lo dice el paso)
-  1: { quiz: 'acne-16-cases', desde: 1, k: 5, foco: 'casos 1-5 = lesiones PRIMARIAS (comedón, pápula, pústula, nódulo): nombra la lesión elemental y descríbela con los 8 ejes ANTES de «Show Answers»' },
+  1: { quiz: 'acne-16-cases', desde: 1, k: 5, foco: 'nombra la lesión elemental de cada caso y descríbela con los 8 ejes ANTES de «Show Answers»' }, // 19-nov: sin la lista de lesiones (eran las respuestas de los casos 1-5, en su orden)
   4: { quiz: 'brown-skin-lesions-12-cases', desde: 4, k: 7, foco: 'pigmentación: antes de «Show Answers» di epidérmica (marrón) o dérmica (gris-azul), si es postinflamatoria y qué fototipo crees que tiene' },
   6: { quiz: 'dermoscopy-local-features-quiz', desde: 1, k: 4, lectura: 'tresPuntos', foco: 'aplica la lista de 3 puntos que acabas de leer (asimetría · red atípica · estructuras blanco-azuladas) y nombra la estructura local antes de «Show Answers»' },
   9: { quiz: 'acne-16-cases', desde: 12, k: 4, foco: 'formas clínicas de acné: lesión elemental + gravedad antes de «Show Answers»' },
