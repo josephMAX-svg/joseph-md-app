@@ -35,10 +35,12 @@ export function ConsoleStat({ label, value, hint, accent = GOLD }: ReadinessStat
 export default function ReadinessBar({
   flag, title, subtitle, accent,
   dia, total, temarioPct, racha, readinessPct, readinessLabel,
-  extraStat, media7d, onTrack,
+  extraStat, media7d, onTrack, diaValor,
 }: {
   flag: string; title: string; subtitle: string; accent: string;
   dia: number; total: number; temarioPct: number; racha?: string;
+  /** v6.10r: texto del stat DÍA cuando el plan numera sus días a su manera (USMLE: «2/13» = etiquetaDiaUSMLE, la misma de la guía y del Home); sin él, `dia/total` */
+  diaValor?: string;
   readinessPct: number; readinessLabel: string;
   extraStat?: ReadinessStat;
   /** media móvil 7d (usmleScores.mediaMovil7d) — opcional, solo con datos */
@@ -63,7 +65,7 @@ export default function ReadinessBar({
 
         {/* métricas transversales (oro) */}
         <View style={st.stats}>
-          <ConsoleStat label="DÍA" value={`${dia}/${total}`} hint="del plan" />
+          <ConsoleStat label="DÍA" value={diaValor ?? `${dia}/${total}`} hint="del plan" />
           <View style={st.divider} />
           <ConsoleStat label="TEMARIO" value={`${temarioPct}%`} hint="cubierto" />
           {racha ? (<><View style={st.divider} /><ConsoleStat label="RACHA" value={racha} hint="constancia" /></>) : null}

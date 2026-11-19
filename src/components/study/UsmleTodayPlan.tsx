@@ -81,6 +81,25 @@ import { fechasRealesEnTexto, reemplazosCorrida } from '../../lib/corridaTexto';
 const tierDe = (t: string) => TIER_INFO[t] ?? (TIER_INFO.CORE as { c: string; t: string });
 /** Etiqueta corta del día (D10 · T51). */
 const etq = (x: DiaUSMLE): string => (esFilaT2(x) ? `T${x.t}` : `D${x.d}`);
+/**
+ * v6.10r (jue 19-nov · hallazgo 7 del chat USMLE): F1 en BASE CERO = fila de F1, sin hito, con fase Palmerton N0 o N1 y con 🧭 Guía del día.
+ * Esos días manda la guía (la misma que copia el Calendar): los widgets de la plantilla clásica (pre-test 10Q 08:15, consolidación 20-30Q,
+ * eval cronometrada 18:00, temporizador de 2′, «mañana a las 07:15») se adaptan al nivel 0-1 (Tutor, sin tiempo por pregunta) o se ocultan.
+ * aFondo (nivel 0) = nº de «PREGUNTA k/N a fondo» de la guía (respaldo: qDia − 5 de validación).
+ */
+interface BaseCero { nivel: 0 | 1; aFondo: number }
+function baseCeroDe(dia: DiaUSMLE): BaseCero | null {
+  if (esFilaT2(dia) || esHito(dia)) return null;
+  const fp = fasePalmertonDe(dia.d);
+  if (!fp || (fp.fase !== 'N0' && fp.fase !== 'N1')) return null;
+  const guia = guiaUsmleDe(dia.fecha);
+  if (!guia.length) return null;
+  if (fp.fase === 'N1') return { nivel: 1, aFondo: 0 };
+  const m = guia.map((g) => /PREGUNTA \d+\/(\d+) a fondo/i.exec(g.titulo)).find((x): x is RegExpExecArray => !!x);
+  return { nivel: 0, aFondo: m ? Number(m[1]) : Math.max(1, dia.qDia - 5) };
+}
+/** Franja de la guía con la revalidación del subtema anterior (07:15; tras el NBME 25, la que diga la guía). */
+const bloqueRevalidacion = (fecha: string) => guiaUsmleDe(fecha).find((g) => /REVALIDACI[ÓO]N|VALIDACI[ÓO]N (DE )?48 H/i.test(g.titulo));
 /** Tipos del tramo 2 que NO son «atrasables»: anclas (hitos, day-after, taper, ritual) y el propio colchón (§B7.1). */
 const NO_ATRASABLE = new Set(['colchon', 'hito', 'day_after', 'taper', 'ritual']);
 const GREEN = Colors.green;   // jade (US console) — migrado de #3FB984 fosforescente
@@ -184,6 +203,10 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
   const derma = esDiaDermaStep1(dia);
   const atomos = derma ? dermaStep1Atomos() : [];
   const notaColor = taper ? RED : Colors.gold;
+  // v6.10r: F1 en base cero (nivel 0-1) → la guía manda; fi0 = la ficha de la fase N0 (preguntas · criterio para pasar a nivel 1)
+  const bc = baseCeroDe(dia);
+  const fi0 = bc?.nivel === 0 ? faseInfo('N0') : undefined;
+  const rv = bc && prev ? bloqueRevalidacion(dia.fecha) : undefined;
   // v6.02c · 🧭 guía «qué · cuánto · cómo» de cada franja (usmleGuia.ts). Fin de semana: la de HOY (no hay fila del plan ese día).
   const guia = guiaUsmleDe(dia.fecha);
   const guiaHoyFuera = hoy !== dia.fecha && !DIAS_TODOS.some((x) => x.fecha === hoy) ? guiaUsmleDe(hoy) : [];
@@ -217,7 +240,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             {t2 && t2.dF1 == null && /^DE F1 → TRAMO 2/.test(t2.sub) && <Chip label="DE F1 → tramo 2 (corrimiento)" color={Colors.gold} small />}
             {t2 && t2.adapt && <Chip label="inducción SERUMS (50 %)" color={Colors.muted} small />}
             <Chip label={`Fase ${faseDe(dia.d)}`} color={Colors.muted} small />
-            <Chip label={`Nivel UW ${dia.nivelUW} · ${qHoy}Q${t2 && t2.qDiaT != null ? ` (M/L/G ${t2.qDia} · T ${t2.qDiaT})` : ''}`} color={niv.color} small />
+            <Chip label={bc?.nivel === 0 ? `NIVEL 0 · ${bc.aFondo} a fondo + 5 de validación · Tutor` : `Nivel UW ${dia.nivelUW} · ${qHoy}Q${t2 && t2.qDiaT != null ? ` (M/L/G ${t2.qDia} · T ${t2.qDiaT})` : ''}`} color={niv.color} small />
             {viernesN4 && <Chip label={`N4 semanal · S${semanaDe(dia.fecha)}`} color={Colors.gold} small />}
             {taper && <Chip label={t2?.dOrig === 95 ? 'TAPER · D95 sesión MÍNIMA (≤1 h)' : t2?.dOrig === 94 ? 'TAPER · D94 · última sesión de banco' : 'TAPER · semana previa (≤2 h, solo bloque A)'} color={RED} small />}
             {ritual && <Chip label="RITUAL · sin estudio" color={RED} small />}
@@ -234,13 +257,18 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
           </View>
           <Text style={st.temaTitle}>{subConGuia(dia.sub, dia.fecha)}</Text>
           <Text style={st.temaSub}>{t2 ? `${etiquetaDiaUSMLE(dia)} · ${t2.fase} · fase UWorld ${t2.faseUW} · ${t2.h} h al piso · toca el sistema para ver el temario y tu avance ›` : 'Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›'}</Text>
-          <Text style={[st.temaSub, { color: niv.color }]}>Nivel {niv.nivel} · {niv.nombre} — {niv.formato}. Gate: {niv.umbral}.</Text>
+          {fi0
+            ? <Text style={[st.temaSub, { color: niv.color }]}>Nivel 0 · arranque desde cero — {fi0.preguntas} · Tutor (sin tiempo por pregunta) + 5 de validación. Pasa a nivel 1 con: {fi0.pasa}.</Text>
+            : <Text style={[st.temaSub, { color: niv.color }]}>Nivel {niv.nivel} · {niv.nombre} — {niv.formato}. Gate: {niv.umbral}.</Text>}
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#0A1A12' : GREEN }]}>{hecho ? '✓ Completado hoy' : '○ Marcar como completado'}</Text>
           </TouchableOpacity>
           {/* §12.6-10 · día PARCIAL = modo ROJO de PROTOCOLO_MODO_MINIMO (solo Anki AM + 10Q pre-test): no es "completado", cuenta como perdido para el corrimiento */}
           <TouchableOpacity activeOpacity={0.85} onPress={toggleParcial} style={[st.parcialBtn, parcial && { backgroundColor: RED + '22', borderColor: RED + '99' }]}>
-            <Text style={[st.parcialTxt, { color: parcial ? RED : Colors.muted }]}>{parcial ? '🚦 DÍA PARCIAL marcado · solo Anki AM + 10Q (ROJO) · cuenta como día perdido: la fila se hace en la próxima fila COLCHÓN (v6.00, sin corrimiento)' : '🚦 Marcar como día PARCIAL (ROJO: solo Anki AM + 10Q pre-test; el resto del bloque = dormir)'}</Text>
+            {/* v6.10r: en base cero no hay pre-test de 10Q ni filas COLCHÓN en F1 (el día perdido lo recoloca el chat de plan) */}
+            <Text style={[st.parcialTxt, { color: parcial ? RED : Colors.muted }]}>{bc
+              ? (parcial ? '🚦 DÍA PARCIAL marcado · solo Anki AM + las preguntas de la 1.ª franja de la guía (ROJO) · cuenta como día perdido: lo recoloca el chat de plan (aquí no se mueve nada)' : '🚦 Marcar como día PARCIAL (ROJO: solo Anki AM + las preguntas de la 1.ª franja de la guía; el resto del bloque = dormir)')
+              : (parcial ? '🚦 DÍA PARCIAL marcado · solo Anki AM + 10Q (ROJO) · cuenta como día perdido: la fila se hace en la próxima fila COLCHÓN (v6.00, sin corrimiento)' : '🚦 Marcar como día PARCIAL (ROJO: solo Anki AM + 10Q pre-test; el resto del bloque = dormir)')}</Text>
           </TouchableOpacity>
         </View>
       </FadeUp>
@@ -250,7 +278,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
         <FadeUp delay={6}>
           <Text style={st.secLbl}>🧭 Guía del día · qué · cuánto · cómo · {guia.length} franjas · {guia.reduce((a, g) => a + g.totalMin, 0)}′ (toca una franja para ver sus pasos)</Text>
           {guia.map((g, i) => <GuiaBloqueCard key={`${dia.fecha}-${g.franja}-${i}`} g={reemplazosCorrida(g, dia.fecha)} color={GREEN} compacto={!(dia.fecha === hoy && enCurso(g.franja))} ahora={dia.fecha === hoy && enCurso(g.franja)} />)}
-          <Text style={st.note}>Velocidad: {GUIA_USMLE_META.velocidad}. {GUIA_USMLE_META.reglaVideo}</Text>
+          {/* v6.10r: el texto se generó con fechas de PLAN («configuración (mié 18-nov)», «D2 (jue 19-nov)») → se pintan las REALES (una sola vez) */}
+          <Text style={st.note}>{fechasRealesEnTexto(`Velocidad: ${GUIA_USMLE_META.velocidad}. ${GUIA_USMLE_META.reglaVideo}`, 'usmle')}</Text>
         </FadeUp>
       )}
       {/* v6.00 · F4: plantilla del turno del día (bloques A/B, MIR por turno; día de hito → H / H-sáb) */}
@@ -403,7 +432,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
       )}
 
       {/* Medición Palmerton del día (gate 80%) */}
-      <FadeUp delay={30}><MedicionCard dia={dia} /></FadeUp>
+      <FadeUp delay={30}><MedicionCard dia={dia} bc={bc} hayPrevio={!!prev} /></FadeUp>
 
       {/* Puente Derma ↔ Step 1: el día de "dermato Step 1" cuenta doble con los átomos Derma ya estudiados */}
       {derma && (
@@ -423,16 +452,19 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 07:15 · Repaso anclado (tema de AYER + D-3/D-7)</Text>
+            {/* v6.10r: en base cero la revalidación es en Tutor y su franja la da la guía (07:15; tras el NBME 25, otra) */}
+            <Text style={st.anchorLbl}>{bc ? (rv ? `🎯 ${rv.franja} · ${reemplazosCorrida(rv, dia.fecha).titulo}` : '🎯 Subtema de la sesión anterior') : '🎯 07:15 · Repaso anclado (tema de AYER + D-3/D-7)'}</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
-            <Text style={st.anchorSub}>{derma ? `HOY: ${DERMA_STEP1_QUERY} + fallos del ledger derma (cuenta doble) antes de las 5Q del subtema de ayer · ` : ''}Anki FSRS deck USMLE + 5Q uWorld TIMED del subtema de ayer (1ª mitad del gate de 10Q; la 2ª mitad va en la consolidación) · si free recall &lt;60% → re-encolar</Text>
+            {bc
+              ? <Text style={st.anchorSub}>{rv ? '5Q NUEVAS en Tutor (sin tiempo por pregunta) del subtema anterior · con las 5 de su validación = 10 consecutivas: ≥8/10 → subtema VALIDADO · <8/10 → sigue en su nivel y se revalida en la próxima sesión. Banco, filtros y pasos: esta franja en la 🧭 Guía del día.' : 'Hoy la guía no trae revalidación: lee la shopping list de abajo antes de la primera pregunta.'}</Text>
+              : <Text style={st.anchorSub}>{derma ? `HOY: ${DERMA_STEP1_QUERY} + fallos del ledger derma (cuenta doble) antes de las 5Q del subtema de ayer · ` : ''}Anki FSRS deck USMLE + 5Q uWorld TIMED del subtema de ayer (1ª mitad del gate de 10Q; la 2ª mitad va en la consolidación) · si free recall &lt;60% → re-encolar</Text>}
             {mirPrev && <Text style={[st.anchorSub, { color: Colors.gold }]}>🇪🇸 {mirPrev.texto} · Anki: tag compartido {mirPrev.tag} (APEX::MIR + APEX::USMLE) para el D-7 en español</Text>}
             {/* #28 · shopping list arrastrada (§3.5.B / §6.5): las notas de ayer se leen ANTES de las 5Q de validación */}
             <View style={st.shopBox}>
               {/* v6.02d: fecha real visible (semana corrida) */}
-              <Text style={[st.anchorLbl, { color: APEX }]}>🛒 Shopping list de ayer · {etq(prev)} ({fmtFecha(fechaRealDe(prev.fecha, 'usmle'))})</Text>
-              {sPrev?.notas ? <Text style={[st.anchorSub, { color: Colors.onSurfaceVariant }]}>{sPrev.notas}</Text> : <Text style={st.anchorSub}>sin notas registradas en {etq(prev)} → hoy anota en 📏 Medición cada duda (también en las correctas): es lo que se valida mañana a las 07:15</Text>}
-              {sPrev && (sPrev.tipoError || sPrev.consol30pct != null) ? <Text style={st.anchorSub}>ayer: consolidación {sPrev.consol30pct != null ? `${sPrev.consol30pct}%` : '—'}{sPrev.tipoError ? ` · error dominante ${TIPO_ERROR_INFO[sPrev.tipoError].corto} → ${TIPO_ERROR_INFO[sPrev.tipoError].tarjeta.split(' · ')[0]}` : ''}</Text> : null}
+              <Text style={[st.anchorLbl, { color: APEX }]}>🛒 Shopping list {bc ? 'de la sesión anterior' : 'de ayer'} · {etq(prev)} ({fmtFecha(fechaRealDe(prev.fecha, 'usmle'))})</Text>
+              {sPrev?.notas ? <Text style={[st.anchorSub, { color: Colors.onSurfaceVariant }]}>{sPrev.notas}</Text> : <Text style={st.anchorSub}>sin notas registradas en {etq(prev)} → hoy anota en 📏 Medición cada duda (también en las correctas): {bc ? 'es lo que se revalida en la próxima sesión de Step 1' : 'es lo que se valida mañana a las 07:15'}</Text>}
+              {sPrev && (sPrev.tipoError || sPrev.consol30pct != null) ? <Text style={st.anchorSub}>{bc ? 'sesión anterior: validación' : 'ayer: consolidación'} {sPrev.consol30pct != null ? `${sPrev.consol30pct}%` : '—'}{sPrev.tipoError ? ` · error dominante ${TIPO_ERROR_INFO[sPrev.tipoError].corto} → ${TIPO_ERROR_INFO[sPrev.tipoError].tarjeta.split(' · ')[0]}` : ''}</Text> : null}
               {postHito && ayer && ayer.d !== prev.d ? <Text style={[st.anchorSub, { color: Colors.gold }]}>{etq(ayer)} fue un hito ({ayer.uw}): el subtema que se valida hoy es el de {etq(prev)}; la auditoría del hito va en el Day-After de arriba</Text> : null}
             </View>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
@@ -443,7 +475,17 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
         </FadeUp>
       )}
 
-      {/* Cola de materiales de hoy */}
+      {/* Cola de materiales de hoy · v6.10r: en base cero (nivel 0-1) la cola clásica contradice la guía → se oculta y remite a ella */}
+      {bc ? (
+        <FadeUp delay={60}>
+          <Text style={st.secLbl}>📋 Cola de hoy · nivel {bc.nivel} · la 🧭 Guía del día manda</Text>
+          <View style={[st.anchor, { borderLeftColor: GREEN }]}>
+            <Text style={[st.anchorLbl, { color: GREEN }]}>Hoy la cola es la de la 🧭 Guía del día (arriba): cada franja con su banco, sus preguntas, sus vídeos y sus enlaces, en orden.</Text>
+            <Text style={st.anchorSub}>{bc.nivel === 0 ? `Nivel 0: ${bc.aFondo} preguntas a fondo (≤45′ cada una) + la página completa + 5Q NUEVAS de validación, todo en Tutor (sin tiempo por pregunta).` : 'Nivel 1: bloques de 5Q del subtema (pre-test ciego, bloque 2 y validación), todo en Tutor (sin tiempo por pregunta).'} La plantilla clásica (pre-test 10Q 08:15 · consolidación 20-30Q · eval cronometrada 18:00) no aplica en el nivel 0-1; las 18:00 son la 1.ª pasada de Anki + vocabulario + nota del día (o el Day-After del NBME 25).</Text>
+            <Text style={[st.anchorSub, { color: Colors.muted }]}>Lo que cada franja pide registrar va en 📏 Medición (arriba).</Text>
+          </View>
+        </FadeUp>
+      ) : (<>
       <Text style={st.secLbl}>{enF4 ? `📋 Cola de hoy · F4 SERUMS · ${pl?.titulo ?? ''} (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)` : t2 ? '📋 Cola de hoy · F3 · 05:00 Anki AM · 07:15–12:00 + 16:15 REENTRADA + 18:00–18:45 (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)' : '📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)'}</Text>
       <FadeUp delay={60}><ColaItem icon="🅠" lbl={hitoHoy ? `HITO · ${dia.uw} (${dia.qDia}Q · nivel 5 · timed)` : "PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)"} val={hitoHoy ? `${dia.sub} · protocolo test-day (Ziploc BREAK 1/2/3, sit-in breaks, sin cambiar respuestas)` : derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
@@ -466,15 +508,18 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
           </View>
         </View>
       </FadeUp>
+      </>)}
     </View>
   );
 }
 
 /** 📏 Medición Palmerton del día: 3 números + tipo de error + gate ✓/✗ + export JSON (usmleScores). */
-function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
+function MedicionCard({ dia, bc = null, hayPrevio = false }: { dia: DiaUSMLEPlan; bc?: BaseCero | null; hayPrevio?: boolean }) {
   const hito = esHito(dia);
   const fase = faseDe(dia.d);
   const niv = nivelInfo(dia.nivelUW);
+  // v6.10r: base cero (nivel 0-1) → campos de la guía: preguntas a fondo /N (N0) o bloque 1 /5 (N1) · validación 5Q (%) · sin eval de las 18:00
+  const maxPre = bc ? (bc.nivel === 0 ? bc.aFondo : 5) : 10;
   const [pre, setPre] = useState('');
   const [con, setCon] = useState('');
   const [ev, setEv] = useState('');
@@ -491,7 +536,8 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
   const str = (v: number | null | undefined) => (v != null ? String(v) : '');
   useEffect(() => {
     const s = scoreDe(loadScores(), dia.fecha);
-    setPre(str(s?.pretest10)); setCon(str(s?.consol30pct)); setEv(str(s?.evalPct));
+    // v6.10r: en base cero el campo se escribe en aciertos /N y se guarda como nota sobre 10 (pretest10: la media 7d lo lee ×10 como %)
+    setPre(bc && s?.pretest10 != null ? str(Math.round((s.pretest10 * maxPre) / 10)) : str(s?.pretest10)); setCon(str(s?.consol30pct)); setEv(str(s?.evalPct));
     setTipo(s?.tipoError ?? null);
     setNotas(s?.notas ?? '');
     setCam(str(s?.cambiadas)); setRel(str(s?.relecturas)); setNf(str(s?.nFallos)); setNc(str(s?.nConocidos));
@@ -504,16 +550,23 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
     const n = Number(v.replace(',', '.'));
     return isNaN(n) ? null : Math.max(0, Math.min(max, n));
   };
+  const sobre10 = (v: number | null): number | null => (v == null ? null : Math.round((v / maxPre) * 10));
   const bloques = blq.map((b) => num(b, 100));
   const score: UsmleScore = {
-    fecha: dia.fecha, d: dia.d, pretest10: num(pre, 10), consol30pct: num(con, 100), evalPct: num(ev, 100), tipoError: tipo, nivelUW: dia.nivelUW, notas, updatedAt: '',
+    fecha: dia.fecha, d: dia.d, pretest10: bc ? sobre10(num(pre, maxPre)) : num(pre, 10), consol30pct: num(con, 100), evalPct: num(ev, 100), tipoError: tipo, nivelUW: dia.nivelUW, notas, updatedAt: '',
     cambiadas: num(cam, 200), relecturas: num(rel, 200), nFallos: num(nf, 400), nConocidos: num(nc, 400), bloquesPct: bloques.some((b) => b != null) ? bloques : null,
     horas: num(hrs, 16),
   };
   const horasAcum = esFilaT2(dia) ? horasDesde(loadScores().filter((x) => x.fecha !== dia.fecha).concat([score])) : null;
   // v6.00: umbral de horas de la fecha de examen VIGENTE (tabla B4.5: 31-ago ≥ 290 · 27-sep / 25-oct ≥ 294), no el 294 escrito a mano
   const umbralGNG = GONOGO_HORAS.find((x) => x.examen === DAILY_META.examenTarget);
-  const gate = gateDelDia(score, dia);
+  const gate0 = gateDelDia(score, dia);
+  // v6.10r: en base cero el gate es de 10 consecutivas en 2 sesiones (validación de hoy + revalidación el próximo día de Step): nunca «SUBIR de nivel» con 5Q
+  const pv = score.consol30pct;
+  const gate = !bc ? gate0
+    : pv == null ? { ...gate0, estado: 'sin-dato' as const, label: '— sin registrar', detalle: '' }
+    : pv >= USMLE_GATE.pct ? { ...gate0, estado: 'sube' as const, label: `✓ 1.ª mitad del gate · validación ${pv}% ≥ ${USMLE_GATE.pct}%`, detalle: 'la 2.ª mitad: la revalidación (5Q nuevas) del próximo día de Step 1 → con estas 5, 10 consecutivas: ≥8/10 = subtema VALIDADO' }
+    : { ...gate0, estado: 'repite' as const, label: `✗ el subtema sigue en nivel ${bc.nivel} · validación ${pv}% < ${USMLE_GATE.pct}%`, detalle: 'la página de cada fallo vuelve a la shopping list' };
   const gateColor = gate.estado === 'sube' ? GREEN : gate.estado === 'repite' ? RED : gate.estado === 'lectura' ? Colors.gold : Colors.muted;
   // #8 regla del tercio sobre la semana (registros guardados + lo que hay en pantalla)
   const tercio = reglaDelTercio(loadScores().filter((x) => x.fecha !== dia.fecha).concat([score]), dia.fecha);
@@ -533,25 +586,26 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
     } catch { /* cae al Share */ }
     try { await Share.share({ message: json, title: 'usmle-scores.json' }); setExp('✓ JSON compartido'); } catch { setExp('no se pudo exportar en este dispositivo'); }
   };
-  const lblPre = fase === 'A' ? 'Pre-test 08:15 (aciertos /10)' : 'Stress set 05:00 (aciertos /10)';
+  const lblPre = bc ? (bc.nivel === 0 ? `Preguntas a fondo (aciertos /${bc.aFondo})` : 'Bloque 1 · pre-test 5Q ciegas (aciertos /5)') : fase === 'A' ? 'Pre-test 08:15 (aciertos /10)' : 'Stress set 05:00 (aciertos /10)';
   // #13: los viernes de nivel 3 el gate se mide SOLO sobre el bloque de 20Q del sistema timed (no sobre las 10Q tutor)
-  const lblCon = hito ? 'Bloque timed extra (%) · opcional' : fase === 'A' ? (dia.nivelUW === 3 ? '20Q sistema TIMED (%) · solo ese bloque' : 'Consolidación 11:00 (%)') : 'Bloques timed del día (%)';
+  const lblCon = bc ? 'Validación · 5Q nuevas (%) · 4/5 = 80' : hito ? 'Bloque timed extra (%) · opcional' : fase === 'A' ? (dia.nivelUW === 3 ? '20Q sistema TIMED (%) · solo ese bloque' : 'Consolidación 11:00 (%)') : 'Bloques timed del día (%)';
   const lblEv = hito ? `% del ${dia.uw}` : 'Eval 18:00 timed mixta (%)';
   return (
     <View style={[st.medCard, { borderColor: niv.color + '66' }]}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
         <Text style={st.medTitle}>📏 MEDICIÓN DEL DÍA</Text>
-        <Chip label={`nivel ${dia.nivelUW} · ${niv.nombre}`} color={niv.color} small />
-        <Chip label={`${dia.qDia}Q objetivo${esFilaT2(dia) && dia.qDiaT != null ? ` · turno T ${dia.qDiaT}Q` : ''}`} color={Colors.muted} small />
+        <Chip label={bc ? `nivel ${bc.nivel} · ${bc.nivel === 0 ? 'arranque desde cero' : niv.nombre}` : `nivel ${dia.nivelUW} · ${niv.nombre}`} color={niv.color} small />
+        <Chip label={bc?.nivel === 0 ? `${bc.aFondo} a fondo + 5 de validación` : `${dia.qDia}Q objetivo${esFilaT2(dia) && dia.qDiaT != null ? ` · turno T ${dia.qDiaT}Q` : ''}`} color={Colors.muted} small />
         {hito && <Chip label="HITO" color={Colors.gold} small />}
       </View>
-      <Text style={st.medHint}>{hito ? `Día de hito: registra el % del ${dia.uw} en el campo eval. ${gate.detalle}.` : `Gate del día = ${gate.metrica} ≥ ${USMLE_GATE.pct}%. El % de UWorld es gate de proceso, no predicción (solo el NBME predice).`}</Text>
+      <Text style={st.medHint}>{bc ? `Nivel ${bc.nivel} · Tutor (sin tiempo por pregunta). Gate = 10 consecutivas al ${USMLE_GATE.pct} % de un subtema: la validación de hoy (5Q nuevas, ≥4/5) es la 1.ª mitad; la 2.ª, su revalidación el próximo día de Step 1. El % de UWorld es gate de proceso, no predicción (solo el NBME predice).` : hito ? `Día de hito: registra el % del ${dia.uw} en el campo eval. ${gate.detalle}.` : `Gate del día = ${gate.metrica} ≥ ${USMLE_GATE.pct}%. El % de UWorld es gate de proceso, no predicción (solo el NBME predice).`}</Text>
       <View style={st.medRow}>
         <View style={st.medField}><Text style={st.medLbl}>{lblPre}</Text><TextInput style={st.medInput} value={pre} onChangeText={setPre} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
         <View style={st.medField}><Text style={st.medLbl}>{lblCon}</Text><TextInput style={st.medInput} value={con} onChangeText={setCon} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
-        <View style={st.medField}><Text style={st.medLbl}>{lblEv}</Text><TextInput style={st.medInput} value={ev} onChangeText={setEv} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
+        {!bc && <View style={st.medField}><Text style={st.medLbl}>{lblEv}</Text><TextInput style={st.medInput} value={ev} onChangeText={setEv} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>}
         <View style={st.medField}><Text style={st.medLbl}>Horas netas Step 1 hoy (0-16)</Text><TextInput style={st.medInput} value={hrs} onChangeText={setHrs} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
       </View>
+      {bc && (hayPrevio || bc.nivel === 1) && <Text style={st.medHint}>Sin casilla propia (van en Notas): {[hayPrevio ? 'la revalidación del subtema anterior (x/5 y sus 10 consecutivas, p. ej. «reval 4/5 · 10 consec 8/10»)' : '', bc.nivel === 1 ? 'el % del bloque 2' : ''].filter(Boolean).join(' · ')}.</Text>}
       {horasAcum != null && <Text style={st.medHint}>⏱ Horas acumuladas desde el reinicio ({FECHAS_V6.step1.reinicio}): {horasAcum} h · umbral GO/NO-GO {umbralGNG?.gonogo ?? DAILY_META.gonogo}: ≥ {umbralGNG?.umbral ?? '—'} h (§B4.5, examen {DAILY_META.examenTarget}) · se guardan en usmle_daily_scores.extra.horas</Text>}
       <Text style={st.medLbl}>Tipo de error dominante (knowledge / transfer / proceso)</Text>
       <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
@@ -574,10 +628,10 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
         <View style={st.medField}><Text style={st.medLbl}>Fallos del día</Text><TextInput style={st.medInput} value={nf} onChangeText={setNf} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
         <View style={st.medField}><Text style={st.medLbl}>…en temas YA estudiados</Text><TextInput style={[st.medInput, tercio.estado === 'ALARMA' && { borderColor: RED + 'AA' }]} value={nc} onChangeText={setNc} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
       </View>
-      {abogado && <Text style={[st.medHint, { color: RED }]}>⚖ ABOGADO: {score.cambiadas} respuestas cambiadas (≥2). Regla única §7.4: solo se cambia por error de lectura innegable; 60-70 % de los cambios van de correcta a incorrecta → mañana 18:00 stress set (sin tiempo para cambiar).</Text>}
+      {abogado && <Text style={[st.medHint, { color: RED }]}>⚖ ABOGADO: {score.cambiadas} respuestas cambiadas (≥2). Regla única §7.4: solo se cambia por error de lectura innegable; 60-70 % de los cambios van de correcta a incorrecta{bc ? '.' : ' → mañana 18:00 stress set (sin tiempo para cambiar).'}</Text>}
       {circular && <Text style={[st.medHint, { color: RED }]}>🔁 LECTURA CIRCULAR: {score.relecturas} relecturas de una pregunta (§7.3). Causa nº1 = no dominar el material la 1ª vez; CCSN automático → diagnóstico en la primera lectura (&lt;60 s).</Text>}
       <Text style={[st.medHint, { color: tercio.estado === 'ALARMA' ? RED : tercio.estado === 'ok' ? GREEN : Colors.muted }]}>{tercio.label}{tercio.estado !== 'sin-dato' ? ` — ${tercio.detalle}` : ` (${tercio.detalle})`}</Text>
-      {(score.consol30pct != null || score.evalPct != null) && <Text style={st.medHint}>Pisos ámbar (#21): consolidación <Text style={{ color: semColor(semCon), fontWeight: '800' }}>{semCon}</Text> (≥{PISO_AMBAR.consol} %) · eval <Text style={{ color: semColor(semEv), fontWeight: '800' }}>{semEv}</Text> (≥{PISO_AMBAR.eval} %) · gate de progresión = {USMLE_GATE.pct} %</Text>}
+      {!bc && (score.consol30pct != null || score.evalPct != null) && <Text style={st.medHint}>Pisos ámbar (#21): consolidación <Text style={{ color: semColor(semCon), fontWeight: '800' }}>{semCon}</Text> (≥{PISO_AMBAR.consol} %) · eval <Text style={{ color: semColor(semEv), fontWeight: '800' }}>{semEv}</Text> (≥{PISO_AMBAR.eval} %) · gate de progresión = {USMLE_GATE.pct} %</Text>}
       {/* #27 · hito: % por bloque + plantilla del reporte por sistema */}
       {hito && (
         <View style={{ marginTop: 8 }}>
@@ -591,8 +645,8 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
           <Text style={st.medHint}>Lectura por sistema (§9.1): ≥80 % en lo ya estudiado; B1→B4 cayendo = fatiga/pánico (kit anti-pánico), no conocimiento. Qbankly = % bruto sin curva (A VERIFICAR · #24).</Text>
         </View>
       )}
-      <TextInput style={st.medNotas} value={notas} onChangeText={setNotas} placeholder="Notas: shopping list (cada duda, también en aciertos), subtema a repetir, sensación del bloque… mañana se leen a las 07:15" placeholderTextColor={Colors.muted} multiline />
-      <Temporizador />
+      <TextInput style={st.medNotas} value={notas} onChangeText={setNotas} placeholder={bc ? 'Notas · bitácora: minutos por pregunta · seguridad (seguro / dudo / adivino) · shopping list (cada duda, también en aciertos)… se leen en la próxima sesión de Step 1' : 'Notas: shopping list (cada duda, también en aciertos), subtema a repetir, sensación del bloque… mañana se leen a las 07:15'} placeholderTextColor={Colors.muted} multiline />
+      {!bc ? <Temporizador /> : bc.nivel === 0 ? <Temporizador presets={[[2700, '45:00 pregunta a fondo']]} nota="tope de 45′ por pregunta a fondo (en Tutor, Qbankly no pone tiempo por pregunta): si suena, lo que falte pasa a la shopping list de la próxima sesión" fin="⏰ 45′: cierra la pregunta; lo que falte, a la shopping list" /> : null}
       <View style={[st.gateBox, { borderColor: gateColor + '77', backgroundColor: gateColor + '14' }]}>
         <Text style={[st.gateTxt, { color: gateColor }]}>{gate.label}</Text>
         {gate.estado !== 'sin-dato' && <Text style={st.gateDet}>{gate.detalle}</Text>}
@@ -611,9 +665,10 @@ function MedicionCard({ dia }: { dia: DiaUSMLEPlan }) {
 }
 
 /** #10 · Temporizador §7.1/§7.5: 2:00 por pregunta (reiniciar en cada una) · 12:00 stress set 10Q · 60:00 bloque 40Q. setInterval, sin persistencia. */
-function Temporizador() {
-  const [total, setTotal] = useState(120);
-  const [seg, setSeg] = useState(120);
+function Temporizador({ presets: pr, nota, fin }: { presets?: [number, string][]; nota?: string; fin?: string } = {}) {
+  const ini = pr?.[0]?.[0] ?? 120;
+  const [total, setTotal] = useState(ini);
+  const [seg, setSeg] = useState(ini);
   const [on, setOn] = useState(false);
   useEffect(() => {
     if (!on) return;
@@ -624,11 +679,11 @@ function Temporizador() {
   const preset = (n: number) => { setTotal(n); setSeg(n); setOn(false); };
   const mm = String(Math.floor(seg / 60)).padStart(2, '0'), ss = String(seg % 60).padStart(2, '0');
   const color = seg === 0 ? RED : seg <= 15 ? Colors.gold : GREEN;
-  const presets: [number, string][] = [[120, '2:00 pregunta'], [720, '12:00 stress set'], [3600, '60:00 bloque 40Q']];
+  const presets: [number, string][] = pr ?? [[120, '2:00 pregunta'], [720, '12:00 stress set'], [3600, '60:00 bloque 40Q']];
   return (
     <View style={st.timerBox}>
       <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-        <Text style={st.medLbl}>⏱ Temporizador (§7.1 · §7.5)</Text>
+        <Text style={st.medLbl}>{pr ? '⏱ Temporizador' : '⏱ Temporizador (§7.1 · §7.5)'}</Text>
         {presets.map(([n, l]) => (
           <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => preset(n)} style={[st.tipoChip, { borderColor: total === n ? GREEN + 'CC' : Hairline.medium, backgroundColor: total === n ? GREEN + '22' : 'transparent' }]}>
             <Text style={[st.tipoChipTxt, { color: total === n ? GREEN : Colors.muted }]}>{l}</Text>
@@ -639,7 +694,7 @@ function Temporizador() {
         <Text style={[st.timerTxt, { color }]}>{mm}:{ss}</Text>
         <TouchableOpacity activeOpacity={0.85} onPress={() => { if (seg === 0) setSeg(total); setOn((o) => !o); }} style={[st.verBtn, { borderColor: GREEN + '88' }]}><Text style={[st.verTxt, { color: GREEN }]}>{on ? '❚❚ pausa' : '▶ iniciar'}</Text></TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => preset(total)} style={[st.verBtn, { borderColor: Hairline.medium }]}><Text style={[st.verTxt, { color: Colors.muted }]}>↺ reiniciar</Text></TouchableOpacity>
-        <Text style={[st.colaSub, { flex: 1 }]}>{seg === 0 ? '⏰ se acabó: adivina, marca (flag) y avanza — nunca >2 min en una pregunta' : 'reinicia en cada pregunta (90 s + 30 % = tope de 2 min)'}</Text>
+        <Text style={[st.colaSub, { flex: 1 }]}>{seg === 0 ? (fin ?? '⏰ se acabó: adivina, marca (flag) y avanza — nunca >2 min en una pregunta') : (nota ?? 'reinicia en cada pregunta (90 s + 30 % = tope de 2 min)')}</Text>
       </View>
     </View>
   );
@@ -668,6 +723,28 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
         ))}
         {pl.notas.map((n, i) => <Text key={i} style={st.franjaRegla}>⚙ {n}</Text>)}
         {FRANJAS_F4_NOTAS.map((n, i) => <Text key={`n${i}`} style={st.note}>{n}</Text>)}
+      </View>
+    );
+  }
+  // v6.10r: F1 en base cero (nivel 0-1) → el horario son las franjas de la 🧭 Guía del día (las del Calendar), no las FRANJAS fijas clásicas
+  const bc = baseCeroDe(dia);
+  if (bc) {
+    const guia = guiaUsmleDe(dia.fecha).map((g) => reemplazosCorrida(g, dia.fecha));
+    return (
+      <View>
+        <Text style={st.secLbl}>🕓 Bloque USMLE · {etiquetaDiaUSMLE(dia)} ({fmtFecha(fechaRealDe(dia.fecha, 'usmle'))}) · hora Lima · la 🧭 Guía del día manda</Text>
+        {guia.map((g, i) => (
+          <FadeUp key={`${g.franja}-${i}`} delay={i * 25}>
+            <View style={st.franja}>
+              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{g.franja}</Text></View>
+              <View style={{ flex: 1 }}>
+                <Text style={st.franjaFase}>{g.titulo}</Text>
+                <Text style={st.franjaRegla}>⚙ {g.totalMin}′ · hecho = {g.hecho}</Text>
+              </View>
+            </View>
+          </FadeUp>
+        ))}
+        <Text style={st.note}>Nivel {bc.nivel} (F1 v6.10, base cero): todo en Tutor (sin tiempo por pregunta). La plantilla clásica (pre-test 10Q 08:15 · consolidación 20-30Q · eval cronometrada 18:00) no aplica: estas son las franjas de la guía, las mismas del Calendar. Los pasos de cada franja, en 📋 HOY → 🧭 Guía del día.</Text>
       </View>
     );
   }

@@ -139,4 +139,4 @@ if (has('--abrir')) {
     catch (e) { console.log('no se pudo abrir automáticamente:', e.message); }
   }
 }
-console.log(`journal: ${JOURNAL}/${rel} · commit sugerido: git -C "${JOURNAL}" add -A && git -C "${JOURNAL}" commit -m "journal ${SEM} ${FECHA}"`);
+console.log(`journal: ${JOURNAL}/${rel} · commit sugerido (repo del journal, no es el [S<n>] del proyecto; dos órdenes): git -C "${JOURNAL}" add -A → git -C "${JOURNAL}" commit -m "journal ${SEM} ${FECHA}"`);

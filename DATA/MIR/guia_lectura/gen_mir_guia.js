@@ -44,6 +44,8 @@
  *  · v6.10e (18-nov-2026 · revisión adversarial): la cobertura de F1 se comprueba a 150 palabras/min y con la fecha de la 2.ª vuelta antes del carácter 100
  *    del «cómo» (el Calendar lo corta a 110; antes se buscaba en 260) · metodo_ravimedtest.json fases[2].avance ya no dice «oct-2027» y --check exige 0
  *    «oct-2027» en la guía D1-D78, en los avisos de fase y en las 220 sesiones del banqueo (mir-5).
+ *  · v6.10r (19-nov-2026 · chat MIR, hallazgo 9): --check exige que ningún plan B (D1-D78 y el banqueo) remita al pool oficial de la app ni a la nota madre,
+ *    que los ids que nombra sean los de su propio pre-test, que D1-D76 aplacen el quiz y que el banqueo diga que sus Q son las de hoy.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 9-nov → D78 lun 1-mar) y del JSON
  *    regenerado; banqueo = 203 sesiones (60 mant. con los sáb 8, 15 y 22-may + 129 ext. + 14 repuestas mar 26-oct → vie 12-nov-2027).
  */
@@ -320,6 +322,15 @@ function validarTodo(tsDatos) {
     const qz = g.pasos.find((p) => /Q reales MIR/.test(p.que));
     if (qz && !/solo MIR oficiales/.test(qz.como)) errores.push(`M${m.d}: el bloque de preguntas no limita el respaldo a MIR oficiales con su año-número`);
   }
+  // v6.10r (19-nov-2026 · chat MIR, hallazgo 9): con ProMIR caído el plan B usa solo preguntas de HOY: en D1-D78 no remite al pool oficial de la app ni a la
+  //   nota madre de Obsidian, los ids que nombra son los 5 de su propio pre-test (MIR_GUIA_MEDIDA) y en D1-D76 aplaza el quiz; en el banqueo, sus Q son «de hoy»
+  for (const d of MDD.MIR_DIAS) {
+    const pb = String(MG.mirGuiaDe(d.fecha).planB || ''); const ids = [...new Set(pb.match(/\b(?:19|20)\d{2}-\d{3}\b/g) || [])]; const pq = MG.mirGuiaPreguntas(d.d);
+    if (/pool oficial de la app|nota madre|◆ Obsidian/i.test(pb)) errores.push(`D${d.d}: el plan B remite al pool oficial de la app o a la nota madre (sus preguntas son de otros días; la nota, vacía)`);
+    if (ids.length && (!pq || JSON.stringify(ids) !== JSON.stringify(pq.pretest.map((q) => q.id)))) errores.push(`D${d.d}: el plan B nombra preguntas que no son las de su pre-test (${ids.join(' · ')})`);
+    if (d.d <= MDD.MIR_TEMAS_TOTAL && (!/SUS MISMAS 5Q/.test(pb) || !/el quiz se aplaza hasta que ProMIR vuelva/.test(pb))) errores.push(`D${d.d}: el plan B no da el pre-test con sus mismas 5Q o no aplaza el quiz`);
+  }
+  for (const m of MM.MIR_MANT_DIAS) { const pb = String(MG.mirGuiaMant(m, '15:15').planB || ''); if (!/Q de hoy/.test(pb) || /pool oficial de la app|nota madre/i.test(pb)) errores.push(`M${m.d}: el plan B del banqueo no dice que sus preguntas son las de hoy`); }
   // v6.10 · tanda C (decidido con Joseph en el chat MIR, 17-nov): (A) la hora MIR empieza SIEMPRE con preguntas (cierre · eval · pre-test) y Anki solo
   //   repasa lo ya estudiado · (B) el mazo de Ravi ya está en Anki: nada de importar; se reactiva POR SUBTEMA al terminarlo (último paso del día-tema) ·
   //   (D) el pre-test no muestra la sección de la pregunta antes de contestarla

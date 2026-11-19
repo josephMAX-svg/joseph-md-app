@@ -18,6 +18,7 @@
  *     T# del tramo 2) y aborta si alguna no se resuelve. v6.08 (fix revisión 14-nov, dia8): antes iban escritas a mano («(D46)», «del D23»…) y,
  *     desde la v6.03, el D# v5.20 ya no es el D# del Home (el D46 está en el tramo 2: T41-T44, mié 12 → sáb 15-may-2027).
  * v6.02c (18-oct-2026, E1): nuevo.
+ * v6.10r (19-nov-2026): PALM › BOtQJeFE_rc + `doblado` y `corteD2` · Te5RnxeG_Gg + `caps` y `faq` (capítulos verificados en vivo por el chat USMLE).
  * v6.05 (24-oct-2026): + D52, D53, D54, D56, D57 (Heme/Onco) y D79 (bioestadística): las filas v5.20 desplazadas al tramo 2 que nunca
  *   tuvieron mapeo (la guía del tramo 2 de gen_usmle_guia.js las necesita: las 11 desplazadas D47-D54, D56, D57, D79 llevan guía en su fecha T)
  *   + Pathoma cap. 4 y 6. Ids verificados contra los TSV del 18-oct (el generador aborta si alguno no existe).
@@ -33,10 +34,16 @@ const PATHOMA = {
 
 /** Palmerton (YouTube): título actual y duración real (lengthSeconds leído el 18-oct-2026; v6.03, 20-oct: los 4 «Part 2» con el título EXACTO de YouTube, verificado por oEmbed). */
 const PALM = {
-  BOtQJeFE_rc: { t: 'The ONLY Video You Need to Pass the USMLE Step 1 in 2026', s: 2293 },
+  // v6.10r (jue 19-nov-2026, verificación EN VIVO del chat USMLE en YouTube): arranca con DOBLAJE automático al español (`doblado`) y sus subtítulos en
+  //   inglés son solo automáticos; sin capítulos del autor: el tramo del Anki del D2 corta en 15:04 (`corteD2`), donde empieza «Reading test writer intent»
+  //   (15:04-19:27, capítulo automático de YouTube); el resto sigue en la cola (D2 11:00 + D3 10:45)
+  BOtQJeFE_rc: { t: 'The ONLY Video You Need to Pass the USMLE Step 1 in 2026', s: 2293, doblado: true, corteD2: 904 },
   // v6.10i (auditoría del volcado c12): `t` = solo el título real de YouTube (entre comillas en la guía); `app` = el nombre con el que lo lista la app
   //   (usmleStep1Daily › D3 «PALMERTON · al empezar el sistema»), que la guía pone FUERA de las comillas: «…Fixed It.» (en la app: «…»)
-  Te5RnxeG_Gg: { t: 'Anki Almost Broke Me at Stanford Med. 8 Changes Fixed It.', app: '5X Your Anki Efficiency (FSRS)', s: 1847 },
+  // v6.10r (19-nov, verificación EN VIVO): capítulos del autor (s): 0:00 Intro · 3:37 · 6:50 · 9:10 · 13:10 · 15:55 · 19:20 · 22:00 · 23:50 Change 8 ·
+  //   26:15 FAQ (hasta el final, 30:47) → `caps` (inicio de cada capítulo) y `faq`; subtítulos en inglés solo automáticos. Se reparte entero en la holgura
+  //   del Anki AM USMLE (gen_usmle_guia.js · HOLGURA_ANKI), cortando siempre en un límite de capítulo; el FAQ, opcional al final.
+  Te5RnxeG_Gg: { t: 'Anki Almost Broke Me at Stanford Med. 8 Changes Fixed It.', app: '5X Your Anki Efficiency (FSRS)', s: 1847, caps: [0, 217, 410, 550, 790, 955, 1160, 1320, 1430], faq: 1575 },
   Nfp3hs490wM: { t: 'High Yield Immunology for Shelf Exams & Step 1 + Step 2 CK', s: 2486 },
   hOGhcie47nM: { t: 'High Yield Cardiology for Shelf Exam & Step 1 + Step 2 CK', s: 6719 },
   nFfdaHLtxag: { t: 'High Yield Cardiology Part 2 | Shelf Exam, Step 1 & Step 2 CK', s: 5043 },

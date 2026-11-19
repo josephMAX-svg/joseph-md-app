@@ -10,7 +10,7 @@ import {
   USMLE_STEP2_RESOURCES, USMLE_CHECKPOINTS, USMLE_READINESS, FIRST_AID_INDEX, SKETCHY_SYMBOLS,
   PRIORIDAD_COLOR, VUELTAS, ANKI_CONFIG_PALMERTON, USMLE_RAMP_LEGACY, USMLE_LEGACY_NOTA,
 } from '../../lib/usmleData';
-import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1 } from '../../lib/usmleStep1Daily';
+import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1, etiquetaDiaUSMLE } from '../../lib/usmleStep1Daily';
 import { FECHAS_V6, reservaStep1, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
@@ -71,6 +71,9 @@ export default function UsmleHub() {
   const pausa = enPausaStep1(iso);
   const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const posHoy = Math.max(1, DIAS_TODOS.findIndex((x) => x.d === hoyD) + 1);
+  // v6.10r: UN solo contador de día = el de la navegación, la guía y el Home (etiquetaDiaUSMLE: «2/13» en F1 · «T5/218» en el tramo 2); antes la posición sobre 230 filas («1/230» junto a «Día 2/13»)
+  const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);
+  const diaValor = pausa ? 'PAUSA' : hoyRow ? etiquetaDiaUSMLE(hoyRow).replace(/^Día /, '') : undefined;
   const glob = progresoGlobal(DIAS_TODOS, new Set(done));
   // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.
   const [scores, setScores] = useState<UsmleScore[]>(() => loadScores());
@@ -95,7 +98,7 @@ export default function UsmleHub() {
         flag={USMLE_META.flag} title={USMLE_META.title}
         subtitle="US knowledge-bank terminal · Pathology + Physiology = the exam"
         accent={JADE}
-        dia={posHoy} total={glob.total} temarioPct={glob.pct}
+        dia={posHoy} total={glob.total} diaValor={diaValor} temarioPct={glob.pct}
         racha={`${done.length} temas`}
         readinessPct={rd ? rd.pct : USMLE_READINESS.pct} readinessLabel={rd ? rd.label : USMLE_READINESS.status}
         extraStat={{ label: 'PATH', value: `${USMLE_KPIS.pathologyPct}%`, hint: 'del examen', accent: Colors.coral }}
@@ -244,7 +247,7 @@ function ChecklistCard({ scores }: { scores: UsmleScore[] }) {
 function AnkiConfigCard() {
   return (
     <GlassPanel accent={Colors.teal} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
-      <Text style={st.h3}>🃏 Configuración Anki exacta (Palmerton §4.2) · aplicar antes del D1</Text>
+      <Text style={st.h3}>🃏 Configuración Anki · preset «APEX USMLE» (Palmerton §4.2; los pasos, en la guía del día)</Text>
       {ANKI_CONFIG_PALMERTON.map((a, i) => (
         <View key={i} style={[st.hourRow, i === 0 && { borderTopWidth: 0 }]}>
           <View style={{ flex: 1 }}>

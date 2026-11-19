@@ -117,6 +117,13 @@
  *    D2) abre como el del D1: «Tapa las opciones · Rule-In → Rule-Out · 6Q ≈ 10,7′ (…) · las 2 primeras que no entren abren la eval de mañana (…)» (antes
  *    «… · tapa las opciones · 6Q ≈ … · Rule-In → Rule-Out», y el corte se llevaba «Rule-In → Rule-Out»). --check: en los 76 quizzes el par va junto, justo
  *    delante del ritmo y dentro de los 110; la cola del D2, antes del carácter 200 y como única fecha del «cómo» (como la del D1).
+ *  · v6.10r (19-nov-2026 · chat MIR, hallazgo 9; decisión del chat de plan; solo TEXTO del plan B: mismas preguntas, secciones, minutos y horas): el plan B
+ *    con ProMIR caído decía «pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: 5Q del capítulo + 25 de Epidemiología) y lectura en la
+ *    nota madre de Obsidian»: el pool de la ASIGNATURA son los pre-tests ciegos, quizzes, evals y cierres de otros días (D1: 18 de las 25 ya repartidas: los
+ *    pre-tests del D2 y del D3, el cierre del D4…) y la nota madre del tema está vacía hasta que se escribe. Ahora (planBMir): la eval anclada o el test de
+ *    cierre y el pre-test, con SUS MISMAS preguntas de hoy (el pre-test con sus 5 por año-número), por el chat MIR · lectura en el resumen de Ravi del Drive ·
+ *    el quiz se APLAZA hasta que ProMIR vuelva, con su misma lista (no se sustituye) · modo mínimo de los días de cierre = el test de cierre (antes «4Q
+ *    ancladas», que ese día no hay). --check: cada plan B nombra solo ids de su propio pre-test, ninguno de otro día, y no remite al pool ni a la nota madre.
  *  · v6.07 (8-nov-2026 · corrimiento D1 = lun 9-nov; la semana del lun 2-nov sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 9-nov →
  *    D76 jue 25-feb · dermaDailyPlan d1-d5 mar 10 → vie 20-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
@@ -252,6 +259,22 @@ function cobertura150(us, leidos, conRecuadro) {
 }
 /** v6.10e (revisión del 18-nov · dias-1920-11): dónde están las preguntas con su enlace (la tarjeta del Home solo pinta el texto del paso) */
 const DONDE_IDS = 'enlaces en Estudio › 🇪🇸 España › Cola de hoy';
+/** v6.10r (19-nov-2026 · chat MIR, hallazgo 9): PLAN B con ProMIR caído = las MISMAS preguntas de HOY (nunca el pool de la asignatura: son los pre-tests,
+ *  quizzes, evals y cierres de otros días) · lectura en el resumen de Ravi del Drive (la nota madre del tema está vacía hasta que se escribe) · el quiz se
+ *  aplaza con su misma lista. `modo` = el modo mínimo del día roto (los primeros 15′: en el D1, pre-test + §2-§3; con cierre, el cierre; si no, Anki + eval). */
+function planBMir(preguntas, pasos, modoD1) {
+  const ids = preguntas.pretest.map((q) => q.promir);
+  if (ids.length !== 5) throw new Error(`plan B: el pre-test tiene ${ids.length} preguntas (se esperaban 5)`);
+  const ev = pasos.find((p) => /^EVAL ANCLADA/.test(p.que));
+  const nEv = ev ? (/^EVAL ANCLADA (\d+)Q(?: \+ (\d+)Q de la cola)?/.exec(ev.que) || []).slice(1, 3).reduce((a, n) => a + (+n || 0), 0) : 0;
+  const nCi = (preguntas.cierre || []).length;
+  if (ev && !nEv) throw new Error('plan B: no se pudo leer cuántas preguntas tiene la eval anclada');
+  const previas = nCi ? `el test de cierre con sus ${nCi}Q de hoy y ` : nEv ? `la eval anclada con sus ${nEv}Q de hoy y ` : '';
+  const modo = modoD1 || (nCi ? `el test de cierre de hoy (sus ${nCi}Q, 15′).` : `Anki a cero + las ${nEv}Q de la eval de hoy (15′).`);
+  // numeración de ProMIR (año de la convocatoria): sin ProMIR, el chat las busca en el cuadernillo oficial del año SIGUIENTE (pool 2022-046 = ProMIR 2021-046)
+  const [a0, n0] = ids[0].split('-');
+  return `Si ProMIR no abre: ${previas}el pre-test con SUS MISMAS 5Q (${ids.join(' · ')}; numeración de ProMIR: ${ids[0]} = MIR ${a0}-${+a0 + 1}, P${n0}), por el chat MIR · lectura: el resumen de Ravi del tema (rabi_94, Drive) · el quiz se aplaza hasta que ProMIR vuelva, con su misma lista (no lo sustituyas por otras preguntas del pool oficial: son los pre-tests, quizzes y cierres de otros días). Día roto (modo mínimo): ${modo}`;
+}
 /** El Calendar copia el «qué» de cada paso cortado a 150 caracteres CON la hora del paso delante («15:37–15:53 · », 14): el «qué» de la lectura cabe
  *  ENTERO en lo que queda (136) y empieza por la lista de apartados de hoy. Si la lista con todo su detalle no cabe, se compacta (título + minutos →
  *  título → los primeros por título y el resto por su número «§n») y el detalle de cada apartado va al «cómo» (la app lo muestra entero). */
@@ -577,7 +600,8 @@ function pasosD1(d) {
     bloque: {
       franja: `${D1_RELOJ[0]}–${D1_RELOJ[D1_RELOJ.length - 1]}`, plan: 'MIR', titulo: `MIR D${d}/78 · ${x.asignatura} — ${x.tema}`, totalMin, pasos, recursos,
       hecho: `Pre-test 5Q registrado (línea base) + lectura de base en orden (+ el §9 con lo que sobre) + ${D1_QUIZ.min}-${D1_QUIZ.max}Q del quiz registradas + ≤4 APEX de los fallos + repaso en blanco + las ${rv.n} tarjetas de Ravi del ${rv.tema} reactivadas.`,
-      planB: `Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: ${pool.length}Q del capítulo + ${POOL.preguntasDeAsignatura(x.num).length} de ${x.asignatura}) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): pre-test 5Q + §2 y §3 de la lectura de base (15′).`,
+      // v6.10r (chat MIR, hallazgo 9): las MISMAS preguntas de hoy (antes «pool oficial de la app … 5Q del capítulo + 25 de Epidemiología» y la nota madre)
+      planB: planBMir(preguntas, pasos, 'pre-test 5Q + §2 y §3 de la lectura de base (15′).'),
     },
     preguntas,
     lectura: {
@@ -816,7 +840,8 @@ function pasosDia(d) {
     bloque: {
       franja: '15:15–16:15', plan: 'MIR', titulo: `MIR D${d}/78 · ${x.asignatura} — ${x.tema}`, totalMin, pasos, recursos,
       hecho: `${cierre ? 'Cierre 10Q registrado + ' : !anc.d1 ? 'Mazo creado + 5Q ciegas extra + ' : 'Eval registrada + Anki a cero + '}pre-test 5Q registrado${fz.n === 1 ? ' (línea base)' : ''} + lectura de ${fz.n === 1 ? 'base' : 'la lista'} en orden, sin saltar secciones + ≥${QUIZ_HACER}Q del quiz registradas + ≤4 APEX creados.`,
-      planB: `Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR → registro: ${pool.length}Q del capítulo + ${POOL.preguntasDeAsignatura(x.num).length} de ${x.asignatura}) y lectura en la nota madre de Obsidian (◆ Obsidian) o en el resumen de rabi_94 (Drive). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′).`,
+      // v6.10r (chat MIR, hallazgo 9): las MISMAS preguntas de hoy (antes «pool oficial de la app … NQ del capítulo + M de <asignatura>» y la nota madre)
+      planB: planBMir(preguntas, pasos),
     },
     preguntas,
     lectura: {
@@ -1066,6 +1091,24 @@ if (rep.length) errs.push('preguntas repetidas entre pasos: ' + [...new Set(rep)
 //   extra del D1, quiz, eval (anclas y cola) y cierres
 const noServ = salida.flatMap((x) => [].concat(x.preguntas.pretest, x.preguntas.extraD1 || [], x.preguntas.quiz, (x.preguntas.eval || []).flatMap((e) => e.preguntas), x.preguntas.cierre || []).filter((q) => noServible(q.promir)).map((q) => `D${x.d} ${q.promir} (pool ${proMIRAPool(q.promir)})`));
 if (noServ.length) errs.push('preguntas NO servibles (anuladas o con la clave en duda en el pool oficial): ' + noServ.join(', '));
+// v6.10r (chat MIR, hallazgo 9): el plan B con ProMIR caído usa solo preguntas de HOY: los ids que nombra son los 5 de su propio pre-test, en orden, y ninguno
+//   está repartido a otro día (pre-test, extra, quiz, eval o cierre); no remite al pool oficial de la app ni a la nota madre de Obsidian; el quiz se aplaza;
+//   el modo mínimo de un día de cierre no pide «4Q ancladas» (ese día no hay)
+{
+  const dueno = new Map(); const pon = (pid, d, k) => { if (!dueno.has(pid)) dueno.set(pid, []); dueno.get(pid).push(`D${d} ${k}`); };
+  for (const x of salida) {
+    x.preguntas.pretest.forEach((q) => pon(q.promir, x.d, 'pre-test')); (x.preguntas.extraD1 || []).forEach((q) => pon(q.promir, x.d, 'extra'));
+    x.preguntas.quiz.forEach((q) => pon(q.promir, x.d, 'quiz')); (x.preguntas.cierre || []).forEach((q) => pon(q.promir, x.d, 'cierre'));
+    (x.preguntas.eval || []).forEach((e) => e.preguntas.forEach((q) => pon(q.promir, x.d, `eval ${e.slot}`)));
+  }
+  for (const x of salida) {
+    const pb = String(x.bloque.planB || ''); const ids = [...new Set(pb.match(/\b(?:19|20)\d{2}-\d{3}\b/g) || [])]; // sin repetir el ejemplo de la numeración
+    const ajenos = ids.flatMap((pid) => (dueno.get(pid) || []).filter((k) => !k.startsWith(`D${x.d} `)).map((k) => `${pid} (${k})`));
+    if (!/SUS MISMAS 5Q/.test(pb) || JSON.stringify(ids) !== JSON.stringify(x.preguntas.pretest.map((q) => q.promir))) errs.push(`D${x.d}: el plan B no da el pre-test con sus MISMAS 5Q (ids: ${ids.join(' · ') || '—'})`);
+    if (ajenos.length) errs.push(`D${x.d}: el plan B usa preguntas de otro día: ${ajenos.join(', ')}`);
+    if (/pool oficial de la app|nota madre|◆ Obsidian/i.test(pb) || !/el quiz se aplaza hasta que ProMIR vuelva/.test(pb) || (x.preguntas.cierre && /ancladas/.test(pb))) errs.push(`D${x.d}: el plan B remite al pool de la app o a la nota madre, no aplaza el quiz o pide ancladas un día de cierre`);
+  }
+}
 if (errs.length) { console.error('ERRORES:', errs); process.exit(1); }
 const txt = JSON.stringify(json, null, 1) + '\n';
 if (CHECK) {

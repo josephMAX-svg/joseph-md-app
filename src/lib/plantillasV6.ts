@@ -259,10 +259,12 @@ function nombresStepF1(u: DiaUSMLEPlan | null): { am: string; pm: string } {
   const hNom = h ? (/NBME \d+|UWSA\d/.exec(h.sub) ?? ['hito'])[0] : '';
   const tras1 = !!h && DIAS_TODOS[i - 1] === h;
   const n0 = u.qDia <= 9; // nivel 0 (D2-D4: 3-4 preguntas a fondo + validación de 5)
+  // remate v6.10r (revisión BAJA #3): «Tutor, sin tiempo por pregunta» (la v6.10r lo quitó de pasos y franjas: en Qbankly no hay casilla «sin reloj») y el
+  //   Day-After 6/6 de F1 con «eval 10Q Tutor» como su guía (antes «timed»)
   return {
-    am: n0 ? `USMLE · NIVEL 0 · ${u.qDia === 8 ? '3 preguntas a fondo' : 'revalidación + 4 preguntas a fondo'} + página completa + validación (Tutor, sin reloj)`
-      : `USMLE · ${tras1 ? `Day-After ${hNom} 2/6 + ` : ''}NIVEL 1 · ${tras1 ? 'bloque de 5Q + deep prime + revalidación' : 'revalidación + 2 bloques de 5Q + deep prime'} + validación (Tutor, sin reloj)`,
-    pm: h ? (() => { const n = i - DIAS_TODOS.indexOf(h); return `USMLE · Day-After ${hNom} ${n + 2}/6 (drill de cronología${n === 4 ? ' + eval 10Q timed' : ''})`; })() : 'USMLE · 1.ª pasada de Anki + vocabulario + nota del día',
+    am: n0 ? `USMLE · NIVEL 0 · ${u.qDia === 8 ? '3 preguntas a fondo' : 'revalidación + 4 preguntas a fondo'} + página completa + validación (Tutor, sin tiempo por pregunta)`
+      : `USMLE · ${tras1 ? `Day-After ${hNom} 2/6 + ` : ''}NIVEL 1 · ${tras1 ? 'bloque de 5Q + deep prime + revalidación' : 'revalidación + 2 bloques de 5Q + deep prime'} + validación (Tutor, sin tiempo por pregunta)`,
+    pm: h ? (() => { const n = i - DIAS_TODOS.indexOf(h); return `USMLE · Day-After ${hNom} ${n + 2}/6 (drill de cronología${n === 4 ? ' + eval 10Q Tutor' : ''})`; })() : 'USMLE · 1.ª pasada de Anki + vocabulario + nota del día',
   };
 }
 function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
@@ -304,7 +306,9 @@ function ankiNombreF1(iso: string): string {
   // v6.10f/g (regla de Joseph del 17-nov: ninguna estructura vacía por adelantado): el jue 19 solo se guarda el preset FSRS (sin asignar); APEX::USMLE y cada submazo nacen con su primera tarjeta
   if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN (preset FSRS, sin mazos) 45′';
   // v6.10h (revisión 18-nov · c10): «sin tarjetas que repasar» y no «sin mazo»: la [TEST S1] del vibecoding (04:15) puede haber creado ya APEX::USMLE (suspendida)
-  if (iso === '2026-11-19') return 'ANKI · USMLE sin tarjetas que repasar → vídeos de método 28′ · repasos ENCAPS 15′';
+  // v6.10r (19-nov · decisión del chat de plan): la configuración del mié 18 (jue 19 real) no se hizo → el D2 hace el preset «APEX USMLE» desde las Deck Options del
+  //   propio APEX::USMLE (ya existe, vacío) 9′ + «The ONLY Video…» 20′ (+ Sync 1′); «Anki Almost Broke Me…» pasa a la holgura del Anki AM siguiente
+  if (iso === '2026-11-19') return 'ANKI · USMLE: preset «APEX USMLE» 9′ + vídeo de método 20′ · repasos ENCAPS 15′';
   return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
 }
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */

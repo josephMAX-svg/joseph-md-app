@@ -46,6 +46,9 @@
  *   opciones · Rule-In → Rule-Out» delante del ritmo.
  * v6.10p (19-nov-2026 · ronda c18 del Calendar, solo TEXTO): en la guía medida, el quiz del D2 abre como el del D1 («Tapa las opciones · Rule-In → Rule-Out
  *   · 6Q ≈ 10,7′ (…) · las 2 primeras que no entren abren la eval de mañana (…)»): el par ya no queda partido por el ritmo ni tras el corte del Calendar.
+ * v6.10r (19-nov-2026 · chat MIR, hallazgo 9; solo TEXTO del plan B): con ProMIR caído, la eval o el cierre y el pre-test van con SUS MISMAS preguntas de hoy
+ *   (por el chat MIR), la lectura en el resumen de Ravi del Drive y el quiz se aplaza con su misma lista; nunca el pool de la asignatura (son los pre-tests,
+ *   quizzes y cierres de otros días) ni la nota madre (vacía hasta que se escribe). Días por regla: planBPorRegla; banqueo: «las 10 primeras de las NQ de hoy».
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja
  *   ni los 60′: Anki = mazo personal APEX::MIR primero y mazo base de Ravi («1ºVUELTA 2MIR21», suspendido y reactivado por asignatura) después,
@@ -258,6 +261,15 @@ export function metodoRavi(g: GuiaBloque, dia: DiaMIR): GuiaBloque {
   };
 }
 
+/** v6.10r (19-nov-2026 · chat MIR, hallazgo 9): plan B de un día por regla con ProMIR caído = las MISMAS preguntas de hoy (eval o cierre + pre-test) por el
+ *  chat MIR, lectura en el resumen de Ravi y el quiz aplazado con su misma lista; nunca el pool de la asignatura ni la nota madre (texto de planBMir). */
+function planBPorRegla(dia: DiaMIR, cierre: boolean): string {
+  const a = mirAnclas(dia.d);
+  const nEv = cierre ? 0 : (a.d1 ? 2 : 0) + (a.d3 ? 1 : 0) + (a.d7 ? 1 : 0);
+  const previas = cierre ? 'el test de cierre con sus 10Q de hoy y ' : nEv ? `la eval anclada con sus ${nEv}Q de hoy y ` : '';
+  const modo = cierre ? 'el test de cierre de hoy (sus 10Q, 15′).' : nEv ? `Anki a cero + las ${nEv}Q de la eval de hoy (15′).` : 'Anki a cero + el pre-test de hoy (15′).';
+  return `Si ProMIR no abre: ${previas}el pre-test con SUS MISMAS 5Q (las de Estudio › 🇪🇸 España › Cola de hoy), por el chat MIR · lectura: el resumen de Ravi del tema (rabi_94, Drive) · el quiz se aplaza hasta que ProMIR vuelva, con su misma lista (no lo sustituyas por otras preguntas del pool oficial: son los pre-tests, quizzes y cierres de otros días). Día roto (modo mínimo): ${modo}`;
+}
 /** Día-tema SIN medición (no ocurre con el plan v6.03: los 76 capítulos están medidos): misma estructura que los medidos, con «sin medir». */
 function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
   const deck = mirAnkiDeck(dia.asignatura);
@@ -322,7 +334,9 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     pasos: conHoras(pasos, ini),
     recursos,
     hecho: `${cierre ? 'Test de cierre 10Q registrado' : 'Eval anclada registrada'} + pre-test 5Q registrado + lectura en orden, sin saltar secciones + ≥6Q del quiz registradas + ≤4 APEX creados.`,
-    planB: 'Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR) y lectura en la nota madre de Obsidian (◆ Obsidian). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′).',
+    // v6.10r (chat MIR, hallazgo 9): las MISMAS preguntas de hoy, como la guía medida (gen_guia_lectura.planBMir); antes «pre-test y quiz con el pool oficial
+    //   de la app» (el pool de la asignatura son los pre-tests, quizzes y cierres de otros días) y la nota madre (vacía hasta que se escribe)
+    planB: planBPorRegla(dia, !!cierre),
     aviso: `Capítulo sin medir (la medición cubre los 76 capítulos del plan v6.03; este día no está en ella): las secciones de la lectura se eligen por regla. Para fijarlas: DATA/MIR/guia_lectura/analiza_cap.js (DevTools) → medicion_promir_*/ → gen_guia_lectura.js → gen_mir_guia.js.`,
   };
 }
@@ -437,7 +451,8 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     pasos: conHoras(pasos, ini),
     recursos,
     hecho: `${dia.nQ}Q respondidas en ${dia.minQ} min + neto registrado en la app (kind mantenimiento)${dia.tierC ? ' + entrada propia del Tier C' : ''} + Anki a cero.`,
-    planB: 'Guardia o día roto: Anki a cero + 10Q en tiempo muerto; lo que no se termine se suma al día de plan siguiente (DJ-4).',
+    // v6.10r (chat MIR, hallazgo 9): las 10Q son de HOY (antes «10Q en tiempo muerto», sin decir de dónde: el pool de la asignatura es de otros días)
+    planB: `Guardia o día roto: Anki a cero + ${dia.nQ > 10 ? `las 10 primeras de las ${dia.nQ}Q de hoy` : `las ${dia.nQ}Q de hoy`} en tiempo muerto (nunca preguntas de otro día); lo que no se termine se suma al día de plan siguiente (DJ-4).`,
     // v6.10 · base cero: el banqueo es la fase 3 (nivel 3) si el mini-MIR D77 pasó la puerta; si no, sigue en niveles 1-2
     aviso: [avisoFase(mirFaseDe('banqueo')), dia.repuesta ? `Sesión REPUESTA (${dia.repuesta}): la extensión la perdió con los corrimientos v6.01/v6.02/v6.03 y se recoloca tras el examen Step 1 («si se recortó algo, alárgalo»).` : ''].filter(Boolean).join(' · ') || undefined,
   };

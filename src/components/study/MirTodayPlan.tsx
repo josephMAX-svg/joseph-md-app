@@ -572,7 +572,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={6} totalOpciones={[6, 7, 8]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 6Q comentadas (máx. 8)" tactica qIds={qIdsQuiz} onSaved={bump} />
           </Plegable>
           {mirObsUrl(dia.capId) && (
-            <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema (lectura / Shopping List)" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · los APEX NO pasan por aquí hasta verificar n8n (P0-2/P0-3): van directos a Anki" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
+            <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema, si ya tiene contenido (lectura / Shopping List)" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · los APEX NO pasan por aquí hasta verificar n8n (P0-2/P0-3): van directos a Anki" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
           )}
           <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (FSRS · retention 0,85)" val={mirAnkiDeck(dia.asignatura)} sub={`abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto · preset APEX::MIR · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
           <FadeUp delay={150}>

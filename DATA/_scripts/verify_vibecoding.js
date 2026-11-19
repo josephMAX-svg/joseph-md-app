@@ -8,7 +8,7 @@
 // puede leer el mismo JSON.
 //
 // Tipos de comprobación:
-//   git      { repo, grep }                 → git -C <repo> log --all --grep '\[S<n>\]' tiene ≥1 commit
+//   git      { repo, grep }                 → git -C <repo> log --all --grep '^\[S<n>\]' tiene ≥1 commit (anclado al inicio de línea: un cuerpo que solo CITA [S1] no cuenta)
 //   test     { cwd, cmd, expect? }          → el comando termina con código 0 (y su salida contiene `expect`)
 //   url      { url }                        → HEAD/GET responde 2xx/3xx
 //   supabase { tabla, min_filas? }          → REST /rest/v1/<tabla> con la anon key de src/lib/supabase.ts → 200 y count ≥ min
@@ -54,7 +54,7 @@ function checkGit(v) {
   if (!fs.existsSync(path.join(repo, '.git'))) return { ok: false, msg: `repo sin .git: ${repo}` };
   const pat = String(v.grep).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   try {
-    const out = cp.execSync(`git -C "${repo}" log --all --grep="${pat}" --oneline`, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 20000 }).trim();
+    const out = cp.execSync(`git -C "${repo}" log --all --grep="^${pat}" --oneline`, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 20000 }).trim();
     const n = out ? out.split('\n').length : 0;
     return { ok: n > 0, msg: n ? `${n} commit(s) ${v.grep}: ${cut(out.split('\n')[0], 70)}` : `ningún commit con ${v.grep} en ${repo}` };
   } catch (e) { return { ok: false, msg: 'git log falló: ' + cut(e.message, 70) }; }

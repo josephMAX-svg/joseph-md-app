@@ -159,15 +159,18 @@ export const USMLE_QBANK_RULES = [
  * #15 · Configuración Anki exacta de Palmerton (§4.2 de PALMERTON_METODO_COMPLETO.md; 2.ª capa 19-sep-2026). Se pinta en la pestaña
  * Palmerton; la telemetría (anki_telemetria.js → getDeckConfig rev.perDay / rollover) queda fuera de la app (pendiente; nombre exacto
  * de la clave en AnkiConnect A VERIFICAR). Joseph aplica los ajustes antes del D1.
+ * remate v6.10r (19-nov-2026, revisión BAJA #8): alineada con el preset «APEX USMLE» que crea el Anki del D2 (gen_usmle_guia.js › reglaAnki: FSRS 0,90 ·
+ *   20 nuevas/día · 9999 repasos · repasos antes que nuevas · día a las 4 h · APEX::USMLE con sus submazos, un solo preset con Save to All Subdecks). Antes
+ *   decía ≤50 nuevas/día, «dejar SM-2 el primer mes» y «2 mazos, máximo 3»: contradecía la guía del día.
  */
 export const ANKI_CONFIG_PALMERTON: { ajuste: string; valor: string; porque: string; check?: string }[] = [
-  { ajuste: 'FSRS', valor: 'Activado (desired retention 0,90; rango sano 85-90 %)', porque: 'de 90 a 100 % = +500 % de tiempo; principiante sin datos → dejar SM-2 el primer mes', check: 'deckConfig.fsrs / desiredRetention' },
-  { ajuste: 'New cards/day', valor: '≤50 (principiantes 30-40); pharm aparte con 20/día dentro del cap', porque: '>50 → colisión de intervalos cortos entre la semana 3 y la 6 → avalancha y burnout', check: 'new.perDay' },
+  { ajuste: 'FSRS', valor: 'Activado desde el primer día (desired retention 0,90; rango sano 85-90 %) · «Optimize» del preset tras 4 semanas de repasos', porque: 'de 90 a 100 % = +500 % de tiempo', check: 'deckConfig.fsrs / desiredRetention' },
+  { ajuste: 'New cards/day', valor: '20 (preset «APEX USMLE»; Palmerton: ≤50, principiantes 30-40)', porque: '>50 → colisión de intervalos cortos entre la semana 3 y la 6 → avalancha y burnout; con el tope de creación del plan, 20/día bastan', check: 'new.perDay' },
   { ajuste: 'Maximum reviews/day', valor: '9999', porque: 'el default (100) OCULTA tarjetas vencidas y crea un backlog invisible', check: 'rev.perDay = 9999 (alarma si <9999)' },
   { ajuste: 'Learning steps / intervalos', valor: 'los de por defecto', porque: 'manipularlos "para acelerar" deforma la matemática del algoritmo' },
   { ajuste: 'Orden', valor: 'Reviews first, new cards second', porque: '"plugging the leaks" antes de añadir; si falta tiempo, nuevas = 0', check: 'newMix / reviewOrder' },
   { ajuste: 'Next day starts at (rollover)', valor: '4 h (en vez de 9): despiertas a las 05:00', porque: 'que las tarjetas del día estén listas al abrir a las 05:00', check: 'rollover = 4 (alarma si ≠ 4)' },
-  { ajuste: 'Mazos', valor: '2 (Pharmacology + no-pharm); máximo 3 (micro aparte)', porque: 'nunca 6 mazos por materia ni "mother of all decks": fricción diaria', check: 'nº de mazos APEX::USMLE ≤ 3' },
+  { ajuste: 'Mazos', valor: 'APEX::USMLE con sus submazos por especialidad (ya existen) y UN solo preset, «APEX USMLE», en todos (Save to All Subdecks); se estudia desde el padre', porque: 'un clic en el padre junta todos los submazos: sin fricción diaria ni presets distintos (Palmerton: nunca 6 mazos sueltos por materia)', check: 'preset de APEX::USMLE y de cada submazo = «APEX USMLE»' },
   { ajuste: 'Sync', valor: 'AnkiWeb al INICIO y al FINAL de cada sesión; conflicto → Upload desde el dispositivo recién usado', porque: 'elegir mal borra los repasos del día' },
   { ajuste: 'Note type', valor: 'Basic (optional reversed card); "y" en Add Reverse SOLO si la dirección inversa se evalúa', porque: 'reversar todo duplica el mazo' },
   { ajuste: 'Dispositivos', valor: 'crear/editar en desktop; móvil solo para repasar; en hospital AnkiWeb en el PC', porque: 'Med School Anki FAQ 12' },
