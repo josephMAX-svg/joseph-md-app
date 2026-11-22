@@ -7,7 +7,7 @@
  * Fuentes: filas del SQL vigente (_encaps_mantenimiento_2027.sql = Supabase; no cambia fechas, dia ni códigos del régimen v6.10) · runners de
  * DATA/ENCAPS/BANCO_PROPIO publicados en https://joseph-md-app.vercel.app/encaps/bp/ (public/encaps/bp) · material del Drive del 18-oct por código · nota Obsidian del CÓDIGO ·
  * proyecto de Claude del área. Una sesión cuya fila de Supabase no cuadre (dia/código) con la de aquí NO usa la guía (sesionEncapsCuadra).
- * v6.02c (18-oct-2026, E4): nuevo. · v6.10 (generado 2026-11-19): F1 dia 1-32 desde el mié 18-nov (v6.10d: SIN re-fecha — alias de corrida_s1: cada sesión se hace en su día real (fechaRealDe), vie 20-nov → vie 1-ene; las fechas de aquí, las de Supabase y las de los runners son de PLAN y la app las muestra con su día real).
+ * v6.02c (18-oct-2026, E4): nuevo. · v6.10 (generado 2026-11-22): F1 dia 1-32 desde el mié 18-nov (v6.10d: SIN re-fecha — alias de corrida_s1: cada sesión se hace en su día real (fechaRealDe), lun 23-nov → vie 1-ene; las fechas de aquí, las de Supabase y las de los runners son de PLAN y la app las muestra con su día real).
  */
 import type { GuiaBloque } from './guia';
 
@@ -23,7 +23,7 @@ export interface EncapsSesionGuia {
 
 export const ENCAPS_GUIA_META = {
   "version": "v6.10",
-  "generado": "2026-11-19",
+  "generado": "2026-11-22",
   "fuente": "DATA/_scripts/gen_encaps_guia.js + encaps_guia_catalogo.js · ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (2026-11-17)",
   "sesiones": 32,
   "conRunnerPublicado": 7,
