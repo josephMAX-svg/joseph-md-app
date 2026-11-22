@@ -209,14 +209,25 @@ export function encapsLabelDe(iso: string): string | null {
   // v6.07: lun · mié · vie de F1 = MAÑANA ENCAPS (07:15-12:00) además de la sesión de las 16:15 · sábado = clase EN VIVO · domingo = opcional
   // v6.07a (lun 9-nov, revisión): en la semana corrida la mañana y la sesión de las 16:15 salen de los BLOQUES del día (su fecha de plan): antes la
   //   mañana iba con la fecha real (el mié 11 del UWSA1 decía «mañana 2/22») y el reparto tomaba la parte del propio fin de semana
-  const pc = corridaS1De(iso) ? plantillaDelDia(iso) : null;
-  const bAm = pc?.bloques.find((b) => b.id === 'encaps-am'), b16 = pc?.bloques.find((b) => b.id === 'encaps');
+  // v6.10w (remate): también un día con bloques EXTRA de corrida_s1 entre semana (lun 4-ene: el ENCAPS de las 09:45 hace la sesión del sáb 2-ene)
+  const pc = corridaS1De(iso) || FECHAS_V6.corrida_s1.extra?.[iso] ? plantillaDelDia(iso) : null;
+  // v6.10w (remate · revisión cobertura): un día con DOS bloques «encaps» (lun 4-ene: el RE-SCAN de la intensiva, sin fecha de plan, y el ENCAPS de las 09:45 que
+  //   hace la sesión del sáb 2-ene) → la sesión es la del bloque con fecha de plan; el otro y la clase en diferido fija del día (encaps-rec) van delante y detrás.
+  //   Antes cogía el primero (el RE-SCAN), no encontraba sesión y la etiqueta decía «ENCAPS 10:45 recuperación del viaje (fija)»
+  const bAm = pc?.bloques.find((b) => b.id === 'encaps-am');
+  const bEs = pc?.bloques.filter((b) => b.id === 'encaps') ?? [];
+  const b16 = bEs.find((b) => b.fechaPlan && b.fechaPlan !== iso) ?? bEs[0];
+  const bOtro = bEs.length > 1 ? bEs.find((b) => b !== b16) : undefined;
+  const recDia = encapsRecuperaDe(iso);
+  const bRec = recDia && !recDia.llegada && new Date(iso + 'T12:00:00Z').getUTCDay() !== 0 ? pc?.bloques.find((b) => b.id === 'encaps-rec') : undefined;
+  const corto = (n: string): string => n.replace(/^ENCAPS · /, '').replace(/\s*\(.*$/, '').replace(/:.*$/, '');
   const am = pc ? (bAm ? encapsMananaDe(bAm.fechaPlan ?? iso) : null) : encapsMananaDe(iso);
   const pre = am ? `ENCAPS mañana ${am.n}/${am.de} · ${am.resumen.split(' · ')[0]}` : null;
   const s = pc ? (b16 ? sesionEncapsDe(b16.fechaPlan ?? iso) : null) : sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
     const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
     // v6.07d: la hora real del bloque (los domingos de plan va a las 16:00 o a las 15:00), no «16:15» fijo
+    if (bOtro || bRec) return `ENCAPS ${[bOtro ? `${bOtro.ini} ${corto(bOtro.nombre)}` : null, `${b16?.ini ?? '16:15'} ${tarde}`, bRec ? `${bRec.ini} ${corto(bRec.nombre)}` : null].filter(Boolean).join(' + ')}`;
     return pre ? `${pre} + ${b16?.ini ?? '16:15'} ${tarde}` : `ENCAPS ${tarde}`;
   }
   // v6.07a ronda 3: sáb 14 de la corrida = mañana del vie 13 + la clase EN VIVO de Theomed del propio sábado
@@ -691,8 +702,9 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     case 'synapse': {
       // v6.09b lote 1-ter: bloque «syn-cola» = la cola del SYNAPSE de F1 con franja real (sáb 26-dic 07:15 · F5 04:15 L-V) → su propia guía
       // v6.10 (17-nov-2026): bloque «syn-rec» = la sesión del SYNAPSE que recupera el mar 17 a hora fija (v6.10c: dom 3-ene 05:00 · v6.10: sáb 28-nov 07:15; su guía trae la franja real)
-      if (b.id === 'syn-rec') {
-        const gR = guiaSynapseRecDe(iso);
+      // v6.10w: + «syn-rec2» (dom 3-ene: dos sesiones a hora fija) · la guía de la sesión de ESA hora
+      if (b.id === 'syn-rec' || b.id === 'syn-rec2') {
+        const gR = guiaSynapseRecDe(iso, b.ini);
         const url = gR?.pasos.find((p) => p.enlace)?.enlace?.url;
         return { tema: gR ? gR.titulo : 'SYNAPSE · recuperación', sub: "A 15' pantalla · B 10' audio · C 5' lectura (la sesión del día perdido)", acciones: url ? [{ lbl: '▶ abrir', color: OBS, url, fill: true }] : [], ...(gR ? { guias: [gR] } : {}) };
       }
@@ -810,7 +822,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
       {fase === 'F2' && (
         <View style={[st.banner, { borderColor: GREEN + '66', backgroundColor: GREEN + '10' }]}>
           <Text style={[st.bannerTxt, { color: GREEN }]}>🇺🇸 Step 1 en PAUSA — Anki 30' + sábado 20Q mezcladas</Text>
-          <Text style={st.modoInfo}>Anki USMLE 05:15-05:45 L-V (0 nuevas, FSRS 0,85) · sáb 04:15-05:45 STEP 1 VIVO (10 incorrectas UWorld + 10 AMBOSS) · reinicio mar {FECHAS_V6.step1.reinicio.slice(8)}-mar (NBME 29 al día siguiente).</Text>
+          <Text style={st.modoInfo}>Anki USMLE 05:15-05:45 L-V (0 nuevas, FSRS 85 %) · sáb 04:15-05:45 STEP 1 VIVO (10 incorrectas UWorld + 10 AMBOSS) · reinicio mar {FECHAS_V6.step1.reinicio.slice(8)}-mar (NBME 29 al día siguiente).</Text>
         </View>
       )}
       {/* v6.00 · F4: turno del día + rol semanal */}

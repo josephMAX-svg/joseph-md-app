@@ -288,27 +288,58 @@ function comprobarCorridaS1(c, F) {
  *  empieza a las 05:00 porque el sábado acaba a las 22:00). La rutina personal 05:45-07:15 queda fuera de ambas. */
 const VENTANAS_FINDE = { 6: [['04:15', '05:45'], ['07:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']], 0: [['05:00', '05:45'], ['07:15', '17:00']] };
 const hm = (t) => { const m = /^(\d{2}):(\d{2})$/.exec(t); return m ? +m[1] * 60 + +m[2] : NaN; };
-/** v6.10 · `corrida_s1.extra` = { día de fin de semana: { frente: 'HH:MM-HH:MM' } }: el día que cada plan recupera, a hora fija, el día perdido. */
+/** v6.10w · franja «HH:MM-HH:MM» y fecha de PLAN de una entrada de corrida_s1.extra (texto = la propia fecha; { hora, plan } = la fecha de plan que hace). */
+const extraNorm = (v, dia) => (typeof v === 'string' ? { hora: v, plan: dia } : v && typeof v === 'object' && !Array.isArray(v) ? { hora: v.hora, plan: v.plan || dia } : { hora: null, plan: dia });
+/** v6.10w · gemelo node de extraCorridaDe del .ts: [{ frente, ini, fin, plan }] por hora. */
+const extraListaDe = (s, F = fechasPorDefecto()) => Object.entries(((F.corrida_s1 || {}).extra || {})[s] || {})
+  .map(([frente, v]) => { const n = extraNorm(v, s); const [ini, fin] = String(n.hora).split('-'); return { frente, ini, fin, plan: n.plan }; })
+  .sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0));
+/** v6.10w · HÁBILES EXTRA de fin de semana de un frente para los GENERADORES (trabajan con fechas de plan): Map(fecha de plan de fin de semana → franja
+ *  real «HH:MM-HH:MM») de las entradas de corrida_s1.extra de ese frente. Una entrada de texto hace la fila de su propia fecha; { hora, plan } la de `plan`
+ *  (el sáb 2-ene sigue siendo hábil extra de MIR, AURUM, LIVIANO, Business y ENCAPS porque el dom 3-ene / lun 4-ene hacen su fila; la entrada del sáb 2-ene
+ *  con plan jue 31-dic no añade nada: el 31-dic ya es hábil). */
+const extraHabilesDe = (frente, F = fechasPorDefecto()) => {
+  const out = new Map();
+  for (const d of Object.keys(((F.corrida_s1 || {}).extra) || {}).sort()) for (const x of extraListaDe(d, F)) if (x.frente === frente && [0, 6].includes(wd(x.plan))) out.set(x.plan, `${x.ini}-${x.fin}`);
+  return new Map([...out].sort((a, b) => (a[0] < b[0] ? -1 : 1)));
+};
+/** v6.10w · ventana del lunes del RE-SCAN (1.er día de la intensiva ENCAPS: bloque de 285′ con 135′ de contenido, 07:15-09:30): la holgura que el plan
+ *  del jue 31-dic usa entre semana (corrida_s1.extra en un L-V solo ese día y dentro de esta ventana). */
+const VENTANA_RESCAN = [['09:45', '12:00']];
+/** v6.10 · `corrida_s1.extra` = { día de fin de semana: { frente: 'HH:MM-HH:MM' } }: el día que cada plan recupera, a hora fija, el día perdido.
+ *  v6.10w (dom 22-nov): el valor también puede ser { hora: 'HH:MM-HH:MM', plan: fecha de PLAN } = ese día real hace, a esa hora, la fila de ese frente
+ *  de otra fecha de plan (sáb 2-ene = el plan del jue 31-dic, que no tiene día real; dom 3-ene = el del sáb 2-ene); fechaPlanDe / fechaRealDe lo
+ *  traducen por frente. Un L-V solo vale el lunes del RE-SCAN (encaps.intensiva_desde) dentro de VENTANA_RESCAN. */
 function comprobarExtra(c, F) {
   const err = [];
   const x = c.extra;
   if (!x || typeof x !== 'object' || Array.isArray(x)) return ['«corrida_s1.extra» debe ser un objeto { día: { frente: «HH:MM-HH:MM» } }'];
   const sin = new Set(c.sin_sesion || []), skip = new Set((F && F.skip) || []), prot = new Set(((F && F.protegidos) || []).map((p) => p.fecha));
+  const planesExtra = new Map(); // v6.10w: «frente|fecha de plan» → día real (ninguna fecha de plan de un frente se hace dos veces)
   for (const [d, fr] of Object.entries(x)) {
     if (!esISO(d)) { err.push(`«corrida_s1.extra» ${d}: fecha inválida`); continue; }
     const w = wd(d);
-    if (w !== 0 && w !== 6) err.push(`«corrida_s1.extra» ${d}: no es sábado ni domingo`);
+    const rescan = !!(F && F.encaps && d === F.encaps.intensiva_desde && w >= 1 && w <= 5); // v6.10w
+    if (w !== 0 && w !== 6 && !rescan) err.push(`«corrida_s1.extra» ${d}: no es sábado ni domingo (ni el lunes del RE-SCAN)`);
     if (skip.has(d) || prot.has(d)) err.push(`«corrida_s1.extra» ${d}: es SKIP o protegido`);
     if (sin.has(d)) err.push(`«corrida_s1.extra» ${d}: es un día sin sesión`);
     if (!fr || typeof fr !== 'object' || Array.isArray(fr) || !Object.keys(fr).length) { err.push(`«corrida_s1.extra» ${d}: { frente: franja } vacío o inválido`); continue; }
     const tramos = [];
     for (const [k, v] of Object.entries(fr)) {
       if (!(k in BLOQUES_POR_FRENTE)) err.push(`«corrida_s1.extra» ${d}: frente «${k}» no está en BLOQUES_POR_FRENTE`);
-      const m = typeof v === 'string' ? /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(v) : null;
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        for (const kk of Object.keys(v)) if (!['hora', 'plan'].includes(kk)) err.push(`«corrida_s1.extra» ${d} ${k}: clave no prevista «${kk}» (solo hora y plan)`);
+        if (!esISO(v.plan) || !(v.plan < d)) err.push(`«corrida_s1.extra» ${d} ${k}: plan «${v.plan}» inválido (fecha de plan anterior al día)`);
+        const ya = planesExtra.get(`${k}|${v.plan}`);
+        if (ya) err.push(`«corrida_s1.extra» ${d} ${k}: la fecha de plan ${v.plan} ya la hace el ${ya}`);
+        planesExtra.set(`${k}|${v.plan}`, d);
+      }
+      const hv = extraNorm(v, d).hora;
+      const m = typeof hv === 'string' ? /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(hv) : null;
       const a = m ? hm(m[1]) : NaN, b = m ? hm(m[2]) : NaN;
-      if (!m || !(a < b)) { err.push(`«corrida_s1.extra» ${d} ${k}: franja «${v}» inválida (HH:MM-HH:MM)`); continue; }
-      const ven = VENTANAS_FINDE[w] || [];
-      if (!ven.some(([i, f2]) => a >= hm(i) && b <= hm(f2))) err.push(`«corrida_s1.extra» ${d} ${k}: ${v} fuera de las ventanas fijas del ${w === 6 ? 'sábado' : 'domingo'} (${ven.map((y) => y.join('-')).join(' · ')})`);
+      if (!m || !(a < b)) { err.push(`«corrida_s1.extra» ${d} ${k}: franja «${hv}» inválida (HH:MM-HH:MM)`); continue; }
+      const ven = rescan ? VENTANA_RESCAN : VENTANAS_FINDE[w] || [];
+      if (!ven.some(([i, f2]) => a >= hm(i) && b <= hm(f2))) err.push(`«corrida_s1.extra» ${d} ${k}: ${hv} fuera de las ventanas fijas del ${rescan ? 'lunes del RE-SCAN' : w === 6 ? 'sábado' : 'domingo'} (${ven.map((y) => y.join('-')).join(' · ')})`);
       tramos.push([a, b, k]);
     }
     tramos.sort((p, q) => p[0] - q[0]);
@@ -346,7 +377,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
-  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'syn-rec2', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). Mismo literal que el .ts. */
 const PRINCIPAL_POR_FRENTE = {
@@ -354,6 +385,9 @@ const PRINCIPAL_POR_FRENTE = {
 };
 /** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
 const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
+  // v6.10w: el día extra que hace la fila de otra fecha de plan de ese frente (sáb 2-ene → jue 31-dic · dom 3-ene → sáb 2-ene · lun 4-ene ENCAPS → sáb 2-ene)
+  //   solo en fin de semana: el lun 4-ene (RE-SCAN) tiene su propia fila ENCAPS (dia 33) y el D32 del sáb 2-ene es un bloque más de ese día
+  if (frente && [0, 6].includes(wd(s))) { const x = extraListaDe(s, F).find((y) => y.frente === frente); if (x && x.plan !== s) return x.plan; }
   const c = corridaS1De(s, F);
   if (!c) return s;
   // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
@@ -377,6 +411,8 @@ const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
 const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   const c = F.corrida_s1;
   if (!c) return plan;
+  // v6.10w: con `frente`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
+  if (frente) for (const r of Object.keys(c.extra || {}).sort()) { const x = extraListaDe(r, F).find((y) => y.frente === frente && y.plan === plan); if (x && r !== plan) return r; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] || []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
@@ -643,7 +679,7 @@ export interface FechasV6 {
     notas?: Record<string, string[]>;
     /** v6.10: día de fin de semana → { frente (clave de BLOQUES_POR_FRENTE): 'HH:MM-HH:MM' } = el bloque L-V de ese frente que recupera, a hora fija,
      *  el día perdido (plantillasV6 lo pinta con bloqueCorrido; cada generador tiene su fila ese día) */
-    extra?: Record<string, Record<string, string>>;
+    extra?: Record<string, Record<string, string | { hora: string; plan?: string }>>;
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -903,7 +939,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
   usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
-  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+  liviano: ['liv'], synapse: ['syn', 'syn-rec', 'syn-rec2', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */
 export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
@@ -915,6 +951,9 @@ export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
  * si ese día no tiene bloque del frente, la propia fecha (v6.06d) · día sin sesión → la fila del próximo día con sesión (v6.06e) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
+  // v6.10w: el día extra que hace la fila de otra fecha de plan de ese frente (sáb 2-ene → jue 31-dic · dom 3-ene → sáb 2-ene · lun 4-ene ENCAPS → sáb 2-ene)
+  //   solo en fin de semana: el lun 4-ene (RE-SCAN) tiene su propia fila ENCAPS (dia 33) y el D32 del sáb 2-ene es un bloque más de ese día
+  if (frente && [0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay())) { const x = extraCorridaDe(iso).find((y) => y.frente === frente); if (x && x.plan !== iso) return x.plan; }
   const c = corridaS1De(iso);
   if (!c) return iso;
   // v6.06e: día sin sesión → la fila del próximo día con sesión (sin esto los hubs marcaban como «hoy» una fila ya repartida a otro día)
@@ -944,6 +983,8 @@ export function fechaPlanDe(iso: string, frente?: string): string {
  */
 export function fechaRealDe(plan: string, frente?: string): string {
   const c = FECHAS_V6.corrida_s1;
+  // v6.10w: con \`frente\`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
+  if (frente) { const x = extraDePlan(plan, frente); if (x && x.real !== plan) return x.real; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
@@ -954,11 +995,24 @@ export function fechaRealDe(plan: string, frente?: string): string {
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 }
-/** v6.10 · bloques que un día de fin de semana recupera a hora fija (corrida_s1.extra): [{ frente, ini, fin }] por hora; [] si ninguno. */
-export function extraCorridaDe(iso: string): { frente: string; ini: string; fin: string }[] {
+/** v6.10 · bloques que un día de fin de semana recupera a hora fija (corrida_s1.extra): [{ frente, ini, fin, plan }] por hora; [] si ninguno.
+ *  v6.10w: \`plan\` = la fecha de PLAN cuya fila de ese frente se hace a esa hora (la propia fecha si la entrada es solo la franja). */
+export function extraCorridaDe(iso: string): { frente: string; ini: string; fin: string; plan: string }[] {
   const x = FECHAS_V6.corrida_s1.extra?.[iso];
   if (!x) return [];
-  return Object.entries(x).map(([frente, v]) => { const [ini, fin] = v.split('-') as [string, string]; return { frente, ini, fin }; }).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0));
+  return Object.entries(x).map(([frente, v]) => {
+    const hora = typeof v === 'string' ? v : v.hora, plan = typeof v === 'string' ? iso : (v.plan ?? iso);
+    const [ini, fin] = hora.split('-') as [string, string]; return { frente, ini, fin, plan };
+  }).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0));
+}
+/** v6.10w · día REAL y franja en que se hace la fila de \`frente\` con fecha de plan \`plan\` por corrida_s1.extra (o null): sáb 2-ene 07:15 = MIR del jue
+ *  31-dic · dom 3-ene 07:15 = MIR del sáb 2-ene. Las guías lo usan para decir «hoy sábado / domingo, a hora fija» con el día de verdad. */
+export function extraDePlan(plan: string, frente: string): { real: string; ini: string; fin: string } | null {
+  for (const r of Object.keys(FECHAS_V6.corrida_s1.extra ?? {}).sort()) {
+    const x = extraCorridaDe(r).find((y) => y.frente === frente && y.plan === plan);
+    if (x) return { real: r, ini: x.ini, fin: x.fin };
+  }
+  return null;
 }
 `;
 }
@@ -999,7 +1053,7 @@ function compararTS(T, F, d) {
     for (const p of [undefined, 'usmle', 'encaps', 'mir', 'research', 'derma', 'aurum']) eq(`esDiaPlan ${s} ${p}`, T.esDiaPlan(s, p), esDiaPlan(s, p, F));
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
-    eq('extraCorridaDe ' + s, T.extraCorridaDe(s), Object.entries((F.corrida_s1.extra || {})[s] || {}).map(([frente, v]) => ({ frente, ini: v.split('-')[0], fin: v.split('-')[1] })).sort((a, b) => (a.ini < b.ini ? -1 : a.ini > b.ini ? 1 : 0))); // v6.10
+    eq('extraCorridaDe ' + s, T.extraCorridaDe(s), extraListaDe(s, F)); // v6.10 · v6.10w: + plan
     eq('fechaPlanDe ' + s, T.fechaPlanDe(s), fechaPlanDe(s, F));
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaPlanDe ${s} ${fr}`, T.fechaPlanDe(s, fr), fechaPlanDe(s, F, fr));
     eq('fechaRealDe ' + s, T.fechaRealDe(s), fechaRealDe(s, F));
@@ -1057,7 +1111,7 @@ function main() {
   }
   console.log('  fases: ' + fasesV6(F, d).map((x) => `${x.id} ${f(x.desde)}→${x.hasta ? f(x.hasta) : '…'}${x.diasPlan ? ' (' + x.diasPlan + ')' : ''}`).join(' · '));
   console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${diasSemanaTxt(F.step1.f1_dias_semana)} = ${d.diasStepF1} mañanas (v6.07; última ${f(d.ultimoStepF1)}, pausa desde el ${f(add(d.ultimoStepF1, 1))})`);
-  if (Object.keys(F.corrida_s1.extra || {}).length) console.log('  corrida_s1.extra (v6.10): ' + Object.entries(F.corrida_s1.extra).map(([dd, x]) => `${f(dd)} ${Object.entries(x).map(([k, v]) => `${k} ${v}`).join(', ')}`).join(' · '));
+  if (Object.keys(F.corrida_s1.extra || {}).length) console.log('  corrida_s1.extra (v6.10): ' + Object.entries(F.corrida_s1.extra).map(([dd, x]) => `${f(dd)} ${Object.entries(x).map(([k, v]) => `${k} ${typeof v === 'string' ? v : `${v.hora} (plan ${f(v.plan)})`}`).join(', ')}`).join(' · '));
   const ts = emitirTS(F, d);
   const T = cargarTS(ts);
   if (!T) console.warn('⚠ typescript no disponible en node_modules: no se pudo comprobar el .ts contra node');
@@ -1087,7 +1141,7 @@ module.exports = {
   // JSON
   cargarFechasV6, validar, derivar, ctxDe, comprobarForma,
   // fases y predicados (F opcional = el JSON validado)
-  fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1,
+  fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1, extraListaDe, extraNorm, extraHabilesDe, // v6.10w: + extraListaDe, extraNorm, extraHabilesDe
   // v6.02d: semana 1 corrida (alias en la consulta)
   comprobarCorridaS1, corridaS1De, fechaPlanDe, fechaRealDe, BLOQUES_POR_FRENTE,
   // v6.10d: alias → los generadores no cuentan como perdido el día cuyo plan hace otro día real

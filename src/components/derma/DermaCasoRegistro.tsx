@@ -28,11 +28,12 @@ export interface DermaCasoRegistroProps {
   accent?: string;
   titulo?: string;
   segundaPasada?: boolean;          // repaso 1 (d72 en la v3): se anota en la nota
+  notaFija?: string;                // v6.10w: abre la nota (DermNet: «DermNet «quiz» · caso N», porque el id solo es el nº de caso del quiz)
   onDone?: () => void;
   onCancel?: () => void;
 }
 
-export default function DermaCasoRegistro({ dia, id, fuente = 'caso', acierto, accent = DermaAtlas.amethyst, titulo, segundaPasada, onDone, onCancel }: DermaCasoRegistroProps) {
+export default function DermaCasoRegistro({ dia, id, fuente = 'caso', acierto, accent = DermaAtlas.amethyst, titulo, segundaPasada, notaFija, onDone, onCancel }: DermaCasoRegistroProps) {
   const esCaso = fuente === 'caso' && id >= 1 && id <= 200;
   const moduloFijo: DermaAreaCORE | null = esCaso ? dermaCasoArea(id) : null;
   const [evalAcierto, setEvalAcierto] = useState<DermaEvalAcierto>(acierto === false ? 'no-sabia' : 'conocimiento');
@@ -49,7 +50,7 @@ export default function DermaCasoRegistro({ dia, id, fuente = 'caso', acierto, a
       id, fecha: dermaHoyISO(), d: dia.d, bKey: dia.bKey, fuente,
       acierto: esAcierto, evalAcierto, tipoError: esAcierto ? null : tipoError,
       moduloCORE: modulo, descripcion8ejes: score,
-      nota: [segundaPasada ? '2ª pasada FSRS (repaso 1)' : '', nota.trim()].filter(Boolean).join(' · ') || undefined,
+      nota: [notaFija || '', segundaPasada ? '2ª pasada FSRS (repaso 1)' : '', nota.trim()].filter(Boolean).join(' · ') || undefined,
     });
     notifyDermaLedger();
     setMsg(r.guardado ? `✓ guardado en el ledger (${r.entry.moduloCORE} · ${r.entry.evalAcierto}${r.entry.tipoError ? ' · ' + r.entry.tipoError : ''})` : '⚠ sin localStorage: no se pudo guardar (SSR/nativo)');

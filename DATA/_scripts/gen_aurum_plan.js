@@ -149,7 +149,7 @@ const PROTEGIDOS = new Set(F6.protegidos.map((x) => x.fecha));
 const MIN30_DESDE = F6.encaps.intensiva_desde;
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 // v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].aurum = franja; v6.10c: sáb 2-ene 14:30-15:30 · v6.10: dom 6-dic 07:15-08:15: recupera el mar 17) desde el START
-const EXTRA_AURUM = new Map(Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.aurum && f >= START_ISO).map(([f, x]) => [f, x.aurum]));
+const EXTRA_AURUM = new Map([...require('./gen_fechas_v6').extraHabilesDe('aurum', F6)].filter(([f]) => f >= START_ISO)); // v6.10w: por fecha de plan (el sáb 2-ene lo hace el dom 3-ene 08:15)
 for (const f of EXTRA_AURUM.keys()) {
   const w = new Date(f + 'T12:00:00Z').getUTCDay();
   if (w !== 0 && w !== 6) throw new Error(`corrida_s1.extra ${f}: el hábil extra de AURUM debe ser sábado o domingo`);

@@ -63,7 +63,7 @@ const MEDIANOCHE = new Date(now.getFullYear(), now.getMonth(), now.getDate()).ge
 const ANKI_INICIO = '05:00';                                   // franja USMLE · ANKI AM (L-V)
 const LIMITE_1A_REVIEW = '05:10';                              // freno 04:55: 1ª review > 05:10 = ámbar
 // v6.03 (20-oct-2026 · DATA/USMLE/METODO_ANKI_APEX_USMLE.md §3): UN preset «APEX USMLE» en el padre y en TODOS los submazos ·
-// New cards/day 20 (antes se esperaba 10, el valor v5.7) · Maximum reviews/day 9999 · desired retention 0,90 · Next day starts at 4.
+// New cards/day 20 (antes se esperaba 10, el valor v5.7) · Maximum reviews/day 9999 · desired retention 90 % · Next day starts at 4.
 // Protocolo de backlog (§7, disparador ALARMA G): New cards/day 0 y Maximum reviews/day 200-300 hasta backlog < 20 → vuelta a 20 / 9999.
 const ESPERADO = { preset: 'APEX USMLE', nuevasPorDia: 20, revPorDia: 9999, retencion: 0.9, rollover: 4, salidaBacklog: 20 };
 
@@ -94,7 +94,7 @@ function leerJson() {
     return {
       _meta: {
         descripcion: 'Telemetría diaria del Anki del USMLE (AnkiConnect) — append idempotente por fecha. Generado por DATA/_scripts/anki_telemetria.js (v2: sync previo + primeraReview). Lo consumen CockpitStatusBar (KPI Anki, vía localStorage jmd-anki-telemetria), gen_revision_semanal.js (métrica 3) y verify_vibecoding.js --sensores.',
-        freno_0455: 'primeraReview = hora de la 1ª review del día (revlog): ≤ 05:10 verde · > 05:10 ámbar · sin review L-V rojo · sáb/dom finde · antes de las 05:00 pendiente',
+        freno_0455: 'primeraReview = hora de la 1ª review del día (revlog): ≤ 05:10 verde · > 05:10 ámbar · sin review L-V rojo · sáb/dom finde · antes de las 05:00 pendiente · día sin sesión de corrida_s1 sin-sesion (v6.10w)',
         query_default: 'deck:APEX::USMLE*',
         alarma_G: 'backlog > 100 o retencion30 < 0.85 → no añadir nuevas hasta backlog < 20; NUNCA capar revisiones',
         regla_finde: 'minFinde = due × segPorTarjeta ÷ 60 (dato, no reloj)',
@@ -155,12 +155,16 @@ async function retencion30(q) {
 // antes de las 05:00 = 'pendiente'. Fuente: revlog vía getReviewsOfCards (min id ≥ medianoche local) sobre `rated:1`.
 async function primeraReviewHoy(q) {
   // v6.06e: un domingo con plan corrido lleva Anki AM 05:00 → el KPI se mide como un día de semana
-  let conAnkiAM = false;
+  let conAnkiAM = false, sinSesion = false;
   try {
     const c1 = JSON.parse(fs.readFileSync(path.join(__dirname, '_fechas_v6.json'), 'utf8')).corrida_s1;
     const z = (n) => String(n).padStart(2, '0');
     const h = `${now.getFullYear()}-${z(now.getMonth() + 1)}-${z(now.getDate())}`;
     conAnkiAM = !!c1.alias[h] || !!(c1.reparto[h] && c1.reparto[h].partes.some((p) => 'anki' in p.bloques));
+    // v6.10w (pendientes de la revisión): un día REAL sin sesión (corrida_s1.sin_sesion, sin alias, ni reparto con Anki, ni extra del USMLE) no tiene
+    //   Anki AM: un L-V así no es «rojo» (del lun 16 al vie 20-nov) → estado 'sin-sesion' (la app y la revisión semanal no lo cuentan como fallo)
+    const ext = (c1.extra || {})[h];
+    sinSesion = (c1.sin_sesion || []).includes(h) && !conAnkiAM && !(ext && Object.prototype.hasOwnProperty.call(ext, 'usmle'));
   } catch { /* sin fechas: regla de siempre */ }
   const finde = (WD_HOY === 0 || WD_HOY === 6) && !conAnkiAM;
   try {
@@ -171,12 +175,12 @@ async function primeraReviewHoy(q) {
       for (const cid of Object.keys(rev)) for (const r of rev[cid] || []) if (r.id >= MEDIANOCHE && (min == null || r.id < min)) min = r.id;
     }
     if (min == null) {
-      const estado = finde ? 'finde' : HORA < ANKI_INICIO ? 'pendiente' : 'rojo';
+      const estado = sinSesion ? 'sin-sesion' : finde ? 'finde' : HORA < ANKI_INICIO ? 'pendiente' : 'rojo';
       return { hora: null, estado, metodo: cards.length ? 'rated:1 sin reviews de hoy en el revlog' : 'sin tarjetas revisadas hoy' };
     }
     const d = new Date(min);
     const hora = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-    return { hora, estado: finde ? 'finde' : hora <= LIMITE_1A_REVIEW ? 'verde' : 'ambar', metodo: 'getReviewsOfCards (min id ≥ medianoche local)' };
+    return { hora, estado: sinSesion ? 'sin-sesion' : finde ? 'finde' : hora <= LIMITE_1A_REVIEW ? 'verde' : 'ambar', metodo: 'getReviewsOfCards (min id ≥ medianoche local)' };
   } catch (e) {
     return { hora: null, estado: 'desconocido', metodo: 'no disponible: ' + String(e.message).slice(0, 80) };
   }
@@ -267,7 +271,7 @@ async function configDeck(prefijo) {
   if (cfg.alertaRollover) avisos.push('config: ' + cfg.alertaRollover);
   if (cfg.preset && cfg.preset !== ESPERADO.preset) avisos.push(`config: el padre ${cfg.padre} usa el preset "${cfg.preset}" (esperado «${ESPERADO.preset}») → Deck Options › preset «${ESPERADO.preset}» › Save to All Subdecks`);
   if (cfg.fueraDePreset && cfg.fueraDePreset.length) avisos.push(`config: ${cfg.fueraDePreset.length} submazo(s) sin el preset «${ESPERADO.preset}» (el motor APEX los crea con Default): ${cfg.fueraDePreset.join(', ')} → Deck Options del padre › Save ▾ › Save to All Subdecks`);
-  if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - ESPERADO.retencion) > 0.001) avisos.push(`config: desired retention = ${cfg.desiredRetention} (esperado 0.90) → corregir en Anki`);
+  if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - ESPERADO.retencion) > 0.001) avisos.push(`config: desired retention = ${Math.round(cfg.desiredRetention * 100)} % (esperado 90 %; en Anki 25.02 se escribe en %) → corregir en Anki`);
   if (cfg.nota) avisos.push('config: ' + cfg.nota);
   if (total === 0) avisos.push(`el patrón "${QUERY}" no devuelve tarjetas: ¿deck aún no creado (lazy) o nombre distinto? (deckNames: ${cfg.decks.join(', ') || 'ninguno con ese prefijo'})`);
   if (pr.estado === 'ambar') avisos.push(`FRENO 04:55: 1ª review de Anki a las ${pr.hora} (> ${LIMITE_1A_REVIEW}) → el bloque 04:15 se comió el Anki; mañana commit selectivo o nota de estado a las 04:55 (nunca git stash)`);

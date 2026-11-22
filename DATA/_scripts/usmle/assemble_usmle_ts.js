@@ -580,7 +580,7 @@ export const DAY_AFTER = {
 export const FRANJAS_REGLAS: Record<number, string[]> = {
   0: [
     'BACKLOG (§4.10): reviews first, nuevas después; si falta tiempo, nuevas = 0. Vencidas acumuladas → nuevas = 0 y cap de reviews 200 (número psicológico; 300 si sobra energía y volver a 200 antes de dormir) hasta la pantalla verde; NUNCA "Forget" en bloque ni resetear el mazo.',
-    ${q(`FRENO POR HITO (§4.10): % del banco / NBME estancado o en declive → nuevas = 0 y días dedicados a limpiar el backlog con honestidad · nuevas = 0 durante la PAUSA (${f(PAUSA.desde)} → ${f(PAUSA.hasta)}; FSRS 0,85 desde el ${f(FV6.encaps.intensiva_desde)} y 0,90 otra vez el día del reinicio, ${f(REINICIO)}) y desde el Free 120 (${f(FREE120 ? FREE120.fecha : '')}).`)},
+    ${q(`FRENO POR HITO (§4.10): % del banco / NBME estancado o en declive → nuevas = 0 y días dedicados a limpiar el backlog con honestidad · nuevas = 0 durante la PAUSA (${f(PAUSA.desde)} → ${f(PAUSA.hasta)}; FSRS 85 % desde el ${f(FV6.encaps.intensiva_desde)} y 90 % otra vez el día del reinicio, ${f(REINICIO)}) y desde el Free 120 (${f(FREE120 ? FREE120.fecha : '')}).`)},
     'Pharm = mazo aparte (§4.2): 20 nuevas/día dentro del cap de 50; máximo 3 mazos.',
   ],
   3: [

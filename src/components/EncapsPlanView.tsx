@@ -43,7 +43,7 @@ import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe, subtemaCiego } from '../lib/encapsPlan'; // v6.10p (auditoría c18 · #11): subtemaCiego = el sub-eje sin las cifras-respuesta del pre-test / banco ciego
-import { fechaPlanDe, fechaRealDe, extraCorridaDe } from '../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe, extraDePlan } from '../lib/fechasV6';
 import { fechasRealesEnTexto, reemplazosCorrida } from '../lib/corridaTexto'; // v6.10d: los textos del Horario (study_metrics.extra.horarios) citan fechas de PLAN → día real
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from '../lib/encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de TODO simulacro + cierre semanal = Home (plantillasV6.bloqueCorrSim / bloqueCierreSemanal) = ítems
 
@@ -1183,7 +1183,9 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   // v6.10 (17-nov-2026): un fin de semana con fila ENCAPS (corrida_s1.extra: v6.10c sáb 2-ene 04:30-05:30 = dia 32 · v6.10 dom 29-nov = dia 9; recuperan el mar 17) no es «libre»
-  const extraEnc = today?.fecha ? extraCorridaDe(String(today.fecha).slice(0, 10)).find((x) => x.frente === 'encaps') ?? null : null;
+  // v6.10w: por FECHA DE PLAN (la fila del jue 31-dic la hace el sáb 2-ene 04:30 · la del sáb 2-ene, el lun 4-ene 09:45): el día real y su franja
+  const extraEnc = today?.fecha ? extraDePlan(String(today.fecha).slice(0, 10), 'encaps') : null;
+  const dowExtra = extraEnc ? new Date(`${extraEnc.real}T12:00:00`).getDay() : dow;
   const isWeekendDay = (dow === 0 || dow === 6) && !extraEnc;
   const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.02: lun 4-ene → vie 12-mar = dia 53-102 (v6.01: dia 58-107 · v6.00: dia 61-110), examen dom 14-mar PROVISIONAL · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
@@ -1224,7 +1226,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {exRendido && <Text style={styles.horarioWarn}>▪ Examen ENCAPS rendido ({fechaCorta(exFecha)}): el plan queda en su último día.</Text>}
       {extraEnc && (
         <Text style={styles.horarioWarn}>
-          ▪ Hoy {dow === 0 ? 'domingo' : 'sábado'}, a hora fija ({extraEnc.ini}-{extraEnc.fin}): la sesión de las 16:15 que recupera un día perdido (mismo protocolo de 60′; las horas de abajo son las de un día L-V).
+          ▪ Hoy {['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][dowExtra]}, a hora fija ({extraEnc.ini}-{extraEnc.fin}): la sesión de las 16:15 que toca en orden (mismo protocolo de 60′; las horas de abajo son las de un día L-V).
         </Text>
       )}
       {isWeekendDay && !useSimTemplate && (

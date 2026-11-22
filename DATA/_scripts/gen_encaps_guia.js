@@ -161,7 +161,7 @@ const F6 = require('./gen_fechas_v6').cargarFechasV6();
 // v6.09 (16-nov-2026): + los L-V HÁBILES de la transición (no SKIP; v6.09: jue 31-dic, que recupera el lun 16-nov) = filas del mantenimiento (dia 32)
 const HAB_TRANS = []; for (let d = F6.transicion.desde; d <= F6.transicion.hasta; ) { const w = new Date(d + 'T12:00:00Z').getUTCDay(); if (w >= 1 && w <= 5 && !(F6.skip || []).includes(d)) HAB_TRANS.push(d); const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); d = x.toISOString().slice(0, 10); }
 // v6.10 (17-nov-2026): + los fines de semana de corrida_s1.extra con ENCAPS (v6.10c: sáb 2-ene 04:30 = dia 32 · v6.10: dom 29-nov 07:15 = dia 9; recuperan el mar 17): también son fila del mantenimiento
-const EXTRA_ENC = Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.encaps && f >= F6.f1.inicio && f <= F6.transicion.hasta).map(([f]) => f);
+const EXTRA_ENC = [...require('./gen_fechas_v6').extraHabilesDe('encaps', F6).keys()].filter((f) => f >= F6.f1.inicio && f <= F6.transicion.hasta); // v6.10w: por fecha de plan
 const F1_DIAS = F6.f1.dias + HAB_TRANS.length + EXTRA_ENC.length; // v6.10: 30 + 1 + 1 = 32 · v6.09: 31 + 1 = 32 · v6.08: 32 · v6.06: 42 · v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
 const CORR = (F6.corrimientos || []).at(-1) || null; // v6.05: versión y fecha del régimen vigente (META, cabecera del .ts)
 // v6.10d (18-nov-2026): con alias en corrida_s1 (jue 19-nov → vie 1-ene hacen el plan del hábil anterior) NO hay re-fecha: el SQL, Supabase y los
@@ -789,7 +789,9 @@ function construirGuia(fila, sab = null) {
             // v6.09b lote 1-quater FX1 (revisión V2): el plazo va al PRINCIPIO del aviso (el Calendar corta el aviso a 240: tras la excepción del lunes quedaba en la pos. 371)
             // v6.10j (auditoría c14, dias-clave #1): la semana del domingo de LLEGADA (dom 22-nov) dice la regla única (reglaRunnersLlegada), con su «NO --semana»
             const llS = llegadaDe(pendSem);
-            if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS, fila.fecha) || null : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del domingo no los generó, antes del ${corta(pendSem[0])}: ${cmdRunnersDias(pendSem)} (o pídeselo a Claude).`);
+            // remate v6.10w (revisión cobertura): la revisión que los genera es la del SÁBADO real anterior al primero (sáb 28-nov para los del lun 30 y mar 1), no «la del domingo»
+            const revRun = (() => { let r = addD(realDe(pendSem[0]), -1); while (new Date(r + 'T12:00:00Z').getUTCDay() !== 6) r = addD(r, -1); return r; })();
+            if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS, fila.fecha) || null : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del ${corta(revRun)} no los generó, antes del ${corta(pendSem[0])}: ${cmdRunnersDias(pendSem)} (o pídeselo a Claude).`);
           }
           const pendArm = bancosSinRunner(cmdSemana, addD(cmdSemana, 4));
           const primeraPend = pendArm[0] || fila.fecha; // v6.09 (fix): con la semana armada, el plazo es la 1.ª sesión sin runner

@@ -256,6 +256,23 @@ const TEXTO_VETADO = /otro enfoque|rehech|rehaz|del tema de AYER \((?:D1|lunes)|
 const realDeEncaps = (plan) => { try { return require('./gen_fechas_v6').fechaRealDe(plan, undefined, 'encaps') || plan; } catch (e) { return plan; } };
 const MESES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fechaVis = (plan) => { const r = realDeEncaps(plan); return `${WD[dowDe(r)].toLowerCase()} ${Number(r.slice(8))}-${MESES_C[Number(r.slice(5, 7)) - 1]}`; };
+// v6.10w (pendientes de la revisión): «de ayer» solo cuando la sesión anterior (fecha de PLAN) cae el día REAL anterior al de la eval; si no, «del <día real>»
+//   (con el alias de corrida_s1 la sesión anterior de plan puede caer 2+ días reales antes, o en otro día que el que decía el runner)
+const relSesionAnterior = (saPlan, fechaPlan) => (realDeEncaps(saPlan) === addDays(realDeEncaps(fechaPlan), -1) ? 'de ayer' : `del ${fechaVis(saPlan)}`);
+const DIA_VIS_RE = '(?:de ayer|del (?:lun|mar|mié|jue|vie|sáb|dom) \\d{1,2}-(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic))';
+/** v6.10w: las fechas de la sesión anterior en el texto de una salida YA ARMADA, por día REAL (sin tocar ítems): «pre-test de arranque del X sustituyó
+ *  (pretest_arranque_F» → fechaVis(F) · «pre-test de arranque de ayer (pretest_arranque_F;» y «código de ayer C» → relSesionAnterior. */
+function textoFechasReales(t, doc) {
+  let x = String(t);
+  x = x.replace(/pre-test de arranque del ([^()]+?) sustituyó \((pretest_arranque_(\d{4}-\d\d-\d\d))/g, (m0, v, pa, f) => `pre-test de arranque del ${fechaVis(f)} sustituyó (${pa}`);
+  const sa = ((doc && doc._meta) || {}).sesion_anterior || {};
+  if (sa.fecha && doc.fecha) {
+    const rel = relSesionAnterior(sa.fecha, doc.fecha);
+    x = x.replace(new RegExp(`pre-test de arranque ${DIA_VIS_RE} \\((pretest_arranque_\\d{4}-\\d\\d-\\d\\d);`, 'g'), (m0, pa) => `pre-test de arranque ${rel} (${pa};`);
+    x = x.replace(new RegExp(`código ${DIA_VIS_RE} (?=[IV]+-)`, 'g'), `código ${rel} `);
+  }
+  return x;
+}
 // instrucciones de la eval anclada: «del tema de AYER» solo cuando hay un código de la sesión anterior (no en el D1 ni tras el mini-sim)
 const instrEval = (modo, paAyer) => (/fallos previos/i.test(modo) ? `5 preguntas ${modo.replace(/^[^:]*:\s*5Q /, '')} · ${modo.split(':')[0]}`
   : paAyer ? `5 preguntas · ${modo}` : `5 preguntas del código de la sesión anterior (${modo})`);
@@ -676,7 +693,7 @@ function modoEval(fecha, ignorar) {
     }
     if (items.length < 5) items = items.concat(cand.filter((x) => CRITICOS_V3.includes(x.codigo) && !items.includes(x)).slice(0, 5 - items.length));
   } else {
-    modo = `código de ayer ${filaAyer.codigo}: 3 cifras + 2 viñetas`;
+    modo = `código ${relSesionAnterior(ayer, fecha)} ${filaAyer.codigo}: 3 cifras + 2 viñetas`; // v6.10w: «de ayer» por día REAL
     const delCod = cand.filter((it) => poolCode(it.codigo) === poolCode(filaAyer.codigo));
     const pref = (l) => l.sort((a, b) => ((b.sub_eje === filaAyer.extra.sub_eje) - (a.sub_eje === filaAyer.extra.sub_eje)));
     const cifras = pref(delCod.filter(esCifra)); const directas = pref(delCod.filter((x) => !esVineta(x) && !esCifra(x))); const vin = pref(delCod.filter((x) => esVineta(x) && !esCifra(x)));
@@ -691,8 +708,8 @@ function modoEval(fecha, ignorar) {
       const n0 = items.length;
       if (n0 < 5 && delPA.length) {
         items = items.concat(delPA.slice(0, 5 - n0).map((x) => { const { n, ...it } = pool.find((y) => y.id === x.id) || x; void n; return { ...it, retest: true, fallback: 'pre-test de ayer' }; }));
-        modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): ${n0 ? `${n0}Q reales nuevas de ${filaAyer.codigo} + ` : ''}${items.length - n0}Q de ${filaAyer.codigo} del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de ${filaAyer.codigo} sin usar)`;
-      } else modo = `pre-test de arranque de ayer (${paAyer}; sustituyó al banco ${filaAyer.codigo}): 5Q reales de ${filaAyer.codigo}`;
+        modo = `pre-test de arranque ${relSesionAnterior(ayer, fecha)} (${paAyer}; sustituyó al banco ${filaAyer.codigo}): ${n0 ? `${n0}Q reales nuevas de ${filaAyer.codigo} + ` : ''}${items.length - n0}Q de ${filaAyer.codigo} del pre-test en RE-TEST: las mismas preguntas reales, en otro orden (no quedan reales de ${filaAyer.codigo} sin usar)`;
+      } else modo = `pre-test de arranque ${relSesionAnterior(ayer, fecha)} (${paAyer}; sustituyó al banco ${filaAyer.codigo}): 5Q reales de ${filaAyer.codigo}`;
     }
   }
   // v5.14 (19-sep): una eval NUNCA sale con 0Q → cadena de fallback (cabecera) cuando el pool libre no llega a 5Q
@@ -1137,21 +1154,21 @@ function modoTextosReales() {
   const hoy = new Date().toISOString().slice(0, 10); const plan = [];
   for (const f of fs.readdirSync(OUT_DIR).filter((x) => USADOS_RE.test(x)).sort()) {
     const base = f.replace(/\.json$/, ''); const doc = readJSON(path.join(OUT_DIR, f)); const m = doc._meta || {}; const cambios = [];
-    const set = (obj, k, etq) => { if (obj && typeof obj[k] === 'string') { const v = textoReal(obj[k]); if (v !== obj[k]) { obj[k] = v; cambios.push(etq); } } };
+    const set = (obj, k, etq) => { if (obj && typeof obj[k] === 'string') { const v = textoFechasReales(textoReal(obj[k]), doc); if (v !== obj[k]) { obj[k] = v; cambios.push(etq); } } }; // v6.10w: + fechas reales
     set(m, 'modo', '_meta.modo');
     if (/^eval_/.test(base) && typeof m.modo === 'string') {
       const tema = `eval anclada · ${m.modo}`; if (doc.tema !== tema) { doc.tema = tema; cambios.push('tema'); }
       const sa = m.sesion_anterior || {}; const paAyer = sa.tipo === 'pretest_arranque' ? sa.archivo || null : null;
       // instrucciones: la cola (CALIENTE / override) se conserva; la cabeza se rehace con instrEval (sin «del tema de AYER» en el D1 ni tras el mini-sim)
       const ins = String(doc.instrucciones || ''); const cola = ins.slice(ins.indexOf(', de memoria, sin material'));
-      if (/^5 preguntas del tema de AYER \(/.test(ins) && cola.startsWith(', de memoria')) { const v = textoReal(`${instrEval(m.modo, paAyer)}${cola}`); if (v !== ins) { doc.instrucciones = v; cambios.push('instrucciones'); } }
+      if (/^5 preguntas del tema de AYER \(/.test(ins) && cola.startsWith(', de memoria')) { const v = textoFechasReales(textoReal(`${instrEval(m.modo, paAyer)}${cola}`), doc); if (v !== ins) { doc.instrucciones = v; cambios.push('instrucciones'); } }
       else set(doc, 'instrucciones', 'instrucciones');
     } else set(doc, 'tema', 'tema');
-    if (Array.isArray(m.avisos)) m.avisos = m.avisos.map((a) => { const v = textoReal(a); if (v !== a) cambios.push('_meta.avisos'); return v; });
+    if (Array.isArray(m.avisos)) m.avisos = m.avisos.map((a) => { const v = textoFechasReales(textoReal(a), doc); if (v !== a) cambios.push('_meta.avisos'); return v; });
     if (m.fallback && Array.isArray(m.fallback.cadena)) for (const c of m.fallback.cadena) set(c, 'fuente', '_meta.fallback.cadena');
     const h = html(doc); const hDisco = fs.existsSync(path.join(OUT_DIR, base + '.html')) ? fs.readFileSync(path.join(OUT_DIR, base + '.html'), 'utf8') : null;
     if (!cambios.length && hDisco === h) { console.log(`— ${base}: al día`); continue; }
-    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [...new Set(cambios)], motivo: 'v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos' }];
+    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [...new Set(cambios)], motivo: 'v6.10i/v6.10w: el re-test es de las mismas preguntas reales y la sesión anterior se nombra por su día REAL (alias de corrida_s1); ids, orden, claves y selección intactos' }];
     else cambios.push('html re-emitido (render del runner: rótulo del re-test y fecha real en la cabecera)');
     doc._meta = m; plan.push({ base, doc, cambios });
   }

@@ -65,7 +65,9 @@ const enHistorial = (prev: string): boolean => {
   const vs = clausula.match(/\bv\d\.\d+[a-z]?(?!\d)/g);
   return !!vs && verN(vs[vs.length - 1] as string) < VIGENTE_MIN;
 };
-const externa = (s: string, i: number, n = 0, pre = ''): boolean => enHistorial(s.slice(0, i) + pre) || (!/→\s*$/.test(s.slice(Math.max(0, i - 4), i) + pre)
+// v6.10w (dom 22-nov): «el plan del <fecha>» nombra la FECHA DE PLAN misma (p. ej. «el plan del jue 31-dic no tiene día propio»): no se traduce
+const PLAN_DEL = /\bplan del\s*$/i;
+const externa = (s: string, i: number, n = 0, pre = ''): boolean => enHistorial(s.slice(0, i) + pre) || PLAN_DEL.test(s.slice(Math.max(0, i - 12), i) + pre) || (!/→\s*$/.test(s.slice(Math.max(0, i - 4), i) + pre)
   && (EXTERNA.test(s.slice(Math.max(0, i - 60), i)) || EXTERNA_BANQUEO.test(s.slice(Math.max(0, i - 20), i) + pre) || EXTERNA_VERSION.test(s.slice(Math.max(0, i - 30), i) + pre)
     || EXTERNA_DESPUES.test(s.slice(i + n, i + n + 40))));
 // v6.07d (mié 11-nov): se prueban TODOS los meses de DESDE a HASTA, no solo los dos de los extremos. Con los repartos del 6, 13 y 20-dic el rango

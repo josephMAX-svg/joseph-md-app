@@ -292,7 +292,7 @@ export interface AnkiKpi {
   minFinde?: number | null;                  // due × seg/tarjeta ÷ 60
   /** v5.14 (19-sep): hora de la 1.ª review del día (anki_telemetria.js v2) y su estado (verde ≤05:10 · ámbar >05:10 · rojo sin review L-V). */
   primeraReview?: string | null;
-  primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'desconocido' | string;
+  primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'sin-sesion' | 'desconocido' | string;
 }
 /** Lee el último KPI (acepta objeto o array de entradas). null si no hay. */
 export function leerAnkiKpi(): AnkiKpi | null {

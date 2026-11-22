@@ -89,7 +89,7 @@ export const MIR_FRANJAS: FranjaMIR[] = [
   // v6.10 · base cero (18-nov-2026): solo preguntas MIR oficiales (pool de la app + MIR citadas en el capítulo ProMIR, con su año-número); la lectura no se
   //   recorta por el pre-test (1.ª vuelta) y en la fase 1 (F1, D1-D32) el pre-test es línea base y la lectura es LECTURA DE BASE (mirGuia.mirFaseDe)
   { hora: '15:15–15:22', fase: 'EVAL ANCLADA 4Q = 2Q tema D-1 + 1Q tema D-3 + 1Q tema D-7 (MIR oficiales citadas en ProMIR, con su año-número · 77 s/Q · opción en blanco)', tipo: 'eval' },
-  { hora: '15:22–15:27', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 0,85)', tipo: 'anki' },
+  { hora: '15:22–15:27', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 85 %)', tipo: 'anki' },
   { hora: '15:27–15:30', fase: 'Log de la eval: aciertos/4 · brecha knowledge / transfer / proceso · 🇪🇸 delta-España · fallo D-7 → cola D+14', tipo: 'log' },
   { hora: '15:30–15:38', fase: 'PRE-TEST: 5Q ciegas del capítulo NUEVO (pool oficial de la app → MIR citadas en ProMIR) · fase 1: línea base, contesta las 5 aunque adivines', tipo: 'pretest' },
   { hora: '15:38–15:53', fase: 'LECTURA DE BASE (fase 1) / DIRIGIDA (fase 2): las secciones con más preguntas MIR citadas, en el orden del capítulo y enteras, sin saltar ninguna por acertar el pre-test (Whole Page Rule · vídeo solo si el clip es ≤12 min verificado)', tipo: 'read' },

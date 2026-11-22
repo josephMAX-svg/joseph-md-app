@@ -675,7 +675,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 3,
      "que": "Anki · 1.ª sesión: sin repasos ni mazo todavía — APEX::DERMA::A nace con la 1.ª tarjeta del cierre",
-     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
+     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (Desired retention 90 %) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
     },
     {
      "min": 9,
@@ -764,7 +764,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 3,
      "que": "Anki · 1.ª sesión: sin repasos ni mazo todavía — APEX::DERMA::A nace con la 1.ª tarjeta del cierre",
-     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (retention 0,90) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
+     "como": "Ahora: Sync · al crear la 1.ª tarjeta del cierre nace APEX::DERMA::A → Options → preset FSRS (Desired retention 90 %) · tag step1 en las tarjetas de los átomos que cuentan doble para el Step 1."
     },
     {
      "min": 12,
@@ -778,7 +778,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 10,
      "que": "LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › 2.1. Lesiones primarias + 2.2. Lesiones secundarias (9,9′ medidos: 586 palabras a 150 palabras/min + 24 figuras × 0,25′)",
-     "como": "Tapa el texto de cada figura y nombra la lesión ANTES de leer · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».",
+     "como": "ANTES de abrir ProMIR (allí el nombre sale antes que la foto): nombra cada figura en tu PDF de solo fotos de GoodNotes · después lee y corrige · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».",
      "enlace": {
       "t": "ProMIR · Dermatología cap. 1",
       "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646"
@@ -787,7 +787,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 8,
      "que": "DermNet › «Terminology» › Describing skin conditions + Morphology + Secondary changes (762 palabras = 7,62′ medidos)",
-     "como": "Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (papule = pápula, wheal = habón, crust = costra…) · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «02_d01_DermNet_Terminology».",
+     "como": "Solo esos 3 apartados, a ~100 palabras/min · cada término en inglés que no sepas → glosario EN-ES del cuaderno (término en inglés = término en español) · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «02_d01_DermNet_Terminology».",
      "enlace": {
       "t": "DermNet · Terminology",
       "url": "https://dermnetnz.org/topics/terminology"

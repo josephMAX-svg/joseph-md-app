@@ -20,7 +20,7 @@
     "raviPorCap": { "570779c9f4d68bf008dbc7b1": { "n": 4, "tema": "ensayo clínico" }, "570779c9f4d68bf008dbc80d": { "n": 0, "tema": "clasificación de los estudios" }, "570779c9f4d68bf008dbc80f": { "n": 2, "tema": "pruebas diagnósticas", "nota": "sensibilidad/VPP y STARD" } },
     "raviPorCapNota": "Conteo hecho por el chat MIR en el Anki de Joseph (17-nov-2026) para los 3 primeros subtemas de Epidemiología; el resto se cuenta el día del subtema (buscar por texto en «1º VUELTA»).",
     "mazoBaseBusca": "https://drive.google.com/drive/search?q=1%C2%BAVUELTA%202MIR21",
-    "presetBase": "RAVI-1V (FSRS · retention 0,85 · orden de repaso aleatorio)",
+    "presetBase": "RAVI-1V (FSRS · retention 85 % · orden de repaso aleatorio)",
     "nuevasBase1V": 3,
     "nuevasBaseBanqueo": 10,
     "umbralVencidas": 60,

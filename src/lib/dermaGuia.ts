@@ -57,7 +57,7 @@ import {
   dermatoscopiaModuloDe, qa, cases, DERMA_DIAS,
 } from './dermaDailyPlan';
 import { DERMA_DIAS_TODOS } from './dermaCiclo2';
-import { faseV6 } from './fechasV6';
+import { faseV6, extraDePlan } from './fechasV6';
 import { dermaAnkiDeck } from './ankiLinks';
 import {
   DERMA_CASO_GBOS, DERMA_GUIA_CURADA, PICTORIAL_ASIGNACION, PICTORIAL_TEMAS, BB_DERM, UW_DERM, DERMA_VELOCIDAD, DERMA_TEST_PROMIR_D3,
@@ -719,7 +719,13 @@ export function dermaGuiaPar(dia: DiaDerma, opts: { ini?: string; minutos?: numb
   const c = DERMA_GUIA_CURADA[dia.d];
   // v6.10e (base cero): cada guía (plan A y B) lleva en su aviso la FASE, qué se hace en ella y el criterio para pasar a la siguiente (v6.10g: tras el de AccessDerma)
   // v6.10g (revisión 18-nov · c11): el aviso de AccessDerma (renovar el acceso remoto) va PRIMERO; el resto de avisos, tras la fase como antes
-  const fase = (g: GuiaBloque): GuiaBloque => ({ ...g, aviso: !g.aviso ? dermaFaseAviso(dia) : /^AccessDerma/.test(g.aviso) ? `${g.aviso} · ${dermaFaseAviso(dia)}` : `${dermaFaseAviso(dia)} · ${g.aviso}` });
+  // v6.10w (remate · revisión textos): la sesión que un fin de semana hace a hora fija la fila de otra fecha de plan (dom 3-ene 10:45 = d17, plan del jue 31-dic)
+  //   lo dice delante, como MIR · AURUM · LIVIANO · Business ese día
+  const xF = extraDePlan(dia.fecha, 'research-derma');
+  const wF = xF ? new Date(xF.real + 'T12:00:00Z').getUTCDay() : -1;
+  const finde = xF && xF.real !== dia.fecha && (wF === 0 || wF === 6) ? `Hoy ${wF === 0 ? 'domingo' : 'sábado'}, a hora fija (${xF.ini}-${xF.fin}): la sesión de Derma que toca en orden (su día de plan no tiene día propio: nada se compacta). Mismo paso a paso que entre semana.` : '';
+  const conFinde = (t: string): string => (!finde ? t : /^AccessDerma/.test(t) ? t.replace(/^([^·]*?) · /, (_m: string, a0: string) => `${a0} · ${finde} · `) : `${finde} · ${t}`);
+  const fase = (g: GuiaBloque): GuiaBloque => ({ ...g, aviso: conFinde(!g.aviso ? dermaFaseAviso(dia) : /^AccessDerma/.test(g.aviso) ? `${g.aviso} · ${dermaFaseAviso(dia)}` : `${dermaFaseAviso(dia)} · ${g.aviso}`) });
   if (c && c.fecha === dia.fecha && total === 45) return { planA: fase(moverA(c.planA, ini)), planB: fase(moverA(c.planB, ini)), curada: true };
   return { planA: fase(planAPorRegla(dia, ini, total)), planB: fase(planBPorRegla(dia, ini, total)), curada: false };
 }

@@ -63,7 +63,7 @@ import { MIR_DIAS, mirDiaDe, mirDiaN, mirAnclas, mirCierreDe, mirBloques, capUrl
 import { mirMantDiaDe, mirMantFranjas, MIR_MANT_META, type DiaMIRMant } from './mirMantenimiento';
 import { mirAnkiDeck } from './ankiLinks';
 import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO, type MirGuiaPreguntas, type MirMetodoAsig, type MirFase } from './mirGuiaDatos';
-import { extraCorridaDe } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir)
+import { extraDePlan } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir) · v6.10w: por fecha de plan (extraDePlan)
 /** v6.10 · base cero (fix 18-nov): «vie 3-dic-2027» = handoff del banqueo → fase principal MIR (antes «oct-2027» escrito, de la v6.00). */
 const _HANDOFF_MIR = MIR_MANT_META.handoff.split(' (')[0];
 
@@ -411,7 +411,7 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     //   y el orden aleatorio en el «qué»; la regla de las vencidas y la retention con la fecha del handoff abren el «cómo».
     // v6.10j (auditoría c14, diffs #9): «FSRS · solo Good/Again» abre el «cómo» (antes iba detrás de la fecha del handoff y el corte lo escondía) y la regla de
     //   las vencidas, en corto como en el plan; el «qué» (136, lleno) no cambia
-    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (las 14 asignaturas), ≤${M.nuevasBaseBanqueo} nuevas/día · orden aleatorio, nunca por asignatura`, como: `FSRS · solo Good/Again · ② > ${M.umbralVencidas} vencidas 2 días seguidos → nuevas a 0 esa semana · retention 0,85 hasta el Step 1 → 0,90 tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · ② hasta que acabe el paso: las 14 asignaturas del plan ya reactivadas (Anki no le quita tiempo a las preguntas) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques).` };
+    if (f.tipo === 'anki') return { min, que: `Anki · ① ${M.mazoPersonal} (tus fallos) a cero → ② Ravi «${M.mazoBase}» (las 14 asignaturas), ≤${M.nuevasBaseBanqueo} nuevas/día · orden aleatorio, nunca por asignatura`, como: `FSRS · solo Good/Again · ② > ${M.umbralVencidas} vencidas 2 días seguidos → nuevas a 0 esa semana · retention 85 % hasta el Step 1 → 90 % tras el handoff del ${_HANDOFF_MIR} (fase principal MIR) · ② hasta que acabe el paso: las 14 asignaturas del plan ya reactivadas (Anki no le quita tiempo a las preguntas) · tus fallos de todas las asignaturas, mezclados (Ravi: el examen no viene por bloques).` };
     if (f.tipo === 'quiz') {
       // ≥20Q: pasada a ≈72 s/Q con el reloj cada 10 preguntas y los últimos minutos para la revisión FORMAL (Ravi); <20Q: sin cambios
       const pasada = dia.nQ >= 20 ? Math.min(min - 2, Math.round(dia.nQ * 1.2)) : 0;
@@ -468,8 +468,12 @@ export function mirGuiaDe(iso: string, ini?: string | null): GuiaBloque | null {
   if (g && ini === null) g = { ...g, aviso: [g.aviso, 'Guardia: sin hora fija → mismo reparto en minutos, en tiempo muerto (DJ-4).'].filter(Boolean).join(' · ') };
   // v6.10 (17-nov-2026): hábil EXTRA de fin de semana (v6.10c: sáb 2-ene 07:15-08:15, el D32 · v6.10: dom 29-nov 08:15-09:15, recupera el mar 17): la guía sigue en la hora de PLAN (15:15) y el Home la
   //   mueve a la real (plantillasV6 › bloqueCorrido + moverGuia); el aviso nombra la hora real (fuera de la franja que se mueve)
-  const fx = g ? extraCorridaDe(iso).find((x) => x.frente === 'mir') : undefined;
-  if (g && fx) g = { ...g, aviso: [`Hoy ${new Date(iso + 'T12:00:00Z').getUTCDay() === 0 ? 'domingo' : 'sábado'}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (el mar 17-nov fue sin sesión y cada día MIR de F1 corrió uno; ${new Date(iso + 'T12:00:00Z').getUTCDay() === 6 ? 'es la última sesión de F1: desde el lunes' : 'desde mañana'}, las fechas de siempre). Mismo reparto que entre semana.`, g.aviso].filter(Boolean).join(' · ') };
+  // v6.10w (dom 22-nov): por FECHA DE PLAN (extraDePlan): el sáb 2-ene hace el D31 (plan del jue 31-dic, sin día propio) y el dom 3-ene el D32 (el del sáb 2-ene)
+  const fx = g ? extraDePlan(iso, 'mir') : null;
+  const diaFx = fx ? ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][new Date(fx.real + 'T12:00:00Z').getUTCDay()] : '';
+  if (g && fx) g = { ...g, aviso: [fx.real !== iso
+    ? `Hoy ${diaFx}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (su día de plan ya tiene otra sesión MIR: nada se compacta; desde el lunes, las fechas de siempre). Mismo reparto que entre semana.`
+    : `Hoy ${diaFx}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (el mar 17-nov fue sin sesión y cada día MIR de F1 corrió uno; desde mañana, las fechas de siempre). Mismo reparto que entre semana.`, g.aviso].filter(Boolean).join(' · ') };
   return g;
 }
 /** Preguntas exactas de la guía medida (D1-D76 desde v6.03); undefined en los días por regla (las da la app desde el pool). */

@@ -184,7 +184,9 @@ const SIN_SESION_VIBE = require('./gen_fechas_v6').sinSesionPlan(require('./gen_
 // v6.10q (19-nov-2026): semana ISO del journal de un proyecto que no va en la de cada fecha → VIBE_JOURNAL_SEMANA. S1 se anota entero en 2026-W47, como
 //   manda el kit v5 de GoodNotes (S01_APEX), aunque sus días crucen de semana (v6.10u: paso 1 vie 20 → paso 5 jue 26-nov y SHIP el dom 29). v6.10u: la tabla vive
 //   aquí (antes, en _fechas_v6.json › corrida_s1.alias_frente.vibecoding.journal, retirado con el alias propio del vibecoding); journal_hoy.js la lee del .ts
-const JOURNAL_SEM = { 1: '2026-W47' };
+// v6.10w (dom 22-nov): S1 va del lun 23 al vie 27-nov (2026-W48) y S2 empieza el lun 30: la semana del journal sale del DÍA REAL (vibeJournalSemanaDe y
+//   journal_hoy.js con fechaRealDe) y ya no hace falta fijar la de S1 (antes 2026-W47, con S1 en la semana del mié 18)
+const JOURNAL_SEM = {};
 // 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
@@ -220,6 +222,51 @@ for (const p of P) {
   }
 }
 if (dias.length !== 60) throw new Error('Deben salir 60 días S1-S12, salieron ' + dias.length);
+// v6.10w (dom 22-nov-2026 · «todo inicia el 23»): un día del proyecto cuya fecha de PLAN no tiene día real (corrida_s1: el jue 31-dic real hace el plan del
+//   mar 29 y nadie hace el del jue 31) no se pierde ni se compacta: los pasos del proyecto se reparten EN ORDEN por la capacidad de sus días restantes
+//   (L-V = 45′ · hábil extra de fin de semana = su franja de corrida_s1.extra), con los MISMOS minutos (S7 deload: 135′ → sáb 2-ene 15′ «1/5, 1.ª parte»
+//   · lun 4 45′ «1/5, 2.ª parte» + «2/5» · mar 5 45′ «3/5» · mié 6 30′ «4/5» + «5/5»). El d de cada día se conserva; el día sin real sale del plan.
+const SIN_DIA_REAL_VIBE = (() => {
+  const c = require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {};
+  const vals = new Set(Object.values(c.alias || {}));
+  return new Set(Object.keys(c.alias || {}).filter((r) => !vals.has(r)));
+})();
+const CAP_EXTRA_VIBE = (() => {
+  const ex = (require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).extra || {};
+  const out = new Map();
+  for (const [f, x] of Object.entries(ex)) if (x && x.vibecoding) { const h = typeof x.vibecoding === 'string' ? x.vibecoding : x.vibecoding.hora; const [a, b] = h.split('-').map((t) => t.split(':').reduce((m, y) => m * 60 + Number(y), 0)); out.set(f, b - a); }
+  return out;
+})();
+const REPARTIDOS_VIBE = [];
+for (const p of P) {
+  const ds = dias.filter((x) => x.semana === p.s);
+  if (!ds.some((x) => SIN_DIA_REAL_VIBE.has(x.fecha))) continue;
+  const quedan = ds.filter((x) => !SIN_DIA_REAL_VIBE.has(x.fecha));
+  const total = ds.reduce((a, x) => a + x.min, 0);
+  const cap = (x) => CAP_EXTRA_VIBE.get(x.fecha) ?? 45;
+  if (quedan.reduce((a, x) => a + cap(x), 0) < total) throw new Error(`v6.10w · S${p.s}: sus ${total}′ no caben en sus días con día real (${quedan.map((x) => x.fecha).join(', ')})`);
+  // cola de pasos (k, minutos pendientes) → se llena cada día por orden, sin pasarse de su capacidad
+  const cola = ds.map((x) => ({ k: x.k, tipo: x.tipo, paso: x.paso, min: x.min, total: x.min }));
+  const nuevos = [];
+  for (const x of quedan) {
+    let libre = cap(x); const trozos = [];
+    while (libre > 0 && cola.length) {
+      const q = cola[0]; const m = Math.min(libre, q.min);
+      trozos.push({ k: q.k, tipo: q.tipo, paso: q.paso, min: m, parte: q.min === q.total && m === q.total ? null : q.min === q.total ? 1 : 2, de: q.total });
+      q.min -= m; libre -= m; if (!q.min) cola.shift();
+    }
+    if (!trozos.length) continue;
+    const min = trozos.reduce((a, t) => a + t.min, 0);
+    const txt = (t) => `[${t.k}/5${t.parte ? `, ${t.parte === 1 ? '1.ª' : '2.ª'} parte: ${t.min}′ de ${t.de}′` : ` · ${t.min}′`}] ${t.parte === 1 ? 'objetivo y spec de este paso (lo que quede, en la 2.ª parte) — ' : t.parte === 2 ? 'termina este paso (lo que quedó de la 1.ª parte) — ' : ''}${t.paso}`;
+    nuevos.push({ ...x, k: trozos[0].k, tipo: trozos[0].tipo, min, paso: trozos.length === 1 && !trozos[0].parte ? trozos[0].paso : trozos.map(txt).join(' + ') });
+  }
+  if (cola.length) throw new Error(`v6.10w · S${p.s}: quedan pasos sin día`);
+  for (const x of ds) dias.splice(dias.indexOf(x), 1);
+  const i0 = dias.findIndex((y) => y.fecha > nuevos[0].fecha);
+  dias.splice(i0 < 0 ? dias.length : i0, 0, ...nuevos);
+  REPARTIDOS_VIBE.push({ s: p.s, sin: ds.filter((x) => SIN_DIA_REAL_VIBE.has(x.fecha)).map((x) => x.fecha), dias: nuevos.map((x) => `${x.fecha} ${x.min}′`) });
+}
+if (REPARTIDOS_VIBE.length) console.log('v6.10w · repartidos por capacidad: ' + REPARTIDOS_VIBE.map((r) => `S${r.s} (sin día real ${r.sin.join(', ')}) → ${r.dias.join(' · ')}`).join(' | '));
 const finS12 = dias[dias.length - 1].fecha;
 // v6.07 (8-nov-2026): día de SHIP de cada semana = el DOMINGO siguiente al 5º día del proyecto (flexible, 2 h; el sábado 15:00-17:00 es la clase EN
 //   VIVO de Theomed). Hasta v6.06: el sábado siguiente (PC SYNAPSE 15:00-17:00). El nombre sabadoShip se conserva (histórico) para no reescribir las reglas.
@@ -254,7 +301,8 @@ for (const t of T) {
   });
   taperSemanas.push({ s: t.s, id: t.id, ini: ds[0], fin: ds[ds.length - 1], ship: sabadoShip(ds[ds.length - 1]) });
 }
-if (dias.length !== DIAS_STEP1) throw new Error(`Deben salir ${DIAS_STEP1} días en total, salieron ${dias.length}`);
+const QUITADOS_VIBE = REPARTIDOS_VIBE.reduce((a, r) => a + r.sin.length, 0); // v6.10w: días de plan sin día real (sus pasos, repartidos en su semana)
+if (dias.length !== DIAS_STEP1 - QUITADOS_VIBE) throw new Error(`Deben salir ${DIAS_STEP1 - QUITADOS_VIBE} días en total, salieron ${dias.length}`);
 if (dias[dias.length - 1].fecha !== finStep1) throw new Error('El último día del taper debe ser el 95.º hábil desde START: ' + finStep1);
 
 // v6.01 (10-oct-2026): sábado del PC opcional de cada semana del taper en el SYNAPSE (gen_synapse_plan.js, PC_DESPLAZADOS): el de su SHIP,
@@ -347,6 +395,17 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 const shipTs = (e) => `{s:${e.s},id:"${esc(e.id)}",fecha:"${e.fecha}",hora:"${esc(e.hora)}",criterios_ok:${e.criterios_ok},total:${e.total},shipped:${e.shipped},resumen:"${esc(e.resumen)}"}`;
 
 const nP = dias.filter((x) => x.semana <= 12).length;
+// remate v6.10w (revisión textos · journal del S7): un proyecto que EMPIEZA en un fin de semana (corrida_s1: el S7 abre con 15′ el sáb 2-ene y sigue lun 4 → mié 6)
+//   se anota entero en la semana ISO de sus días L-V (2027-W01), no la 1.ª parte en la del sábado (2026-W53, la del S6) y el resto en otra
+{
+  const V6j = require('./gen_fechas_v6'), F6j = V6j.cargarFechasV6();
+  const isoW = (f) => { const d = new Date(f + 'T12:00:00Z'); const day = (d.getUTCDay() + 6) % 7; d.setUTCDate(d.getUTCDate() - day + 3); const fy = new Date(Date.UTC(d.getUTCFullYear(), 0, 4)); const w = 1 + Math.round(((d.getTime() - fy.getTime()) / 86400000 - 3 + ((fy.getUTCDay() + 6) % 7)) / 7); return d.getUTCFullYear() + '-W' + String(w).padStart(2, '0'); };
+  for (const s of [...new Set(dias.map((x) => x.semana))]) {
+    const reales = dias.filter((x) => x.semana === s).map((x) => V6j.fechaRealDe(x.fecha, F6j, 'vibecoding')).sort();
+    const w0 = new Date(reales[0] + 'T12:00:00Z').getUTCDay(), lv = reales.find((r) => { const w = new Date(r + 'T12:00:00Z').getUTCDay(); return w >= 1 && w <= 5; });
+    if ((w0 === 0 || w0 === 6) && lv && isoW(lv) !== isoW(reales[0]) && JOURNAL_SEM[s] === undefined) JOURNAL_SEM[s] = isoW(lv);
+  }
+}
 const ts = `/**
  * vibecodingPlan.ts — Motor día-a-día del VIBECODING 04:15-05:00 (L-V) · 12 proyectos S1-S12 (${nP} días hábiles,
  * ${dias[0].fecha} → ${finS12}; DOMINGO = SHIP, flexible, 2 h —v6.07; hasta v6.06 el sábado 15:00-17:00—) + taper S13-S20 (${dias[nP].fecha} → ${dias[dias.length - 1].fecha}:
@@ -372,6 +431,7 @@ const ts = `/**
  * y S7 toca 2 de sus 5 días en la del lun 28-dic · en v6.06 —como en v6.05— la semana post-NBME 26 era S6 EXACTA y S7 no la tocaba —v6.03: S7 solapaba 3 de sus 5 días—).
  * Las semanas deload del Step 1 las fija homeBriefing.DELOAD_SEMANAS (v6.08 = v6.07: lun 14-dic y lun 28-dic · v6.06: lun 7-dic y lun 28-dic · v6.05 = v6.03: lun 30-nov y lun 28-dic).
  */
+import { fechaRealDe } from './fechasV6'; // v6.10w: la semana del journal sale del día REAL
 export type VibeRotacion = 'yocpmd' | 'preguntas' | 'bots' | 'contenido';
 export type VibeTipo = 'definir' | 'construir' | 'verificar' | 'ship-prep' | 'sensores' | 'mejora' | 'lectura' | 'retro' | 'journal';
 export type VibeVerifTipo = 'git' | 'test' | 'url' | 'supabase' | 'fichero' | 'manual';
@@ -542,7 +602,8 @@ const VIBE_JOURNAL_SEMANA: Record<number, string> = ${JSON.stringify(JOURNAL_SEM
 export function vibeJournalSemanaDe(fechaISO: string): string {
   const pc = vibePCDomingo(fechaISO);
   const s = vibeDiaDe(fechaISO)?.semana ?? (pc.length ? pc[pc.length - 1].s : undefined);
-  return (s !== undefined ? VIBE_JOURNAL_SEMANA[s] : undefined) ?? vibeSemanaISO(fechaISO);
+  // v6.10w: la semana ISO del DÍA REAL en que se hace (con la corrida, la fecha de plan del mié 18 se hace el lun 23: S1 entero en 2026-W48)
+  return (s !== undefined ? VIBE_JOURNAL_SEMANA[s] : undefined) ?? vibeSemanaISO(fechaRealDe(fechaISO, 'vibecoding'));
 }
 /** Ruta del journal de la semana y su URL vscode:// (VS Code instalado en el PC de Joseph; en móvil no abre). v6.10q: semana = vibeJournalSemanaDe. */
 export function vibeJournalPath(fechaISO: string): string { return VIBE_META.journalRoot + '/journal/' + vibeJournalSemanaDe(fechaISO) + '.md'; }

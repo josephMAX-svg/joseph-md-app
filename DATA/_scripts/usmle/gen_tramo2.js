@@ -547,7 +547,7 @@ function generarTramo2(o) {
     const F4row = esF4(s);
     const postFree = FREE120 && s > FREE120;
     switch (a.tipo) {
-      case 'reentrada': Object.assign(fila, DEF.reentrada, { uw: `AMBOSS timed mixto (${nSisF1} sistemas F1) + incorrectas uWorld`, sub: `REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los ${nSisF1} sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 0,90 hoy)`, qDia: 40, nivelUW: 4, h: 5.5 }); break;
+      case 'reentrada': Object.assign(fila, DEF.reentrada, { uw: `AMBOSS timed mixto (${nSisF1} sistemas F1) + incorrectas uWorld`, sub: `REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los ${nSisF1} sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 90 % hoy)`, qDia: 40, nivelUW: 4, h: 5.5 }); break;
       case 'hito': {
         const q = /UWSA/.test(a.nombre) ? 160 : /Free 120 \+ 4/.test(a.nombre) ? 280 : /Free 120/.test(a.nombre) ? 120 : /\+ 3 bloques/.test(a.nombre) ? 320 : 200;
         const hora = !F4row ? '07:00-12:30' : q >= 280 ? '07:00-16:30' : q === 200 ? '07:00-12:15' : q === 160 ? '07:00-11:15' : '07:00-10:15';

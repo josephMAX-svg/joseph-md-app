@@ -148,7 +148,7 @@ En el SERUMS la hora se desplaza al turno (M 16:00 · T 10:35 · L 15:15 · hito
 |---|---|---|
 | Nombre | `APEX::MIR` (subdecks `APEX::MIR::<asignatura>`, `ankiLinks.mirAnkiDeck`) | «1ºVUELTA 2MIR21» (importado tal cual) |
 | Qué entra | solo APEX: fallos propios y detalles de nivel 3-4/5 (§5) | las tarjetas de Ravi; se **reactivan por asignatura** |
-| Preset | «APEX::MIR» (README §5): FSRS, retention 0,85 hasta el Step 1 → 0,90 desde oct-2027, ≤4 nuevas/día | «RAVI-1V»: FSRS, retention 0,85, **≤3 nuevas/día en la 1.ª vuelta · ≤10 en el banqueo** |
+| Preset | «APEX::MIR» (README §5): FSRS, retention 85 % hasta el Step 1 → 90 % desde oct-2027, ≤4 nuevas/día | «RAVI-1V»: FSRS, retention 85 %, **≤3 nuevas/día en la 1.ª vuelta · ≤10 en el banqueo** |
 | Orden | **aleatorio**, estudiando desde la raíz `APEX::MIR` (todas las asignaturas mezcladas) | **aleatorio** entre lo reactivado |
 | Prioridad | **primero y a cero** cada día (P4) | después, hasta que acabe el paso de Anki |
 | Deuda | no se acumula (es pequeño) | si pasa de 60 vencidas dos días seguidos → nuevas a 0 esa semana (misma regla del README) |

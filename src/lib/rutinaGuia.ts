@@ -122,7 +122,7 @@ import {
   VIBE_FASES_BC, vibeFaseBCDe, // v6.10 · base cero: fases PRIMM del vibecoding
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
-import { SYN_DIAS, SYN_PLAN_META, synDiaDe, synColaDe, SYN_COLA_POST_STEP1, synRecDe, SYN_REC_F1, SYN_FASES_BC, synFaseBCDe } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real · v6.10: + la sesión de recuperación (sáb 28-nov 07:15)
+import { SYN_DIAS, SYN_PLAN_META, synDiaDe, synColaDe, SYN_COLA_POST_STEP1, synRecDe, SYN_REC_F1, SYN_FASES_BC, synFaseBCDe, SYN_CADENAS } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real · v6.10: + la sesión de recuperación (sáb 28-nov 07:15)
 import type { SynBloque } from './synapseDailyPlan';
 import { AURUM_DIAS, aurumDiaDe, aurumObsUrl } from './aurumDailyPlan';
 import type { DiaAurum, AurumBloque } from './aurumDailyPlan';
@@ -135,7 +135,7 @@ import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from
 import { guiaUsmleDe } from './usmleGuia'; // remate v6.10j: la eval 10Q del DAY-AFTER 6/6 en la métrica 1 de la revisión
 import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe, encapsMananaDe, encapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De, ENCAPS_F2_FECHAS } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De, extraCorridaDe } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10u: sin enShipDe (el SHIP S1 vuelve a ser solo SHIP)
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, motivoProtegido, corridaS1De, extraCorridaDe, extraDePlan } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10u: sin enShipDe (el SHIP S1 vuelve a ser solo SHIP)
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -433,7 +433,7 @@ function vibeS2(k: number): GuiaPaso[] | undefined {
       P(15, 'INVESTIGA: predicción ↔ salida ↔ Stats de Anki (±5 %)', 'Por cada número que no cuadre, Claude Code: «¿de qué línea de anki_telemetria.js sale <número> y qué consulta de AnkiConnect usa?» → línea + consulta al journal (deck:APEX::USMLE* vs AnKing). Hoy no se cambia código.'),
     ];
     case 2: return [
-      P(10, 'PREDICE: preset, nuevas/día y Desired retention del mazo APEX::USMLE', 'Anki → engranaje de APEX::USMLE → Options: anota nombre del preset, nuevas/día y Desired retention. Escribe qué esperas que diga el script (preset «APEX USMLE», 20 nuevas/día, 0,90).'),
+      P(10, 'PREDICE: preset, nuevas/día y Desired retention del mazo APEX::USMLE', 'Anki → engranaje de APEX::USMLE → Options: anota nombre del preset, nuevas/día y Desired retention. Escribe qué esperas que diga el script (preset «APEX USMLE», 20 nuevas/día, 90 %).'),
       // v6.10u (auditoría c19 · dias-clave #2): ruta absoluta (hoy no hay «pushd»: desde otra carpeta, «Cannot find module»)
       P(10, 'CORRE: `node D:\\joseph-md-app\\DATA\\_scripts\\anki_telemetria.js --json` → busca configDeck, desiredRetention y retencion30', 'Compara los 3 valores con tu predicción y con Anki. retencion30 = 1 − Again/revisiones de 30 días (cabecera del script).'),
       P(15, 'INVESTIGA y corrige EN ANKI (no en el script): ningún submazo APEX::USMLE::… en «Default»', 'Options de cada submazo: si alguno usa Default, pásalo a «APEX USMLE» ahí. Claude Code: «explícame en 3 líneas qué es la retención review-level (getReviewsOfCards)» → journal.'),
@@ -502,7 +502,11 @@ const VIBE_COMO_TIPO: Record<string, string> = {
 /** v6.10 (17-nov-2026): franja REAL de un bloque de fin de semana que recupera el mar 17 a hora fija (_fechas_v6.json › corrida_s1.extra[iso][frente]);
  *  null si ese día no lo trae. Las guías de esos bloques se piden en su fecha de plan (= ese mismo día) y a la hora L-V del frente; plantillasV6 ›
  *  bloqueCorrido + guia.moverGuia las llevan a esta franja (v6.02d). Los textos que nombran la hora real la escriben aquí (fuera de la franja L-V). */
-export const franjaExtraDe = (iso: string, frente: string): { ini: string; fin: string } | null => extraCorridaDe(iso).find((x) => x.frente === frente) ?? null;
+// v6.10w (dom 22-nov): por FECHA DE PLAN (extraDePlan): el día extra puede hacer la fila de otra fecha de plan (sáb 2-ene = la del jue 31-dic · dom 3-ene = la
+//   del sáb 2-ene); `real` = el día en que se hace (las guías dicen «hoy sábado / domingo» con ese día, no con el de plan)
+export const franjaExtraDe = (iso: string, frente: string): { ini: string; fin: string; real: string } | null => extraDePlan(iso, frente);
+/** v6.10w: la fila de plan que un día extra hace con OTRA fecha (el plan del jue 31-dic, sin día propio, el sáb 2-ene; lo del sáb 2-ene, el dom 3-ene) */
+const extraOtroDia = (iso: string, fx: { real: string } | null): boolean => !!fx && fx.real !== iso;
 /** v6.09b lote 1-quater (QS): días cuyos textos de SYNAPSE / vibecoding / SHIP reescribe este lote = F1 desde MAÑANA (mié 18-nov → dom 3-ene): el mar
  *  17-nov (D1) estaba en curso y no se toca; 2027, idéntico. */
 const textosQSDe = (iso: string): boolean => iso >= '2026-11-18' && iso <= FECHAS_V6.transicion.hasta;
@@ -583,7 +587,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
   // v6.10 (17-nov-2026): hábil EXTRA de fin de semana (corrida_s1.extra › vibecoding: sáb 28-nov 05:00-05:45, recupera el mar 17). La guía sigue en la
   //   franja de PLAN (04:15-05:00): plantillasV6 › bloqueCorrido + moverGuia la llevan a su hora real; los textos con hora dentro de esa franja se mueven
   //   con ella (04:55 → 05:40, 05:00 → 05:45) y los demás nombran la rutina y el Anki del sábado (21:30), que no se mueven.
-  const fxV = dow(iso) === 0 || dow(iso) === 6 ? franjaExtraDe(iso, 'vibecoding') : null;
+  const fxV = franjaExtraDe(iso, 'vibecoding'); // v6.10w: por fecha de plan
   const sem = vibeJournalSemanaDe(iso); // v6.10q: la del proyecto si la fija el plan (S1 entero en 2026-W47; antes la semana ISO de la fecha de plan)
   const journal = { t: `📓 journal ${sem}`, url: vibeJournalUrl(iso) };
   const docs = p?.docs?.[0];
@@ -630,7 +634,8 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
         // remate v6.10q (revisión «calendar» #3, kit v5 de GoodNotes): el respaldo del paso 1 de S1 es lo que no puede faltar (el paso 2 no pega sin él)
         dia.semana === 1 && dia.k === 1 ? 'Si vas tarde, el respaldo (15′) va antes que el test y los hashes: sin él, en el paso 2 no se pega ni se publica.' : '',
         // v6.10c: la hora real del día extra (sáb 2-ene 04:15-04:30; v6.10: sáb 28-nov 05:00-05:45, «justo antes de la rutina»)
-        fxV ? `Hoy ${dow(iso) === 0 ? 'domingo' : 'sábado'}, a hora fija (${fxV.ini}-${fxV.fin}${fxV.fin === '05:45' ? ', justo antes de la rutina de las 05:45' : ''}): el paso que toca en orden (el mar 17-nov fue sin sesión y cada paso de F1 corrió un día${faseV6(iso) === 'TRANSICION' ? ' hasta fin de año: hoy, el último de F1' : ''}; desde el lunes, las fechas de siempre).` : '',
+        // v6.10w: el paso REPARTIDO de una semana con un día de plan sin día real (S7: sáb 2-ene 1.ª parte del 1/5 · lun 4 2.ª parte + 2/5) lo dice
+        fxV ? `Hoy ${DIA_LARGO[dow(fxV.real)]}, a hora fija (${fxV.ini}-${fxV.fin}${fxV.fin === '05:45' ? ', justo antes de la rutina de las 05:45' : ''}): ${/^\[\d\/5/.test(dia.paso) ? 'la 1.ª parte del paso que toca en orden (los pasos de esta semana se reparten por sus días, con los mismos minutos: el lunes, el resto)' : 'el paso que toca en orden (el mar 17-nov fue sin sesión y cada paso de F1 corrió un día; desde el lunes, las fechas de siempre)'}.` : '',
         primerDia ? '' : vibeFaseAvisoDe(iso), // v6.10 · BASE CERO: fase PRIMM (1 guiado · 2 modificar · 3 crear), al final (el Calendar corta el aviso en 240)
       ].filter(Boolean).join(' ') || undefined,
     });
@@ -739,11 +744,25 @@ let SYN_CUR_IDX: Map<string, SynCur> | null = null;
 /** Curaduría de un bloque A/B/C de una fecha: la n-ésima aparición de su pieza en SYN_DIAS (n = 1 si no se indica) · v6.09: los recursos repartidos
  *  (SYN_SERIES) por fecha de sesión: su comodín va al 1.er sábado posterior a la 1.ª aparición con su comodín LIBRE (≤ 3 semanas; v6.05 fix: si ese
  *  sábado ya está curado, el siguiente sábado libre), en el orden de la tabla, y las apariciones siguientes de su carril lo continúan mientras quede. */
+// v6.10w (dom 22-nov): las CADENAS (SYN_CADENAS) movieron el contenido de sus filas una sesión: la curaduría por fecha se calcula con la disposición
+//   ORIGINAL (DIAS_CUR: cada fila con el contenido que tenía) y sus textos dicen dónde está ahora cada sesión (CAD_SIG: fila original → fila actual o
+//   la sesión a hora fija); pasoSyn busca con la fila ORIGINAL del contenido (CAD_ORIG).
+const CAD_SIG = new Map<string, string>(), CAD_ORIG = new Map<string, string>();
+for (const c of SYN_CADENAS) c.filas.forEach((f, k) => { const dest = k + 1 < c.filas.length ? c.filas[k + 1] as string : c.rec.fecha; CAD_SIG.set(f, dest); if (k + 1 < c.filas.length) CAD_ORIG.set(c.filas[k + 1] as string, f); });
+const recCadenaDe = (fecha: string, plan: string) => SYN_REC_F1.find((r) => !!r.cadena && r.fecha === fecha && r.plan === plan);
+const DIAS_CUR = SYN_DIAS.map((d) => {
+  const dest = CAD_SIG.get(d.fecha);
+  if (!dest) return d;
+  const fila = SYN_DIAS.find((x) => x.fecha === dest && CAD_ORIG.get(dest) === d.fecha);
+  const rec = fila ? null : recCadenaDe(dest, d.fecha);
+  return { ...d, bloques: fila ? fila.bloques : rec ? rec.bloques : [] };
+});
+const sesAhora = (x: SynSesion): SynSesion => ({ ...x, fecha: CAD_SIG.get(x.fecha) ?? x.fecha });
 function synCurDe(iso: string, tag: string): SynCur | undefined {
   if (!SYN_CUR_IDX) {
     const idx = new Map<string, SynCur>();
     const vistos = SYN_CUR_PIEZAS.map(() => 0);
-    for (const d of SYN_DIAS) for (const b of d.bloques) {
+    for (const d of DIAS_CUR) for (const b of d.bloques) {
       SYN_CUR_PIEZAS.forEach((p, i) => {
         if (p.tag !== b.tag || !p.es(b)) return;
         vistos[i] += 1;
@@ -752,18 +771,18 @@ function synCurDe(iso: string, tag: string): SynCur | undefined {
     }
     const ultimo = SYN_DIAS.length ? SYN_DIAS[SYN_DIAS.length - 1]!.fecha : '';
     for (const s of SYN_SERIES) {
-      const d0 = SYN_DIAS.find((d) => d.bloques.some((b) => b.tag === s.tag && s.primera(b)));
+      const d0 = DIAS_CUR.find((d) => d.bloques.some((b) => b.tag === s.tag && s.primera(b)));
       if (!d0) continue;
       // el comodín del sábado: 1.er sábado posterior a la pieza con su comodín presente y LIBRE (≤ 3 semanas)
       let sabC: string | undefined;
       for (let sab = siguienteDow(d0.fecha, 6); sab <= ultimo && sab <= addDias(d0.fecha, 21); sab = addDias(sab, 7)) {
-        const ds = SYN_DIAS.find((d) => d.fecha === sab);
+        const ds = DIAS_CUR.find((d) => d.fecha === sab);
         if (!ds || !ds.bloques.some((b) => b.tag === s.tag && s.comodin(b)) || idx.has(`${sab}|${s.tag}`)) continue;
         sabC = sab; break;
       }
       // sesiones por FECHA: la 1.ª, el comodín y las apariciones siguientes de su carril, hasta agotar el recurso
       const ses: SynSesion[] = [{ fecha: d0.fecha, tipo: 'primera' }];
-      for (const d of SYN_DIAS) {
+      for (const d of DIAS_CUR) {
         if (d.fecha <= d0.fecha) continue;
         if (s.paso0 + (ses.length - 1) * s.paso >= s.total && (!sabC || d.fecha > sabC)) break;
         if (d.fecha === sabC) ses.push({ fecha: d.fecha, tipo: 'comodin' });
@@ -772,7 +791,7 @@ function synCurDe(iso: string, tag: string): SynCur | undefined {
       const usadas: Array<{ ses: SynSesion; desde: number; hasta: number }> = [];
       let hecho = 0;
       for (const x of ses) { if (hecho >= s.total) break; const n = usadas.length ? s.paso : s.paso0; usadas.push({ ses: x, desde: hecho, hasta: Math.min(s.total, hecho + n) }); hecho = Math.min(s.total, hecho + n); }
-      usadas.forEach((u, k) => idx.set(`${u.ses.fecha}|${s.tag}`, s.txt({ desde: u.desde, hasta: u.hasta, total: s.total, ses: u.ses, prev: usadas[k - 1]?.ses, sig: usadas.slice(k + 1).map((x) => x.ses) })));
+      usadas.forEach((u, k) => { const pv = usadas[k - 1]?.ses; idx.set(`${u.ses.fecha}|${s.tag}`, s.txt({ desde: u.desde, hasta: u.hasta, total: s.total, ses: sesAhora(u.ses), prev: pv ? sesAhora(pv) : undefined, sig: usadas.slice(k + 1).map((x) => sesAhora(x.ses)) })); });
     }
     SYN_CUR_IDX = idx;
   }
@@ -783,8 +802,9 @@ function synCurDe(iso: string, tag: string): SynCur | undefined {
  *  toda sesión A/B/C, de recuperación y de la cola (≤ 180 caracteres con el criterio: el volcado del Calendar corta la línea «Hecho» en 180). */
 const SYN_REGLA_NOTAS = 'Anki · Obsidian · GoodNotes: hoy nada fijo; lo que salga se decide al terminar, en el chat SYNAPSE y con tu OK.';
 const SYN_HECHO = `A, B y C con su parada anotada + ✓ en Estudio › SYNAPSE. ${SYN_REGLA_NOTAS}`;
-function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
-  const cur = synCurDe(iso, b.tag);
+function pasoSyn(b: SynBloque, iso: string, origen?: string): GuiaPaso {
+  // v6.10w: la curaduría se busca con la fila ORIGINAL del contenido (cadenas); la sesión a hora fija de una cadena pasa su fila de origen
+  const cur = synCurDe(origen ?? CAD_ORIG.get(iso) ?? iso, b.tag);
   // v6.09: la pieza que recupera un día sin sesión (dom 29-nov, DOM_RECUPERA) conserva su «· recupera el …» aunque lleve curaduría
   const rec = (/ · recupera el .+$/.exec(b.leccion) || [''])[0];
   // v6.09b (S1 · a2-4/5/6): F1 troceado con material MEDIDO (gen_synapse_plan.js › synapse_f1_tramos.js): el paso del generador manda sobre la
@@ -938,9 +958,12 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
   const recPrev = SYN_REC_F1.find((r) => previos.some((x) => x.fecha === r.plan));
   // v6.10 · tanda C (decidido con Joseph en el chat SYNAPSE): la auditoría F0 del día sin sesión ABRE esta sesión (3′; la A queda en 12′)
   const auditHoy = s.bloques.find((b) => b.tag === 'A' && b.audit && /^AUDITORÍA F0/.test(b.leccion));
+  // v6.10w: con la cadena de la semana 1 la auditoría F0 abre la sesión SIGUIENTE (la primera es la del dom 22, que no tuvo sesión)
+  const auditSig = auditHoy ? null : SYN_DIAS.find((x) => x.fecha > s.fecha && x.bloques.some((b) => b.tag === 'A' && b.audit && /^AUDITORÍA F0/.test(b.leccion))) ?? null;
+  const auditSigB = auditSig?.bloques.find((b) => b.tag === 'A' && b.audit && /^AUDITORÍA F0/.test(b.leccion));
   const d2 = s.d > 1 && previos.every((x) => perdidoDelPlan(x.fecha)) // v6.10d: perdidoDelPlan (el mié 18 con alias no cuenta)
     ? (previos.length > 1
-      ? `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)}: ${previos.map((x) => fCorta(x.fecha)).join(' y ')} fueron sin sesión${auditHoy ? `${recPrev ? (recPrev.semana > 2 ? ` (el carril del martes corre una semana: sus piezas, el ${fCorta(addDias(recPrev.plan, 7))})` : ` (sus piezas del martes van el ${fCorta(recPrev.fecha)} a las ${recPrev.ini})`) : ''} y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre esta sesión (${auditHoy.min}′; la A queda en ${15 - auditHoy.min}′)` : recPrev ? ` y la auditoría F0 del ${fCorta(recPrev.plan)} va el ${fCorta(recPrev.fecha)} a las ${recPrev.ini}` : ''}; así la numeración de 2027 no cambia.${auditHoy ? ' Skilljar cierra a principios de diciembre: guarda antes los PDF de tus certificados viejos.' : ''}`
+      ? `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)}: ${previos.map((x) => fCorta(x.fecha)).join(' y ')} fueron sin sesión${auditSigB && recPrev ? ` (el carril del martes corre una semana) y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre la sesión siguiente (${auditSigB.min}′)` : auditHoy ? `${recPrev ? (recPrev.semana > 2 ? ` (el carril del martes corre una semana: sus piezas, el ${fCorta(addDias(recPrev.plan, 7))})` : ` (sus piezas del martes van el ${fCorta(recPrev.fecha)} a las ${recPrev.ini})`) : ''} y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre esta sesión (${auditHoy.min}′; la A queda en ${15 - auditHoy.min}′)` : recPrev ? ` y la auditoría F0 del ${fCorta(recPrev.plan)} va el ${fCorta(recPrev.fecha)} a las ${recPrev.ini}` : ''}; así la numeración de 2027 no cambia.${auditHoy ? ' Skilljar cierra a principios de diciembre: guarda antes los PDF de tus certificados viejos.' : ''}`
       : `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)} (sin sesión, v6.09); así la numeración de 2027 no cambia.`) : '';
   return bloque(franja, 'synapse', `SYNAPSE S${s.semana} · ${s.fase.split('·')[0].trim()} — A pantalla · B audio · C lectura`, pasos, recursos,
     SYN_HECHO,
@@ -958,9 +981,20 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
  *  15′ medidos del vídeo que el comodín del sáb 2-ene dejó a medias, «Interpretability…» min 15:00-37:30 a 1,5×) · v6.10: sáb 28-nov 07:15-07:45 = la sesión del mar 17 (sin sesión) — tanda C: su A = 15′ de la siguiente lección de F0 sin ✓ (la auditoría abrió el mié 18) + la primera
  *  lección de F0 sin ✓) y las piezas B/C del carril del martes de la sem 2 (Dwarkesh × Dario 10:00-25:00 a 1,5× · Willison ≈530 palabras); cada paso
  *  trae su tramo medido (b.guia). Bloque «syn-rec» de plantillasV6 (lo pinta NÚCLEO); la sesión de las 21:00 de ese día es la suya (guiaSynapseDe). */
-export function guiaSynapseRecDe(iso: string): GuiaBloque | null {
-  const r = synRecDe(iso);
+export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque | null {
+  const r = synRecDe(iso, ini) ?? (ini ? undefined : synRecDe(iso));
   if (!r) return null;
+  // v6.10w (dom 22-nov): sesión de una CADENA (las sesiones del SYNAPSE corrieron una): dom 29-nov 05:00 = la del sáb 28 (el dom 22 fue sin sesión) · dom 3-ene
+  //   05:00 = la del sáb 2-ene (que hizo la del plan del jue 31-dic, sin día propio). Es la sesión normal de ese día, a hora fija.
+  if (r.cadena) {
+    const abcC = r.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
+    if (!abcC.length) return null;
+    const otraRec = SYN_REC_F1.find((x) => x.fecha === iso && x !== r);
+    return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · la sesión del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, abcC.map((b) => pasoSyn(b, r.fecha, r.plan)),
+      abcC.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })), SYN_HECHO,
+      { aviso: `Hoy, a hora fija (${r.ini}-${r.fin}, antes de la rutina de las 05:45): la sesión del SYNAPSE que toca en orden (${r.cadena}: cada sesión hizo la de la anterior y esta es la que no tenía sitio). ${otraRec ? `Aparte, a las ${otraRec.ini}, la otra sesión de hoy. ` : ''}Desde mañana, las fechas de siempre.`,
+        planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC de hoy (SHIP del vibecoding, flexible).` });
+  }
   const abc = r.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   if (!abc.length) return null;
   const pasos = abc.map((b) => pasoSyn(b, iso));
@@ -968,14 +1002,17 @@ export function guiaSynapseRecDe(iso: string): GuiaBloque | null {
   // v6.10c · FIX r1 (hallazgo 1 de la revisión): la A de la sesión ya no es «la siguiente lección de F0 sin ✓» (el 3-ene no queda ninguna en la Academy):
   //   el aviso nombra el material real de la A (el vídeo que el comodín de ayer dejó a medias, medido por el generador)
   const aR = abc.find((b) => b.tag === 'A');
-  const aTxt = aR && !aR.audit ? `${aR.min}′ en pantalla de ${aR.material.replace(/^Canal Anthropic · /, '')}, donde lo dejó el comodín de ayer a las 21:00` : '15′ de la siguiente lección de F0 sin ✓; la auditoría F0 abrió la sesión del mié 18-nov';
+  // v6.10w: el dom 3-ene esta sesión va a las 11:30 y el comodín que deja el vídeo a medias es el de la sesión de las 05:00 de ese día (la del sáb 2-ene)
+  const antes = SYN_REC_F1.find((x) => x.fecha === iso && x !== r && x.ini < r.ini);
+  const aTxt = aR && !aR.audit ? `${aR.min}′ en pantalla de ${aR.material.replace(/^Canal Anthropic · /, '')}, donde lo dejó el comodín ${antes ? `de la sesión de las ${antes.ini} de hoy` : 'de ayer a las 21:00'}` : '15′ de la siguiente lección de F0 sin ✓; la auditoría F0 abrió la sesión del mié 18-nov';
+  const cuandoTxt = aMin(r.ini) < aMin('05:45') ? 'Antes de la rutina de la mañana (05:45-07:15).' : `Hoy va a las ${r.ini}, tras las sesiones de la mañana; nada de estudio desde las 17:00.`;
   const pc = vibePCDomingo(addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso))).length ? addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso)) : null;
   return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · recuperación del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, pasos, recursos,
     SYN_HECHO,
     // v6.10c (cadena del carril del martes, decisión de Joseph del 17-nov 17:20): la sesión va el dom 3-ene 05:00 con las piezas del ÚLTIMO martes de F1
     //   (semana > 2; antes, sáb 28-nov 07:15 con las de la sem 2) → el aviso dice de qué martes son y cuándo es (antes de la rutina, el domingo)
     { aviso: r.semana > 2
-      ? `Hoy, a hora fija (${r.ini}-${r.fin}), la sesión del SYNAPSE que el ${fCorta(r.plan)} no tuvo (fue sin sesión): su A (${aTxt}) y las piezas del carril del martes de la semana del ${fCorta(addDias(r.plan, 7 * (r.semana - 1)))}: el carril corrió una semana y esta es su última pieza de F1. Antes de la rutina de la mañana (05:45-07:15).`
+      ? `Hoy, a hora fija (${r.ini}-${r.fin}), la sesión del SYNAPSE que el ${fCorta(r.plan)} no tuvo (fue sin sesión): su A (${aTxt}) y las piezas del carril del martes de la semana del ${fCorta(addDias(r.plan, 7 * (r.semana - 1)))}: el carril corrió una semana y esta es su última pieza de F1. ${cuandoTxt}`
       : `Hoy, a hora fija (${r.ini}-${r.fin}), la sesión del SYNAPSE del ${fCorta(r.plan)}, que fue sin sesión: su A (${aTxt}) y las piezas del martes que siguen a las del ${fCorta(addDias(r.plan, 7))}. Es aparte de la sesión de hoy a las 21:00. Tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30).`,
       planB: dow(iso) === 0 && vibePCDomingo(iso).length
         ? `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC de hoy (SHIP del vibecoding, flexible).`
@@ -1167,7 +1204,9 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
   // v6.09b lote 1-quater (QS · e): en F1 el lunes del plan B va con fecha (dom 3-ene → «el lun 4-ene a las 04:15»); fuera de F1, el texto de siempre
   let planB = textosQSDe(iso) && addDias(iso, 1) > FECHAS_V6.transicion.hasta
     ? 'Sin PC el domingo: el proyecto queda escrito como no shipped en el journal, con lo que falte (el lun 4-ene ya es el vibecoding del proyecto siguiente y no se toca). Nunca se arrastra al proyecto siguiente.'
-    : `Sin PC el domingo: ${textosQSDe(iso) ? `el ${fCorta(addDias(iso, 1))} a las 04:15` : 'el lunes 04:15'} empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
+    // v6.10w (remate · revisión textos): la 1.ª sesión REAL de vibecoding tras el domingo (con la corrida, el lun 30-nov hace el plan del mié 25: antes «el lun 30-nov»
+    //   de PLAN, que la app pintaba «jue 3-dic», ya en la 4.ª sesión del proyecto siguiente)
+    : `Sin PC el domingo: ${textosQSDe(iso) ? `el ${fCorta(VIBE_DIAS.map((x) => x.fecha).filter((x) => fechaRealDe(x, 'vibecoding') > iso).sort((a, b) => (fechaRealDe(a, 'vibecoding') < fechaRealDe(b, 'vibecoding') ? -1 : 1))[0] ?? addDias(iso, 1))} a las 04:15` : 'el lunes 04:15'} empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
   // v6.10 · fix 18-nov (revisión de los frentes): el aviso del GATE del SYNAPSE (synFaseAvisoDe) manda el quiz oficial suspendido «al PC del domingo»; en F1
   //   este SHIP lo recoge: el domingo siguiente al día REAL de un gate con quiz oficial, el paso de cerrar/avanzar empieza por repetirlo (solo lo fallado), a
@@ -1219,8 +1258,12 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       if (iso <= FECHAS_V6.transicion.hasta && (p.fin <= addDias(iso, -6) || (p.fin <= addDias(iso, -5) && vibeDiaDe(addDias(iso, 1))?.tipo === 'ship-prep' && vibeDiaDe(addDias(iso, 1))?.semana !== p.s))) {
         const sig = vibeProyectoDe(p.s + 1);
         avisoF1 = `SHIP S${p.s} hoy, tras su cierre del ${fCorta(p.fin)} (doc + commit + preparar SHIP): en F1 ${dow(p.fin) === 1 ? 'cada proyecto cierra en lunes (todo corrió un hábil en la v6.09)' : `S${p.s} cierra en ${['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][dow(p.fin)]} (el D1 fue el ${fCorta(VIBE_META.inicio)})`} y su SHIP va el domingo siguiente${sig ? `, con S${sig.s} ya en curso` : ''}. Hoy solo se cierra S${p.s}.`; // FX1: sin «(cierra el …)», que caía en la pos. ≈320 del aviso (el Calendar lo corta a 240)
-        const lunSig = addDias(iso, 1), dSig = vibeDiaDe(lunSig);
-        if (dSig && dSig.tipo === 'ship-prep' && dSig.semana !== p.s) planB = `Sin PC el domingo: el verify (10′) y lo rojo de S${p.s} van el ${fCorta(addDias(iso, 2))} a las 04:15 (el ${fCorta(lunSig)} es el cierre de S${dSig.semana} —doc + commit + preparar SHIP— y no se toca); lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
+        // v6.10w (remate · revisión textos): las sesiones de vibecoding en orden REAL tras el domingo (con la corrida, el lun 30-nov hace el plan del mié 25: antes
+        //   el plan B mandaba el verify al «lun 30-nov» de PLAN, que se hace el jue 3-dic, ya en la 4.ª sesión del proyecto siguiente)
+        const rV = (x: string): string => fechaRealDe(x, 'vibecoding');
+        const sigsV = VIBE_DIAS.map((x) => x.fecha).filter((x) => rV(x) > iso).sort((a, b) => (rV(a) < rV(b) ? -1 : rV(a) > rV(b) ? 1 : 0));
+        const lunSig = sigsV[0] ?? addDias(iso, 1), dSig = vibeDiaDe(lunSig);
+        if (dSig && dSig.tipo === 'ship-prep' && dSig.semana !== p.s) planB = `Sin PC el domingo: el verify (10′) y lo rojo de S${p.s} van el ${fCorta(sigsV[1] ?? addDias(iso, 2))} a las 04:15 (el ${fCorta(lunSig)} es el cierre de S${dSig.semana} —doc + commit + preparar SHIP— y no se toca); lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
         else planB = `Sin PC el domingo: el ${fCorta(lunSig)} a las 04:15 empieza con el verify (10′) de S${p.s} y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`; // v6.09b lote 1-quater (QS · e): con fecha (antes «el lunes 04:15»: dom 27-dic y 3-ene)
       }
     } else {
@@ -1518,7 +1561,7 @@ export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
   }
   return bloque(`${S.ini}–${S.fin}`, 'aurum', `AURUM · L de la semana (${S.min}′: lo que no cupo a las 14:15)`, pasos, recursos,
     'cada tramo leído o escuchado, con su marca (página o minuto) en la nota ◆ del día',
-    { aviso: `Sábado ${S.ini}, antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo en las 14:15 de esta semana${sabadoLibre(addDias(iso, -7)) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
+    { aviso: `Sábado ${S.ini}, antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo en las 14:15 de esta semana${sabadoLibre(addDias(iso, -7)) && [...aurumF1().dias.values()].some((r) => { const x = fechaRealDe(r.fecha, 'aurum'); return x > addDias(iso, -13) && x < addDias(iso, -7); }) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
 }
 /** v6.05 (fix 24-oct-2026): AURUM en F4 (SERUMS) = 30′ en el TIEMPO MUERTO del turno, justo DESPUÉS de los 30′ de R↔D (DJ-4), y no a la franja
  *  nominal 14:15–14:45 de F2/F3 (en el turno M chocaba con el almuerzo 13:40-14:30 y con el bloque B del Step 1 14:30-16:00). `rd` = bloque R↔D
@@ -1685,11 +1728,13 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     if (lvFuera && pasoLV) avisos.push(`Núcleo + variante LIVIANO = ${aMinPlan + (PR ? PR.min : 0) + pasoLV.min}′ > 60′: la variante LIVIANO (${pasoLV.min}′) no cabe hoy → ⚠ decisión de Joseph (propuesta: el sábado tras la revisión).`);
     // v6.10 (17-nov-2026): domingo de recuperación a hora fija (corrida_s1.extra › aurum: dom 6-dic 07:15-08:15) — la franja sigue siendo la de PLAN
     //   (14:15-15:15); plantillasV6 › bloqueCorrido + moverGuia la llevan a su hora real. El aviso nombra la hora real (fuera de la franja que se mueve).
-    const fxA = dow(iso) === 0 || dow(iso) === 6 ? franjaExtraDe(iso, 'aurum') : null;
+    const fxA = franjaExtraDe(iso, 'aurum'); // v6.10w: por fecha de plan (sáb 2-ene = la del jue 31-dic · dom 3-ene = la del sáb 2-ene)
     // v6.10c: el sáb 2-ene la hora real (14:30-15:30) cae DENTRO de la franja de plan (14:15-15:15), así que moverGuia la movería (+15′ → «14:45»): se
     //   escribe la hora que, tras moverGuia, se lee como la real (horaTrasMover); con la hora real fuera de la franja (dom 6-dic 07:15), igual que antes
     const horaTrasMover = (h: string): string => { const d = aMin(fxA!.ini) - aMin('14:15'), w = aMin(h) - d; return w >= aMin('14:15') && w <= aMin('15:15') ? aHHMM(w) : h; };
-    if (fxA) avisos.unshift(`Hoy ${dow(iso) === 0 ? 'domingo' : 'sábado'}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden (el mar 17-nov fue sin sesión y cada lección de F1 corrió un día${faseV6(iso) === 'TRANSICION' ? ' hasta fin de año: hoy, la última de F1' : ''}; desde el D${a.d + 1}, las fechas de siempre). Misma hora y mismo reparto que entre semana.`);
+    if (fxA) avisos.unshift(extraOtroDia(iso, fxA)
+      ? `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden (su día de plan ya tiene otra lección de AURUM: nada se compacta). Mismo reparto que entre semana.`
+      : `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden (el mar 17-nov fue sin sesión y cada lección de F1 corrió un día; desde el D${a.d + 1}, las fechas de siempre). Misma hora y mismo reparto que entre semana.`);
     franja = '14:15–15:15';
   } else {
     // DJ-4 (desde el lun 4-ene-2027): 30′ = 1′ arranque + vídeo (≤8′) + drill (el resto) + 1′ cierre; lo demás opcional
@@ -1998,7 +2043,9 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   if (iso <= FECHAS_V6.transicion.hasta) {
     if (caso && l.wd !== 'Vie') {
       const prevL = LIV_DIAS.filter((x) => x.d < l.d && x.casoId == null).pop();
-      avisos.unshift(`El CASO ${caso.id}/16 va hoy ${diaRealNom(iso, 'liviano')} y no el viernes: el ${prevL ? `${fCorta(prevL.fecha)} tocó la lección que lo prepara (${prevL.tema.split(':')[0]})` : 'viernes tocó la lección que lo prepara'}; las lecciones de F1 corrieron por los días sin sesión de noviembre. ${l.pretest ? 'Primero el recall en blanco del lunes; después, el caso.' : ''}`.trim());
+      // v6.10w (remate · revisión textos): si el día REAL es viernes (vie 27-nov, vie 25-dic) no se dice «hoy viernes y no el viernes»
+      const esVieR = diaRealNom(iso, 'liviano') === 'viernes';
+      avisos.unshift(`El CASO ${caso.id}/16 va hoy ${diaRealNom(iso, 'liviano')}${esVieR ? '' : ' y no el viernes'}: el ${prevL ? `${fCorta(prevL.fecha)} tocó la lección que lo prepara (${prevL.tema.split(':')[0]})` : 'viernes tocó la lección que lo prepara'}; las lecciones de F1 corrieron por los días sin sesión de noviembre. ${l.pretest ? 'Primero el recall en blanco del lunes; después, el caso.' : ''}`.trim());
     } else if (!caso && l.wd === 'Vie') {
       const sigC = LIV_DIAS.find((x) => x.d > l.d);
       if (sigC?.casoId != null) avisos.unshift(`Hoy ${diaRealNom(iso, 'liviano')} no hay caso: toca la lección que lo prepara (las lecciones de F1 corrieron por los días sin sesión de noviembre); el CASO ${sigC.casoId}/16 va el ${fCorta(sigC.fecha)}.`);
@@ -2008,8 +2055,10 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   }
   // v6.10 (17-nov-2026): domingo de recuperación a hora fija (corrida_s1.extra › liviano: dom 6-dic 08:15-09:00) — la franja sigue siendo la de PLAN
   //   (17:15-18:00); plantillasV6 › bloqueCorrido + moverGuia la llevan a su hora real. El aviso nombra la hora real.
-  const fxL = dow(iso) === 0 || dow(iso) === 6 ? franjaExtraDe(iso, 'liviano') : null;
-  if (fxL) avisos.unshift(`Hoy ${dow(iso) === 0 ? 'domingo' : 'sábado'}, a hora fija (${fxL.ini}-${fxL.fin}): la lección que toca en orden (el mar 17-nov fue sin sesión y cada lección de F1 corrió un día; desde el D${l.d + 1}, las fechas de siempre). Mismo paso a paso que entre semana.`);
+  const fxL = franjaExtraDe(iso, 'liviano'); // v6.10w: por fecha de plan
+  if (fxL) avisos.unshift(extraOtroDia(iso, fxL)
+    ? `Hoy ${DIA_LARGO[dow(fxL.real)]}, a hora fija (${fxL.ini}-${fxL.fin}): la lección que toca en orden (su día de plan ya tiene otra lección de LIVIANO: nada se compacta). Mismo paso a paso que entre semana.`
+    : `Hoy ${DIA_LARGO[dow(fxL.real)]}, a hora fija (${fxL.ini}-${fxL.fin}): la lección que toca en orden (el mar 17-nov fue sin sesión y cada lección de F1 corrió un día; desde el D${l.d + 1}, las fechas de siempre). Mismo paso a paso que entre semana.`);
   // v6.10e (18-nov-2026 · BASE CERO): en F1 la fase de LIVIANO (fisiología → farmacología → casos integrados) y el criterio de paso, AL FINAL del aviso
   if (iso <= FECHAS_V6.transicion.hasta) {
     const cont = (m: string): DiaLiviano[] => LIV_DIAS.filter((x) => x.modulo === m && x.casoId == null);
@@ -2268,9 +2317,11 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     const arrastrado = (r: DiaBiz): boolean => r.fecha < addDias(sab, -6);
     // v6.09: semana de un sábado sin sesión SIN OUTPUT (sáb 21-nov: el OUTPUT S1 corrió al lun 23) → solo su fila del tracker (10′), primero
     for (const x of c ? c.soloTracker : []) {
-      const nL = [1, 2, 3, 4, 5].filter((k) => { const r0 = bizDiaDe(addDias(x, -k)); return !!r0 && bizModo(r0) !== 'DESCANSO' && bizModo(r0) !== 'OUTPUT'; }).length;
+      // v6.10w (remate · revisión textos): las lecturas de ESA semana por día REAL (con la corrida, las de los planes del 18-20 se hicieron del 23 al 25 y ya
+      //   cuentan en la fila del OUTPUT S1): la del lun 16-nov, sin sesión, lleva «lecturas L 0»
+      const nL = BIZ_DIAS.filter((r0) => { const rr = fechaRealDe(r0.fecha, 'business'); return rr > addDias(x, -6) && rr < x && bizModo(r0) !== 'DESCANSO' && bizModo(r0) !== 'OUTPUT'; }).length;
       const sigOut = BIZ_DIAS.find((r0) => r0.fecha > x && bizModo(r0) === 'OUTPUT');
-      pasos.push(P(10, `TRACKER semanal (1 fila) — semana del ${fCorta(lunesDeIso(addDias(x, -5)))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L ${nL}/${nL} · output 0`,
+      pasos.push(P(10, `TRACKER semanal (1 fila) — semana del ${fCorta(lunesDeIso(addDias(x, -5)))}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · ${nL ? `lecturas L ${nL}/${nL}` : 'lecturas L 0 (sin sesión)'} · output 0`,
         `El ${fCorta(x)} no hubo sesión (viaje) y esa semana no tuvo OUTPUT${sigOut ? ` (el ${sigOut.lectura.split(':')[0].split(' · ')[0]} corrió al ${fCorta(sigOut.fecha)}, tras su última lectura)` : ''}: la fila de ESA semana se llena hoy, con los datos de su revisión ${revisionFicheroDe(x).replace('.md', '')}${revisionDomingoDe(x) ? ` (hecha el ${fCorta(revisionDomingoDe(x)!.domingo)} a la vuelta del viaje)` : ', que también se hace hoy'}.`, { t: '◆ 01_PULSO', url: PULSO_OBS }));
     }
     for (const { r, entero } of c ? c.outs : bizOutputsDeSemana(sab)) {
@@ -2322,8 +2373,9 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     : `Primera lectura. Sale como D${r.d} porque el D1 era el ${fCorta(BIZ_DIAS[0]!.fecha)} (sin sesión, v6.09); así la numeración de 2027 no cambia.`);
   // v6.10: domingo de recuperación a hora fija (dom 29-nov 05:00-05:25) — la hora real va escrita (fuera de la franja L-V que moverGuia desplaza)
   // v6.10c: también el sábado (sáb 2-ene 21:30-21:55, la última lectura de F1, tras el SYNAPSE de las 21:00)
-  const fx = dow(iso) === 0 || dow(iso) === 6 ? franjaExtraDe(iso, 'business') : null;
-  if (fx) avisos.push(dow(iso) === 6
+  const fx = franjaExtraDe(iso, 'business'); // v6.10w: por fecha de plan
+  if (fx && extraOtroDia(iso, fx)) avisos.push(`Hoy ${DIA_LARGO[dow(fx.real)]}, a hora fija (${fx.ini}-${fx.fin}${dow(fx.real) === 6 && fx.ini >= '21:00' ? ', al terminar el SYNAPSE de las 21:00' : ''}): la lectura que toca en orden (su día de plan ya tiene otra lectura de Business: nada se compacta).`);
+  else if (fx) avisos.push(dow(fx.real) === 6
     ? `Hoy sábado, a hora fija (${fx.ini}-${fx.fin}, al terminar el SYNAPSE de las 21:00): la lectura que toca en orden (el mar 17-nov fue sin sesión y cada lectura de F1 corrió un día hasta fin de año: hoy, la última de F1; desde el lunes, las fechas de siempre).`
     : `Hoy domingo, a hora fija (${fx.ini}-${fx.fin}, antes de la rutina de las 05:45): la lectura que toca en orden (el mar 17-nov fue sin sesión y cada lectura de F1 corrió un día; desde el lun 30-nov, las fechas de siempre).`);
   // v6.09 (joseph 5): en F1 / transición el OUTPUT va después de la última lectura de su módulo (gen_business_plan.py): el viernes de esa lectura y el
@@ -2454,28 +2506,42 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   // v6.10q (19-nov): el journal de la semana 2 nace el 1.er día del vibecoding que lo escribe (fecha de PLAN, la traduce corridaTexto): S1 corrió una sesión
   //   y se anota entero en 2026-W47 (vibeJournalSemanaDe), así que el 2026-W48 lo crea el S2 paso 1 (plan mié 25 → jue 26 real), no el lunes de plan (mar 24 real)
   const jSem2 = vibeSemanaISO(lun2);
-  const jDia2 = VIBE_DIAS.find((x) => x.fecha >= lun2 && vibeJournalSemanaDe(x.fecha) === jSem2)?.fecha ?? lun2;
+  // v6.10w (remate · revisión textos): el 1.er día cuyo día REAL cae en la semana 2 (con la corrida, el S2 paso 1 es el plan del mié 25, que se hace el lun 30): antes
+  //   se filtraba por fecha de PLAN ≥ lun 30 y salía el plan del lun 30 (jue 3-dic real), cuando journal_hoy.js crea el 2026-W49 el lun 30-nov
+  const jDia2 = VIBE_DIAS.find((x) => fechaRealDe(x.fecha, 'vibecoding') >= lun2 && vibeJournalSemanaDe(x.fecha) === jSem2)?.fecha ?? lun2;
   // v6.10 (17-nov-2026): los runners ENCAPS de la semana 2 salen de encapsGuia (bancos SIN runner de lun → dom; v6.10: mié 25, jue 26 y dom 29-nov, que
   //   recupera el mar 17; los del lun 23 y mar 24 ya existen). Antes «del lun 23 al jue 26» fijo.
-  const sesS2 = Array.from({ length: 7 }, (_, k) => sesionEncapsDe(addDias(lun2, k))).filter((s): s is NonNullable<typeof s> => !!s && s.tipo === 'banco');
+  // v6.10w (remate · revisiones cobertura/textos): la semana 2 por días REALES (con la corrida, el lun 30-nov y el mar 1-dic hacen los planes del 25 y 26-nov):
+  //   antes, la semana de PLAN del lun 30 (jue 3 → mar 8 reales) y los runners del lun 30 y mar 1 no los generaba nadie (los generaba la revisión del dom 22)
+  const plansS2 = Array.from({ length: 21 }, (_, k) => addDias(lun2, k - 10)).filter((p) => { const r = fechaRealDe(p, 'encaps'); return r >= lun2 && r <= addDias(lun2, 6); });
+  const sesAllS2 = plansS2.map((p) => sesionEncapsDe(p)).filter((x): x is NonNullable<typeof x> => !!x);
+  const sesS2 = sesAllS2.filter((x) => x.tipo === 'banco');
+  const msS2 = sesAllS2.find((x) => x.tipo === 'minisim');
+  const msReal = msS2 ? fechaRealDe(msS2.fecha, 'encaps') : null;
   const yTxt = (xs: string[]): string => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} y ${xs[xs.length - 1]}` : xs[0] ?? '');
-  const pendS2 = sesS2.filter((s) => !s.principal).map((s) => fCorta(s.fecha)), hechosS2 = sesS2.filter((s) => !!s.principal).map((s) => fCorta(s.fecha));
+  // los runners que tocan a esta revisión: los de la semana ANTES de su mini-sim; los de después, el día del mini-sim (la guía ENCAPS de esos días lo dice)
+  const antesMs = (x: { fecha: string }): boolean => !msReal || fechaRealDe(x.fecha, 'encaps') < msReal;
+  const pendSes = sesS2.filter((x) => !x.principal && antesMs(x));
+  const trasMs = sesS2.filter((x) => !x.principal && !antesMs(x));
+  const pendS2 = pendSes.map((x) => fCorta(x.fecha)), hechosS2 = sesS2.filter((x) => !!x.principal).map((x) => fCorta(x.fecha));
   const runnersS2 = sesS2.length
     ? pendS2.length ? `runners ENCAPS del ${yTxt(pendS2)} generados (eval + banco; E4${hechosS2.length ? `; los del ${yTxt(hechosS2)} ya existen` : ''})` : `runners ENCAPS de la semana ya generados (${yTxt(hechosS2)})`
     : `runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4)`;
-  // remate v6.10l: «NO gen_encaps_minisim.js --semana …» (el script nombrado, como el «Ojo» de los bancos: gen_encaps_semana.js --semana, el cierre, sí se corre)
-  // v6.10j (rev. c14, dias-clave #1 y #8): con runners por generar, el paso 5 EMPIEZA por su receta —«NO --semana» delante (re-sortearía los ya armados) y
-  //   la cadena gen_encaps_minisim --eval/--banco por día → sync → guía → deploy, la misma regla que la guía ENCAPS: los genera esta revisión; si no, antes del
-  //   primero— y el journal de la semana 2 nace el día REAL en que journal_hoy.js lo crea (el lunes de PLAN: con el alias, el mar 24-nov; antes «el lunes»)
-  const pendSes = sesS2.filter((s) => !s.principal);
-  // v6.10u (auditoría c19 · vetadas #14, URGENTE dom 22-nov): cada orden ENTERA («node DATA/_scripts/gen_encaps_minisim.js --banco …»), una por llamada: el
-  //   script corre solo una de --eval/--banco (con las dos, solo --banco). Antes «… --eval 2026-11-25` → `--banco 2026-11-25` → …»: flags sueltos que,
-  //   pegados tal cual en PowerShell, fallan. Las fechas ISO son las de PLAN (nombre del runner: eval_/banco_<fecha>.html); corridaTexto traduce el resto
+  // v6.10u (auditoría c19 · vetadas #14): cada orden ENTERA, una por llamada (el script corre solo una de --eval/--banco). Las fechas ISO son las de PLAN (nombre del
+  //   runner); corridaTexto traduce el resto. Por SEMANA DE PLAN: si ya tiene runners armados, la cadena por día y «NO --semana» (re-sortearía los armados); si
+  //   no, «--semana <lunes de plan>» (la receta de la guía ENCAPS)
   const MINISIM = 'node DATA/_scripts/gen_encaps_minisim.js';
-  const cadenaS2 = pendSes.length ? `${pendSes.map((s) => `\`${MINISIM} --eval ${s.fecha}\` → \`${MINISIM} --banco ${s.fecha}\``).join(' → ')} → \`node DATA/_scripts/sync_encaps_bp_web.js\` → \`node DATA/_scripts/gen_encaps_guia.js\` → deploy` : '';
-  //   Con las órdenes enteras la cadena es más larga: va justo detrás del plazo (el Calendar la enseña entera solo si empieza ahí) y el «NO --semana», corto,
-  //   dentro del paréntesis del plazo; qué runners ya están armados, detrás de la cadena (entero en la app)
-  const recetaS2 = pendSes.length ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}; NO gen_encaps_minisim.js --semana${hechosS2.length ? ': re-sortearía los ya armados' : ` ${lun2}`}): ${cadenaS2}.${hechosS2.length ? ` Los del ${yTxt(hechosS2)} ya están armados.` : ''} · ` : '';
+  const lunP = (p: string): string => addDias(p, -((dow(p) + 6) % 7));
+  const armada = (l: string): boolean => Array.from({ length: 5 }, (_, k) => sesionEncapsDe(addDias(l, k))).some((x) => !!x && !!x.principal);
+  const gruposS2 = [...new Set(pendSes.map((x) => lunP(x.fecha)))];
+  const cadenaS2 = gruposS2.map((l) => (armada(l)
+    ? pendSes.filter((x) => lunP(x.fecha) === l).map((x) => `\`${MINISIM} --eval ${x.fecha}\` → \`${MINISIM} --banco ${x.fecha}\``).join(' → ')
+    : `\`${MINISIM} --semana ${l}\`${pendSes.some((x) => x.fecha === l) ? ` → \`${MINISIM} --eval ${l}\`` : ''}`)).join(' → ');
+  const noSemana = gruposS2.some(armada);
+  const trasTxt = trasMs.length && msS2 ? ` Los del ${yTxt(trasMs.map((x) => fCorta(x.fecha)))}, el ${fCorta(msS2.fecha)}, tras el mini-sim (lo dice su guía).` : '';
+  const recetaS2 = pendSes.length
+    ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}${noSemana ? '; NO gen_encaps_minisim.js --semana: re-sortearía los ya armados' : ''}): ${cadenaS2} → \`node DATA/_scripts/sync_encaps_bp_web.js\` → \`node DATA/_scripts/gen_encaps_guia.js\` → deploy.${trasTxt} · `
+    : trasTxt ? `${trasTxt.trim()} · ` : '';
   const prep = primera
     // remate v6.10j (revisión adversarial, visibilidad #4): la comprobación de AccessDerma va DELANTE de la receta (la cadena de comandos alarga el corte del
     //   Calendar hasta su «deploy» y empujaba fuera «Semana 2: AccessDerma renovado …»)

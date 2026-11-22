@@ -28,8 +28,9 @@ export const DERMA_LEDGER_KEY = 'jmd-derma-casos';
 export const DERMA_FALLOS_KEY = 'jmd-derma-fallos';
 export const DERMA_LEDGER_VERSION = 1;
 
-/** Fuente de una entrada: caso ciego · banco de review (clave = DermaBancoKey de dermaDailyPlan) · imagen dermatoscópica · drill. */
-export type DermaFuente = 'caso' | DermaBancoKey | 'dermatoscopia' | 'drill';
+/** Fuente de una entrada: caso ciego · banco de review (clave = DermaBancoKey de dermaDailyPlan) · imagen dermatoscópica · drill ·
+ *  caso REAL de DermNet Quizzes (plan B sin AccessDerma: id = nº de caso del quiz; el quiz va en la nota, «DermNet «quiz» · caso N»). */
+export type DermaFuente = 'caso' | DermaBancoKey | 'dermatoscopia' | 'drill' | 'dermnet';
 export type DermaEvalAcierto = 'conocimiento' | 'suerte' | 'confusion' | 'no-sabia';
 export type DermaTipoError = 'CCSN' | 'CONCEPTO' | 'MORFOLOGIA' | 'DDX';
 
@@ -43,11 +44,12 @@ export const DERMA_FUENTES: Array<{ k: DermaFuente; label: string }> = [
   { k: 'lange', label: 'LANGE Clinical Dermatology Cases (48Q)' },
   { k: 'dermatoscopia', label: 'Imagen dermatoscópica ciega' },
   { k: 'drill', label: 'Drill oclusión vascular 90 s' },
+  { k: 'dermnet', label: 'DermNet Quizzes (plan B · caso N del quiz)' },
 ];
 /** Fuentes que son bancos de preguntas (las que llevan cursor "retoma en Q#"). */
 export const DERMA_FUENTES_BANCO: DermaBancoKey[] = DERMA_BANCOS.map((b) => b.fuente);
-/** Fuentes que cuentan para el % ciego y el mapa de fallos (casos + bancos; NO drill ni dermatoscopia). */
-export const DERMA_FUENTES_MEDIBLES: DermaFuente[] = ['caso', ...DERMA_FUENTES_BANCO];
+/** Fuentes que cuentan para el % ciego y el mapa de fallos (casos + bancos + casos reales de DermNet Quizzes; NO drill ni dermatoscopia). */
+export const DERMA_FUENTES_MEDIBLES: DermaFuente[] = ['caso', ...DERMA_FUENTES_BANCO, 'dermnet'];
 /** Matriz Palmerton confianza × acierto (chips del cierre). Solo 'conocimiento' cuenta para el % ciego. */
 export const DERMA_EVAL_ACIERTO: Array<{ k: DermaEvalAcierto; label: string; acierto: boolean; desc: string }> = [
   { k: 'conocimiento', label: 'Lo sabía', acierto: true, desc: 'acierto seguro → cuenta para el % ciego' },

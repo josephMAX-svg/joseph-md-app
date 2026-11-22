@@ -160,7 +160,7 @@ const SKIP = new Set(FJ_V6.skip);
 // v6.10 (17-nov-2026): días de FIN DE SEMANA en que la ENCAPS 16:15 recupera, a hora fija, un día perdido (corrida_s1.extra[fecha].encaps; v6.10: dom
 //   29-nov 07:15-08:15 = dia 9, recupera el mar 17) → fechas() también los devuelve, en su orden: son un slot de banco más de la rotación (un domingo
 //   nunca es mini-sim: lo decide dow === 5) y el `dia` se renumera por fecha. Desde el dia 10 (lun 30-nov) todo queda como en la v6.09.
-const EXTRA_ENCAPS = new Set(Object.entries((FJ_V6.corrida_s1 && FJ_V6.corrida_s1.extra) || {}).filter(([, x]) => x && x.encaps).map(([f]) => f));
+const EXTRA_ENCAPS = new Set(require('./gen_fechas_v6').extraHabilesDe('encaps', FJ_V6).keys()); // v6.10w: por fecha de plan (el sáb 2-ene lo hace el lun 4-ene 09:45)
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 function* fechas(desde, hasta) {
   const d = new Date(desde + 'T12:00:00Z'), end = new Date(hasta + 'T12:00:00Z');

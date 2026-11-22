@@ -53,7 +53,7 @@ if (!dias.length) { console.error('uso: node DATA/_scripts/sim_plantilla_dia.js 
 function guiasDe(b, p, iso) {
   switch (b.plan) {
     case 'vibecoding': { const g = b.id === 'pc' ? RT.guiaShipDe(iso) : b.id === 'feynman' ? RT.guiaFeynmanDe(iso) : VB.vibeDiaDe(iso) ? RT.guiaVibeDe(iso) : null; return g ? [g] : null; }
-    case 'synapse': { const g = b.id === 'syn-cola' ? RT.guiaSynapseColaDe(iso) /* v6.09b lote 1-ter: cola del SYNAPSE de F1 con franja real */ : b.id === 'syn-rec' ? RT.guiaSynapseRecDe(iso) /* v6.10: recuperación del mar 17 (sáb 28-nov 07:15) */ : RT.guiaSynapseDe(iso); return g ? [g] : null; }
+    case 'synapse': { const g = b.id === 'syn-cola' ? RT.guiaSynapseColaDe(iso) /* v6.09b lote 1-ter: cola del SYNAPSE de F1 con franja real */ : b.id === 'syn-rec' || b.id === 'syn-rec2' ? RT.guiaSynapseRecDe(iso, b.ini) /* v6.10w: + syn-rec2 */ /* v6.10: recuperación del mar 17 (sáb 28-nov 07:15) */ : RT.guiaSynapseDe(iso); return g ? [g] : null; }
     case 'business': { const g = RT.guiaBusinessDe(iso); return g ? [g] : null; }
     case 'aurum': { const g = b.id === 'aurum-l' ? RT.guiaAurumSabadoDe(iso) /* v6.09b lote 1-bis S2: sábado 04:15 de F1 */ : AU.aurumDiaDe(iso) ? RT.guiaAurumDe(iso, F6.faseV6(iso) === 'F4' ? b.ini : undefined) : null; return g ? [g] : null; }
     case 'liviano': { const g = LV.livDiaDe(iso) ? RT.guiaLivianoDe(iso) : null; return g ? [g] : null; }
@@ -184,7 +184,9 @@ function controlAnkiEncaps(iso, p) {
 // v6.10 (17-nov-2026): (f) un día de corrida_s1.extra lleva, por cada frente, un bloque en su franja (hora real), dentro de las ventanas fijas del fin de
 //   semana (F6 no exporta las ventanas: se repiten aquí, las de _fechas_v6.json › VENTANAS_FINDE de gen_fechas_v6.js) y sin solaparse con otro bloque con hora
 const VENTANAS_FINDE = { 6: [['04:15', '05:45'], ['07:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']], 0: [['05:00', '05:45'], ['07:15', '17:00']] };
-const ID_EXTRA = { vibecoding: ['vibe'], synapse: ['syn-rec'], business: ['biz'], 'research-derma': ['rd'], aurum: ['aurum'], mir: ['mir'], encaps: ['encaps'], liviano: ['liv'] };
+// v6.10w: el lunes del RE-SCAN (encaps.intensiva_desde) admite corrida_s1.extra en su holgura (= gen_fechas_v6.VENTANA_RESCAN)
+const VENTANA_RESCAN = [['09:45', '12:00']];
+const ID_EXTRA = { vibecoding: ['vibe'], synapse: ['syn-rec', 'syn-rec2'], business: ['biz'], 'research-derma': ['rd'], aurum: ['aurum'], mir: ['mir'], encaps: ['encaps'], liviano: ['liv'] };
 function controlExtra(iso, p) {
   const xs = F6.extraCorridaDe(iso);
   if (!xs.length) return [];
@@ -192,7 +194,8 @@ function controlExtra(iso, p) {
   for (const x of xs) {
     const b = p.bloques.find((y) => (ID_EXTRA[x.frente] || []).includes(y.id) && y.ini === x.ini && y.fin === x.fin);
     if (!b) e.push(`corrida_s1.extra: sin bloque de ${x.frente} en ${x.ini}-${x.fin}`);
-    if (!(VENTANAS_FINDE[w] || []).some(([a, z]) => hm(x.ini) >= hm(a) && hm(x.fin) <= hm(z))) e.push(`corrida_s1.extra: ${x.frente} ${x.ini}-${x.fin} fuera de las ventanas fijas del fin de semana`);
+    const ven = iso === F6.FECHAS_V6.encaps.intensiva_desde && w >= 1 && w <= 5 ? VENTANA_RESCAN : VENTANAS_FINDE[w] || [];
+    if (!ven.some(([a, z]) => hm(x.ini) >= hm(a) && hm(x.fin) <= hm(z))) e.push(`corrida_s1.extra: ${x.frente} ${x.ini}-${x.fin} fuera de las ventanas fijas del fin de semana (o de la holgura del RE-SCAN)`);
   }
   const conHora = p.bloques.filter((b) => b.ini && b.fin && b.ini !== b.fin);
   for (let i = 0; i < conHora.length; i++) for (let j = i + 1; j < conHora.length; j++) { const a = conHora[i], b = conHora[j]; if (hm(a.ini) < hm(b.fin) && hm(b.ini) < hm(a.fin)) e.push(`día de corrida_s1.extra: ${a.id} ${a.hora} ⟂ ${b.id} ${b.hora}`); }

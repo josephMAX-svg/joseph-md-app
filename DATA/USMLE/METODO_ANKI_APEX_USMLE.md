@@ -15,7 +15,7 @@
 > **[PLAN]** = decisión de este plan cuando la fuente no fija el número o cuando la carga horaria fija obliga a adaptarlo (siempre
 > con su porqué). Redacción propia; las citas literales son mínimas y van entre comillas.
 >
-> Los números operativos (20 nuevas/día, 9999, 0,90, presupuesto por bloque) viven en el generador (`AK` en
+> Los números operativos (20 nuevas/día, 9999, 90 %, presupuesto por bloque) viven en el generador (`AK` en
 > `gen_usmle_guia.js`); si cambian aquí, se cambian allí y se regenera (`node DATA/_scripts/usmle/gen_usmle_guia.js` → `--check`).
 
 ---
@@ -31,7 +31,7 @@
 7. **Tope diario de creación: 20 tarjetas USMLE** (Palmerton pone el techo en 50 y 30-40 al empezar; este plan va por debajo porque la franja de Anki es fija de 45′) [P · PLAN §5].
 8. **Vencidas primero, todas, cada día**, a primera hora; las nuevas solo con las vencidas a 0 [P · R §4.10, §4.13].
 9. **Botones: Good ≈90 % / Again ≈10 %; nunca Hard ni Easy** [P «Give Me 30 Minutes…», cambio 6].
-10. **FSRS con retención 0,90** y **Maximum reviews/day 9999** (nunca capar las vencidas) [P].
+10. **FSRS con retención 90 %** y **Maximum reviews/day 9999** (nunca capar las vencidas) [P].
 11. **Backlog → nuevas a 0 y tope visual de 200** hasta limpiarlo; **nunca Forget ni Reset** [P «How to Catch Up 2,000 Anki Cards in 3 Days» · R §4.10].
 12. **Se mide**: telemetría diaria (due, backlog, retención, % Again) e informe APEX de las 18:00; la semana se audita el sábado [R · APEX].
 
@@ -76,7 +76,7 @@ la 1.ª del plan a las 07:15 (con `::Pathology`). **Al cerrar el bloque de las 0
 |---|---|---|
 | **FSRS** | **Activado**. Si ya lo está (el interruptor vale para toda la colección), déjalo; si no, actívalo y pulsa **Optimize all presets** | [P «Give Me 30 Minutes…»]: con historial previo se activa y se optimiza; **solo quien es nuevo en Anki** usa el algoritmo por defecto ~1 mes antes de activarlo. Joseph ya tiene historial (mazos MIR/ENCAPS) → se activa desde el D1 |
 | **Optimize del preset «APEX USMLE»** | **sáb 19-dic** (1.er sábado ≥ 28 días tras el D2, con 4 semanas de repasos), en el Anki del sábado | [P] FSRS necesita datos tuyos (~1 mes); el preset nuevo empieza sin repasos propios · [R] `SYNC_ANKI_OBSIDIAN_APP.md` («Optimize» cuando haya datos) |
-| **Desired retention** | **0,90** | [P] pasar de 90 a 100 % cuesta ~5 veces más tiempo; rango sano 85-90 % |
+| **Desired retention** | **90 %** (Anki 25.02 la escribe en %, 70-99; «0,90» tecleado la deja en 70 %) | [P] pasar de 90 a 100 % cuesta ~5 veces más tiempo; rango sano 85-90 % |
 | **New cards/day** | **20** | [P] techo 50, 30-40 al empezar · [PLAN] 20 = el tope de creación diario (§5): todo lo creado un día se estudia al siguiente sin cola |
 | **Maximum reviews/day** | **9999** | [P] «You never want to cap» (las vencidas): un tope bajo esconde vencidas y crea backlog invisible. **Nunca 200** salvo en el protocolo de backlog (§7) |
 | **Learning / relearning steps** | **por defecto** (no tocar) | [P · R §4.2] manipularlos deforma el algoritmo; FSRS calcula los intervalos |
@@ -279,8 +279,8 @@ Las franjas no cambian: el backlog se limpia dentro de las 05:00, el «Anki rest
 | **Sábado 19:00-19:30** | solo vencidas (22′) · preset en submazos nuevos (3′) · telemetría + Stats (5′) | plan (Calendar) · [PLAN] |
 | **Domingo 17:00-17:15** | **opcional**: solo vencidas | plan (domingo libre). Palmerton haría los repasos también hoy («regla del 100 %»: le dolió saltarse 1-2 días) [R §4.8]; la guía lo dice |
 | **Día de hito** | Anki AM normal antes del hito; 0 tarjetas nuevas creadas | [R §4.8] |
-| **Pausa ENCAPS (jue 31-dic → lun 15-mar)** | Step 1 en pausa: **0 nuevas** y mantenimiento 30′ a las 05:00 con **retención 0,85** (+ sábado 07:45 «STEP 1 VIVO») | `plantillasV6.ts` (§B2) · [P] rango sano 85-90 %; en vacaciones, como mínimo los repasos viejos, sin excusa |
-| **Tramo 2 (mar 16-mar → sep-2027)** | vuelve el preset 0,90 / 20 nuevas; mismo flujo | — |
+| **Pausa ENCAPS (jue 31-dic → lun 15-mar)** | Step 1 en pausa: **0 nuevas** y mantenimiento 30′ a las 05:00 con **retención 85 %** (+ sábado 07:45 «STEP 1 VIVO») | `plantillasV6.ts` (§B2) · [P] rango sano 85-90 %; en vacaciones, como mínimo los repasos viejos, sin excusa |
+| **Tramo 2 (mar 16-mar → sep-2027)** | vuelve el preset 90 % / 20 nuevas; mismo flujo | — |
 | **Últimas 1-2 semanas antes del examen** | **nuevas = 0**, solo repasos de lo ya creado; preguntas mixtas y cronometradas (20-40/día) hasta el examen | [P «Before you take your USMLE, watch this» · R §8.3] |
 
 ---
@@ -388,7 +388,7 @@ salvo que la transcripción o el repo las confirmaran.
 
 **Repo**: `DATA/USMLE/PALMERTON_METODO_COMPLETO.md` §3.5, §4.1-§4.14, §6.1-§6.5, §8.3, §9.1-§9.2 · `PALMERTON_DIVERGENCIAS_PLAN.md` #16, #24 ·
 `DATA/SYNC_ANKI_OBSIDIAN_APP.md` · `DATA/_scripts/anki_telemetria.js` · `src/lib/ankiLinks.ts` · `src/lib/usmleData.ts`
-(`ANKI_CONFIG_PALMERTON`) · `src/lib/plantillasV6.ts` (F2: mantenimiento 0 nuevas, 0,85).
+(`ANKI_CONFIG_PALMERTON`) · `src/lib/plantillasV6.ts` (F2: mantenimiento 0 nuevas, 85 %).
 
 **Motor APEX** (fuera del repo, solo lectura): `agente_estudio/config/subtema_mapping.json` v2.3.2 · `scripts/node_parsear_tarjeta_v2_3.js` ·
 `scripts/node_anki_obsidian_v2_3.js` · `scripts/apex_hotkey_listener.py` · `scripts/apex_reports_daemon.py`.

@@ -182,8 +182,11 @@ const TIPO_RD_FORZADO = (() => { const t = fs.readFileSync(path.join(ROOT, 'src/
 {
   const ex = (F6.corrida_s1 && F6.corrida_s1.extra) || {};
   const finde = (s) => { const w = fromISO(s).getUTCDay(); return w === 0 || w === 6; };
-  for (const f of Object.keys(ex)) if (ex[f]['research-derma'] && !TIPO_RD_FORZADO[f]) throw new Error(`v6.10: corrida_s1.extra ${f} trae research-derma y researchData.ts › TIPO_RD_FORZADO no lo fuerza`);
-  for (const f of Object.keys(TIPO_RD_FORZADO)) if (finde(f) && f < SERUMS_INICIO && !(ex[f] && ex[f]['research-derma'])) throw new Error(`v6.10: TIPO_RD_FORZADO ${f} (fin de semana) sin franja en corrida_s1.extra`);
+  // v6.10w: solo la entrada que hace la fila de SU propia fecha (texto «HH:MM-HH:MM»); { hora, plan } hace la de otra fecha de plan (dom 3-ene = la Derma d17
+  //   del jue 31-dic), que ya tiene su tipo
+  const propia = (f) => { const v = ex[f] && ex[f]['research-derma']; return !!v && (typeof v === 'string' || !v.plan || v.plan === f); };
+  for (const f of Object.keys(ex)) if (propia(f) && !TIPO_RD_FORZADO[f]) throw new Error(`v6.10: corrida_s1.extra ${f} trae research-derma y researchData.ts › TIPO_RD_FORZADO no lo fuerza`);
+  for (const f of Object.keys(TIPO_RD_FORZADO)) if (finde(f) && f < SERUMS_INICIO && !propia(f)) throw new Error(`v6.10: TIPO_RD_FORZADO ${f} (fin de semana) sin franja en corrida_s1.extra`);
 }
 // v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {

@@ -574,7 +574,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
           {mirObsUrl(dia.capId) && (
             <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema, si ya tiene contenido (lectura / Shopping List)" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · los APEX NO pasan por aquí hasta verificar n8n (P0-2/P0-3): van directos a Anki" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
           )}
-          <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (FSRS · retention 0,85)" val={mirAnkiDeck(dia.asignatura)} sub={`abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto · preset APEX::MIR · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
+          <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (FSRS · retention 85 %)" val={mirAnkiDeck(dia.asignatura)} sub={`abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto · preset APEX::MIR · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
           <FadeUp delay={150}>
             <View style={[st.cola, { borderLeftColor: AMBER }]}>
               <Text style={st.colaIcon}>🃏</Text>
@@ -889,7 +889,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
           </View>
         </FadeUp>
       ))}
-      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta el Step 1 (→ 0,90 tras el handoff del ${MIR_MANT_META.handoff.split(' (')[0]}, fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 85 % hasta el Step 1 (→ 90 % tras el handoff del ${MIR_MANT_META.handoff.split(' (')[0]}, fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas (mini-simulacro)' : `${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub={`${FB_MIR_ASIG} · en blanco permitido`} color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (

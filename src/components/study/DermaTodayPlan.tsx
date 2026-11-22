@@ -35,6 +35,7 @@ import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import type { GuiaBloque } from '../../lib/guia';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
 import { dermaGuiaPar, accessDermaOK, guardarAccessDermaOK, dermaCasoUrl, dermaCasoTitulo, DERMA_TEST_PROMIR_D3, moduloCMEDe } from '../../lib/dermaGuia';
 /** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
@@ -229,6 +230,7 @@ function DermaGuiaSeccion({ dia, accent }: { dia: DiaDerma; accent: string }) {
         </View>
       )}
       <GuiaBloqueCard g={reemplazosCorrida(activa, dia.fecha)} color={accent} />
+      <DermnetRegistro dia={dia} g={activa} accent={accent} />
       {dia.d === 3 && dia.fecha === DERMA_GUIA_D3_FECHA && (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 }}>
           {DERMA_TEST_PROMIR_D3.preguntas.map((q, i) => (
@@ -242,6 +244,48 @@ function DermaGuiaSeccion({ dia, accent }: { dia: DiaDerma; accent: string }) {
         <Text style={[st.infoTxt, { color: Colors.muted }]}>{verOtro ? '▾' : '▸'} ver {ok ? 'el PLAN B (sin AccessDerma)' : 'el plan A (con AccessDerma)'}</Text>
       </TouchableOpacity>
       {verOtro && <GuiaBloqueCard g={reemplazosCorrida(otra, dia.fecha)} color={Colors.muted} compacto />}
+    </View>
+  );
+}
+/** v6.10w · la guía de DermNet Quizzes pide «✓/✗ en el ledger («DermNet · caso N»)»: chip mínimo que registra cada caso REAL del quiz con la
+ *  fuente 'dermnet' (dermaLedger.ts; cuenta para el % ciego). Los quizzes y su primer caso salen del propio paso de la guía («Quiz» · casos N-M). */
+function DermnetRegistro({ dia, g, accent }: { dia: DiaDerma; g: GuiaBloque; accent: string }) {
+  const quizzes = useMemo(() => {
+    const out: Array<{ t: string; desde: number }> = [];
+    for (const p of g.pasos) {
+      if (!/^DermNet Quizzes/.test(p.que)) continue;
+      const re = /«([^»]+)» · casos? (\d+)/g; let m: RegExpExecArray | null;
+      while ((m = re.exec(p.que))) out.push({ t: m[1]!, desde: Number(m[2]) });
+    }
+    return out;
+  }, [g]);
+  const [abierto, setAbierto] = useState(false);
+  const [qi, setQi] = useState(0);
+  const [caso, setCaso] = useState('');
+  useEffect(() => { setAbierto(false); setQi(0); setCaso(''); }, [dia.d]);
+  if (!quizzes.length) return null;
+  const q = quizzes[Math.min(qi, quizzes.length - 1)]!;
+  const n = Number(caso) || q.desde;
+  return (
+    <View style={{ marginTop: 4 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
+        <ChipBtn label={abierto ? '✓/✗ DermNet · cerrar' : '✓/✗ en el ledger · DermNet · caso N'} color={accent} on={abierto} onPress={() => setAbierto((v) => !v)} />
+      </View>
+      {abierto && (
+        <View>
+          {quizzes.length > 1 && (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 }}>
+              {quizzes.map((x, i) => <ChipBtn key={x.t + i} label={`«${x.t}»`} color={accent} on={i === qi} onPress={() => { setQi(i); setCaso(''); }} />)}
+            </View>
+          )}
+          <View style={st.bancoRow}>
+            <Text style={st.bancoLbl}>nº de caso del quiz «{q.t}» (vacío = caso {q.desde}):</Text>
+            <TextInput value={caso} onChangeText={setCaso} placeholder={String(q.desde)} placeholderTextColor={Colors.muted} keyboardType="numeric" style={st.bancoInput} />
+          </View>
+          <DermaCasoRegistro key={`${q.t}|${n}`} dia={dia} id={n} fuente="dermnet" accent={accent} titulo={`Registrar DermNet · «${q.t}» · caso ${n}`}
+            notaFija={`DermNet «${q.t}» · caso ${n}`} onDone={() => setCaso(String(n + 1))} onCancel={() => setAbierto(false)} />
+        </View>
+      )}
     </View>
   );
 }

@@ -39,6 +39,18 @@ const _F6 = _V6.cargarFechasV6();
 const FECHA = _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
 // v6.07d: la cabecera del journal dice los días REALES del proyecto y de su SHIP (con la semana corrida no son los de plan)
 const _REAL = (f) => _V6.fechaRealDe(f, _V6.cargarFechasV6(), 'vibecoding');
+// v6.10w (pendientes de la revisión): un día REAL sin sesión (corrida_s1.sin_sesion: del lun 16 al dom 22-nov) no tiene vibecoding: fechaPlanDe lo da
+//   como la próxima fecha de plan (mié 18-nov), que se hace otro día real (lun 23) → escribir su sección hoy la DUPLICABA («## Mié 18-nov (hecho el Vie
+//   20-nov)» y luego «(hecho el Lun 23-nov)»). Sin alias, ni reparto, ni extra del vibecoding ese día → no se escribe nada y se dice qué día real lo hace.
+const _C1 = _F6.corrida_s1 || {};
+const _own = (o, k) => !!o && Object.prototype.hasOwnProperty.call(o, k);
+const SIN_SESION_HOY = (_C1.sin_sesion || []).includes(REAL) && !_own(_C1.alias, REAL) && !_own(_C1.reparto, REAL)
+  && !(_V6.extraListaDe ? _V6.extraListaDe(REAL, _F6) : []).some((x) => x.frente === 'vibecoding');
+if (SIN_SESION_HOY) {
+  const r = _REAL(FECHA);
+  console.log(`SIN SESIÓN ${REAL} (corrida_s1.sin_sesion ${_C1.version || ''}): hoy no hay vibecoding ni entrada en el journal · la próxima sesión (plan ${FECHA}) se hace el ${r}${r !== FECHA ? '' : ' (su propio día)'}: node DATA/_scripts/journal_hoy.js --fecha ${r}`);
+  process.exit(0);
+}
 
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -69,12 +81,12 @@ const diaHoy = DIAS.find((x) => x.fecha === FECHA) || null;
 //   (VIBE_JOURNAL_SEMANA, { n: «YYYY-Www» }; gen_vibecoding_plan.js › JOURNAL_SEM), no de _fechas_v6.json
 const _JSEM = (() => { try { return Object.fromEntries(Object.entries(JSON.parse((VP.match(/const VIBE_JOURNAL_SEMANA: Record<number, string> = (\{[^}]*\});/) || [])[1] || '{}')).map(([n, w]) => [`S${n}`, w])); } catch { return {}; } })();
 const _sHoy = diaHoy ? diaHoy.semana : (PROY.find((p) => p.ship === FECHA) || {}).s;
-const SEM = (_sHoy != null && _JSEM[`S${_sHoy}`]) || semanaISO(FECHA);
+const SEM = (_sHoy != null && _JSEM[`S${_sHoy}`]) || semanaISO(REAL); // v6.10w: la semana del DÍA REAL (S1 = lun 23 → vie 27-nov, 2026-W48)
 const lunesDeSemana = (w) => { const [y, n] = w.split('-W').map(Number); const e4 = `${y}-01-04`; return addDays(addDays(e4, -((dow(e4) + 6) % 7)), (n - 1) * 7); };
-const LUNES = SEM === semanaISO(FECHA) ? addDays(FECHA, -((dow(FECHA) + 6) % 7)) : lunesDeSemana(SEM);
+const LUNES = SEM === semanaISO(REAL) ? addDays(REAL, -((dow(REAL) + 6) % 7)) : lunesDeSemana(SEM);
 const DOMINGO = addDays(LUNES, 6);
 // v6.10q: sin los días de un proyecto cuyo journal va en OTRA semana (S1 en 2026-W47: la cabecera del 2026-W48 es la de S2, no la de S1)
-const semanaDias = DIAS.filter((x) => LUNES <= x.fecha && x.fecha <= addDays(LUNES, 4) && (!_JSEM[`S${x.semana}`] || _JSEM[`S${x.semana}`] === SEM));
+const semanaDias = DIAS.filter((x) => LUNES <= _REAL(x.fecha) && _REAL(x.fecha) <= addDays(LUNES, 4) && (!_JSEM[`S${x.semana}`] || _JSEM[`S${x.semana}`] === SEM)); // v6.10w: por día REAL
 const proySemana = semanaDias.length ? (PROY.find((p) => p.s === semanaDias[0].semana) || TAPER.find((t) => t.s === semanaDias[0].semana) || null) : null;
 const nStep1 = D1 ? Math.floor((fromISO(LUNES) - fromISO(D1)) / 86400000 / 7) + 1 : null;
 
@@ -88,7 +100,7 @@ if (!fs.existsSync(file)) {
   L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : ''}`);
   L.push('');
   if (proySemana) {
-    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · ${_REAL(proySemana.ini) !== proySemana.ini ? 'días' : 'L-V'} ${fmt(_REAL(proySemana.ini))} → ${fmt(_REAL(proySemana.fin))}${proySemana.tipo ? '' : ` · SHIP ${fmt(_REAL(proySemana.ship))} (PC del domingo, flexible) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
+    L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · ${_REAL(proySemana.ini) !== proySemana.ini || [0, 6].includes(dow(_REAL(proySemana.ini))) ? 'días' : 'L-V'} ${fmt(_REAL(proySemana.ini))} → ${fmt(_REAL(proySemana.fin))}${proySemana.tipo ? '' : ` · SHIP ${fmt(_REAL(proySemana.ship))} (PC del domingo, flexible) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
     if (proySemana.aceptacion.length) { L.push(''); L.push('Criterios de aceptación (definition of done):'); for (const a of proySemana.aceptacion) L.push(`- [ ] ${a}`); }
   } else {
     L.push('**Proyecto de la semana**: fuera del plan del vibecoding (src/lib/vibecodingPlan.ts) — semana libre o pre-D1.');
@@ -110,7 +122,11 @@ if (!fs.existsSync(file)) {
 let txt = fs.readFileSync(file, 'utf8');
 const titulo = `## ${fmt(FECHA)}${REAL !== FECHA ? ` (hecho el ${fmt(REAL)})` : ''}${diaHoy ? ` · D${diaHoy.d} · S${diaHoy.semana}` : ''}`;
 let anadido = false;
-if (!txt.includes(titulo)) {
+// v6.10w: una sola sección por fecha de PLAN (aunque se escribiera otro día real: «## Mié 18-nov …» con o sin «(hecho el …)»)
+const _esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const yaPlan = new RegExp(`^## ${_esc(fmt(FECHA))}(?= |$)`, 'm').test(txt);
+if (yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FECHA)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
+if (!txt.includes(titulo) && !yaPlan) {
   const S = [];
   S.push(titulo);
   S.push('');

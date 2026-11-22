@@ -271,7 +271,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > - **Días sin fila MIR:** SKIP 25-dic · 31-dic · 1-ene · 25-mar · 26-mar y protegidos v6 **vie 12-mar** (D-1 hábil del ENCAPS; decisión abierta: si Joseph
 >   quiere su hora MIR esa tarde, se quita del set y se regenera, +1 fila) · sáb 13 · dom 14 · lun 15-mar · sáb 25 · dom 26 · lun 27-sep *(**v6.04:** sáb 23 · dom 24 · lun 25-oct)*. Los protegidos v5.20
 >   (22-feb, 9-mar, 10-mar) vuelven a ser días de plan. Sábados solo desde el inicio del SERUMS (~lun 3-may [S]).
-> - Retención FSRS `APEX::MIR` **0,85 hasta el Step 1**; 0,90 al empezar la fase principal (oct-2027). En el SERUMS la franja la da la plantilla del turno
+> - Retención FSRS `APEX::MIR` (*Desired retention*, en % desde Anki 25.02) **85 % hasta el Step 1**; 90 % al empezar la fase principal (oct-2027). En el SERUMS la franja la da la plantilla del turno
 >   (`mirFranjaPorTurno`); lo que no se termine en una guardia se suma al día de plan siguiente (nunca se pierde).
 > - ⏸ Los bloques «v5.20 (6-oct-2026, VIGENTE …)» y anteriores de abajo, §3 (franja única 15:15), **§4.2 (handoff 22-abr, umbral 70/55 → 75/60 desde el
 >   23-abr)**, **§5 (FSRS 0,85 → 0,90 desde el 23-abr, handoff 22-abr)** y §6 (58 días, reducido, handoff 22-abr) quedan **SUPERSEDIDOS** donde contradigan
@@ -558,7 +558,7 @@ Las 14 asignaturas del plan suman **80,7 %** del peso ProMIR (`MIR_MANT_PESOS`, 
 | Hora | Fase |
 |------|------|
 | 15:15–15:22 | **EVAL ANCLADA 4Q multi-temporal** = 2Q tema D-1 (fijo) + **2 slots dinámicos de 1Q** que priorizan temas **● caliente** del gate (§4); sin temas calientes = D-3 y D-7 (77 s/Q, en blanco permitido). Cronómetro en la app (⏱ 4Q/10Q/25Q/40Q, aviso a 100 s por pregunta). |
-| 15:22–15:27 | Anki APEX::MIR (FSRS · Good/Again · retention 0,85) |
+| 15:22–15:27 | Anki APEX::MIR (FSRS · Good/Again · retention 85 %) |
 | 15:27–15:30 | Log de la eval en la app (aciertos/4 · slot ✓/✗ con el D# real de cada slot · brecha knowledge/transfer/proceso · 🇪🇸 delta · táctica −1/3 opcional · slot ✗ → tema caliente mañana · fallo D-7 → **cola D+14**) |
 | 15:30–15:38 | PRE-TEST 5Q ciegas del capítulo nuevo → marca los gaps · **se registra** (kind `pretest`, 10 s: no cuenta para readiness, sí para validar el tema) |
 | 15:38–15:53 | LECTURA DIRIGIDA solo a los gaps (Whole Page Rule sobre el capítulo ProMIR; vídeo solo si el clip ≤12 min está verificado). En los 11 días 🇪🇸: leer antes la fila de `DELTA_ESPANA.md` |
@@ -657,7 +657,7 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
 - D77 = mini-MIR 40Q (solo plantilla + neto) · D78 = corrección Whole-Page + `mirBaselineTabla()` (neto por asignatura = baseline honesto abr-2027).
 
 ## 5. Anki · preset FSRS `APEX::MIR` y plantilla APEX-MIR
-- **v6.03b:** segundo mazo = el de Ravi («1ºVUELTA 2MIR21», preset RAVI-1V: FSRS 0,85, ≤3 nuevas/día en 1.ª vuelta · ≤10 en el banqueo),
+- **v6.03b:** segundo mazo = el de Ravi («1ºVUELTA 2MIR21», preset RAVI-1V: FSRS 85 %, ≤3 nuevas/día en 1.ª vuelta · ≤10 en el banqueo),
   importado TODO SUSPENDIDO y reactivado por asignatura el día que empieza; orden aleatorio en los dos; el personal (APEX::MIR) primero.
   [`METODO_RAVIMEDTEST.md`](METODO_RAVIMEDTEST.md) §4.
 - **Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki escritorio** (Palmerton "as you learn": la tarjeta es la nota,
@@ -665,7 +665,7 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
   disco SIN redesplegar → las tarjetas podrían llegar truncadas o no llegar). La cola de HOY, el bloque APEX y el mantenimiento lo repiten.
   La nota madre Obsidian sigue siendo el sitio de la lectura / Shopping List, no el canal de las tarjetas.
 - Deck raíz `APEX::MIR::<asignatura>` (`ankiLinks.mirAnkiDeck`; se crean lazy, hoy solo existe `cardiologia`).
-- **Preset FSRS "APEX::MIR"** (separado del USMLE): desired retention **0,85 hasta el Step 1 → 0,90 desde oct-2027** (v6.00, al entrar en la fase principal) · ⏸ (0,85 hasta el 22-abr-2027 → 0,90 desde el vie 23-abr-2027, al
+- **Preset FSRS "APEX::MIR"** (separado del USMLE): desired retention **85 % hasta el Step 1 → 90 % desde oct-2027** (en %: Anki 25.02 la muestra así, 70-99; «0,85» tecleado la deja en 70 %) (v6.00, al entrar en la fase principal) · ⏸ (0,85 hasta el 22-abr-2027 → 0,90 desde el vie 23-abr-2027, al
   entrar en la fase principal; v5.20; v5.19: 15-abr → vie 16-abr; v5.18: 14-abr → jue 15-abr) · solo Good/Again · nuevas ≤4/día · límite de repasos sin capar (la franja de
   5 min soporta ~40-60 reviews; si el deck marca >60 vencidas dos días seguidos → bajar nuevas a 2 esa semana).
   Configurarlo es manual en Anki escritorio (A VERIFICAR 05-sep: no hay acceso AnkiConnect desde la app).
@@ -717,7 +717,7 @@ Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_
 ## 8. Pendientes (fuera del alcance de la app)
 - Pool de preguntas oficiales por capítulo (`mirPreguntasOficiales.ts`): en curso por el pipeline `DATA/MIR/pool/` (examenesmir.com 2022-2026 + clasificación). Sin él, pre-test/eval/cierre usan el test del capítulo ProMIR; la UI ya consume `preguntasSinUsar` y guarda `qIds`.
 - Acceso AMIR: no verificado → todo el loop se apoya en ProMIR + cuadernillos oficiales.
-- Preset FSRS APEX::MIR (retention 0,85) y plantilla APEX-MIR: configurar en Anki escritorio; verificar el redeploy de n8n (hasta entonces, APEX directos en Anki).
+- Preset FSRS APEX::MIR (retention 85 %) y plantilla APEX-MIR: configurar en Anki escritorio; verificar el redeploy de n8n (hasta entonces, APEX directos en Anki).
 - Verificar en vivo el espejo Supabase con dos dispositivos (móvil → web) y el bloque MIR de `gen_revision_semanal.js`.
 - Completar las filas **A VERIFICAR** de `DELTA_ESPANA.md` con sesión de navegador (AEP, PAPPS, EDO, GesEPOC/GEMA, PEAHC, consenso *H. pylori*, tablas netas–nº de orden).
 - Obsidian: `obsidianMap.ts` mapea MIR por `capId` (no por día) → el nuevo orden no requiere regenerarlo.

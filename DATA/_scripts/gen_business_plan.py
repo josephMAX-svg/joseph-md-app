@@ -100,7 +100,7 @@ SKIP_FIJOS = set()  # v6.09 (16-nov-2026): antes {25-dic, 31-dic, 1-ene} a mano;
 def _fechas_v6_extra():
     import subprocess
     js = ("const V6=require('./gen_fechas_v6');const F=V6.cargarFechasV6();const D1=V6.derivar(F).d1HabilEncaps;"
-          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip),sin:V6.sinSesionPlan(F),th:F.transicion.hasta,ex:F.corrida_s1.extra||{}}))")
+          "process.stdout.write(JSON.stringify({skip:F.skip,prot:F.protegidos,d2:V6.ultimoHabilAntes(D1,F.skip),sin:V6.sinSesionPlan(F),th:F.transicion.hasta,ex:Object.fromEntries([...V6.extraHabilesDe('business',F)].map(([f,h])=>[f,{business:h}]))}))")
     try:
         r = subprocess.run(['node', '-e', js], cwd=str(Path(__file__).resolve().parent), capture_output=True, text=True, encoding='utf-8', check=True)
         j = json.loads(r.stdout)

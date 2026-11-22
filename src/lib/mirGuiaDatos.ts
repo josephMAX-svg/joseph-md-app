@@ -305,7 +305,7 @@ export const MIR_METODO: MirMetodo = {
  "mazoPersonal": "APEX::MIR",
  "mazoBase": "1º VUELTA",
  "mazoBaseBusca": "https://drive.google.com/drive/search?q=1%C2%BAVUELTA%202MIR21",
- "presetBase": "RAVI-1V (FSRS · retention 0,85 · orden de repaso aleatorio)",
+ "presetBase": "RAVI-1V (FSRS · retention 85 % · orden de repaso aleatorio)",
  "mazoBaseEstado": "v6.10 · tanda C (17-nov-2026, comprobado en el Anki de Joseph con el chat MIR): el mazo de Ravi YA está en Anki con el nombre «1º VUELTA» (851 tarjetas, todas suspendidas; «1ºVUELTA 2MIR21» existe pero vacío) → no se importa ningún .apkg.",
  "raviPorCap": {
   "570779c9f4d68bf008dbc7b1": {

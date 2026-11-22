@@ -195,10 +195,13 @@ const RECUPERA_V609 = { dom: '2026-11-22', llegada: true, pierde: ['2026-11-16',
 //   domingo antes de la rutina 05:45) y el CARRIL DEL MARTES CORRE UNA SEMANA (CADENA): cada martes de F1 desde el `intercambia` (mar 24-nov) lleva las piezas
 //   B/C de la semana anterior (mar 24 ← sem 1 … mar 29-dic ← sem 6) y la sesión de recuperación, las del último martes de F1 (sem 7) → cada serie avanza
 //   en orden de fecha y en F1 se consumen las mismas piezas que en la v6.09 (cola post-Step 1 y 2027 iguales). Su A sigue siendo 15′ de F0.
-const REC_V610 = { fecha: '2027-01-03', ini: '05:00', fin: '05:30', pierde: '2026-11-17', wd: 'Mar', semana: 1, intercambia: '2026-11-24', cadena: true, motivo: 'mar 17-nov (no se estudió)' };
+// v6.10w (dom 22-nov): pasa a las 11:30-12:00 del dom 3-ene; a las 05:00 va la sesión del sáb 2-ene (CADENAS_V610W, transición), cuyo comodín de audio abre
+//   el vídeo que esta A continúa («Interpretability…» min 15:00-37:30): así el vídeo va en orden. corrida_s1.extra[dom 3].synapse = la franja de las 05:00.
+const REC_V610 = { fecha: '2027-01-03', ini: '11:30', fin: '12:00', pierde: '2026-11-17', wd: 'Mar', semana: 1, intercambia: '2026-11-24', cadena: true, motivo: 'mar 17-nov (no se estudió)' };
 { // la franja debe ser la de _fechas_v6.json › corrida_s1.extra (fuente única de fechas)
   const ex = ((require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).extra || {})[REC_V610.fecha];
-  if (!ex || ex.synapse !== `${REC_V610.ini}-${REC_V610.fin}`) throw new Error(`v6.10 · REC_V610: la franja ${REC_V610.ini}-${REC_V610.fin} ≠ corrida_s1.extra[${REC_V610.fecha}].synapse (${ex && ex.synapse})`);
+  // v6.10w: el día debe traer SYNAPSE en corrida_s1.extra (sin él la plantilla no pinta las sesiones a hora fija); la de las 05:00 es la de la cadena
+  if (!ex || !ex.synapse) throw new Error(`v6.10 · REC_V610: corrida_s1.extra[${REC_V610.fecha}] no trae synapse`);
 }
 /** v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat SYNAPSE, ≈06:12: «Sí, añádela»): la AUDITORÍA F0 (la A-unit del mar 17, sin sesión) ya no
  *  va a la sesión de recuperación del sáb 28 07:15: ABRE LA PRIMERA SESIÓN (mié 18, 12:30) con 3′ que salen de la A (la A del día queda en 12′ y para a
@@ -820,7 +823,18 @@ if (aIdx !== aUnits.length) throw new Error(`A-units sin asignar: usadas ${aIdx}
 //   reparten las MISMAS A-units de F1 por fecha REAL (alias inverso; sin alias, la del plan): mismas fechas, horas y bloques, solo cambia qué lección cae en
 //   cada uno; B y C no se tocan (sus carriles y comodines ya van por fecha). Fuera de F1 nada cambia (2027 idéntico).
 const ALIAS_INV = new Map(Object.entries(((require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).alias) || {}).map(([real, plan]) => [plan, real]));
-const realDe = (f) => ALIAS_INV.get(f) || f; // v6.10 · base cero: día REAL de una fecha de plan (alias inverso de corrida_s1; sin alias, la misma)
+// v6.10w (dom 22-nov-2026 · «todo inicia el 23»): CADENAS = sesiones que corren UNA sesión, en orden real: el contenido de cada fila pasa a la siguiente y el de la
+//   última, a una sesión a hora fija (SYN_REC_F1, bloque syn-rec); la primera queda sin sesión. (1) semana 1: el dom 22 (antes domingo de llegada, sin sesión) →
+//   lun 23 (fila del mié 18) → … → sáb 28 21:00 → dom 29 05:00-05:30 (corrida_s1.extra › synapse). (2) transición: el plan del jue 31-dic no tiene día real
+//   (el jue 31 y el vie 1 hacen los del mar 29 y el mié 30) → su sesión va el sáb 2-ene 21:00 y la del sáb 2-ene, el dom 3-ene 11:30-12:00 (tras Derma; el
+//   dom 3 05:00 sigue siendo la recuperación del mar 17). Las filas, en orden de día REAL; se comprueba contra corrida_s1.
+const CADENAS_V610W = [
+  { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23', '2026-11-24', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
+  { id: 'transición', motivo: 'el plan del jue 31-dic no tiene día propio', filas: ['2026-12-31', '2027-01-02'], rec: { fecha: '2027-01-03', ini: '05:00', fin: '05:30' } },
+];
+// día REAL de cada fila de una cadena (para el orden de las A-units): la fila k la hace el día real de la fila k+1 (la última, la sesión a hora fija)
+const REAL_CADENA = new Map(CADENAS_V610W.flatMap((c) => c.filas.map((f, k) => [f, (k + 1 < c.filas.length ? (ALIAS_INV.get(c.filas[k + 1]) || c.filas[k + 1]) : c.rec.fecha) + (k + 1 < c.filas.length ? '' : 'T' + c.rec.ini)])));
+const realDe = (f) => REAL_CADENA.get(f) || ALIAS_INV.get(f) || f; // v6.10 · base cero: día REAL de una fecha de plan (alias inverso de corrida_s1; sin alias, la misma) · v6.10w: + cadenas
 {
   const F1_HASTA = '2027-01-03';
   const conA = dias.filter((x) => x.fecha >= START_ISO && x.fecha <= F1_HASTA && x.bloques.filter((b) => b.tag === 'A').length === 1);
@@ -923,7 +937,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
       const o = T.sesiones.get(`${x.fecha}|${b.tag}`);
       if (!o || !['A', 'B', 'C'].includes(b.tag)) continue;
       if (x.fecha > require('./synapse_f1_tramos').HASTA || x.fecha < require('./synapse_f1_tramos').DESDE) throw new Error('v6.09b: tramo F1 fuera de F1 en ' + x.fecha);
-      b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; if (o.min) b.min = o.min; n++; // v6.09b lote 1-ter: el sábado A/C con sus minutos reales (A + B + C = 30)
+      b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 100) / 100; if (o.min) b.min = o.min; n++; // v6.09b lote 1-ter: el sábado A/C con sus minutos reales (A + B + C = 30)
       if (o.guia && o.guia.url) assertUrl(o.guia.url);
     }
     // v6.09b lote 1-quater (QS · hallazgo a de R2): el ÚNICO bloque de 2027 que reescribe el troceado de F1 = el B del vie 8-ene («termina los tramos
@@ -934,7 +948,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
       if (!TR.EXTRA_2027.includes(f)) throw new Error('v6.09b lote 1-quater: bloque de 2027 no autorizado ' + k);
       const b = (dias.find((x) => x.fecha === f) || { bloques: [] }).bloques.find((y) => y.tag === tag);
       if (!b || !/termina los tramos pendientes/.test(b.leccion)) throw new Error('v6.09b lote 1-quater: ' + k + ' ya no es el B «termina los tramos pendientes»');
-      b.leccion = o.leccion; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; n++;
+      b.leccion = o.leccion; b.guia = o.guia; b.med = Math.round(o.med * 100) / 100; n++;
       if (o.guia && o.guia.url) assertUrl(o.guia.url);
     }
     // v6.10: la sesión de recuperación del sáb 28 07:15 (clave «fecha@hora|tag»): B y C con su tramo; el A (auditoría F0, Academy sin duración
@@ -943,7 +957,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
       const o = T.sesiones.get(`${r.fecha}@${r.ini}|${b.tag}`);
       // v6.10c · FIX r1 (hallazgo 1): la A de la sesión de recuperación trae su propio material (el vídeo que el comodín de ayer dejó a medias, medido):
       //   material, url y sin la marca de auditoría de F0 (no es una A-unit de F0)
-      if (o) { b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 10) / 10; if (o.min) b.min = o.min; if (o.material) b.material = o.material; if (o.url) { assertUrl(o.url); b.url = o.url; } if (o.audit === false) delete b.audit; n++; if (o.guia && o.guia.url) assertUrl(o.guia.url); continue; }
+      if (o) { b.leccion = o.leccion; if (o.dur) b.dur = o.dur; b.guia = o.guia; b.med = Math.round(o.med * 100) / 100; if (o.min) b.min = o.min; if (o.material) b.material = o.material; if (o.url) { assertUrl(o.url); b.url = o.url; } if (o.audit === false) delete b.audit; n++; if (o.guia && o.guia.url) assertUrl(o.guia.url); continue; }
       // v6.10c · FIX r1 (hallazgo 1): ya no hay caja «la siguiente lección de F0 sin ✓» (el 3-ene no queda ninguna lección de F0 en la Academy, así que
       //   el plan no «llega» a ninguna): la A de la recuperación la pone synapse_f1_tramos.js con material medido; si no llega, ABORTA (nunca una caja vacía).
       throw new Error(`v6.10: la sesión de recuperación ${r.fecha} ${r.ini} trae un bloque ${b.tag} sin tramo medido`);
@@ -960,6 +974,65 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     COLA_F1 = T.colaF1;
     if (!CHECK) console.log(`v6.09b · F1 troceado con material medido: ${n} bloques A/B/C reescritos · cola post-Step 1: ${COLA_POST.length} días (${COLA_POST[0] ? COLA_POST[0].fecha : '—'} → ${COLA_POST.length ? COLA_POST[COLA_POST.length - 1].fecha : '—'})`);
   }
+}
+// v6.10w · CADENAS_V610W (arriba): el contenido A/B/C de cada fila pasa a la siguiente; el de la última, a la sesión a hora fija. Se comprueba: filas en orden de día
+//   REAL (alias de corrida_s1), sesión a hora fija dentro de las ventanas del domingo y, la de la semana 1, = corrida_s1.extra › synapse.
+{
+  const F6c = require('./gen_fechas_v6').cargarFechasV6();
+  const VF = require('./gen_fechas_v6').VENTANAS_FINDE;
+  const aMc = (h) => { const [x, y] = h.split(':').map(Number); return x * 60 + y; };
+  for (const c of CADENAS_V610W) {
+    const reales = c.filas.map((f) => ALIAS_INV.get(f) || f);
+    for (let k = 1; k < c.filas.length; k++) if (!(reales[k] > reales[k - 1]) && !(k === 1 && c.filas[0] === '2026-12-31')) throw new Error(`v6.10w · cadena ${c.id}: las filas no van en orden de día real (${c.filas.join(' → ')})`);
+    if (!(c.rec.fecha > reales[reales.length - 1])) throw new Error(`v6.10w · cadena ${c.id}: la sesión a hora fija (${c.rec.fecha}) no es posterior a la última fila`);
+    const w = new Date(c.rec.fecha + 'T12:00:00Z').getUTCDay();
+    if (!(VF[w] || []).some(([a, z]) => aMc(c.rec.ini) >= aMc(a) && aMc(c.rec.fin) <= aMc(z)) || aMc(c.rec.fin) - aMc(c.rec.ini) !== 30) throw new Error(`v6.10w · cadena ${c.id}: ${c.rec.fecha} ${c.rec.ini}-${c.rec.fin} fuera de las ventanas del fin de semana o ≠ 30′`);
+    const ex = (((F6c.corrida_s1 || {}).extra || {})[c.rec.fecha] || {}).synapse;
+    if (!ex) throw new Error(`v6.10w · cadena ${c.id}: corrida_s1.extra[${c.rec.fecha}] no trae synapse (sin él la plantilla no pinta la sesión)`);
+    const filas = c.filas.map((f) => dias.find((x) => x.fecha === f));
+    if (filas.some((x) => !x)) throw new Error(`v6.10w · cadena ${c.id}: una fila no está en el plan`);
+    const abc = (x) => x.bloques.filter((b) => ['A', 'B', 'C'].includes(b.tag));
+    if (filas.some((x) => x.bloques.some((b) => !['A', 'B', 'C'].includes(b.tag)))) throw new Error(`v6.10w · cadena ${c.id}: una fila trae bloques que no son A/B/C`);
+    // el «recupera el lun 16-nov …» que el domingo de llegada añadía a sus piezas ya no vale (esa sesión va el lun 23)
+    const limpia = (b) => (typeof b.leccion === 'string' ? { ...b, leccion: b.leccion.replace(/ · recupera el lun 16-nov[^·]*$/, '') } : { ...b });
+    const contenido = filas.map((x) => abc(x).map(limpia));
+    // A-units: su fecha pasa a la de la fila siguiente (la última, a la sesión a hora fija)
+    for (let k = c.filas.length - 1; k >= 0; k--) { const dest = k + 1 < c.filas.length ? c.filas[k + 1] : c.rec.fecha; for (let i = 0; i < aDia.length; i++) if (aDia[i] === c.filas[k]) aDia[i] = dest; }
+    for (let k = c.filas.length - 1; k >= 1; k--) filas[k].bloques = contenido[k - 1];
+    const f0 = c.filas[0];
+    filas[0].bloques = [{ tag: 'R', min: 0, formato: 'repaso', material: `⏸ Sin sesión · ${f0.slice(8, 10)}-${f0.slice(5, 7)}`, leccion: `Sin SYNAPSE en este día de plan (${c.motivo}): su sesión la hace el día siguiente y cada sesión corre una, hasta la de ${['dom','lun','mar','mié','jue','vie','sáb'][w]} ${Number(c.rec.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(c.rec.fecha.slice(5, 7)) - 1]} a las ${c.rec.ini}. Nada que marcar.`, real: true }];
+    const ult = contenido[contenido.length - 1];
+    const minT = ult.reduce((a, b) => a + b.min, 0);
+    if (minT !== 30) throw new Error(`v6.10w · cadena ${c.id}: la sesión que va a hora fija suma ${minT}′ (A + B + C debe ser 30′)`);
+    REC_SES.push({ fecha: c.rec.fecha, ini: c.rec.ini, fin: c.rec.fin, plan: c.filas[c.filas.length - 1], semana: filas[filas.length - 1].semana, bloques: ult, cadena: c.motivo });
+  }
+  REC_SES.sort((a, b) => (a.fecha + a.ini < b.fecha + b.ini ? -1 : 1));
+  // v6.10w: las FECHAS que los textos del SYNAPSE citan de las filas de una cadena («retoma donde paraste el vie 20-nov», «Lo que queda → sáb 28-nov 21:00»)
+  //   pasan a la fila que ahora lleva ese contenido (la última, a la sesión a hora fija, con su hora). Una sola pasada sobre todos los textos de F1.
+  {
+    const MESr = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], DOWr = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+    const fCr = (iso) => `${DOWr[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${Number(iso.slice(8))}-${MESr[Number(iso.slice(5, 7)) - 1]}`;
+    const MAPA = new Map();
+    for (const c of CADENAS_V610W) c.filas.forEach((f, k) => MAPA.set(f, k + 1 < c.filas.length ? { a: c.filas[k + 1] } : { a: c.rec.fecha, h: c.rec.ini }));
+    // remate v6.10w (revisión textos): + la hora entre paréntesis («del sáb 2-ene (21:00)»): con la fila movida a una sesión a hora fija, la hora vieja se va
+    //   con la fecha (antes quedaba «del dom 3-ene 05:00 (21:00)»)
+    const RXr = /\b(lun|mar|mié|jue|vie|sáb|dom) (\d{1,2})-(nov|dic|ene)( \d{2}:\d{2}| \(\d{2}:\d{2}\))?/g;
+    const remap = (t) => (typeof t !== 'string' ? t : t.replace(RXr, (m, dw, dd, mes, hh) => {
+      const iso = `${mes === 'ene' ? 2027 : 2026}-${String(MESr.indexOf(mes) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
+      const x = MAPA.get(iso);
+      if (!x || DOWr[new Date(iso + 'T12:00:00Z').getUTCDay()] !== dw) return m;
+      return `${fCr(x.a)}${x.h ? (hh ? ` ${x.h}` : ` ${x.h}`) : hh || ''}`;
+    }));
+    const tocar = (b) => { for (const k of ['leccion']) if (b[k]) b[k] = remap(b[k]); if (b.guia) for (const k of ['que', 'como']) if (b.guia[k]) b.guia[k] = remap(b.guia[k]); };
+    const hasta = '2027-01-03';
+    for (const x of dias) if (x.fecha <= hasta) for (const b of x.bloques) tocar(b);
+    for (const r of REC_SES) for (const b of r.bloques) tocar(b);
+    for (const c of [...COLA_F1, ...COLA_POST]) for (const k of Object.keys(c)) if (typeof c[k] === 'string') c[k] = remap(c[k]); else if (Array.isArray(c[k])) c[k].forEach((y) => y && typeof y === 'object' && tocar(y));
+  }
+  // la A de la recuperación del mar 17 (dom 3 11:30) sigue el vídeo que el comodín de la sesión de las 05:00 deja a medias (antes, el del sáb 2-ene a las 21:00)
+  for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) for (const k of ['leccion']) if (typeof b[k] === 'string') b[k] = b[k].replace(/sigue al comodín del sáb 2-ene/, 'sigue a la sesión de las 05:00 de hoy');
+  for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) if (b.guia) for (const k of ['que', 'como']) if (typeof b.guia[k] === 'string') b.guia[k] = b.guia[k].replace(/del comodín del sáb 2-ene|el comodín del sáb 2-ene/g, 'la sesión de las 05:00 de hoy');
+  if (!CHECK) console.log(`v6.10w · cadenas: ${CADENAS_V610W.map((c) => `${c.id} (${c.filas.length} filas → ${c.rec.fecha} ${c.rec.ini})`).join(' · ')}`);
 }
 
 // ─── v6.10 · BASE CERO (mié 18-nov-2026 · orden de Joseph: «todos estamos partiendo de cero … estructura planes bien estructurados, verifica todo»):
@@ -1119,10 +1192,17 @@ export function synColaDe(fechaISO: string): SynColaDia | undefined { return SYN
 /** v6.10 (17-nov-2026): SESIONES DE RECUPERACIÓN a hora fija (gen_synapse_plan.js › REC_V610 = _fechas_v6.json › corrida_s1.extra[fecha].synapse): el v6.10c
  *  dom 3-ene 05:00-05:30 (v6.10: sáb 28-nov 07:15-07:45) recupera el mar 17 (sin sesión): A = 15′ medidos del vídeo que el comodín del sáb 2-ene dejó a medias («Interpretability…» min 15:00-37:30 a 1,5×; v6.10c FIX r1: antes «la siguiente lección de F0 sin ✓», que el 3-ene ya no existe) + las piezas B/C del carril del martes de
  *  la sem ${REC_SES.length ? REC_SES[0].semana : '—'} (el mar 24 lleva las de la sem 1). \`plan\` = el día que recupera. Bloque «syn-rec» de plantillasV6 · rutinaGuia › guiaSynapseRecDe. */
-export interface SynRecSesion { fecha: string; ini: string; fin: string; plan: string; semana: number; bloques: SynBloque[] }
-export const SYN_REC_F1: SynRecSesion[] = [${REC_SES.map((r) => `{fecha:"${r.fecha}",ini:"${r.ini}",fin:"${r.fin}",plan:"${r.plan}",semana:${r.semana},bloques:[${r.bloques.map(blkTs).join(',')}]}`).join(',' + String.fromCharCode(10))}];
+export interface SynRecSesion { fecha: string; ini: string; fin: string; plan: string; semana: number; bloques: SynBloque[];
+  /** v6.10w: sesión de una CADENA (las sesiones corren una): el motivo; \`plan\` = la fila cuyo contenido trae */
+  cadena?: string }
+export const SYN_REC_F1: SynRecSesion[] = [${REC_SES.map((r) => `{fecha:"${r.fecha}",ini:"${r.ini}",fin:"${r.fin}",plan:"${r.plan}",semana:${r.semana},bloques:[${r.bloques.map(blkTs).join(',')}]${r.cadena ? `,cadena:${JSON.stringify(r.cadena)}` : ''}}`).join(',' + String.fromCharCode(10))}];
 /** v6.10: sesión de recuperación del SYNAPSE de una fecha (v6.10c: dom 3-ene 05:00 · v6.10: sáb 28-nov 07:15) · undefined si no hay */
-export function synRecDe(fechaISO: string): SynRecSesion | undefined { return SYN_REC_F1.find((x) => x.fecha === fechaISO); }
+export function synRecDe(fechaISO: string, ini?: string | null): SynRecSesion | undefined { return SYN_REC_F1.find((x) => x.fecha === fechaISO && (!ini || x.ini === ini)) ?? (ini ? undefined : undefined); }
+/** v6.10w: todas las sesiones a hora fija de una fecha, por hora (dom 3-ene: 05:00 recuperación del mar 17 + 11:30 la del sáb 2-ene) */
+export function synRecsDe(fechaISO: string): SynRecSesion[] { return SYN_REC_F1.filter((x) => x.fecha === fechaISO); }
+/** v6.10w: CADENAS (gen_synapse_plan.js › CADENAS_V610W): filas de PLAN en orden real cuyo contenido corrió una sesión (la de filas[k] está ahora en filas[k+1];
+ *  la de la última, en la sesión a hora fija \`rec\`). rutinaGuia la usa para la curaduría por fecha (SYN_SERIES), que se calcula con la disposición original. */
+export const SYN_CADENAS: { filas: string[]; rec: { fecha: string; ini: string; fin: string } }[] = ${JSON.stringify(CADENAS_V610W.map((c) => ({ filas: c.filas, rec: c.rec })))};
 /** v6.10 · BASE CERO (18-nov-2026): fases explícitas del SYNAPSE (1-4 = F0 partida por dificultad · 5 = F1 · 6 = F2). Cada fase: qué se hace, su GATE
  *  (preguntas solo REALES: «Course quiz» oficial de la Academy; sin quiz oficial, recall en blanco / Feynman) y sus fechas de plan. Criterio de avance:
  *  SYN_AVANCE_BC. Método y fuentes: DATA/SYNAPSE/METODO_BASE_CERO.md. rutinaGuia › guiaSynapseDe lo pone en el aviso de cada sesión. */

@@ -92,6 +92,16 @@ const usmleTs = readTs('usmleStep1Daily.ts');
 // fijo (v5.20: S20 = 15-19 feb, examen lun 22-feb), que en v6 etiquetaba como 'examen' todo lo posterior a la sem 20 (pausa ENCAPS y tramo 2).
 const V6 = require('./gen_fechas_v6');
 const F6 = V6.cargarFechasV6();
+// v6.10w (pendientes de la revisión): con el ALIAS de corrida_s1 una fila de PLAN se hace otro día REAL (el lun 23-nov real hace el plan del mié 18; el
+//   sáb 2-ene, por frente, el del jue 31-dic). La revisión es de una semana REAL (lun → dom): elige las filas de los planes, los hitos y las sesiones
+//   ENCAPS de Supabase (que conserva la fecha de PLAN) por su día REAL (fechaRealDe del frente, gemelo node de fechasV6.fechaRealDe) y pinta ese día.
+//   El tramo de días que cuenta sigue siendo el del plan (L-V; SYNAPSE L-S: el domingo Feynman no cuenta). Los registros que ya llevan fecha real
+//   (Anki, VITALS, diario Obsidian, checked_at de plan_checks) no cambian.
+const realDe = (plan, frente) => { try { return V6.fechaRealDe(plan, F6, frente) || plan; } catch { return plan; } };
+/** fila de plan de esta semana: su día REAL cae entre el lunes y el domingo y su día de PLAN es L-V (hastaDow 5) o L-S (6) */
+// remate v6.10w (revisión textos): + una fila de plan en fin de semana que se hace OTRO día real (corrida_s1.extra { hora, plan }: MIR · AURUM · LIVIANO · Business
+//   del plan del sáb 2-ene, el dom 3-ene): antes solo entraban las de L-V de plan y esas no contaban en ninguna revisión
+const filaSemana = (fecha, frente, hastaDow = 5) => { const w = dow(fecha); return ((w >= 1 && w <= hastaDow) || realDe(fecha, frente) !== fecha) && enSemana(realDe(fecha, frente), LUNES, DOMINGO); };
 const D1 = F6.f1.inicio; // v6.09: mar 17-nov-2026 → la semana del D1 sigue siendo la del lun 16-nov: S1 = lun 16 → vie 20-nov y su fichero S01_2026-11-21 (los NOMBRES no cambian), pero el sáb 21-nov es SIN SESIÓN (viaje, corrida_s1) → v6.09b: la S01 se hace el DOM 22-NOV a las 14:30, sola (domingo de llegada; con --forzar), y la S02 del sáb 28-nov va sola (su cabecera lo recuerda); hasta el 17-nov la S01 iba junto con la S02 el sáb 28 · v6.08: lun 16-nov-2026 → S1 = lun 16 → vie 20-nov, 1.ª revisión con plan = S01_2026-11-21 (sáb 21-nov); el sáb 14-nov está en corrida_s1.sin_sesion · v6.07: lun 9-nov · v6.06: lun 2-nov-2026 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
 const D1ts = (usmleTs.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1];
 // v6.08: el Step de F1 va solo los días step1.f1_dias_semana (v6.07+: mar · jue) → su inicio = 1.er día ≥ f1.inicio con día de Step (v6.08: mar 17-nov;
@@ -196,28 +206,28 @@ const MINIMOS = { 'NBME 25': '≥51%', 'NBME 26': '≥54%', 'NBME 27': '≥57%',
 // (NBME 29-33, UWSA3 opcional, UWSA2, Free 120); antes solo leía las filas {d:…} de F1.
 const HITOS = [...usmleTs.matchAll(/\{(?:t:\d+,)?d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",[^}]*?system:"(?:Assessment|Banco intensivo|Sprint final)"[^}]*?sub:"🎯 ([^"—(]+)/g)]
   .map((m) => { const nombre = ((m[3].match(/UWSA\d|NBME \d+|FREE 120/i) || [m[3]])[0]).toUpperCase().replace('NBME', 'NBME'); return { d: +m[1], fecha: m[2], nombre: nombre.replace(/^NBME/, 'NBME'), minimo: MINIMOS[nombre] || null }; });
-const hitoSemana = HITOS.find((h) => enSemana(h.fecha, LUNES, DOMINGO)) || null;
-const proximoHito = HITOS.find((h) => h.fecha > VIERNES) || null;
+const hitoSemana = HITOS.find((h) => enSemana(realDe(h.fecha, 'usmle'), LUNES, DOMINGO)) || null; // v6.10w: por día REAL
+const proximoHito = HITOS.find((h) => realDe(h.fecha, 'usmle') > DOMINGO) || null;
 const USMLE_DIAS = [...usmleTs.matchAll(/\{(?:t:\d+,)?d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => ({ d: +m[1], fecha: m[2] })); // v6.01: + tramo 2 (d = 100 + t = clave de plan_checks)
-const usmleSemana = USMLE_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
+const usmleSemana = USMLE_DIAS.filter((x) => filaSemana(x.fecha, 'usmle')); // v6.10w: por día REAL
 
 const synTs = readTs('synapseDailyPlan.ts');
 const SYN_DIAS = [...synTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"([^"]+)"/g)].map((m) => ({ d: +m[1], fecha: m[2], wd: m[3] }));
-const synSemana = SYN_DIAS.filter((x) => enSemana(x.fecha, LUNES, SABADO)); // L-Sáb (dom = Feynman opcional, no cuenta)
+const synSemana = SYN_DIAS.filter((x) => filaSemana(x.fecha, 'synapse', 6)); // L-Sáb (dom = Feynman opcional, no cuenta) · v6.10w: por día REAL
 
 const vibeTs = readTs('vibecodingPlan.ts');
 const VIBE_DIAS = [...vibeTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]+",semana:(\d+)/g)].map((m) => ({ d: +m[1], fecha: m[2], semana: +m[3] }));
 const VIBE_PROY = [...vibeTs.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)"[^}]*?ship:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), ship: m[4] }));
-const vibeSemana = VIBE_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
+const vibeSemana = VIBE_DIAS.filter((x) => filaSemana(x.fecha, 'vibecoding')); // v6.10w: por día REAL
 const vibeP = vibeSemana.length ? VIBE_PROY.find((p) => p.s === vibeSemana[0].semana) : null;
 // v6.01: rangos del vibecoding derivados del plan (antes texto fijo v5.20): proyecto S3 (jmd-usmle-scores) y rango total S1-S20
-const vibeRango = (pred) => { const xs = VIBE_DIAS.filter(pred); return xs.length ? `${fmt(xs[0].fecha)} → ${fmt(xs[xs.length - 1].fecha)}-${xs[xs.length - 1].fecha.slice(0, 4)}` : null; };
+const vibeRango = (pred) => { const xs = VIBE_DIAS.filter(pred).map((x) => realDe(x.fecha, 'vibecoding')); return xs.length ? `${fmt(xs[0])} → ${fmt(xs[xs.length - 1])}-${xs[xs.length - 1].slice(0, 4)}` : null; }; // v6.10w: días REALES
 const VIBE_S3 = vibeRango((x) => x.semana === 3);           // v6.01: lun 26-oct → vie 30-oct-2026 (v6.00 = v5.20: mié 21 → mar 27-oct) · v6.02: lo que diga vibecodingPlan.ts (D1 19-oct) · v6.03: mié 4 → mar 10-nov-2026 (derivado, D1 mié 21-oct) · v6.05: lun 9 → vie 13-nov-2026 (derivado, D1 lun 26-oct) · v6.06: lun 16 → vie 20-nov-2026 (derivado, D1 lun 2-nov)
 const VIBE_TODO = vibeRango(() => true);                    // v6.01: lun 12-oct → mié 24-feb-2027 (S1-S12 + taper S13-S20) · v6.02: derivado igual (lote de secundarios) · v6.03: mié 21-oct → vie 5-mar-2027 · v6.05: lun 26-oct → mié 10-mar-2027 · v6.06: lun 2-nov-2026 → vie 19-mar-2027 (sin los PROTEGIDOS vie 12 / lun 15-mar)
 
 const mirTs = readTs('mirDailyPlan.ts');
 const MIR_DIAS = [...mirTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => ({ d: +m[1], fecha: m[2] }));
-const mirSemana = MIR_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
+const mirSemana = MIR_DIAS.filter((x) => filaSemana(x.fecha, 'mir')); // v6.10w: por día REAL (el plan del jue 31-dic → sáb 2-ene)
 // v6.01 · MIR tras la 1.ª vuelta (mirMantenimiento.ts, 185 filas): MANTENIMIENTO mar 2-feb → mar 27-abr-2027 (57) + EXTENSIÓN mié 28-abr → vie 24-sep
 // (128; L-S desde el SERUMS); sin sesión en SKIP ni en los protegidos v6 (fuente: _fechas_v6.json) · v6.00: jue 28-ene → jue 22-abr + extensión → vie 24-sep ·
 // v5.20: jue 28-ene → jue 22-abr-2027, 58 días (protegidos lun 22-feb / mar 9-mar / mié 10-mar) · v5.19: mié 27-ene → jue 15-abr · v5.18: mar 26-ene → mié 14-abr.
@@ -226,7 +236,7 @@ const mirSemana = MIR_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
 const mirMantTs = readTs('mirMantenimiento.ts');
 const MIR_MANT = [...mirMantTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]*",semana:\d+,(?:fase:"([^"]*)",)?modo:"([^"]*)",tipo:"([^"]*)",num:[^,]*,asignatura:("([^"]*)"|null)/g)]
   .map((m) => ({ d: +m[1], fecha: m[2], fase: m[3] || 'mantenimiento', modo: m[4], tipo: m[5], asignatura: m[7] || null }));
-const mirMantSemana = MIR_MANT.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
+const mirMantSemana = MIR_MANT.filter((x) => filaSemana(x.fecha, 'mir')); // v6.10w: por día REAL
 
 // ─── localStorage export ───
 let LS = null, lsFecha = 'sin export';
@@ -294,7 +304,9 @@ async function supabaseSemana() {
     out.planChecks = {};
     for (const r of pc) { (out.planChecks[r.plan_key] = out.planChecks[r.plan_key] || new Set()).add(Number(r.dia)); if (enSemana(String(r.checked_at || ''), LUNES, DOMINGO)) out.planChecksSemana++; }
   }
-  out.encaps = (await safe(() => cli.select('study_schedule', 'examen,dia,fecha,weekday,tipo,codigo,subtema,modo,simulacro', [['eq', 'examen', 'ENCAPS'], ['gte', 'fecha', LUNES], ['lte', 'fecha', DOMINGO]]), 'study_schedule')) || [];
+  // v6.10w: study_schedule conserva la FECHA DE PLAN → se pide desde 4 semanas antes y se quedan las sesiones cuyo día REAL cae en esta semana
+  out.encaps = ((await safe(() => cli.select('study_schedule', 'examen,dia,fecha,weekday,tipo,codigo,subtema,modo,simulacro', [['eq', 'examen', 'ENCAPS'], ['gte', 'fecha', addDays(LUNES, -28)], ['lte', 'fecha', DOMINGO]]), 'study_schedule')) || [])
+    .filter((x) => enSemana(realDe(String(x.fecha).slice(0, 10), 'encaps'), LUNES, DOMINGO)).sort((a, b) => realDe(String(a.fecha).slice(0, 10), 'encaps').localeCompare(realDe(String(b.fecha).slice(0, 10), 'encaps')));
   out.simScores = (await safe(() => cli.select('study_sim_scores', 'examen,sim_n,nota,fecha', [['gte', 'fecha', LUNES], ['lte', 'fecha', DOMINGO]]), 'study_sim_scores')) || [];
   const m = await safe(() => cli.select('study_metrics', 'examen,fecha,qx_pct,prom_sim,cobertura_pct,dias_a_examen', [['eq', 'examen', 'ENCAPS']]), 'study_metrics');
   out.metrics = m && m.length ? m[0] : null;
@@ -450,7 +462,7 @@ function usmleScores() {
   const m1Fuente = sc0 && sc0.length ? 'jmd-usmle-scores' : sc ? 'diario Obsidian' : null;
   const m1 = sc && sc.length ? { fuente: m1Fuente, dias: sc.length, pretest: media(sc.map((x) => x.pretest)), q30: media(sc.map((x) => x.q30)), eval: media(sc.map((x) => x.eval)), evalMax: Math.max(...sc.map((x) => x.eval ?? -1)), errores: sc.map((x) => x.error).filter(Boolean) } : null;
   // 2 · próximo hito
-  const m2 = { hitoSemana: hitoSemana ? `${hitoSemana.nombre} ${fmt(hitoSemana.fecha)} (${hitoSemana.minimo || '—'})` : null, proximo: proximoHito ? `${proximoHito.nombre} ${fmt(proximoHito.fecha)} · mínimo on-track ${proximoHito.minimo || '—'}` : null, uworldPct: null };
+  const m2 = { hitoSemana: hitoSemana ? `${hitoSemana.nombre} ${fmt(realDe(hitoSemana.fecha, 'usmle'))} (${hitoSemana.minimo || '—'})` : null, proximo: proximoHito ? `${proximoHito.nombre} ${fmt(realDe(proximoHito.fecha, 'usmle'))} · mínimo on-track ${proximoHito.minimo || '—'}` : null, uworldPct: null };
   // 3 · Anki
   const ja = anki.json;
   const m3 = {
@@ -476,7 +488,7 @@ function usmleScores() {
   const miniSim = rEnc.find((r) => /mini|sim/i.test(r.tipo) && r.fecha === VIERNES) || rEnc.find((r) => /mini|sim/i.test(r.tipo)) || null;
   const simSb = sb.simScores.find((s) => s.examen === 'ENCAPS') || null;
   const m4 = {
-    temas: sb.encaps.map((x) => `${x.weekday || WD[dow(x.fecha)]} ${x.codigo || (x.simulacro ? 'mini-sim 25Q' : x.tipo || '?')}${x.simulacro && x.codigo ? ' (mini-sim)' : ''}`),
+    temas: sb.encaps.map((x) => `${WD[dow(realDe(String(x.fecha).slice(0, 10), 'encaps'))]} ${x.codigo || (x.simulacro ? 'mini-sim 25Q' : x.tipo || '?')}${x.simulacro && x.codigo ? ' (mini-sim)' : ''}`),
     miniSim: miniSim ? `${miniSim.correctas ?? '?'}/${miniSim.n ?? '?'} (${pct(miniSim.pct)} ciego)` : simSb ? `${simSb.nota} (study_sim_scores #${simSb.sim_n})` : null,
     rondas: rEnc.length, pctMedio: media(rEnc.map((r) => r.pct)), checks: sb.checks,
     qxPct: sb.metrics ? sb.metrics.qx_pct : null,
@@ -512,7 +524,7 @@ function usmleScores() {
   const m6 = { plan: synSemana.length, hechos: hayProgreso() ? synSemana.filter((x) => synDone.has(x.d)).length : null };
   // 7 · Vibecoding (✓ de la app + SHIPPED del verificador si existe _vibecoding_ship.json)
   const vibeDone = doneSet('vibecoding');
-  const m7 = vibeP ? { s: vibeP.s, nombre: vibeP.nombre, ship: vibeP.ship, plan: vibeSemana.length, hechos: hayProgreso() ? vibeSemana.filter((x) => vibeDone.has(x.d)).length : null } : null;
+  const m7 = vibeP ? { s: vibeP.s, nombre: vibeP.nombre, ship: realDe(vibeP.ship, 'vibecoding'), plan: vibeSemana.length, hechos: hayProgreso() ? vibeSemana.filter((x) => vibeDone.has(x.d)).length : null } : null;
   const shipV = vibeP ? shipSemana(vibeP.s) : { estado: 'n/a', ship: null };
   if (m7) {
     m7.shipped = m7.hechos != null && m7.plan > 0 && m7.hechos === m7.plan;
@@ -526,8 +538,8 @@ function usmleScores() {
   // 9 · días perdidos / niveles (modo: jmd-modo-log ∪ campo modo del diario)
   const usDone = doneSet('usmle');
   const corte = FECHA < VIERNES ? FECHA : VIERNES;
-  const usPasados = usmleSemana.filter((x) => x.fecha <= corte);
-  const sinCheck = hayProgreso() ? usPasados.filter((x) => !usDone.has(x.d)).map((x) => x.fecha) : null;
+  const usPasados = usmleSemana.filter((x) => realDe(x.fecha, 'usmle') <= corte); // v6.10w: por día REAL
+  const sinCheck = hayProgreso() ? usPasados.filter((x) => !usDone.has(x.d)).map((x) => realDe(x.fecha, 'usmle')) : null;
   const nivelesMap = {};
   for (const x of dia.dias) if (x.modo) nivelesMap[x.fecha] = x.modo;
   for (const [f, n] of Object.entries(modoLog)) nivelesMap[f] = n;   // la app manda sobre el diario si ambos existen
@@ -568,7 +580,7 @@ function usmleScores() {
   L.push(`## 2 uWorld acumulado     __% (n = ____) [manual: dashboard uWorld] · próximo hito: ${m2.proximo || '—'} · distancia: __ pts`);
   L.push(`## 3 Anki                 ${m3.estado === 'cerrado' && !m3.diasTelemetria ? 'Anki cerrado y sin telemetría en la semana → correr node DATA/_scripts/anki_telemetria.js con Anki abierto' : `due ${sd(m3.due)} (medio ${sd(m3.dueMedio)}) · backlog ${sd(m3.backlog)} · retención 30d ${m3.retencion30 == null ? 'sin dato' : Math.round(m3.retencion30 * 100) + '%'} · again ${pct(m3.againPct)} · minFinde ${sd(m3.minFinde, "'")} · telemetría ${m3.diasTelemetria} días${m3.estado === 'live' ? ' (+ live)' : ''}`} · alarma G: ${m3.alarmaG ? 'SÍ → cero nuevas hasta backlog < 20' : 'no'} · 1ª review (05:00): ${m3.primeraReview.sinDato ? 'sin dato (telemetría v2 no corrida esta semana)' : `${m3.primeraReview.verde} verde · ${m3.primeraReview.ambar} ámbar · ${m3.primeraReview.rojo} rojo [${m3.primeraReview.dias.join(' · ')}]`}${m3.alarmaPrimeraReview ? ' · ⚠ ALARMA: ≥ 2 días hábiles con la 1ª review tarde o ausente → revisar la hora de dormir (DOCTRINA §6)' : ''}`);
   L.push(`## 4 ENCAPS simulacros    mini-sim ${m4.miniSim || 'sin dato (registrar la ronda mini_sim en _registro_resoluciones.json)'} · rondas de la semana: ${m4.rondas}${m4.pctMedio != null ? ` (media ${pct(m4.pctMedio)} ciego)` : ''} · checks app: ${sd(m4.checks)} · QX acumulado: ${pct(m4.qxPct)} · temas: ${m4.temas.join(' · ') || 'sin filas en study_schedule'}`);
-  L.push(`## 5 MIR eval D-1         ${m5 ? `neto ${pct(m5.netoPct)} (bruto ${pct(m5.brutoPct)}) · QUIZ ${pct(m5.quizPct)} (n=${m5.quizN}) · pre-test ${pct(m5.pretestPct)} · días con eval ${m5.dias}/${m5.diasPlan} · entradas ${m5.entradas} (${m5.fuente}) · errores: ${m5.errores.join(', ') || '—'}${m5.ajustes.length ? ` · ajustes: ${m5.ajustes.join(', ')}` : ''}${m5.cierres.length ? ` · cierres: ${m5.cierres.join(' · ')}` : ''} · temas CALIENTES (14 d): ${m5.calientes.length ? m5.calientes.join(' · ') : 'ninguno'}${m5.mantenimiento ? ` · MANTENIMIENTO: ${m5.mantenimiento.sesiones}/${m5.mantenimiento.plan} sesiones (${m5.mantenimiento.modos}${m5.mantenimiento.pct != null ? ` · ${pct(m5.mantenimiento.pct)}` : ''}) · ${m5.mantenimiento.asignaturas || '—'}` : ''}` : `sin dato (jmd-mir-eval-log vacío o sin export${sb.mirLog ? '; mir_eval_log sin filas' : '; mir_eval_log sin acceso'}) · días MIR en el plan: ${mirSemana.length} · rellenar: media __% · días _/5`}`);
+  L.push(`## 5 MIR eval D-1         ${m5 ? `neto ${pct(m5.netoPct)} (bruto ${pct(m5.brutoPct)}) · QUIZ ${pct(m5.quizPct)} (n=${m5.quizN}) · pre-test ${pct(m5.pretestPct)} · días con eval ${m5.dias}/${m5.diasPlan} · entradas ${m5.entradas} (${m5.fuente}) · errores: ${m5.errores.join(', ') || '—'}${m5.ajustes.length ? ` · ajustes: ${m5.ajustes.join(', ')}` : ''}${m5.cierres.length ? ` · cierres: ${m5.cierres.join(' · ')}` : ''} · temas CALIENTES (14 d): ${m5.calientes.length ? m5.calientes.join(' · ') : 'ninguno'}${m5.mantenimiento ? ` · MANTENIMIENTO: ${m5.mantenimiento.sesiones}/${m5.mantenimiento.plan} sesiones (${m5.mantenimiento.modos}${m5.mantenimiento.pct != null ? ` · ${pct(m5.mantenimiento.pct)}` : ''}) · ${m5.mantenimiento.asignaturas || '—'}` : ''}` : `sin dato (jmd-mir-eval-log vacío o sin export${sb.mirLog ? '; mir_eval_log sin filas' : '; mir_eval_log sin acceso'}) · días MIR en el plan: ${mirSemana.length} · rellenar: media __% · días _/${mirSemana.length || 5}`}`);
   L.push(`## 6 SYNAPSE misiones     ${m6.hechos == null ? `sin plan_checks ni export de localStorage · plan ${m6.plan} misiones (L-sáb) · rellenar _/${m6.plan}` : `${m6.hechos}/${m6.plan} ✓`}`);
   L.push(`## 7 Vibecoding           ${m7 ? `S${m7.s} ${m7.nombre} · días ✓ ${m7.hechos == null ? '_' : m7.hechos}/${m7.plan} · SHIP ${fmt(m7.ship)} (domingo, flexible · desde la v6.07) · SHIPPED: ${m7.verificador ? `${on(m7.shipped)} (verify_vibecoding ${m7.verificador.ok ?? '?'}/${m7.verificador.total ?? '?'} criterios${m7.verificador.fecha ? ' · ' + m7.verificador.fecha : ''})` : m7.hechos == null ? '__' : `${on(m7.shipped)} (auto-reporte: ✓ ${m7.hechos}/${m7.plan}; correr node DATA/_scripts/verify_vibecoding.js ${m7.s} para el dato real)`} · evidencia (commit/URL/test): ______` : `fuera del rango del vibecoding (S1-S20: ${VIBE_TODO || '—'}; v6.00 = v5.20: mié 7-oct → vie 19-feb)`}`);
   L.push(`## 8 VITALS               ${sue.length ? `${vit.logs.length ? `logs ${m8.logsDias}/7 días · ` : ''}sueño medio ${sd(m8.suenoMedio, ' h')} (${m8.suenoFuente}, ${sue.length} noche(s)) · noches < 7 h: ${m8.noches7} · < 6 h: ${m8.noches6} · agua media ${sd(m8.aguaMedia, ' ml')}` : `${vit.estado.startsWith('ok') ? 'sin registros de la semana (quick-log de VITALS a las 07:00)' : vit.estado} · sin sueno_h en el diario · rellenar: sueño medio __ h · noches < 7 h _ · agua ____ ml`}`);

@@ -10,7 +10,7 @@
    "fecha": "YYYY-MM-DD (sesión Derma)",
    "d": "sesión del plan 1-70 (dermaDailyPlan.ts)",
    "bKey": "bloque del plan A|B|C|D|E|F|G|H|Z|X",
-   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill",
+   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill | dermnet",
    "n": "nº de ítems de la ronda",
    "correctas_seguras": "aciertos con eval_acierto = conocimiento (los únicos que cuentan para el % ciego)",
    "correctas_dudosas": "aciertos con eval_acierto = suerte (NO cuentan para el % ciego)",
@@ -19,10 +19,10 @@
    "items": "detalle por ítem con el esquema_item (opcional pero recomendado para los casos)"
   },
   "esquema_item": {
-   "id": "id del caso (1-200, DERMA_CASOS) · nº de pregunta del banco · 0 para el drill HDPH",
+   "id": "id del caso (1-200, DERMA_CASOS) · nº de pregunta del banco · 0 para el drill HDPH · nº de caso del quiz DermNet (fuente dermnet; el quiz va en la nota)",
    "fecha": "YYYY-MM-DD",
    "d": "sesión del plan",
-   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill",
+   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill | dermnet",
    "moduloCORE": "Med | Path | Peds | Surg (los casos lo traen por id: Med 1-110 · Path 111-140 · Peds 141-170 · Surg 171-200 — A VERIFICAR el orden real del listado, ver dermaDailyPlan.ts)",
    "acierto": "true | false (diagnóstico correcto en el paso ③, ANTES de leer la discusión)",
    "eval_acierto": "conocimiento | suerte | confusion | no-sabia  (matriz Palmerton confianza × acierto: conocimiento = acierto seguro · suerte = acierto adivinado · confusion = fallo por discriminación/CCSN · no-sabia = fallo por vacío)",
@@ -43,7 +43,7 @@
    "no-sabia": "fallo por vacío → error_tipo CONCEPTO o MORFOLOGIA"
   },
   "modulo_por_bloque": { "A": "Med", "B": "Med", "C": "Med", "D": "Med", "E": "Path", "F": "Peds", "G": "Surg", "H": "Med", "Z": "Med", "X": "Surg" },
-  "bancos": { "caso": "Cases for Board Review 200 (groupid 1546)", "pictorial": "Pictorial Review 4e 381Q (resourceid 3626)", "core": "CORE Exam Bank 104Q (3479)", "barnhill": "Barnhill's Challenge 403Q (2865)", "qotw": "Question of the Week 50Q (3562)", "dermatoscopia": "imagen dermatoscópica ciega de la sesión (Self-Assessment 2e / Dermoscopedia)", "drill": "simulador oclusión vascular 90 s (checklist HDPH de dermaCerebro.ts)" },
+  "bancos": { "dermnet": "DermNet Quizzes (plan B sin AccessDerma; v6.10w): casos REALES, id = nº de caso del quiz y nota «DermNet «quiz» · caso N»", "caso": "Cases for Board Review 200 (groupid 1546)", "pictorial": "Pictorial Review 4e 381Q (resourceid 3626)", "core": "CORE Exam Bank 104Q (3479)", "barnhill": "Barnhill's Challenge 403Q (2865)", "qotw": "Question of the Week 50Q (3562)", "dermatoscopia": "imagen dermatoscópica ciega de la sesión (Self-Assessment 2e / Dermoscopedia)", "drill": "simulador oclusión vascular 90 s (checklist HDPH de dermaCerebro.ts)" },
   "metas": {
    "pct_ciego_meta": 85,
    "pct_ciego_crucero": 75,

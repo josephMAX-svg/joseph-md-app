@@ -48,7 +48,7 @@
  *     SERUMS: 88 lun-jue · 23 viernes · 20 sábados). lun-jue = misma rotación ponderada (cuotas por resto mayor sobre los slots de
  *     la extensión) · viernes = 30Q de la asignatura peor del log · SÁBADO (tipo 'sabado', nuevo) = mini-simulacro 30Q MIXTAS de las
  *     14 asignaturas (77 s/Q) + corrección · Tier C express = último lun-jue de cada semana repitiendo el ciclo de las 12 con
- *     preguntas no usadas (preguntasSinUsar). `semana` continua. FSRS 0,85 hasta el Step 1 → 0,90 en la fase principal (oct-2027).
+ *     preguntas no usadas (preguntasSinUsar). `semana` continua. FSRS 85 % hasta el Step 1 → 90 % en la fase principal (oct-2027).
  *   · v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): la 1ª vuelta (gen_mir_daily.js 2026-10-12) termina el lun 1-feb → mantenimiento
  *     mar 2-feb → mar 27-abr = las MISMAS 57 filas (47 lun-jue · 10 viernes · 12 Tier C; cuotas idénticas), re-fechadas; extensión
  *     mié 28-abr → vie 24-sep (tope SIN cambio: día de plan anterior al ritual) = 128 filas (antes 131): la extensión absorbe los 3 días.
@@ -515,7 +515,7 @@ const nTierCExt = cuenta(EXT, (r) => r.tierC);
 const vueltaDe = (r) => (r.fase === 'mantenimiento' ? 1 : +((r.tierC.nota || '').match(/vuelta (\d+)/) || [0, 0])[1]);
 // v6.02c: con reposición, el handoff es la última sesión del banqueo (la última repuesta, ya en F5) y no el último día antes del Step 1
 // v6.06: el mes de la fase principal se deriva del handoff (+3 días: el lunes siguiente si es viernes) — antes «oct-2027» escrito (v6.06: vie 5-nov → «nov-2027»)
-const HANDOFF = `${fmtLargo(ROWS[ROWS.length - 1].fecha)} (${REPO.length ? `última sesión del banqueo; cierra las ${REPO.length} sesiones repuestas tras el examen Step 1 · ${REPUESTA}` : 'último día con estudio antes del Step 1'}) → fase principal MIR desde ${MESES[+addISO(ROWS[ROWS.length - 1].fecha, 3).slice(5, 7) - 1]}-${addISO(ROWS[ROWS.length - 1].fecha, 3).slice(0, 4)}: export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR (retention 0,85 → 0,90)`;
+const HANDOFF = `${fmtLargo(ROWS[ROWS.length - 1].fecha)} (${REPO.length ? `última sesión del banqueo; cierra las ${REPO.length} sesiones repuestas tras el examen Step 1 · ${REPUESTA}` : 'último día con estudio antes del Step 1'}) → fase principal MIR desde ${MESES[+addISO(ROWS[ROWS.length - 1].fecha, 3).slice(5, 7) - 1]}-${addISO(ROWS[ROWS.length - 1].fecha, 3).slice(0, 4)}: export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR (retention 85 % → 90 %)`;
 const fmtCorto = (s) => `${WD[fromISO(s).getUTCDay()].toLowerCase()} ${+s.slice(8)}-${MESES[+s.slice(5, 7) - 1]}`;
 const TXT_REPO = REPO.length
   ? `REPOSICIÓN de lo que la extensión perdió con los corrimientos v6.01/v6.02/v6.03/v6.05/v6.06/v6.07/v6.08 (v6.00 = ${57 + REF.filas} filas: 57 + ${REF.filas}${PUBLICADO_TOTAL.map((x) => ` · ${x.version} publicada = ${x.filas} filas`).join('')}; mecanismo v6.02c, recalculado en ${REPUESTA} con el piso de lo publicado):\n` +
@@ -631,7 +631,7 @@ export const MIR_MANT_DIAS: DiaMIRMant[] = [${ROWS.map(rowTS).join(',')}];
 
 export const MIR_MANT_FRANJAS: Record<DiaMIRMant['modo'] | 'viernes' | 'sabado', Array<{ hora: string; fase: string; tipo: string }>> = {
   normal: [
-    { hora: '15:15–15:30', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 0,85 hasta el Step 1 → 0,90 en la fase principal, tras el handoff)', tipo: 'anki' },
+    { hora: '15:15–15:30', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 85 % hasta el Step 1 → 90 % en la fase principal, tras el handoff)', tipo: 'anki' },
     { hora: '15:30–16:02', fase: '25Q reales MIR cronometradas (15Q asignatura foco + 10Q interleaving · 77 s/Q · opción en blanco)', tipo: 'quiz' },
     { hora: '16:02–16:15', fase: 'Corrección −1/3 (neto = A − F/3) · Whole-Page Rule de cada fallo · log (knowledge/transfer/proceso · 🇪🇸 delta)', tipo: 'log' },
   ],

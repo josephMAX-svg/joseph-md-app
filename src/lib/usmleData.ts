@@ -159,12 +159,12 @@ export const USMLE_QBANK_RULES = [
  * #15 · Configuración Anki exacta de Palmerton (§4.2 de PALMERTON_METODO_COMPLETO.md; 2.ª capa 19-sep-2026). Se pinta en la pestaña
  * Palmerton; la telemetría (anki_telemetria.js → getDeckConfig rev.perDay / rollover) queda fuera de la app (pendiente; nombre exacto
  * de la clave en AnkiConnect A VERIFICAR). Joseph aplica los ajustes antes del D1.
- * remate v6.10r (19-nov-2026, revisión BAJA #8): alineada con el preset «APEX USMLE» que crea el Anki del D2 (gen_usmle_guia.js › reglaAnki: FSRS 0,90 ·
+ * remate v6.10r (19-nov-2026, revisión BAJA #8): alineada con el preset «APEX USMLE» que crea el Anki del D2 (gen_usmle_guia.js › reglaAnki: FSRS 90 % ·
  *   20 nuevas/día · 9999 repasos · repasos antes que nuevas · día a las 4 h · APEX::USMLE con sus submazos, un solo preset con Save to All Subdecks). Antes
  *   decía ≤50 nuevas/día, «dejar SM-2 el primer mes» y «2 mazos, máximo 3»: contradecía la guía del día.
  */
 export const ANKI_CONFIG_PALMERTON: { ajuste: string; valor: string; porque: string; check?: string }[] = [
-  { ajuste: 'FSRS', valor: 'Activado desde el primer día (desired retention 0,90; rango sano 85-90 %) · «Optimize» del preset tras 4 semanas de repasos', porque: 'de 90 a 100 % = +500 % de tiempo', check: 'deckConfig.fsrs / desiredRetention' },
+  { ajuste: 'FSRS', valor: 'Activado desde el primer día (desired retention 90 %; rango sano 85-90 %) · «Optimize» del preset tras 4 semanas de repasos', porque: 'de 90 a 100 % = +500 % de tiempo', check: 'deckConfig.fsrs / desiredRetention' },
   { ajuste: 'New cards/day', valor: '20 (preset «APEX USMLE»; Palmerton: ≤50, principiantes 30-40)', porque: '>50 → colisión de intervalos cortos entre la semana 3 y la 6 → avalancha y burnout; con el tope de creación del plan, 20/día bastan', check: 'new.perDay' },
   { ajuste: 'Maximum reviews/day', valor: '9999', porque: 'el default (100) OCULTA tarjetas vencidas y crea un backlog invisible', check: 'rev.perDay = 9999 (alarma si <9999)' },
   { ajuste: 'Learning steps / intervalos', valor: 'los de por defecto', porque: 'manipularlos "para acelerar" deforma la matemática del algoritmo' },

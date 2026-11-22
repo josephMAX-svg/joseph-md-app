@@ -956,8 +956,8 @@ export default function UsmleTodayPlan() {
       {pausa && (
         <View style={[st.anchor, { borderLeftColor: Colors.gold, marginBottom: Spacing.sm }]}>
           <Text style={[st.anchorLbl, { color: Colors.gold }]}>⏸ Step 1 en PAUSA · {fmtFecha(DAILY_META.pausa.desde)} → {fmtFecha(DAILY_META.pausa.hasta)} · {DAILY_META.pausa.motivo}</Text>
-          <Text style={st.anchorSub}>{faseV6(iso) === 'F2' ? `Mantenimiento: Anki USMLE 05:15-05:45 L-V (0 tarjetas nuevas, FSRS 0,85) + sábado 07:45-09:15 «STEP 1 VIVO»: 20Q timed MEZCLADAS de los ${SISTEMAS_F1.length} sistemas vistos en F1 (${SISTEMAS_F1.join(' · ')}; 10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión. Sin NBME/UWSA.` : 'Sin sesión (Anki opcional). Desde el lun 4-ene: Anki 30\' L-V + sábado 20Q mezcladas.'}</Text>
-          <Text style={st.anchorSub}>Reinicio: {fmtFecha(FECHAS_V6.step1.reinicio)} (T1 · REENTRADA) · NBME 29 al día siguiente · FSRS vuelve a 0,90 el día del reinicio. Abajo puedes navegar el plan; ninguna fila es «hoy» durante la pausa.</Text>
+          <Text style={st.anchorSub}>{faseV6(iso) === 'F2' ? `Mantenimiento: Anki USMLE 05:15-05:45 L-V (0 tarjetas nuevas, FSRS 85 %) + sábado 07:45-09:15 «STEP 1 VIVO»: 20Q timed MEZCLADAS de los ${SISTEMAS_F1.length} sistemas vistos en F1 (${SISTEMAS_F1.join(' · ')}; 10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión. Sin NBME/UWSA.` : 'Sin sesión (Anki opcional). Desde el lun 4-ene: Anki 30\' L-V + sábado 20Q mezcladas.'}</Text>
+          <Text style={st.anchorSub}>Reinicio: {fmtFecha(FECHAS_V6.step1.reinicio)} (T1 · REENTRADA) · NBME 29 al día siguiente · FSRS vuelve a 90 % el día del reinicio. Abajo puedes navegar el plan; ninguna fila es «hoy» durante la pausa.</Text>
         </View>
       )}
 

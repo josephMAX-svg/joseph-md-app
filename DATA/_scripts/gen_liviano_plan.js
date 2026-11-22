@@ -150,7 +150,7 @@ const dow = (s) => fromISO(s).getUTCDay();
 const wdOf = (s) => WD[dow(s)];
 const isWeekend = (s) => { const w = dow(s); return w === 0 || w === 6; };
 // v6.10 (17-nov-2026): hábiles EXTRA de fin de semana (corrida_s1.extra[fecha].liviano = franja; v6.10c: sáb 2-ene 16:15-17:00 · v6.10: dom 6-dic 08:15-09:00: recupera el mar 17) desde el START
-const EXTRA_LIV = new Map(Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, x]) => x && x.liviano && f >= START).map(([f, x]) => [f, x.liviano]));
+const EXTRA_LIV = new Map([...require('./gen_fechas_v6').extraHabilesDe('liviano', F6)].filter(([f]) => f >= START)); // v6.10w: por fecha de plan (el sáb 2-ene lo hace el dom 3-ene 09:15)
 for (const f of EXTRA_LIV.keys()) {
   if (!isWeekend(f)) throw new Error(`corrida_s1.extra ${f}: el hábil extra de LIVIANO debe ser sábado o domingo`);
   if (SKIP.has(f) || F6.corrida_s1.sin_sesion.includes(f)) throw new Error(`corrida_s1.extra ${f}: cae en SKIP / protegido / D-2 / sin sesión`);

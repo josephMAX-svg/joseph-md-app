@@ -654,7 +654,7 @@ function pasosDia(d) {
     // v6.10l (auditoría c15, diffs #39): «cronometradas» vuelve al «qué» (el «cómo» ya no tiene sitio en sus 110: reloj, blanco y fuente)
     pasos.push({ min: 15, hora: '15:15–15:30', que: `TEST DE CIERRE · 10Q reales MIR cronometradas de ${cierre.asignatura} (bloque D${cierre.dIni}-D${cierre.dFin} cerrado)`, como: `${String(MD.mirMinutos(10)).replace('.', ',')}′ (${SEG_POR_Q} s/Q) · en blanco si no descartas 2 · Fuente: ${fuenteCierre} · neto = A − F/3 → ≥70 % consolidada · 55-69 % intermedia · <55 % la asignatura entra en las anclas D-7 · 2′ para registrar (kind cierre). Hoy no hay eval anclada ni Anki en esta franja (los sustituye el cierre).${quedaban}` });
   } else if (!anc.d1) { // D1: sin anclas (el primer día del plan)
-    pasos.push({ min: 5, hora: '15:15–15:20', que: `ARRANQUE (D1 no tiene anclas) · Anki: crear el mazo ${deck}`, como: 'Preset FSRS de APEX::MIR (retention 0,85; DATA/MIR/README.md §5). Sin tarjetas nuevas todavía: las crean los APEX de las 16:05.' });
+    pasos.push({ min: 5, hora: '15:15–15:20', que: `ARRANQUE (D1 no tiene anclas) · Anki: crear el mazo ${deck}`, como: 'Preset FSRS de APEX::MIR (Desired retention 85 %; DATA/MIR/README.md §5). Sin tarjetas nuevas todavía: las crean los APEX de las 16:05.' });
     // 5Q ciegas extra (citadas ≥2015 de las secciones de más peso, distintas del pre-test; reservadas en el primer pase)
     const extra = CAP[d].extra;
     if (extra.length !== 5) throw new Error('D' + d + ': 5Q ciegas extra → ' + extra.length);

@@ -97,7 +97,7 @@ function Instrument({ label, value, color, mono = true }: Item) {
  * · finde (sáb/dom) · pendiente (antes de las 05:00) · desconocido. Los campos viajan en la misma entrada de 'jmd-anki-telemetria';
  * AnkiKpi (homeBriefing.ts) aún no los tipa → se leen aquí con un tipo ampliado. Solo cuenta la entrada de HOY (fecha = hoy).
  */
-type AnkiKpiV2 = AnkiKpi & { primeraReview?: string | null; primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'desconocido' | string };
+type AnkiKpiV2 = AnkiKpi & { primeraReview?: string | null; primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'sin-sesion' | 'desconocido' | string };
 export interface PrimeraReview { estado: string; hora: string | null; color: string | null; sufijo: string }
 export function primeraReviewDe(k: AnkiKpi | null, hoyISO?: string): PrimeraReview {
   const e = k as AnkiKpiV2 | null;

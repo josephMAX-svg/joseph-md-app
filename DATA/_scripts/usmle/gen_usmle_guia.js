@@ -99,7 +99,7 @@
  *   (6) Palmerton «High Yield» de F1: el texto dice las pausas para anotar que ya llevaban sus minutos (× 1,15); antes «escucha y anota» (0,82-0,87).
  * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
  *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
- *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
+ *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 90 % · 20 nuevas/día · 9999 repasos/día · repasos antes que
  *   nuevas · steps por defecto · día nuevo a las 4 h; antes decía 200 repasos/día, que oculta vencidas) · Anki AM = vencidas primero sin
  *   tope + Good/Again + nuevas solo con vencidas a 0 + telemetría (% Again) · tope de CREACIÓN 20 tarjetas/día repartido por bloque
  *   (deep prime ≤10 · consolidación ≤4/3/2 según nivel · eval ≤5 · comprimida ≤3 · PC cards del Day-After primero) con la cabecera APEX
@@ -163,7 +163,7 @@ const deckDe = (row) => (ANKI ? ANKI.usmleAnkiDeck(row.system, row.matType) : 'A
 
 // ── v6.03b · MÉTODO ANKI · APEX (DATA/USMLE/METODO_ANKI_APEX_USMLE.md) ───────────────────────────────────────────────────────────
 // Ajustes y cuotas: Palmerton (NotebookLM «STEP 1 · Palmerton Engine», transcripción de «Give Me 30 Minutes and I'll 5X Your Anki
-// Efficiency»: ≤50 nuevas/día —30-40 al empezar—, 9.999 repasos/día, retención 0,90, Good ≈90 % / Again ≈10 %, sin Hard/Easy) ajustado a
+// Efficiency»: ≤50 nuevas/día —30-40 al empezar—, 9.999 repasos/día, retención 90 %, Good ≈90 % / Again ≈10 %, sin Hard/Easy) ajustado a
 // la franja FIJA de 45′ del Anki AM (su calibración: ~1 h por 100 repasos y 1-2′ por tarjeta nueva) → tope de creación 20/día.
 const AK = {
   nuevasDia: 20, maxRev: 9999, ret: '90 %', topeDia: 20, // v6.10u-b: desde Anki 25.02 «Desired retention» se escribe en % (70-99): «0,90» tecleado la deja en 70 %
@@ -322,6 +322,12 @@ const diasEntre = (a, b) => Math.round((new Date(b + 'T12:00:00Z') - new Date(a 
 //   Con el alias y el SKIP del vie 25-dic, D11 (plan mar 22) → D12 (plan jue 24) son 5 días reales (mié 23 → lun 28) y D12 → D13 (plan mar 29) son 2
 //   (lun 28 → mié 30): «validación de 48 h» / «revalidación a los N días» se rotulan con el hueco que de verdad vive Joseph. Sin alias = diasEntre.
 const diasReales = (a, b) => diasEntre(V6.fechaRealDe(a, FV6, 'usmle'), V6.fechaRealDe(b, FV6, 'usmle'));
+// v6.10w (remate · revisiones cobertura/textos): una fecha de PLAN tiene día real si el alias de corrida_s1 la lleva a un día (es un valor) o si ningún día real
+//   la sustituye (no es una clave). El plan del jue 31-dic no tiene: el jue 31 y el vie 1 reales hacen los del mar 29 y el mié 30 (su Anki va a la cola FSRS del
+//   lun 4-ene) → el Anki del vie 1-ene ya no anuncia «jue 31-dic día de plan» y la pausa del Step 1 empieza el día real siguiente al del último día de F1
+const _ALIAS_U = (FV6.corrida_s1 && FV6.corrida_s1.alias) || {};
+const conDiaReal = (x) => Object.values(_ALIAS_U).includes(x) || !(x in _ALIAS_U);
+const PAUSA_REAL = V6.add(V6.fechaRealDe(FV6.f1.fin, FV6, 'usmle'), 1);
 /** «ayer» si a es el día natural anterior a b; si no (fin de semana en medio), «el vie 23-oct» */
 const antesTxt = (a, b) => (diasEntre(a, b) === 1 ? 'ayer' : `el ${fd(a)}`);
 /** «mañana» si b es el día natural siguiente a a; si no, «el lun 26-oct» */
@@ -1193,7 +1199,7 @@ function bloqueConfigAnki(f) {
   return B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN: preset «APEX USMLE» en APEX::USMLE (FSRS) + manual + vídeo FSRS', [
     P(CONF_MIN.sync, 'Sync (Anki escritorio)', `APEX::USMLE ya existe (vacío, con sus submazos desde mayo): hoy recibe el preset. Las primeras tarjetas USMLE nacen el ${fd(D2.fecha)} (la [TEST S1] del vibecoding a las 04:15, si el redeploy sale verde, y las del plan desde las 07:15).`),
     P(CONF_MIN.preset, `Preset «APEX USMLE» en APEX::USMLE (ya existe, vacío): ${AK.ret} · ${AK.nuevasDia} nuevas · ${AK.maxRev} repasos · repasos antes que nuevas → Save to All Subdecks y compruébalo`,
-      `Deck Options de APEX::USMLE › Save ▾ «Add Preset» → «APEX USMLE» · Desired retention ${AK.ret} (es el 0,90 del plan: en un preset nuevo ya viene así; NO teclees 0,90, que la deja en 70 %) · New cards/day ${AK.nuevasDia} · Maximum reviews/day ${AK.maxRev} (nunca 200: oculta vencidas) · Display order › New/review order: «Show after reviews» · learning y relearning steps por defecto (no tocar) · FSRS: vale para toda la colección (si ya está activado, déjalo; si no, actívalo y pulsa «Optimize all presets»: ya tienes historial en tus mazos MIR/ENCAPS) · Preferences › Review › Next day starts at 4 · Save ▾ «Save to All Subdecks»: el preset queda en APEX::USMLE y en sus submazos (${APEX_USMLE_SUBMAZOS.map((x) => '::' + x).join(', ')}) y ningún otro mazo cambia de preset. El «Optimize» FSRS de este preset, el ${fd(SAB_OPT)} (4 semanas de repasos).`),
+      `Deck Options de APEX::USMLE › Save ▾ «Add Preset» → «APEX USMLE» · Desired retention ${AK.ret} (en un preset nuevo ya viene así; NO teclees 0,90, que la deja en 70 %) · New cards/day ${AK.nuevasDia} · Maximum reviews/day ${AK.maxRev} (nunca 200: oculta vencidas) · Display order › New/review order: «Show after reviews» · learning y relearning steps por defecto (no tocar) · FSRS: vale para toda la colección (si ya está activado, déjalo; si no, actívalo y pulsa «Optimize all presets»: ya tienes historial en tus mazos MIR/ENCAPS) · Preferences › Review › Next day starts at 4 · Save ▾ «Save to All Subdecks»: el preset queda en APEX::USMLE y en sus submazos (${APEX_USMLE_SUBMAZOS.map((x) => '::' + x).join(', ')}) y ningún otro mazo cambia de preset. El «Optimize» FSRS de este preset, el ${fd(SAB_OPT)} (4 semanas de repasos).`),
     P(CONF_MIN.comprob, 'Comprobación del preset', `Reabre las Deck Options de APEX::USMLE y de ::${dp} → «APEX USMLE» con retención ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día.`),
     P(CONF_MIN.manual, 'Manual de Anki › Deck Options › FSRS: «Desired Retention» y «FSRS Parameters › Optimize FSRS Parameters» (Ctrl+F Optimize; acotado a 3′)', `Lee en el manual oficial qué hacen los dos ajustes FSRS del preset: la retención deseada (la que acabas de fijar en ${AK.ret}) y la optimización de parámetros con tu historial (la del ${fd(SAB_OPT)}); marca dónde paras. Lo que no entre, el día del «Optimize».`, DOC_FSRS),
     ...v05,
@@ -1324,7 +1330,7 @@ function validacion(r, franja) {
     P(tutMin(5), `5Q NUEVAS en ${TUTOR1} · validación de la misma sesión (filtro distinto: Mehlman)`, `SAQ + CCSN antes de mirar las opciones; después, la explicación entera (Tutor: ${TUTOR_TXT}).`),
     faAcotado(largo ? 15 : 12, m.fa, 'la página de cada fallo y de cada acierto con duda', 'la shopping list'),
     P(largo ? 8 : 3, `≤${tj} tarjeta${tj > 1 ? 's' : ''} APEX de los fallos · ${cabCorta(espApex(r), subApex(r), 'mix_examen_usmle', 'estudio')}`, `${mayus(R_ERROR)}. ${mayus(R_ENVIO)}.`),
-    P(2, 'Gate (1.ª mitad) en 📏 Medición', `≥4/5 → 1.ª mitad del gate de 10 consecutivas; la 2.ª mitad${prox ? ', ' : ': '}${prox ? `${diasReales(r.fecha, prox.fecha) <= 2 ? 'la validación de 48 h' : 'la revalidación'} del ${fd(prox.fecha)} a las ${nivel0(prox) ? '07:15' : prox && trasHito(prox) && trasHito(prox).n === 1 ? '11:00' : '07:15'} (5Q nuevas de uWorld)` : `sin mañana de Step antes de la pausa (${fd(V6.add(FV6.f1.fin, 1))}): el subtema vuelve a medirse en la REENTRADA mixta del ${fd(FV6.step1.reinicio)}`} · <4/5 → el subtema sigue en nivel ${nivel0(r) ? 0 : 1}: la página de cada fallo vuelve a la shopping list.`),
+    P(2, 'Gate (1.ª mitad) en 📏 Medición', `≥4/5 → 1.ª mitad del gate de 10 consecutivas; la 2.ª mitad${prox ? ', ' : ': '}${prox ? `${diasReales(r.fecha, prox.fecha) <= 2 ? 'la validación de 48 h' : 'la revalidación'} del ${fd(prox.fecha)} a las ${nivel0(prox) ? '07:15' : prox && trasHito(prox) && trasHito(prox).n === 1 ? '11:00' : '07:15'} (5Q nuevas de uWorld)` : `sin mañana de Step antes de la pausa (desde el ${fd(PAUSA_REAL)}): el subtema vuelve a medirse en la REENTRADA mixta del ${fd(FV6.step1.reinicio)}`} · <4/5 → el subtema sigue en nivel ${nivel0(r) ? 0 : 1}: la página de cada fallo vuelve a la shopping list.`),
   ];
   const vids = largo ? pasosVideo(d, rep.s1100) : []; const V = vids.reduce((a, p) => a + p.min, 0);
   const usado = pasos.reduce((a, p) => a + p.min, 0) + V;
@@ -1433,7 +1439,7 @@ function ankiDiaSinStep(iso) {
     P(15, 'VENCIDAS primero, sin tope', 'Responde en voz alta y gira · Good ≈90 % / Again solo si la olvidaste · nunca Hard/Easy · lee primero la línea «Summary:» · el mazo de F1 tiene ≤ 210 tarjetas (≤ 20 nuevas por día de Step): las vencidas de un día sin Step caben en 15′.'),
     P(2, `NUEVAS: solo las del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que queden en la cola y solo con las vencidas a 0`, 'Hoy no se crean tarjetas USMLE: la mañana es de ENCAPS.'),
     P(1, 'Sync final', 'Sync y cierra: a las 05:20 siguen los 25′ de repasos ENCAPS (su guía).'),
-  ], [R_ANKI], '0 vencidas en APEX::USMLE', { aviso: `${finF1 ? `Nuevas del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que no entren hoy → reinicio del ${fd(FV6.step1.reinicio)}. Último Anki AM de F1 con nuevas. Pausa del Step 1: ${[...diasHabTransicion().filter((x) => x > iso).map((x) => `${fd(x)} día de plan (Anki USMLE solo vencidas)`), ...skipReal().filter((x) => x > iso && x < FV6.encaps.intensiva_desde).map((x) => `${fd(x)} SKIP`), 'finde opcional', `mantenimiento desde el ${fd(FV6.encaps.intensiva_desde)}`].join(' · ')}. ` : ''}Día sin Step: en F1 el Step 1 tiene mañana solo los ${DSEM}; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El Anki USMLE sigue TODOS los días (Palmerton: repasos a cero cada día): 20′ los días sin Step y 30′ los de Step; el resto del Anki 05:00-05:45 es de ENCAPS.` });
+  ], [R_ANKI], '0 vencidas en APEX::USMLE', { aviso: `${finF1 ? `Nuevas del ${prevStep ? fd(prevStep.fecha) : 'último día de Step'} que no entren hoy → reinicio del ${fd(FV6.step1.reinicio)}. Último Anki AM de F1 con nuevas. Pausa del Step 1: ${[...diasHabTransicion().filter((x) => x > iso && conDiaReal(x)).map((x) => `${fd(x)} día de plan (Anki USMLE solo vencidas)`), ...skipReal().filter((x) => x > iso && x < FV6.encaps.intensiva_desde).map((x) => `${fd(x)} SKIP`), 'finde opcional', `mantenimiento desde el ${fd(FV6.encaps.intensiva_desde)}`].join(' · ')}. ` : ''}Día sin Step: en F1 el Step 1 tiene mañana solo los ${DSEM}; hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS. El Anki USMLE sigue TODOS los días (Palmerton: repasos a cero cada día): 20′ los días sin Step y 30′ los de Step; el resto del Anki 05:00-05:45 es de ENCAPS.` });
 }
 /** v6.10f (revisión 18-nov · Anki de la transición): los SKIP que de verdad no tienen sesión. Con el alias de corrida_s1 (v6.10d) un SKIP puede ser el día REAL
  *  de un día de plan (vie 1-ene = el plan del jue 31-dic: día de plan completo, Anki USMLE en pausa): ese no se anuncia como «SKIP» (antes «vie 1-ene solo
