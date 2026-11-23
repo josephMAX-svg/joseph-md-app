@@ -839,13 +839,19 @@ const ALIAS_INV = new Map(Object.entries(((require('./gen_fechas_v6').cargarFech
 //   lun 23 (fila del mié 18) → … → sáb 28 21:00 → dom 29 05:00-05:30 (corrida_s1.extra › synapse). (2) transición: el plan del jue 31-dic no tiene día real
 //   (el jue 31 y el vie 1 hacen los del mar 29 y el mié 30) → su sesión va el sáb 2-ene 21:00 y la del sáb 2-ene, el dom 3-ene 11:30-12:00 (tras Derma; el
 //   dom 3 05:00 sigue siendo la recuperación del mar 17). Las filas, en orden de día REAL; se comprueba contra corrida_s1.
+// v6.11 (lun 23-nov-2026 · «a partir del día 24 iniciamos todo»): el lun 23 también fue sin sesión y el alias global corre un hábil → la fila del mar 24 de plan
+//   se hace el lun 30 (después del dom 29) y sale de la cadena de la semana 1: mar 24 (fila del mié 18) → … → vie 27 (fila del lun 23) → sáb 28 21:00 → dom 29
+//   05:00-05:30; la fila del mar 24 vuelve a llevar su propio contenido el lun 30.
 const CADENAS_V610W = [
-  { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23', '2026-11-24', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
+  { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
   { id: 'transición', motivo: 'el plan del jue 31-dic no tiene día propio', filas: ['2026-12-31', '2027-01-02'], rec: { fecha: '2027-01-03', ini: '05:00', fin: '05:30' } },
 ];
 // día REAL de cada fila de una cadena (para el orden de las A-units): la fila k la hace el día real de la fila k+1 (la última, la sesión a hora fija)
 const REAL_CADENA = new Map(CADENAS_V610W.flatMap((c) => c.filas.map((f, k) => [f, (k + 1 < c.filas.length ? (ALIAS_INV.get(c.filas[k + 1]) || c.filas[k + 1]) : c.rec.fecha) + (k + 1 < c.filas.length ? '' : 'T' + c.rec.ini)])));
-const realDe = (f) => REAL_CADENA.get(f) || ALIAS_INV.get(f) || f; // v6.10 · base cero: día REAL de una fecha de plan (alias inverso de corrida_s1; sin alias, la misma) · v6.10w: + cadenas
+// v6.11: una fila cuyo plan se quedó SIN DÍA real (gen_fechas_v6.planesSinDia: el mié 30-dic) va, para el orden, tras el último día del alias (sin hueco en la
+//   progresión de los días que sí tienen día real; su A-unit es la siguiente y la coloca otra ronda)
+const SIN_DIA_SYN = new Set(require('./gen_fechas_v6').planesSinDia());
+const realDe = (f) => REAL_CADENA.get(f) || ALIAS_INV.get(f) || (SIN_DIA_SYN.has(f) ? require('./gen_fechas_v6').ordenRealDe(f) : f); // v6.10 · base cero: día REAL de una fecha de plan (alias inverso de corrida_s1; sin alias, la misma) · v6.10w: + cadenas
 {
   const F1_HASTA = '2027-01-03';
   const conA = dias.filter((x) => x.fecha >= START_ISO && x.fecha <= F1_HASTA && x.bloques.filter((b) => b.tag === 'A').length === 1);
@@ -942,7 +948,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     // URLs medidas (curl 200 el 17-nov-2026, medir_synapse_f1.js) → allowlist (regla «cero URLs inventadas»)
     for (const L of Object.values(MED.lectura)) { ALLOWED.add(L.url); for (const sx of L.secciones) if (sx.url) ALLOWED.add(sx.url); }
     for (const A of Object.values(MED.audio)) ALLOWED.add(A.url);
-    const T = require('./synapse_f1_tramos').crear(MED, { dias, rec: REC_SES, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()), feriados: new Set(require('./gen_fechas_v6').cargarFechasV6().feriados) }); // v6.09b lote 1-ter: + feriados (fuera de la cola)
+    const T = require('./synapse_f1_tramos').crear(MED, { dias, rec: REC_SES, lexCaps, skip: SKIP_FIJOS, protegidos: new Set(PROTEGIDOS_SYN.keys()), feriados: new Set(require('./gen_fechas_v6').cargarFechasV6().feriados), realDe }); // v6.09b lote 1-ter: + feriados (fuera de la cola) · v6.11 (revisión c32): + realDe (la cola se consume en orden de día REAL)
     let n = 0;
     for (const x of dias) for (const b of x.bloques) {
       const o = T.sesiones.get(`${x.fecha}|${b.tag}`);
@@ -1039,6 +1045,9 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     for (const x of dias) if (x.fecha <= hasta) for (const b of x.bloques) tocar(b);
     for (const r of REC_SES) for (const b of r.bloques) tocar(b);
     for (const c of [...COLA_F1, ...COLA_POST]) for (const k of Object.keys(c)) if (typeof c[k] === 'string') c[k] = remap(c[k]); else if (Array.isArray(c[k])) c[k].forEach((y) => y && typeof y === 'object' && tocar(y));
+    // v6.11 (revisión c32): el «Retoma donde quedaste el …» de la cola (pieza.retoma, ISO de la fila de PLAN que leyó esa pieza por última vez) también pasa a la
+    //   fila que ahora lleva ese contenido: con la cadena de la semana 1, «Whetting Your Appetite» (fila del mié 18) se lee el mié 25 real y la cola decía «mar 24»
+    for (const c of [...COLA_F1, ...COLA_POST]) for (const p of c.pasos || []) for (const z of p.piezas || []) if (z.retoma && MAPA.has(z.retoma)) z.retoma = MAPA.get(z.retoma).a;
   }
   // la A de la recuperación del mar 17 (dom 3 11:30) sigue el vídeo que el comodín de la sesión de las 05:00 deja a medias (antes, el del sáb 2-ene a las 21:00)
   for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) for (const k of ['leccion']) if (typeof b[k] === 'string') b[k] = b[k].replace(/sigue al comodín del sáb 2-ene/, 'sigue a la sesión de las 05:00 de hoy');

@@ -5,14 +5,14 @@
  "fecha": "2026-11-24",
  "codigo": "V-2",
  "sub_eje": "planeamiento",
- "tema": "eval anclada · código de ayer V-2: 3 cifras + 2 viñetas",
+ "tema": "eval anclada · código del vie 27-nov V-2: 3 cifras + 2 viñetas",
  "fuente_preguntas": "BANCO_PROPIO (set_V-2_1.json, set_reales_otros_1.json)",
  "n": 5,
  "seg_por_q": 72,
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas del código de la sesión anterior (código de ayer V-2: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas del código de la sesión anterior (código del vie 27-nov V-2: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
@@ -21,7 +21,7 @@
    "codigo": "V-2",
    "sub_eje": "planeamiento"
   },
-  "modo": "código de ayer V-2: 3 cifras + 2 viñetas",
+  "modo": "código del vie 27-nov V-2: 3 cifras + 2 viñetas",
   "lista_negra_pretest": "VIGENTE",
   "refrescado": [
    {
@@ -37,6 +37,15 @@
      "instrucciones"
     ],
     "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
+   },
+   {
+    "el": "2026-11-23",
+    "cambios": [
+     "_meta.modo",
+     "tema",
+     "instrucciones"
+    ],
+    "motivo": "v6.10i/v6.10w: el re-test es de las mismas preguntas reales y la sesión anterior se nombra por su día REAL (alias de corrida_s1); ids, orden, claves y selección intactos"
    }
   ],
   "realineado": [

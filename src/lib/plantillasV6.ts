@@ -300,6 +300,14 @@ function bloquesF1(iso: string, usmle: DiaUSMLEPlan | null = null): BloqueV6[] {
 /** v6.09 (16-nov-2026): la 1.ª mañana ENCAPS (mié 18-nov) cae antes del D2 del Step 1: aún no hay tarjetas USMLE (nacen el jue 19) ni ENCAPS (nacen hoy a las 11:40) → el bloque no promete repasos (la guía ya dice «libre»).
  *  v6.09b (17-nov · auditoría a1-11, contrato con el lote USMLE): el reparto sigue el tamaño de los mazos → lun · mié · vie (mañana ENCAPS): USMLE 05:00-05:20 +
  *  ENCAPS 05:20-05:45 (Cifras 10′ + Flashcards 10′ + APEX::ENCAPS 5′) · mar · jue (Step): USMLE 05:00-05:30 + ENCAPS 05:30-05:45 (encapsManana.guiaEncapsAnkiDe). */
+/** v6.11 (revisión c32): último día REAL que hace un plan de F1 (el mayor día real del alias cuya fecha de plan ≤ f1.fin; sin alias, f1.fin). Con la v6.11 el plan
+ *  del mié 30-dic (f1.fin) se quedó sin día y fechaRealDe(f1.fin) devolvía el mié 30 real, que hace el plan del jue 24-dic: el último día de F1 es el vie 1-ene. */
+function ultimoRealF1(): string {
+  const fin = FECHAS_V6.f1.fin;
+  const rs = Object.entries(FECHAS_V6.corrida_s1.alias).filter(([, de]) => de <= fin).map(([r]) => r).sort();
+  const r = rs[rs.length - 1];
+  return r && r > fin ? r : fechaRealDe(fin);
+}
 function ankiNombreF1(iso: string): string {
   // v6.10 (17-nov): la CONFIGURACIÓN (45′) pasa al mié 18 (1.er día de F1, antes de que nazcan las tarjetas ENCAPS a las 11:40) · v6.10b (decisión 4 de
   //   Joseph): jue 19 = D2 en NIVEL 0 (sin UWSA1): el mazo USMLE está vacío (las tarjetas nacen a las 07:15) → 05:00-05:30 = vídeos de MÉTODO (regla del
@@ -311,12 +319,14 @@ function ankiNombreF1(iso: string): string {
   //   real, 05:00) y el manual + vídeo FSRS, el sáb 28 a las 04:45 (usmleGuia › USMLE_FIJO_SAB); este 05:00 solo dice adónde fue (usmleGuia › bloqueConfigMovida),
   //   sin vídeo ni repasos (no hay tarjetas todavía). Fechas de PLAN: conFechasReales las pasa a su día real
   //   (revisión: ≤ 110 caracteres, el título del Calendar se corta ahí y perdía la hora del sábado)
-  if (iso === '2026-11-18') return 'ANKI · sin tarjetas que repasar: preset → jue 19-nov 05:00 · manual + vídeo FSRS → sáb 28-nov 04:45';
+  // v6.11 (lun 23-nov): sin efecto la v6.10y-b: el lun 23 quedó sin sesión y la CONFIGURACIÓN (plan del mié 18) se hace ENTERA el mar 24 a las 05:00
+  if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN: preset «APEX USMLE» en APEX::USMLE + vídeo FSRS 45′';
   // v6.10h (revisión 18-nov · c10): «sin tarjetas que repasar» y no «sin mazo»: la [TEST S1] del vibecoding (04:15) puede haber creado ya APEX::USMLE (suspendida)
   // v6.10u: el D2 (plan del jue 19 = lun 23 real) vuelve a ser «sin tarjetas que repasar → vídeos de método» (el resto del vídeo FSRS + «The ONLY Video…» hasta
   //   15:04 + free recall, 29′ tras el Sync); el preset ya lo puso la configuración (la v6.10r lo había traído aquí)
   // v6.10y-b: el D2 lleva DELANTE el preset de la configuración (Sync · preset · comprobación, 12′) y detrás «The ONLY Video…» de 0:00 a 15:04 (18′), como antes
-  if (iso === '2026-11-19') return 'ANKI · PRESET «APEX USMLE» 12′ + vídeo de método 18′ · repasos ENCAPS 15′';
+  // v6.11: el D2 (plan del jue 19 = mié 25 real) vuelve a sus vídeos de método (el preset lo puso la configuración del mar 24)
+  if (iso === '2026-11-19') return 'ANKI · USMLE sin tarjetas que repasar → vídeos de método 29′ · repasos ENCAPS 15′';
   return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
 }
 /** v6.09 (16-nov-2026): el D1 del MIR (mar 17-nov) no tiene día anterior que evaluar → el bloque se llama «Arranque + Deep Work» ese día (la guía ya dice «ARRANQUE (D1 no tiene anclas)»). */
@@ -354,7 +364,7 @@ function bloquesHabilTransicion(iso: string, am: NonNullable<ReturnType<typeof e
 function bloqueBiz(iso: string): BloqueV6 | null {
   const f = bizFranjaDe(iso);
   if (!f) return null;
-  const nombre = f.cierre ? 'BUSINESS · tracker semanal + cierre del OUTPUT (Estudio Pulso)' : f.ini === '12:30' ? 'BUSINESS · Estudio Pulso (audio en el almuerzo: hoy hay NBME)' : 'BUSINESS · Estudio Pulso (1 tramo del libro + acción)';
+  const nombre = f.soloTracker ? 'BUSINESS · tracker semanal (Estudio Pulso)' : f.cierre ? 'BUSINESS · tracker semanal + cierre del OUTPUT (Estudio Pulso)' : f.ini === '12:30' ? 'BUSINESS · Estudio Pulso (audio en el almuerzo: hoy hay NBME)' : 'BUSINESS · Estudio Pulso (1 tramo del libro + acción)';
   return bloque('biz', f.ini, f.fin, nombre, 'business', 'business');
 }
 /** v6.07: PC del DOMINGO (SHIP del vibecoding · avance · PC del taper) = bloque FLEXIBLE sin hora fija (antes: sábado 15:00 con el SYNAPSE A/B/C,
@@ -443,9 +453,11 @@ function notaExtraDe(iso: string): string | null {
     const manana = planHoy ? extraCorridaDe(addDias(iso, 1)).filter((x) => x.plan === planHoy) : [];
     const porque = dow(iso) === 6 ? `El plan del jue 31-dic no tiene día propio (el jue 31 y el vie 1 hacen planes de días anteriores): cada plan lo hace hoy, a hora fija, sin compactar${manana.length ? ` (${manana.map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente}, mañana a las ${x.ini}`).join(' · ')})` : ''}; lo que este sábado tenía va mañana domingo.`
       : dow(iso) === 0 && xs.some((x) => x.plan !== iso) ? 'Es lo que ayer no tenía sitio (el sábado hizo el plan del jue 31-dic), a hora fija y antes del baile.'
-      : dow(iso) === 0 ? 'Esta semana el SYNAPSE corrió una sesión (el dom 22 fue sin sesión): hoy, antes de la rutina, la que no tuvo sitio.'
+      : dow(iso) === 0 ? 'Es la sesión del SYNAPSE de esta semana que no tuvo sitio, antes de la rutina.' // v6.11 (revisión c32): sin el porqué (bitácora)
       : `En la holgura de la mañana (el RE-SCAN usa 07:15-09:30)${(() => { const r = encapsRecuperaDe(iso); return r && !r.llegada ? `; detrás, ${r.ini}-${r.fin}, ${r.tema || r.nombre.replace(/^ENCAPS · /, '')} (fija)` : ''; })()}.`; // v6.10w (remate): + la clase en diferido fija del día (lun 4-ene: SP 6/11 10:45)
-    return `Hoy, a hora fija: ${lista}. ${porque} Desde el ${dow(iso) === 1 ? 'jueves 7-ene' : dow(iso) === 0 && iso > FECHAS_V6.transicion.desde ? 'lunes 4-ene' : 'lunes'}, las fechas de siempre.`;
+    // v6.11 (revisión c32): el domingo de la semana 1 (dom 29-nov) el alias sigue hasta el vie 1-ene: «desde el lunes, las fechas de siempre» se leía como si acabara
+    const soloSyn = dow(iso) === 0 && !xs.some((x) => x.plan !== iso) && iso < FECHAS_V6.transicion.desde;
+    return `Hoy, a hora fija: ${lista}. ${porque} ${soloSyn ? 'Desde mañana, el SYNAPSE vuelve a su hora (12:30).' : `Desde el ${dow(iso) === 1 ? 'jueves 7-ene' : dow(iso) === 0 && iso > FECHAS_V6.transicion.desde ? 'lunes 4-ene' : 'lunes'}, las fechas de siempre.`}`;
   }
   const perd = (CORR_REFECHA?.perdidos ?? [])[0] /* v6.10d: el último que re-fecha */;
   const lista = xs.map((x) => `${x.ini}-${x.fin} ${ETQ_EXTRA[x.frente] ?? x.frente}`).join(' · ');
@@ -966,7 +978,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         const lstT = (xs: typeof xsT): string => xs.map((x) => `${ETQ_EXTRA[x.frente] ?? x.frente} ${x.ini}`).join(' · ');
         return out('TRANSICION', `Sábado${otro ? ` · a hora fija: el plan del ${fCorta(dePlan[0]!.plan)} (${lstT(dePlan)})${propios.length ? ` + ${lstT(propios)}` : ''}` : ` que recupera (transición) · la última sesión de F1 de cada plan a hora fija (${lstT(xsT)})`} + revisión 14:00 · gimnasio 08:30-14:00 y baile 17:00-20:00 fijos`,
           [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso), ...bloquesExtraDe(iso)],
-          { notas: [...(nxT ? [nxT] : []), `Step 1 en PAUSA desde ${addDias(fechaRealDe(FECHAS_V6.f1.fin), 1) === iso ? 'hoy' : `el ${fCorta(addDias(fechaRealDe(FECHAS_V6.f1.fin), 1))}`} (el último día de F1 fue el ${fCorta(fechaRealDe(FECHAS_V6.f1.fin))}): hoy sin Anki ni Step; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.10w (remate): antes «desde el jue 31-dic», un plan sin día real
+          { notas: [...(nxT ? [nxT] : []), `Step 1 en PAUSA desde ${addDias(ultimoRealF1(), 1) === iso ? 'hoy' : `el ${fCorta(addDias(ultimoRealF1(), 1))}`} (el último día de F1 fue el ${fCorta(ultimoRealF1())}): hoy sin Anki ni Step; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.10w (remate): antes «desde el jue 31-dic», un plan sin día real · v6.11: ultimoRealF1 (el plan del mié 30-dic se quedó sin día: fechaRealDe(f1.fin) daba el mié 30 real)
       }
       return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(iso), ...extrasSabado(iso, false), ...bloquesTheomedSabado(iso)] : [], { notas: [`Step 1 en PAUSA desde ${iso === FECHAS_V6.transicion.desde ? 'hoy' : `el ${fCorta(FECHAS_V6.transicion.desde)}`}: 0 tarjetas nuevas; la intensiva ENCAPS arranca el ${fCorta(addDias(FECHAS_V6.transicion.hasta, 1))}.`] }); // v6.08 (rev. dia5): la pausa empieza el jue 31-dic (transicion.desde), no «hoy» (sáb 2-ene)
     }

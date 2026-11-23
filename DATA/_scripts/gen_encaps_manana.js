@@ -351,7 +351,9 @@ const fechasJ = J.mananas.map((x) => x.fecha);
 if (fechasJ.join() !== ESPERADAS.join()) aborta(`mañanas del JSON (${fechasJ.length}) ≠ días de F1 sin Step ni SKIP de _fechas_v6.json ${F6.version} + días extra (${ESPERADAS.length}): sobran [${fechasJ.filter((f) => !ESPERADAS.includes(f)).join(', ')}] · faltan [${ESPERADAS.filter((f) => !fechasJ.includes(f)).join(', ')}]`);
 if (J.mananas.some((x) => x.a_las_18 && !EXTRA.has(x.fecha))) aborta('a_las_18 solo vale en un día extra (_meta.dias_extra)');
 // v6.10w: el nº de la mañana sigue el orden en que Joseph las hace (día REAL; el domingo de plan del 27-dic va antes del lun 28, que hace el plan del mié 23)
-[...J.mananas].sort((a, b) => (realDe(a.fecha) < realDe(b.fecha) ? -1 : realDe(a.fecha) > realDe(b.fecha) ? 1 : 0)).forEach((x, i) => { if (x.n !== i + 1) aborta(`mañana ${x.fecha}: n = ${x.n} ≠ ${i + 1} (orden de día real)`); });
+// v6.11: una mañana cuyo plan se quedó SIN DÍA real (gen_fechas_v6.planesSinDia: el mié 30-dic) va, para el orden, tras el último día del alias (ordenRealDe)
+const _ORD = (f) => require('./gen_fechas_v6').ordenRealDe(f, F6);
+[...J.mananas].sort((a, b) => (_ORD(a.fecha) < _ORD(b.fecha) ? -1 : _ORD(a.fecha) > _ORD(b.fecha) ? 1 : 0)).forEach((x, i) => { if (x.n !== i + 1) aborta(`mañana ${x.fecha}: n = ${x.n} ≠ ${i + 1} (orden de día real)`); });
 if (J.sabados.map((x) => x.fecha).join() !== SAB_ESP.join()) aborta(`sábados del JSON ≠ sábados de F1 + transición + F2 sin protegidos (${SAB_ESP.join(', ')})`);
 if (J.domingos.map((x) => x.fecha).join() !== DOM_ESP.join()) aborta(`domingos del JSON ≠ domingos de F1 + transición (${DOM_ESP.join(', ')})`);
 // v6.09 (16-nov-2026): fines de semana SIN SESIÓN (corrida_s1.sin_sesion; v6.09: sáb 21 y dom 22-nov, viaje) → siguen en el JSON (nada se quita: la clase
@@ -1206,8 +1208,11 @@ for (const d of DIAS_GA) {
   // v6.10g (revisión 18-nov · dom 27-dic): la cadena va en orden REAL (= el de plan salvo un día fuera del alias, el domingo de plan): las ★ pendientes son las
   //   de las tardes ENCAPS cuyo día real cae entre el Anki 05:xx anterior (incluido: su tarde va después) y el de hoy. Antes, en orden de plan, las ★ del dom
   //   27-dic iban al plan del lun 28 (mar 29 real) y el lun 28 real (plan jue 24), el primer Anki después de ese domingo, no las nombraba
-  const dR = realDe(d), prevGA = GA_FECHAS.map(realDe).filter((r) => r < dR).sort().pop();
-  const pendT = GT_FECHAS.filter((x) => realDe(x) < dR && (!prevGA || realDe(x) >= prevGA)).sort((a, b) => (realDe(a) < realDe(b) ? -1 : 1));
+  // v6.11 (revisión c32): en orden de día REAL con la fecha de plan SIN DÍA (el mié 30-dic) detrás del último día del alias (ordenRealDe): con realDe quedaba en
+  //   el mié 30 real (que hace el plan del jue 24) y el Anki del jue 31-dic real nombraba «las ★ del mié 30-dic», de una tarde que aún no tiene día
+  const ordR = (f) => require('./gen_fechas_v6').ordenRealDe(f, F6);
+  const dR = ordR(d), prevGA = GA_FECHAS.map(ordR).filter((r) => r < dR).sort().pop();
+  const pendT = GT_FECHAS.filter((x) => ordR(x) < dR && (!prevGA || ordR(x) >= prevGA)).sort((a, b) => (ordR(a) < ordR(b) ? -1 : 1));
   const ultT = pendT[pendT.length - 1];
   // v6.10d (fix revisión 18-nov): «del viernes» solo sin alias (con alias el lunes de plan es un martes real y el viernes, un lunes): si no, la fecha de plan
   const deT = !pendT.length ? null : pendT.length > 1 ? `del ${pendT.map(corta).join(' y del ')}`

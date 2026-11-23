@@ -226,10 +226,14 @@ if (dias.length !== 60) throw new Error('Deben salir 60 días S1-S12, salieron '
 //   mar 29 y nadie hace el del jue 31) no se pierde ni se compacta: los pasos del proyecto se reparten EN ORDEN por la capacidad de sus días restantes
 //   (L-V = 45′ · hábil extra de fin de semana = su franja de corrida_s1.extra), con los MISMOS minutos (S7 deload: 135′ → sáb 2-ene 15′ «1/5, 1.ª parte»
 //   · lun 4 45′ «1/5, 2.ª parte» + «2/5» · mar 5 45′ «3/5» · mié 6 30′ «4/5» + «5/5»). El d de cada día se conserva; el día sin real sale del plan.
+// v6.11 (lun 23-nov-2026): con el alias PROPIO del vibecoding (corrida_s1.alias_frente.vibecoding: desde el lun 30 el de la v6.10w; S1 con su SHIP del dom 29)
+//   las fechas de plan con día real son las de ese alias (manda sobre el global en este frente): el mié 30-dic, que el global deja sin día, lo hace el vie 1-ene
 const SIN_DIA_REAL_VIBE = (() => {
   const c = require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {};
-  const vals = new Set(Object.values(c.alias || {}));
-  return new Set(Object.keys(c.alias || {}).filter((r) => !vals.has(r)));
+  const af = (c.alias_frente || {}).vibecoding || {};
+  const ef = { ...(c.alias || {}), ...(af.alias || {}) };
+  const vals = new Set([...Object.values(ef), ...Object.values(af.en_ship || {})]);
+  return new Set(Object.keys(ef).filter((r) => !vals.has(r)));
 })();
 const CAP_EXTRA_VIBE = (() => {
   const ex = (require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).extra || {};

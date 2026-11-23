@@ -589,7 +589,10 @@ function construirGuia(fila, sab = null) {
               ? ` (su override no se aplica: bórralo de SEMANAS/overrides_acumulado.json; vale el del ${MS_F1.indexOf(msSig.dia) + 1}/${MS_F1.length}, desde el ${corta(trasMsSig.fecha)}).`
               : ` → override del ${siguiente ? corta(siguiente.fecha) : 'lunes siguiente'}.`} --registrar guarda las 25 preguntas en TRACKING_ERRORES y reparte los fallos por código; el CIERRE del móvil guarda nota y totales (n · seguras · dudosas · fallos por subtipo · t medio), sin preguntas. ${CAT.TECNICA_SIM.COMPARA}${(() => {
             // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
-            const pend = SIN_SESION_S1.has(addD(fila.fecha, 1)) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
+            // v6.11 (revisión c32): «este fin de semana» = el del día REAL (alias: el mini-sim del vie 20 de plan se hace el jue 26 y su sábado, el 28, sí tiene
+            //   revisión, que genera esos runners); antes miraba el sábado de la fecha de PLAN (sáb 21, viaje) y decía «no hay revisión»
+            const r0 = realDe(fila.fecha), sabR = addD(r0, (6 - new Date(r0 + 'T12:00:00Z').getUTCDay() + 7) % 7);
+            const pend = SIN_SESION_S1.has(sabR) ? bancosSinRunner(addD(fila.fecha, 1), addD(fila.fecha, 9)) : [];
             const ll = llegadaDe(pend);
             return !pend.length || ll ? '' : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}: ${cmdRunnersDias(pend)} (o pídeselo a Claude).`; // v6.10j: con domingo de llegada, la regla va en el «Ojo»
           })()}` },

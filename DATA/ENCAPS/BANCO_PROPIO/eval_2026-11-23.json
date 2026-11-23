@@ -5,14 +5,14 @@
  "fecha": "2026-11-23",
  "codigo": "I-3",
  "sub_eje": "tipos_vigilancia",
- "tema": "eval anclada · I-3 = el código del banco que el pre-test de arranque del mar 24-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test: 3 cifras + 2 viñetas · tras el mini-sim: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave",
+ "tema": "eval anclada · I-3 = el código del banco que el pre-test de arranque del mié 25-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test: 3 cifras + 2 viñetas · tras el mini-sim: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave",
  "fuente_preguntas": "BANCO_PROPIO (set_I-3_1.json)",
  "n": 5,
  "seg_por_q": 72,
  "umbral": 60,
  "alerta": 60,
  "mostrar_codigo": false,
- "instrucciones": "5 preguntas de I-3 (I-3 = el código del banco que el pre-test de arranque del mar 24-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
+ "instrucciones": "5 preguntas de I-3 (I-3 = el código del banco que el pre-test de arranque del mié 25-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override que propone el próximo mini-sim (gen_encaps_semana.js).",
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
@@ -26,7 +26,7 @@
    "codigo": "I-3",
    "sub_eje": "tipos_vigilancia"
   },
-  "modo": "I-3 = el código del banco que el pre-test de arranque del mar 24-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test: 3 cifras + 2 viñetas · tras el mini-sim: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave",
+  "modo": "I-3 = el código del banco que el pre-test de arranque del mié 25-nov sustituyó (pretest_arranque_2026-11-19: II-5 · I-4 · IV-1+IV-2 · II-4); ningún ítem de esta eval salió en ese pre-test: 3 cifras + 2 viñetas · tras el mini-sim: si ya registraste sus fallos, primero re-test de esas mismas preguntas reales, sin la clave",
   "lista_negra_pretest": "VIGENTE",
   "refrescado": [
    {
@@ -55,6 +55,15 @@
    },
    {
     "el": "2026-11-22",
+    "cambios": [
+     "_meta.modo",
+     "tema",
+     "instrucciones"
+    ],
+    "motivo": "v6.10i/v6.10w: el re-test es de las mismas preguntas reales y la sesión anterior se nombra por su día REAL (alias de corrida_s1); ids, orden, claves y selección intactos"
+   },
+   {
+    "el": "2026-11-23",
     "cambios": [
      "_meta.modo",
      "tema",

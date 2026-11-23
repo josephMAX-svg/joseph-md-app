@@ -152,12 +152,16 @@ function crear(MED, ctx) {
   const AUD = MED.audio;
   /** hora de la sesión de destino que conviene escribir (las de hora no habitual): comodín del sábado 21:00 · el resto, la franja de su día */
   const horaSes = (f) => (dowOf(f) === 6 ? '21:00' : null);
+  /** v6.11 (revisión c32): ¿la pieza de la cola ya existe en el DÍA REAL de la sesión `fecha`? (ctx.realDe: fecha de plan → día real, con las cadenas). El recorrido
+   *  va en orden de PLAN y los sábados nativos no corren con el alias: con un hábil más de alias, el resto que deja la sesión del mar 1-dic de plan (lun 7-dic
+   *  real) lo leía el comodín del sáb 5-dic, dos días ANTES. Una pieza cuyo origen se hace después del día real de la sesión espera al siguiente comodín. */
+  const yaExiste = (it, fecha) => { const c = it.creado || it.origen; return !ctx.realDe || !c || ctx.realDe(c) <= ctx.realDe(fecha); };
   /** consume `seg` segundos de audio (de reloj, a la velocidad de cada pieza) de la cola B; minutos de audio ENTEROS */
   function tomarB(segReloj, fecha, filtro = () => true) {
     const piezas = [];
     let resto = segReloj;
     while (resto > 30) {
-      const it = colaB.find(filtro);
+      const it = colaB.find((x) => filtro(x) && yaExiste(x, fecha));
       if (!it) break;
       const cabe = Math.floor((resto * it.vel) / 60) * 60;
       if (cabe <= 0) break;
@@ -175,7 +179,8 @@ function crear(MED, ctx) {
     let falta = obj;
     while (falta > 60 && colaC.length) {
       colaC.sort((x, y) => (x.articulo === y.articulo ? (x.origen < y.origen ? -1 : x.origen > y.origen ? 1 : 0) : x.articulo ? -1 : 1));
-      const it = colaC[0];
+      const it = colaC.find((x) => yaExiste(x, fecha)); // v6.11: la primera que ya existe en el día real de la sesión
+      if (!it) break;
       const quedan = sumW(it.L, it.a, it.b);
       let v = quedan <= falta * 1.15 ? { a: it.a, b: it.b, w: quedan } : ventana(it.L, it.a, falta, it.b);
       // v6.10c: sin MIGAS — si cortar deja < 100 palabras del artículo y llevárselo entero mantiene la sesión ≤ 1,15 × su objetivo, se lee entero (con la
@@ -196,7 +201,7 @@ function crear(MED, ctx) {
       }
       falta -= v.w;
       it.a = v.b;
-      if (it.a >= it.b) colaC.shift();
+      if (it.a >= it.b) colaC.splice(colaC.indexOf(it), 1); // v6.11: ya no es siempre la primera
     }
     // v6.10c: RELLENO — si la sesión queda por debajo de 0,85 × su objetivo porque el siguiente párrafo de la pieza en curso no cabe (sáb 19-dic: «Many-shot…»
     //   244 palabras en 3′ = 0,81 y el párrafo siguiente, 145), se completa con el comienzo de la SIGUIENTE pieza de la cola (por orden), en párrafos enteros
@@ -204,7 +209,7 @@ function crear(MED, ctx) {
     if (piezas.length && obj - falta < obj * RAT[0]) {
       const usados = new Set(piezas.map((p) => p.it));
       for (const it of colaC) {
-        if (usados.has(it) || obj - falta >= obj * RAT[0]) continue;
+        if (usados.has(it) || obj - falta >= obj * RAT[0] || !yaExiste(it, fecha)) continue; // v6.11
         let w = 0, b = null;
         for (let i = it.a; i < it.b; i++) {
           w += it.L.flat[i].w;
@@ -490,7 +495,7 @@ function crear(MED, ctx) {
         else {
           // el final de un artículo (≤ 300 palabras) que no cabe hoy: al comodín del sábado (lo prometido el mar 17-nov para «Prompt injection…») y la serie sigue con el siguiente
           const rest = sumW(L, serieW.a, L.flat.length);
-          if (rest <= 300 && L.id === 'pi1') { colaC.push({ k: `${L.id}#resto`, id: L.id, L, a: serieW.a, b: L.flat.length, origen: dia.plan || prevSes[L.id] || f, articulo: true, serie: true }); serieW.i++; serieW.a = 0; }
+          if (rest <= 300 && L.id === 'pi1') { colaC.push({ k: `${L.id}#resto`, id: L.id, L, a: serieW.a, b: L.flat.length, origen: dia.plan || prevSes[L.id] || f, creado: f, articulo: true, serie: true }); serieW.i++; serieW.a = 0; } // v6.11: + creado (la sesión que deja el resto; origen sigue mandando el orden de la cola)
           break;
         }
       }

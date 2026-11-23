@@ -6,14 +6,16 @@
  * menciones «<día> <n>-oct» de 2026 entre el 19 y el 25 por su día REAL (fechasV6.fechaRealDe, según el frente de la guía). Nombres de
  * fichero e ISO (eval_2026-10-19, 2026-10-23) no se tocan. No es idempotente: aplicar UNA sola vez, al pintar (GuiaBloqueCard).
  */
-import { FECHAS_V6, fechaRealDe, extraCorridaDe } from './fechasV6';
+import { FECHAS_V6, fechaRealDe, extraCorridaDe, PLANES_SIN_DIA } from './fechasV6';
 import type { GuiaBloque } from './guia';
 
 const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 // v6.10d (fix revisión 18-nov): + el nombre COMPLETO con fecha («las 10 tarjetas del jueves 31-dic» → «viernes 1-ene»); sin mes, no (RX2): «(lunes 30, 19:30,
 //   en vivo)» y los reemplazos «(viernes 20, 19:00)» son fechas reales a propósito
-const RX = /(^|[^\p{L}])(lunes|martes|miércoles|jueves|viernes|sábado|domingo|lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?![\p{L}])/giu;
+// v6.11 (revisión c32): + el año opcional («jue 31-dic-2026»): con año, la fecha de plan es la de ese año y el real lleva el suyo (antes el traductor cambiaba
+//   el día y dejaba el año: «vie 1-ene-2026»; y «mar 29-dic-2027» se tomaba por el 29-dic-2026)
+const RX = /(^|[^\p{L}])(lunes|martes|miércoles|jueves|viernes|sábado|domingo|lun|mar|mié|jue|vie|sáb|dom)(\.?) (\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/giu;
 const DOW_L = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 /** «jueves» → «jue» (las abreviaturas, tal cual en minúscula) */
 const abrev = (dow: string): string => { const i = DOW_L.indexOf(dow.toLowerCase()); return i >= 0 ? DOW[i] as string : dow.toLowerCase(); };
@@ -91,25 +93,29 @@ const diaReal = (real: string, dow: string): string => {
 };
 
 /** Texto con las menciones «<día> <n>-<mes>» (y v6.07a «<día> <n>» sin mes) de la semana corrida (fechas de plan) cambiadas por su día real para `frente`. */
+// v6.11 (revisión c32): una fecha de PLAN que se quedó SIN DÍA REAL (PLANES_SIN_DIA: el mié 30-dic; la coloca otra ronda) no se pinta como si fuera ese día real
+//   (el mié 30-dic real hace otro plan): lleva detrás «(día por fijar)». Cuando la fecha tenga día (alias o extra del frente), la marca se va sola.
+const SIN_DIA = new Set(PLANES_SIN_DIA);
+const MARCA_SIN_DIA = ' (día por fijar)';
 export function fechasRealesEnTexto(t: string, frente?: string): string {
   if (!t || !_ACTIVA) return t;
-  const t1 = t.replace(RX, (m, pre: string, dow: string, punto: string, dd: string, mes: string, i: number, s: string) => {
-    const plan = `${DESDE.slice(0, 4)}-${String(MES.indexOf(mes.toLowerCase()) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
+  const t1 = t.replace(RX, (m, pre: string, dow: string, punto: string, dd: string, mes: string, yy: string | undefined, i: number, s: string) => {
+    const plan = `${yy ?? DESDE.slice(0, 4)}-${String(MES.indexOf(mes.toLowerCase()) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
     if (plan < DESDE || plan > HASTA) return m;
     if (DOW[dowDe(plan)] !== abrev(dow)) return m; // el día de la semana no cuadra: no es una fecha de esta semana
     if (externa(s, i, m.length, pre)) return m;
     const real = fechaRealDe(plan, frente);
-    if (real === plan) return m;
+    if (real === plan) return SIN_DIA.has(plan) ? `${m}${MARCA_SIN_DIA}` : m;
     const mr = MES[Number(real.slice(5, 7)) - 1] ?? mes;
     const dr = DOW_L.includes(dow.toLowerCase()) ? largoComo(real, dow) : diaReal(real, dow); // v6.10d: completo → completo
-    return `${pre}${dr}${punto} ${Number(real.slice(8))}-${mes === mes.toUpperCase() ? mr.toUpperCase() : mr}`;
+    return `${pre}${dr}${punto} ${Number(real.slice(8))}-${mes === mes.toUpperCase() ? mr.toUpperCase() : mr}${yy ? `-${real.slice(0, 4)}` : ''}`;
   });
   return t1.replace(RX2, (m, pre: string, dow: string, punto: string, dd: string, i: number, s: string) => {
     // v6.10d: «mar 08» (día con cero delante) no es una fecha de plan (las guías escriben «mar 8»): la nota del SERUMS «preferente mar 08» es de 2027
     const plan = dd.startsWith('0') ? null : planSinMes(dd, dow);
     if (!plan || externa(s, i, m.length, pre)) return m;
     const real = fechaRealDe(plan, frente);
-    return real === plan ? m : `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}`;
+    return real === plan ? (SIN_DIA.has(plan) ? `${m}${MARCA_SIN_DIA}` : m) : `${pre}${diaReal(real, dow)}${punto} ${Number(real.slice(8))}`;
   });
 }
 

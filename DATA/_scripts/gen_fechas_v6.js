@@ -409,6 +409,30 @@ function corrimientoRefecha(F = fechasPorDefecto()) {
   const llevadas = new Set(Object.values((F.corrida_s1 && F.corrida_s1.alias) || {}));
   return [...(F.corrimientos || [])].reverse().find((x) => !(x.perdidos || []).length || !x.perdidos.every((d) => llevadas.has(d))) || null;
 }
+/**
+ * v6.11 (lun 23-nov-2026): fechas de PLAN que se quedan SIN DÍA REAL con el alias (ningún día real las hace y no las reparte corrida_s1.extra): hábiles
+ * L-V de plan (sin SKIP ni feriado) entre la 1.ª fecha de plan del alias y su último día real que no son destino de ningún alias. Con la v6.11: el mié 30-dic
+ * (lo coloca otra ronda). Los generadores que ordenan por día REAL las ponen tras el último día del alias (no abortan por ellas) y las listan.
+ */
+function planesSinDia(F = fechasPorDefecto()) {
+  const c = F.corrida_s1 || {}; const al = c.alias || {};
+  const vals = Object.values(al).sort(), keys = Object.keys(al).sort();
+  if (!vals.length) return [];
+  const hechas = new Set(vals), skip = new Set(F.skip || []), fer = new Set(F.feriados || []);
+  for (const d of Object.keys(c.extra || {})) for (const x of extraListaDe(d, F)) hechas.add(x.plan);
+  for (const a of Object.values(c.alias_frente || {})) { for (const v of Object.values(a.alias || {})) if (!al[v]) hechas.add(v); }
+  const out = [];
+  for (let d = vals[0]; d <= keys[keys.length - 1]; d = add(d, 1)) if (wd(d) >= 1 && wd(d) <= 5 && !skip.has(d) && !fer.has(d) && !hechas.has(d)) out.push(d);
+  return out;
+}
+/** v6.11 · clave de ORDEN por día real de una fecha de plan: su día real (alias inverso) o, si se quedó sin día (planesSinDia), justo detrás del último día
+ *  real del alias («AAAA-MM-DD~», mayor que ese día y menor que el siguiente). Solo para ordenar; nunca se pinta. */
+function ordenRealDe(plan, F = fechasPorDefecto()) {
+  const al = (F.corrida_s1 || {}).alias || {};
+  for (const [r, de] of Object.entries(al)) if (de === plan) return r;
+  if (planesSinDia(F).includes(plan)) { const ks = Object.keys(al).sort(); return ks[ks.length - 1] + '~'; }
+  return plan;
+}
 /** Semana corrida (gemelo node de corridaS1De del .ts): null fuera de ella. */
 function corridaS1De(s, F = fechasPorDefecto()) {
   const c = F.corrida_s1;
@@ -1090,6 +1114,17 @@ export function extraDePlan(plan: string, frente: string): { real: string; ini: 
 export function enShipDe(dom: string, frente: string = 'vibecoding'): string | null {
   return FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom] ?? null;
 }
+/** v6.11 (lun 23-nov-2026) · fechas de PLAN que se quedan SIN DÍA REAL con el alias (gen_fechas_v6.planesSinDia, calculado al generar): el mié 30-dic.
+ *  corridaTexto las pinta «(día por fijar)» (no un día real que hace otro plan) y los repartos por día real las ordenan tras el último día del alias. */
+export const PLANES_SIN_DIA: string[] = ${L(planesSinDia(F))};
+/** v6.11 · clave de ORDEN por día real de una fecha de plan (gemelo de gen_fechas_v6.ordenRealDe, con el \`frente\` de fechaRealDe): su día real o, si se quedó
+ *  sin día (PLANES_SIN_DIA) y ningún día extra la hace para ese frente, justo detrás del último día real del alias («AAAA-MM-DD~»). Solo para ordenar; nunca se pinta. */
+export function ordenRealDe(plan: string, frente?: string): string {
+  const r = fechaRealDe(plan, frente);
+  if (r !== plan || !PLANES_SIN_DIA.includes(plan)) return r;
+  const ks = Object.keys(FECHAS_V6.corrida_s1.alias).sort();
+  return ks.length ? \`\${ks[ks.length - 1]}~\` : plan;
+}
 `;
 }
 
@@ -1109,6 +1144,7 @@ function compararTS(T, F, d) {
   eq('FASES_V6', T.FASES_V6, fasesV6(F, d));
   eq('STEP1_SEMANAS', T.STEP1_SEMANAS, d.step1Semanas);
   eq('SEMANAS_F1', T.SEMANAS_F1, d.semanasF1);
+  eq('PLANES_SIN_DIA', T.PLANES_SIN_DIA, planesSinDia(F)); // v6.11
   eq('DIAS_PROTEGIDOS', [...T.DIAS_PROTEGIDOS], F.protegidos.map((p) => p.fecha));
   eq('BLOQUES_POR_FRENTE', T.BLOQUES_POR_FRENTE, BLOQUES_POR_FRENTE);
   eq('PRINCIPAL_POR_FRENTE', T.PRINCIPAL_POR_FRENTE, PRINCIPAL_POR_FRENTE);
@@ -1226,6 +1262,8 @@ module.exports = {
   comprobarAliasFrente, aliasFrenteDe, enShipDe,
   // v6.10d: alias → los generadores no cuentan como perdido el día cuyo plan hace otro día real
   sinSesionPlan, corrimientoRefecha,
+  // v6.11: planes que se quedan sin día real (el mié 30-dic) y su clave de orden
+  planesSinDia, ordenRealDe,
 };
 
 if (require.main === module) main();
