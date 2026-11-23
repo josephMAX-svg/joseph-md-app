@@ -1351,7 +1351,7 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
     const min = Math.ceil(x.q * 72 / 60);
     L_.push({ de: x.de, min, corto: `${x.q}Q de ${area}`, desc: `las ${x.q}Q de ${area} (${min}′) que faltaron en el banqueo de la mañana del ${corta(x.de)}`,
       paso: P(min, `${x.q}Q de ${area} que faltaron el ${corta(x.de)} · ${x.fuente} · modo examen (72 s c/u) → ${min}′ · NO opcional`,
-        `${cap(x.si_no)}. Sin material, sin mirar nada. ${CONFIANZA} Ruta: ${RUTA.drLopezPT}.`) });
+        `${cap(x.si_no)}. Sin material, sin mirar nada. ${RESERVA} ${CONFIANZA} Ruta: ${RUTA.drLopezPT}.`) });
     pB.como = `Si hoy no cupo: ${x.q} de las ${nQ} → ${corta(x.fecha)}, primer paso de su ENCAPS (${min}′) · ${pB.como}`;
   } else if (x.item === 'verificacion') {
     const pV = pasosM.find((p) => /^Verificación en la norma/.test(p.que));
@@ -1918,7 +1918,7 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) !== 0)) { // v6.10z-b: los de
     const nom = `${x.q}Q de ${area} · tanda ${i}/${n}`;
     const horas = tandas.map((t) => (t.fecha === x.fecha ? t.franja[0] : `${corta(t.fecha)} ${t.franja[0]}`)).join(' · ');
     g = guia(fr(ini, fin), `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, [
-      P(min, `${x.q}Q de ${area} que faltaron el ${corta(x.de)} · ${x.fuente} · modo examen (72 s c/u) → ${min}′`, `${cap(x.si_no)}. Sin material, sin mirar nada. ${CONFIANZA} Ruta: ${RUTA.drLopezPT}.`),
+      P(min, `${x.q}Q de ${area} que faltaron el ${corta(x.de)} · ${x.fuente} · modo examen (72 s c/u) → ${min}′`, `${cap(x.si_no)}. Sin material, sin mirar nada. ${RESERVA} ${CONFIANZA} Ruta: ${RUTA.drLopezPT}.`),
       P(resto, 'Vuelta a las marcadas', `Sin clave (la corrección de las ${qT}Q, el ${corta(corr.fecha)}, primer paso de su ENCAPS: ${minCorr}′): como en el examen, las dudosas al final.`),
     ], [R99], `${x.q}Q respondidas con su confianza (el % ciego, en la corrección)`, {
       aviso: `Fijo, no opcional: ${x.q} de las ${qT}Q que faltaron en el banqueo de la mañana ENCAPS ${m.n}/${NM} del ${corta(x.de)} (empezó a las ${x.inicio_real}; ${qT < nQ ? `ese día, ${nQ - qT}Q` : 'ese día no hubo banqueo'}).${n > 1 ? ` Tanda ${i}/${n} (${horas}).` : ''} Su corrección, el ${corta(corr.fecha)} (${minCorr}′).`,
