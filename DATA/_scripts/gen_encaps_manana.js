@@ -138,6 +138,13 @@
  *   (SUN_AUTO): las 10Q del banqueo y la verificación en la norma → dom 29-nov, delante del PPT de SP 2/11; el paso de origen lo dice · domingos[].recorte_max
  *   (dom 29: 40′) deja acortar el simulacro opcional más de 30′ si hay compromiso (todo de la corrección; lo que no se corrige → CORR_PEND, dom 6-dic) y el recorte
  *   se dice con minutos (sub, aviso y paso de la corrección) · el aviso de la recuperación fija nombra los primeros pasos del ENCAPS que la sigue.
+ * v6.10z-d (23-nov-2026 ≈09:45, «última estructura»: la mañana 1/21 va 10:00-12:00 y ese día es SOLO teoría + post-tests): _meta.no_cupo admite VARIOS bloques
+ *   fijos el mismo sábado (REC_SAB/GR_SAB → encapsRecuperasDe · guiasEncapsRecuperaDe; encapsRecuperaDe / guiaEncapsRecuperaDe con la hora del bloque) y, además
+ *   del Theoesencial (sáb 28-nov 07:15-07:42), el BANQUEO entero en TANDAS (sáb 28-nov 05:30-05:45 · 08:10-08:25 · 14:30-14:45: 10Q a 72 s + 3′ de vuelta a las
+ *   marcadas cada una) · ítem «correccion» de un domingo (dom 29-nov: la de las 30Q de esas tandas, 25′ —30 × 0,85′ = 25,5′; `min` del JSON entre el suelo y el
+ *   techo—, NO opcional, delante de la verificación en la norma) · recorte_max hasta 55′ (dom 29: 53′; la corrección del simulacro opcional queda en 27′ —31
+ *   preguntas— y las 69 que no se corrigen van al dom 6-dic, CORR_PEND, 53′) · % CIEGO = correctas Y seguras ÷ total (en la corrección, con la clave; como
+ *   FASE_INTENSIVA_2027-I.md) · post-tests de Theomed: POST_TEST_ENVIO (sin terminar no se envía; al terminarlo, solo la nota; la revisión, en la corrección).
  */
 'use strict';
 const fs = require('fs');
@@ -703,7 +710,13 @@ function repartir(dia) {
 // ── textos comunes ─────────────────────────────────────────────────────────────────────────────────────────────
 const FUENTES = J._meta.banqueo_fuentes.replace(/^por orden:\s*/, '').replace(/\.?\s*El material de academias no se copia al repo ni a la app\.?$/, '');
 const RESERVA = 'Reservados: el ENCAPS 2026-II real (pre-test ciego del vie 8-ene) y el 2026-I (ensayo general del jue 11-mar). Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8-ene.';
-const CONFIANZA = 'Confianza en cada una: segura · dudosa · adivinada (el % CIEGO = seguras ÷ total).';
+// v6.10z-d (lun 23-nov, chat ENCAPS): % CIEGO = correctas Y seguras ÷ total (como FASE_INTENSIVA_2027-I.md: «correctas seguras / total»), y se calcula en la
+//   CORRECCIÓN, con la clave (antes «el % CIEGO = seguras ÷ total», que contaba una segura FALLADA como ciega). La definición, en frase propia: el corte del
+//   Calendar (110) llega hasta «÷ total» en el paso del banqueo («Sin mirar nada. Confianza…»); el «cuándo», detrás
+const CONFIANZA = 'Confianza en cada una: segura · dudosa · adivinada. % CIEGO = correctas Y seguras ÷ total (en la corrección, con la clave).';
+// v6.10z-d (lun 23-nov, chat ENCAPS): regla de los post-tests de Theomed (mañanas y clases en vivo), al PRINCIPIO del «cómo» de su paso (build_ops le da el corte
+//   del Calendar hasta el final de esta frase)
+const POST_TEST_ENVIO = 'Un post-test sin terminar NO se envía (al enviarlo, el campus enseña la revisión con respuestas de preguntas que pasan al banqueo); se envía al terminarlo y se mira SOLO la nota; la revisión se abre en la corrección.';
 const TIPOS_ERROR = 'tipo de error (concepto · cifra · lectura · confusión entre vecinos) + regla de 1 línea en el registro';
 const CRITICOS = 'I-3 · V-2 · IV-1+IV-2 · I-4 · II-3 · III-5 · II-5 · II-4';
 /** «sábado 14:00» (F1 y transición, con la clase en vivo) o «sáb 9-ene 07:15» (F2): la revisión semanal que recoge el registro de `iso`. */
@@ -919,7 +932,8 @@ for (const dia of J.mananas) {
     gs.push(guia(fr('09:15', '09:30'), pts.length ? `${tag} · POST-TEST de Theomed · ${pts.join(' · ')}` : `${tag} · RECALL de cifras y definiciones de hoy`, pts.length
       // v6.09b lote 1-ter (pendiente a1-18 de G): el nº de preguntas de cada post-test no se conoce (el campus no lo muestra sin abrir el intento) → el paso se
       //   ACOTA a lo que cabe en 15′ (12 preguntas a 72 s) y lo que quede tiene franja (el banqueo de las 09:45, que lo cuenta); Joseph anota N para medirlo
-      ? [P(15, `Post-test${pts.length > 1 ? 's' : ''} de ${pts.join(', ')} · 15′ = hasta 12 preguntas a 72 s/Q`, `${pts.length > 1 ? 'Los post-tests en orden; lo' : 'Si trae más, lo'} que quede abre el banqueo de las 09:45 (cuenta como banqueo del tema) · anota cuántas preguntas trae ${pts.length > 1 ? 'cada post-test' : 'el post-test'}. Primer intento CIEGO, sin apuntes: es la medición. La nota va al registro. Ruta: el post-test está en la misma sección de la sesión.`, L99)]
+      // v6.10z-d (lun 23-nov, chat ENCAPS): la regla del envío (POST_TEST_ENVIO) delante: «lo que quede» sigue en el banqueo SIN haberlo enviado
+      ? [P(15, `Post-test${pts.length > 1 ? 's' : ''} de ${pts.join(', ')} · 15′ = hasta 12 preguntas a 72 s/Q`, `${POST_TEST_ENVIO} ${pts.length > 1 ? 'Los post-tests en orden; lo' : 'Si trae más, lo'} que quede abre el banqueo de las 09:45 (cuenta como banqueo del tema) · anota cuántas preguntas trae ${pts.length > 1 ? 'cada post-test' : 'el post-test'}. Primer intento CIEGO, sin apuntes: es la medición. La nota va al registro. Ruta: el post-test está en la misma sección de la sesión.`, L99)]
       : [P(15, '10 cifras o definiciones de lo de hoy, de memoria', 'Tapa, di, comprueba. Las que fallen → tarjeta a las 11:40.')],
     [R99], pts.length ? 'nota del primer intento en el registro' : '10 cifras dichas; las falladas, anotadas', { planB: pts.length ? `Si el post-test no abre: 10Q del post-test de DR LOPEZ del área (${RUTA.drLopezPT}), también a ciegas.` : undefined }));
     // 09:30 pausa
@@ -943,7 +957,7 @@ for (const dia of J.mananas) {
     const nMax = restoB >= 15 ? Math.min(40, nQ + Math.floor((restoB - 5) * 60 / 72)) : nQ; // v6.09b: lo que de verdad se corrige (las del «hasta NQ si sobra» también)
     if (restoB > 0) pasosB.push(P(restoB, restoB >= 15 ? `Vuelta a las marcadas + hasta ${nMax}Q del mismo tema si sobra` : 'Vuelta a las marcadas', restoB >= 15 ? 'Como en el examen: primero las dudosas, sin clave. Si sobra, sigue con preguntas del mismo tema (o los post-tests que no cupieron a las 09:15).' : 'Como en el examen: las dudosas al final, sin clave.'));
     gs.push(guia(fr('09:45', finB), `${tag} · BANQUEO ${nQ}Q · ${dia.banqueo.area}`, pasosB, [R99],
-      `${nQ}Q respondidas con su confianza y el % ciego anotado`, { planB: 'Si una fuente no carga, pasa a la siguiente del orden. Nunca el 2026-II.' }));
+      `${nQ}Q respondidas con su confianza (el % ciego, en la corrección)`, { planB: 'Si una fuente no carga, pasa a la siguiente del orden. Nunca el 2026-II.' })); // v6.10z-d: el % ciego necesita la clave
     // corrección — v6.09b (a1-8): 0,85′ por pregunta (fallos + dudosas; la tasa del simulacro de 100Q), el resto de la franja = verificación en la norma
     const minC = aMin('11:40') - aMin(finB);
     const normaHoy = normaTxt(dia);
@@ -1311,6 +1325,14 @@ const condCorta = (x) => `si las 18:00 del ${corta(x.de)} no fueron las normales
 //   (antesDom ordena por «de»: delante del PPT de SP 2/11, clase del lun 23): las Q que faltaron del banqueo (n × 72 s, sin material, con confianza) y la
 //   verificación en la norma (los minutos de su paso de la mañana). El paso de origen lo dice al principio de su «cómo» (corte del Calendar: check_rutina_guia
 //   26h). Lo que no se recoloca (orientación, pausa, «hasta 40Q si sobra», lo proporcional de la corrección) no se pinta.
+// v6.10z-d: minutos de la corrección de las Q del banqueo que van a tandas de un sábado (ítem «correccion» de un domingo): q × 0,85′; el JSON puede fijar `min`
+//   entre el suelo y el techo de esa cuenta (dom 29-nov: 30 × 0,85 = 25,5′ → 25′, los del plan de Joseph de las 09:44). Lo usan el domingo y las tandas («Vuelta a
+//   las marcadas» dice cuánto dura su corrección)
+const corrNoCupo = (x, q) => {
+  const ex = q * CORR_Q, min = x.min == null ? Math.ceil(ex) : x.min;
+  if (!Number.isInteger(min) || min < Math.floor(ex) || min > Math.ceil(ex)) aborta(`_meta.no_cupo ${x.fecha}: correccion de ${q}Q con min ${x.min} (entre ${Math.floor(ex)} y ${Math.ceil(ex)}′: ${q} × ${CORR_Q}′)`);
+  return min;
+};
 for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
   const m = J.mananas.find((d) => d.fecha === x.de);
   if (!m || !GM[x.de]) aborta(`_meta.no_cupo ${x.fecha}: «de» ${x.de} no es una mañana ENCAPS`);
@@ -1321,6 +1343,8 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
   if (x.item === 'banqueo') {
     const nQ = m.banqueo && m.banqueo.n, area = m.banqueo && m.banqueo.area;
     if (!nQ || !Number.isInteger(x.q) || !(x.q > 0 && x.q < nQ) || !x.fuente || !x.si_no) aborta(`_meta.no_cupo ${x.fecha}: banqueo con q (< ${nQ || '?'}Q de la mañana), fuente y si_no`);
+    // v6.10z-d: el banqueo de una mañana va a un domingo O a tandas de un sábado (el paso de origen dice un solo destino)
+    if (NO_CUPO.some((y) => y !== x && y.de === x.de && y.item === 'banqueo')) aborta(`_meta.no_cupo ${x.fecha}: el banqueo del ${x.de} ya tiene otro destino (o un domingo o las tandas de un sábado)`);
     const pB = pasosM.find((p) => p.que.startsWith(`${nQ}Q de ${area} `));
     if (!pB) aborta(`_meta.no_cupo ${x.fecha}: la mañana del ${x.de} no tiene el paso «${nQ}Q de ${area}»`);
     const min = Math.ceil(x.q * 72 / 60);
@@ -1334,7 +1358,23 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
     L_.push({ de: x.de, min: pV.min, corto: 'verificación en la norma', recurso: R99, desc: `la verificación en la norma de las reglas nuevas (${pV.min}′), que no cupo en la mañana del ${corta(x.de)}`,
       paso: P(pV.min, `Verificación en la norma de cada regla nueva del ${corta(x.de)} (no cupo ese día) → ${pV.min}′ · NO opcional`, `${VERIF_NORMA} Ruta: ${RUTA.normas}.`, L99) });
     pV.como = `Si hoy no cupo → ${corta(x.fecha)}, primeros pasos de su ENCAPS (${pV.min}′) · ${pV.como}`;
-  } else aborta(`_meta.no_cupo ${x.fecha}: «${x.item}» en un domingo (solo banqueo o verificacion)`);
+  } else if (x.item === 'correccion') {
+    // v6.10z-d (lun 23-nov ≈09:45 · la mañana fue 10:00-12:00, solo teoría y post-tests): la CORRECCIÓN de las Q del banqueo que van a las tandas de un sábado
+    //   (_meta.no_cupo › banqueo con franja; sáb 28-nov 05:30 · 08:10 · 14:30, las 30Q) → primer paso NO opcional del ENCAPS del domingo siguiente (dom 29-nov),
+    //   a 0,85′ por pregunta (la tasa de la mañana; corrNoCupo), con la clave oficial; va delante de la verificación en la norma (orden del JSON) y cierra con el
+    //   % CIEGO (se calcula aquí, con la clave). El paso de la corrección de la mañana lo dice al principio de su «cómo»
+    const tandas = NO_CUPO.filter((y) => y.de === x.de && y.item === 'banqueo' && dow(y.fecha) === 6);
+    if (!tandas.length || tandas.some((y) => !(y.fecha < x.fecha) || !Number.isInteger(y.q))) aborta(`_meta.no_cupo ${x.fecha}: correccion sin tandas del banqueo del ${x.de} en un sábado ANTERIOR a este domingo`);
+    if (NO_CUPO.some((y) => y !== x && y.de === x.de && y.item === 'correccion')) aborta(`_meta.no_cupo ${x.fecha}: la corrección del banqueo del ${x.de} ya tiene destino`);
+    const area = m.banqueo.area, q = tandas.reduce((a, y) => a + y.q, 0), min = corrNoCupo(x, q);
+    const sabs = [...new Set(tandas.map((y) => y.fecha))].sort(), sabTxt = sabs.map(corta).join(' y ');
+    const pC = pasosM.find((p) => /^Cada fallo y cada dudosa de las .*Q de hoy/.test(p.que));
+    if (!pC) aborta(`_meta.no_cupo ${x.fecha}: la mañana del ${x.de} no tiene el paso de la corrección («Cada fallo y cada dudosa de las …Q de hoy»)`);
+    L_.push({ de: x.de, min, corto: `corrección ${q}Q de ${area}`, recurso: R99, desc: `la corrección de las ${q}Q de ${area} del ${sabTxt} (${min}′), las que no cupieron en el banqueo de la mañana del ${corta(x.de)}`,
+      paso: P(min, `Corrección de las ${q}Q de ${area} del ${sabTxt} (cada fallo y cada dudosa) → ${min}′ · NO opcional`,
+        `Con la clave oficial y su explicación: ${TIPOS_ERROR}. Mira por qué es correcta la buena, no solo la tuya. ${String(CORR_Q).replace('.', ',')}′ por pregunta. Al terminar, el % CIEGO (correctas Y seguras ÷ total) al registro.`) });
+    pC.como = `Si hoy no cupo: la corrección de las ${q}Q del ${sabTxt} → ${corta(x.fecha)}, primer paso de su ENCAPS (${min}′) · ${pC.como}`;
+  } else aborta(`_meta.no_cupo ${x.fecha}: «${x.item}» en un domingo (solo banqueo, correccion o verificacion)`);
 }
 
 // ── v6.09b lote 1-quater FX1 (revisión V1 · cifras de las 18:00): el material se fija al tiempo ──────────────────────────────────────────────────────
@@ -1605,7 +1645,7 @@ function antesDom0(d) {
         //   conectarse) trae aquí la clase entera con sus minutos y la hora de ejemplo a la que empieza entonces el bloque ({{INI_PB}}: la pone el bucle del domingo)
         `Sin conexión el ${corta(t.de)}: la clase entera (${vivoMin(150)}′, no ${TRAMO_MIN}′), desde las {{INI_PB}}. Si no: lo que no viste en vivo (a las 17:00 empieza el baile), desde el minuto que anotaste; la grabación ya está publicada. La clase entera = ${vivoMin(150)}′ de tramos útiles a ${vel(VIVO_VEL)}: el bloque empieza ${vivoMin(150) - TRAMO_MIN}′ antes. Notas SOLO en forma de pregunta; ★ lo que sea cifra, plazo o definición textual. Ruta: ${RUTA.vivo(areaDe(t.clase))}.`, L99),
       P(PT_SAB_MIN, `Post-test de ${t.clase} (en vivo, ${corta(t.de)}) · ${PT_SAB_MIN}′ = hasta ${PT_SAB_Q} preguntas a 72 s/Q · NO opcional`,
-        `Justo después del tramo (la clase ya está completa): primer intento CIEGO, sin apuntes; la nota va al registro. Anota cuántas preguntas trae: si son más de ${PT_SAB_Q}, se acota a ${PT_SAB_Q} (es la medición de la clase, no un banqueo). Ruta: el post-test está en la sección de la clase (${RUTA.vivo(areaDe(t.clase))}).`, L99)],
+        `${POST_TEST_ENVIO} Justo después del tramo (la clase ya está completa): primer intento CIEGO, sin apuntes; la nota va al registro. Anota cuántas preguntas trae: si son más de ${PT_SAB_Q}, se acota a ${PT_SAB_Q} (es la medición de la clase, no un banqueo). Ruta: el post-test está en la sección de la clase (${RUTA.vivo(areaDe(t.clase))}).`, L99)],
       planBSab: t });
   }
   for (const a of SUN_AUTO[d.fecha] || []) { ANTES_USADOS.add(a); L.push({ ...a, recurso: a.recurso || R99 }); }
@@ -1832,7 +1872,7 @@ for (const x of J._meta.diferidos || []) {
   const sigM = sigManana(x.fecha);
   GR[x.fecha] = guia(fr(ini, fin), `ENCAPS · ${clase} EN DIFERIDO (fija) · grabación a 2× en sus tramos útiles${pt ? ' + post-test' : ''}`, [
     ...us.map((u) => P(u.min, `CLASE EN DIFERIDO (va hoy a las ${ini}): ${typeof u.que === 'function' ? u.que(u.min) : u.que}`, `${u.postTest ? (pt ? 'Post-test justo después (siguiente paso). ' : `Post-test al terminar (ciego; si no cabe → banqueo del ${sigM ? corta(sigM) : 'próximo día ENCAPS'} 09:45). `) : ''}${u.como}`, L99)),
-    ...(pt ? [P(pt, `Post-test de ${clase} · ${pt}′ = hasta ${PT_SAB_Q} preguntas a 72 s/Q`, `Justo después de la clase: primer intento CIEGO, sin apuntes; la nota va al registro. Si trae más de ${PT_SAB_Q} preguntas, se acota a ${PT_SAB_Q} (es la medición de la clase, no un banqueo). Ruta: el post-test está en la sección de la clase (${RUTA.vivo(areaDe(clase))}).`, L99)] : []),
+    ...(pt ? [P(pt, `Post-test de ${clase} · ${pt}′ = hasta ${PT_SAB_Q} preguntas a 72 s/Q`, `${POST_TEST_ENVIO} Justo después de la clase: primer intento CIEGO, sin apuntes; la nota va al registro. Si trae más de ${PT_SAB_Q} preguntas, se acota a ${PT_SAB_Q} (es la medición de la clase, no un banqueo). Ruta: el post-test está en la sección de la clase (${RUTA.vivo(areaDe(clase))}).`, L99)] : []),
   ], [R99], `${clase} vista en sus tramos útiles, con las notas en forma de pregunta${pt ? ', y su post-test hecho en ciego, con la nota en el registro' : ''}`, { aviso: `Fijo, no opcional. ${x.motivo}` });
   REC[x.fecha] = { fecha: x.fecha, ini, fin, nombre: `ENCAPS · ${clase} en diferido (fija): grabación a 2× en sus tramos útiles${pt ? ' + post-test' : ''}`, tema: `Grabación ${clase} a 2× en sus tramos útiles${pt ? ' + post-test' : ''}`, clases: [clase], motivo: x.motivo };
 }
@@ -1844,28 +1884,81 @@ for (const x of J._meta.diferidos || []) {
 //   minutos exactos (páginas × 1′ = la franja). El paso de origen dice adónde va (unidades › ncTxt). Las fechas de PLAN de los textos (la mañana del mié 18,
 //   el resto de las páginas del vie 20) las pinta con su día real corridaTexto (lun 23 · mié 25), como el USMLE_FIJO_SAB del mismo sábado.
 const SAB_VENTANAS = [['04:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']]; // estudio del sábado (gimnasio 08:30-14:00 · baile 17:00-20:00)
+// v6.10z-d (lun 23-nov ≈09:45 · la mañana fue 10:00-12:00, solo teoría y post-tests): VARIOS bloques fijos el mismo sábado (REC_SAB / GR_SAB: sábado → lista,
+//   por hora) y, además del Theoesencial (07:15), el BANQUEO en TANDAS (item «banqueo» con franja: sáb 28-nov 05:30-05:45 · 08:10-08:25 · 14:30-14:45, 10Q cada
+//   una; pueden ser TODAS las Q de la mañana): q × 72 s sin material + vuelta a las marcadas sin clave (el resto de la franja, 1-5′); su corrección va al domingo
+//   del ítem «correccion» (obligatorio) · el paso del banqueo de la mañana lo dice.
+const REC_SAB = {}, GR_SAB = {};
 for (const x of NO_CUPO.filter((y) => dow(y.fecha) !== 0)) { // v6.10z-b: los de un domingo van como primeros pasos de su ENCAPS (SUN_AUTO, más arriba)
   const m = J.mananas.find((d) => d.fecha === x.de);
-  const it = m && m.teoria.find((t) => t.item === x.item);
-  if (!it || it.modo !== 'theoesencial') aborta(`_meta.no_cupo ${x.fecha}: «${x.item}» no es un Theoesencial de la mañana del ${x.de}`);
+  if (!m || !GM[x.de]) aborta(`_meta.no_cupo ${x.fecha}: «de» ${x.de} no es una mañana ENCAPS`);
   if (!/^20\d\d-\d\d-\d\d$/.test(x.fecha) || dow(x.fecha) !== 6 || x.fecha <= realDe(x.de) || x.fecha > F6.f1.fin) aborta(`_meta.no_cupo ${x.fecha}: solo un sábado de F1 posterior al día real de la mañana (${realDe(x.de)})`);
   if (!Array.isArray(x.franja) || x.franja.length !== 2 || !/^\d\d:\d\d$/.test(x.inicio_real || '') || !x.motivo) aborta(`_meta.no_cupo ${x.fecha}: franja, inicio_real (HH:MM) y motivo`);
   if (REC[x.fecha]) aborta(`_meta.no_cupo ${x.fecha}: ese día ya tiene un bloque fijo de recuperación`);
   const [ini, fin] = x.franja;
   if (!SAB_VENTANAS.some(([a, b]) => aMin(ini) >= aMin(a) && aMin(fin) <= aMin(b))) aborta(`_meta.no_cupo ${x.fecha}: ${ini}-${fin} fuera de las ventanas de estudio del sábado (${SAB_VENTANAS.map((v) => v.join('-')).join(' · ')})`);
   if (aMin(ini) < aMin(RUTINA_AM[1]) && aMin(fin) > aMin(RUTINA_AM[0])) aborta(`_meta.no_cupo ${x.fecha}: ${ini}-${fin} pisa la rutina de la mañana`);
-  const [u] = unidades({ ...it, fecha: x.de });
-  if (u.min !== G.minutosFranja(fr(ini, fin))) aborta(`_meta.no_cupo ${x.fecha}: el ${x.item} (${u.min}′) no llena la franja ${ini}-${fin}`);
-  const pags = pagsDe(it.de).replace(/^las /, ''), nom = `Theoesencial de ${AREA[it.area]} · ${pags}`;
-  const restoTxt = it.resto ? ` Las ${(/^p\. \d+(?:-\d+)?/.exec(it.resto) || [it.resto])[0]} ya fueron el ${it.resto_a}.` : '';
-  GR[x.fecha] = guia(fr(ini, fin), `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, [
-    P(u.min, u.que(u.min), `${cap(MODO.theoesencial.replace(/ a las \d\d:\d\d$/, ''))}. Ruta: ${RUTA.theoes(AREA[it.area])}.`, L99),
-  ], [R99], `${pags} del Theoesencial de ${AREA[it.area]} leídas en activo, con tarjeta de lo que no salió`, {
-    aviso: `Fijo, no opcional: lo que no cupo en la mañana ENCAPS ${m.n}/${NM} del ${corta(x.de)} (empezó a las ${x.inicio_real}), entero.${restoTxt}`,
-  });
-  // tema y sub: el Home los pinta tal cual (sin corridaTexto) → sin fechas · sinMinimo: 27′ de lectura sin versión reducida (el mínimo ROJO de encaps-rec habla de PPT)
-  REC[x.fecha] = { fecha: x.fecha, ini, fin, nombre: `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, tema: `Theoesencial de ${AREA[it.area]} · ${it.de}`, clases: [], motivo: x.motivo,
-    sub: `fijo · ${MODO.theoesencial.replace(/ a las \d\d:\d\d$/, '')}`, sinMinimo: true };
+  const otro = (REC_SAB[x.fecha] || []).find((r) => aMin(ini) < aMin(r.fin) && aMin(r.ini) < aMin(fin));
+  if (otro) aborta(`_meta.no_cupo ${x.fecha}: ${ini}-${fin} pisa el bloque fijo de las ${otro.ini}-${otro.fin}`);
+  const minF = G.minutosFranja(fr(ini, fin));
+  let g, rec;
+  if (x.item === 'banqueo') {
+    // v6.10z-d: una TANDA del banqueo que no cupo (sáb 28-nov 05:30 · 08:10 · 14:30): q × 72 s (sin material, con confianza) + vuelta a las marcadas, sin clave
+    const nQ = m.banqueo && m.banqueo.n, area = m.banqueo && m.banqueo.area;
+    if (!nQ || !Number.isInteger(x.q) || !(x.q > 0) || !x.fuente || !x.si_no) aborta(`_meta.no_cupo ${x.fecha} ${ini}: banqueo con q, fuente y si_no`);
+    const tandas = NO_CUPO.filter((y) => y.de === x.de && y.item === 'banqueo').sort((a, b) => (a.fecha + a.franja[0] < b.fecha + b.franja[0] ? -1 : 1));
+    if (tandas.some((y) => dow(y.fecha) !== 6)) aborta(`_meta.no_cupo ${x.fecha}: el banqueo del ${x.de} va a un domingo O a tandas de un sábado, no a los dos`);
+    const qT = tandas.reduce((a, y) => a + y.q, 0), i = tandas.indexOf(x) + 1, n = tandas.length;
+    if (!(qT <= nQ)) aborta(`_meta.no_cupo ${x.fecha}: las tandas del banqueo del ${x.de} suman ${qT}Q (más que las ${nQ}Q de la mañana)`);
+    const corr = NO_CUPO.find((y) => y.de === x.de && y.item === 'correccion');
+    if (!corr) aborta(`_meta.no_cupo ${x.fecha}: las tandas del banqueo del ${x.de} sin «correccion» (el domingo que las corrige)`);
+    const min = Math.ceil(x.q * 72 / 60), resto = minF - min, minCorr = corrNoCupo(corr, qT);
+    if (resto < 1 || resto > 5) aborta(`_meta.no_cupo ${x.fecha} ${ini}-${fin}: ${x.q}Q × 72 s = ${min}′ deja ${resto}′ de vuelta a las marcadas (entre 1 y 5′)`);
+    const nom = `${x.q}Q de ${area} · tanda ${i}/${n}`;
+    const horas = tandas.map((t) => (t.fecha === x.fecha ? t.franja[0] : `${corta(t.fecha)} ${t.franja[0]}`)).join(' · ');
+    g = guia(fr(ini, fin), `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, [
+      P(min, `${x.q}Q de ${area} que faltaron el ${corta(x.de)} · ${x.fuente} · modo examen (72 s c/u) → ${min}′`, `${cap(x.si_no)}. Sin material, sin mirar nada. ${CONFIANZA} Ruta: ${RUTA.drLopezPT}.`),
+      P(resto, 'Vuelta a las marcadas', `Sin clave (la corrección de las ${qT}Q, el ${corta(corr.fecha)}, primer paso de su ENCAPS: ${minCorr}′): como en el examen, las dudosas al final.`),
+    ], [R99], `${x.q}Q respondidas con su confianza (el % ciego, en la corrección)`, {
+      aviso: `Fijo, no opcional: ${x.q} de las ${qT}Q que faltaron en el banqueo de la mañana ENCAPS ${m.n}/${NM} del ${corta(x.de)} (empezó a las ${x.inicio_real}; ${qT < nQ ? `ese día, ${nQ - qT}Q` : 'ese día no hubo banqueo'}).${n > 1 ? ` Tanda ${i}/${n} (${horas}).` : ''} Su corrección, el ${corta(corr.fecha)} (${minCorr}′).`,
+      planB: 'Si una fuente no carga, pasa a la siguiente del orden. Nunca el 2026-II.',
+    });
+    // tema y sub: el Home los pinta tal cual (sin corridaTexto) → sin fechas · sinMinimo: 15′ sin versión reducida (el mínimo ROJO de encaps-rec habla de PPT)
+    rec = { fecha: x.fecha, ini, fin, nombre: `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, tema: `${x.q}Q de ${area} · ${x.fuente}`, clases: [], motivo: x.motivo,
+      sub: `fijo · modo examen (72 s c/u), sin mirar nada · ${resto}′ de vuelta a las marcadas, sin clave`, sinMinimo: true };
+  } else {
+    const it = m.teoria.find((t) => t.item === x.item);
+    if (!it || it.modo !== 'theoesencial') aborta(`_meta.no_cupo ${x.fecha}: «${x.item}» no es un Theoesencial ni el banqueo de la mañana del ${x.de}`);
+    const [u] = unidades({ ...it, fecha: x.de });
+    if (u.min !== minF) aborta(`_meta.no_cupo ${x.fecha}: el ${x.item} (${u.min}′) no llena la franja ${ini}-${fin}`);
+    const pags = pagsDe(it.de).replace(/^las /, ''), nom = `Theoesencial de ${AREA[it.area]} · ${pags}`;
+    const restoTxt = it.resto ? ` Las ${(/^p\. \d+(?:-\d+)?/.exec(it.resto) || [it.resto])[0]} ya fueron el ${it.resto_a}.` : '';
+    g = guia(fr(ini, fin), `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, [
+      P(u.min, u.que(u.min), `${cap(MODO.theoesencial.replace(/ a las \d\d:\d\d$/, ''))}. Ruta: ${RUTA.theoes(AREA[it.area])}.`, L99),
+    ], [R99], `${pags} del Theoesencial de ${AREA[it.area]} leídas en activo, con tarjeta de lo que no salió`, {
+      aviso: `Fijo, no opcional: lo que no cupo en la mañana ENCAPS ${m.n}/${NM} del ${corta(x.de)} (empezó a las ${x.inicio_real}), entero.${restoTxt}`,
+    });
+    // tema y sub: el Home los pinta tal cual (sin corridaTexto) → sin fechas · sinMinimo: 27′ de lectura sin versión reducida (el mínimo ROJO de encaps-rec habla de PPT)
+    rec = { fecha: x.fecha, ini, fin, nombre: `ENCAPS · ${nom} (lo que no cupo el ${corta(x.de)})`, tema: `Theoesencial de ${AREA[it.area]} · ${it.de}`, clases: [], motivo: x.motivo,
+      sub: `fijo · ${MODO.theoesencial.replace(/ a las \d\d:\d\d$/, '')}`, sinMinimo: true };
+  }
+  (REC_SAB[x.fecha] = REC_SAB[x.fecha] || []).push(rec);
+  (GR_SAB[x.fecha] = GR_SAB[x.fecha] || []).push(g);
+}
+for (const f of Object.keys(REC_SAB)) { // por hora (el Home y el Calendar los leen en orden)
+  const o = REC_SAB[f].map((r, i) => [r, GR_SAB[f][i]]).sort((a, b) => aMin(a[0].ini) - aMin(b[0].ini));
+  REC_SAB[f] = o.map((x) => x[0]); GR_SAB[f] = o.map((x) => x[1]);
+}
+// v6.10z-d: el paso del banqueo de la mañana dice adónde van las Q que no cupieron (las tandas del sábado), al principio de su «cómo» (corte del Calendar: 26h)
+for (const de of [...new Set(NO_CUPO.filter((y) => y.item === 'banqueo' && dow(y.fecha) === 6).map((y) => y.de))]) {
+  const m = J.mananas.find((d) => d.fecha === de), nQ = m.banqueo.n, area = m.banqueo.area;
+  const tandas = NO_CUPO.filter((y) => y.de === de && y.item === 'banqueo').sort((a, b) => (a.fecha + a.franja[0] < b.fecha + b.franja[0] ? -1 : 1));
+  const pB = GM[de].flatMap((g) => g.pasos).find((p) => p.que.startsWith(`${nQ}Q de ${area} `));
+  if (!pB) aborta(`_meta.no_cupo: la mañana del ${de} no tiene el paso «${nQ}Q de ${area}»`);
+  const porSab = [...new Set(tandas.map((t) => t.fecha))].map((f) => `${corta(f)} ${tandas.filter((t) => t.fecha === f).map((t) => t.franja.join('-')).join(' · ')}`).join(' · ');
+  const qT = tandas.reduce((a, t) => a + t.q, 0), qs = tandas.map((t) => t.q);
+  const qsTxt = qs.length > 1 && qs.every((q) => q === qs[0]) ? `${qs.length} tandas de ${qs[0]}Q` : qs.map((q) => `${q}Q`).join(' + ');
+  pB.como = `Si hoy no cupo: ${qT === nQ ? `las ${nQ}` : `${qT} de las ${nQ}`} → ${porSab} (${qsTxt}, bloques fijos) · ${pB.como}`;
 }
 // v6.10d (18-nov-2026): el plan B de una recuperación (dom 22 → la 18:00 del vie 27-nov, que con el alias se hace el lun 30) manda lo que falta de su
 //   clase al domingo con ENCAPS siguiente a su día REAL, aunque sea de banqueos (dom 6-dic): antes de nada y con sus minutos; el bloque empieza antes
@@ -2035,8 +2128,11 @@ for (const d of [...J.domingos.filter((x) => !x.modo || x.modo === 'simulacro'),
   const recorte = 240 + antesMin - minEj, corr = 80 - recorte;
   // v6.10z-b (lun 23-nov): recorte_max (por defecto 30′) = cuánto puede acortarse el simulacro opcional de un domingo con compromiso cuando sus primeros pasos NO
   //   opcionales crecen (dom 29-nov: +33′ de la mañana del lun 23 → 40′, todos de la corrección; lo que no se corrige va al domingo siguiente: CORR_PEND)
+  //   v6.10z-d (lun 23-nov ≈09:45, la mañana del lun 23 fue solo teoría y post-tests): tope 55′ (la corrección del simulacro opcional, nunca menos de 25′ ≈ 29
+  //   preguntas). Dom 29-nov: 25′ de corrección de las 30Q del sábado + 21′ de verificación + 10′ del PPT = 56′ de primeros pasos en la franja de ejemplo
+  //   08:27-12:30 (243′) → 240 + 56 − 243 = 53′ de recorte; la corrección del simulacro queda en 27′ (31 preguntas; las 69 que no, al dom 6-dic: CORR_PEND, 53′)
   const recMax = d.recorte_max == null ? 30 : d.recorte_max;
-  if (d.recorte_max != null && (!d.compromiso || !Number.isInteger(recMax) || recMax <= 30 || recMax > 40 || recorte <= 30)) aborta(`domingo ${d.fecha}: recorte_max ${d.recorte_max} solo con compromiso, entre 31 y 40′ y si el recorte (${recorte}′) pasa de 30′`);
+  if (d.recorte_max != null && (!d.compromiso || !Number.isInteger(recMax) || recMax <= 30 || recMax > 55 || recorte <= 30)) aborta(`domingo ${d.fecha}: recorte_max ${d.recorte_max} solo con compromiso, entre 31 y 55′ y si el recorte (${recorte}′) pasa de 30′`);
   if (recorte < 0 || recorte > recMax) aborta(`domingo ${d.fecha}: franja_ejemplo ${ejI}-${ejF} (${minEj}′${antesMin ? `, ${antesMin}′ de primeros pasos no opcionales` : ''}) deja para el simulacro ${minEj - antesMin}′: debe estar entre ${fmtMin(240 - recMax)} y 4 h`);
   // la corrección cubre las 100 si su ratio cabe en la tolerancia (100 × 0,85′ ≤ corr × 1,15: ≥ 74′); si no, dice cuántas corrige y adónde van las demás
   const nCorr = 100 * CORR_Q <= corr * 1.15 ? 100 : Math.floor(corr / CORR_Q);
@@ -2153,7 +2249,7 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
 }
 
 // ── validación de todas las guías ─────────────────────────────────────────────────────────────────────────────
-const TODAS = [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [f, g])), ...Object.entries(GT), ...Object.entries(GA), ...Object.entries(GSP), ...Object.entries(GSV), ...Object.entries(GD), ...Object.entries(GR)];
+const TODAS = [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [f, g])), ...Object.entries(GT), ...Object.entries(GA), ...Object.entries(GSP), ...Object.entries(GSV), ...Object.entries(GD), ...Object.entries(GR), ...Object.entries(GR_SAB).flatMap(([f, gs]) => gs.map((g) => [f, g]))]; // v6.10z-d: + los bloques fijos del sábado
 const ERR = [];
 for (const [f, g] of TODAS) {
   for (const e of G.validarGuia(g)) ERR.push(`${f} ${g.franja} «${g.titulo.slice(0, 50)}»: ${e}`);
@@ -2178,7 +2274,7 @@ const META = {
 };
 const tabla = new Map();
 const walk = (v) => { if (typeof v === 'string') { if (v.length >= 30) tabla.set(v, (tabla.get(v) || 0) + 1); } else if (Array.isArray(v)) v.forEach(walk); else if (v && typeof v === 'object') Object.values(v).forEach(walk); };
-const GUIAS = { GM, GT, GA, GSP, GSV, GD, GR }; // v6.09 (fix revisión, joseph 4): + GR (recuperación fija del domingo)
+const GUIAS = { GM, GT, GA, GSP, GSV, GD, GR, GRS: GR_SAB }; // v6.09 (fix revisión, joseph 4): + GR (recuperación fija del domingo) · v6.10z-d: + GRS (los bloques fijos de un sábado, por hora)
 walk(GUIAS);
 const T = [...tabla].filter(([, n]) => n >= 2).map(([s]) => s);
 const idx = new Map(T.map((s, i) => [s, i]));
@@ -2248,6 +2344,8 @@ const M: Record<string, EncapsMananaDia> = ${JSON.stringify(M)};
 const SAB: Record<string, TheomedSabado> = ${JSON.stringify(SAB)};
 const DOM: Record<string, EncapsDomingo> = ${JSON.stringify(DOM)};
 const REC: Record<string, EncapsRecupera> = ${JSON.stringify(REC)};
+/** v6.10z-d: bloques ENCAPS fijos de un SÁBADO, varios el mismo día y por hora (sáb 28-nov: 05:30 · 08:10 · 14:30 las tres tandas de 10Q del banqueo + 07:15 el Theoesencial, que no cupieron en la mañana del lun 23) */
+const REC_SAB: Record<string, EncapsRecupera[]> = ${JSON.stringify(REC_SAB)};
 
 // Tabla de textos repetidos: un {"$": i} en RAW es T[i]. Se decodifica una vez al cargar.
 const T: string[] = ${JSON.stringify(T)};
@@ -2264,7 +2362,7 @@ const dec = (v: unknown): unknown => {
 };
 const GU = dec(RAW) as {
   GM: Record<string, GuiaBloque[]>; GT: Record<string, GuiaBloque>; GA: Record<string, GuiaBloque>;
-  GSP: Record<string, GuiaBloque>; GSV: Record<string, GuiaBloque>; GD: Record<string, GuiaBloque>; GR: Record<string, GuiaBloque>;
+  GSP: Record<string, GuiaBloque>; GSV: Record<string, GuiaBloque>; GD: Record<string, GuiaBloque>; GR: Record<string, GuiaBloque>; GRS: Record<string, GuiaBloque[]>;
 };
 
 const k = (iso: string): string => iso.slice(0, 10);
@@ -2296,10 +2394,23 @@ export function encapsDomingoDe(iso: string): EncapsDomingo | null { return DOM[
 /** Guía del ENCAPS opcional del domingo (sin hora fija: la franja 08:00-12:00 es solo un ejemplo). */
 export function guiaEncapsDomingoDe(iso: string): GuiaBloque | null { return GU.GD[k(iso)] ?? null; }
 /** v6.09 (fix revisión 16-nov): bloque ENCAPS FIJO de recuperación del domingo (v6.09, 17-nov: dom 22-nov 15:00-16:30, domingo de llegada —antes dom 29 07:15-08:45—: grabación de la ET 2/3 + PPT en diferido) · null si no hay.
- *  v6.10w: + la clase en diferido de un L-V (lun 4-ene 10:45) · v6.10z: + lo que no cupo de una mañana, en un sábado de F1 (sáb 28-nov 07:15). */
-export function encapsRecuperaDe(iso: string): EncapsRecupera | null { return REC[k(iso)] ?? null; }
-/** Guía de ese bloque (hora fija). */
-export function guiaEncapsRecuperaDe(iso: string): GuiaBloque | null { return GU.GR[k(iso)] ?? null; }
+ *  v6.10w: + la clase en diferido de un L-V (lun 4-ene 10:45) · v6.10z: + lo que no cupo de una mañana, en un sábado de F1 (sáb 28-nov 07:15).
+ *  v6.10z-d: un sábado puede llevar VARIOS (sáb 28-nov 05:30 · 07:15 · 08:10 · 14:30): con la hora del bloque (ini), el de esa hora; sin ella, el primero del día. */
+export function encapsRecuperaDe(iso: string, ini?: string | null): EncapsRecupera | null {
+  const L = REC_SAB[k(iso)];
+  if (L) return (ini ? L.find((r) => r.ini === ini) : L[0]) ?? null;
+  return REC[k(iso)] ?? null;
+}
+/** v6.10z-d: todos los bloques ENCAPS fijos del día, por hora ([] si no hay; el domingo y el L-V, uno como mucho). */
+export function encapsRecuperasDe(iso: string): EncapsRecupera[] { const r = REC[k(iso)]; return REC_SAB[k(iso)] ?? (r ? [r] : []); }
+/** Guía de ese bloque (hora fija) · v6.10z-d: con la hora del bloque, la de esa franja. */
+export function guiaEncapsRecuperaDe(iso: string, ini?: string | null): GuiaBloque | null {
+  const L = GU.GRS[k(iso)];
+  if (L) return (ini ? L.find((g) => g.franja.slice(0, 5) === ini) : L[0]) ?? null;
+  return GU.GR[k(iso)] ?? null;
+}
+/** v6.10z-d: las guías de todos los bloques ENCAPS fijos del día, por hora. */
+export function guiasEncapsRecuperaDe(iso: string): GuiaBloque[] { const g = GU.GR[k(iso)]; return GU.GRS[k(iso)] ?? (g ? [g] : []); }
 export const ENCAPS_MANANA_FECHAS: string[] = Object.keys(M);
 
 /** Mínimo de cada bloque ENCAPS nuevo según el modo del día (PROTOCOLO_MODO_MINIMO; null = intacto). La mañana ENCAPS es el bloque
@@ -2316,12 +2427,12 @@ export const ENCAPS_MINIMO: Record<string, { AMBAR: string | null; ROJO: string 
 `;
 
 if (INFORME) {
-  for (const g of [...(GA[INFORME] ? [GA[INFORME]] : []), ...(GM[INFORME] || []), ...(GT[INFORME] ? [GT[INFORME]] : []), ...(GSP[INFORME] ? [GSP[INFORME]] : []), ...(GSV[INFORME] ? [GSV[INFORME]] : []), ...(GR[INFORME] ? [GR[INFORME]] : []), ...(GD[INFORME] ? [GD[INFORME]] : [])]) {
+  for (const g of [...(GA[INFORME] ? [GA[INFORME]] : []), ...(GM[INFORME] || []), ...(GT[INFORME] ? [GT[INFORME]] : []), ...(GSP[INFORME] ? [GSP[INFORME]] : []), ...(GSV[INFORME] ? [GSV[INFORME]] : []), ...(GR[INFORME] ? [GR[INFORME]] : []), ...(GR_SAB[INFORME] || []), ...(GD[INFORME] ? [GD[INFORME]] : [])]) {
     console.log(`\n${g.franja} (${g.totalMin}′) · ${g.titulo}${g.aviso ? `\n  ⚠ ${g.aviso}` : ''}`);
     for (const p of g.pasos) console.log(`  ${String(p.min).padStart(3)}′ ${p.que}\n        ${p.como}`);
   }
 }
-const resumen = `${NM} mañanas (${Object.values(GM).reduce((a, g) => a + g.length, 0)} franjas) · ${Object.keys(GT).length} tardes 18:00 (${Object.values(MD).filter((x) => x.tarde.length).length} con pendiente de la mañana) · ${Object.keys(GA).length} Anki 05:30 · ${Object.keys(GSV).length} sábados en vivo · ${Object.keys(GD).length} domingos · ${Object.keys(GR).length} bloque(s) fijo(s) de recuperación (domingo · L-V en diferido · sábado: lo que no cupo)`; // v6.10z: ya no solo de domingo
+const resumen = `${NM} mañanas (${Object.values(GM).reduce((a, g) => a + g.length, 0)} franjas) · ${Object.keys(GT).length} tardes 18:00 (${Object.values(MD).filter((x) => x.tarde.length).length} con pendiente de la mañana) · ${Object.keys(GA).length} Anki 05:30 · ${Object.keys(GSV).length} sábados en vivo · ${Object.keys(GD).length} domingos · ${Object.keys(GR).length + Object.values(GR_SAB).reduce((a, gs) => a + gs.length, 0)} bloque(s) fijo(s) de recuperación (domingo · L-V en diferido · sábado: lo que no cupo)`; // v6.10z: ya no solo de domingo
 if (AVISOS.length) console.warn(`⚠ ${AVISOS.length} aviso(s):\n  ` + AVISOS.join('\n  '));
 if (CHECK) {
   const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').replace(/\r\n/g, '\n') : '';

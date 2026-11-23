@@ -65,7 +65,7 @@ function guiasDe(b, p, iso) {
       if (b.id === 'theomed-prep') { const g = EM.guiaTheomedPrepDe(iso); return g ? [g] : null; }
       if (b.id === 'theomed-vivo') { const g = EM.guiaTheomedVivoDe(iso); return g ? [g] : null; }
       if (b.id === 'encaps-dom') { const g = EM.guiaEncapsDomingoDe(iso); return g ? [g] : null; }
-      if (b.id === 'encaps-rec') { const g = EM.guiaEncapsRecuperaDe(iso); return g ? [g] : null; } // v6.09 (fix): recuperación fija del domingo
+      if (b.id === 'encaps-rec') { const g = EM.guiaEncapsRecuperaDe(iso, b.ini); return g ? [g] : null; } // v6.09 (fix): recuperación fija del domingo · v6.10z-d: la de la hora del bloque (varios el mismo sábado)
       if (b.id === 'encaps-sab') { const g = EG.guiaEncapsSabadoDe(iso), sab = EG.encapsSabadoDe(iso); return g && sab ? [G.moverGuia(g, b.ini ? hm(b.ini) - hm(sab.ini) : 0)] : null; } // como TodayMission (desplazada si Business la empuja)
       // v6.09: + el día de plan de la transición (jue 31-dic, dia 32 del mantenimiento): su 16:15 es una sesión de encapsGuia, como en F1
       if (b.ini === '16:15' && (F6.faseV6(iso) === 'F1' || (F6.faseV6(iso) === 'TRANSICION' && b.id === 'encaps'))) { const g = EG.sesionEncapsDe(iso) ? EG.guiaEncapsDe(iso) : null; return g ? [g] : null; }

@@ -525,7 +525,7 @@ export const esCriticoV3 = (code: string): boolean => CRITICOS_V3_SET.has(code);
 export interface CiegoCodigo {
   codigo: string; area: string; peso: number;          // peso = % del área en el vector v3 (0 si el código no tiene área v3, p.ej. MIX)
   n: number; seg: number; dud: number; fallos: number; rondas: number;
-  pct: number;                                          // % ciego = seguras / n (1 decimal, como el script)
+  pct: number;                                          // % ciego = correctas Y seguras / n (1 decimal, como el script)
   evalFallos: number;                                   // fallos acumulados en rondas eval_anclada
   knowledge: number; transfer: number; proceso: number; // fallos por tipo (taxonomía v3)
   esCrit: boolean; rebote: boolean; ultima: string;
@@ -1042,7 +1042,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
   } : {
     key: `D${N}:m_log`, kind: 'material',
     label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
-    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar "<export.json>" --append (UNA sola vía, nunca las dos)' : ''}`,
+    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = correctas Y seguras ÷ n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar "<export.json>" --append (UNA sola vía, nunca las dos)' : ''}`,
     dur: 5, hora: '17:10–17:15',
   });
   return items;

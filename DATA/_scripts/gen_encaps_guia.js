@@ -395,7 +395,7 @@ const PASO_ARRANQUE = (runners, sinRunner = '') => ({
   que: `Arranque: abre ${runners.filter(Boolean).map((r) => r.f).join(' + ') || 'el banco del día'}, móvil en silencio y NADA de material abierto`,
   // remate v6.10l (revisión adversarial · visibilidad): sin NINGÚN runner, el plan B corto no va seguido de «Los runners abren en cualquier navegador…»
   //   (se contradecía y el corte del Calendar lo dejaba en «… en cualquier …»)
-  como: `${sinRunner ? sinRunner + ' ' : ''}${sinRunner && !runners.some(Boolean) ? '' : 'Los runners abren en cualquier navegador (también el del móvil) y guardan el avance en ese navegador. '}Confianza 1-3 OBLIGATORIA en cada ítem (3 = segura · 2 = dudosa · 1 = adivinada): el % CIEGO = seguras / total.`,
+  como: `${sinRunner ? sinRunner + ' ' : ''}${sinRunner && !runners.some(Boolean) ? '' : 'Los runners abren en cualquier navegador (también el del móvil) y guardan el avance en ese navegador. '}Confianza 1-3 OBLIGATORIA en cada ítem (3 = segura · 2 = dudosa · 1 = adivinada): el % CIEGO = correctas Y seguras ÷ total.`, // v6.10z-d (chat ENCAPS): antes «seguras / total» (como FASE_INTENSIVA_2027-I.md)
   ...(runners[0] ? { enlace: enlaceRunner(runners[0], `${runners[0].f}`) } : {}),
 });
 // v6.10m (auditoría c16 · cambios-c16 #9): en el CARRIL SÁBADO la vía (b) nombra la fila del viernes host y, en la MISMA cláusula, su --pull (la fecha alarga el

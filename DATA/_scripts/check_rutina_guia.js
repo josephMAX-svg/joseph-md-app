@@ -1102,7 +1102,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     let nEnc = 0;
     for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
       const gs = [...EM2.guiaEncapsMananaDe(iso).map((g) => [`ENCAPS mañana ${g.franja}`, g]), ['ENCAPS 18:00', EM2.guiaEncapsTardeDe(iso)], ['ENCAPS Anki', EM2.guiaEncapsAnkiDe(iso)],
-        ['ENCAPS sáb (preparar)', EM2.guiaTheomedPrepDe(iso)], ['ENCAPS sáb (en vivo)', EM2.guiaTheomedVivoDe(iso)], ['ENCAPS domingo', EM2.guiaEncapsDomingoDe(iso)], ['ENCAPS recuperación', EM2.guiaEncapsRecuperaDe(iso)]];
+        ['ENCAPS sáb (preparar)', EM2.guiaTheomedPrepDe(iso)], ['ENCAPS sáb (en vivo)', EM2.guiaTheomedVivoDe(iso)], ['ENCAPS domingo', EM2.guiaEncapsDomingoDe(iso)], ...EM2.guiasEncapsRecuperaDe(iso).map((g) => [`ENCAPS recuperación ${g.franja}`, g])]; // v6.10z-d: todos los bloques fijos del día (varios el mismo sábado)
       for (const [n, g] of gs) for (const p of (g && g.pasos) || []) {
         nEnc++;
         // v6.10w: futura respecto al día REAL en que se hace (con el alias, el 2-dic de plan es el lun 7-dic: «las 2 del dom 6-dic» ya pasó)
@@ -1119,7 +1119,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     const UG2 = LIB('usmleGuia');
     let nAv = 0;
     for (let iso = '2026-11-18'; iso <= FV.FECHAS_V6.transicion.hasta; iso = addDias(iso, 1)) {
-      const gs = [...EM2.guiaEncapsMananaDe(iso), EM2.guiaEncapsTardeDe(iso), EM2.guiaEncapsAnkiDe(iso), EM2.guiaTheomedPrepDe(iso), EM2.guiaTheomedVivoDe(iso), EM2.guiaEncapsDomingoDe(iso), EM2.guiaEncapsRecuperaDe(iso),
+      const gs = [...EM2.guiaEncapsMananaDe(iso), EM2.guiaEncapsTardeDe(iso), EM2.guiaEncapsAnkiDe(iso), EM2.guiaTheomedPrepDe(iso), EM2.guiaTheomedVivoDe(iso), EM2.guiaEncapsDomingoDe(iso), ...EM2.guiasEncapsRecuperaDe(iso) /* v6.10z-d */,
         ...UG2.guiaUsmleDe(iso), RG2.guiaVibeDe(iso), RG2.guiaSynapseDe(iso), RG2.guiaSynapseColaDe(iso), RG2.guiaBusinessDe(iso), AU2.aurumDiaDe(iso) ? RG2.guiaAurumDe(iso) : null, RG2.guiaAurumSabadoDe(iso),
         LV2.livDiaDe(iso) ? RG2.guiaLivianoDe(iso) : null, RG2.guiaRevisionDe(iso), RG2.guiaShipDe(iso), RG2.guiaFeynmanDe(iso)].filter(Boolean);
       for (const g of gs) {

@@ -23,7 +23,7 @@
   (V6), «EL DÍA DEL EXAMEN MIR: MI EXPERIENCIA» (V7), «Cómo gestionar los percentiles en la preparación del examen MIR» (V8), «Cómo
   responde preguntas MIR un opositor del percentil 100» (V9), «MIS 3 MAYORES ERRORES EN LA PREPARACIÓN MIR» (V3). Tabla completa y
   enlaces en `DATA/MIR/METODO_RAVIMEDTEST.md` §1.
-- **Protocolo propio:** 72 s/Q · sin pausa · sin material · confianza 1-3 obligatoria · % CIEGO = seguras / total · umbral mini-sim
+- **Protocolo propio:** 72 s/Q · sin pausa · sin material · confianza 1-3 obligatoria · % CIEGO = correctas Y seguras ÷ total · umbral mini-sim
   18/25 · alerta <15/25 dos viernes seguidos · override (máx. 2 sustituciones; I-3 y V-2 nunca se ceden) · taxonomía
   CONCEPTO/OLVIDO/CRONOLOGIA · CCSN/CONTEXTO · CAMBIO/TIEMPO/LECTURA (`PROTOCOLO_HORA_MANTENIMIENTO.md` §2, §5).
 - **Runner** (`gen_encaps_minisim.js`): cuenta atrás visible, confianza obligatoria para terminar, una pregunta sin responder cuenta

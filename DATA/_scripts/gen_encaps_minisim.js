@@ -250,7 +250,8 @@ const OVERRIDE_TXT = 'el override que propone el próximo mini-sim (gen_encaps_s
 // v6.10i (remate de la revisión del 18-nov · regla de Joseph: toda pregunta de evaluación es REAL): un ítem repetido es un RE-TEST de la MISMA pregunta
 //   real (nunca «rehecha con otro enfoque» / «rehechas en otro orden»); los textos que ve Joseph en el runner lo dicen así. TEXTO_VETADO lo vigila --check.
 const RETEST_TXT = 're-test de las mismas preguntas reales, sin la clave';
-const TEXTO_VETADO = /otro enfoque|rehech|rehaz|del tema de AYER \((?:D1|lunes)|que SUSTITUYÓ el pre-test|\bpropio #|sim100 propio/i;
+// v6.10z-d (lun 23-nov, chat ENCAPS): + la definición vieja del % CIEGO («% CIEGO = seguras/total»): es correctas Y seguras ÷ total (FASE_INTENSIVA_2027-I.md)
+const TEXTO_VETADO = /otro enfoque|rehech|rehaz|del tema de AYER \((?:D1|lunes)|que SUSTITUYÓ el pre-test|\bpropio #|sim100 propio|% CIEGO = seguras/i;
 // día REAL en que se hace una sesión con fecha de PLAN (alias de corrida_s1; gemelo node de fechasV6.fechaRealDe): el runner muestra el día real en su
 //   cabecera (el fichero, el id y la fecha del export siguen en fecha de PLAN: el registro y gen_encaps_semana.js trabajan con ella)
 const realDeEncaps = (plan) => { try { return require('./gen_fechas_v6').fechaRealDe(plan, undefined, 'encaps') || plan; } catch (e) { return plan; } };
@@ -469,7 +470,7 @@ textarea{width:100%;min-height:180px;font:12px/1.4 ui-monospace,Consolas,monospa
 <span id="timer">--:--</span><span id="prog" class="pill">0/${doc.n}</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>Terminar y corregir</button><button id="reset" class="sec">Reiniciar</button></header>
 <main>
 ${estaSustituida(doc) ? `<div class="q" style="border:2px solid var(--bad)"><p><b class="bad">⛔ SESIÓN SUSTITUIDA — NO RESOLVER ESTE BANCO.</b> El ${doc.fecha} se resuelve <b>${doc._meta.sustituido_por}.html</b> (${doc._meta.sustituido_motivo || 'pre-test de arranque'}). Este fichero se conserva solo como registro; sus ítems no cuentan como usados.</p></div>` : ''}
-<div id="intro" class="q"><p><b>Instrucciones.</b> ${doc.instrucciones}</p><p class="note">Regla Palmerton: marca la <b>confianza</b> en cada ítem. Un acierto con confianza «adivinada» o «dudosa» NO cuenta como conocimiento (% CIEGO = correctas seguras / total). El reloj no se detiene. Al terminar, exporta el JSON y guárdalo en <code>TRACKING_ERRORES/RONDAS/</code>; la línea de cierre va a <code>gen_encaps_semana.js --cerrar</code>.</p></div>
+<div id="intro" class="q"><p><b>Instrucciones.</b> ${doc.instrucciones}</p><p class="note">Regla Palmerton: marca la <b>confianza</b> en cada ítem. Un acierto con confianza «adivinada» o «dudosa» NO cuenta como conocimiento (% CIEGO = correctas Y seguras ÷ total). El reloj no se detiene. Al terminar, exporta el JSON y guárdalo en <code>TRACKING_ERRORES/RONDAS/</code>; la línea de cierre va a <code>gen_encaps_semana.js --cerrar</code>.</p></div>
 <div id="qs" class="hidden"></div>
 <div id="res" class="hidden"></div>
 </main>
@@ -1003,7 +1004,7 @@ function modoPretestArranque(lunesArg) {
       tema: `pre-test de arranque · 5Q × 4 críticos (${parte.codigos.join(' · ')}) · ${parte.etiqueta}`,
       fuente_preguntas: `ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: ${[...new Set(items.map((x) => x._file || 'set'))].join(', ')})${items.length - nReales ? ` + ${items.length - nReales} ítem(s) nuevos verificados contra compendio/norma` : ''} · ${FP_LN_ARRANQUE}`,
       n: items.length, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, correccion_inmediata: false,
-      instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = seguras/total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
+      instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = correctas Y seguras ÷ total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
       _meta: {
         generado: new Date().toISOString().slice(0, 10), parte: i + 1, de: PARTES_ARRANQUE.length, codigos: parte.codigos, q_por_codigo: Q_POR_CODIGO_ARRANQUE,
         sustituye: { fichero: `banco_${fecha}`, dia: fila.dia, codigo: fila.codigo, sub_eje: fila.extra.sub_eje || null, secundario: fila.extra.secundario || null, horario: 'sin cambio (16:15-17:15)' },
@@ -1142,6 +1143,7 @@ function modoSesionPretest() {
 function textoReal(t) {
   let x = String(t);
   x = x.replace(/re-test con otro enfoque/g, RETEST_TXT);
+  x = x.replace(/% CIEGO = seguras ?\/ ?total/g, '% CIEGO = correctas Y seguras ÷ total'); // v6.10z-d (chat ENCAPS)
   x = x.replace(/para el override del viernes \(gen_encaps_semana\.js\)/g, `para ${OVERRIDE_TXT}`);
   x = x.replace(/(\d+Q de \S+ del pre-test), rehechas en otro orden \(/g, '$1 en RE-TEST: las mismas preguntas reales, en otro orden (');
   x = x.replace(/(\S+) = el código del banco del (\d{4}-\d\d-\d\d), que SUSTITUYÓ el pre-test de arranque \(/g, (m0, c, f) => `${c} = el código del banco que el pre-test de arranque del ${fechaVis(f)} sustituyó (`);
@@ -1163,12 +1165,18 @@ function modoTextosReales() {
       const ins = String(doc.instrucciones || ''); const cola = ins.slice(ins.indexOf(', de memoria, sin material'));
       if (/^5 preguntas del tema de AYER \(/.test(ins) && cola.startsWith(', de memoria')) { const v = textoFechasReales(textoReal(`${instrEval(m.modo, paAyer)}${cola}`), doc); if (v !== ins) { doc.instrucciones = v; cambios.push('instrucciones'); } }
       else set(doc, 'instrucciones', 'instrucciones');
-    } else set(doc, 'tema', 'tema');
+    } else {
+      set(doc, 'tema', 'tema');
+      // v6.10z-d (chat ENCAPS): en las instrucciones de las demás salidas (pre-test de arranque), SOLO la definición del % CIEGO (sin traducir fechas: su texto
+      //   ya se escribió con las del día de la salida)
+      if (typeof doc.instrucciones === 'string') { const v = doc.instrucciones.replace(/% CIEGO = seguras ?\/ ?total/g, '% CIEGO = correctas Y seguras ÷ total'); if (v !== doc.instrucciones) { doc.instrucciones = v; cambios.push('instrucciones (% CIEGO)'); } }
+    }
     if (Array.isArray(m.avisos)) m.avisos = m.avisos.map((a) => { const v = textoFechasReales(textoReal(a), doc); if (v !== a) cambios.push('_meta.avisos'); return v; });
     if (m.fallback && Array.isArray(m.fallback.cadena)) for (const c of m.fallback.cadena) set(c, 'fuente', '_meta.fallback.cadena');
     const h = html(doc); const hDisco = fs.existsSync(path.join(OUT_DIR, base + '.html')) ? fs.readFileSync(path.join(OUT_DIR, base + '.html'), 'utf8') : null;
     if (!cambios.length && hDisco === h) { console.log(`— ${base}: al día`); continue; }
-    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [...new Set(cambios)], motivo: 'v6.10i/v6.10w: el re-test es de las mismas preguntas reales y la sesión anterior se nombra por su día REAL (alias de corrida_s1); ids, orden, claves y selección intactos' }];
+    const soloCiego = cambios.length && cambios.every((c) => c === 'instrucciones (% CIEGO)'); // v6.10z-d: el motivo de lo que de verdad cambió
+    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios: [...new Set(cambios)], motivo: soloCiego ? 'v6.10z-d (chat ENCAPS): % CIEGO = correctas Y seguras ÷ total (FASE_INTENSIVA_2027-I.md); ids, orden, claves y selección intactos' : 'v6.10i/v6.10w: el re-test es de las mismas preguntas reales y la sesión anterior se nombra por su día REAL (alias de corrida_s1); ids, orden, claves y selección intactos' }];
     else cambios.push('html re-emitido (render del runner: rótulo del re-test y fecha real en la cabecera)');
     doc._meta = m; plan.push({ base, doc, cambios });
   }

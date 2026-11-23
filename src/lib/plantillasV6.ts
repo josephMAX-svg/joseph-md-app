@@ -157,7 +157,7 @@ import { SYN_PLAN_META, synColaDe, SYN_COLA_POST_STEP1, synRecsDe } from './syna
 import { VIBE_META, vibePCDomingo, vibeDiaDe } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
 import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
-import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
+import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe, encapsRecuperasDe } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
 import { USMLE_FIJO_SAB } from './usmleGuia'; // v6.10y-b: bloque USMLE a hora fija de un sábado de F1 (sáb 28-nov 04:45: manual + vídeo FSRS de la configuración del lun 23)
@@ -1006,11 +1006,13 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         const fxU = USMLE_FIJO_SAB[iso];
         // v6.10z (lun 23-nov): + el bloque ENCAPS a hora fija del sábado (encapsManana.encapsRecuperaDe: sáb 28-nov 07:15-07:42, el Theoesencial de INV p. 1-27
         //   que no cupo en la mañana 1/21 del lun 23, que empezó a las 09:00 —v6.10z-b—); su guía, guiaEncapsRecuperaDe (TodayMission › encaps-rec)
-        const recS = encapsRecuperaDe(iso);
+        // v6.10z-d (lun 23-nov ≈09:45, la mañana fue 10:00-12:00, solo teoría y post-tests): VARIOS el mismo sábado (encapsRecuperasDe: sáb 28-nov 05:30 · 08:10 ·
+        //   14:30 las tres tandas de 10Q del banqueo + 07:15 el Theoesencial) → un bloque «encaps-rec» por hora; TodayMission busca la guía de cada uno por su hora (guiaEncapsRecuperaDe(iso, ini))
+        const recsS = encapsRecuperasDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',
           [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : []),
             ...(fxU ? [bloque('anki-fsrs', fxU.ini, fxU.fin, fxU.nombre, 'usmle', 'usmle-anki', fxU.detalle)] : []),
-            ...(recS ? [bloque('encaps-rec', recS.ini, recS.fin, recS.nombre, 'encaps', 'encaps', recS.tema)] : []), ...bloquesExtraDe(iso)],
+            ...recsS.map((r) => bloque('encaps-rec', r.ini, r.fin, r.nombre, 'encaps', 'encaps', r.tema)), ...bloquesExtraDe(iso)],
           nxS ? { notas: [nxS] } : {});
       }
       return out('F1', esDiaStepF1(iso) ? 'F1 · mañana Step 1 (mar · jue) + ENCAPS 16:15' : 'F1 · mañana ENCAPS (lun · mié · vie) + ENCAPS 16:15 y 18:00', bloquesF1(iso, usmleExacto));

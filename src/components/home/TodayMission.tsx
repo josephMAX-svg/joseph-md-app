@@ -35,7 +35,7 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
 import { guiaEncapsDe, sesionEncapsDe, encapsSabadoDe, guiaEncapsSabadoDe, sesionEncapsSabadoDe } from '../../lib/encapsGuia'; // v6.06: + carril SÁBADO de la intensiva · v6.06 (fix): + su guía y sus runners
 import {
   encapsMananaDe, guiaEncapsMananaEnRango, guiaEncapsTardeDe, guiaEncapsAnkiDe, theomedSabadoDe, guiaTheomedPrepDe, guiaTheomedVivoDe, encapsDomingoDe,
-  guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO, encapsRecuperaDe, guiaEncapsRecuperaDe,
+  guiaEncapsDomingoDe, ENCAPS_MANANA_META, ENCAPS_MINIMO, encapsRecuperaDe, guiaEncapsRecuperaDe, encapsRecuperasDe,
 } from '../../lib/encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + 18:00 + Anki 05:30 + clase EN VIVO del sábado + ENCAPS opcional del domingo · v6.09 (fix): + recuperación fija del domingo
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
@@ -241,8 +241,10 @@ export function encapsLabelDe(iso: string): string | null {
   const repo = sab ? `reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim() : null;
   if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
   // v6.10z: un sábado con bloque ENCAPS fijo (sáb 28-nov 07:15: el Theoesencial que no cupo el lun 23) lo nombra delante de la clase en vivo
-  const recSab = new Date(iso + 'T12:00:00Z').getUTCDay() === 6 ? encapsRecuperaDe(iso) : null;
-  if (viv?.vivo) return `ENCAPS · sáb ${recSab ? `${recSab.ini} ${corto(recSab.nombre)} + ` : ''}15:00 Theomed EN VIVO · ${viv.vivo}`;
+  // v6.10z-d: todos los del sábado, por hora (sáb 28-nov: 05:30 · 08:10 · 14:30 las tres tandas de 10Q del banqueo + 07:15 el Theoesencial)
+  const recSab = new Date(iso + 'T12:00:00Z').getUTCDay() === 6 ? encapsRecuperasDe(iso).map((r) => `${r.ini} ${corto(r.nombre)}`).join(' + ') : '';
+  if (viv?.vivo) return `ENCAPS · sáb ${recSab ? `${recSab} + ` : ''}15:00 Theomed EN VIVO · ${viv.vivo}`;
+  if (recSab) return `ENCAPS · sáb ${recSab}${repo ? ` + ${sab!.ini} ${repo}` : ''}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
   // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (v6.09, 17-nov: dom 22-nov 15:00, domingo de llegada; antes dom 29-nov 07:15): va primero en la etiqueta
   const recE = encapsRecuperaDe(iso);
@@ -556,9 +558,10 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         if (viv?.vivo && g) return { tema: `${viv.vivo} · ${viv.area ?? ''}`.replace(/ · $/, ''), sub: b.id === 'theomed-prep' ? 'PPT de la clase + 3 preguntas' : 'en vivo, participando · notas en forma de pregunta · el tramo 17:00-17:30 en la grabación', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
       // v6.09 (fix revisión 16-nov, joseph 4): bloque FIJO de recuperación del domingo (v6.09, 17-nov: dom 22-nov 15:00-16:30, domingo de llegada —antes dom 29-nov 07:15-08:45—: grabación de la ET 2/3 + PPT en diferido)
+      // v6.10z-d: un sábado con VARIOS bloques fijos (sáb 28-nov 05:30 · 07:15 · 08:10 · 14:30) → el de la hora de este bloque
       if (b.id === 'encaps-rec') {
-        const rec = encapsRecuperaDe(iso);
-        const g = guiaEncapsRecuperaDe(iso);
+        const rec = encapsRecuperaDe(iso, b.ini);
+        const g = guiaEncapsRecuperaDe(iso, b.ini);
         // v6.10z: lo que no cupo de una mañana (sáb 28-nov 07:15, Theoesencial) trae su propia línea (rec.sub); sin ella, la de la recuperación con PPT y grabación
         if (rec && g) return { tema: rec.tema, sub: rec.sub ?? 'fijo, no opcional · primero el PPT; la grabación a 2× solo en los tramos que el PPT no explica · notas en forma de pregunta', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
@@ -860,14 +863,14 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         // v6.02c (E5): los opcionales del domingo no tienen «mínimo» · v6.07: + el ENCAPS opcional del domingo; los bloques ENCAPS nuevos usan
         //   encapsManana.ENCAPS_MINIMO (la mañana ENCAPS es el bloque PRINCIPAL de lun · mié · vie: en ROJO conserva su mínimo, no «Omitido»)
         // v6.10z: + el encaps-rec de lo que no cupo de una mañana (sinMinimo: 27′ de lectura sin versión reducida; el mínimo ROJO de encaps-rec habla de PPT)
-        const minimo = !b.frente || /^(feynman|anki-dom|encaps-dom)$/.test(b.id) || (b.id === 'encaps-rec' && !!encapsRecuperaDe(iso)?.sinMinimo) ? null
+        const minimo = !b.frente || /^(feynman|anki-dom|encaps-dom)$/.test(b.id) || (b.id === 'encaps-rec' && !!encapsRecuperaDe(iso, b.ini)?.sinMinimo) ? null
           : ENCAPS_MINIMO[b.id] ? (modo === 'VERDE' ? null : ENCAPS_MINIMO[b.id]![modo === 'AMBAR' ? 'AMBAR' : 'ROJO'])
             : minimoPorFrente(b.frente as Frente, modo, iso);
         const omitido = !!minimo && /^Omitid/.test(minimo);
         if (!b.frente && b.plan !== 'usmle' && b.plan !== 'encaps') {
           // SERUMS · gimnasio · vida · revisión: fila compacta
           return (
-            <View key={`${b.fechaPlan ?? iso}:${b.id}`} style={[st.compacta, { borderLeftColor: color }, enCurso && { backgroundColor: color + '14' }]}>
+            <View key={`${b.fechaPlan ?? iso}:${b.id}:${b.ini ?? ''}`} style={[st.compacta, { borderLeftColor: color }, enCurso && { backgroundColor: color + '14' }]}>
               <Text style={[st.compactaHora, { color }]}>{b.hora}</Text>
               <Text style={st.compactaTxt} numberOfLines={2}>{PLAN_FLAG[b.plan]} {b.nombre}</Text>
               {enCurso && <AhoraChip color={color} />}
@@ -878,7 +881,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         // v6.02c F2 (E6): con guía, la cabecera la manda la guía (franja real + títulos), no el texto genérico de la plantilla
         const { ini, fin, enCurso: enCursoG, pasado: pasadoG, nombre: nombreH, tema: temaH, sub: subH, varias, conGuia } = cabeceraBloque(b, c, ahora);
         return (
-          <React.Fragment key={`${b.fechaPlan ?? iso}:${b.id}`}>
+          <React.Fragment key={`${b.fechaPlan ?? iso}:${b.id}:${b.ini ?? ''}`}>
           <TouchableOpacity activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
             style={[st.bloque, { borderLeftColor: color }, enCursoG && { backgroundColor: color + '14', borderColor: color + '66' }, (pasadoG || omitido) && { opacity: 0.5 }]}>
             <View style={st.horaCol}>

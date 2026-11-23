@@ -271,7 +271,7 @@ export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; co
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// % CIEGO SEMANAL (correctas seguras / total) desde study_progress, contra la meta 85% (≥17/20)
+// % CIEGO SEMANAL (correctas Y seguras ÷ total; v6.10z-d: la etiqueta lo dice así) desde study_progress, contra la meta 85% (≥17/20)
 // y el crucero 75%. La última semana se desglosa por área contra el vector v3.
 // ─────────────────────────────────────────────────────────────────────────────
 export interface CiegoSemanaView { lunes: string; pct: number; n: number; rondas: number; porArea: Record<string, { pct: number; n: number }> }
@@ -291,7 +291,7 @@ export function CiegoSemanalStrip({ semanas, tendencia, porCodigo }: { semanas: 
   return (
     <View style={styles.telBox}>
       <View style={styles.telHeader}>
-        <Text style={styles.telTitle}>■ % CIEGO SEMANAL · seguras / total</Text>
+        <Text style={styles.telTitle}>■ % CIEGO SEMANAL · correctas Y seguras ÷ total</Text>
         <Text style={[styles.telEst, { color: zoneColor, borderColor: zoneColor + '55' }]}>
           {last ? `${last.pct}%` : 'SIN DATOS'}
         </Text>
