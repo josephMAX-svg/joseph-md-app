@@ -403,7 +403,9 @@ const JM = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps
 const CAL_DOM_CFG = Object.fromEntries(((JM._meta || {}).dias_extra || []).filter((x) => x.calentamiento_domingo).map((x) => [x.fecha, x.calentamiento_domingo]));
 const aMinI = (h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
 const hhmmI = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
-const domingoTras = (f) => { let d = addDays(f, 1); while (dowDe(d) !== 0) d = addDays(d, 1); return d; };
+// v6.11 fase 2 (lun 23-nov): el primer domingo posterior SIN otro calentamiento (uno por domingo): la mañana 21/21 del jue 7-ene sustituye al II-3, que va al
+//   dom 17-ene porque el dom 10 ya lleva el V-2 del mié 6
+const domingoTras = (f) => { let d = addDays(f, 1); while (dowDe(d) !== 0 || CAL_DOM.some((c) => c.fecha === d)) d = addDays(d, 1); return d; };
 function loopDomingo(f, cfg) {
   if (!/^\d\d:\d\d$/.test(cfg.inicio || '') || !Array.isArray(cfg.almuerzo) || cfg.almuerzo.length !== 2 || !cfg.almuerzo.every((h) => /^\d\d:\d\d$/.test(h))) throw new Error(`_encaps_manana_v607.json dias_extra ${f}: calentamiento_domingo sin inicio (HH:MM) o almuerzo [ini, fin]`);
   const [a0, a1] = cfg.almuerzo.map(aMinI);

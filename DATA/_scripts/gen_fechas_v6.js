@@ -248,6 +248,7 @@ function comprobarCorridaS1(c, F) {
   for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
   if ('extra' in c) err.push(...comprobarExtra(c, F));
   if ('alias_frente' in c) err.push(...comprobarAliasFrente(c));
+  if (!err.length && F) err.push(...comprobarPorFrente(F)); // v6.11 fase 2: cada fecha de plan, una vez por frente y en orden de día real
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
   // v6.07a: «reemplazos» opcional = { fechaPlan: [{ frente?, a, por }] } → textos de la guía de ese día de plan que no valen en el día real
   //   (p. ej. «Hoy 16:00 Theomed abre simulacro» del vie 13 pintado el sáb 14); los aplica corridaTexto.reemplazosCorrida en TodayMission
@@ -409,28 +410,65 @@ function corrimientoRefecha(F = fechasPorDefecto()) {
   const llevadas = new Set(Object.values((F.corrida_s1 && F.corrida_s1.alias) || {}));
   return [...(F.corrimientos || [])].reverse().find((x) => !(x.perdidos || []).length || !x.perdidos.every((d) => llevadas.has(d))) || null;
 }
+/** v6.11 fase 2 (lun 23-nov-2026) · frentes cuyas filas de plan mueve corrida_s1 (alias global, alias_frente y extra { hora, plan }). */
+const FRENTES_CORRIDA = ['encaps', 'synapse', 'vibecoding', 'business', 'research-derma', 'mir', 'aurum', 'liviano'];
+/** v6.11 fase 2 · filas de plan que el PROPIO generador del frente hace otro día (fuera de corrida_s1): las CADENAS del SYNAPSE (gen_synapse_plan.js ›
+ *  CADENAS_V610W: la 1.ª fila de una cadena no tiene día real y su contenido lo hace la fila siguiente) y la semana deload S7 del vibecoding (gen_vibecoding_plan.js
+ *  la reparte por capacidad desde el sáb 2-ene). { frente: { fecha de plan: { real (el día en que empieza), como } } }; gen_synapse_plan.js comprueba que sus
+ *  cadenas son estas. */
+const FILAS_FUERA_CORRIDA = {
+  synapse: { '2026-12-01': { real: '2026-12-05', como: 'sáb 5-dic 21:00 (cadena «semana 2»; la del sáb 5, el dom 6 05:00)' }, '2026-12-31': { real: '2027-01-02', como: 'sáb 2-ene 21:00 (cadena «transición»; la del sáb 2, el dom 3 05:00)' } },
+  vibecoding: { '2026-12-31': { real: '2027-01-02', como: 'semana deload S7 repartida por capacidad desde el sáb 2-ene (gen_vibecoding_plan.js)' } },
+};
+/** v6.11 fase 2 · fechas de PLAN que hace cada día real para un `frente`: Map(fecha de plan → [{ real, mueve }]) con el alias global (o el alias_frente de ese
+ *  día real), el SHIP que absorbe un paso (en_ship), los días extra de ese frente y FILAS_FUERA_CORRIDA. `mueve` = la fila va a un día que no es el suyo (las
+ *  entradas de texto de corrida_s1.extra hacen la fila de su propio fin de semana). */
+function planesHechosDe(F, frente) {
+  const c = F.corrida_s1 || {}, al = c.alias || {}, af = (c.alias_frente || {})[frente];
+  const out = new Map();
+  const put = (p, real, mueve) => { if (!out.has(p)) out.set(p, []); out.get(p).push({ real, mueve }); };
+  for (const [r, de] of Object.entries(al)) put((af && af.alias[r]) || de, r, true);
+  if (af) for (const [r, de] of Object.entries(af.en_ship || {})) put(de, r, true);
+  for (const d of Object.keys(c.extra || {})) for (const x of extraListaDe(d, F)) if (x.frente === frente) put(x.plan, d, x.plan !== d);
+  for (const [p, x] of Object.entries(FILAS_FUERA_CORRIDA[frente] || {})) put(p, x.real, true);
+  return out;
+}
 /**
- * v6.11 (lun 23-nov-2026): fechas de PLAN que se quedan SIN DÍA REAL con el alias (ningún día real las hace y no las reparte corrida_s1.extra): hábiles
- * L-V de plan (sin SKIP ni feriado) entre la 1.ª fecha de plan del alias y su último día real que no son destino de ningún alias. Con la v6.11: el mié 30-dic
- * (lo coloca otra ronda). Los generadores que ordenan por día REAL las ponen tras el último día del alias (no abortan por ellas) y las listan.
+ * v6.11 (lun 23-nov-2026): fechas de PLAN que se quedan SIN DÍA REAL (ningún día real las hace): hábiles L-V de plan (sin SKIP ni feriado) entre la 1.ª fecha de
+ * plan del alias y su último día real que nadie hace. v6.11 fase 2: por FRENTE (`frente`: alias global o alias_frente, en_ship, extra de ese frente y
+ * FILAS_FUERA_CORRIDA); sin frente, la unión de los de FRENTES_CORRIDA. Con la v6.11 fase 2: ninguna (el plan del mié 30-dic tiene día en cada frente).
  */
-function planesSinDia(F = fechasPorDefecto()) {
+function planesSinDia(F = fechasPorDefecto(), frente) {
+  if (!frente) return [...new Set(FRENTES_CORRIDA.flatMap((fr) => planesSinDia(F, fr)))].sort();
   const c = F.corrida_s1 || {}; const al = c.alias || {};
   const vals = Object.values(al).sort(), keys = Object.keys(al).sort();
   if (!vals.length) return [];
-  const hechas = new Set(vals), skip = new Set(F.skip || []), fer = new Set(F.feriados || []);
-  for (const d of Object.keys(c.extra || {})) for (const x of extraListaDe(d, F)) hechas.add(x.plan);
-  for (const a of Object.values(c.alias_frente || {})) { for (const v of Object.values(a.alias || {})) if (!al[v]) hechas.add(v); }
+  const hechas = planesHechosDe(F, frente), skip = new Set(F.skip || []), fer = new Set(F.feriados || []);
   const out = [];
   for (let d = vals[0]; d <= keys[keys.length - 1]; d = add(d, 1)) if (wd(d) >= 1 && wd(d) <= 5 && !skip.has(d) && !fer.has(d) && !hechas.has(d)) out.push(d);
   return out;
 }
-/** v6.11 · clave de ORDEN por día real de una fecha de plan: su día real (alias inverso) o, si se quedó sin día (planesSinDia), justo detrás del último día
- *  real del alias («AAAA-MM-DD~», mayor que ese día y menor que el siguiente). Solo para ordenar; nunca se pinta. */
-function ordenRealDe(plan, F = fechasPorDefecto()) {
+/** v6.11 fase 2 · comprobación por FRENTE (FRENTES_CORRIDA): con el alias global, el alias_frente, el SHIP, los días extra y FILAS_FUERA_CORRIDA, (1) ninguna fecha
+ *  de plan se hace dos veces, (2) las filas que van a otro día se hacen en el orden de su fecha de plan (día real creciente) y (3) ninguna se queda sin día. */
+function comprobarPorFrente(F) {
+  const err = [];
+  for (const fr of FRENTES_CORRIDA) {
+    const h = planesHechosDe(F, fr);
+    for (const [p, xs] of h) if (xs.length > 1) err.push(`«corrida_s1» ${fr}: la fecha de plan ${p} se hace ${xs.length} veces (${xs.map((x) => x.real).join(', ')})`);
+    const mov = [...h].flatMap(([p, xs]) => xs.filter((x) => x.mueve).map((x) => ({ p, real: x.real }))).sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : 0));
+    for (let i = 1; i < mov.length; i++) if (!(mov[i].p > mov[i - 1].p)) err.push(`«corrida_s1» ${fr}: fuera de orden: el ${mov[i - 1].real} hace el plan del ${mov[i - 1].p} y el ${mov[i].real}, el del ${mov[i].p}`);
+    const sd = planesSinDia(F, fr);
+    if (sd.length) err.push(`«corrida_s1» ${fr}: fechas de plan sin día real: ${sd.join(', ')}`);
+  }
+  return err;
+}
+/** v6.11 · clave de ORDEN por día real de una fecha de plan: su día real (alias inverso; con `frente`, el de fechaRealDe de ese frente) o, si se quedó sin día
+ *  (planesSinDia), justo detrás del último día real del alias («AAAA-MM-DD~», mayor que ese día y menor que el siguiente). Solo para ordenar; nunca se pinta. */
+function ordenRealDe(plan, F = fechasPorDefecto(), frente) {
   const al = (F.corrida_s1 || {}).alias || {};
-  for (const [r, de] of Object.entries(al)) if (de === plan) return r;
-  if (planesSinDia(F).includes(plan)) { const ks = Object.keys(al).sort(); return ks[ks.length - 1] + '~'; }
+  if (frente) { const r = fechaRealDe(plan, F, frente); if (r !== plan) return r; }
+  else for (const [r, de] of Object.entries(al)) if (de === plan) return r;
+  if (planesSinDia(F, frente).includes(plan)) { const ks = Object.keys(al).sort(); return ks[ks.length - 1] + '~'; }
   return plan;
 }
 /** Semana corrida (gemelo node de corridaS1De del .ts): null fuera de ella. */
@@ -1114,7 +1152,7 @@ export function extraDePlan(plan: string, frente: string): { real: string; ini: 
 export function enShipDe(dom: string, frente: string = 'vibecoding'): string | null {
   return FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom] ?? null;
 }
-/** v6.11 (lun 23-nov-2026) · fechas de PLAN que se quedan SIN DÍA REAL con el alias (gen_fechas_v6.planesSinDia, calculado al generar): el mié 30-dic.
+/** v6.11 (lun 23-nov-2026) · fechas de PLAN que se quedan SIN DÍA REAL con el alias (gen_fechas_v6.planesSinDia, calculado al generar; v6.11 fase 2: por frente y unidos): ninguna (el plan del mié 30-dic tiene día en cada frente).
  *  corridaTexto las pinta «(día por fijar)» (no un día real que hace otro plan) y los repartos por día real las ordenan tras el último día del alias. */
 export const PLANES_SIN_DIA: string[] = ${L(planesSinDia(F))};
 /** v6.11 · clave de ORDEN por día real de una fecha de plan (gemelo de gen_fechas_v6.ordenRealDe, con el \`frente\` de fechaRealDe): su día real o, si se quedó
@@ -1264,6 +1302,8 @@ module.exports = {
   sinSesionPlan, corrimientoRefecha,
   // v6.11: planes que se quedan sin día real (el mié 30-dic) y su clave de orden
   planesSinDia, ordenRealDe,
+  // v6.11 fase 2: por frente
+  FRENTES_CORRIDA, FILAS_FUERA_CORRIDA, planesHechosDe, comprobarPorFrente,
 };
 
 if (require.main === module) main();

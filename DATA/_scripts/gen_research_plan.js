@@ -1446,7 +1446,7 @@ import type { GuiaBloque } from './guia';
 import { REC, DIAS, type DiaResearch } from './researchDailyPlan';
 import { DIAS_2027 } from './researchDailyPlan2027';
 import { researchObsUrlDay } from './obsidianResearchMap';
-import { FECHAS_V6 } from './fechasV6';
+import { FECHAS_V6, extraDePlan } from './fechasV6';
 
 /** Guías PASO A PASO (clave = d). */
 const G: Record<number, GuiaBloque> = ${JSON.stringify(GR.porD)};
@@ -1456,7 +1456,8 @@ const PLANB_INGLES = '${byCode.M2.fechaPlanB}';
 const TODOS: DiaResearch[] = [...DIAS, ...DIAS_2027];
 /** Guía del átomo (paso a paso si existe; si no, la genérica de las 5 franjas · F4 = 30′ nominal). */
 export function guiaResearchDe(x: DiaResearch): GuiaBloque {
-  if (G[x.d] && x.fecha < FECHAS_V6.serums.inicio) return G[x.d] as GuiaBloque;
+  // v6.11 fase 2: el átomo paso a paso que un fin de semana hace a hora fija (sáb 5-dic 05:00 = M2) lleva delante su hora real
+  if (G[x.d] && x.fecha < FECHAS_V6.serums.inicio) { const g = G[x.d] as GuiaBloque, fx = rdFindePlan(x.fecha); return fx ? { ...g, aviso: [fx, g.aviso].filter(Boolean).join(' · ') } : g; }
   return generica(x, TODOS.find((y) => y.d === x.d - 1) ?? null);
 }
 /** Guía del átomo de una fecha ISO (día-Research), o null. */

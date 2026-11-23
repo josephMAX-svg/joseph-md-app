@@ -136,7 +136,7 @@ de clave oficial).
 - **Sets de julio** en `TRACKING_ERRORES/*_claves.json`: 6 × 20 = 120Q (100 de I-3 + 20 mixtas de rentabilidad). Ojo: la `GUIA_POR_TEMA_2026-2.md`
   tenía claves inventadas (probado el 5-ago); estas claves no pasaron por el gate de verificación del protocolo actual.
 - **Theomed «Banco de preguntas SERUMS 2025-I»** (PDF 24 pp) y diapositivas de «resolución de simulacros» (2 PDFs, 160 pp) en disco.
-- **Deck Anki `ENCAPS::Cifras`**: 207 tarjetas (`TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` = `CIFRAS_CRITICAS_2027-I.md`).
+- **Deck Anki `ENCAPS::Cifras`**: 215 tarjetas (207 + 8 del saneo de cuarentena 2026-II del 23-nov; la tabla de arriba es el inventario previo con 207) (`TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` = `CIFRAS_CRITICAS_2027-I.md`).
   ⚠ **93 de ellas se derivaron del examen reservado** (excepción permitida por el protocolo §3-bis-LN): si el alumno estudia el deck antes del
   8-ene, el pre-test 2026-II deja de ser 100 % ciego en esas cifras. Leer su resultado con esa reserva.
 

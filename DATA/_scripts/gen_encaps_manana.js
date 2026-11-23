@@ -278,6 +278,9 @@ for (const [f, motivo] of EXTRA) {
 //   jue 31): su mañana va a un día extra posterior (mar 5-ene) y su 16:15 al sábado a hora fija (corrida_s1.extra { hora, plan })
 const _AV = new Set(Object.values((F6.corrida_s1 && F6.corrida_s1.alias) || {}));
 const SIN_DIA_REAL = new Set(Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).filter((r) => !_AV.has(r)));
+// v6.11 fase 2 (lun 23-nov): igual en F1: un hábil de F1 cuyo PLAN no tiene día real en el alias GLOBAL (el mié 30-dic: el alias global llega al plan del mar 29)
+//   no espera mañana en su fecha: su mañana (19/21, el simulacro de cierre) va a un día extra (mar 5-ene) y su 16:15, al sábado a hora fija (corrida_s1.extra)
+for (const d of [...ESPERADAS]) if (d >= F6.f1.inicio && d <= F6.f1.fin && SIN_DIA_REAL.has(d) && !EXTRA.has(d)) ESPERADAS.splice(ESPERADAS.indexOf(d), 1);
 for (const d of HAB_TRANS) if (!EXTRA.has(d) && !SIN_DIA_REAL.has(d)) aborta(`${d} es un L-V hábil de la transición (no es SKIP en _fechas_v6.json ${F6.version}) y no está en _meta.dias_extra: ese día de plan se quedaría sin su mañana ENCAPS`);
 // v6.09 (16-nov-2026): DOMINGOS DE PLAN (_meta.domingos_plan, con su motivo): una mañana ENCAPS de F1 que ya no cabe entre semana va un domingo de F1
 //   (v6.09: dom 27-dic, mañana 17/21; obligatoria, 07:15-12:00 con su protocolo; sus «cifras, normas y flashcards» de las 18:00 son FLEXIBLES ese día
@@ -440,10 +443,12 @@ const destDomTxt = (f) => `el ${corta(f)}, primer paso de su ENCAPS del domingo`
 const DOM_LIBRE_F2 = (() => { let d = addDias(F6.transicion.hasta, 1); while (dow(d) !== 0) d = addDias(d, 1); return d; })();
 //   v6.10x (remate): si ese domingo lleva un calentamiento de la intensiva a hora fija (dom 10-ene 07:15-13:30: calDomSQL), el destino dice sus huecos reales
 //   (de 05:00 al inicio de la rutina y desde el fin del calentamiento, sin pisar el SHIP, antes de las 17:00) y adónde va lo que no quepa (el domingo siguiente)
+// v6.11 fase 2: lo que no quepa en el primer domingo libre de F2 va al PRIMER domingo posterior sin calentamiento ni ENCAPS de F1 (dom 24-ene: el dom 17 lleva el II-3)
+function domPBSig() { let x = addDias(DOM_LIBRE_F2, 7); for (let i = 0; i < 10 && (J.domingos.some((y) => y.fecha === x) || calDomSQL(x)); i++) x = addDias(x, 7); return x; }
 function destPBDom(f, primerPaso = false) {
   const d = J.domingos.find((x) => x.fecha === f) || {};
   if (d.modo === 'previos') {
-    const c = calDomSQL(DOM_LIBRE_F2), sig = addDias(DOM_LIBRE_F2, 7);
+    const c = calDomSQL(DOM_LIBRE_F2), sig = domPBSig();
     if (!c) return `${corta(DOM_LIBRE_F2)} (el primer domingo libre: a la hora que puedas, antes de las 17:00; el ENCAPS del ${corta(f)} va lleno y a hora fija)`;
     if (J.domingos.some((x) => x.fecha === sig) || calDomSQL(sig)) aborta(`plan B → ${DOM_LIBRE_F2}: lo que no quepa iría al ${sig}, que no es un domingo de F2 con hueco (tiene ENCAPS de F1 o un calentamiento)`);
     // (sin la hora de inicio del calentamiento: en un domingo de plan, mov() movería una hora de 07:15-12:00 como si fuera del protocolo de la mañana)
@@ -1083,7 +1088,9 @@ for (const dia of J.mananas) {
   const pendM = pend.filter((u) => !u.forzada), pendF = pend.filter((u) => u.forzada); // v6.08: lo que no cupo por la mañana · lo que va directo a las 18:00
   // v6.09b lote 1-quater (R2 · N5): el destino del post-test AL PRINCIPIO del «cómo» (antes al final, pos. 370-800: el Calendar lo cortaba) · (N6) la clase «si no
   //   la viste en vivo» lleva la rama «vista en vivo» con sus minutos ({{SI_EN_VIVO}}, se rellena con los pasos de siempre de esta 18:00)
-  const sigF = (J.mananas.find((x) => x.n === dia.n + 1) || dia).fecha; // v6.10w (remate): por número (orden real), como prevM
+  // v6.11 fase 2 (remate): la siguiente mañana CON nuevas a las 18:00 y banqueo a las 09:45: se salta la del simulacro de cierre (19/21, mar 5-ene: su 18:00 no
+  //   lleva nuevas del temario) → la 18 (jue 31-dic) manda sus nuevas a la 18:00 del mié 6-ene (20/21), no a la del mar 5
+  const sigF = (J.mananas.filter((x) => x.n > dia.n && x.fase !== 'cierre').sort((x, y) => x.n - y.n)[0] || dia).fecha; // v6.10w (remate): por número (orden real), como prevM
   const pasosP = pend.map((u) => P(u.min, `${u.forzada ? 'CLASE EN DIFERIDO (va hoy a las 18:00)' : 'PENDIENTE de la mañana'}: ${u.que}`, `${u.postTest ? `Post-test al terminar (ciego; si no cabe → banqueo del ${corta(sigF)} 09:45). ` : ''}${u.cond ? '{{SI_EN_VIVO}}' : ''}${u.como}`, L99));
   // v6.09b (a1-8): preguntas de otra mañana que no caben allí (tarde_extra: las 10Q del mar 5-ene, que pasa de 60Q a 50Q, van al lun 28-dic 18:00)
   const tx = dia.tarde_extra || null;
@@ -1237,7 +1244,7 @@ for (const d of DIAS_GA) {
     //   las vencidas PRIMERO (y ese día entran menos nuevas)
     // v6.10o (auditoría c17 · diffs #17): sin cambio a propósito — la condición de DR LOPEZ ya va en el «qué» de ESTA misma viñeta, pegada a ENCAPS::Flashcards (y
     //   pasarla al «cómo» llevaría la fecha de destino más allá del carácter 100: check_rutina_guia 26h)
-    P(minGA - 10, `ENCAPS::Flashcards (sin el mazo de DR LOPEZ importado, decisión tuya: ENCAPS::Cifras) + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → ${destPm(GT_FECHAS.find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas).`),
+    P(minGA - 10, `ENCAPS::Flashcards (sin el mazo de DR LOPEZ importado, decisión tuya: ENCAPS::Cifras) + APEX::ENCAPS · vencidas${vencTxt}`, `Primero ENCAPS::Flashcards; las que no acabes → ${destPm(J.mananas.filter((x) => x.fase !== 'cierre').map((x) => x.fecha).find((x) => realDe(x) > realDe(d)) || d)} (allí van primero las vencidas; ese día entran menos nuevas).`),
   ], [], minGA >= 25 ? '0 vencidas en ENCAPS::Cifras, ENCAPS::Flashcards y APEX::ENCAPS' : '0 vencidas en ENCAPS::Cifras (y en ENCAPS::Flashcards si ya existe)', { aviso: GT_FECHAS.includes(d) ? 'Hoy la mañana 07:15-12:00 y las 18:00 son de ENCAPS.' : undefined }); // v6.09: el aviso, si ese día hay mañana ENCAPS (jue 31-dic: jueves sin Step); antes, si no era día de Step
 }
 
@@ -2060,9 +2067,22 @@ const synMinDom = (f) => ((SYNx.synDiaDe(f) || {}).bloques || []).reduce((a, b) 
     const sesDe = (v) => (FILAS_INT.filter((y) => y.fecha < c.fecha && y.extra && y.extra.loop && (y.codigo === v || y.extra.critico_v3 === v)).at(-1) || {}).fecha || null;
     const repTxt = Object.entries(c.repaso).map(([k, v]) => `${k} ${v}${sesDe(v) ? ` (${corta(sesDe(v))})` : ''}`).join(' · ') || 'sin códigos previos aún';
     const prev = [...new Set(Object.values(c.repaso))].join(' + ') || 'los de F1';
+    // v6.11 fase 2 (remate, revisión «cobertura» MEDIA): un calentamiento SIN códigos previos de la intensiva (dom 10-ene: el II-3 del jue 7 pasó al dom 17) no
+    //   deja vacíos sus 60′ de repaso: re-test de los fallos de lo hecho en los 8 días anteriores (ENCAPS de F1 a hora fija de corrida_s1.extra y mañanas de F1)
+    const semAnt = (() => { const d0 = addDias(c.fecha, -8);
+      const ex = Object.entries((F6.corrida_s1 && F6.corrida_s1.extra) || {}).filter(([f, v]) => f >= d0 && f < c.fecha && v && v.encaps).map(([f]) => [f, `ENCAPS 16:15 del ${corta(f)}`]);
+      const mm = J.mananas.map((y) => [realDe(y.fecha), y]).filter(([r]) => r >= d0 && r < c.fecha).map(([r, y]) => [r, `${y.fase === 'cierre' ? 'simulacro de cierre' : `mañana ${y.n}/${NM}`} del ${corta(r)}`]);
+      return [...ex, ...mm].sort((x, y) => x[0].localeCompare(y[0])); })();
+    const repVacio = !Object.keys(c.repaso).length;
+    const barrAntes = (FILAS_INT.filter((y) => y.fecha < c.fecha && y.codigo === cod && /^BARRIDO/.test(String(y.subtema || ''))).at(-1) || {}).fecha || null;
+    if (repVacio && !semAnt.length) aborta(`calentamiento del ${c.fecha}: sin códigos previos de la intensiva ni sesiones de F1 en los 8 días anteriores (el repaso de 60′ quedaría vacío)`);
     const RE_SEG = [
-      [/^Repaso espaciado/, (s) => P(s.min, `REPASO ESPACIADO D-1 / D-7 / D-21 · ${repTxt}`, 'Re-test de las MISMAS preguntas reales que fallaste esos días (registro y runners), sin la clave a la vista; lo que no recuerdes, recall en blanco de la regla contrastado con la norma.')],
-      [/^PRE-TEST 10Q/, (s) => P(s.min, `PRE-TEST 10Q CIEGAS de ${cod} — ${lab} · sin clave hasta responder`, `Primer intento ciego, sin apuntes, confianza 1-3 en cada una; la nota va al registro como pre-test del día. Preguntas reales con su clave: ${FUENTE_F2}.`)],
+      [/^Repaso espaciado/, (s) => (repVacio
+        ? P(s.min, `REPASO ESPACIADO · re-test de los fallos del ${corta(semAnt[0][0])} al ${corta(semAnt[semAnt.length - 1][0])} (aún no hay códigos previos de la intensiva)`, `Las MISMAS preguntas reales que fallaste (registro y runners), sin la clave a la vista: ${semAnt.map((x) => x[1]).join(' · ')}. Lo que no recuerdes, recall en blanco de la regla contrastado con la norma.`)
+        : P(s.min, `REPASO ESPACIADO D-1 / D-7 / D-21 · ${repTxt}`, 'Re-test de las MISMAS preguntas reales que fallaste esos días (registro y runners), sin la clave a la vista; lo que no recuerdes, recall en blanco de la regla contrastado con la norma.'))],
+      // v6.11 fase 2 (remate, revisión «cobertura» BAJA): si el código ya tuvo su BARRIDO antes del domingo (II-3: mié 13-ene → calentamiento dom 17), el pre-test
+      //   no es el primer contacto: re-test ciego tras ese barrido
+      [/^PRE-TEST 10Q/, (s) => P(s.min, `PRE-TEST 10Q CIEGAS de ${cod} — ${lab} · sin clave hasta responder`, `${barrAntes ? `Re-test ciego tras el barrido del ${corta(barrAntes)} (no es tu primer contacto con el tema): preguntas que NO hiciste ese día` : 'Primer intento ciego'}, sin apuntes, confianza 1-3 en cada una; la nota va al registro como pre-test del día. Preguntas reales con su clave: ${FUENTE_F2}.`)],
       [/^DEEP PRIME/, (s) => P(s.min, `DEEP PRIME de ${cod} — ${lab}: la norma / NTS y sus cifras (sin material nuevo)`, `La norma del sub-eje (definiciones de las primeras páginas, tablas, flujogramas, cifras) y tus notas del tema; lo que no salga de memoria → tarjeta a ENCAPS::Cifras. Normas: ${RUTA.normas} · ${RUTA.drLopezNorm}.`, L99)],
       [/^CONSOLIDACIÓN 30Q/, (s) => P(s.min, `CONSOLIDACIÓN 30Q · 60 % ${cod} · 40 % previos (${prev}) + cierre`, `Pregunta por pregunta con corrección inmediata y ≥ 40 % de recall directo (sin mirar las opciones); al final, cada fallo con su área y su tipo. Preguntas reales con su clave: ${FUENTE_F2}.`)],
       // v6.10x (remate): el domingo no tiene fila en Supabase → sin CIERRE en ENCAPS → Plan: el registro dice por dónde va (al principio: el Calendar corta el «cómo»)
@@ -2085,7 +2105,7 @@ const synMinDom = (f) => ((SYNx.synDiaDe(f) || {}).bloques || []).reduce((a, b) 
     const libre = (aMin(RUTINA_AM[0]) - aMin('05:00')) + (aMin('17:00') - aMin(c.fin)) - synMinDom(c.fecha);
     if (libre < 0) aborta(`calentamiento del ${c.fecha}: el SHIP / Feynman (${synMinDom(c.fecha)}′) no caben fuera del bloque antes de las 17:00`);
     const sabV = J.sabados.find((s) => s.fecha === addDias(c.fecha, -1) && s.vivo && !s.sin_sesion && !/banqueo/i.test(s.vivo)) || null;
-    const fuera = [c.fecha === DOM_LIBRE_F2 ? `lo que los planes B de diciembre mandan a este domingo (lo que no quepa, al ${corta(addDias(c.fecha, 7))})` : '',
+    const fuera = [c.fecha === DOM_LIBRE_F2 ? `lo que los planes B de diciembre mandan a este domingo (lo que no quepa, al ${corta(domPBSig())})` : '',
       sabV ? `el post-test de la clase en vivo de ayer (${sabV.vivo}), si ya está publicado (ciego, ≤${PT_SAB_MIN}′)` : ''].filter(Boolean);
     const fueraTxt = fuera.length ? ` Fuera de este bloque, de 05:00 a ${RUTINA_AM[0]} (antes de la rutina) o desde las ${c.fin}, sin pisar el SHIP (≈${libre}′ en total): ${fuera.join(' y ')}.` : '';
     GD[c.fecha] = guia(fr(c.ini, c.fin), `ENCAPS · DOMINGO a hora fija · CALENTAMIENTO ${cod} de la intensiva (NO opcional) · ${lab}`, pasos, [R99],
@@ -2110,7 +2130,11 @@ const SIM_F2 = [];
     const syn = synMinDom(f);
     if (DOM_CAP - syn - (CAL_DOM[f] ? CAL_DOM[f].min : 0) < SIM_OPC_MIN) continue;
     const d = cola.shift();
-    SIM_F2.push({ fecha: f, simulacro: d.simulacro_pendiente, ranking: false, modo: 'simulacro', origen: d.fecha, origenModo: d.modo });
+    // v6.11 fase 2 (remate): si ese domingo lleva un ENCAPS a hora fija (corrida_s1.extra[f].encaps: dom 24-ene 07:15-08:15, el D32), el ejemplo del simulacro
+    //   opcional empieza 15′ después (08:30-12:30); antes, 08:00-12:00, que pisaba el bloque fijo
+    const exE = (((F6.corrida_s1 || {}).extra || {})[f] || {}).encaps, exFin = exE && typeof exE === 'object' && exE.hora ? String(exE.hora).split('-')[1] : null;
+    const fe = exFin && aMin(exFin) + 15 > aMin('08:00') ? [hhmm(aMin(exFin) + 15), hhmm(aMin(exFin) + 15 + SIM_OPC_MIN)] : null;
+    SIM_F2.push({ fecha: f, simulacro: d.simulacro_pendiente, ranking: false, modo: 'simulacro', origen: d.fecha, origenModo: d.modo, ...(fe ? { franja_ejemplo: fe } : {}) });
   }
   if (cola.length) aborta(`simulacros opcionales sin domingo de F2 con hueco antes del examen: ${cola.map((d) => d.simulacro_pendiente).join(' · ')}`);
 }
@@ -2184,7 +2208,7 @@ for (const d of [...J.domingos.filter((x) => !x.modo || x.modo === 'simulacro'),
   ], recursosDe(L, ...(theomed ? [R105] : [])), `${L.length ? `los ${antesMin}′ no opcionales hechos${condMinTxt(L)} (${cortos}) · ` : ''}simulacro hecho en 2 h y corregido, con la nota en el registro (o descanso: es opcional)`, {
     // v6.10x: el simulacro pendiente de otro domingo (simulacro_pendiente → SIM_F2) dice de dónde viene
     //   (remate: sin el historial del traslado) · el primer domingo tras uno con calentamiento a hora fija recibe lo de los planes B de diciembre que allí no quepa
-    aviso: `${d.origen ? `Simulacro opcional pendiente (era del ${corta(d.origen)}). ` : ''}${d.fecha === addDias(DOM_LIBRE_F2, 7) && CAL_DOM[DOM_LIBRE_F2] ? `Si de los planes B de diciembre quedó algo que no cupo el ${corta(DOM_LIBRE_F2)}, va primero (eso no es opcional). ` : ''}${[...pbAqui.map((x) => `Si el dom ${Number(x.desde.slice(8))} fue con el plan B: antes de todo, ${x.min}′ de la ${x.clase} (de ejemplo, hasta las ${hhmm(aMin(ejF) + x.min)}).`), ...(ADEL_PB[d.fecha] || []).map((x) => `Si no viste la ${x.ad.por} en vivo (${corta(x.ad.sab)}): antes de todo, ${x.resto}′ de la ${x.clase} (de ejemplo, hasta las ${hhmm(aMin(ejF) + x.resto)}).`)].map((t) => t + ' ').join('')}${L.length ? 'Flexible' : 'Opcional y flexible'}: a la hora que puedas (${ejI}-${ejF} es solo un ejemplo${REC[d.fecha] ? `: hoy va después de la recuperación FIJA de las ${REC[d.fecha].ini}-${REC[d.fecha].fin}` : ''}${d.compromiso ? ` y termina antes del compromiso personal de las ${d.compromiso}${recorte ? `: el simulacro se acorta ${recorte}′, en la corrección` : ''}` : ''}). ${L.length ? `Los primeros ${antesMin}′ NO son opcionales${condMinTxt(L)}: ${L.map((x) => x.desc).join(' · ')}; aunque descanses del simulacro, hazlos. ` : ''}Si vas atrasado, usa estas horas para lo pendiente de la semana.${d.ranking ? ' RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.' : ''}`,
+    aviso: `${d.origen ? `Simulacro opcional pendiente (era del ${corta(d.origen)}). ` : ''}${d.fecha === domPBSig() && CAL_DOM[DOM_LIBRE_F2] ? `Si de los planes B de diciembre quedó algo que no cupo el ${corta(DOM_LIBRE_F2)}, va primero (eso no es opcional). ` : ''}${[...pbAqui.map((x) => `Si el dom ${Number(x.desde.slice(8))} fue con el plan B: antes de todo, ${x.min}′ de la ${x.clase} (de ejemplo, hasta las ${hhmm(aMin(ejF) + x.min)}).`), ...(ADEL_PB[d.fecha] || []).map((x) => `Si no viste la ${x.ad.por} en vivo (${corta(x.ad.sab)}): antes de todo, ${x.resto}′ de la ${x.clase} (de ejemplo, hasta las ${hhmm(aMin(ejF) + x.resto)}).`)].map((t) => t + ' ').join('')}${L.length ? 'Flexible' : 'Opcional y flexible'}: a la hora que puedas (${ejI}-${ejF} es solo un ejemplo${REC[d.fecha] ? `: hoy va después de la recuperación FIJA de las ${REC[d.fecha].ini}-${REC[d.fecha].fin}` : ''}${d.compromiso ? ` y termina antes del compromiso personal de las ${d.compromiso}${recorte ? `: el simulacro se acorta ${recorte}′, en la corrección` : ''}` : ''}). ${L.length ? `Los primeros ${antesMin}′ NO son opcionales${condMinTxt(L)}: ${L.map((x) => x.desc).join(' · ')}; aunque descanses del simulacro, hazlos. ` : ''}Si vas atrasado, usa estas horas para lo pendiente de la semana.${d.ranking ? ' RANKING: cuenta el primer intento dentro de 89 h desde el viernes 16:00 → hoy, de un tirón.' : ''}`,
     planB: [pbTxt, adTxtD, theomed ? `Si ese simulacro no está: uno antiguo del campus que no hayas hecho, o uno de DR LOPEZ (${RUTA.drLopezSim}).` : `Si prefieres descansar${d.fecha < F6.encaps.intensiva_desde ? ' antes de la intensiva' : ''}, descansa: es opcional.`].filter(Boolean).join(' '),
   });
   for (const x of pbAqui) ANTES_USADOS.add(x);

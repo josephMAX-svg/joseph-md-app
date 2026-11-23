@@ -204,8 +204,10 @@ for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) {
 // v6.08 (14-nov-2026, decisión 7): F2 también 07:45 tras la revisión de las 07:15 (antes 09:15, dentro del gimnasio 08:30-14:00) y SYNAPSE A/B/C 21:00
 const bizSab = (sab, entero) => (RG.sabadoTheomed(sab) ? (entero ? '07:45–08:25' : '14:30–14:45') : (entero ? '07:45–08:25' : '07:45–08:00')); // v6.09: entero con clase → 07:45 (antes 17:15, dentro del baile)
 const SAB_F2_ABC = (S.SYN_DIAS.find((d) => dow(d.fecha) === 6 && FV.faseV6(d.fecha) === 'F2' && d.bloques.some((b) => /^[ABC]$/.test(b.tag))) || {}).fecha;
+// v6.11 fase 2: el NBME es el del día REAL: la fila de un frente con alias propio que se hace ese día (SYNAPSE / Business del plan del vie 11-dic, el mié 16)
+const enRealDe = (n, fr) => { const r = FV.fechaRealDe(n); return dow(r) >= 1 && dow(r) <= 5 ? FV.fechaPlanDe(r, fr) : n; };
 const esperado = [
-  ...(UWSA1 ? [[UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00']] : [[U.DIAS[0].fecha, RG.guiaSynapseDe, '12:30–13:00']]), ...NBMES.map((n) => [n, RG.guiaSynapseDe, '13:00–13:30']),
+  ...(UWSA1 ? [[UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00']] : [[U.DIAS[0].fecha, RG.guiaSynapseDe, '12:30–13:00']]), ...NBMES.map((n) => [enRealDe(n, 'synapse'), RG.guiaSynapseDe, '13:00–13:30']),
   [D1, RG.guiaBusinessDe, '13:00–13:25'], [OUT1, RG.guiaBusinessDe, '13:00–13:25'],
   // v6.09 (rev. joseph 5): el cierre del 1.er OUTPUT va el sábado de SU semana (el OUTPUT S1 va el lun 23 → sáb 28); si el sábado anterior fue sin sesión y su
   //   semana no tuvo OUTPUT, ese sábado lleva además la fila del tracker de esa semana (10′ + 15′ = 25′ → 07:45-08:10, antes del gimnasio)
@@ -221,7 +223,8 @@ const esperado = [
   [D1, RG.guiaVibeDe, '04:15–05:00'],
 ];
 // Business en día de NBME (F1): lectura → audio 12:30-12:55 en el almuerzo · OUTPUT → entero el sábado 07:45-08:25 (v6.02: vie 30-oct)
-for (const n of NBMES) {
+for (const n0 of NBMES) {
+  const n = enRealDe(n0, 'business'); // v6.11 fase 2
   const r = B.bizDiaDe(n);
   if (!r || B.bizModo(r) === 'DESCANSO') continue;
   if (B.bizModo(r) === 'OUTPUT') esperado.push([addDias(n, 6 - dow(n)), RG.guiaBusinessDe, bizSab(addDias(n, 6 - dow(n)), true)]);
@@ -361,14 +364,16 @@ const SAB_DD = SAB_DD0 === SAB_NP ? addDias(SAB_DD0, 7) : SAB_DD0;
 const piResto = (S.SYN_DIAS.find((d) => d.bloques.some((b) => b.tag === 'C' && /^Simon Willison — serie Prompt injection/.test(b.material) && b.guia && /^Resto → /.test(b.guia.como))) || {}).fecha;
 // v6.11 (revisión c32): el 1.er sábado tras el día REAL de esa sesión (alias: el mar 1-dic de plan se hace el lun 7-dic → sáb 12-dic; antes, el sáb 5-dic, dos días
 //   ANTES de que existiera el resto)
-const SAB_PI = piResto ? sabTras(FV.fechaRealDe(piResto)) : SAB_NP;
+// v6.11 fase 2: si la sesión que deja el resto es la 1.ª fila de una CADENA (sáb 5-dic 21:00 = la fila del mar 1-dic), el comodín es el de ese mismo sábado (su fila va
+//   el dom 6-dic 05:00, después: gSynDe lo incluye)
+const SAB_PI = piResto ? ((S.SYN_REC_F1 || []).some((r) => r.cadena && r.plan === piResto) ? piResto : sabTras(FV.fechaRealDe(piResto, 'synapse'))) : SAB_NP;
 if (!conTexto(gSynDe(SAB_NP), /Greg Brockman/) || !conTexto(gSynDe(SAB_PI), /Prompt injection attacks/)) errores.push(`${SAB_NP}/${SAB_PI} guiaSynapseDe: faltan los comodines curados de la curaduría original (No Priors + «Prompt injection…»)`);
 if (!conTexto(gSynDe(SAB_DD), /deep dive.*minutos \d+:00-\d+:00/) || !conTexto(gSynDe(SAB_DD), /lethal trifecta/)) errores.push(`${SAB_DD} guiaSynapseDe: faltan los comodines curados del deep dive + trifecta (1.er sábado LIBRE tras la pieza)`);
 if (SAB_DD0 === SAB_NP && conTexto(gSynDe(SAB_NP), /deep dive.*minutos/)) errores.push(`${SAB_NP} guiaSynapseDe: el comodín del deep dive pisa al de No Priors`);
 // v6.05 (fix): el deep dive retoma donde quedó (tramos de 10′ ya vistos antes del sábado): con el tramo 2 del vie 6-nov → minutos 20:00-30:00
 {
   const tramos = S.SYN_DIAS.filter((d) => d.fecha < SAB_DD && dow(d.fecha) >= 1 && dow(d.fecha) <= 5).reduce((a, d) => a + d.bloques.filter((b) => b.tag === 'B' && /AI prompt engineering: A deep dive/.test(b.leccion)).length, 0);
-  if (!conTexto(RG.guiaSynapseDe(SAB_DD), new RegExp(`deep dive.*minutos ${10 * tramos}:00-${10 * tramos + 10}:00`))) errores.push(`${SAB_DD} guiaSynapseDe: el comodín del deep dive no retoma en el minuto ${10 * tramos} (${tramos} tramos vistos)`);
+  if (!conTexto(gSynDe(SAB_DD), new RegExp(`deep dive.*minutos ${10 * tramos}:00-${10 * tramos + 10}:00`))) errores.push(`${SAB_DD} guiaSynapseDe: el comodín del deep dive no retoma en el minuto ${10 * tramos} (${tramos} tramos vistos)`);
 }
 // ── v6.09 (rev. adversarial): controles (21)-(24) — ver la cabecera ──
 {
@@ -1213,9 +1218,11 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
           if (!g) secErr.push(`(v610-s1) ${f} ${r.ini} SYNAPSE: sin guía`); else if (sumP(g) !== minF(fr2)) secErr.push(`(v610-s1) ${f} ${r.ini} SYNAPSE: Σ pasos ${sumP(g)} ≠ ${minF(fr2)}′`); else if (!/a hora fija/.test(g.aviso || '')) secErr.push(`(v610-s1) ${f} ${r.ini} SYNAPSE: la guía no avisa «a hora fija»`);
           nEx++;
         }
-      } else if (frente === 'business') { const r = B.bizDiaDe(p); if (!r || B.bizModo(r) === 'DESCANSO' || r.min !== m) secErr.push(`(v610-s1) ${f} Business (plan ${p}): ${r ? `${B.bizModo(r)} ${r.min}′` : 'sin fila'} (esperado lectura de ${m}′)`); chkGuia(RG.guiaBusinessDe(p), 'guiaBusinessDe'); nEx++; }
+      // v6.11 fase 2: un OUTPUT a hora fija (sáb 28-nov 07:15) es su parte 1/2 de 25′ (la 2/2, el cierre del mismo sábado)
+      } else if (frente === 'business') { const r = B.bizDiaDe(p); if (!r || B.bizModo(r) === 'DESCANSO' || (B.bizModo(r) === 'OUTPUT' ? m !== 25 : r.min !== m)) secErr.push(`(v610-s1) ${f} Business (plan ${p}): ${r ? `${B.bizModo(r)} ${r.min}′` : 'sin fila'} (esperado lectura de ${m}′ u OUTPUT 1/2 de 25′)`); chkGuia(RG.guiaBusinessDe(p), 'guiaBusinessDe'); nEx++; }
       else if (frente === 'aurum') { if (!A.aurumDiaDe(p)) secErr.push(`(v610-s1) ${f} AURUM (plan ${p}): sin lección`); chkGuia(RG.guiaAurumDe(p), 'guiaAurumDe'); nEx++; }
-      else if (frente === 'liviano') { const r = L.livDiaDe(p); if (!r || r.min !== m || r.casoId != null) secErr.push(`(v610-s1) ${f} LIVIANO (plan ${p}): ${r ? `${r.min}′${r.casoId != null ? ' CASO' : ''}` : 'sin lección'} (esperado lección de ${m}′)`); chkGuia(RG.guiaLivianoDe(p), 'guiaLivianoDe'); nEx++; }
+      // v6.11 fase 2: la sesión a hora fija puede ser un CASO (dom 6-dic = CASO 2/16, plan del mar 1-dic)
+      else if (frente === 'liviano') { const r = L.livDiaDe(p); if (!r || r.min !== m || (r.casoId != null && FVs.faseV6(f) === 'TRANSICION')) secErr.push(`(v610-s1) ${f} LIVIANO (plan ${p}): ${r ? `${r.min}′${r.casoId != null ? ' CASO' : ''}` : 'sin lección'} (esperado lección de ${m}′)`); chkGuia(RG.guiaLivianoDe(p), 'guiaLivianoDe'); nEx++; }
       else if (frente === 'mir') { if (!MDp.mirDiaDe(p)) secErr.push(`(v610-s1) ${f} MIR (plan ${p}): sin sesión`); chkGuia(MGu.mirGuiaDe(p, '15:15'), 'mirGuiaDe'); nEx++; }
       else if (frente === 'research-derma') {
         const at = RDp.DIAS.find((x) => x.fecha === p);
@@ -1254,7 +1261,9 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     ancla(S.SYN_DIAS.length === 137 && S.SYN_PLAN_META.fin === '2027-04-01', `SYNAPSE: ${S.SYN_DIAS.length} días · fin ${S.SYN_PLAN_META.fin} (esperado 137 · jue 1-abr)`);
     const s28 = S.synDiaDe('2026-11-28'); ancla(s28 && s28.d === 13 && s28.bloques.some((b) => b.tag === 'A'), 'SYNAPSE sáb 28-nov 21:00 = d13 con su A-unit');
     ancla(!S.synRecDe('2026-11-28') && !!S.synRecDe('2027-01-03'), 'SYNAPSE: la sesión de recuperación va el dom 3-ene (no el sáb 28-nov)');
-    for (const f of ['2026-11-28', '2026-12-06']) ancla(!EX[f], `corrida_s1.extra ${f}: la recuperación por partes se retiró (v6.10c)`);
+    // v6.11 fase 2 (diseño del juez, pendiente del OK de Joseph): el sáb 28-nov y el dom 6-dic vuelven a llevar días extra, pero no por partes: cada frente hace a
+    //   hora fija la fila de SU fecha de plan (sáb 28: AURUM y Business del mar 24-nov · dom 6: SYNAPSE de la cadena y LIVIANO del mar 1-dic)
+    for (const f of ['2026-11-28', '2026-12-06']) ancla(!EX[f] || Object.values(EX[f]).every((v) => (typeof v === 'object' && v.plan && v.plan < f) || (f === '2026-12-06' && v === '05:00-05:30')), `corrida_s1.extra ${f}: solo filas de su fecha de plan (sin recuperación por partes)`);
     // v6.10w: el dom 29-nov solo lleva el SYNAPSE de la cadena de la semana 1 (05:00, la sesión del sáb 28)
     ancla(EX['2026-11-29'] && Object.keys(EX['2026-11-29']).join() === 'synapse' && (S.synRecsDe('2026-11-29')[0] || {}).cadena, 'corrida_s1.extra dom 29-nov: solo el SYNAPSE de la cadena de la semana 1');
     ancla(!RG.aurumLSabadoDe(SAB2), 'AURUM: el sáb 2-ene (sábado que recupera) no lleva «L de la semana»');

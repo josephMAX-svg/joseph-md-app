@@ -2809,3 +2809,27 @@ Orden de Joseph: «el 22 a partir de las 2 de la tarde se puede hacer». El dom 
 - **v6.10z (lun 23-nov: la mañana ENCAPS empezó a las 09:00, orden de Joseph vía chat ENCAPS 08:02 → 08:30) — app 7e97ad1 + ronda c26 APLICADA:** los 4 eventos de la mañana ENCAPS de hoy re-horados A MANO (08:05 a 08:15 y luego 08:33 a 09:00-10:18 · 10:18-10:43 · 10:43-11:13 · 11:13-12:00, con «⏰ HOY…»; banqueo 20Q DR LOPEZ PosTest 1); regla C-bis en `c12/a_mano.json` (build_ops/ver no los tocan). Lo que no cupo: Theoesencial INV p. 1-27 → evento NUEVO sáb 28-nov 07:15-07:42 (fannb77d06kgdiea1vrrcuoaf4, `_meta.no_cupo` → encaps-rec); 10Q del banqueo (las siguientes no usadas, PosTest 1 → PosTest 2) + verificación en la norma (21′) → primeros pasos NO opcionales del ENCAPS del dom 29 (08:27-09:00; la corrección del simulacro opcional baja a 40′ y sus 53 preguntas pasan al dom 6-dic, que empieza a las 11:51). Más: título del Anki del mar 24, journal «Cierre de semana (domingo…)», ruta absoluta del test del parser. c26: 5 updates + 1 create, ver.js en simulación 9.586 OK · 0 FAIL; registro `c12/ronda_c26/`.
 - **v6.10z-d (lun 23-nov: la mañana ENCAPS fue 10:00-12:00, cuarto y último corrimiento de Joseph) — app e4f82d6 + ronda c29 APLICADA:** los 4 eventos de hoy re-horados a mano a las 09:45 (10:00-11:18 INV S1-S3 · 11:18-11:36 post-tests + pausa · 11:36-11:46 corrección de post-tests, sin banqueo · 11:46-12:00 tarjetas + registro; C-bis). Banqueo de 30Q → 3 eventos NUEVOS el sáb 28 (05:30 oatfs6o5p3uq43pql99l13cadk · 08:10 qq2pnil4e9uil7g2bgcdkrpj8s · 14:30 uqlslcmgs7jaek84gjt43qj4c0; orden PosTest 1 → PosTest 2 sin números fijos); dom 29 primeros pasos 56′ (corrección 30Q 25′ + verificación 21′ + PPT SP 2/11 10′), simulacro opcional con corrección 27′; dom 6-dic parte 1 11:38-14:15 (157′). Textos: % CIEGO «correctas Y seguras ÷ total» (BANQUEO de las mañanas) y regla del envío del post-test (post-test + pausa, dom 13/20-dic). c29: 40 updates + 3 creates en 2 lotes, 0 fallidas, 0 ajenas; `ver.js post --despues` 9.634 OK · 0 FAIL. Pendiente c13 (2027): 46 eventos con los mismos textos (lun 4, mar 5, mié 6-ene y 43 CARRIL B «% ciego = seguras/n») — ronda aparte, no urgente.
 - **v6.10z-e/f (lun 23-nov, chat ENCAPS: «la cuarentena del 2026-II no se leía en el Calendar en los banqueos de 50Q antes del pre-test ciego del 8-ene») — app b2e95aa + 19d2a9e + rondas c30/c31 APLICADAS:** «Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8-ene.» va ahora PRIMERO (tras «Sin mirar nada.») en todos los banqueos ENCAPS y en las 3 tandas del sáb 28. c30: 17 updates (BANQUEO de las mañanas 25-nov → 30-dic) + `lib_txt.limCiego` ajustado en c12 (los «cómo» > 500 con el % CIEGO nuevo se cortan en el último fin de frase dentro de 450, nunca antes de esa frase; copia previa lib_txt.antes_c30.js); c31: 3 updates a mano (tandas del sáb 28). Cuarentena visible: 20/20. ver.js 9.634 OK · 0 FAIL.
+- **v6.11 (lun 23-nov ≈11:20, orden de Joseph: «a partir del 24, con ENCAPS iniciamos todo; correr un día») — fase 1 app 8d2be51 + ronda c34 APLICADA · fase 2 app (commit de la fase 2) + ronda c35 APLICADA:**
+  - **Fase 1.** El lun 23 queda sin sesión (`corrida_s1.sin_sesion`): lo hecho por la mañana en ENCAPS es adelanto, y la mañana 1/21 se repite entera el mar 24. Desde el mar 24, alias de +1 hábil: mar 24 = plan mié 18 … vie 1-ene = plan mar 29-dic. Vibecoding conserva su semana (`alias_frente.vibecoding`).
+  - **c34 (23-29 nov).** 39 + 40 ops. El lun 23 tiene 10 borrados con respaldo en `c12/ronda_c34`; quedan la mañana ENCAPS (C-bis) y el «⛔ HOY NO» de las 16:15.
+  - **Fase 2: el plan del mié 30-dic, que quedó sin día.**
+    - Los secundarios recuperan el hábil en huecos de fin de semana (`corrida_s1.extra`):
+      - sáb 28-nov: AURUM 04:30 y Business 07:15;
+      - sáb 5-dic: R↔D 05:00 y MIR 07:15;
+      - dom 6-dic: SYNAPSE 05:00 y LIVIANO 07:15.
+    - Después vuelven a su fecha W (`alias_frente`): AURUM y Business desde el lun 30-nov; MIR, R↔D, SYNAPSE y LIVIANO desde el lun 7-dic.
+    - ENCAPS:
+      - mañanas 19/20/21 → mar 5, mié 6 y jue 7-ene;
+      - II-3 → dom 17-ene;
+      - 16:15 del plan 30-dic, 31-dic y 2-ene → sáb 2-ene 04:30, lun 4-ene 09:45 y dom 24-ene 07:15 (D32);
+      - repaso del dom 10-ene = re-test de los fallos del 2 al 7-ene.
+    - USMLE: D13 vie 1-ene y PAUSA_REAL desde el sáb 2-ene.
+    - Research: M1 25-nov, T-1 10-dic y CR-1 28-dic (overlays `--set` a las 15:40).
+  - **c35.** 9 lotes (c12_1..7 + c13_1..2) con 328 ops: 300 update, 15 create y 6 delete (respaldos en `ronda_c35/bk_*.json`). Sin fallidas ni ajenas.
+    - Fuera a propósito (`ronda_c35/lotes/excluidas.json`): lun 23 16:15 «HOY NO»; mar 24 18:00, editado por el chat ENCAPS; jue 26 y vie 27 a las 18:00, que solo cambiaban filas de CIFRAS y esperan su commit.
+    - `ver.js --despues`: c12 9.486 OK · 17 FAIL; c13 66 OK · 1 FAIL. Todos explicados:
+      - las 4 excluidas;
+      - el solape de c12 y c13 en la ventana 2-7 ene;
+      - las 2 ediciones de c36.
+    - Constructores parcheados e instalados en `c12/` y `v610w_scratch/c13_c21/`, con copias `*.antes_c35.*`.
+  - **c36 (a mano, 15:02).** El mar 24 a las 09:15 y a las 16:15 llevan al principio «⚠ HOY manda la hoja ENCAPS (GoodNotes)…», a pedido del chat ENCAPS: los post-tests se envían juntos a las 10:40-10:45 y la eval va sin «Terminar y corregir». Respaldo en `ronda_c36/`. Junto con el 18:00 quedan anotados en `a_mano.json › _texto_a_mano`: hasta que pase el día, se excluyen a mano de cualquier lote.

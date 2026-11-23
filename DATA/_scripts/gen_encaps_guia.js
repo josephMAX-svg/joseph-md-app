@@ -172,6 +172,11 @@ const ALIAS_S1 = Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).sort(
 const _AL6 = (F6.corrida_s1 && F6.corrida_s1.alias) || {};
 const realDe = (f) => Object.keys(_AL6).find((k) => _AL6[k] === f) || f;
 const conAlias = (f) => realDe(f) !== f;
+// v6.11 fase 2 (lun 23-nov): con un día EXTRA de ENCAPS (corrida_s1.extra { hora, plan }: el D30 del mié 30-dic el sáb 2-ene, el D31 del jue 31-dic el lun 4-ene)
+//   la sesión de la fecha de plan anterior NO es la de ayer aunque las fechas de plan sean seguidas (sáb 2 → lun 4). Solo cuando entra un día extra; el resto,
+//   como siempre (la app traduce «ayer» con el alias global: corridaTexto.relativosReales)
+const realE = (f) => require('./gen_fechas_v6').fechaRealDe(f, F6, 'encaps');
+const ayerReal = (prevF, filaF) => (realE(prevF) === realDe(prevF) && realE(filaF) === realDe(filaF)) || addD(realE(filaF), -1) === realE(prevF);
 if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias ${F6.f1.dias} + ${HAB_TRANS.length} hábil(es) de la transición + ${EXTRA_ENC.length} fin(es) de semana de corrida_s1.extra = ${F1_DIAS})`);
 const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^--\s*/, '');
 // v6.06: CARRIL SÁBADO de la intensiva (extra.carril_sabado de la fila del viernes host) → ENCAPS_SABADO_F2 (clave = el sábado)
@@ -453,7 +458,7 @@ const evalDesc = (r, fila, prev) => {
     const pv = rondasPreviasDe(r, fila, cod, exc ? exc.ms.fecha : null);
     return `${r.n}Q reales de ${cod}${exc ? `, ${excepcionCorta(fila, exc, cod)}` : ''}${pv.txt ? ` · ${pv.txt}` : ''} · ${cod} = el código del banco que el pre-test ${parte ? `${parte}/2` : 'de arranque'} del ${corta(sa.fecha)} sustituyó`;
   }
-  if (sa.fecha && sa.fecha !== ayer) {
+  if (sa.fecha && (sa.fecha !== ayer || !ayerReal(sa.fecha, fila.fecha))) {
     // v6.07 (fix lote 1b): «tras el mini-sim» solo si hubo una fila mini-sim entre la sesión anterior y hoy; si lo que hubo es un SKIP, se nombra
     const ms = FILAS.find((x) => x.tipo === 'mini_sim' && x.fecha > sa.fecha && x.fecha < fila.fecha);
     const sk = saltadosEntre(sa.fecha, fila.fecha);
@@ -497,8 +502,8 @@ function evalSinRunner(fila, prev) {
   const ayer = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
   // v6.10j (auditoría c14, dias-clave #0): sin runner, la simulación (CAT.PREVISTO_SEMANA2, eval_retest) dice si el código de ayer ya no tiene reales sin usar
   const pv = PREVISTO(fila.fecha);
-  if (prev.fecha === ayer && pv && pv.eval_retest) return retestAyerTxt(5, prev.codigo, pv.eval_retest === 'banco');
-  if (prev.fecha === ayer) return `5Q del código de AYER ${prev.codigo} (3 cifras + 2 viñetas)`;
+  if (prev.fecha === ayer && ayerReal(prev.fecha, fila.fecha) && pv && pv.eval_retest) return retestAyerTxt(5, prev.codigo, pv.eval_retest === 'banco');
+  if (prev.fecha === ayer && ayerReal(prev.fecha, fila.fecha)) return `5Q del código de AYER ${prev.codigo} (3 cifras + 2 viñetas)`;
   const sk = saltadosEntre(prev.fecha, fila.fecha);
   return `5Q de ${prev.codigo} = código de la sesión anterior (${corta(prev.fecha)}${sk.length ? `; ${sk.map((x) => 'el ' + corta(x)).join(' y ')} ${sk.length > 1 ? 'fueron' : 'fue'} SKIP` : ''}) (3 cifras + 2 viñetas)`;
 }
@@ -811,7 +816,10 @@ function construirGuia(fila, sab = null) {
             // v6.10i (remate, revisión adversarial del 18-nov): «NO --semana» va DELANTE de la receta (el Calendar corta el aviso a 240 y, detrás de la cadena
             //   de comandos, se perdía el aviso que impide re-sortear los runners de la semana)
             ? `NO gen_encaps_minisim.js --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía. Runners por generar ANTES del ${corta(primeraPend)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`
-            : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes || finde(fila) ? ` → node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
+            // v6.11 fase 2 (remate, revisión «textos» BAJA): la eval de un lunes / fin de semana (fallos previos) depende del registro de la sesión anterior; si esa
+            //   sesión se hace DESPUÉS del plazo de --semana (D32 dom 24-ene: su anterior, el D31, es el lun 4-ene), su --eval va aparte, tras ese registro
+            : (() => { const evT = lunes || finde(fila), evTarde = evT && prev && realE(prev.fecha) > realE(cmdSemana);
+              return `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${evT && !evTarde ? ` → node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.${evTarde ? ` La eval de hoy, después del registro del ${corta(prev.fecha)} y antes de hoy: node DATA/_scripts/gen_encaps_minisim.js --eval ${fila.fecha} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.` : ''}`; })());
           if (prev2 && prev2.nota) av.push(prev2.nota);
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map((x) => String(x).replace(/re-test con otro enfoque/g, 're-test de las mismas preguntas reales, sin la clave'))); // v6.10h: el re-test es de las MISMAS preguntas
           for (const c of [codigo, ...secCods]) if (CAT.AVISO_CODIGO[c]) av.push(CAT.AVISO_CODIGO[c]);

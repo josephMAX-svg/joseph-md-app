@@ -63,7 +63,7 @@ import { MIR_DIAS, mirDiaDe, mirDiaN, mirAnclas, mirCierreDe, mirBloques, capUrl
 import { mirMantDiaDe, mirMantFranjas, MIR_MANT_META, type DiaMIRMant } from './mirMantenimiento';
 import { mirAnkiDeck } from './ankiLinks';
 import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, MIR_METODO, type MirGuiaPreguntas, type MirMetodoAsig, type MirFase } from './mirGuiaDatos';
-import { extraDePlan } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir) · v6.10w: por fecha de plan (extraDePlan)
+import { extraDePlan, FECHAS_V6 } from './fechasV6'; // v6.10: domingo de recuperación a hora fija (corrida_s1.extra › mir) · v6.10w: por fecha de plan (extraDePlan)
 /** v6.10 · base cero (fix 18-nov): «vie 3-dic-2027» = handoff del banqueo → fase principal MIR (antes «oct-2027» escrito, de la v6.00). */
 const _HANDOFF_MIR = MIR_MANT_META.handoff.split(' (')[0];
 
@@ -471,7 +471,11 @@ export function mirGuiaDe(iso: string, ini?: string | null): GuiaBloque | null {
   // v6.10w (dom 22-nov): por FECHA DE PLAN (extraDePlan): el sáb 2-ene hace el D31 (plan del jue 31-dic, sin día propio) y el dom 3-ene el D32 (el del sáb 2-ene)
   const fx = g ? extraDePlan(iso, 'mir') : null;
   const diaFx = fx ? ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][new Date(fx.real + 'T12:00:00Z').getUTCDay()] : '';
-  if (g && fx) g = { ...g, aviso: [fx.real !== iso
+  // v6.11 fase 2: un fin de semana de F1 que hace a hora fija la fila de otra fecha de plan (sáb 5-dic 07:15 = D10, plan del mar 1-dic): sin el porqué de la transición
+  const f1x = !!fx && fx.real !== iso && fx.real < FECHAS_V6.transicion.desde;
+  if (g && fx) g = { ...g, aviso: [f1x
+    ? `Hoy ${diaFx}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden; desde el lunes, una por día. Mismo reparto que entre semana.`
+    : fx.real !== iso
     ? `Hoy ${diaFx}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (su día de plan ya tiene otra sesión MIR: nada se compacta; desde el lunes, las fechas de siempre). Mismo reparto que entre semana.`
     : `Hoy ${diaFx}, a hora fija (${fx.ini}-${fx.fin}): la sesión que toca en orden (el mar 17-nov fue sin sesión y cada día MIR de F1 corrió uno; desde mañana, las fechas de siempre). Mismo reparto que entre semana.`, g.aviso].filter(Boolean).join(' · ') };
   return g;

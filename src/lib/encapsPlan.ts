@@ -688,6 +688,24 @@ export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | nu
       detail: `Examen oficial con clave (runner); sin runner, re-test de 5 de las MISMAS preguntas que fallaste en el mini-sim, sin la clave a la vista · de memoria, sin material · ${regla}`, regla,
     };
   }
+  // v6.11 fase 2 (remate): la fila anterior por número puede hacerse DESPUÉS en orden real (D32, plan del sáb 2-ene → dom 24-ene: el carril B del lun 4-ene la
+  //   anclaba a ella): la eval va al código de la última sesión de F1 hecha antes de hoy en orden real (D31 · I-3, el mismo lun 4-ene a las 09:45)
+  const realE = (f: unknown): string | null => (typeof f === 'string' && /^\d{4}-\d{2}-\d{2}/.test(f) ? fechaRealDe(f.slice(0, 10), 'encaps') : null);
+  const rDay = realE(day.fecha), rPrev = realE(prev.fecha);
+  if (rDay && rPrev && rPrev > rDay) {
+    for (let k = 1; k <= 14; k++) {
+      const d0 = new Date(`${String(prev.fecha).slice(0, 10)}T12:00:00Z`); d0.setUTCDate(d0.getUTCDate() - k);
+      const p = d0.toISOString().slice(0, 10), s = sesionEncapsDe(p), r = fechaRealDe(p, 'encaps');
+      if (!s || !s.codigo || r > rDay) continue;
+      const dr = new Date(`${r}T12:00:00Z`), dp = new Date(`${rPrev}T12:00:00Z`);
+      const fc = (x: Date) => `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][x.getUTCDay()]} ${x.getUTCDate()}-${MES_C[x.getUTCMonth()]}`;
+      return {
+        modo: 'ayer', codigo: s.codigo,
+        label: `🎯 EVAL ANCLADA: 5Q del código de la última sesión (${r === rDay ? `hoy, ${fc(dr)}` : fc(dr)}) ${s.codigo} (D${s.dia}) · 3 cifras + 2 viñetas`,
+        detail: `preguntas reales: las del runner (examen oficial con clave); sin runner, re-test de tus fallos de ese código, sin la clave a la vista · de memoria, sin material, recall + corrección · ${regla} · la D${prev.dia} (${prev.codigo ?? 'MIX'}) va el ${fc(dp)}`, regla,
+      };
+    }
+  }
   const se = subEjeDe(prev);
   return {
     modo: 'ayer', codigo: prev.codigo,

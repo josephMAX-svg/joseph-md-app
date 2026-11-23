@@ -313,7 +313,9 @@ function SieteView({ fromD, done, onPick }: { fromD: number; done: Set<number>; 
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: hecho ? Colors.green : INDIGO }]}>
               <Text style={[st.d7day, { color: hecho ? Colors.green : INDIGO }]}>{hecho ? '✓' : ''} D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'synapse'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
+              {/* v6.02d: fecha real visible (semana corrida) · v6.11 fase 2: la fila «⏸ Sin sesión» que abre una cadena (su contenido lo hace la fila siguiente)
+                  no tiene día real propio → «—» (antes salía el día real de OTRA fila: dos «lun 7-dic» seguidos) */}
+              <Text style={st.d7fecha}>{/^⏸/.test(String(a.material)) && fechaPlanDe(fechaRealDe(x.fecha, 'synapse'), 'synapse') !== x.fecha ? '—' : fmtFecha(fechaRealDe(x.fecha, 'synapse'))}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{a.material}</Text>
                 <Text style={st.d7sys} numberOfLines={1}>{a.leccion}</Text>
@@ -387,7 +389,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (base cero: fases 1-4, se cursa entera) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */}, con las mismas 110 A-units; sin SYNAPSE en los feriados del SKIP ni en los días PROTEGIDOS del ENCAPS (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos y lo lee la revisión semanal). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */}, con las mismas 110 A-units; sin SYNAPSE en los feriados del SKIP ni en los días PROTEGIDOS del ENCAPS (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

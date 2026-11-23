@@ -340,12 +340,20 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
     hecho: x.entregable,
     ...(recs.length > 1 ? { planB: \`Si «\${r0.label}» no abre o no basta: «\${recs[1].label}».\` } : {}),
     // v6.10i (remate): el día del plan B de inglés, la comprobación del mentor va PRIMERO en el aviso (antes abría el «cómo» de la eval anclada)
-    aviso: [x.fecha === PLANB_INGLES ? 'Dentro de los 5′ de la eval anclada (≤ 2′): ¿mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila.' : '', faseResearchAviso(x.code), rdFinde(x.fecha), ...chips].filter(Boolean).join(' · '),
+    aviso: [x.fecha === PLANB_INGLES ? 'Dentro de los 5′ de la eval anclada (≤ 2′): ¿mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila.' : '', faseResearchAviso(x.code), rdFinde(x.fecha) || rdFindePlan(x.fecha), ...chips].filter(Boolean).join(' · '),
   };
 }
 /** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: v6.10c sáb 2-ene 15:30-16:15, el T-3 · v6.10 dom 6-dic 05:00-05:45; el
  *  mar 17-nov fue sin sesión y los átomos de F1 corrieron una ranura) → aviso con la hora real (la franja de la guía es la de PLAN, 13:30-14:15: el Home
  *  la mueve) y qué hacer si el entregable necesita una oficina abierta. '' si no lo es. */
+/** v6.11 fase 2 (lun 23-nov): el átomo que OTRO día hace a hora fija (corrida_s1.extra { hora, plan }: sáb 5-dic 05:00-05:45 = M2, plan del mar 1-dic) → aviso
+ *  corto con su hora real (va delante: el Calendar corta el aviso en 240); '' si no lo hay. */
+function rdFindePlan(fecha: string): string {
+  const x = extraDePlan(fecha, 'research-derma');
+  if (!x || x.real === fecha) return '';
+  const w = new Date(x.real + 'T12:00:00Z').getUTCDay();
+  return 'Hoy ' + (w === 0 ? 'domingo' : 'sábado') + ', a hora fija (' + x.ini + '-' + x.fin + '): el átomo que toca en orden; lo que necesite una oficina abierta se deja LISTO y se presenta el lunes.';
+}
 function rdFinde(fecha: string): string {
   const fx0 = (FECHAS_V6.corrida_s1.extra ?? {})[fecha]?.['research-derma'];
   // v6.10w: solo la entrada que hace la fila de su propia fecha (texto «HH:MM-HH:MM»)

@@ -833,7 +833,12 @@ if (aIdx !== aUnits.length) throw new Error(`A-units sin asignar: usadas ${aIdx}
 //   + quiz» de Claude Code 101 antes que «Daily workflows» (sáb 5 / lun 7-dic), Karpathy tramo 4/11 antes que el 3/11 (sáb 19 / lun 21-dic)…—. Se
 //   reparten las MISMAS A-units de F1 por fecha REAL (alias inverso; sin alias, la del plan): mismas fechas, horas y bloques, solo cambia qué lección cae en
 //   cada uno; B y C no se tocan (sus carriles y comodines ya van por fecha). Fuera de F1 nada cambia (2027 idéntico).
-const ALIAS_INV = new Map(Object.entries(((require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {}).alias) || {}).map(([real, plan]) => [plan, real]));
+// v6.11 fase 2 (lun 23-nov): el alias del SYNAPSE = el global salvo donde manda su alias propio (corrida_s1.alias_frente.synapse: desde el lun 7-dic, el de la v6.10w)
+const ALIAS_INV = (() => {
+  const c = require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {};
+  const al = { ...(c.alias || {}), ...(((c.alias_frente || {}).synapse || {}).alias || {}) };
+  return new Map(Object.entries(al).map(([real, plan]) => [plan, real]));
+})();
 // v6.10w (dom 22-nov-2026 · «todo inicia el 23»): CADENAS = sesiones que corren UNA sesión, en orden real: el contenido de cada fila pasa a la siguiente y el de la
 //   última, a una sesión a hora fija (SYN_REC_F1, bloque syn-rec); la primera queda sin sesión. (1) semana 1: el dom 22 (antes domingo de llegada, sin sesión) →
 //   lun 23 (fila del mié 18) → … → sáb 28 21:00 → dom 29 05:00-05:30 (corrida_s1.extra › synapse). (2) transición: el plan del jue 31-dic no tiene día real
@@ -844,8 +849,20 @@ const ALIAS_INV = new Map(Object.entries(((require('./gen_fechas_v6').cargarFech
 //   05:00-05:30; la fila del mar 24 vuelve a llevar su propio contenido el lun 30.
 const CADENAS_V610W = [
   { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
+  // v6.11 fase 2: semana 2 — el SYNAPSE recupera el hábil que perdió con el lun 23: la fila del mar 1-dic (sin día real: el alias propio del SYNAPSE es el de la
+  //   v6.10w desde el lun 7-dic) la hace el sáb 5-dic a las 21:00 y la del sáb 5, el dom 6-dic 05:00-05:30 (como la cadena del dom 29). El SYNAPSE no hace dos
+  //   sesiones el mismo día.
+  { id: 'semana 2', motivo: 'el lun 23-nov fue sin sesión', filas: ['2026-12-01', '2026-12-05'], rec: { fecha: '2026-12-06', ini: '05:00', fin: '05:30' } },
   { id: 'transición', motivo: 'el plan del jue 31-dic no tiene día propio', filas: ['2026-12-31', '2027-01-02'], rec: { fecha: '2027-01-03', ini: '05:00', fin: '05:30' } },
 ];
+// v6.11 fase 2: las filas de L-V que abren una cadena (sin día real) son las que gen_fechas_v6.js declara en FILAS_FUERA_CORRIDA.synapse (cada fecha de plan, una
+//   vez por frente): se comprueba en los dos sentidos
+{
+  const FF = require('./gen_fechas_v6').FILAS_FUERA_CORRIDA.synapse || {};
+  const ab = CADENAS_V610W.filter((c) => { const w = new Date(c.filas[0] + 'T12:00:00Z').getUTCDay(); return w >= 1 && w <= 5; });
+  for (const c of ab) if (!FF[c.filas[0]] || FF[c.filas[0]].real !== c.filas[1]) throw new Error(`v6.11 · cadena ${c.id}: la fila ${c.filas[0]} no está en gen_fechas_v6.FILAS_FUERA_CORRIDA.synapse con real = ${c.filas[1]}`);
+  for (const p of Object.keys(FF)) if (!ab.some((c) => c.filas[0] === p)) throw new Error(`v6.11 · FILAS_FUERA_CORRIDA.synapse ${p}: no abre ninguna cadena`);
+}
 // día REAL de cada fila de una cadena (para el orden de las A-units): la fila k la hace el día real de la fila k+1 (la última, la sesión a hora fija)
 const REAL_CADENA = new Map(CADENAS_V610W.flatMap((c) => c.filas.map((f, k) => [f, (k + 1 < c.filas.length ? (ALIAS_INV.get(c.filas[k + 1]) || c.filas[k + 1]) : c.rec.fecha) + (k + 1 < c.filas.length ? '' : 'T' + c.rec.ini)])));
 // v6.11: una fila cuyo plan se quedó SIN DÍA real (gen_fechas_v6.planesSinDia: el mié 30-dic) va, para el orden, tras el último día del alias (sin hueco en la
@@ -998,6 +1015,9 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
   const F6c = require('./gen_fechas_v6').cargarFechasV6();
   const VF = require('./gen_fechas_v6').VENTANAS_FINDE;
   const aMc = (h) => { const [x, y] = h.split(':').map(Number); return x * 60 + y; };
+  // v6.11 fase 2 (remate, revisión «textos» MEDIA): el «Sin sesión» de la fila que abre cada cadena cita su motivo («el lun 23-nov fue sin sesión»); la pasada que
+  //   traduce las fechas de las filas de las cadenas lo convertía en «el sáb 28-nov fue sin sesión» (y «el mié 18-nov…», «el plan del sáb 2-ene…»): se repone
+  const SIN_SES_CAD = new Map();
   for (const c of CADENAS_V610W) {
     const reales = c.filas.map((f) => ALIAS_INV.get(f) || f);
     for (let k = 1; k < c.filas.length; k++) if (!(reales[k] > reales[k - 1]) && !(k === 1 && c.filas[0] === '2026-12-31')) throw new Error(`v6.10w · cadena ${c.id}: las filas no van en orden de día real (${c.filas.join(' → ')})`);
@@ -1017,7 +1037,8 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     for (let k = c.filas.length - 1; k >= 0; k--) { const dest = k + 1 < c.filas.length ? c.filas[k + 1] : c.rec.fecha; for (let i = 0; i < aDia.length; i++) if (aDia[i] === c.filas[k]) aDia[i] = dest; }
     for (let k = c.filas.length - 1; k >= 1; k--) filas[k].bloques = contenido[k - 1];
     const f0 = c.filas[0];
-    filas[0].bloques = [{ tag: 'R', min: 0, formato: 'repaso', material: `⏸ Sin sesión · ${f0.slice(8, 10)}-${f0.slice(5, 7)}`, leccion: `Sin SYNAPSE en este día de plan (${c.motivo}): su sesión la hace el día siguiente y cada sesión corre una, hasta la de ${['dom','lun','mar','mié','jue','vie','sáb'][w]} ${Number(c.rec.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(c.rec.fecha.slice(5, 7)) - 1]} a las ${c.rec.ini}. Nada que marcar.`, real: true }];
+    filas[0].bloques = [{ tag: 'R', min: 0, formato: 'repaso', material: `⏸ Sin sesión · ${f0.slice(8, 10)}-${f0.slice(5, 7)}`, leccion: `Sin SYNAPSE en este día de plan (${c.motivo}): su sesión la hace el ${['dom','lun','mar','mié','jue','vie','sáb'][new Date(reales[1] + 'T12:00:00Z').getUTCDay()]} ${Number(reales[1].slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(reales[1].slice(5, 7)) - 1]} y cada sesión corre una, hasta la de ${['dom','lun','mar','mié','jue','vie','sáb'][w]} ${Number(c.rec.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(c.rec.fecha.slice(5, 7)) - 1]} a las ${c.rec.ini}. Nada que marcar.`, real: true }];
+    SIN_SES_CAD.set(f0, filas[0].bloques[0].leccion); // v6.11 fase 2 (remate): su motivo no pasa por el remap de fechas de abajo
     const ult = contenido[contenido.length - 1];
     const minT = ult.reduce((a, b) => a + b.min, 0);
     if (minT !== 30) throw new Error(`v6.10w · cadena ${c.id}: la sesión que va a hora fija suma ${minT}′ (A + B + C debe ser 30′)`);
@@ -1048,6 +1069,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     // v6.11 (revisión c32): el «Retoma donde quedaste el …» de la cola (pieza.retoma, ISO de la fila de PLAN que leyó esa pieza por última vez) también pasa a la
     //   fila que ahora lleva ese contenido: con la cadena de la semana 1, «Whetting Your Appetite» (fila del mié 18) se lee el mié 25 real y la cola decía «mar 24»
     for (const c of [...COLA_F1, ...COLA_POST]) for (const p of c.pasos || []) for (const z of p.piezas || []) if (z.retoma && MAPA.has(z.retoma)) z.retoma = MAPA.get(z.retoma).a;
+    for (const [f0, t] of SIN_SES_CAD) { const x = dias.find((y) => y.fecha === f0); if (!x || !x.bloques[0] || x.bloques[0].tag !== 'R') throw new Error(`v6.11 · cadena: la fila ${f0} ya no es «Sin sesión»`); x.bloques[0].leccion = t; }
   }
   // la A de la recuperación del mar 17 (dom 3 11:30) sigue el vídeo que el comodín de la sesión de las 05:00 deja a medias (antes, el del sáb 2-ene a las 21:00)
   for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) for (const k of ['leccion']) if (typeof b[k] === 'string') b[k] = b[k].replace(/sigue al comodín del sáb 2-ene/, 'sigue a la sesión de las 05:00 de hoy');

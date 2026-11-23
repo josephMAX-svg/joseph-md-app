@@ -327,7 +327,10 @@ const diasReales = (a, b) => diasEntre(V6.fechaRealDe(a, FV6, 'usmle'), V6.fecha
 //   lun 4-ene) → el Anki del vie 1-ene ya no anuncia «jue 31-dic día de plan» y la pausa del Step 1 empieza el día real siguiente al del último día de F1
 const _ALIAS_U = (FV6.corrida_s1 && FV6.corrida_s1.alias) || {};
 const conDiaReal = (x) => Object.values(_ALIAS_U).includes(x) || !(x in _ALIAS_U);
-const PAUSA_REAL = V6.add(V6.fechaRealDe(FV6.f1.fin, FV6, 'usmle'), 1);
+// v6.11 fase 2 (remate, revisión «textos» MEDIA): el plan de f1.fin (mié 30-dic) se quedó SIN día real y fechaRealDe lo devolvía tal cual (la pausa salía «desde
+//   el jue 31-dic»): la pausa empieza el día siguiente al ÚLTIMO día real de F1 (el mayor día real del alias cuya fecha de plan ≤ f1.fin), como plantillasV6.ultimoRealF1
+const ULTIMO_REAL_F1 = (() => { const fin = FV6.f1.fin; const rs = Object.entries(_ALIAS_U).filter(([, de]) => de <= fin).map(([r]) => r).sort(); const r = rs[rs.length - 1]; return r && r > fin ? r : V6.fechaRealDe(fin, FV6, 'usmle'); })();
+const PAUSA_REAL = V6.add(ULTIMO_REAL_F1, 1);
 /** «ayer» si a es el día natural anterior a b; si no (fin de semana en medio), «el vie 23-oct» */
 const antesTxt = (a, b) => (diasEntre(a, b) === 1 ? 'ayer' : `el ${fd(a)}`);
 /** «mañana» si b es el día natural siguiente a a; si no, «el lun 26-oct» */
@@ -339,9 +342,11 @@ const proxTxt = (r) => { const sig = U.DIAS_TODOS.find((x) => x.fecha > r.fecha)
  *  las 05:00) → «mañana a las 05:00» solo si es el día natural siguiente; si no, «el lun 28-dic a las 05:00» (antes «mañana» también el jue 24-dic, con el vie
  *  25 SKIP, y los viernes del tramo 2). Si cae en el SERUMS (F4: el Anki va con el turno, no a las 05:00), «el Anki USMLE del lun 3-may (con el turno)». */
 /** v6.10r: la fecha (de plan) del próximo ANKI AM de las 05:00 tras `f` (el siguiente L-V hábil, sin SKIP) */
+// v6.11 fase 2 (lun 23-nov): salta también las fechas de plan SIN día real (conDiaReal: el mié 30-dic y el jue 31-dic, cuyo Anki es la cola FSRS) → del vie 1-ene
+//   (plan del mar 29-dic) las vencidas que falten van al lun 4-ene a las 05:00
 const ankiAmSig = (f) => {
   let t = new Date(f + 'T12:00:00Z');
-  do { t = new Date(t.getTime() + 864e5); } while (t.getUTCDay() === 0 || t.getUTCDay() === 6 || FV6.skip.includes(t.toISOString().slice(0, 10)));
+  do { t = new Date(t.getTime() + 864e5); } while (t.getUTCDay() === 0 || t.getUTCDay() === 6 || FV6.skip.includes(t.toISOString().slice(0, 10)) || !conDiaReal(t.toISOString().slice(0, 10)));
   return t.toISOString().slice(0, 10);
 };
 const ankiAmSigTxt = (f) => {
@@ -891,7 +896,14 @@ function anki0500(r, restante = true) {
       ? 'Solo si las vencidas llegaron a 0; si no, nuevas = 0 hoy (esperan en la cola). Hoy NO se crean tarjetas: el NBME se corrige desde las 18:00 (Day-After).'
       : `Solo si las vencidas llegaron a 0. Si a las ${f1 ? '05:22' : '05:37'} aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van ${restante ? `al «Anki restante» de las 07:15 de hoy o ${ankiAmSigTxt(f)}` : ankiAmSigTxt(f)}, siempre antes que nuevas.${f1 ? ' A las 05:30 pasas a los repasos ENCAPS (15′): no los recortes por el USMLE.' : ''}`),
     P(2, 'Sync final + telemetría', 'Sync · node DATA/_scripts/anki_telemetria.js → due · backlog · retención 30 d · % Again (sano ≈10 %; > 20 % = tarjetas largas o perfeccionismo → divídelas; ≈0 % = no te estás examinando).'),
-  ], [R_ANKI], '0 vencidas en APEX::USMLE (las nuevas solo después) y la telemetría registrada', { planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo (borra el historial del algoritmo).' });
+  ], [R_ANKI], '0 vencidas en APEX::USMLE (las nuevas solo después) y la telemetría registrada', { ...(ultimoAnkiRealF1(f) ? { aviso: `Nuevas de hoy que no entren → reinicio del ${fd(FV6.step1.reinicio)}. Último Anki AM de F1 con nuevas. Pausa del Step 1: finde sin Anki · mantenimiento desde el ${fd(FV6.encaps.intensiva_desde)} (las vencidas, primero).` } : {}), planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo (borra el historial del algoritmo).' });
+}
+/** v6.11 fase 2: ¿la fila de Step `f` (fecha de plan) es el ÚLTIMO Anki AM real de F1? = ninguna fecha de plan posterior de F1 tiene día real (las del mié 30 y el jue
+ *  31-dic son cola FSRS) y es la última fila de Step de F1. */
+function ultimoAnkiRealF1(f) {
+  if (f !== F1[F1.length - 1].fecha) return false;
+  for (let t = V6.add(f, 1); t <= FV6.transicion.hasta; t = V6.add(t, 1)) { const w = new Date(t + 'T12:00:00Z').getUTCDay(); if (w >= 1 && w <= 5 && !FV6.skip.includes(t) && conDiaReal(t)) return false; }
+  return true;
 }
 
 // REPASO 07:15 (genérico D6+)
