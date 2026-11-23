@@ -10,10 +10,16 @@
 > Regla de estilo (RUTA §5.2): mensajes **cortos, hiperpersonalizados y con una petición concreta y verificable**
 > (coautoría con reparto de trabajo, permiso de instrumento, revisión de un manuscrito) — nunca "quiero experiencia".
 
-> **✅ v6.10c (mar 17-nov-2026, VIGENTE · D1 del régimen mié 18-nov; 17:20: el día que sobra va entero al sáb 2-ene): las fechas de los átomos las da
-> `src/lib/researchDailyPlan.ts` — M1 (mensaje 1 al Dr. Ciro) JUE 19-NOV = 1.ª sesión Research · R0 lun 23 · R1 mié 25 · C-1 vie 27-nov · M2 (Rising
+> **✅ Fechas REALES vigentes (desde el lun 23-nov-2026 el plan corre un hábil desde el mar 24; `src/lib/researchDailyPlan.ts` guarda las fechas de PLAN y
+> la app las traduce al día real con `src/lib/fechasV6.ts`): M1 (mensaje 1 al Dr. Ciro) MIÉ 25-NOV = 1.ª sesión Research (WhatsApp a las 13:37) · R0 vie
+> 27-nov · R1 mar 1-dic · C-1 jue 3-dic · M2 (Rising Scholars) sáb 5-dic 05:00 · C-2 mar 8-dic · T-1 (CEI) jue 10-dic · seguimiento del caso lun 14-dic
+> (d8, R9) · C-3 mié 16-dic · C-6 (carta) jue 24-dic · CR-1 lun 28-dic (el caso se elige antes del 24-dic) · CR-2 jue 31-dic · T-3 sáb 2-ene · M3 vie
+> 5-mar-2027. Los bloques de abajo son historial.**
+>
+> **⏸ v6.10c (mar 17-nov-2026 · D1 del régimen mié 18-nov; 17:20: el día que sobra va entero al sáb 2-ene): fechas de PLAN de los átomos (las de
+> `src/lib/researchDailyPlan.ts`, sin cambio; el día real, arriba) — M1 (mensaje 1 al Dr. Ciro) JUE 19-NOV · R0 lun 23 · R1 mié 25 · C-1 vie 27-nov · M2 (Rising
 > Scholars) mar 1-dic · C-2 jue 3-dic · T-1 (CEI) lun 7-dic · seguimiento del caso mié 9-dic (d8, R9) · C-3 vie 11-dic · C-6 (carta) lun 21-dic · CR-1 mié
-> 23-dic · CR-2 mar 29-dic · T-3 sáb 2-ene · M3 vie 5-mar-2027. Los bloques de abajo son historial.**
+> 23-dic · CR-2 mar 29-dic · T-3 sáb 2-ene · M3 vie 5-mar-2027.**
 >
 > **⏸ v6.06 (sáb 31-oct-2026 · D1 del régimen lun 2-nov; `researchDailyPlan.ts` regenerado con START 2026-11-02, Research d1 mar 3-nov): fechas vigentes
 > de los átomos de esta tabla** — mandan sobre las de v6.05, v6.03, v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) mar 3-nov = 1.ª sesión Research** (⏸ el
@@ -92,13 +98,14 @@ Leyenda de estado: 🔴 no contactado · 🟡 contactado, sin respuesta · 🟢 
 
 ### Mensaje 1 — Dr. Ciro (WhatsApp para pedir la reunión + guion de la propuesta)
 
-**WhatsApp (pedir 20 minutos) — v6.10 · tanda C (texto decidido con Joseph en el chat Research el 17-nov-2026; se envía en M1, jue 19-nov; las 3 fechas
-salen del plan: T-8 · C-6 · CR-1 de `src/lib/researchDailyPlan.ts`, y la guía de la app las escribe solas si el plan corre):**
-> Dr. Ciro, buenos días. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío:
+**WhatsApp (pedir 20 minutos) — v6.10 · tanda C (texto decidido con Joseph en el chat Research el 17-nov-2026; se envía en M1, mié 25-nov, a las 13:37;
+las 3 fechas son los días REALES de T-8 · C-6 · CR-1 —`src/lib/researchDailyPlan.ts` + `src/lib/fechasV6.ts`—, y la guía de la app las escribe solas si el
+plan corre; si CR-1 cae entre el 24-dic y el 1-ene, el caso se pide antes del 24 de diciembre):**
+> Dr. Ciro, buenas tardes. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío:
 > 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto:
 > 18 de enero. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor
-> (unos 30 minutos de revisión); envío: 21 de diciembre. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el
-> caso antes del 23 de diciembre. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.
+> (unos 30 minutos de revisión); envío: 24 de diciembre. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el
+> caso antes del 24 de diciembre. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.
 
 *(Si prefiere 2 coautorías, borra el punto 2. Plan B: el mismo texto por correo o en persona. Versión anterior —2 coautorías, sin fechas— sustituida
 el 17-nov-2026.)*
@@ -113,12 +120,12 @@ el 17-nov-2026.)*
    permiso; (c) su ORCID (o crearlo en 10 minutos).
 2. **Carta al editor** (≤500 palabras) sobre un artículo de 2026 de JCD/JAAD sobre complicaciones de rellenos o
    láser en fototipos IV-VI, con ángulo peruano. Él: coautor; 30 minutos de revisión clínica. Fecha objetivo de
-   envío: C-6, lun 21-dic-2026 (v6.10c; v6.10: jue 17-dic; antes oct-2026).
+   envío: C-6, jue 24-dic-2026.
 3. **Reporte de caso** de su consulta (últimos 6-12 meses): prioridad complicación de inyectable o reacción a
    láser/RF en fototipo IV-V; si no, dermatosis rara con buenas fotos. Él: senior author. Yo: consentimiento de
    publicación (plantilla bilingüe lista), protocolo de fotos, CARE 13 ítems, borrador, envío a Dermatology Online
-   Journal (feb-2027, tras el Step 1). Su tiempo total estimado: 2 h en 4 meses. Fecha límite para elegir el caso:
-   **CR-1, mié 23-dic-2026** (v6.10c; v6.10: lun 21-dic; el 31-oct-2026 ⏸ venció).
+   Journal (CR-9, lun 1-mar-2027). Su tiempo total estimado: 2 h en 4 meses. Fecha límite para elegir el caso:
+   **antes del jue 24-dic-2026** (CR-1 es el lun 28-dic-2026; entre Navidad y Año Nuevo no se eligen casos de la consulta).
 4. Cierre: "¿Cuál de los tres le interesa más empezar? Con el que diga, le mando el documento esta semana."
 
 ### Mensaje 2 — AuthorAID / Rising Scholars (solicitud de mentor; en inglés; se pega en el perfil/solicitud)
@@ -129,9 +136,9 @@ el 17-nov-2026.)*
 > cross-sectional thesis on acne severity and quality of life in 316 adolescent girls (Spearman rs = 0.64; weighted
 > kappa 0.81), which I am rewriting as a 500-600-word research letter for JAAD International / International Journal of
 > Dermatology. I am looking for a mentor with experience in dermatology or clinical epidemiology publishing who could
-> (1) review one draft of the research letter for clarity and English usage (mid-November 2026), (2) briefly comment
-> on a 500-word letter to the editor (October 2026), and (3) review the English of a short CARE case report (early December
-> 2026). Total time requested: about 3-4 hours over four months, by email or shared document; I will send clean,
+> (1) review one draft of the research letter for clarity and English usage (mid-January 2027), (2) briefly comment
+> on a 500-word letter to the editor (December 2026), and (3) review the English of a short CARE case report (February
+> 2027). Total time requested: about 3-4 hours over three months, by email or shared document; I will send clean,
 > STROBE/CARE-checked drafts with verified references. I use Spanish as my first
 > language and can work in English. Thank you for considering this request.
 

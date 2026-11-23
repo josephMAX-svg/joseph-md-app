@@ -424,7 +424,10 @@ for (const r of [...F1, ...TG]) {
 }
 /** Reglas de redacción (Palmerton: frente «Subject - question», tuyo y exigente; resumen arriba si el reverso es largo; sin cloze). */
 const R_FRENTE = 'FRENTE en inglés «Subject - question», escrito por ti, exigente y sin pistas; REVERSO «Summary:» 1 frase con el porqué (+ ≤2 líneas); CCSN = con qué no confundirlo; 1 idea por tarjeta, sin cloze';
-const R_ENVIO = 'copia el BLOQUE APEX → Ctrl+Shift+A (o ⚡ APEX 1-TAP) → el toast ✓ = tarjeta en Anki + nota en Obsidian';
+// v6.11 (lun 23-nov-2026 · chat USMLE): sin «(o ⚡ APEX 1-TAP)»: el 1-TAP solo encola («APEX Encolado») y su lista de UWorld no trae Pathology
+const R_ENVIO = 'copia el BLOQUE APEX → Ctrl+Shift+A → el toast ✓ = tarjeta en Anki + nota en Obsidian';
+// v6.11 (chat USMLE): una tarjeta ya enviada se corrige en Anki, no reenviándola (el motor APEX hace addNote con allowDuplicate: saldría duplicada)
+const R_CORRIGE = 'Si hay que corregir una, edita la tarjeta en Anki › Browse; nunca la reenvíes (saldría duplicada)';
 /** Ruta de cada error (Palmerton: Educational Objective como filtro; PC card si fallaste el diagnóstico; los errores de lectura no son de tarjeta). */
 const R_ERROR = 'por cada incorrecta y cada acierto con duda, lee el Educational Objective y clasifica: K (no lo sabías) → 1 concept card del PRINCIPIO (abstraído: sin edad ni sexo del paciente) · no reconociste el diagnóstico → 1 PC card (cronología en presente, 4-6 pasos) · QI (lo sabías y leíste o interpretaste mal) → sin tarjeta: la micro-destreza al log de 📏 Medición. Filtro: «¿vale repasarlo a diario 6 meses?»; agotado el tope, el resto va a la shopping list';
 /** Presupuesto de tarjetas NUEVAS del día (tope 20): primero las PC cards / tarjetas de experimento del Day-After, luego deep prime ≤10,
@@ -813,32 +816,40 @@ const TUTOR = 'Tutor (sin reloj)', TIMED = 'Timed (90 s/Q · tope 2 min)';
 // v6.10j (rev. c14, vetadas #8): el modo (Tutor sin reloj / Timed), el nº de preguntas y Status: Unused van DELANTE de los Systems (el «qué» ya los nombra):
 //   el Calendar corta el «cómo» a 110 y antes caía dentro de «System «…»» y se perdía «Tutor (sin reloj)» · «1 pregunta» en singular
 const nPreg = (n) => `${n} pregunta${n === 1 ? '' : 's'}`;
-const tcUW = (ids, n, modo) => `QBanks › «uWorld - USMLE Step 1» (ACTIVE QBANK) › New Test → ${modo} · ${nPreg(n)} · Status: Unused · Subjects: todos · Order: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
-const tcMH = (ids, n, modo) => `QBanks › «Mehlman - Step 1 QBank - 2026» (ACTIVE QBANK) › New Test → ${modo} · ${nPreg(n)} · Status: Unused · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
+// v6.11 (lun 23-nov-2026 · chat USMLE, verificado EN VIVO en Qbankly): el menú «QBanks» se llama ahora «Question Bank Library»; el banco se abre con su «Select»
+//   (pasa a ser el banco ACTIVO: hoy lo es el UWSA1, así que cada sesión empieza por el Select de su banco) y el test se arma en su Dashboard › «+ New Test».
+//   ÚNICA fuente de las rutas de Qbankly de esta guía (F1 y tramo 2): antes «QBanks › … › Select (QBank)», «(ACTIVE QBANK) › New Test» y «Test Composer».
+const QBK = { menu: 'Question Bank Library', boton: '«+ New Test»' };
+const qbSel = (banco) => `${QBK.menu} › ${banco} › Select`;
+const QB_NT = `Dashboard › ${QBK.boton}`;
+const QB_UW = qbSel('uWorld - USMLE Step 1'), QB_MH = qbSel('Mehlman - Step 1 QBank - 2026');
+const tcUW = (ids, n, modo) => `${QB_UW} → ${QB_NT} → ${modo} · ${nPreg(n)} · Status: Unused · Subjects: todos · Order: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
+const tcMH = (ids, n, modo) => `${QB_MH} → ${QB_NT} → ${modo} · ${nPreg(n)} · Status: Unused · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
 // v6.10r (jue 19-nov-2026 · hallazgos 1-2 del chat USMLE, verificación EN VIVO en Qbankly): New Test arma SOLO desde el banco ACTIVO (hoy lo es el UWSA1, no
 //   «uWorld - USMLE Step 1»: el «(ACTIVE QBANK)» de los textos era falso) y «Number of Questions» viene en 20; Tutor es la opción por defecto y no hay casilla
 //   «sin reloj» → en F1 cada sesión de Qbankly empieza seleccionando su banco (uWorld 07:15-10:15 y bloques · Mehlman en la validación) y dice el número de
-//   preguntas; «Tutor (sin tiempo por pregunta)» en vez de «sin reloj». Solo F1 (tcUW1 / tcMH1 / respaldo1): el tramo 2 (2027) queda igual.
-const QB_UW = 'QBanks › uWorld - USMLE Step 1 › Select', QB_MH = 'QBanks › Mehlman - Step 1 QBank - 2026 › Select';
+//   preguntas; «Tutor (sin tiempo por pregunta)» en vez de «sin reloj». (v6.11: la ruta, QBK / qbSel / QB_NT, es ya la misma en F1 y en el tramo 2.)
 const TUTOR1 = 'Tutor (sin tiempo por pregunta)';
 const nQ1 = (n) => `Number of Questions: ${n} (no 20)`;
 // remate v6.10r (revisión «verdad-calendar» MEDIA #2): «Status: Unused» DELANTE del número de preguntas: con el Select del banco delante, el corte de 110 del
 //   Calendar lo dejaba fuera en los 48 pasos de armar (y desde el mié 25 los Systems ya tienen preguntas usadas: sin el filtro puede salir una repetida)
 // v6.10t (auditoría c19 · cambios-c19 #9): «Tutor» junto a «New Test» y lo que va por defecto, detrás del número de preguntas: el corte de 110 del Calendar
-//   caía tras la palabra suelta «Tutor» («… (no 20) · Tutor …»); ahora acaba en «(no 20) …» con banco, Select, Unused y N a la vista. Mehlman (tcMH1) ya
-//   cortaba en «(no 20) …» y su banco es más largo: queda igual
-const tcUW1 = (ids, n) => `${QB_UW} → New Test (Tutor) → Status: Unused · ${nQ1(n)} · Subjects: todos · Order y Tutor: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
-const tcMH1 = (ids, n) => `${QB_MH} → New Test → Status: Unused · ${nQ1(n)} · Tutor (por defecto) · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
-const L_UW = { t: 'Qbankly › QBanks', url: QBQ };
-const R_UW = { t: 'Qbankly › QBanks (Test Composer)', url: QBQ };
+//   caía tras la palabra suelta «Tutor» («… (no 20) · Tutor …»).
+// v6.11 (remate, revisión USMLE MEDIA): con la ruta real («Question Bank Library › <banco> › Select»), banco + Select + botón + Status + N ya no caben en los 110
+//   del Calendar → el NÚMERO de preguntas justo tras el botón (viene en 20: es el error caro; Status: Unused, detrás, y en el «qué» ya van el nº y el modo) y sin
+//   «Dashboard ›» (el Select ya lleva al Dashboard; lo dice el recurso R_UW). uWorld corta en «… Number of Questions: 1 (no 20) …»; Mehlman, en «… Questions: 5 …»
+const tcUW1 = (ids, n) => `${QB_UW} → ${QBK.boton} → ${nQ1(n)} · Status: Unused · Tutor (por defecto) · Subjects: todos · Order: por defecto · System${ids.length > 1 ? 's' : ''} ${ids.map(uwNom).join(' + ')} → BEGIN TEST`;
+const tcMH1 = (ids, n) => `${QB_MH} → ${QBK.boton} → ${nQ1(n)} · Status: Unused · Tutor (por defecto) · System${ids.length > 1 ? 's' : ''} ${ids.map(mhNom).join(' + ')} → BEGIN TEST`;
+const L_UW = { t: `Qbankly › ${QBK.menu}`, url: QBQ };
+const R_UW = { t: `Qbankly › ${QBK.menu} (Select → Dashboard › ${QBK.boton})`, url: QBQ };
 const R_VID = { t: 'Qbankly › Video Library (B&B Step 1)', url: QBV };
 const R_ANKI = { t: 'AnkiWeb (solo si el escritorio falla)', url: 'https://ankiweb.net/decks' };
 const respaldo = (d, n) => (MF1[d] && MF1[d].mh && MF1[d].mh.length
-  ? `Si el composer muestra < ${n} Unused en esos Systems: haz las que haya y completa con Mehlman (QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank) → ${MF1[d].mh.map(mhNom).join(' + ')}, mismo modo; después vuelve a uWorld. Nunca preguntas de otro tema.`
+  ? `Si ${QBK.boton} muestra < ${n} Unused en esos Systems: haz las que haya y completa con Mehlman (${QB_MH}) → ${MF1[d].mh.map(mhNom).join(' + ')}, mismo modo; después vuelve a uWorld (${QB_UW}). Nunca preguntas de otro tema.`
   : 'Si no hay Unused suficientes: las que haya + Status Incorrect del mismo System; nunca preguntas de otro tema.');
 /** v6.10r: el respaldo de F1 con la ruta verificada (Select del banco) y el número de preguntas */
 const respaldo1 = (d, n) => (MF1[d] && MF1[d].mh && MF1[d].mh.length
-  ? `Si el composer muestra < ${n} Unused en esos Systems: haz las que haya y completa con Mehlman (${QB_MH} → New Test → Number of Questions: las que falten · Tutor) → ${MF1[d].mh.map(mhNom).join(' + ')}; después vuelve a uWorld (${QB_UW}). Nunca preguntas de otro tema.`
+  ? `Si ${QBK.boton} muestra < ${n} Unused en esos Systems: haz las que haya y completa con Mehlman (${QB_MH} → ${QB_NT} → Number of Questions: las que falten · Tutor) → ${MF1[d].mh.map(mhNom).join(' + ')}; después vuelve a uWorld (${QB_UW}). Nunca preguntas de otro tema.`
   : 'Si no hay Unused suficientes: las que haya + Status Incorrect del mismo System; nunca preguntas de otro tema.');
 
 function pasosVideo(d, arr) {
@@ -956,7 +967,7 @@ function pretest(r) {
       P(30, '10Q ciegas del tema NUEVO (sin haber visto nada de hoy)', 'SAQ (pregunta autónoma) antes de mirar las opciones + CCSN; después lee la explicación entera (~3′ por pregunta).'),
       P(12, 'Free recall 90 s + shopping list', 'Escribe sin mirar lo que ya sabes del tema; cada duda, también en los aciertos, a la shopping list de 📏 Medición (pre-test /10).'),
     ]),
-  ], [R_UW], 'nota /10 en 📏 Medición (40-60 % es normal: es diagnóstico, no gate)', { planB: respaldo(d, 10), aviso: q.deficit ? `Según este plan, a estos Systems de uWorld les quedan ~${q.dispAntes} Unused antes de hoy y el día pide ${q.dispAntes + q.deficit} (pre-test + consolidación): cuando el composer se quede corto, usa el respaldo de abajo (Mehlman).` : undefined });
+  ], [R_UW], 'nota /10 en 📏 Medición (40-60 % es normal: es diagnóstico, no gate)', { planB: respaldo(d, 10), aviso: q.deficit ? `Según este plan, a estos Systems de uWorld les quedan ~${q.dispAntes} Unused antes de hoy y el día pide ${q.dispAntes + q.deficit} (pre-test + consolidación): cuando ${QBK.boton} se quede corto, usa el respaldo de abajo (Mehlman).` : undefined });
 }
 
 // DEEP PRIME 09:00
@@ -999,7 +1010,7 @@ function deepPrime(r) {
 // CONSOLIDACIÓN 11:00 por nivel (genérico D6+)
 function consolidacion(r) {
   const d = r.d; const hoy = uwDe(d); const prev = contAtras(r, 1); const n = r.nivelUW; const m = MF1[d];
-  const sub = m.uwSub ? ` · si se acaban: Subject «${UWS.get(m.uwSub[0]).nombre}» ∩ ${m.uwSub[1].map(uwNom).join(' + ')} = ${m.uwSub[1].reduce((a, y) => a + MAT.get(`${m.uwSub[0]}:${y}`), 0)}Q (matriz real del composer)` : '';
+  const sub = m.uwSub ? ` · si se acaban: Subject «${UWS.get(m.uwSub[0]).nombre}» ∩ ${m.uwSub[1].map(uwNom).join(' + ')} = ${m.uwSub[1].reduce((a, y) => a + MAT.get(`${m.uwSub[0]}:${y}`), 0)}Q (matriz real de uWorld, catálogo del 18-oct)` : '';
   let pasos; let titulo;
   // v6.09 · lote 1 (17-nov-2026, auditoría a1-13): en F1, N1 = 15Q Tutor a 3′ + revisión 12′ + gate 3′ · N2 = 25Q TIMED + revisión 21′ + gate 2′ (antes
   //   20Q a 2′/Q y 30Q con 11′ de revisión: no cabían a 0,85′/Q); las 5Q que faltan → cincoDe(r). El tramo 2 (2027) sigue igual (otro lote).
@@ -1042,7 +1053,7 @@ function consolidacion(r) {
     titulo = 'CONSOLIDACIÓN · nivel 4 (viernes) · 20Q MIXTOS timed + 10Q Tutor del subtema';
     const mix = (VISTOS_ANTES[d] || []).filter((x) => !hoy.includes(x));
     pasos = [
-      P(2, 'Armar los 2 tests en el Test Composer', `20Q: QBanks › «uWorld - USMLE Step 1» › New Test → Systems: los ${mix.length} ya vistos de los sistemas dominados (no el de hoy) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
+      P(2, `Armar los 2 tests en ${QBK.boton}`, `20Q: ${QB_UW} → ${QB_NT} → Systems: los ${mix.length} ya vistos de los sistemas dominados (no el de hoy) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
       P(30, '20Q MIXTOS TIMED (≥3 sistemas ya dominados)', 'Cronómetro 2:00 por pregunta; saltar entre especialidades sin aviso (eso es el nivel 4); flag y sigue. ' + AJ('contenido-N4')),
       P(20, '10Q Tutor del subtema de hoy', 'Con explicación; cada fallo a la shopping list.'),
       revCon(r, 6, presupuesto(r).con, 'UWorld'),
@@ -1052,7 +1063,7 @@ function consolidacion(r) {
     titulo = 'CONSOLIDACIÓN · nivel 3 · 20Q del SISTEMA timed + 10Q Tutor';
     const org = sistemasOrgano(hoy[0]);
     pasos = [
-      P(2, 'Armar el test en el Test Composer', `20Q: QBanks › «uWorld - USMLE Step 1» › New Test → Systems: TODOS los de «${organoDe(hoy[0])}» (${org.length} Systems) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
+      P(2, `Armar el test en ${QBK.boton}`, `20Q: ${QB_UW} → ${QB_NT} → Systems: TODOS los de «${organoDe(hoy[0])}» (${org.length} Systems) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
       P(30, '20Q del sistema completo TIMED (sin saber el subtema)', 'Cronómetro 2:00 por pregunta; flag y sigue.'),
       P(20, '10Q Tutor del subtema de hoy', 'Con explicación; cada fallo a la shopping list.'),
       revCon(r, 6, presupuesto(r).con, 'UWorld'),
@@ -1076,7 +1087,7 @@ function pasosEval(r, comprimido) {
   //   del nivel 1: 10-20, 20-30 si la revisión cabe) → 12Q = TECHO: las 10 nuevas en 23′ (10 × 2,35′) + ≤2 tarjetas APEX con su cabecera en 4′ · el re-test
   //   de 2 incorrectas, solo si sobra; si no, a la REENTRADA del tramo 2 (incorrectas de uWorld). Mismos 30′ (2 + 23 + 4 + 1); el día queda en 30Q.
   if (comprimido && !r.t) return [
-    P(2, 'Armar 2 tests en TUTOR: 10Q mixtas de lo ya visto + 2 re-test de tus incorrectas (12Q = TECHO, no meta)', `${QB_UW} → New Test ×2: (a) Status Unused · 10Q · (b) Status Incorrect · 2Q → en cada uno, Number of Questions: esa cifra (no 20) · Tutor (por defecto) · Systems: ${txtSis} (las incorrectas = las que fallaste en F1: el re-test no gasta preguntas nuevas)`, L_UW),
+    P(2, 'Armar 2 tests en TUTOR: 10Q mixtas de lo ya visto + 2 re-test de tus incorrectas (12Q = TECHO, no meta)', `${QB_UW} → ${QB_NT} ×2: (a) Status Unused · 10Q · (b) Status Incorrect · 2Q → en cada uno, Number of Questions: esa cifra (no 20) · Tutor (por defecto) · Systems: ${txtSis} (las incorrectas = las que fallaste en F1: el re-test no gasta preguntas nuevas)`, L_UW),
     P(23, `10Q nuevas en ${TUTOR1}, mezcladas (de lo ya visto)`, `Nivel 1 (Palmerton): aún no hay subtemas en nivel 3, así que se mezcla sin tiempo por pregunta (interleaving). Cada una: cover-the-options + SAQ + CCSN → la explicación entera (Tutor: ${TUTOR_TXT}; 10 × 2,35′ ≈ 23′); cada fallo: knowledge / transfer / unforced.`),
     corrEval(r, 4, presupuesto(r).ev),
     P(1, 'Registrar el % (las 10 nuevas) + horas netas del día · el re-test, solo si sobra', `📏 Medición. TECHO: las 2 del re-test (Status Incorrect) solo si las 10 nuevas y las tarjetas te dejaron minutos; si no, se re-testean en la REENTRADA del ${fd(FV6.step1.reinicio)} (2×20Q mixtas + incorrectas de uWorld): no gastan preguntas nuevas.`),
@@ -1085,7 +1096,7 @@ function pasosEval(r, comprimido) {
   //   en el paso de armar: 10Q en Tutor = 23,5′ = los 15′ del paso de responder + los primeros ≈9′ de la corrección (mismas Q, mismos 27′)
   const f3 = r.t && r.fase === 'F3';
   if (comprimido) return [
-    P(1, f3 ? 'Armar 10Q mixtas (timed solo con gate; si no, Tutor)' : 'Armar 10Q mixtas TIMED', `QBanks › uWorld › New Test → Systems: ${txtSis} · Status Unused · 10 · ${f3 ? 'Timed si esos subtemas ya tienen el gate del 80 % en 📏 Medición; si no, Tutor' : 'Timed'}`, L_UW),
+    P(1, f3 ? 'Armar 10Q mixtas (timed solo con gate; si no, Tutor)' : 'Armar 10Q mixtas TIMED', `${QB_UW} → ${QB_NT} → Systems: ${txtSis} · Status Unused · 10 · ${f3 ? 'Timed si esos subtemas ya tienen el gate del 80 % en 📏 Medición; si no, Tutor' : 'Timed'}`, L_UW),
     P(15, f3 ? '10Q mixtas — TIMED solo con gate (90 s/Q · tope 2 min)' : '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · sin cambiar respuestas salvo error de lectura.' + (f3 ? ' ' + AJ('eval18F3') + ' Rama Tutor: 10 × 2,35′ ≈ 23,5′ = este paso + los primeros ≈9′ de la corrección; en lo que queda de la corrección, las tarjetas.' : '')),
     corrEval(r, 12, presupuesto(r).ev),
     P(2, 'Registrar eval % + horas netas del día', '📏 Medición.'),
@@ -1094,13 +1105,13 @@ function pasosEval(r, comprimido) {
   //   22,5′ → 23′ · corrección 15 × 0,85′ ≈ 12,8′ → 14′); antes 10Q en 15′ + 23′ de corrección (ratio 0,68)
   const c5 = cincoDe(r);
   if (c5 && c5.donde === 'eval18') return [
-    P(2, 'Armar 2 tests TIMED: 10Q mixtas de lo ya visto + 5Q del subtema de hoy', `(a) QBanks › uWorld › New Test → Systems: ${txtSis} · Subjects todos · Status Unused · 10 · Timed · (b) ${tcUW(r.nivelUW === 2 ? sistemasSoFar(r) : uwDe(r.d), 5, TIMED)} = las 5Q que no entraron en la consolidación de las 11:00 (${r.nivelUW === 1 ? '15 + 5 = las 20 del nivel 1' : '25 + 5 = las 30 del nivel 2'})`, L_UW),
+    P(2, 'Armar 2 tests TIMED: 10Q mixtas de lo ya visto + 5Q del subtema de hoy', `(a) ${QB_UW} → ${QB_NT} → Systems: ${txtSis} · Subjects todos · Status Unused · 10 · Timed · (b) ${tcUW(r.nivelUW === 2 ? sistemasSoFar(r) : uwDe(r.d), 5, TIMED)} = las 5Q que no entraron en la consolidación de las 11:00 (${r.nivelUW === 1 ? '15 + 5 = las 20 del nivel 1' : '25 + 5 = las 30 del nivel 2'})`, L_UW),
     P(23, '15Q TIMED (90 s/Q · tope 2 min): las 10 mixtas y después las 5 del subtema', 'Modo examen: cover-the-options · juez, no abogado · cuenta las respuestas cambiadas y las relecturas.'),
     corrEval(r, 14, presupuesto(r).ev),
     P(6, 'Registrar en 📏 Medición', 'eval % (las 10 mixtas) · las 5 del subtema suman al % de la consolidación de hoy · horas netas de Step 1 del día (GO/NO-GO por horas) · cambiadas · relecturas.'),
   ];
   return [
-    P(2, f3 ? 'Armar 10Q mixtas de lo ya visto (timed solo con gate; si no, Tutor)' : 'Armar 10Q mixtas TIMED de lo ya visto', `QBanks › uWorld › New Test → Systems: ${txtSis} · Subjects todos · Status Unused · 10 · ${f3 ? 'Timed si esos subtemas ya tienen el gate del 80 % en 📏 Medición; si no, Tutor' : 'Timed'}`, L_UW),
+    P(2, f3 ? 'Armar 10Q mixtas de lo ya visto (timed solo con gate; si no, Tutor)' : 'Armar 10Q mixtas TIMED de lo ya visto', `${QB_UW} → ${QB_NT} → Systems: ${txtSis} · Subjects todos · Status Unused · 10 · ${f3 ? 'Timed si esos subtemas ya tienen el gate del 80 % en 📏 Medición; si no, Tutor' : 'Timed'}`, L_UW),
     P(15, f3 ? '10Q mixtas — TIMED solo con gate (90 s/Q · tope 2 min)' : '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · juez, no abogado · cuenta las respuestas cambiadas y las relecturas.' + (f3 ? ' ' + AJ('eval18F3') + ' Rama Tutor: 10 × 2,35′ ≈ 23,5′ = este paso + los primeros ≈9′ de la corrección; el resto de la corrección, tarjetas y log.' : '')),
     corrEval(r, 23, presupuesto(r).ev),
     P(5, 'Registrar en 📏 Medición', 'eval % · horas netas de Step 1 del día (GO/NO-GO por horas) · cambiadas · relecturas.'),
@@ -1142,14 +1153,14 @@ function hitoNBME(r) {
     B(f, '07:00–12:30', `HITO · NBME ${form} — 4 bloques de ${bloques.join('/')}Q (Timed)`, [
       // v6.10j (rev. c14, vetadas #5): la ruta de menús va en el «qué» (≤ 150, entero en el Calendar) y el «cómo» EMPIEZA por cómo se crea el bloque 1 (antes
       //   el corte de 110 caía dentro de la ruta: «… › Select QBank › …» y se perdía «New Test → Subject «Block 1» (50) · … · Timed → BEGIN TEST»)
-      P(3, `Armar el bloque 1 · QBanks › NBME - Comprehensive Basic Science (Step 1) › «${nom}» (${bloques.reduce((a, b) => a + b, 0)}Q) › Select QBank`, `New Test → Subject «Block 1» (${bloques[0]}) · Timed · System All Systems · Status Unused · ${bloques[0]} → BEGIN TEST`, L_UW),
+      P(3, `Armar el bloque 1 · ${qbSel(`NBME - Comprehensive Basic Science (Step 1) › «${nom}» (${bloques.reduce((a, b) => a + b, 0)}Q)`)}`, `${QB_NT} → Subject «Block 1» (${bloques[0]}) · Timed · System All Systems · Status Unused · ${bloques[0]} → BEGIN TEST`, L_UW),
       P(75, `Bloque 1 · ${bloques[0]}Q · 75′ (ritmo NBME: 90 s/Q)`, 'Kit anti-pánico: tope 2 min · flag y sigue · sin cambiar respuestas salvo error de lectura.'),
-      P(75, `Bloque 2 · ${bloques[1]}Q · 75′ (seguido)`, 'Sit-in 10-15 s en la silla → New Test «Block 2».'),
+      P(75, `Bloque 2 · ${bloques[1]}Q · 75′ (seguido)`, `Sit-in 10-15 s en la silla → ${QBK.boton} «Block 2».`),
       P(12, 'Pausa fuera de la silla', 'Ziploc BREAK 1, agua, baño; no revises nada.'),
-      P(75, `Bloque 3 · ${bloques[2]}Q · 75′`, 'New Test «Block 3».'),
+      P(75, `Bloque 3 · ${bloques[2]}Q · 75′`, `${QBK.boton} «Block 3».`),
       P(15, 'Pausa fuera de la silla', 'Ziploc BREAK 2.'),
-      P(75, `Bloque 4 · ${bloques[3]}Q · 75′`, 'New Test «Block 4». Al terminar: % total y por bloque.'),
-    ], [{ t: `Qbankly › QBanks › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: ${r.fase === 'F3' ? `almuerzo 12:30-13:00 (F3: no hay SYNAPSE; R↔D 13:30 sin cambio). Su Day-After (~4 h) se reparte como en F1: 18:00 de hoy (1/6) + las 4 filas siguientes (07:15 de la fila siguiente y 18:00).${daEnF4(r).length ? ' ' + daEnF4Txt(r) : ''}` : 'almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).'}${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
+      P(75, `Bloque 4 · ${bloques[3]}Q · 75′`, `${QBK.boton} «Block 4». Al terminar: % total y por bloque.`),
+    ], [{ t: `Qbankly › ${QBK.menu} › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: ${r.fase === 'F3' ? `almuerzo 12:30-13:00 (F3: no hay SYNAPSE; R↔D 13:30 sin cambio). Su Day-After (~4 h) se reparte como en F1: 18:00 de hoy (1/6) + las 4 filas siguientes (07:15 de la fila siguiente y 18:00).${daEnF4(r).length ? ' ' + daEnF4Txt(r) : ''}` : 'almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).'}${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
     B(f, '18:00–18:45', `DAY-AFTER NBME ${form} · 1/6 — registro + trayectoria + auditoría`, [
       P(5, 'Registrar en 📏 Medición: % total, % de los 4 bloques, horas netas', 'Step 1 → 📋 HOY → 📏 Medición.'),
       P(15, 'Trayectoria: curva del % frente a los hitos previos y al mínimo on-track', '¿Subieron los sistemas estudiados en las últimas 2 semanas?'),
@@ -1169,7 +1180,7 @@ function reentrada1615(r) {
   const org = m && ORGANO_ROT[m[1]]; const ids = org ? [...UWY.keys()].filter((id) => organoDe(id) === org) : [];
   if (!ids.length) { ERR.push(`${etq(r)} ${r.fecha}: 16:15 REENTRADA sin sistema de la rotación reconocible («${r.franjaNota || ''}»)`); return null; }
   return B(r.fecha, U.FRANJA_F3_REENTRADA.hora, `16:15 REENTRADA · 20Q de ${m[1]} (timed solo con gate; rotación de F3)`, [
-    P(2, `Armar: los ${ids.length} Systems de «${org}»`, `QBanks › «uWorld - USMLE Step 1» › New Test → Systems: TODOS los de «${org}» (${ids.length}) · Subjects todos · Status Incorrect (NO Unused: el uWorld fresco se reserva para el contenido) · 20 · Timed si el sistema ya tiene 3-5 subtemas al 80 % sin reloj (📏 Medición); si no, Tutor → BEGIN TEST · si salen < 20, completa con AMBOSS (bloque del mismo sistema, mismo modo)`, L_UW),
+    P(2, `Armar: los ${ids.length} Systems de «${org}»`, `${QB_UW} → ${QB_NT} → Systems: TODOS los de «${org}» (${ids.length}) · Subjects todos · Status Incorrect (NO Unused: el uWorld fresco se reserva para el contenido) · 20 · Timed si el sistema ya tiene 3-5 subtemas al 80 % sin reloj (📏 Medición); si no, Tutor → BEGIN TEST · si salen < 20, completa con AMBOSS (bloque del mismo sistema, mismo modo)`, L_UW),
     P(30, '20Q del sistema — TIMED solo con gate (90 s/Q · tope 2 min)', 'Sin saber el subtema: cover-the-options · flag y sigue · cuenta las respuestas cambiadas. ' + AJ('reentrada1615') + ' Rama Tutor (sin gate): en este paso, las primeras 13Q (13 × 2,35′ ≈ 31′); las 7 restantes, al empezar el paso de revisión.'),
     P(25, 'Revisión: Educational Objective + log de errores (0 tarjetas nuevas: el tope del día ya lo reparten deep prime, consolidación y eval)', 'Cada fallo: knowledge / transfer / proceso → 📏 Medición; lo que merecería tarjeta va a la shopping list. Timed: 20 × 0,85′ ≈ 17′ de Educational Objective + ≈8′ de log. Rama Tutor: primero las 7Q que faltan (≈16′, su explicación ya es la revisión) y en los ≈9′ que quedan, el log de las 20.'),
     P(3, 'Gate de la reentrada (marca ✓/✗ en 📏 Medición)', U.FRANJA_F3_REENTRADA.gate),
@@ -1223,7 +1234,16 @@ const frDe = (t, m) => `${hhmm(t)}–${hhmm(t + m)}`;
 function bloqueConfigAnki(f) {
   const it = CONF_REP[0], pF = PALM.Te5RnxeG_Gg;
   const capsTxt = pF.caps.map((x, i) => (i === pF.caps.length - 1 ? `${hms(x)} Change 8` : hms(x))).concat(`${hms(pF.faq)} FAQ`).join(' · ');
-  const v05 = pasosVideo(D2.d, CONF_REP).map((p) => ({ ...p, como: p.como.replace(' · pausa y anota los 8 cambios', ` · pausa y anota los 8 cambios · para en ${hms(it.fin)}${it.fin === pF.faq ? ', donde empieza el FAQ' : ', un fin de capítulo'} (lo que falta, el ${fd(D2.fecha)} a las 05:00${it.fin === pF.faq ? ': el FAQ, opcional' : ''}) · corta solo en un fin de capítulo, nunca a mitad (capítulos: ${capsTxt})`) }));
+  // v6.11 (lun 23-nov-2026 · chat USMLE): el tramo 0:00 → it.fin recoge solo los cambios que EMPIEZAN antes de it.fin (con 23:50, los 7 primeros: el «Change 8»
+  //   empieza justo ahí y va al D2). El replace buscaba « · pausa y anota…», pero el texto de METODO lo lleva tras «:» → nunca se aplicaba (sin «para en 23:50 ·
+  //   corta solo en un fin de capítulo»); ahora busca la frase sin el separador y, si no la encuentra, aborta.
+  const totC = pF.caps.length - 1, nC = pF.caps.slice(1).filter((x) => x < it.fin).length;
+  const cambiosTxt = nC >= totC ? `los ${totC} cambios` : `los ${nC} primeros cambios (${nC === totC - 1 ? `el ${totC}.º` : `del ${nC + 1}.º al ${totC}.º`}, en el D2)`;
+  const ANOTA = `pausa y anota los ${totC} cambios`;
+  const v05 = pasosVideo(D2.d, CONF_REP).map((p) => {
+    if (!p.como.includes(ANOTA)) aborta(`CONFIGURACIÓN 05:00: el «cómo» del vídeo FSRS ya no dice «${ANOTA}» (METODO.Te5RnxeG_Gg): no puedo añadir dónde parar`);
+    return { ...p, como: p.como.replace(ANOTA, `pausa y anota ${cambiosTxt} · para en ${hms(it.fin)}${it.fin === pF.faq ? ', donde empieza el FAQ' : ', un fin de capítulo'} (lo que falta, el ${fd(D2.fecha)} a las 05:00${it.fin === pF.faq ? ': el FAQ, opcional' : ''}) · corta solo en un fin de capítulo, nunca a mitad (capítulos: ${capsTxt})`) };
+  });
   const V05 = v05.reduce((a, p) => a + p.min, 0);
   if (CONF_MIN.sync + CONF_MIN.preset + CONF_MIN.comprob + CONF_MIN.manual + V05 !== 45) aborta(`CONFIGURACIÓN 05:00: no suma 45′ (Sync ${CONF_MIN.sync} + preset ${CONF_MIN.preset} + comprobación ${CONF_MIN.comprob} + manual ${CONF_MIN.manual} + vídeo ${V05})`);
   const recPalm = (id) => ({ t: `Palmerton · ${id === 'Te5RnxeG_Gg' ? 'Anki + FSRS' : 'The ONLY video (Step 1 2026)'} (YouTube)`, url: yt(id), min: Math.round(PALM[id].s / 60) });
@@ -1250,7 +1270,14 @@ function anki0500D2(r) {
   if (!iO || rep.s0500.some((it) => it.id !== 'Te5RnxeG_Gg' && it.id !== 'BOtQJeFE_rc')) aborta(`${etq(r)}: el Anki de las 05:00 espera el resto del vídeo FSRS y «The ONLY Video…» (v6.10u)`);
   const vids = pasosVideo(r.d, rep.s0500).map((p, i) => {
     const it = rep.s0500[i];
-    if (it.id === 'Te5RnxeG_Gg') return { ...p, que: `${p.que}${it.ini === pF.faq ? ' · el FAQ, opcional' : ''}`, como: p.como.replace(` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`, ` · sigue desde el minuto ${hms(it.ini)}, donde paraste en la configuración del ${fd(CONF_DIA)} (si paraste antes, desde ahí)${it.ini === pF.faq ? ': es el FAQ, opcional; si no lo ves, esos minutos van al free recall' : ''}`) };
+    // v6.11 (remate, revisión USMLE BAJA): el resto del vídeo FSRS dice qué cambios quedan, con la misma cuenta que la configuración (los que EMPIEZAN desde
+    //   it.ini); antes repetía «pausa y anota los 8 cambios» aunque la configuración ya anotó los primeros. Aborta si el texto base cambia
+    if (it.id === 'Te5RnxeG_Gg') {
+      const totC = pF.caps.length - 1, nYa = pF.caps.slice(1).filter((x) => x < it.ini).length, ANOTA = `pausa y anota los ${totC} cambios`;
+      if (!p.como.includes(ANOTA)) aborta(`${etq(r)} 05:00: el «cómo» del resto del vídeo FSRS ya no dice «${ANOTA}» (METODO.Te5RnxeG_Gg)`);
+      const quedan = nYa >= totC ? 'ya anotaste los cambios en la configuración: hoy solo completa la lista' : nYa === totC - 1 ? `pausa y anota el ${totC}.º cambio (los ${nYa} primeros, en la configuración)` : nYa ? `pausa y anota del ${nYa + 1}.º al ${totC}.º cambio (los ${nYa} primeros, en la configuración)` : ANOTA;
+      return { ...p, que: `${p.que}${it.ini === pF.faq ? ' · el FAQ, opcional' : ''}`, como: p.como.replace(ANOTA, quedan).replace(` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`, ` · sigue desde el minuto ${hms(it.ini)}, donde paraste en la configuración del ${fd(CONF_DIA)} (si paraste antes, desde ahí)${it.ini === pF.faq ? ': es el FAQ, opcional; si no lo ves, esos minutos van al free recall' : ''}`) };
+    }
     return { ...p, como: p.como.replace(' · pausa y anota 5 ideas', ` · pausa y anota 5 ideas · para en ${hms(iO.fin)}, donde empieza «Reading test writer intent» (lo siguiente, en la cola)`) };
   });
   const V = vids.reduce((a, p) => a + p.min, 0); const resto = D2_0500.total - D2_0500.sync - V;
@@ -1287,7 +1314,7 @@ function preguntaAFondo(r, k, n, franja) {
     P(7, `Clasificar el error + SAQ y PC por escrito + ${tj} tarjetas APEX · ${cabCorta(espApex(r), subApex(r), 'UWorld', 'estudio')}`, `Clasifica: knowledge / transfer / unforced («no conocía la palabra» = knowledge de vocabulario) · escribe solo la SAQ y la cronología fisiopatológica (PC: 4-6 pasos en presente) · ${tj} tarjetas de MECANISMO o PC: ${R_FRENTE} · ${R_ENVIO}.${tarjetaDiaTxt(r)}`),
   ];
   if (conPulido) pasos.push(
-    P(10, 'Pulir las tarjetas de esta pregunta y la shopping list', 'Relee cada tarjeta: ¿se entiende sola dentro de 6 meses?, ¿la respuesta es un porqué y no un dato suelto? Corrige y reenvía si hace falta (toast ✓). La shopping list, con la palabra o el concepto exacto que faltó.'),
+    P(10, 'Pulir las tarjetas de esta pregunta y la shopping list', `Relee cada tarjeta: ¿se entiende sola dentro de 6 meses?, ¿la respuesta es un porqué y no un dato suelto? ${R_CORRIGE}. La shopping list, con la palabra o el concepto exacto que faltó.`),
     P(5, 'Bitácora de la pregunta (📏 Medición)', 'Minutos usados · relecturas de la viñeta · seguridad (seguro / dudo / adivino) · tipo de error. Si llegaste a los 45′, lo que falte pasa a la shopping list de la próxima sesión.'));
   const aviso = k === 1 ? `NIVEL 0 (decisión de Joseph del 17-nov, DATA/USMLE/PALMERTON_NIVEL0_ARRANQUE.md §3): sin simulacro ni reloj; ${n} preguntas a fondo, una ${conPulido ? 'por hora (≤45′ cada una + 10′ de tarjetas y shopping list + 5′ de bitácora)' : 'cada 45′ (tope duro: sin los 15′ de pulido, §3.2)'}, del mismo subtema y con su análisis completo. Funcionan como PRE-TEST: 40-60 % es normal. ${conPulido ? `Al final de la mañana, la validación con 5Q NUEVAS de Mehlman (11:00).` : 'Al final, la validación con 5Q NUEVAS de otro banco (A5/A6).'}` : undefined;
   return B(r.fecha, franja, tit85(`PREGUNTA ${k}/${n} a fondo · NIVEL 0 · `, txtSub(r), ' (Tutor, sin tiempo por pregunta, ≤45′)'), pasos, [R_UW], `pregunta ${k} respondida y analizada en ≤45′, su SAQ + PC escritas y ${tj} tarjetas APEX confirmadas (toast ✓)`, { planB: respaldo1(d, 1), aviso });
@@ -1342,7 +1369,7 @@ function pretestN1(r) {
     P(tutMin(5), '5Q ciegas del tema NUEVO (sin haber visto nada de hoy)', `SAQ (pregunta autónoma) antes de mirar las opciones + CCSN · ${faseTxtDe(r)} (Palmerton: 1 subtema, Tutor, sin reloj); después, la explicación entera (Tutor: ${TUTOR_TXT}).`),
     faAcotado(27, m.fa, 'revisión a fondo de cada incorrecta y de cada duda: Educational Objective → la página completa (Whole Page Rule)', 'el DEEP PRIME de las 09:00 (misma sección)'),
     P(5, 'Bitácora + shopping list (pre-test /5 en 📏 Medición)', `Cada duda, también en los aciertos, a la shopping list; 40-60 % es normal: es diagnóstico, no gate.${trampaTrasTxt(r, 'el bloque 1 es ciego')}${metDia(r) ? ' Lo aplicas en el bloque 2 y en la validación.' : ''}`),
-  ], [R_UW], 'nota /5 en 📏 Medición y la shopping list escrita', { planB: respaldo1(d, 5), aviso: q && q.deficit ? `Según este plan, a estos Systems de uWorld les quedan ~${q.dispAntes} Unused antes de hoy: cuando el composer se quede corto, usa el respaldo de abajo (Mehlman).` : undefined });
+  ], [R_UW], 'nota /5 en 📏 Medición y la shopping list escrita', { planB: respaldo1(d, 5), aviso: q && q.deficit ? `Según este plan, a estos Systems de uWorld les quedan ~${q.dispAntes} Unused antes de hoy: cuando ${QBK.boton} se quede corto, usa el respaldo de abajo (Mehlman).` : undefined });
 }
 /** v6.10b · 11:00-11:30 del nivel 1: BLOQUE 2 = 5Q Tutor del subtema (tras el deep prime) + la página de cada fallo + ≤2 tarjetas + bitácora (§3.2 modo B). */
 function bloque2N1(r) {
@@ -1580,7 +1607,7 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
         for (const p of g.pasos) {
           const c0 = p.como;
           p.como = p.como.split(mayus(R_ENVIO)).join(`Cada tarjeta, ${dir(r)}`).split(R_ENVIO).join(`cada tarjeta, ${dir(r)}`)
-            .replace('Corrige y reenvía si hace falta (toast ✓)', 'Si hay que corregir una, díctale el cambio al chat (lo aplica en Anki y en Obsidian)');
+            .replace(R_CORRIGE, 'Si hay que corregir una, díctale el cambio al chat (lo aplica en Anki y en Obsidian)');
           if (p.como !== c0) toca = true;
         }
         // la 1.ª pasada de las 18:00 tampoco reescribe en Anki (desincronizaría la nota de Obsidian): la corrección se dicta. Fuera de `toca`: ese bloque no crea

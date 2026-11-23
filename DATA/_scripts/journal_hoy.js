@@ -86,6 +86,15 @@ const PROY = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",
 const TAPER = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",tipo:"(mantenimiento|deload)",ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"/g)]
   .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), tipo: m[4], ini: m[5], fin: m[6], ship: m[7], aceptacion: [] }));
 const diaHoy = DIAS.find((x) => x.fecha === FECHA) || null;
+// v6.11 (lun 23-nov, chat vibecoding): un día sin bloque de vibecoding DENTRO del plan (sábado, feriado, día protegido: su fecha de plan no tiene paso ni
+//   SHIP) no escribe nada, igual que un día sin sesión: antes el sáb 28-nov creaba «## Sáb 28-nov» fuera del plan. Fuera del rango del plan (antes del
+//   primer paso o tras el último SHIP) sigue la entrada libre de siempre.
+const _ships = new Set([...PROY, ...TAPER].map((p) => p.ship));
+const _rango = DIAS.length ? [DIAS.map((x) => x.fecha).sort()[0], [...DIAS.map((x) => x.fecha), ..._ships].sort().pop()] : null;
+if (!diaHoy && _rango && FECHA >= _rango[0] && FECHA <= _rango[1] && !_ships.has(FECHA)) {
+  console.log(`SIN VIBECODING ${REAL}: ${fmt(REAL)} no tiene bloque de vibecoding en el plan (ni paso ni SHIP) · hoy no se escribe nada en el journal`);
+  process.exit(0);
+}
 // v6.10q: la semana del journal = la del PROYECTO si el plan la fija (S1 entero en 2026-W47, también su SHIP del dom 29; = vibecodingPlan.vibeJournalSemanaDe de
 //   la app); si no, la semana ISO de la fecha de plan. El lunes y el domingo de la cabecera, los de esa semana. v6.10u: la tabla sale del .ts generado
 //   (VIBE_JOURNAL_SEMANA, { n: «YYYY-Www» }; gen_vibecoding_plan.js › JOURNAL_SEM), no de _fechas_v6.json

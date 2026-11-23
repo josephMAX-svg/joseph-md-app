@@ -1,6 +1,6 @@
 /**
  * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.7 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
- * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-19) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
+ * GENERADO por DATA/_scripts/gen_research_plan.js (2026-11-23) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  *
  * 42 átomos · D1 = Jue 2026-11-19 → D42 = Lun 2027-04-12 · 1 átomo por DÍA-RESEARCH
  * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres (v6.00: desde el SERUMS 2027-05-03 el sábado es día de plan) · salta los SKIP
@@ -61,7 +61,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   ROBINS: { label: 'ROBINS-I (no-aleatorizados)', url: 'https://www.riskofbias.info/welcome/home' },
   GRADE:  { label: 'GRADEpro (certeza)', url: 'https://www.gradepro.org/' },
   // rótulo CORTO a propósito: el «cómo» del R9 lo cita («Trabaja con «…» MIENTRAS produces el artefacto: …», ≤110 en el Calendar) y uno largo saca el artefacto del corte
-  AMSTAR: { label: 'AMSTAR-2 (apreciar SR)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404)
+  AMSTAR: { label: 'AMSTAR-2 (Shea, BMJ 2017)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404)
   DMAR:   { label: 'Doing Meta-Analysis in R (libro gratis)', url: 'https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/' },
   METAFOR:{ label: 'metafor package (R)', url: 'https://www.metafor-project.org/' },
   EQ:     { label: 'EQUATOR Network', url: 'https://www.equator-network.org/' },
@@ -162,7 +162,7 @@ export const RESEARCH_RECURSOS_TOP: { capa: string; items: RecursoTopResearch[] 
   ] },
   { capa: 'Guías de reporte (exigidas por revistas top)', items: [
     { label: 'EQUATOR Network — CONSORT 2025, STROBE, PRISMA, SPIRIT', url: 'https://www.equator-network.org/reporting-guidelines/', autor: 'UK EQUATOR Centre (Oxford)', tipo: 'biblioteca de checklists', nivel: 'todos', confianza: 'verificado', porQue: '>250 guías por tipo de estudio que NEJM/Lancet/JAMA/BMJ exigen. Regla de oro: elegir la guía ANTES de escribir.' },
-    { label: 'PRISMA 2020 — statement + E&E', url: 'https://www.prisma-statement.org/', autor: 'PRISMA Group / EQUATOR', tipo: 'guía de reporte', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar de facto para SR/meta-análisis: checklist 27 ítems + diagramas de flujo. El E&E explica cada ítem con ejemplos.' },
+    { label: 'PRISMA 2020 — statement + E&E', url: 'https://www.prisma-statement.org/', autor: 'PRISMA Group / EQUATOR', tipo: 'guía de reporte', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar de facto para SR/meta-análisis: checklist + diagramas de flujo. El E&E explica cada ítem con ejemplos.' }, // v6.11 (remate): sin el nº de ítems (es la respuesta del pre-test ciego de M1 y R0; el hub está siempre a la vista)
     { label: 'Cochrane Handbook v6.5 (acceso abierto)', url: 'https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current', autor: 'Cochrane (Higgins, Thomas et al.)', tipo: 'guía metodológica', nivel: 'avanzado', confianza: 'verificado', porQue: 'La biblia metodológica de las revisiones sistemáticas (v6.5, ago 2024: network MA, síntesis narrativa, equidad, automatización).' },
   ] },
   { capa: 'Bioestadística con código (puente → Synapse)', items: [
@@ -237,7 +237,7 @@ export const DIAS: DiaResearch[] = [
   // C · Carta al editor
   { d: 4, fecha: '2026-11-27', ciclo: 1, fase: 'C', pista: 'C', code: 'C-1', prioridad: 'CRITICA', objetivo: 'Discovery de 5 artículos 2026 recientes en JAAD / JAAD Intl / IJD / JCD / Dermatol Surg sobre derma estética · fototipos IV-VI · complicaciones de fillers, con los datos de envío de cada journal', entregable: 'Tabla de 5 candidatos con las 7 columnas del paso de la tabla (guía del bloque: journal, fecha de publicación, DOI y 4 más)', artefacto: 'DATA/RESEARCH/CARTA_1/candidatos.md (tabla de 5) + correo a IJD Editorial Office pidiendo su política de correspondencia (pendiente desde 27-ago)', tool: 'research-discovery · PubMed', recs: ['PM', 'OPENALEX', 'JAADINT', 'IJD'], apex: null },
   // M · Mentores & red
-  { d: 5, fecha: '2026-12-01', ciclo: 1, fase: 'M', pista: 'M', code: 'M2', prioridad: 'ALTA', objetivo: 'Rising Scholars (ex-AuthorAID, INASP): solicitar mentor 1-a-1 gratuito para la revisión en inglés del primer manuscrito — tarda semanas, pedirlo YA; el mentor debe cubrir los 3 manuscritos del plan (la solicitud los nombra con sus meses)', entregable: 'Perfil creado + solicitud de mentor enviada (área: dermatología / escritura científica)', artefacto: 'MENTORES.md: fila Rising Scholars (fecha de solicitud · estado · fecha de decisión del plan B)', tool: 'risingscholars.net', recs: ['RISING', 'SCIWRITE', 'PHRASE'], chips: ['plan B (editor profesional US$200-400 · RUTA §3.1) se decide el mar 29-dic-2026 (4 semanas) si no hay mentor asignado — MENTORES fila 2'], apex: null },
+  { d: 5, fecha: '2026-12-01', ciclo: 1, fase: 'M', pista: 'M', code: 'M2', prioridad: 'ALTA', objetivo: 'Rising Scholars (ex-AuthorAID, INASP): solicitar mentor 1-a-1 gratuito para la revisión en inglés del primer manuscrito — tarda semanas, pedirlo YA; el mentor debe cubrir los 3 manuscritos del plan (la solicitud los nombra con sus meses)', entregable: 'Perfil creado + solicitud de mentor enviada (área: dermatología / escritura científica)', artefacto: 'MENTORES.md: fila Rising Scholars (fecha de solicitud · estado · fecha de decisión del plan B)', tool: 'risingscholars.net', recs: ['RISING', 'SCIWRITE', 'PHRASE'], chips: ['plan B (editor profesional US$200-400 · RUTA §3.1) se decide el mar 29-dic-2026 si no hay mentor asignado — MENTORES fila 2'], apex: null },
   // C · Carta al editor
   { d: 6, fecha: '2026-12-03', ciclo: 1, fase: 'C', pista: 'C', code: 'C-2', prioridad: 'CRITICA', objetivo: 'Elegir 1 artículo diana con FECHA LÍMITE de submit calculada (ventana del journal) + leer 5 letters modelo del mismo journal (cita → aporte u objeción con 1 dato verificable → implicación)', entregable: 'Artículo diana fijado + deadline en la Mesa editorial + esqueleto de la carta (3 párrafos) calcado de los 5 modelos', artefacto: 'CARTA_1/diana.md (DOI del artículo, deadline, límites, esqueleto) + Mesa editorial: carta-1 → borrador', tool: 'PubMed · Mesa editorial', recs: ['PM', 'PHRASE', 'ICMJE'], apex: { id: 'carta-diana', t: 'Artículo diana + deadline' } },
   // T · Tesis · research letter

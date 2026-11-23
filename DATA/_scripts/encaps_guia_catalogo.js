@@ -67,7 +67,7 @@ const AREA = {
 
 /** Banco de respaldo (plan B) — los mismos de src/lib/encapsResumenes.ts (ENCAPS_BANCOS). */
 const PLAN_B_QX = { t: 'QX · App Banqueo (banco de respaldo)', url: 'https://qxmedic-aulavirtual.com/evaluaciones/banqueapp' };
-const POSTEST_DRLOPEZ = { t: 'DR LOPEZ · 🚀 PosTest 2026-I por área (con claves de academia)', url: D('1HiH_Jtl-1aCxnHlvcE-xhFslHuey-gy-') };
+const POSTEST_DRLOPEZ = { t: 'DR LOPEZ · 🚀 PosTest 2026-I por área (post-tests de clase, no el examen; con claves de academia)', url: D('1HiH_Jtl-1aCxnHlvcE-xhFslHuey-gy-') };
 
 /**
  * Nota Obsidian del CÓDIGO v3 (carpeta del tema en el vault). `sub` = override por sub-eje cuando el sub-eje vive en otra nota.
@@ -361,13 +361,28 @@ const TECNICA_SIM = {
  *     Antes: «2Q en 8′» (0,38) · «16Q en 30′» (0,80) y un «cómo» que mandaba completar hasta 5 sin que el rótulo lo dijera.
  *   · MATERIAL (7′, solo si ≥2 fallos): acotado a ≤3 p a 2′/p.
  *   · PRE-TEST (mié 18-nov): eval 5Q = 6′ + 2′ de solución (8′, antes 10′: 0,80) · corrección 20Q × 0,85′ = 17′ (antes 15′).
+ *     v6.11 (lun 23-nov, chat ENCAPS · pendiente 23.2): el día de un test CIEGO (pre-test de arranque o mini-sim) la eval anclada se responde SIN
+ *     «Terminar y corregir» y sin leer soluciones; sus 2′ de solución pasan a la corrección, después del test ciego: eval 6′ · corrección 17′ + 2′ = 19′
+ *     (mismos 60′).
  *   · MINI-SIM: corrección 25Q × 0,85′ = 21′ → 20′ (antes 18′: 1,18) · registro + cierre semanal 4′ · APEX + 1 cifra por código caliente 4′.
  */
 const RECETA_F1 = {
   desde: '2026-11-18',
   banco: { principal: 20, secundario: 5, segQ: 90, material: { min: 7, paginas: 3 } },
-  pretest: { eval: 8, correccion: 17 },
+  pretest: { eval: 6, correccion: 19 },
   minisim: { correccion: 20, registro: 4, apex: 4 },
 };
 
-module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1 };
+/**
+ * v6.11 (lun 23-nov, chat ENCAPS · pendiente 21.2): CUARENTENA de los exámenes reservados, UNA sola frase para las mañanas (gen_encaps_manana.js, antes su
+ * constante RESERVA) y para todo paso de las 16:15 que saque preguntas de QX · App Banqueo · DR LOPEZ · Theomed (gen_encaps_guia.js; los runners de
+ * BANCO_PROPIO solo traen examen oficial 2024-2A / 2025-1A / 2025-2). `RESERVA_FECHAS`: el PRE-TEST ciego 2026-II (_fechas_v6.json encaps.pretest) y el
+ * ensayo general con el 2026-I (fila dress_rehearsal de _encaps_intensivo_2027.sql); los generadores abortan si dejan de coincidir. Desde el pre-test
+ * hasta el ensayo general solo queda la reserva del 2026-I (reservaDe, por el día REAL de la sesión); después, nada.
+ */
+const RESERVA_FECHAS = { pretest: '2027-01-08', ensayo: '2027-03-11' };
+const RESERVA = 'Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8-ene. Reservados: el ENCAPS 2026-II real (pre-test ciego del vie 8-ene) y el 2026-I (ensayo general del jue 11-mar).';
+const RESERVA_2026_I = 'Reservado: el ENCAPS 2026-I (ensayo general del jue 11-mar).';
+const reservaDe = (realISO) => (realISO < RESERVA_FECHAS.pretest ? RESERVA : realISO < RESERVA_FECHAS.ensayo ? RESERVA_2026_I : '');
+
+module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1, RESERVA_FECHAS, RESERVA, RESERVA_2026_I, reservaDe };

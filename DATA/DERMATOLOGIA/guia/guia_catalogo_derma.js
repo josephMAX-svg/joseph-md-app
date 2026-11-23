@@ -180,6 +180,8 @@ const CME_DESPLAZADO = {
 };
 
 const QBANKS = 'https://qbankly.app/qbanks';
+const QB_RUTA_UW = 'Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test»';
+const QB_ENLACE_UW = { t: 'Qbankly › Question Bank Library (uWorld Step 1)', url: QBANKS };
 const VIDEOS = 'https://qbankly.app/videos';
 const DERMNET = 'https://dermnetnz.org';
 const DSC = 'https://dermoscopedia.org';
@@ -230,8 +232,10 @@ const uworld = (C, sysId, nQ, min, como) => {
   const s = C.uw(sysId);
   return {
     min, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${nQ}Q · Tutor (${s.q} preguntas en el System)`,
-    como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → ${nQ} preguntas → Tutor → BEGIN TEST · ${como} · cuentan doble para el Step 1 (no se repiten después).`,
-    enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS },
+    // v6.11 (remate · ítem 24 del chat USMLE, verificado en vivo el 23-nov): el menú «QBanks» es ahora «Question Bank Library»; el banco se abre con su
+    //   Select (el ACTIVO es el UWSA1) y el test se arma en «+ New Test», donde «Number of Questions» viene en 20 (misma ruta que gen_usmle_guia.js)
+    como: `${QB_RUTA_UW} → Number of Questions: ${nQ} (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · ${como} · cuentan doble para el Step 1 (no se repiten después).`,
+    enlace: QB_ENLACE_UW,
   };
 };
 const bbVideo = (C, id, fecha, que) => {
@@ -304,7 +308,7 @@ function curadas(C) {
         quizPaso(DERMA_QUIZ_F1[1].quiz, DERMA_QUIZ_F1[1].desde, kD1, mD1, DERMA_QUIZ_F1[1].foco),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
-        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '5Q' },
+        { ...QB_ENLACE_UW, cantidad: '5Q' },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` },
         { t: `DermNet Quiz · ${DERMNET_QUIZZES[DERMA_QUIZ_F1[1].quiz].t}`, url: DN_QUIZ_URL(DERMA_QUIZ_F1[1].quiz), cantidad: `${kD1} casos` },
@@ -350,7 +354,7 @@ function curadas(C) {
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa título y pies: describe la red antes de leer · registra ✓/✗ en ①b · si no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.', enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
         cierre(2, `≤3 tarjetas en ${C.deck('A')}.`), // v6.09b · lote 1-ter: 3′ → 2′ (como todas las sesiones): el minuto lo pide el «Terminology» a 100 palabras/min
       ], [
-        { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS, cantidad: '4Q' },
+        { ...QB_ENLACE_UW, cantidad: '4Q' },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: `B&B · ${C.bb(74).nombre}`, url: VIDEOS, min: C.bbMin(74, x.fecha).min },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` }, { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` }, R_DSC,

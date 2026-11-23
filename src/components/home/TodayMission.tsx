@@ -488,8 +488,9 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       const hoyHito = us.fecha === iso && esHito(us);
       const lblQb = hoyHito ? (/Self-Assessment 1|UWSA1/.test(us.uw) ? 'UWSA1 ↗' : `${us.uw.replace('NBME CBS Form', 'NBME')} ↗`) : 'uWorld ↗';
       const ruta = hoyHito && /Self-Assessment 1|UWSA1/.test(us.uw)
-        ? 'Qbankly › QBanks › USMLE High Yield › «uWorld - Step 1 Self Assessment Simulation 1» › Select QBank › New Test → Subject «Block - #1» · Timed'
-        : hoyHito ? `Qbankly › QBanks › NBME - Comprehensive Basic Science (Step 1) › «Self-Assessment - Form ${(/Form (\d+)/.exec(us.uw) || [])[1] ?? ''}» › Select QBank › New Test → «Block 1» · Timed`
+        // v6.11 (remate · ítem 24 del chat USMLE, en vivo el 23-nov): «QBanks» → «Question Bank Library»; el banco con su Select y el test en «+ New Test» (como la guía)
+        ? 'Qbankly › Question Bank Library › USMLE High Yield › «uWorld - Step 1 Self Assessment Simulation 1» › Select → «+ New Test» → Subject «Block - #1» · Timed'
+        : hoyHito ? `Qbankly › Question Bank Library › NBME - Comprehensive Basic Science (Step 1) › «Self-Assessment - Form ${(/Form (\d+)/.exec(us.uw) || [])[1] ?? ''}» › Select → «+ New Test» → Subject «Block 1» · Timed`
           : `${us.bbCh}: ${us.bbVid} · ${us.mat} · nivel UW ${us.nivelUW} · ${q} · todo en inglés`;
       return {
         tema: `${etiquetaDiaUSMLE(us)}${tipo} · ${us.system} — ${us.sub}`,

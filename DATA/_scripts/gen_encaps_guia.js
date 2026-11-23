@@ -225,6 +225,19 @@ const FICHAS = FUENTES.ENCAPS_FICHAS_POR_TEMA || {};
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const corta = (iso) => { const d = new Date(iso + 'T12:00:00Z'); return `${WD[d.getUTCDay()]} ${Number(iso.slice(8, 10))}-${MES[Number(iso.slice(5, 7)) - 1]}`; };
+// v6.11 (lun 23-nov, chat ENCAPS · pendiente 21.2): CUARENTENA de los exámenes reservados (CAT.RESERVA: la MISMA frase que las mañanas de gen_encaps_manana.js)
+//   al principio del «cómo» de todo paso de las 16:15 que saque preguntas de QX · App Banqueo · DR LOPEZ · Theomed (banco o secundario que completa con QX, banco
+//   o mini-sim sin runner) y en los planes B que los nombran; los runners no la necesitan (solo examen oficial 2024-2A / 2025-1A / 2025-2). Por el día REAL de la
+//   sesión (CAT.reservaDe): entera antes del pre-test 2026-II; desde ese día y hasta el ensayo general, solo la reserva del 2026-I. Las fechas que cita la frase
+//   tienen que ser las del plan (_fechas_v6.json encaps.pretest · fila dress_rehearsal del SQL de la intensiva) o el script aborta.
+{
+  const dress = Object.values(F2_DIAS).find((x) => x.tipo === 'dress_rehearsal');
+  if (F6.encaps.pretest !== CAT.RESERVA_FECHAS.pretest || !dress || dress.fecha !== CAT.RESERVA_FECHAS.ensayo
+    || ![CAT.RESERVA_FECHAS.pretest, CAT.RESERVA_FECHAS.ensayo].every((f) => CAT.RESERVA.includes(corta(f))) || !CAT.RESERVA_2026_I.includes(corta(CAT.RESERVA_FECHAS.ensayo))) {
+    aborta(`CAT.RESERVA: pre-test ${CAT.RESERVA_FECHAS.pretest} / ensayo ${CAT.RESERVA_FECHAS.ensayo} ≠ _fechas_v6.json (${F6.encaps.pretest}) / dress_rehearsal del SQL (${dress ? dress.fecha : '—'}), o la frase no los cita`);
+  }
+}
+const reservaDe = (fila) => CAT.reservaDe(realE(fila.fecha));
 /** v6.05 (fix): último día de plan ESTRICTAMENTE anterior a `iso` (L-V, ni SKIP ni protegido de _fechas_v6.json): vie 25-dic (SKIP) → jue 24-dic. */
 const NO_PLAN = new Set([...(F6.skip || []), ...(F6.protegidos || []).map((x) => x.fecha)]);
 function ultimoDiaPlanAntes(iso) {
@@ -403,6 +416,20 @@ const PASO_ARRANQUE = (runners, sinRunner = '') => ({
   como: `${sinRunner ? sinRunner + ' ' : ''}${sinRunner && !runners.some(Boolean) ? '' : 'Los runners abren en cualquier navegador (también el del móvil) y guardan el avance en ese navegador. '}Confianza 1-3 OBLIGATORIA en cada ítem (3 = segura · 2 = dudosa · 1 = adivinada): el % CIEGO = correctas Y seguras ÷ total.`, // v6.10z-d (chat ENCAPS): antes «seguras / total» (como FASE_INTENSIVA_2027-I.md)
   ...(runners[0] ? { enlace: enlaceRunner(runners[0], `${runners[0].f}`) } : {}),
 });
+// v6.11 (lun 23-nov, chat ENCAPS · pendiente 23.2): la EVAL ANCLADA de un día con TEST CIEGO detrás (pre-test de arranque; en F1 el mini-sim no lleva eval) se
+//   responde SIN «Terminar y corregir» ni soluciones y se corrige DESPUÉS del test, en su paso de corrección (que absorbe sus 2′ de solución); el «Empezar» del
+//   test, solo al salir de la eval. Botones = los del runner (public/encaps/bp/*.html: «Empezar» · «Terminar y corregir» · «Descargar .json», y este último solo
+//   aparece tras corregir). El runner guarda el avance en el navegador: la eval cerrada a medias se reabre igual, con su reloj donde quedó (con la pestaña
+//   abierta, al llegar a 0 se corregiría sola: por eso se cierra).
+const EVAL_ANTES_CIEGO = {
+  arranque: (test) => `«Empezar» primero en la eval; el «Empezar» del ${test}, solo al salir de la eval.`,
+  como: (test, conRunner) => (conRunner
+    ? `SIN «Terminar y corregir» y sin mirar soluciones: la eval se corrige después del ${test}. De memoria y sin material: 72 s/Q (6′), cada una con su confianza; al responder la 5.ª, cierra la pestaña de la eval (el runner guarda el avance en este navegador; si su reloj llega a 0 antes, se corrige sola: ciérrala sin mirar) y pasa al ${test}.`
+    : `Sin mirar la clave: la eval se corrige después del ${test}. De memoria y sin material: 72 s/Q (6′), cada una con su confianza; anota tu respuesta y pasa al ${test}.`),
+  correccion: (conRunner) => (conRunner
+    ? 'Primero la eval: reábrela en el mismo navegador y pulsa «Terminar y corregir» enseguida (al reabrirla, su reloj vuelve a correr); lee la solución de cada fallo con su regla en 1 línea.'
+    : 'Primero la eval: la solución de cada fallo y su regla en 1 línea.'),
+};
 // v6.10m (auditoría c16 · cambios-c16 #9): en el CARRIL SÁBADO la vía (b) nombra la fila del viernes host y, en la MISMA cláusula, su --pull (la fecha alarga el
 //   corte del Calendar hasta el final de esa cláusula: el «.» tras «registro»); antes el corte quedaba en «… y el cierre sale con la fecha del sábado) …» y la
 //   vía móvil parecía completa sin su --pull. Sin alargar lo visible (el cuerpo del carril sábado va al límite de 2400 del Calendar)
@@ -419,15 +446,17 @@ const PASO_ARRANQUE = (runners, sinRunner = '') => ({
 //   y sus 2 comandos --registrar en cadena (el corte del Calendar alarga hasta el final de la cadena: se ven enteros). Las de QX, en el «qué» y, enteras, al final.
 //   (diffs #15) En el CARRIL SÁBADO, «Banco» por una vía y «Eval» por CIERRE «Eval anclada», uno por código fallado: es un RE-TEST de un simulacro ya registrado
 //   (su runner exporta el mismo id y --registrar no lo duplica) o de un simulacro de plataforma (sin JSON)
+// v6.11 (lun 23-nov, chat ENCAPS · pendiente 23.2): el botón es «Descargar .json» (el nombre real del runner, public/encaps/bp/*.html): baja <ID>.json y --registrar
+//   lee ESE fichero; «Generar JSON de la ronda» solo lo enseña en pantalla (antes los textos decían «Generar JSON» → --registrar "<ruta del JSON>")
 const CMD_REG2 = 'node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON del banco>" --append → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON de la eval>" --append';
 const EVAL_SAB_CIERRE = 'un CIERRE tipo «Eval anclada» por código fallado (n = sus preguntas de las 5; el código, a mano: el formulario propone MIX), y el mismo --pull lo trae al registro; su JSON no: el runner del simulacro ya está registrado con ese id (--registrar no lo duplica) y el de plataforma no lo tiene';
 //   El cuerpo del sábado en el Calendar va al límite (2400): lo que va DETRÁS de la vía (b) del banco («--registrar guarda …», «el del cierre semanal») sale de su
 //   cláusula visible para que la eval quepa sin que el corte esconda esa vía
 const REGISTRO_RUNNER = (r, tipo, sab = null, evalCod) => sab
-  ? `Banco, una vía (nunca las dos): (a) en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append — preferida; o (b) en el móvil, CIERRE DE SESIÓN ${tipo} desde la fila D${sab.host.dia} del ${corta(sab.host.fecha)} + en el PC node DATA/_scripts/gen_encaps_semana.js --pull, que la trae al registro. --registrar guarda las preguntas en TRACKING_ERRORES; el --pull es el del cierre semanal. Eval: ${EVAL_SAB_CIERRE}. ${sab.filaCierre}; el cierre guarda n · seguras · dudosas · fallos por subtipo · t medio.`
+  ? `Banco, una vía (nunca las dos): (a) en el PC, «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append — preferida; o (b) en el móvil, CIERRE DE SESIÓN ${tipo} desde la fila D${sab.host.dia} del ${corta(sab.host.fecha)} + en el PC node DATA/_scripts/gen_encaps_semana.js --pull, que la trae al registro. --registrar guarda las preguntas en TRACKING_ERRORES; el --pull es el del cierre semanal. Eval: ${EVAL_SAB_CIERRE}. ${sab.filaCierre}; el cierre guarda n · seguras · dudosas · fallos por subtipo · t medio.`
   : evalCod !== undefined
-    ? `${evalCod ? `(b) móvil: CIERRE tipo ${tipo} + CIERRE «Eval anclada» con el código ${evalCod}` : `(b) móvil: solo el banco (CIERRE tipo ${tipo}); la eval MIX, solo por PC`} · (a) PC, preferida: «Generar JSON» en los 2 runners → ${CMD_REG2} (guardan las preguntas en TRACKING_ERRORES). Nunca las dos vías para la misma ronda. Con (b), ${evalCod ? 'cada CIERRE' : 'el CIERRE'} (ENCAPS → Plan → HOY → CIERRE DE SESIÓN) lleva n · seguras · dudosas · fallos por subtipo · t medio y el --pull del cierre semanal lo trae al registro${evalCod ? '' : '; la eval MIX no va por CIERRE: no se reparte por código'}.`
-    : `Una sola vía (nunca las dos): (a) en el PC, botón «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (guarda las preguntas en TRACKING_ERRORES) — preferida; o (b) en el móvil, ENCAPS → Plan → HOY → CIERRE DE SESIÓN tipo ${tipo} con n · seguras · dudosas · fallos por subtipo · t medio (el --pull del cierre semanal la trae al registro).`;
+    ? `${evalCod ? `(b) móvil: CIERRE tipo ${tipo} + CIERRE «Eval anclada» con el código ${evalCod}` : `(b) móvil: solo el banco (CIERRE tipo ${tipo}); la eval MIX, solo por PC`} · (a) PC, preferida: «Descargar .json» en los 2 runners → ${CMD_REG2} (guardan las preguntas en TRACKING_ERRORES). Nunca las dos vías para la misma ronda. Con (b), ${evalCod ? 'cada CIERRE' : 'el CIERRE'} (ENCAPS → Plan → HOY → CIERRE DE SESIÓN) lleva n · seguras · dudosas · fallos por subtipo · t medio y el --pull del cierre semanal lo trae al registro${evalCod ? '' : '; la eval MIX no va por CIERRE: no se reparte por código'}.`
+    : `Una sola vía (nunca las dos): (a) en el PC, botón «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (guarda las preguntas en TRACKING_ERRORES) — preferida; o (b) en el móvil, ENCAPS → Plan → HOY → CIERRE DE SESIÓN tipo ${tipo} con n · seguras · dudosas · fallos por subtipo · t medio (el --pull del cierre semanal la trae al registro).`;
 /** v6.10p (auditoría c18 · dias-clave #0): código de la eval anclada de una sesión de banco de F1 (string) o null = MIX. Con runner, el suyo (su JSON lleva
  *  `codigo`: un código o «MIX»); sin runner, la regla de gen_encaps_minisim.js --eval (la sesión anterior es un mini-sim o no tiene código → MIX). Antes se
  *  decidía por la posición (tras un mini-sim = MIX) y el mar 24-nov (EXCEPCIÓN: la eval es de I-3) salía como MIX. */
@@ -572,12 +601,13 @@ function construirGuia(fila, sab = null) {
         // v6.10e (revisión del 18-nov · dias-1920-1): con runner, lo que TRAE (desde el 18-nov solo examen real: con el stock real no siempre llega a la receta
         //   de fallos previos y cola larga); sin runner, la receta del SQL
         { min: 30, que: `MINI-SIMULACRO 25Q mixtas (${recTxt}; ${r && r.meta.conteos ? `${r.meta.conteos.criticos} de los 8 críticos · ${r.meta.conteos.fallos_previos} de fallos previos · ${r.meta.conteos.cola_larga}Q de ${cola.join(' + ')}${(r.j.items || []).every((x) => /^R-/.test(x.id)) ? ' · todas de examen real' : ''}` : `≥${e.criticos_min || 10} de los 8 críticos · ≥${e.fallos_previos_min || 5} de fallos previos · ${e.cola_larga_q || '5-6'}Q de ${cola.join(' + ')}`})${r ? ` — ${r.f}` : ' — runner POR GENERAR'}`,
-          como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos mini-sims seguidos.`,
+          // v6.11 (pendiente 21.2): sin runner, el mini-sim sale de QX · Theomed (plan B) → la cuarentena delante
+          como: `${!r && reservaDe(fila) ? `${reservaDe(fila)} ` : ''}${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos mini-sims seguidos.`,
           ...(r ? { enlace: enlaceRunner(r, 'Mini-sim') } : {}) },
         { min: rcM ? rcM.correccion : 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: rcM ? `${rcM.correccion}′ para las 25Q (≈0,8′ por pregunta: los aciertos «seguros» solo se leen; el tiempo va a fallos y dudosas). ${CAT.TECNICA_SIM.CORRECCION}` : CAT.TECNICA_SIM.CORRECCION },
         // remate v6.10l (revisión adversarial · visibilidad): la nota (CIERRE DE SESIÓN, con su sim_n) y la ronda (--registrar, con las 25 preguntas) en el «qué»,
         //   delante del corte del Calendar; antes solo «nota /25» y la ronda quedaba oculta
-        sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN}) por CIERRE DE SESIÓN + ronda por --registrar`, como: `ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes; guarda también n · seguras · dudosas · fallos por subtipo · t medio). Ronda con sus 25 preguntas: en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (las guarda en TRACKING_ERRORES). Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
+        sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN}) por CIERRE DE SESIÓN + ronda por --registrar`, como: `ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes; guarda también n · seguras · dudosas · fallos por subtipo · t medio). Ronda con sus 25 preguntas: en el PC, «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (las guarda en TRACKING_ERRORES). Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
           // v6.10j (auditoría c14, dias-clave #2): el «Hecho» exige el cierre semanal y el Calendar corta el «cómo» a 110 → su comando va PRIMERO (con «Al final»:
           //   se corre tras registrar la nota y la ronda); la regla de los runners de la semana siguiente va en el «Ojo», con las mismas palabras que los
           //   bancos (reglaRunnersLlegada). Antes el «cómo» abría con «Runners del jue 26-nov al vie 27-nov: los genera la revisión del dom 22-nov…» (un parche de
@@ -590,7 +620,7 @@ function construirGuia(fila, sab = null) {
           //   «▲ SIM (o … --registrar …)» como equivalentes y el --pull quedaba tras el corte: con solo ▲ SIM el mini-sim no entraba en el registro.
           //   (dias-clave #11) Si la semana siguiente ya está armada (armadoSig), su override no llega a ninguna sesión: lo dice y nombra el que sí.
           : { min: rcM ? rcM.registro : 5, que: `Registro: nota /25 + ronda + cierre semanal${armadoSig ? ` (esta vez su override no se aplica: los runners hasta el ${corta(bancosSig.at(-1))} ya están${pendSig.length && llMS ? ` o los arma la revisión del ${corta(llMS.fecha)}` : ''})` : ''}`,
-            como: `Nota /25 en ENCAPS → Plan → ▲ SIM (solo la nota). RONDA por UNA vía: PC, «Generar JSON» → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON>" --append (preferida); o móvil, CIERRE mini_sim + en el PC node DATA/_scripts/gen_encaps_semana.js --pull. Luego, cierre semanal: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem}${armadoSig
+            como: `Nota /25 en ENCAPS → Plan → ▲ SIM (solo la nota). RONDA por UNA vía: PC, «Descargar .json» → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON>" --append (preferida); o móvil, CIERRE mini_sim + en el PC node DATA/_scripts/gen_encaps_semana.js --pull. Luego, cierre semanal: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem}${armadoSig
               ? ` (su override no se aplica: bórralo de SEMANAS/overrides_acumulado.json; vale el del ${MS_F1.indexOf(msSig.dia) + 1}/${MS_F1.length}, desde el ${corta(trasMsSig.fecha)}).`
               : ` → override del ${siguiente ? corta(siguiente.fecha) : 'lunes siguiente'}.`} --registrar guarda las 25 preguntas en TRACKING_ERRORES y reparte los fallos por código; el CIERRE del móvil guarda nota y totales (n · seguras · dudosas · fallos por subtipo · t medio), sin preguntas. ${CAT.TECNICA_SIM.COMPARA}${(() => {
             // v6.09 (fix revisión 16-nov, joseph 6): si el fin de semana que sigue es SIN SESIÓN (viaje: no hay revisión del sábado que prepare la semana), aquí la orden
@@ -607,7 +637,8 @@ function construirGuia(fila, sab = null) {
       hecho: sab ? `25/25 respondidas en ≤30′ con la revisión formal hecha · nota /25 con sim_n ${sab.simN} (CIERRE DE SESIÓN) y ronda en el registro (--registrar) · 1-3 APEX creados.`
         // v6.10l (auditoría c15 · diffs #33): la nota (▲ SIM) y la ronda (--registrar o CIERRE + --pull) son dos cosas; antes «nota /25 registrada (▲ SIM o --registrar)»
         : `25/25 respondidas en ≤30′ con la revisión formal hecha · nota en ▲ SIM y ronda en el registro (--registrar o CIERRE + --pull) · cierre semanal corrido · 1-3 APEX creados.`,
-      planB: r ? `Si el enlace web no abre: en el PC ${r.local} (es el mismo fichero). Sin runner: Theomed · SIMULACROS MEDICINA o QX · Simulacros Virtuales (25Q mixtas a 72 s/Q), anotando la nota como /25.` : 'Runner sin generar: node DATA/_scripts/gen_encaps_minisim.js ' + fila.fecha + ' → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy. Si no llega: QX · Simulacros Virtuales (25Q a 72 s/Q, nota /25).',
+      planB: (r ? `Si el enlace web no abre: en el PC ${r.local} (es el mismo fichero). Sin runner: Theomed · SIMULACROS MEDICINA o QX · Simulacros Virtuales (25Q mixtas a 72 s/Q), anotando la nota como /25.` : 'Runner sin generar: node DATA/_scripts/gen_encaps_minisim.js ' + fila.fecha + ' → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy. Si no llega: QX · Simulacros Virtuales (25Q a 72 s/Q, nota /25).')
+        + (reservaDe(fila) ? ` ${reservaDe(fila)}` : ''), // v6.11 (pendiente 21.2)
       // v6.10j (auditoría c14, diffs #4): solo el comando del sábado (antes «…, o --semana <lunes>», que contradice el «NO --semana» de los bancos: con la
       //   semana del carril B ya armada, --semana re-sortearía sus banco_/eval_)
       // remate v6.10l (revisión adversarial · visibilidad): la cadena entera del runner (como los bancos del carril) y DELANTE de la nota, que repite la cabecera
@@ -651,24 +682,28 @@ function construirGuia(fila, sab = null) {
         titulo: `D${fila.dia} · 🧪 PRE-TEST DE ARRANQUE parte ${pm.parte}/${pm.de} · 20Q (${cods.join(' · ')}) a 72 s/Q + eval 5Q`,
         totalMin: 60,
         pasos: [
-          PASO_ARRANQUE([rEval, rPre]),
-          { min: rcP ? rcP.eval : 10, que: `EVAL ANCLADA · ${ePrev || '5Q'} — ${rEval ? rEval.f : 'sin runner'}`, como: `De memoria y sin material: 72 s/Q (6′) → al final lee la solución de cada fallo (${rcP ? rcP.eval - 6 : 4}′) y escribe la regla en 1 línea. Si fallas ≥2, ese código queda CALIENTE${rEval ? ' (su JSON va en el Registro, con el del pre-test)' : ''}${ovPre && ovPre.ev ? `: ${ovPre.ev}; no cambia el tema de la próxima sesión` : ' para el override que propone el próximo mini-sim (no cambia el tema de la próxima sesión)'}.`, ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
+          // v6.11 (lun 23-nov, chat ENCAPS · pendiente 23.2): día de TEST CIEGO tras la eval (EVAL_ANTES_CIEGO): la eval sin «Terminar y corregir» ni soluciones,
+          //   corregida DESPUÉS del pre-test en su paso de corrección (que absorbe sus 2′: RF1.pretest 6′ + 19′, antes 8′ + 17′; mismos 60′); el «Empezar» del
+          //   pre-test, solo al salir de la eval
+          ((a) => (rEval ? { ...a, como: `${EVAL_ANTES_CIEGO.arranque('pre-test')} ${a.como}` } : a))(PASO_ARRANQUE([rEval, rPre])),
+          { min: rcP ? rcP.eval : 6, que: `EVAL ANCLADA · ${ePrev || '5Q'} — ${rEval ? rEval.f : 'sin runner'}`, como: `${EVAL_ANTES_CIEGO.como('pre-test', !!rEval)} Si fallas ≥2, ese código queda CALIENTE${rEval ? ' (su JSON va en el Registro, con el del pre-test)' : ''}${ovPre && ovPre.ev ? `: ${ovPre.ev}; no cambia el tema de la próxima sesión` : ' para el override que propone el próximo mini-sim (no cambia el tema de la próxima sesión)'}.`, ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
           // v6.10o (auditoría c17 · dias-clave #1): el Registro registra los 2 JSON (pre-test y eval; --registrar admite UNA ruta: 2 comandos en cadena) en sus
           //   mismos 5′, y la eval lo dice sin condición (antes «queda CALIENTE si registras también el JSON de la eval», que el corte del Calendar escondía y que
           //   ningún paso visible mandaba hacer). La prohibición del CIERRE DE SESIÓN sigue en el «qué», delante del corte
           { min: 24, que: `PRE-TEST DE ARRANQUE parte ${pm.parte}/${pm.de} · ${rPre.n}Q CIEGAS (${cods.map((c) => `${rPre.porCod[c] || 5} × ${c}`).join(' · ')}) · ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 — ${rPre.f}`,
-            como: `MODO EXAMEN: 72 s/Q = 24′ sin pausa y sin material; la solución sale solo al final. Es tu LÍNEA BASE ciega por crítico: marca la confianza real (no «para quedar bien»). ${CAT.TECNICA_SIM.como(rPre.n, 24, 2, rPre.seg || 72)}`, enlace: enlaceRunner(rPre, 'Pre-test') },
-          { min: rcP ? rcP.correccion : 15, que: 'Corrección del pre-test: cada fallo y cada «dudosa»', como: `${rcP ? `${rPre.n}Q × 0,85′ ≈ ${rcP.correccion}′. ` : ''}Lee la explicación y la fuente del runner; clasifica (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) y escribe la regla en 1 línea. Hoy NO abres material del Drive: cada código se trabaja en su propia sesión de banco (${prox.join(' · ')}).` },
+            como: `${rEval ? '«Empezar» solo ahora, con la eval ya cerrada. ' : ''}MODO EXAMEN: 72 s/Q = 24′ sin pausa y sin material; la solución sale solo al final. Es tu LÍNEA BASE ciega por crítico: marca la confianza real (no «para quedar bien»). ${CAT.TECNICA_SIM.como(rPre.n, 24, 2, rPre.seg || 72)}`, enlace: enlaceRunner(rPre, 'Pre-test') },
+          // v6.11 (pendiente 23.2): + la corrección de la eval (primero, 2′: su JSON solo se puede descargar tras «Terminar y corregir»)
+          { min: rcP ? rcP.correccion : 19, que: 'Corrección del pre-test y de la eval: cada fallo y cada «dudosa»', como: `${rPre.n}Q × 0,85′ ≈ ${Math.round(rPre.n * 0.85)}′ + ${(rcP ? rcP.correccion : 19) - Math.round(rPre.n * 0.85)}′ de la eval. ${EVAL_ANTES_CIEGO.correccion(!!rEval)} Después, el pre-test: lee la explicación y la fuente del runner; clasifica (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) y escribe la regla en 1 línea. Hoy NO abres material del Drive: cada código se trabaja en su propia sesión de banco (${prox.join(' · ')}).` },
           // v6.10m (auditoría c16 · dias-clave #0): la prohibición del CIERRE DE SESIÓN va en el «qué», delante del corte del Calendar (del lun 23 al vie 27 el
           //   Calendar sí ofrece el CIERRE como vía de registro; antes el corte del «cómo» la escondía)
           rEval
-            ? { min: 5, que: `Registro de los 2 JSON, pre-test y eval: «Generar JSON» en cada runner → --registrar --append (NO el CIERRE DE SESIÓN: guardaría las ${rPre.n}Q como MIX)`,
+            ? { min: 5, que: `Registro de los 2 JSON, pre-test y eval: «Descargar .json» en cada runner → --registrar --append (NO el CIERRE DE SESIÓN: guardaría las ${rPre.n}Q como MIX)`,
               como: `En el PC: node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON del pre-test>" --append → node DATA/_scripts/gen_encaps_minisim.js --registrar "<JSON de la eval>" --append → las 2 rondas se reparten por código (pre-test: n = 5 por crítico, tu LÍNEA BASE ciega; eval: ≥2 fallos de un código = CALIENTE)${ovPre ? `; ${ovPre.regs}` : ''}.` }
-            : { min: 5, que: `Registro del pre-test: «Generar JSON» → --registrar --append (NO el CIERRE DE SESIÓN de la app: guardaría las ${rPre.n}Q como MIX)`, como: `En el PC: node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON descargado>" --append → la ronda «pretest» se reparte por código: n = 5 por crítico, tu LÍNEA BASE ciega${ovPre ? `; ${ovPre.reg}` : ''}.` },
+            : { min: 5, que: `Registro del pre-test: «Descargar .json» → --registrar --append (NO el CIERRE DE SESIÓN de la app: guardaría las ${rPre.n}Q como MIX)`, como: `En el PC: node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON descargado>" --append → la ronda «pretest» se reparte por código: n = 5 por crítico, tu LÍNEA BASE ciega${ovPre ? `; ${ovPre.reg}` : ''}.` },
           { min: 4, que: '1-3 APEX de los errores de CONOCIMIENTO (CONCEPTO / OLVIDO)', como: 'Cada APEX a la nota Obsidian del código fallado (las 4 notas en recursos) y a Anki APEX::ENCAPS: la regla corregida + la cifra exacta, en una frase.', ...(obsCods[0] ? { enlace: obsCods[0] } : {}) },
         ],
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rPre, `Pre-test ${rPre.f}`), ...obsCods, ...matCods],
-        hecho: `Eval 5/5 y pre-test ${rPre.n}/${rPre.n} respondidos con confianza · ${rEval ? 'los 2 JSON (pre-test y eval) registrados' : 'JSON del pre-test registrado'} con --registrar --append · 1-3 APEX creados.`,
+        hecho: `Eval 5/5 y pre-test ${rPre.n}/${rPre.n} respondidos con confianza (la eval, tras el pre-test) · ${rEval ? 'los 2 JSON (pre-test y eval) registrados' : 'JSON del pre-test registrado'} con --registrar --append · 1-3 APEX creados.`,
         planB: `Si el enlace web no abre: en el PC ${rPre.local}${rEval ? ` y ${rEval.local}` : ''} (son los mismos ficheros). El pre-test NO se sustituye por QX: es la línea base con clave oficial.`,
         aviso: `Hoy NO hay «banco ${codigo} + ${sec.map((s) => s.codigo).join(' + ')}»: el pre-test de arranque SUSTITUYE el banco del día (BANCO_PROPIO, _meta.sustituye; el horario no cambia). ${sec.map((s) => s.codigo).join(' + ')} (cola larga) entra en el mini-sim del ${corta((FILAS.find((x) => x.dia > fila.dia && x.tipo === 'mini_sim') || fila).fecha)}.`,
       };
@@ -730,6 +765,10 @@ function construirGuia(fila, sab = null) {
       // v6.10p (auditoría c18 · dias-clave #0): la eval es MIX o de un código por su runner (evalCodigoDe), no por ir tras un mini-sim · n del Registro
       const evalCod = sab ? null : evalCodigoDe(rEval, prev);
       const nTxtReg = !rcB ? (nRun != null ? nRun : 'las del runner') : nQx == null ? `${rcB.principal + (secCods.length ? rcB.secundario : 0)}: las del runner + las de QX` : nQx ? `${nRun} del runner + ${nQx} de QX` : nRun;
+      // v6.11 (pendiente 21.2): la cuarentena (CAT.RESERVA, por el día real) en el paso que saca preguntas de QX / DR LOPEZ: el principal si el runner está por
+      //   generar o no trae las 20 · el secundario si el runner no trae las 5 o, en el carril SÁBADO, si se completa con el banco de respaldo
+      const resPri = pendiente || (!!rcB && qxP !== 0) ? reservaDe(fila) : '';
+      const resSec = secCods.length && (pendiente || !rcB || qxS !== 0) ? reservaDe(fila) : '';
       g = {
         franja: sab ? sab.franja : FRANJA, plan: 'encaps',
         titulo: `${sab ? sab.etq : `D${fila.dia}`} · 🎯 BANCO ${codigo} · ${subLbl}${secCods.length ? ` + cola larga ${secCods.join(' + ')}` : ''}`,
@@ -749,16 +788,17 @@ function construirGuia(fila, sab = null) {
           //   prevista)»; el sub-eje, detrás (ya está en el título)
           { min: 30, que: pendiente && prev2 && mixto ? `BANCO DEL DÍA · ${qPri} CIEGAS, ${CAT.PREVISTO_ORIGEN} (${compTxt(qxP, QXC)}) — banco_${fila.fecha} POR GENERAR · sub-eje «${subLbl}»${subTxt}`
             : `BANCO DEL DÍA · ${priLbl} · sub-eje «${subLbl}»${subTxt} — ${runTxt}`,
-            como: `Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
+            // v6.11 (pendiente 21.2): si este paso saca preguntas de QX / DR LOPEZ (runner por generar o que no trae las 20), la cuarentena delante
+            como: `${resPri ? `${resPri} ` : ''}Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.${!rcB ? ''
               : qxP == null ? ` ${rcB.principal}Q × 90 s = 30′: si el runner trae menos de ${rcB.principal}, completa con ${qxDe(codigo, subLblRaw)} hasta ${rcB.principal}, mismo método.`
               : qxP > 0 ? ` ${rcB.principal}Q × 90 s = 30′: al acabar las ${nPri} del runner, ${qxP} de ${qxDe(codigo, subLblRaw)} (las primeras que no hayas visto), mismo método; si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t}.`
               : ` ${rcB.principal}Q × 90 s = 30′.`}`, ...(rBan ? { enlace: enlaceRunner(rBan, 'Banco') } : {}) },
           { min: 8, que: secCods.length ? `SECUNDARIO de cola larga · ${qSec} de ${secCods.join(' + ')}${secFuente} — ${sec.map((s) => subtemaCiego(s.subtema)).join(' / ').slice(0, 160)}` : 'Sin secundario: 8′ más del banco principal (sub-ejes distintos)',
-            como: !secCods.length ? 'Mismo método.' : !rcB ? 'Las últimas preguntas del mismo runner, mismo método (corrección inmediata + confianza). Si el runner trae menos de 4, completa con el banco de respaldo (plan B) hasta 5.'
+            como: !secCods.length ? 'Mismo método.' : `${resSec ? `${resSec} ` : ''}${!rcB ? 'Las últimas preguntas del mismo runner, mismo método (corrección inmediata + confianza). Si el runner trae menos de 4, completa con el banco de respaldo (plan B) hasta 5.'
               : `${qxS == null ? `Las últimas del mismo runner; si trae menos de ${rcB.secundario}, completa con ${qxDe(secCods[0], sec[0].subtema)} hasta ${rcB.secundario}.`
                 : qxS === 0 ? `${ultimasDe(rcB.secundario)} del mismo runner.`
                 : nSec === 0 ? `El runner no trae ninguna: las ${rcB.secundario} de ${qxDe(secCods[0], sec[0].subtema)}.`
-                : `${ultimasDe(nSec)} del mismo runner y, al acabar, ${qxS} de ${qxDe(secCods[0], sec[0].subtema)} (las primeras que no hayas visto).`} ${rcB.secundario}Q × 90 s ≈ 8′, mismo método (corrección inmediata + confianza).` },
+                : `${ultimasDe(nSec)} del mismo runner y, al acabar, ${qxS} de ${qxDe(secCods[0], sec[0].subtema)} (las primeras que no hayas visto).`} ${rcB.secundario}Q × 90 s ≈ 8′, mismo método (corrección inmediata + confianza).`}` },
           { min: 7, que: mat1 ? `MATERIAL — SOLO si fallaste ≥2 del principal: ${mat1.t}` : 'MATERIAL — solo si fallaste ≥2: compendio del área',
             como: rcB ? `Busca en el PDF SOLO la sección de tus fallos, ≤${rcB.material.paginas} p a 2′/p (empieza por los que marcaste «segura»), y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).`
               : 'Busca en el PDF SOLO la sección de tus fallos y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).', ...(mat1 ? { enlace: { t: `${mat1.tipo === 'mp4' ? 'Vídeo' : mat1.tipo === 'carpeta' ? 'Carpeta' : 'PDF'}`, url: mat1.url } } : {}) },
@@ -773,8 +813,8 @@ function construirGuia(fila, sab = null) {
         recursos: [...recursoRunner(rEval, `Eval ${rEval ? rEval.f : ''}`), ...recursoRunner(rBan, `Banco ${rBan ? rBan.f : ''}`), ...mat.items.slice(0, 4), ...matSec, ...(obs ? [obs] : []), ...obsSec, proyecto, ...(area ? [area.videoclases] : [])],
         hecho: `Eval 5/5 + ${mixto ? `las ${qPri} del banco` /* remate v6.10j: su composición va en el «qué» (con ella el «hecho» pasaba de 180 y el Calendar escondía «1-3 APEX creados») */ : `${qPri} de ${codigo}${qxP ? ` (${nPri} del runner + ${qxP} de QX)` : ''}`}${secCods.length ? ` + ${qSec} de ${secCods.join(' + ')}${qxS ? (nSec ? ` (${nSec} + ${qxS} de QX)` : ' (de QX)') : ''}` : ''} respondidas con confianza · ${sab ? 'banco (--registrar o CIERRE) y eval (CIERRE «Eval anclada») registrados' : !evalCod ? 'banco (UNA vía: --registrar o CIERRE) y eval MIX (--registrar) registrados' : 'banco y eval registrados (cada uno por UNA vía: --registrar o CIERRE)'} · 1-3 APEX creados.`, // v6.10p (c18 #0/#15): por el código de la eval, no por ir tras un mini-sim · sábado: + la eval
         planB: pendiente
-          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio (preguntas reales, con su clave); (2) si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}. Nada de preguntas generadas: solo bancos reales.${!rEval ? (sab && sab.evalPB ? sab.evalPB : evalSinRunnerPB(fila, prev, sab, lunes)) : ''}`
-          : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${CAT.POSTEST_DRLOPEZ.t} (preguntas reales, con su clave).`,
+          ? `Runner sin generar al empezar: (1) ${CAT.PLAN_B_QX.t} → área ${area ? area.nombre : ''} → ${qPri} del tema «${subLbl}» en modo estudio (preguntas reales, con su clave); (2) si QX no trae el tema, ${CAT.POSTEST_DRLOPEZ.t} → ${CAT.POSTEST_DRLOPEZ.url}. Nada de preguntas generadas: solo bancos reales.${reservaDe(fila) ? ` ${reservaDe(fila)}` : ''}${!rEval ? (sab && sab.evalPB ? sab.evalPB : evalSinRunnerPB(fila, prev, sab, lunes)) : ''}`
+          : `Si el enlace web no abre: en el PC ${rBan.local}${rEval ? ` y ${rEval.local}` : ''}. Si el runner se queda corto: ${CAT.PLAN_B_QX.t} (mismo tema) o ${CAT.POSTEST_DRLOPEZ.t} (preguntas reales, con su clave).${reservaDe(fila) ? ` ${reservaDe(fila)}` : ''}`, // v6.11 (pendiente 21.2): la cuarentena
         ...((() => {
           const av = [];
           // v6.03: si la semana ya tiene runners armados (p.ej. los re-fechados del lun 26 / mar 27-oct), --semana los re-sortearía → comandos del día
@@ -838,15 +878,22 @@ function construirGuia(fila, sab = null) {
   const sum = g.pasos.reduce((a, p) => a + p.min, 0);
   // v6.09b (lote 1-bis G): en F1 (desde RF1.desde) cada paso con cantidad cuadra con su tiempo (reglas de la auditoría: 72 s/Q · 90 s/Q con corrección
   //   inmediata · corrección 0,85′/Q; OK si necesario / asignado ∈ [0,85; 1,15]) y el rótulo dice la cantidad que el paso pide
+  // v6.11 (pendiente 23.2): con un TEST CIEGO detrás de la eval (pre-test · mini-sim) la eval no lleva solución (1,2′/Q) y la corrección del test suma la de la
+  //   eval (0,4′/Q); y los pasos lo dicen: «Empezar» del test al salir de la eval · eval sin «Terminar y corregir» · corrección «… y de la eval»
+  const pEv = g.pasos.find((p) => /^EVAL ANCLADA · /.test(p.que));
+  const ciego = !!pEv && g.pasos.some((p) => /^(PRE-TEST DE ARRANQUE parte|MINI-SIMULACRO)/.test(p.que));
+  const nEv = pEv && /^EVAL ANCLADA · (\d+)Q/.test(pEv.que) ? +/^EVAL ANCLADA · (\d+)Q/.exec(pEv.que)[1] : 5;
+  if (ciego && (!/se corrige después del/.test(pEv.como) || !g.pasos.some((p) => /^Corrección .* y de la eval/.test(p.que))
+    || (/Terminar y corregir/.test(pEv.como) && !/«Empezar» del /.test(g.pasos[0].como)))) aborta(`D${fila.dia} ${fila.fecha}: día de test ciego sin la regla de la eval (sin corregir hasta después del test · «Empezar» del test al salir de ella · corrección «… y de la eval»)`);
   if (!sab && fila.fecha >= RF1.desde) {
     for (const p of g.pasos) {
       let m, need = null;
-      if ((m = /^EVAL ANCLADA · (\d+)Q/.exec(p.que))) need = +m[1] * 1.2 + +m[1] * 0.4;
+      if ((m = /^EVAL ANCLADA · (\d+)Q/.exec(p.que))) need = +m[1] * 1.2 + (ciego ? 0 : +m[1] * 0.4);
       else if ((m = /^BANCO DEL DÍA · (\d+)Q CIEGAS/.exec(p.que))) need = +m[1] * 1.5;
       else if ((m = /^SECUNDARIO de cola larga · (\d+)Q/.exec(p.que))) need = +m[1] * 1.5;
       else if ((m = /^(?:MINI-SIMULACRO|PRE-TEST DE ARRANQUE parte \d\/\d ·) (\d+)Q/.exec(p.que))) need = +m[1] * 1.2;
       else if (/^Corrección: cada fallo y cada «dudosa»/.test(p.que)) need = 25 * 0.85;
-      else if (/^Corrección del pre-test/.test(p.que)) need = 20 * 0.85;
+      else if (/^Corrección del pre-test/.test(p.que)) need = 20 * 0.85 + (/ y de la eval/.test(p.que) ? nEv * 0.4 : 0);
       else if (/^(BANCO DEL DÍA|SECUNDARIO de cola larga)/.test(p.que)) aborta(`D${fila.dia} ${fila.fecha}: «${p.que.slice(0, 60)}…» sin una cantidad fija de preguntas (16-20Q / 4-5Q)`);
       if (need != null && (need / p.min < 0.85 || need / p.min > 1.15)) aborta(`D${fila.dia} ${fila.fecha}: «${p.que.slice(0, 60)}…» pide ${need.toFixed(1)}′ en ${p.min}′ (ratio ${(need / p.min).toFixed(2)} fuera de 0,85-1,15)`);
     }

@@ -769,9 +769,9 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 12,
      "que": "uWorld Step 1 · System «Dermatology (Inflammatory dermatoses and bullous diseases)» · Unused · 5Q · Tutor (28 preguntas en el System)",
-     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 5 preguntas → Tutor → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (5Q ≈ 11,8′), en inglés · cuentan doble para el Step 1 (no se repiten después).",
+     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 5 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (5Q ≈ 11,8′), en inglés · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
-      "t": "Qbankly › QBanks (uWorld Step 1)",
+      "t": "Qbankly › Question Bank Library (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
      }
     },
@@ -810,7 +810,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "recursos": [
     {
-     "t": "Qbankly › QBanks (uWorld Step 1)",
+     "t": "Qbankly › Question Bank Library (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
      "cantidad": "5Q"
     },
@@ -952,9 +952,9 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "min": 9,
      "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 4Q · Tutor (18 preguntas en el System)",
-     "como": "Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: marca SOLO ese System → Status Unused → 4 preguntas → Tutor → BEGIN TEST · antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
+     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 4 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
-      "t": "Qbankly › QBanks (uWorld Step 1)",
+      "t": "Qbankly › Question Bank Library (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
      }
     },
@@ -1011,7 +1011,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
    ],
    "recursos": [
     {
-     "t": "Qbankly › QBanks (uWorld Step 1)",
+     "t": "Qbankly › Question Bank Library (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
      "cantidad": "4Q"
     },

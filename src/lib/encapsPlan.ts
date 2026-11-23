@@ -1013,7 +1013,9 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
   items.push({
     key: `D${N}:m_eval`, kind: 'eval',
     label: ev.label,
-    detail: `${ev.detail}${runEval ? ` · runner ${ses?.eval?.f} (5Q, 72 s/Q)` : ''}`,
+    // v6.11 (lun 23-nov, chat ENCAPS · pendiente 23.2): con el pre-test detrás, la eval va SIN «Terminar y corregir» ni soluciones y se corrige después del
+    //   pre-test (la guía de la hora: eval 6′ · corrección 19′ con la de la eval)
+    detail: `${pre ? 'Hoy hay pre-test: respóndela SIN «Terminar y corregir» ni mirar soluciones, cierra la pestaña y pasa al pre-test; se corrige después de él · ' : ''}${pre ? ev.detail.replace(' + corrección', '') : ev.detail}${runEval ? ` · runner ${ses?.eval?.f} (5Q, 72 s/Q)` : ''}`,
     code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
     ...(runEval ? { url: runEval, source: 'BANCO_PROPIO · runner' } : {}),
     dur: ses ? (pre ? minEvalPre : 8) : 15, hora: ses ? (pre ? `16:17–${hhPre(iniPre)}` : '16:17–16:25') : '16:15–16:30',
@@ -1023,7 +1025,7 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
     items.push({
       key: `D${N}:m_banco`, kind: 'sim',
       label: `🧪 PRE-TEST DE ARRANQUE parte ${pre.parte}/${pre.de}: ${pre.n}Q CIEGAS (${pre.codigos.join(' · ')}) · modo examen 72 s/Q`,
-      detail: `Sustituye el banco del día (${day.codigo} · ${se?.key || ''}); ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 · sin material ni pausa · solución al final · confianza 1-3 obligatoria = LÍNEA BASE ciega por crítico · luego ${minCorrPre}′ de corrección`,
+      detail: `Sustituye el banco del día (${day.codigo} · ${se?.key || ''}); ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 · sin material ni pausa · solución al final · confianza 1-3 obligatoria = LÍNEA BASE ciega por crítico · «Empezar» solo al salir de la eval · luego ${minCorrPre}′ de corrección (también la de la eval)`,
       url: runnerUrl(ses.principal), source: 'BANCO_PROPIO · pre-test de arranque', code: day.codigo, dur: 24, hora: `${hhPre(iniPre)}–${hhPre(iniPre + 24)}`,
     });
   } else {
@@ -1054,13 +1056,13 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
   });
   items.push(pre ? {
     key: `D${N}:m_log`, kind: 'material',
-    label: '📝 REGISTRO del pre-test y de la eval: «Generar JSON» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<export.json>" --append (un comando por JSON) + 1-3 APEX',
+    label: '📝 REGISTRO del pre-test y de la eval: «Descargar .json» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<export.json>" --append (un comando por JSON) + 1-3 APEX',
     detail: 'Las 2 rondas se reparten por código (pre-test: n = 5 por crítico; eval: ≥2 fallos de un código = CALIENTE). Hoy NO uses el formulario CIERRE DE SESIÓN: guardaría las 20Q como MIX · los APEX caen en la nota Obsidian del código fallado',
     dur: 9, hora: '17:06–17:15',
   } : {
     key: `D${N}:m_log`, kind: 'material',
     label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
-    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = correctas Y seguras ÷ n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar "<export.json>" --append (UNA sola vía, nunca las dos)' : ''}`,
+    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = correctas Y seguras ÷ n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Descargar .json» → --registrar "<export.json>" --append (UNA sola vía, nunca las dos)' : ''}`,
     dur: 5, hora: '17:10–17:15',
   });
   return items;

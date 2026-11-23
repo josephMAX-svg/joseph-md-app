@@ -499,7 +499,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             </Text>
             {/* v6.10l (auditoría c15 · diffs #33): ▲ SIM solo guarda la nota; la RONDA entra al registro por UNA vía: --registrar <JSON> --append en el PC (con las 25
                 preguntas, preferida) o este CIERRE + --pull antes del cierre semanal (gen_encaps_semana.js). Antes: «también vale ▲ SIM», como si fueran equivalentes */}
-            <Text style={styles.recetaHint}>Al terminar: nota /25 en ▲ SIM (solo guarda la nota) y la RONDA por UNA vía: en el PC, «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;JSON&gt; --append (preferida: guarda las 25 preguntas); o el CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress) y, en el PC, node DATA/_scripts/gen_encaps_semana.js --pull antes del cierre semanal. Alerta: &lt;{receta.alerta}/25 dos mini-sims seguidos → re-ponderar la semana siguiente.</Text>
+            <Text style={styles.recetaHint}>Al terminar: nota /25 en ▲ SIM (solo guarda la nota) y la RONDA por UNA vía: en el PC, «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;JSON&gt; --append (preferida: guarda las 25 preguntas); o el CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress) y, en el PC, node DATA/_scripts/gen_encaps_semana.js --pull antes del cierre semanal. Alerta: &lt;{receta.alerta}/25 dos mini-sims seguidos → re-ponderar la semana siguiente.</Text>
           </View>
         )}
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
@@ -547,7 +547,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <GuiaBloqueCard g={reemplazosCorrida(guia, fPlanHoy)} color={Colors.teal} ahora={esHoyLima && ahoraMin >= 16 * 60 + 15 && ahoraMin < 17 * 60 + 15} />
           {ses?.tipo === 'pretest' && (
             // v6.10o (auditoría c17 · dias-clave #1): el registro de hoy son 2 JSON, el del pre-test y el de la eval anclada (si no, sus fallos no cuentan como calientes)
-            <Text style={styles.groupHint}>Hoy el registro son 2 JSON, el del pre-test y el de la eval: «Generar JSON» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append, una vez por JSON. El formulario CIERRE DE SESIÓN de abajo guardaría el pre-test como una ronda MIX: no lo uses hoy.</Text>
+            <Text style={styles.groupHint}>Hoy el registro son 2 JSON, el del pre-test y el de la eval (que se corrige después del pre-test): «Descargar .json» en cada runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append, una vez por JSON. El formulario CIERRE DE SESIÓN de abajo guardaría el pre-test como una ronda MIX: no lo uses hoy.</Text>
           )}
         </View>
       )}

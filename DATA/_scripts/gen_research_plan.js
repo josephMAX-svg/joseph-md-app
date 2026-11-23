@@ -321,7 +321,7 @@ const C1 = [
     'MENTORES.md: fila Rising Scholars (fecha de solicitud · estado · fecha de decisión del plan B)',
     'risingscholars.net', ['RISING', 'SCIWRITE', 'PHRASE'],
     // v6.08 (rev. dia6): la fecha de la decisión sale de fechaPlanB (M2 + 4 semanas; si cae en SKIP, PROTEGIDO o fin de semana → siguiente día-Research)
-    { chipsDyn: ({ f, fmt, addDays, planB }) => [`plan B (editor profesional US$200-400 · RUTA §3.1) se decide el ${fmt(planB)} (${planB === addDays(f('M2'), 28) ? '4 semanas' : `4 semanas tras M2 = ${fmt(addDays(f('M2'), 28))}, día sin sesión → el siguiente día-Research`}) si no hay mentor asignado — MENTORES fila 2`] }),
+    { chipsDyn: ({ f, fmt, addDays, planB }) => [`plan B (editor profesional US$200-400 · RUTA §3.1) se decide el ${fmt(planB)}${planB === addDays(f('M2'), 28) ? '' : ` (4 semanas tras M2 = ${fmt(addDays(f('M2'), 28))}, día sin sesión → el siguiente día-Research)`} si no hay mentor asignado — MENTORES fila 2`] }),
   a('C-2', 'C', 'C', 'CRITICA', 'Elegir 1 artículo diana con FECHA LÍMITE de submit calculada (ventana del journal) + leer 5 letters modelo del mismo journal (cita → aporte u objeción con 1 dato verificable → implicación)',
     'Artículo diana fijado + deadline en la Mesa editorial + esqueleto de la carta (3 párrafos) calcado de los 5 modelos',
     'CARTA_1/diana.md (DOI del artículo, deadline, límites, esqueleto) + Mesa editorial: carta-1 → borrador',
@@ -688,7 +688,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   ROBINS: { label: 'ROBINS-I (no-aleatorizados)', url: 'https://www.riskofbias.info/welcome/home' },
   GRADE:  { label: 'GRADEpro (certeza)', url: 'https://www.gradepro.org/' },
   // rótulo CORTO a propósito: el «cómo» del R9 lo cita («Trabaja con «…» MIENTRAS produces el artefacto: …», ≤110 en el Calendar) y uno largo saca el artefacto del corte
-  AMSTAR: { label: 'AMSTAR-2 (apreciar SR)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404)
+  AMSTAR: { label: 'AMSTAR-2 (Shea, BMJ 2017)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5833365/' }, // verif: curl 19-nov-2026 · Shea, BMJ 2017, texto completo en PMC (amstar.ca caído: «temporarily unavailable», checklist 404)
   DMAR:   { label: 'Doing Meta-Analysis in R (libro gratis)', url: 'https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/' },
   METAFOR:{ label: 'metafor package (R)', url: 'https://www.metafor-project.org/' },
   EQ:     { label: 'EQUATOR Network', url: 'https://www.equator-network.org/' },
@@ -773,7 +773,7 @@ export const RESEARCH_RECURSOS_TOP: { capa: string; items: RecursoTopResearch[] 
   ] },
   { capa: 'Guías de reporte (exigidas por revistas top)', items: [
     { label: 'EQUATOR Network — CONSORT 2025, STROBE, PRISMA, SPIRIT', url: 'https://www.equator-network.org/reporting-guidelines/', autor: 'UK EQUATOR Centre (Oxford)', tipo: 'biblioteca de checklists', nivel: 'todos', confianza: 'verificado', porQue: '>250 guías por tipo de estudio que NEJM/Lancet/JAMA/BMJ exigen. Regla de oro: elegir la guía ANTES de escribir.' },
-    { label: 'PRISMA 2020 — statement + E&E', url: 'https://www.prisma-statement.org/', autor: 'PRISMA Group / EQUATOR', tipo: 'guía de reporte', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar de facto para SR/meta-análisis: checklist 27 ítems + diagramas de flujo. El E&E explica cada ítem con ejemplos.' },
+    { label: 'PRISMA 2020 — statement + E&E', url: 'https://www.prisma-statement.org/', autor: 'PRISMA Group / EQUATOR', tipo: 'guía de reporte', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar de facto para SR/meta-análisis: checklist + diagramas de flujo. El E&E explica cada ítem con ejemplos.' }, // v6.11 (remate): sin el nº de ítems (es la respuesta del pre-test ciego de M1 y R0; el hub está siempre a la vista)
     { label: 'Cochrane Handbook v6.5 (acceso abierto)', url: 'https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current', autor: 'Cochrane (Higgins, Thomas et al.)', tipo: 'guía metodológica', nivel: 'avanzado', confianza: 'verificado', porQue: 'La biblia metodológica de las revisiones sistemáticas (v6.5, ago 2024: network MA, síntesis narrativa, equidad, automatización).' },
   ] },
   { capa: 'Bioestadística con código (puente → Synapse)', items: [

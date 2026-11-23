@@ -70,6 +70,10 @@ export { DERMA_GUIA_DATOS_META, DERMA_TEST_PROMIR_D3, DERMNET_DERMOSCOPY, DERMNE
 // v6.10g (revisión 18-nov · c11): empieza por «AccessDerma caducado» y dermaGuiaPar lo pone ANTES del aviso de FASE (al final, el corte de 240 del Calendar lo tapaba)
 export const ACCESSDERMA_AVISO = 'AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B.';
 const QBANKS = 'https://qbankly.app/qbanks';
+// v6.11 (remate · ítem 24 del chat USMLE, verificado en vivo el 23-nov): «QBanks» → «Question Bank Library»; el banco se abre con su Select (el ACTIVO es el
+//   UWSA1) y el test se arma en «+ New Test», donde «Number of Questions» viene en 20 (misma ruta que la guía USMLE y guia_catalogo_derma.js)
+const QB_RUTA_UW = 'Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test»';
+const QB_ENLACE_UW = { t: 'Qbankly › Question Bank Library (uWorld Step 1)', url: QBANKS };
 const VIDEOS = 'https://qbankly.app/videos';
 const DERMNET = 'https://dermnetnz.org';
 /** Respaldo de Dermoscopedia (que falla por HTTPS desde algunas redes): mismo patrón en DermNet. */
@@ -621,13 +625,13 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     // v6.09b · lote 1-quater: en F1 la regla del Tutor (2,35′/Q) y el reparto UW_TUTOR_F1; 2027 (y el SERUMS, 30′) sin cambio
     const f1T = !corto && dia.fecha <= LOTE1_HASTA;
     const s = UW_DERM[a.uw]!; const pide = corto ? 3 : uwPideRegla(dia.fecha); const minUW = corto ? 9 : f1T ? tutorMin(pide) : 12;
-    if (taper) pasos.push({ min: minUW, que: `TAPER · uWorld Step 1 · System «${s.nombre}» · Status Incorrect · hasta ${pide}Q (0 nuevas)`, como: 'Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Status Incorrect → Tutor · re-test de tus fallos; si no tienes incorrectas en ese System, repasa los fallos del ledger · la semana de examen no se abren preguntas nuevas.', enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+    if (taper) pasos.push({ min: minUW, que: `TAPER · uWorld Step 1 · System «${s.nombre}» · Status Incorrect · hasta ${pide}Q (0 nuevas)`, como: `${QB_RUTA_UW} → Number of Questions: ${pide} (no 20) · Status: Incorrect · Tutor · SOLO ese System · re-test de tus fallos; si no tienes incorrectas en ese System, repasa los fallos del ledger · la semana de examen no se abren preguntas nuevas.`, enlace: QB_ENLACE_UW });
     else {
       // v6.02c F2 (E6): reparto de las Unused en orden de fecha; si el System se agota → relleno CONCRETO en ProMIR (capítulo afín)
       const asig = dermaUwAsignacion().get(dia.fecha);
       const toma = Math.min(pide, asig ? asig.toma : pide);
       const minQ = toma === pide ? minUW : f1T ? tutorMin(toma) : toma * 3;
-      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → ${toma} → Tutor${f1T ? ` · ${tutorTxt(toma)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si el composer muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `${QB_RUTA_UW} → Number of Questions: ${toma} (no 20) · Status: Unused · Tutor · SOLO ese System${f1T ? ` · ${tutorTxt(toma)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si «+ New Test» muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: QB_ENLACE_UW });
       if (toma < pide) {
         const c = PROMIR_DERMA_CAPS[(a.pmd ?? UW_A_PMD[a.uw] ?? 1) - 1]!;
         const mR = minUW - (toma > 0 ? minQ : 0); const nR = Math.max(2, Math.floor((mR * 60) / SEG_Q));
@@ -646,7 +650,7 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     // v6.09b · lote 1-quater: en F1 con la regla del Tutor (2,35′/Q); en F1 no ocurre (Inflammatory y Skin and soft tissue infections van repartidos enteros)
     const f1T = dia.fecha <= LOTE1_HASTA;
     const kUW = s && a.uw ? Math.min(2, Math.floor(libre / (f1T ? TUTOR_MIN_Q : 3)), uwSobranteDelPlan(a.uw)) : 0;
-    if (kUW >= 1 && s) pasos.push({ min: f1T ? tutorMin(kUW) : kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: `Qbankly › QBanks › uWorld - USMLE Step 1 › Test Composer: SOLO ese System → Unused → Tutor${f1T ? ` · ${tutorTxt(kUW)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.`, enlace: { t: 'Qbankly › QBanks (uWorld Step 1)', url: QBANKS } });
+    if (kUW >= 1 && s) pasos.push({ min: f1T ? tutorMin(kUW) : kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: `${QB_RUTA_UW} → Number of Questions: ${kUW} (no 20) · Status: Unused · Tutor · SOLO ese System${f1T ? ` · ${tutorTxt(kUW)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.`, enlace: QB_ENLACE_UW });
     else {
       const c = PROMIR_DERMA_CAPS[(a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined) ?? 1) - 1]!;
       const k = Math.min(2, Math.floor((libre * 60) / SEG_Q));
