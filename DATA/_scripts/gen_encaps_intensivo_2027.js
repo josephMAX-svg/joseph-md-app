@@ -225,6 +225,14 @@
  *   04:30-05:30) → EXTRA_MANT = [2027-01-02], offset 32, DESFASE_CB 28 (sin cambio) · f1 «dia 1-32 (2026-11-18 → 2027-01-02 = F1 + jue 31-dic + sáb 2-ene
  *   (recupera el mar 17))» · weekday[0] «El sáb 2-ene (D32, recupera el mar 17) lleva la eval de I-3 (código del jue 31).» · weekend[1] «--hasta
  *   2027-01-02». TAMPOCO SE EJECUTÓ: el .metrics.sql se editó a mano con esas 4 frases + la regla v6.10c; intensiva (dia 33-82) idéntica.
+ * v6.10x (22-nov-2026, orden de Joseph «que se cumpla toda la programación, que no se omita nada»): la v6.10w puso la mañana 21/21 de F1 el mié 6-ene en
+ *   lugar del CALENTAMIENTO V-2 y lo dejó sin sitio. Con _meta.dias_extra[].calentamiento_domingo (DATA/ENCAPS/_encaps_manana_v607.json) el calentamiento
+ *   sustituido va ENTERO al domingo siguiente (dom 10-ene 07:15-13:30, almuerzo 12:00-12:30) en extra.manana_f1.calentamiento_domingo de la fila del día
+ *   extra (gen_encaps_manana.js lo pinta como bloque fijo del domingo) y entra en los repasos: su repaso = el del hábil siguiente (D-1 II-3) y lo citan el
+ *   D-1 del lun 11-ene, el D-7 del mar 19-ene y el D-21 del jue 4-feb (los dos primeros citaban el II-3, que conserva su D-1 en el propio domingo, su D-7 el
+ *   lun 18-ene y su D-21 el lun 8-feb; regla: el domingo no quita ninguna cita de repaso y, si le quitaría a una sesión su única cita con una clave, él pasa
+ *   a la fila anterior más cercana sin esa clave: remate, antes «D-21 II-3 + V-2» en el mismo tramo del lun 8-feb). Filas 56 y 58 = las de 54c4f43. Se ejecuta
+ *   en una COPIA (--sin-tx --out) y se copia solo el .sql (el .metrics.sql versionado está editado a mano y no cambia).
  * v5.14 (19-sep): la app renderiza modo='INTENSIVO' (encapsPlan.ts: regimenDe() · itemsForDay · simDays con pretest/sim100/dress_rehearsal).
  */
 const fs = require('fs');
@@ -383,6 +391,30 @@ for (const f of EMx.ENCAPS_MANANA_FECHAS.filter((x) => x >= D1 && x <= addDays(E
   if (t !== '12:00') throw new Error(`encapsManana.ts ${f}: la mañana no termina a las 12:00 (${t})`);
   MANANA_F1[f] = { am, segs };
 }
+// v6.10x (dom 22-nov-2026 · orden de Joseph: «que se cumpla toda la programación, que no se omita nada»): el CALENTAMIENTO que sustituye una mañana de F1
+//   con _meta.dias_extra[].calentamiento_domingo (DATA/ENCAPS/_encaps_manana_v607.json; v6.10x: el V-2 del mié 6-ene, que la v6.10w dejó sin sitio) va
+//   ENTERO al DOMINGO SIGUIENTE (el primero de F2: sin ENCAPS de F1), a hora fija desde `inicio` (07:15, tras la rutina), con el almuerzo libre y nada
+//   después de las 17:00: sus segmentos del LOOP (sin el Anki de las 05:00, que se queda en el bloque Anki de su día) seguidos; el que pisaría el almuerzo
+//   empieza al acabar este. Va en la fila de ese día (extra.manana_f1.calentamiento_domingo: fecha · codigo · subtema · loop · repaso), que gen_encaps_manana.js
+//   lee para el bloque fijo del domingo (encaps-dom). REPASOS: el domingo cuenta como la sesión justo anterior al hábil siguiente → su repaso es el de ese
+//   hábil (repasoDe) y entra en el historial con el índice del hábil anterior (D-1 del lunes siguiente · D-7 · D-21 por la regla de siempre). Se lee el
+//   JSON (no encapsManana.ts) para que el orden de generación no sea circular: este script → _encaps_intensivo_2027.sql → gen_encaps_manana.js.
+const JM = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps_manana_v607.json'), 'utf8'));
+const CAL_DOM_CFG = Object.fromEntries(((JM._meta || {}).dias_extra || []).filter((x) => x.calentamiento_domingo).map((x) => [x.fecha, x.calentamiento_domingo]));
+const aMinI = (h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
+const hhmmI = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const domingoTras = (f) => { let d = addDays(f, 1); while (dowDe(d) !== 0) d = addDays(d, 1); return d; };
+function loopDomingo(f, cfg) {
+  if (!/^\d\d:\d\d$/.test(cfg.inicio || '') || !Array.isArray(cfg.almuerzo) || cfg.almuerzo.length !== 2 || !cfg.almuerzo.every((h) => /^\d\d:\d\d$/.test(h))) throw new Error(`_encaps_manana_v607.json dias_extra ${f}: calentamiento_domingo sin inicio (HH:MM) o almuerzo [ini, fin]`);
+  const [a0, a1] = cfg.almuerzo.map(aMinI);
+  let t = aMinI(cfg.inicio);
+  const out = LOOP.slice(1).map((s) => { if (t < a1 && t + s.min > a0) t = a1; const x = { h: hhmmI(t), seg: s.seg, min: s.min }; t += s.min; return x; });
+  const ini = aMinI(out[0].h);
+  if (ini < aMinI('05:00') || (ini < aMinI('07:15') && t > aMinI('05:45'))) throw new Error(`calentamiento al domingo (${f}): empieza a las ${out[0].h}: antes de las 05:00 o pisa la rutina de 05:45-07:15`);
+  if (t > aMinI('17:00')) throw new Error(`calentamiento al domingo (${f}): termina a las ${hhmmI(t)}, después de las 17:00 (baile)`);
+  return { loop: out, ini: out[0].h, fin: hhmmI(t), almuerzo: cfg.almuerzo };
+}
+const CAL_DOM = []; // { fecha (domingo), de (día extra), codigo, host (extra.manana_f1 de la fila), hecho }
 const NOTA_PROFUNDA = 'pasada profunda solo para sub-ejes < 70 % en su D+21';
 
 // ── simulacros 100Q del núcleo (v6.00: orden §C3 · #1 2025-II · #4 2024-II · #7 2025-I ancla tardía · 2026-I reservado al dress) ──
@@ -696,6 +728,10 @@ const watchList = () => { const cl = [0, 1, 2].map((k) => COLA_LARGA[(colaIdx + 
 const simExtra = (s, n, fecha) => ({ n: 100, seg_por_q: 72, ...s, hora: horaSim(fecha, s), num: n, correccion: 'por código v3 + formato (viñeta/cifra) · registro en _registro_resoluciones.json' });
 plan.forEach(({ fecha, dow }, i) => {
   const dia = offset + i + 1;
+  // v6.10x: el calentamiento que va a un domingo entra en la cadena de repasos al llegar al primer hábil POSTERIOR a ese domingo: su repaso = el de este
+  //   hábil (antes de él no hay otra sesión) y en el historial cuenta con el índice del hábil anterior (i − 1) → este hábil lo cita como D-1 y los de
+  //   i + 6 / i + 20 como D-7 / D-21, con la regla de siempre
+  for (const c of CAL_DOM) if (!c.hecho && fecha > c.fecha) { c.hecho = true; c.host.repaso = repasoDe(i); c.h = { i: i - 1, codigo: c.codigo }; historial.push(c.h); }
   let tipo, codigo = null, subtema, prio = 'CRITICA', secs = null;
   const extra = { fase: 'INTENSIVA', semana: semana(fecha) + 1 }; // v6.00: sin dias_a_examen (la app lo calcula con exam_date)
   const kCola = COLA.indexOf(fecha);
@@ -726,9 +762,18 @@ plan.forEach(({ fecha, dow }, i) => {
       const { am, segs } = MANANA_F1[fecha];
       const sust = calent[calIdx % calent.length]; calIdx++;
       tipo = 'loop'; prio = 'ALTA';
-      subtema = `MAÑANA ENCAPS ${am.n}/${am.de} DE F1 (no cupo en F1) · ${am.resumen} · sin material nuevo · en lugar del CALENTAMIENTO ${sust}`;
+      // v6.10x: con calentamiento_domingo, el calentamiento sustituido va ENTERO al domingo siguiente (a hora fija); sin él, como en la v6.08
+      const cfgD = CAL_DOM_CFG[fecha] || null;
+      const dD = cfgD ? domingoTras(fecha) : null, lD = cfgD ? loopDomingo(fecha, cfgD) : null;
+      subtema = `MAÑANA ENCAPS ${am.n}/${am.de} DE F1 (no cupo en F1) · ${am.resumen} · sin material nuevo · en lugar del CALENTAMIENTO ${sust}${dD ? `, que pasa entero al ${fCorta(dD)} ${lD.ini}-${lD.fin}` : ''}`;
       extra.loop = [LOOP[0], ...segs]; extra.nota_horas = 'v6.08: la mañana de F1 (src/lib/encapsManana.ts, guiaEncapsMananaDe) con sus franjas; sin EVAL 18:00 (las 18:00 son «cifras, normas y flashcards» de esa mañana)';
-      extra.manana_f1 = { n: am.n, de: am.de, fecha, sustituye: `CALENTAMIENTO ${sust} (${sust} conserva sus slots de barrido del núcleo)`, regla: am.diaExtra, guia: 'src/lib/encapsManana.ts (encapsMananaDe / guiaEncapsMananaDe)' };
+      extra.manana_f1 = { n: am.n, de: am.de, fecha, sustituye: dD ? `CALENTAMIENTO ${sust} → ${fCorta(dD)} ${lD.ini}-${lD.fin}, a hora fija y entero (${sust} conserva además sus slots de barrido del núcleo)` : `CALENTAMIENTO ${sust} (${sust} conserva sus slots de barrido del núcleo)`, regla: am.diaExtra, guia: 'src/lib/encapsManana.ts (encapsMananaDe / guiaEncapsMananaDe)' };
+      if (dD) {
+        extra.manana_f1.calentamiento_domingo = { fecha: dD, codigo: sust, subtema: `CALENTAMIENTO (sin material nuevo) · ${temaInfo(sust).label}`, ini: lD.ini, fin: lD.fin, almuerzo: lD.almuerzo, loop: lD.loop, repaso: null,
+          regla: cfgD.motivo || 'calentamiento sustituido por una mañana de F1: va entero al domingo siguiente, a hora fija', guia: 'src/lib/encapsManana.ts (encapsDomingoDe / guiaEncapsDomingoDe, modo calentamiento)' };
+        if (CAL_DOM.some((c) => c.fecha === dD)) throw new Error(`calentamiento ${sust} (${fecha}) al ${dD}: ese domingo ya lleva otro calentamiento (uno por domingo)`);
+        CAL_DOM.push({ fecha: dD, de: fecha, codigo: sust, host: extra.manana_f1.calentamiento_domingo, hecho: false });
+      }
     } else {
       tipo = 'loop'; codigo = calent[calIdx % calent.length]; calIdx++;
       subtema = `CALENTAMIENTO (sin material nuevo) · ${temaInfo(codigo).label}`;
@@ -848,6 +893,35 @@ plan.forEach(({ fecha, dow }, i) => {
   }
   filas.push({ dia, fecha, dow, tipo, codigo, subtema, prio, secs, extra });
 });
+// v6.10x: el calentamiento del domingo NO quita ninguna cita de repaso. Entra en el historial con el índice del viernes anterior, justo donde caen las citas
+//   que el viernes (SIM / PRE-TEST, sin repaso) pasa al lunes: si una fila, por él, deja de citar con una clave la sesión que citaría sin él, y esa sesión no
+//   queda citada con esa clave en ninguna otra fila ni en el repaso del propio domingo, la fila cita las dos (así quedaba «D-21 II-3 + V-2» el lun 8-feb; desde el remate, ver abajo). Sin domingos, nada cambia.
+//   v6.10x (remate · revisión «nada se omite», BAJA): antes de citar las dos en el mismo tramo, la sesión del domingo pasa a la fila anterior más cercana que
+//   no tiene esa clave (posterior al domingo y como mucho 2 sesiones antes de su D-k) y la fila se queda con la que citaría sin él: D-21 V-2 el jue 4-feb y
+//   D-21 II-3 el lun 8-feb, como antes de la v6.10w (cada D-21 con su tramo entero). Solo si no hay esa fila, «II-3 + V-2».
+const MOV_REP = []; // { k, codigo, de (fecha que lo citaría), a (fecha que lo cita) }
+if (CAL_DOM.length) {
+  const KEYS = [['D-1', 1], ['D-7', 7], ['D-21', 21]];
+  const domH = new Set(CAL_DOM.map((c) => c.h));
+  const sinDom = historial.filter((x) => !domH.has(x));
+  const ent = (hist, i, back) => hist.filter((x) => x.i <= i - back).at(-1) || null;
+  const citadas = Object.fromEntries(KEYS.map(([k]) => [k, new Set()]));
+  filas.forEach((r, ir) => { for (const [k, b] of KEYS) if (r.extra.repaso && k in r.extra.repaso) { const e = ent(historial, ir, b); if (e) citadas[k].add(e); } });
+  for (const c of CAL_DOM) { const antes = historial.slice(0, historial.indexOf(c.h)); const iSig = c.h.i + 1; for (const [k, b] of KEYS) if (k in c.host.repaso) { const e = ent(antes, iSig, b); if (e) citadas[k].add(e); } }
+  filas.forEach((r, ir) => {
+    for (const [k, b] of KEYS) {
+      if (!r.extra.repaso || !(k in r.extra.repaso)) continue;
+      const con = ent(historial, ir, b), sin = ent(sinDom, ir, b);
+      if (con && domH.has(con) && sin && sin !== con && !citadas[k].has(sin)) {
+        let jP = -1;
+        for (let j = ir - 1; j > con.i && j >= con.i + b - 2; j--) { const rp = filas[j].extra.repaso; if (rp && !(k in rp)) { jP = j; break; } }
+        if (jP >= 0) { r.extra.repaso[k] = sin.codigo; filas[jP].extra.repaso[k] = con.codigo; MOV_REP.push({ k, codigo: con.codigo, de: r.fecha, a: filas[jP].fecha }); }
+        else r.extra.repaso[k] = `${sin.codigo} + ${con.codigo}`;
+        citadas[k].add(sin);
+      }
+    }
+  });
+}
 
 // ── verificación (aborta si algo no cuadra; no escribe nada) ──
 const fallos = [];
@@ -922,6 +996,13 @@ function filasF1Sims() { // v6.06: dia de los mini-sims F1 (sim_n = dia) del SQL
   return fs.readFileSync(f, 'utf8').split('\n').map((l) => l.match(/^\('ENCAPS',(\d+),'[\d-]+','[^']+','mini_sim',/)).filter(Boolean).map((m) => +m[1]);
 }
 if (ESCENARIO_JSON) ok(filas[0].dia === F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length + 1, `la intensiva empieza en el dia ${filas[0].dia} y debe ser f1.dias + hábiles de la transición + fines de semana de corrida_s1.extra + 1 = ${F6.f1.dias + HAB_TRANS_N + EXTRA_MANT.length + 1}`);
+// v6.10x: cada calentamiento que va a un domingo: domingo de F2 (sin ENCAPS de F1), después de su día y antes del último hábil, con su repaso y citado por el
+//   D-1 del hábil siguiente (la regla de repasos lo hace sola: aquí solo se comprueba)
+for (const c of CAL_DOM) {
+  const sig = filas.find((r) => r.fecha > c.fecha);
+  ok(c.hecho && c.host.repaso && sig && sig.extra.repaso && sig.extra.repaso['D-1'] === c.codigo, `calentamiento ${c.codigo} al ${c.fecha}: sin repaso propio o el hábil siguiente (${sig ? sig.fecha : '—'}) no lo cita como D-1`);
+  ok(dowDe(c.fecha) === 0 && c.fecha > c.de && (!ESCENARIO_JSON || c.fecha > F6.transicion.hasta), `calentamiento ${c.codigo} al ${c.fecha}: no es un domingo de F2 posterior a su día (${c.de})`);
+}
 if (fallos.length) { console.error('⛔ verificación:\n  · ' + fallos.join('\n  · ')); process.exit(1); }
 
 // ── SQL ──
@@ -1157,4 +1238,9 @@ console.log('carril B: banqueo1h', nCbB, '· mini-sim absorbido', nCbM, '· repo
 console.log('barrido (' + SLOTS + ' slots):', ordenSlots.map((c) => (c === 'IV-1+IV-2' ? 'IV' : c)).join(' · '));
 console.log('SIM:', filas.filter((r) => r.tipo === 'sim100').map((r) => `${r.fecha} #${r.extra.sim.num} ${r.extra.sim.hora}`).join(' · '));
 console.log('cola:', filas.slice(-5).map((r) => `${r.fecha} ${r.tipo}`).join(' · '));
+// v6.10x: calentamientos que van a un domingo y las filas que los citan en sus repasos
+for (const c of CAL_DOM) {
+  const cita = filas.flatMap((r, ir) => Object.keys(r.extra.repaso || {}).filter((k) => historial.filter((x) => x.i <= ir - Number(k.slice(2))).at(-1) === c.h).map((k) => { const m = MOV_REP.find((x) => x.k === k && x.de === r.fecha && x.codigo === c.codigo); return `${k} ${m ? m.a : r.fecha}`; }));
+  console.log(`calentamiento ${c.codigo} → ${c.fecha} ${c.host.ini}-${c.host.fin} (de la fila del ${c.de}) · su repaso ${JSON.stringify(c.host.repaso)} · lo citan: ${cita.join(' · ')}`);
+}
 if (horarioTextos) console.log('horarios (pasos[0].d por ruta):', horarioTextos.rutas.map((x) => `${x.ruta[0]}[${x.ruta[1]}] ${x.hora}`).join(' · '), `· D1 ${horarioTextos.r1.fecha} (${horarioTextos.r1.codigo}) · D2 ${horarioTextos.r2.fecha} (${horarioTextos.r2.codigo}) · D3 ${horarioTextos.r3.fecha} · 1.er mini-sim ${horarioTextos.vie1.fecha} · runner ${avisosHorario.length ? `${avisosHorario.length} aviso(s)` : 'OK'}`); // v6.02

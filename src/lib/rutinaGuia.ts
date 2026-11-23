@@ -2542,11 +2542,15 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const recetaS2 = pendSes.length
     ? `Runners ENCAPS del ${yTxt(pendS2)} (eval + banco), los genera esta revisión (si no, antes del ${pendS2[0]}${noSemana ? '; NO gen_encaps_minisim.js --semana: re-sortearía los ya armados' : ''}): ${cadenaS2} → \`node DATA/_scripts/sync_encaps_bp_web.js\` → \`node DATA/_scripts/gen_encaps_guia.js\` → deploy.${trasTxt} · `
     : trasTxt ? `${trasTxt.trim()} · ` : '';
-  const prep = primera
+  // v6.10x (chat ENCAPS, dom 22-nov): si mañana domingo hay recuperación fija con grabación, se mira hoy si Theomed ya la publicó (si no, mañana va su plan B)
+  const recDom = encapsRecuperaDe(addDias(sab, 1));
+  const recGrab = recDom ? (/Grabación (\S+ \d+\/\d+)/.exec(recDom.tema) || [])[1] : undefined;
+  const recChk = recGrab ? `¿Grabación de la ${recGrab} ya en el campus? (si no, mañana a las ${recDom!.ini} va el plan B de la recuperación) · ` : '';
+  const prep = recChk + (primera
     // remate v6.10j (revisión adversarial, visibilidad #4): la comprobación de AccessDerma va DELANTE de la receta (la cadena de comandos alarga el corte del
     //   Calendar hasta su «deploy» y empujaba fuera «Semana 2: AccessDerma renovado …»)
     ? `¿AccessDerma renovado? (si no, Derma sigue en PLAN B: selector en Derma › HOY) · ${recetaS2}Semana ${Number(fichero.slice(1, 3)) + 1}: ${pendSes.length ? '' : `${runnersS2} · `}velocidad de vídeo USMLE de la S${Number(fichero.slice(1, 3)) + 1} = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${jSem2} lo crea journal_hoy.js el ${fCorta(jDia2)}.`
-    : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
+    : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).');
   // v6.10j (rev. c14, diffs #0 y #7 · cambios-v610i #0, #2, #3 y #4): el «cómo» de RELLENAR empieza por los RÓTULOS de todas las métricas (el Calendar corta
   //   a 110 y antes solo dejaba ver «4 ENCAPS …») y después el detalle de cada una, sacado del plan de ESA semana (encapsRevDe · usmleRevDe). ENCAPS va
   //   primero hasta su examen; después, último y solo si su ventana trae algo (la S18 recoge el mini-sim, el dress rehearsal y el examen de la semana sin revisión)

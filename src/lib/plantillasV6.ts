@@ -703,7 +703,8 @@ function extrasDomingo(iso: string): BloqueV6[] {
   // v6.07: domingo FLEXIBLE (sin hora fija): ENCAPS opcional 4 h (F1 y transición, con el simulacro del día) · SHIP del vibecoding · Feynman
   const dom = encapsDomingoDe(iso);
   // v6.07d: nombre, hora y minutos salen de encapsManana (domingos de 2 h con banqueos o con el simulacro solo; por defecto, 4 h)
-  if (dom) bs.push(dom.fija ? bloque('encaps-dom', dom.fija[0], dom.fija[1], dom.nombre, 'encaps', 'encaps', dom.tema) : bloque('encaps-dom', null, null, dom.nombre, 'encaps', 'encaps', dom.tema, dom.min, dom.hora)); // v6.10w: + a hora fija
+  // v6.10w: + a hora fija · v6.10x (remate): sus minutos son los de ESTUDIO (encapsManana.min: el calentamiento del dom 10-ene, 345′ sin el almuerzo de 12:00-12:30)
+  if (dom) bs.push(dom.fija ? { ...bloque('encaps-dom', dom.fija[0], dom.fija[1], dom.nombre, 'encaps', 'encaps', dom.tema), min: dom.min } : bloque('encaps-dom', null, null, dom.nombre, 'encaps', 'encaps', dom.tema, dom.min, dom.hora));
   const pc = bloquePCDomingo(iso); if (pc) bs.push(pc);
   const g = guiaFeynmanDe(iso);
   if (g) bs.push(bloque('feynman', null, null, 'IA · FEYNMAN del proyecto (opcional, 10′)', 'vibecoding', 'vibecoding', undefined, g.totalMin, `flexible · ${fmtH(g.totalMin)}`));
@@ -922,7 +923,8 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
     //   personales (dom 13-dic: «5 h 41′ con 2 h 30′ de pausa (3 h 11′ de estudio)» → «3 h 11′ de estudio»)
     const durD = ((h: string) => { const m = / \(([^()]+) de estudio\)$/.exec(h); return m ? m[1] : h.replace(/^flexible · /, '').replace(/ con .*$/, ''); })(encapsDomingoDe(iso)?.hora ?? 'flexible · 4 h');
     const domFija = encapsDomingoDe(iso)?.fija ?? null; // v6.10w: ENCAPS del domingo a hora fija (dom 3-ene 12:30-14:09), no opcional
-    if (domFija) notasD.unshift(`Hoy ${domFija[0]}-${domFija[1]}, a hora fija y NO opcional: ENCAPS (${(encapsDomingoDe(iso)?.ppt ?? []).join(' + ')}); hoy no hay simulacro opcional.`);
+    // v6.10x: + el calentamiento de la intensiva a hora fija (dom 10-ene 07:15-13:30) con su propia nota (encapsManana.notaFija)
+    if (domFija) notasD.unshift(encapsDomingoDe(iso)?.notaFija ?? `Hoy ${domFija[0]}-${domFija[1]}, a hora fija y NO opcional: ENCAPS (${(encapsDomingoDe(iso)?.ppt ?? []).join(' + ')}); hoy no hay simulacro opcional.`);
     if (bsD.some((b) => !b.ini)) notasD.unshift(`Domingo flexible: los bloques sin hora se hacen cuando puedas.${bsD.some((b) => b.id === 'encaps-dom' && !b.ini) ? ` El ENCAPS (${durD} de estudio) es opcional${pptD ? `, ${pptD}` : ''}.` : ''}${shipObligatorio ? ' El SHIP del vibecoding, no: cierra el proyecto de la semana.' : ''}`);
     if (notaPlanD) notasD.unshift(notaPlanD);
     // v6.07: un PC de 0′ (deload total del taper) no tiene guía ni bloque → se nombra aquí (nada se calla)
