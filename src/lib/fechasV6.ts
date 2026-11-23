@@ -414,8 +414,8 @@ export const FECHAS_V6: FechasV6 = {
         },
         {
           "frente": "encaps",
-          "a": "GES 2/6 (hoy 20:00): PPT → dom 29-nov 07:15 (recuperación del viaje)",
-          "por": "GES 2/6 (viernes 20, 20:00): su PPT va el dom 29-nov 07:15 (recuperación del viaje)"
+          "a": "GES 2/6 (hoy 20:00): sin PPT en el campus, solo la grabación",
+          "por": "GES 2/6 (viernes 20, 20:00): sin PPT en el campus; su grabación"
         },
         {
           "frente": "usmle",
