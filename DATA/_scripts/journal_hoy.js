@@ -77,8 +77,10 @@ function semanaISO(s) {
 let VP = '';
 try { VP = fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8'); } catch { /* sin plan: journal genérico */ }
 const D1 = (VP.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1] || null;
+// v6.10z-b: el paso, sin los escapes del literal de JS en una sola pasada (\\ → \, \" → ", \n → espacio): la ruta del test del parser va con barras invertidas
+const unesc = (s) => s.replace(/\\(.)/g, (_, c) => (c === 'n' ? ' ' : c));
 const DIAS = [...VP.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]+",semana:(\d+),proyecto:"([^"]+)",k:\d+,tipo:"([^"]+)",min:(\d+),deload:(true|false),paso:"((?:[^"\\]|\\.)*)"\}/g)]
-  .map((m) => ({ d: +m[1], fecha: m[2], semana: +m[3], proyecto: m[4], tipo: m[5], min: +m[6], deload: m[7] === 'true', paso: m[8].replace(/\\"/g, '"').replace(/\\n/g, ' ') }));
+  .map((m) => ({ d: +m[1], fecha: m[2], semana: +m[3], proyecto: m[4], tipo: m[5], min: +m[6], deload: m[7] === 'true', paso: unesc(m[8]) }));
 const PROY = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",rotacion:"[^"]+",deload:(?:true|false),ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"[\s\S]*?aceptacion:\[((?:"(?:[^"\\]|\\.)*",?)*)\]/g)]
   .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), ini: m[4], fin: m[5], ship: m[6], aceptacion: [...m[7].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => x[1].replace(/\\"/g, '"')) }));
 const TAPER = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",tipo:"(mantenimiento|deload)",ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"/g)]
@@ -116,7 +118,7 @@ if (!fs.existsSync(file)) {
   L.push('');
   L.push("> Ciclo diario 04:15-05:00: 5' objetivo → 35' construir → 5' esta entrada. **04:55 commit selectivo o nota de estado (nunca git stash) · 05:00 Anki sin excepción** (si el día se recorta pierde el proyecto, nunca el Anki). Commits `[S<n>] …`.");
   L.push('');
-  L.push('## Cierre de semana (sábado, tras el verify)');
+  L.push('## Cierre de semana (domingo, tras el verify del SHIP)'); // v6.10z-b (lun 23-nov): el SHIP es el domingo (PC del domingo), no el sábado
   L.push('');
   L.push('- shipped (verify): ☐ sí ☐ no · criterios __/4 · evidencia (commit/URL/test): ');
   L.push('- lección de la semana (1 línea): ');

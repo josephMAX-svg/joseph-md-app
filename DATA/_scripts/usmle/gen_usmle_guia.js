@@ -1242,7 +1242,7 @@ function bloquePresetD2(r) {
   if (pasos.reduce((a, p) => a + p.min, 0) !== D2_0500.total) aborta(`${etq(r)}: el Anki de las 05:00 no suma ${D2_0500.total}′ (preset ${CONF_MIN.sync + CONF_MIN.preset + CONF_MIN.comprob}′ + vídeo ${vids.reduce((a, p) => a + p.min, 0)}′)`);
   const pend = [...colaPendienteTras(r.d, 's0500')].filter((it) => it.id === 'BOtQJeFE_rc').map((it) => `«${PALM[it.id].t.split(' You Need')[0]}…» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
   const dicta = antesRedeploy(r); // la [TEST S1] (redeploy del parser) va otro día real, después: las tarjetas de hoy se dictan al chat USMLE
-  return B(f, '05:00–05:30', `ANKI · PRESET «APEX USMLE» (de la configuración del ${fd(CONF_DIA)}) + VÍDEO DE MÉTODO`, pasos,
+  return B(f, '05:00–05:30', `ANKI · PRESET «APEX USMLE» (el que no se hizo el ${fd(CONF_DIA)}) + VÍDEO DE MÉTODO`, pasos,
     [R_ANKI, ...recVideo(rep.s0500)], `preset «APEX USMLE» en APEX::USMLE y sus submazos (Save to All Subdecks, comprobado) y «The ONLY Video…» hasta ${hms(iO.fin)} con sus notas`,
     { planB: dicta
       ? `Anki escritorio no abre: el preset, en cuanto abra (antes de que el chat USMLE escriba la 1.ª tarjeta; AnkiWeb no edita presets); mientras no abra, el chat USMLE guarda las tarjetas que le dictes y las escribe en Anki al abrirlo (AnkiConnect necesita Anki escritorio abierto); el vídeo, en el móvil (YouTube; «The ONLY Video…» con ${AUDIO_EN}).`

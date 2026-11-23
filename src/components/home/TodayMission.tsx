@@ -240,7 +240,9 @@ export function encapsLabelDe(iso: string): string | null {
   const sab = encapsSabadoDe(iso);
   const repo = sab ? `reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim() : null;
   if (repo && viv?.vivo) return `ENCAPS · sáb ${sab!.ini} ${repo} + 15:00 Theomed EN VIVO · ${viv.vivo}`;
-  if (viv?.vivo) return `ENCAPS · sáb 15:00 Theomed EN VIVO · ${viv.vivo}`;
+  // v6.10z: un sábado con bloque ENCAPS fijo (sáb 28-nov 07:15: el Theoesencial que no cupo el lun 23) lo nombra delante de la clase en vivo
+  const recSab = new Date(iso + 'T12:00:00Z').getUTCDay() === 6 ? encapsRecuperaDe(iso) : null;
+  if (viv?.vivo) return `ENCAPS · sáb ${recSab ? `${recSab.ini} ${corto(recSab.nombre)} + ` : ''}15:00 Theomed EN VIVO · ${viv.vivo}`;
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
   // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (v6.09, 17-nov: dom 22-nov 15:00, domingo de llegada; antes dom 29-nov 07:15): va primero en la etiqueta
   const recE = encapsRecuperaDe(iso);
@@ -557,7 +559,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       if (b.id === 'encaps-rec') {
         const rec = encapsRecuperaDe(iso);
         const g = guiaEncapsRecuperaDe(iso);
-        if (rec && g) return { tema: rec.tema, sub: 'fijo, no opcional · primero el PPT; la grabación a 2× solo en los tramos que el PPT no explica · notas en forma de pregunta', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
+        // v6.10z: lo que no cupo de una mañana (sáb 28-nov 07:15, Theoesencial) trae su propia línea (rec.sub); sin ella, la de la recuperación con PPT y grabación
+        if (rec && g) return { tema: rec.tema, sub: rec.sub ?? 'fijo, no opcional · primero el PPT; la grabación a 2× solo en los tramos que el PPT no explica · notas en forma de pregunta', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true)], guias: [g] };
       }
       if (b.id === 'encaps-dom') {
         const dom = encapsDomingoDe(iso);
@@ -856,7 +859,8 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         const pasado = !!b.fin && ahora >= hm(b.fin) && b.ini !== b.fin;
         // v6.02c (E5): los opcionales del domingo no tienen «mínimo» · v6.07: + el ENCAPS opcional del domingo; los bloques ENCAPS nuevos usan
         //   encapsManana.ENCAPS_MINIMO (la mañana ENCAPS es el bloque PRINCIPAL de lun · mié · vie: en ROJO conserva su mínimo, no «Omitido»)
-        const minimo = !b.frente || /^(feynman|anki-dom|encaps-dom)$/.test(b.id) ? null
+        // v6.10z: + el encaps-rec de lo que no cupo de una mañana (sinMinimo: 27′ de lectura sin versión reducida; el mínimo ROJO de encaps-rec habla de PPT)
+        const minimo = !b.frente || /^(feynman|anki-dom|encaps-dom)$/.test(b.id) || (b.id === 'encaps-rec' && !!encapsRecuperaDe(iso)?.sinMinimo) ? null
           : ENCAPS_MINIMO[b.id] ? (modo === 'VERDE' ? null : ENCAPS_MINIMO[b.id]![modo === 'AMBAR' ? 'AMBAR' : 'ROJO'])
             : minimoPorFrente(b.frente as Frente, modo, iso);
         const omitido = !!minimo && /^Omitid/.test(minimo);

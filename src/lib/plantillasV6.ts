@@ -1004,9 +1004,13 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         // v6.10y-b (lun 23-nov): + el bloque USMLE a hora fija del sábado (usmleGuia.USMLE_FIJO_SAB: sáb 28-nov 04:45-05:30, el manual FSRS y «Anki Almost Broke
         //   Me…» entero de la configuración que no se hizo el lun 23); su guía es la de esa franja (TodayMission › usmle-anki)
         const fxU = USMLE_FIJO_SAB[iso];
+        // v6.10z (lun 23-nov): + el bloque ENCAPS a hora fija del sábado (encapsManana.encapsRecuperaDe: sáb 28-nov 07:15-07:42, el Theoesencial de INV p. 1-27
+        //   que no cupo en la mañana 1/21 del lun 23, que empezó a las 09:00 —v6.10z-b—); su guía, guiaEncapsRecuperaDe (TodayMission › encaps-rec)
+        const recS = encapsRecuperaDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',
           [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : []),
-            ...(fxU ? [bloque('anki-fsrs', fxU.ini, fxU.fin, fxU.nombre, 'usmle', 'usmle-anki', fxU.detalle)] : []), ...bloquesExtraDe(iso)],
+            ...(fxU ? [bloque('anki-fsrs', fxU.ini, fxU.fin, fxU.nombre, 'usmle', 'usmle-anki', fxU.detalle)] : []),
+            ...(recS ? [bloque('encaps-rec', recS.ini, recS.fin, recS.nombre, 'encaps', 'encaps', recS.tema)] : []), ...bloquesExtraDe(iso)],
           nxS ? { notas: [nxS] } : {});
       }
       return out('F1', esDiaStepF1(iso) ? 'F1 · mañana Step 1 (mar · jue) + ENCAPS 16:15' : 'F1 · mañana ENCAPS (lun · mié · vie) + ENCAPS 16:15 y 18:00', bloquesF1(iso, usmleExacto));
