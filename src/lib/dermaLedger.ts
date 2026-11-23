@@ -23,6 +23,7 @@
  */
 import { dermaCasoArea, cases, DERMA_BANCOS, dermaBancoDeUrl, type DermaAreaCORE, type DermaBloqueKey, type DermaBancoKey, type MatLink, type DiaDerma } from './dermaDailyPlan';
 import { dermaDiaPorD } from './dermaCiclo2';
+import { fechaRealDe } from './fechasV6';
 
 export const DERMA_LEDGER_KEY = 'jmd-derma-casos';
 export const DERMA_FALLOS_KEY = 'jmd-derma-fallos';
@@ -312,9 +313,10 @@ export function dermaCuraPendiente(entries: DermaLedgerEntry[] = dermaLedgerLoad
     link: DERMA_CURA_LINK[tipo], cura,
   };
 }
-/** ¿La cura pendiente aplica a esta sesión? (la sesión es posterior a la que originó el fallo). */
+/** ¿La cura pendiente aplica a esta sesión? (la sesión es posterior a la que originó el fallo). dia.fecha es la fecha de PLAN y
+ *  cura.desdeFecha la fecha REAL del ledger → se compara con el día real de la sesión (fechaRealDe; con la corrida no coinciden). */
 export function dermaCuraAplicaA(dia: Pick<DiaDerma, 'fecha'>, cura: DermaCuraPendiente | null = dermaCuraPendiente()): boolean {
-  return !!cura && dia.fecha > cura.desdeFecha;
+  return !!cura && fechaRealDe(dia.fecha) > cura.desdeFecha;
 }
 
 // ── export / import (esquema de _registro_derma.json) ──

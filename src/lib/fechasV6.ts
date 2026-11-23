@@ -17,6 +17,7 @@
  * v6.10 (mar 17-nov-2026): corrimiento rígido del D1 mar 17-nov-2026 → mié 18-nov-2026 (perdidos: mar 17-nov).
  * v6.10d (mié 18-nov-2026): SIN re-fecha — alias de corrida_s1 (el plan del mié 18-nov lo hace el jue 19-nov y cada hábil hasta el vie 1-ene hace el del anterior; las filas conservan su fecha de plan).
  * v6.10w (dom 22-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · jue 19-nov · vie 20-nov · sáb 21-nov · dom 22-nov · lun 23-nov = plan del mié 18-nov · mar 24-nov = plan del jue 19-nov · mié 25-nov = plan del vie 20-nov · jue 26-nov = plan del lun 23-nov · vie 27-nov = plan del mar 24-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic; ningún plan cambia de fecha.
+ * lun 23-nov-2026 · alias propio de «vibecoding» (manda sobre el global en su consulta): mar 24-nov = plan del mié 18-nov · mié 25-nov = plan del jue 19-nov · jue 26-nov = plan del vie 20-nov · vie 27-nov = plan del lun 23-nov · dom 29-nov = el plan del mar 24-nov dentro del SHIP.
  * Versión vigente del JSON: v6.10.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -73,6 +74,9 @@ export interface FechasV6 {
     /** v6.10: día de fin de semana → { frente (clave de BLOQUES_POR_FRENTE): 'HH:MM-HH:MM' } = el bloque L-V de ese frente que recupera, a hora fija,
      *  el día perdido (plantillasV6 lo pinta con bloqueCorrido; cada generador tiene su fila ese día) */
     extra?: Record<string, Record<string, string | { hora: string; plan?: string }>>;
+    /** v6.10q · v6.10y: alias PROPIO de un frente que manda sobre el global en su consulta (fechaPlanDe / fechaRealDe con `frente`): alias = día real L-V →
+     *  plan · en_ship = domingo → fecha de plan del paso que su SHIP absorbe (primero) */
+    alias_frente?: Record<string, { decidido: string; motivo: string; alias: Record<string, string>; en_ship?: Record<string, string> }>;
   };
 }
 export const FECHAS_V6: FechasV6 = {
@@ -625,7 +629,7 @@ export const FECHAS_V6: FechasV6 = {
         }
       ]
     },
-    "resumen": "Orden del dom 22-nov («todo inicia a partir del 23»): del lun 16 al dom 22 no hubo sesión. Desde el LUN 23 cada día hábil hace el plan que le toca en orden, con sus hitos (lun 23 = el del mié 18: la configuración de Anki y la mañana ENCAPS 1/21; mar 24 = el D2 del Step 1 en nivel 0), y el vie 25-dic tiene sesión, hasta el vie 1-ene (el plan del mié 30-dic). El plan del jue 31-dic va repartido, sin compactar: el ENCAPS de las 16:15 y los planes secundarios, el sáb 2-ene a hora fija (lo del sáb 2-ene, el dom 3-ene); la mañana ENCAPS 20/21, el mar 5-ene (la 21/21, el mié 6; el calentamiento V-2 de ese día, entero, el dom 10-ene 07:15-13:30); la SP 6/11 en diferido y el ENCAPS de las 16:15 del sáb 2, el lun 4-ene por la mañana. La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Desde el jue 7-ene, todo igual; examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
+    "resumen": "Orden del dom 22-nov («todo inicia a partir del 23»): del lun 16 al dom 22 no hubo sesión. Desde el LUN 23 cada día hábil hace el plan que le toca en orden, con sus hitos (lun 23 = el del mié 18: la mañana ENCAPS 1/21; mar 24 = el D2 del Step 1 en nivel 0, con el preset de Anki delante a las 05:00; el manual y el vídeo FSRS de la configuración, el sáb 28 a las 04:45), y el vie 25-dic tiene sesión, hasta el vie 1-ene (el plan del mié 30-dic). El plan del jue 31-dic va repartido, sin compactar: el ENCAPS de las 16:15 y los planes secundarios, el sáb 2-ene a hora fija (lo del sáb 2-ene, el dom 3-ene); la mañana ENCAPS 20/21, el mar 5-ene (la 21/21, el mié 6; el calentamiento V-2 de ese día, entero, el dom 10-ene 07:15-13:30); la SP 6/11 en diferido y el ENCAPS de las 16:15 del sáb 2, el lun 4-ene por la mañana. La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Desde el jue 7-ene, todo igual; examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
     "notas": {
       "2026-11-16": [
         "Hoy lunes, sin sesión. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: el PPT el domingo 29-nov a las 07:15 (bloque fijo de recuperación del viaje) y la grabación, 30′ de tramos útiles en la mañana ENCAPS que la lleva; el resto, en audio en tiempos muertos."
@@ -634,7 +638,7 @@ export const FECHAS_V6: FechasV6 = {
         "Martes sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan arranca el lun 23-nov con el D1 (el plan del mié 18); lo de hoy no tiene plan propio que recuperar."
       ],
       "2026-11-18": [
-        "Miércoles sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan de hoy (el D1: configuración de Anki, mañana ENCAPS 1/21 y pre-test de arranque 1/2) se hace el lun 23-nov, a sus mismas horas."
+        "Miércoles sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan de hoy (el D1: mañana ENCAPS 1/21 y pre-test de arranque 1/2) se hace el lun 23-nov, a sus mismas horas; la configuración de Anki, repartida: el preset, el mar 24-nov a las 05:00, y el manual y el vídeo FSRS, el sáb 28-nov a las 04:45."
       ],
       "2026-11-19": [
         "Jueves sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). Lo que hiciste es adelanto: no cuenta."
@@ -707,6 +711,21 @@ export const FECHAS_V6: FechasV6 = {
         "encaps": {
           "hora": "09:45-10:45",
           "plan": "2027-01-02"
+        }
+      }
+    },
+    "alias_frente": {
+      "vibecoding": {
+        "decidido": "2026-11-23",
+        "motivo": "Lun 23-nov-2026 (chat de plan, comprobado por los chats de vibecoding y USMLE): las sesiones de las 04:15 y de las 05:00 no se hicieron; la de las 04:15 era el paso 1 de S1 (plan del mié 18: test del parser, respaldo del n8n vivo y qué se pega; sin pegar ni publicar). Regla de un día que empieza tarde: lo de antes pasa a la próxima sesión de SU frente, sin cascada a otros frentes. Solo el vibecoding S1 corre una sesión, dentro de su semana: paso 1 el mar 24, paso 2 el mié 25 (redeploy + Publish como tarde a las 04:40 + [TEST S1]), paso 3 el jue 26, paso 4 el vie 27 y el paso 5 (commit [S1] + verify 1) PRIMERO dentro del SHIP S1 del dom 29 (en_ship: domingo → fecha de plan del paso que absorbe su SHIP; el SHIP es flexible, 2 h, y se hace con lo que quede). El lun 23 real hizo el plan del mié 18 por el alias global y su texto no se reescribe. Desde el lun 30 (S2 paso 1 = plan del mié 25) manda el alias global: de S2 en adelante no cambia nada; los demás frentes siguen siempre con el alias global. El journal de S1 sigue en 2026-W48 (semana ISO de sus días reales). La CONFIGURACIÓN del Anki de las 05:00 (frente USMLE) va repartida, sin cascada: el preset, delante en el Anki del D2 (mar 24, 05:00-05:30; «The ONLY Video…» sigue con su corte de siempre) y el manual FSRS + «Anki Almost Broke Me…» entero, el sáb 28 04:45-05:30 (hueco libre): eso lo hace gen_usmle_guia.js (USMLE_FIJO_SAB), sin alias.",
+        "alias": {
+          "2026-11-24": "2026-11-18",
+          "2026-11-25": "2026-11-19",
+          "2026-11-26": "2026-11-20",
+          "2026-11-27": "2026-11-23"
+        },
+        "en_ship": {
+          "2026-11-29": "2026-11-24"
         }
       }
     }
@@ -983,6 +1002,9 @@ export const PRINCIPAL_POR_FRENTE: Record<string, string[]> = {
  * si ese día no tiene bloque del frente, la propia fecha (v6.06d) · día sin sesión → la fila del próximo día con sesión (v6.06e) · resto → la propia.
  */
 export function fechaPlanDe(iso: string, frente?: string): string {
+  // v6.10y: el alias propio del frente manda sobre el global (corrida_s1.alias_frente)
+  const af = frente ? FECHAS_V6.corrida_s1.alias_frente?.[frente] : undefined;
+  if (af && af.alias[iso]) return af.alias[iso] as string;
   // v6.10w: el día extra que hace la fila de otra fecha de plan de ese frente (sáb 2-ene → jue 31-dic · dom 3-ene → sáb 2-ene · lun 4-ene ENCAPS → sáb 2-ene)
   //   solo en fin de semana: el lun 4-ene (RE-SCAN) tiene su propia fila ENCAPS (dia 33) y el D32 del sáb 2-ene es un bloque más de ese día
   if (frente && [0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay())) { const x = extraCorridaDe(iso).find((y) => y.frente === frente); if (x && x.plan !== iso) return x.plan; }
@@ -1015,6 +1037,12 @@ export function fechaPlanDe(iso: string, frente?: string): string {
  */
 export function fechaRealDe(plan: string, frente?: string): string {
   const c = FECHAS_V6.corrida_s1;
+  // v6.10y: el alias propio del frente (y el domingo cuyo SHIP absorbe ese paso) manda sobre el global
+  const af = frente ? c.alias_frente?.[frente] : undefined;
+  if (af) {
+    for (const [r, de] of Object.entries(af.alias)) if (de === plan) return r;
+    for (const [r, de] of Object.entries(af.en_ship ?? {})) if (de === plan) return r;
+  }
   // v6.10w: con `frente`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) { const x = extraDePlan(plan, frente); if (x && x.real !== plan) return x.real; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
@@ -1045,4 +1073,8 @@ export function extraDePlan(plan: string, frente: string): { real: string; ini: 
     if (x) return { real: r, ini: x.ini, fin: x.fin };
   }
   return null;
+}
+/** v6.10q · v6.10y: fecha de PLAN del paso del `frente` que el SHIP del domingo `dom` absorbe y hace PRIMERO (corrida_s1.alias_frente[frente].en_ship); null si ninguno. */
+export function enShipDe(dom: string, frente: string = 'vibecoding'): string | null {
+  return FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom] ?? null;
 }

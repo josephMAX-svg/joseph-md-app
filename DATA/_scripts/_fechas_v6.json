@@ -548,7 +548,7 @@
         }
       ]
     },
-    "resumen": "Orden del dom 22-nov («todo inicia a partir del 23»): del lun 16 al dom 22 no hubo sesión. Desde el LUN 23 cada día hábil hace el plan que le toca en orden, con sus hitos (lun 23 = el del mié 18: la configuración de Anki y la mañana ENCAPS 1/21; mar 24 = el D2 del Step 1 en nivel 0), y el vie 25-dic tiene sesión, hasta el vie 1-ene (el plan del mié 30-dic). El plan del jue 31-dic va repartido, sin compactar: el ENCAPS de las 16:15 y los planes secundarios, el sáb 2-ene a hora fija (lo del sáb 2-ene, el dom 3-ene); la mañana ENCAPS 20/21, el mar 5-ene (la 21/21, el mié 6; el calentamiento V-2 de ese día, entero, el dom 10-ene 07:15-13:30); la SP 6/11 en diferido y el ENCAPS de las 16:15 del sáb 2, el lun 4-ene por la mañana. La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Desde el jue 7-ene, todo igual; examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
+    "resumen": "Orden del dom 22-nov («todo inicia a partir del 23»): del lun 16 al dom 22 no hubo sesión. Desde el LUN 23 cada día hábil hace el plan que le toca en orden, con sus hitos (lun 23 = el del mié 18: la mañana ENCAPS 1/21; mar 24 = el D2 del Step 1 en nivel 0, con el preset de Anki delante a las 05:00; el manual y el vídeo FSRS de la configuración, el sáb 28 a las 04:45), y el vie 25-dic tiene sesión, hasta el vie 1-ene (el plan del mié 30-dic). El plan del jue 31-dic va repartido, sin compactar: el ENCAPS de las 16:15 y los planes secundarios, el sáb 2-ene a hora fija (lo del sáb 2-ene, el dom 3-ene); la mañana ENCAPS 20/21, el mar 5-ene (la 21/21, el mié 6; el calentamiento V-2 de ese día, entero, el dom 10-ene 07:15-13:30); la SP 6/11 en diferido y el ENCAPS de las 16:15 del sáb 2, el lun 4-ene por la mañana. La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Desde el jue 7-ene, todo igual; examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
     "notas": {
       "2026-11-16": [
         "Hoy lunes, sin sesión. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: el PPT el domingo 29-nov a las 07:15 (bloque fijo de recuperación del viaje) y la grabación, 30′ de tramos útiles en la mañana ENCAPS que la lleva; el resto, en audio en tiempos muertos."
@@ -557,7 +557,7 @@
         "Martes sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan arranca el lun 23-nov con el D1 (el plan del mié 18); lo de hoy no tiene plan propio que recuperar."
       ],
       "2026-11-18": [
-        "Miércoles sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan de hoy (el D1: configuración de Anki, mañana ENCAPS 1/21 y pre-test de arranque 1/2) se hace el lun 23-nov, a sus mismas horas."
+        "Miércoles sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). El plan de hoy (el D1: mañana ENCAPS 1/21 y pre-test de arranque 1/2) se hace el lun 23-nov, a sus mismas horas; la configuración de Anki, repartida: el preset, el mar 24-nov a las 05:00, y el manual y el vídeo FSRS, el sáb 28-nov a las 04:45."
       ],
       "2026-11-19": [
         "Jueves sin sesión (orden de Joseph del dom 22: «todo inicia el 23»). Lo que hiciste es adelanto: no cuenta."
@@ -630,6 +630,21 @@
         "encaps": {
           "hora": "09:45-10:45",
           "plan": "2027-01-02"
+        }
+      }
+    },
+    "alias_frente": {
+      "vibecoding": {
+        "decidido": "2026-11-23",
+        "motivo": "Lun 23-nov-2026 (chat de plan, comprobado por los chats de vibecoding y USMLE): las sesiones de las 04:15 y de las 05:00 no se hicieron; la de las 04:15 era el paso 1 de S1 (plan del mié 18: test del parser, respaldo del n8n vivo y qué se pega; sin pegar ni publicar). Regla de un día que empieza tarde: lo de antes pasa a la próxima sesión de SU frente, sin cascada a otros frentes. Solo el vibecoding S1 corre una sesión, dentro de su semana: paso 1 el mar 24, paso 2 el mié 25 (redeploy + Publish como tarde a las 04:40 + [TEST S1]), paso 3 el jue 26, paso 4 el vie 27 y el paso 5 (commit [S1] + verify 1) PRIMERO dentro del SHIP S1 del dom 29 (en_ship: domingo → fecha de plan del paso que absorbe su SHIP; el SHIP es flexible, 2 h, y se hace con lo que quede). El lun 23 real hizo el plan del mié 18 por el alias global y su texto no se reescribe. Desde el lun 30 (S2 paso 1 = plan del mié 25) manda el alias global: de S2 en adelante no cambia nada; los demás frentes siguen siempre con el alias global. El journal de S1 sigue en 2026-W48 (semana ISO de sus días reales). La CONFIGURACIÓN del Anki de las 05:00 (frente USMLE) va repartida, sin cascada: el preset, delante en el Anki del D2 (mar 24, 05:00-05:30; «The ONLY Video…» sigue con su corte de siempre) y el manual FSRS + «Anki Almost Broke Me…» entero, el sáb 28 04:45-05:30 (hueco libre): eso lo hace gen_usmle_guia.js (USMLE_FIJO_SAB), sin alias.",
+        "alias": {
+          "2026-11-24": "2026-11-18",
+          "2026-11-25": "2026-11-19",
+          "2026-11-26": "2026-11-20",
+          "2026-11-27": "2026-11-23"
+        },
+        "en_ship": {
+          "2026-11-29": "2026-11-24"
         }
       }
     }

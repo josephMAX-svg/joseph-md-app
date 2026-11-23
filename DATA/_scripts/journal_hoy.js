@@ -33,10 +33,10 @@ const REAL = arg('--fecha', `${hoy.getFullYear()}-${pad(hoy.getMonth() + 1)}-${p
 if (!/^20\d\d-\d\d-\d\d$/.test(REAL)) throw new Error('--fecha inválida (YYYY-MM-DD): ' + REAL);
 // v6.06e: la guía y el botón 📓 usan la fecha de plan → el fichero, el proyecto y el paso del día salen de ella
 const _V6 = require('./gen_fechas_v6');
-// v6.10u (19-nov-2026): sin alias propio del vibecoding: el alias global de corrida_s1 ya lleva el S1 del vie 20 al jue 26 (paso 1 = plan del mié 18 …
-//   paso 5 = plan del mar 24) y el SHIP S1 del dom 29 es solo SHIP
+// v6.10y (lun 23-nov-2026): + el alias PROPIO del vibecoding (corrida_s1.alias_frente: S1 corre una sesión, mar 24 = plan del mié 18 … vie 27 = plan del lun 23)
+//   y el domingo cuyo SHIP absorbe un paso (en_ship: dom 29-nov = el paso 5 de S1, que va primero dentro del SHIP) → su sección es la de ese paso
 const _F6 = _V6.cargarFechasV6();
-const FECHA = _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
+const FECHA = _V6.enShipDe(REAL, _F6, 'vibecoding') || _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
 // v6.07d: la cabecera del journal dice los días REALES del proyecto y de su SHIP (con la semana corrida no son los de plan)
 const _REAL = (f) => _V6.fechaRealDe(f, _V6.cargarFechasV6(), 'vibecoding');
 // v6.10w (pendientes de la revisión): un día REAL sin sesión (corrida_s1.sin_sesion: del lun 16 al dom 22-nov) no tiene vibecoding: fechaPlanDe lo da
@@ -49,6 +49,14 @@ const SIN_SESION_HOY = (_C1.sin_sesion || []).includes(REAL) && !_own(_C1.alias,
 if (SIN_SESION_HOY) {
   const r = _REAL(FECHA);
   console.log(`SIN SESIÓN ${REAL} (corrida_s1.sin_sesion ${_C1.version || ''}): hoy no hay vibecoding ni entrada en el journal · la próxima sesión (plan ${FECHA}) se hace el ${r}${r !== FECHA ? '' : ' (su propio día)'}: node DATA/_scripts/journal_hoy.js --fecha ${r}`);
+  process.exit(0);
+}
+// v6.10y (revisión): con el alias PROPIO del vibecoding, el día real cuyo plan GLOBAL es una fecha que ese alias hace OTRO día (lun 23-nov: plan del mié 18, cuyo
+//   paso 1/5 va el mar 24) no tiene vibecoding → escribir hoy esa sección la creaba con el día equivocado («## Mié 18-nov (hecho el Lun 23-nov)») y el mar 24 la
+//   reutilizaba («sección de hoy ya existía»)
+const _AF = _V6.aliasFrenteDe(_F6, 'vibecoding');
+if (_AF && !_V6.enShipDe(REAL, _F6, 'vibecoding') && Object.values(_AF.alias).includes(FECHA) && _REAL(FECHA) !== REAL) {
+  console.log(`SIN VIBECODING ${REAL}: el paso de este plan (${FECHA}) va el ${_REAL(FECHA)} (corrida_s1.alias_frente.vibecoding) · hoy no se escribe nada: node DATA/_scripts/journal_hoy.js --fecha ${_REAL(FECHA)}`);
   process.exit(0);
 }
 

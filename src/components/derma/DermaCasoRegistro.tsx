@@ -119,7 +119,7 @@ export default function DermaCasoRegistro({ dia, id, fuente = 'caso', acierto, a
       )}
 
       {/* Descripción morfológica 0-8 (paso ①) */}
-      {(esCaso || fuente === 'dermatoscopia') && (
+      {(esCaso || fuente === 'dermatoscopia' || fuente === 'dermnet') && (
         <>
           <Text style={st.lbl}>Descripción en 8 ejes (paso ①) · autoevaluación</Text>
           <View style={[st.row, { alignItems: 'center' }]}>

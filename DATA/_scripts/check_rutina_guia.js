@@ -584,7 +584,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
             if (t !== '12:00') errores.push(`${tag}: la mañana ENCAPS no cubre 07:15-12:00 (termina ${t})`);
           }
           if (!B_('encaps') || hora('encaps') !== '16:15–17:15') errores.push(`${tag}: falta el ENCAPS 16:15 de la rotación F1`);
-          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/CONFIGURACIÓN/.test(an.nombre) : iso === '2026-11-19' ? !/sin tarjetas que repasar → vídeos de método/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.10: la CONFIGURACIÓN (45′) va el mié 18 · v6.10b (decisión 4 de Joseph): jue 19 = D2 en nivel 0, mazo USMLE vacío → vídeos de método (sin UWSA1 ni triaje) · v6.10u: el preset vuelve a la configuración (mié 18 de plan); el D2, solo vídeos de método */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
+          const an = B_('anki'); /* v6.09: la 1.ª mañana ENCAPS (mié 18-nov) va antes del D2 del Step: mazos aún vacíos, el bloque no promete repasos */ if (!an || (iso === '2026-11-18' ? !/preset → .* · manual \+ vídeo FSRS → /.test(an.nombre) : iso === '2026-11-19' ? !/PRESET «APEX USMLE».*repasos ENCAPS 15′/.test(an.nombre) : !/ENCAPS 15′/.test(an.nombre))) /* v6.10: la CONFIGURACIÓN (45′) va el mié 18 · v6.10b (decisión 4 de Joseph): jue 19 = D2 en nivel 0, mazo USMLE vacío → vídeos de método (sin UWSA1 ni triaje) · v6.10u: el preset vuelve a la configuración (mié 18 de plan); el D2, solo vídeos de método · v6.10y-b: la CONFIGURACIÓN va repartida (el preset, delante en el Anki del D2 —jue 19 de plan—; el manual + vídeo FSRS, el sáb 28 04:45) y el mié 18 solo dice adónde fue */ errores.push(`${tag}: el Anki 05:00 no dice «USMLE 30′ + repasos ENCAPS 15′»`);
         }
         if (w === 6 && RG2.sabadoTheomed(iso) && bs.length) {
           const viv = EM2.theomedSabadoDe(iso);
@@ -1306,7 +1306,9 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
 //   jue 19-nov con su SYNAPSE 07:25 · NBME 25 = mar 15-dic (07:00-12:30) · cada step1.f1_extra es un SÁBADO de Step (usmle 04:15-05:45 · usmle2 07:15-08:25 ·
 //   usmle3 14:30-16:05 · eval 16:05-16:50 · anki-sab 21:30-22:00, con sus guías dentro de las ventanas del sábado) · enPausaStep1 falso hasta la última mañana
 //   de F1 y verdadero desde el día siguiente al lunes libre · el jue 31-dic no es día de Step ni de pausa · DIAS_T2 = tramo2_vigente.json (= v6.09) ·
-//   (v610-d) Anki: mié 18 = CONFIGURACIÓN 45′ · jue 19 sin configuración · del 18 al 24-nov ningún bloque USMLE sin material salvo el descanso declarado del
+//   (v610-d) Anki (v6.10y-b): jue 19 de plan (D2) = 05:00-05:30 con el PRESET delante (Sync · preset · comprobación) y «The ONLY Video…» de 0:00 al corte de
+//   siempre · sáb 28-nov 04:45-05:30 = manual FSRS + «Anki Almost Broke Me…» entero + notas (45′, bloque anki-fsrs de la plantilla) · mié 18 de plan = 05:00-05:45
+//   sin configuración ni vídeo (solo dice adónde fue) · del 18 al 24-nov ningún bloque USMLE sin material salvo el descanso declarado del
 //   jue 19 y del mar 24 · ninguna «NUEVAS: … del <día>» cita un día sin Step · (v610-e) ENCAPS: dia del mantenimiento = orden por fecha · diaActual = dia
 //   (mié 18, vie 20, lun 23, vie 27, dom 29, lun 30, jue 31, lun 4-ene, vie 12-mar) · sim_n = dia en los 5 mini-sims de F1 · (v610-f) ENCAPS 16:15: filas
 //   dia ≥ 10 idénticas a la v6.09 (git show e34e1ad, si el commit existe).
@@ -1385,10 +1387,18 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   }
   // (v610-d)
   {
-    const conf = UGn.guiaUsmleDe('2026-11-18').find((g) => g.franja.startsWith('05:'));
-    if (!conf || conf.franja !== '05:00–05:45' || !/CONFIGURACIÓN/.test(conf.titulo)) nErr.push('(v610-d) mié 18-nov: el Anki 05:00 no es la CONFIGURACIÓN de 45′');
-    const j19 = UGn.guiaUsmleDe('2026-11-19').find((g) => g.franja.startsWith('05:'));
-    if (!j19 || /CONFIGURACIÓN/.test(j19.titulo) || j19.franja !== '05:00–05:30') nErr.push('(v610-d) jue 19-nov: el Anki 05:00 debe ser 05:00-05:30 y sin configuración');
+    // v6.10y-b (lun 23-nov): la CONFIGURACIÓN del lun 23 (plan del mié 18) no se hizo y va repartida, sin cascada: el PRESET delante en el Anki del D2 (jue 19 de
+    //   plan = mar 24 real, 05:00-05:30: Sync · preset · comprobación + «The ONLY Video…» de 0:00 al corte de siempre) y el manual FSRS + «Anki Almost Broke Me…»
+    //   ENTERO + notas el sáb 28-nov 04:45-05:30 (bloque anki-fsrs de la plantilla, desde usmleGuia.USMLE_FIJO_SAB); el mié 18 de plan queda 05:00-05:45 sin
+    //   configuración ni vídeo (solo dice adónde fue: así la cadena ENCAPS de las 05:20/05:30 no cambia)
+    const m18 = UGn.guiaUsmleDe('2026-11-18').find((g) => g.franja.startsWith('05:'));
+    if (!m18 || m18.franja !== '05:00–05:45' || !/CONFIGURACIÓN va repartida/.test(m18.titulo) || m18.pasos.some((p) => /^Preset|^Palmerton ·|^Sync/.test(p.que))) nErr.push('(v610-d) mié 18-nov: el Anki 05:00 debe ser 05:00-05:45 sin configuración ni vídeo (solo dice adónde fue cada parte)');
+    const conf = UGn.guiaUsmleDe('2026-11-19').find((g) => g.franja.startsWith('05:'));
+    const pasosConf = conf ? conf.pasos.map((p) => p.que) : [];
+    if (!conf || conf.franja !== '05:00–05:30' || !/PRESET «APEX USMLE»/.test(conf.titulo) || conf.pasos.length !== 4 || !/^Sync/.test(pasosConf[0] || '') || !/^Preset «APEX USMLE»/.test(pasosConf[1] || '') || !/^Comprobación del preset/.test(pasosConf[2] || '') || !/^Palmerton · «The ONLY Video/.test(pasosConf[3] || '') || !/ de 0:00 a 15:04 /.test(pasosConf[3] || '')) nErr.push('(v610-d) jue 19-nov (D2): el Anki 05:00 debe ser 05:00-05:30 con el preset delante (Sync · preset · comprobación) y «The ONLY Video…» de 0:00 a 15:04');
+    const sab = UGn.guiaUsmleDe('2026-11-28').find((g) => g.franja === '04:45–05:30'), pSab = PLn.plantillaDelDia('2026-11-28').bloques.find((b) => b.id === 'anki-fsrs');
+    if (!sab || sab.totalMin !== 45 || !/^Manual de Anki/.test((sab.pasos[0] || {}).que || '') || !/^Palmerton · «Anki Almost Broke Me.* de 0:00 a 30:47 \(entero\)/.test((sab.pasos[1] || {}).que || '') || !/^Notas de los cambios aplicables/.test((sab.pasos[2] || {}).que || '')) nErr.push('(v610-d) sáb 28-nov: falta la guía 04:45-05:30 (manual FSRS + «Anki Almost Broke Me…» entero 0:00-30:47 + notas, 45′)');
+    if (!pSab || pSab.ini !== '04:45' || pSab.fin !== '05:30' || pSab.frente !== 'usmle-anki') nErr.push('(v610-d) sáb 28-nov: la plantilla no pinta el bloque anki-fsrs 04:45-05:30');
     for (let iso = '2026-11-18'; iso <= '2026-11-24'; iso = addDias(iso, 1)) {
       for (const g of UGn.guiaUsmleDe(iso).filter((x) => x.franja.startsWith('05:'))) for (const p of g.pasos) {
         if (/^Libre\b/.test(p.que)) nErr.push(`(v610-d) ${iso} ${g.franja}: paso «Libre» (sin material)`);

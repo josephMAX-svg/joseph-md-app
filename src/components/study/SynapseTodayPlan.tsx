@@ -9,7 +9,7 @@ import {
   SYN_FORMATO_ICON, SYN_FASES_BC, synFaseBCDe, // v6.10 · base cero: fase explícita del día (1-6)
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
-import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { FECHAS_V6, fechaPlanDe, fechaRealDe, enShipDe } from '../../lib/fechasV6'; // v6.10y: + FECHAS_V6 (alias propio del vibecoding, vibeFechaDe) y enShipDe (el paso que absorbe el SHIP del domingo)
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
@@ -40,6 +40,18 @@ export function synTodayISO(): string {
   // v6.02d: semana 1 corrida → fila de la fecha de plan
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`, 'synapse'); }
   catch { return SYN_PLAN_META.inicio; }
+}
+/** v6.10q · v6.10y: fecha de PLAN del vibecoding del mismo día REAL que la fecha de plan `fSyn` del SYNAPSE (con el alias propio del vibecoding difieren: mar
+ *  24-nov = SYNAPSE del jue 19 y vibecoding del mié 18). Solo cambia en los días de ese alias propio; el resto (también los días sin sesión), la misma fecha. */
+function vibeFechaDe(fSyn: string): string { return FECHAS_V6.corrida_s1.alias_frente?.vibecoding?.alias[fechaRealDe(fSyn, 'synapse')] ?? fSyn; }
+/** v6.10y (revisión): el día REAL al que el alias propio del vibecoding lleva el paso de la fecha de plan `fV` si NO es el día real de este SYNAPSE (lun 23-nov:
+ *  plan global del mié 18, cuyo paso 1/5 va el mar 24); null si hoy es su día. Solo para las fechas de plan de ese alias propio: así el ✓ de hoy no marca
+ *  (vibeDone por d) el paso de otro día. */
+function vibeVaOtroDia(fSyn: string, fV: string): string | null {
+  const own = FECHAS_V6.corrida_s1.alias_frente?.vibecoding;
+  if (!own || !Object.values(own.alias).includes(fV)) return null;
+  const r = fechaRealDe(fV, 'vibecoding');
+  return r !== fechaRealDe(fSyn, 'synapse') ? r : null;
 }
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -116,7 +128,7 @@ function BloqueRow({ b }: { b: SynBloque }) {
  *  Theomed) → la card usa vibePCDomingo y VIBE_META.diaShip: SHIP S1 dom 15-nov … S6 dom 20-dic · dom 27-dic = AVANCE S7 · S7 dom 3-ene … S12 dom
  *  7-feb · taper S13 dom 14-feb · S14 21-feb · S15 28-feb · dom 7-mar = PC propio de S16 + PC 0' de S17 · S18 dom 21-mar (dom 14-mar = ENCAPS,
  *  PROTEGIDO; S19 y S20 cierran después del SYNAPSE, sin PC). El sábado ya no lleva PC. */
-function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
+function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void; vaEl?: string | null }) {
   const p = vibeProyectoEnFecha(fecha);
   const t = vibeTaperEnFecha(fecha);
   const pcSab = vibePCDomingo(fecha); // v6.07: el PC es el domingo (nombre de la variable, histórico)
@@ -125,16 +137,24 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
     <Text key={'pc' + x.s} style={st.vibeStep}>› + PC propio de S{x.s} · {x.taper.nombre} ({x.taper.tipo === 'mantenimiento' ? "30' opcional" : "0'"}): {x.taper.shipTxt}</Text>
   ) : null);
   const vd = vibeDiaDe(fecha);
-  const hecho = vd ? vibeDone.has(vd.d) : false;
+  // v6.10q · v6.10y: el domingo cuyo SHIP ABSORBE un paso del proyecto (corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = el paso 5/5 de S1) pinta ese
+  //   paso y su ✓ (sin esto el d5 de S1 no salía en ningún día: S1 se quedaba en 4/5 y vibeShipped nunca lo contaba)
+  const fShip = !vd ? enShipDe(fecha) : null;
+  const vdShip = fShip ? vibeDiaDe(fShip) : undefined;
+  const vdBtn = vd ?? vdShip;
+  const hecho = vdBtn ? vibeDone.has(vdBtn.d) : false;
   const shipped = vibeShipped(vibeDone);
   const verificados = vibeShippedVerificado();
   const wd = (() => { try { return new Date(fecha + 'T12:00:00').getDay(); } catch { return 1; } })();
   const accent = OBS;
   const journal = vibeJournalUrl(fecha);
-  const btnDia = vd ? (
-    <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vd.d)}
+  // v6.10y (revisión): el paso de hoy va OTRO día real (vaEl) → sin ✓ (lo marcarías el día que no es)
+  const btnDia = vaEl ? (
+    <Text style={[st.vibeSub, { flex: 1 }]}>Hoy sin vibecoding: este paso va el {fmtFecha(vaEl)} (márcalo ese día).</Text>
+  ) : vdBtn ? (
+    <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vdBtn.d)}
       style={[st.doneBtn, { flex: 1, marginTop: 0 }, hecho ? { backgroundColor: accent, borderColor: accent } : { backgroundColor: accent + '14', borderColor: accent + '66' }]}>
-      <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : accent }]}>{hecho ? '✓ paso del día hecho' : '○ marcar paso del día'}</Text>
+      <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : accent }]}>{vdShip ? (hecho ? `✓ paso ${vdShip.k}/5 de S${vdShip.semana} hecho` : `○ marcar paso ${vdShip.k}/5 de S${vdShip.semana}`) : hecho ? '✓ paso del día hecho' : '○ marcar paso del día'}</Text>
     </TouchableOpacity>
   ) : null;
   const btnJournal = (
@@ -196,7 +216,7 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
       ) : wd === VIBE_META.diaShip && !pcMain ? (
         <Text style={st.vibeStep}>› DOMINGO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(fechaRealDe(p.ini, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}). Feynman (10′) opcional.</Text>
       ) : wd === VIBE_META.diaShip ? (
-        <Text style={st.vibeStep}>› DOMINGO PC (2 h, a la hora que puedas) = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}. Después, Feynman (10′, opcional): explica en voz alta qué construiste.</Text>
+        <Text style={st.vibeStep}>› DOMINGO PC (2 h, a la hora que puedas) = {vdShip && vdShip.semana === p.s ? `primero el paso ${vdShip.k}/5 de S${p.s} (${VIBE_TIPO_LABEL[vdShip.tipo]}: commit [S${p.s}] + verify ${p.s}; márcalo con su botón), después el ` : ''}SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}. Después, Feynman (10′, opcional): explica en voz alta qué construiste.</Text>
       ) : wd === 6 ? (
         <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). El SHIP de S{p.s} es el domingo {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.</Text>
       ) : (
@@ -260,15 +280,17 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
         </View>
       </FadeUp>
 
-      <FadeUp delay={30}><VibeCard fecha={dia.fecha} vibeDone={vibeDone} onToggleVibe={onToggleVibe} /></FadeUp>
+      {/* v6.10y: el vibecoding puede ir con su alias PROPIO (corrida_s1.alias_frente: S1 corre una sesión) → su fecha de plan sale del día REAL de este SYNAPSE */}
+      <FadeUp delay={30}><VibeCard fecha={vibeFechaDe(dia.fecha)} vibeDone={vibeDone} onToggleVibe={onToggleVibe} vaEl={vibeVaOtroDia(dia.fecha, vibeFechaDe(dia.fecha))} /></FadeUp>
 
       {/* v6.02c (E5) · guías del día (formato común): 04:15 vibecoding · SYNAPSE de L-V · sábado PC (SHIP + A/B/C) · domingo Feynman */}
       {(() => {
-        const gs = [guiaVibeDe(dia.fecha), guiaShipDe(dia.fecha), guiaFeynmanDe(dia.fecha), guiaSynapseDe(dia.fecha)].filter((g): g is NonNullable<typeof g> => !!g);
+        const fV = vibeFechaDe(dia.fecha);
+        const gs = [guiaVibeDe(fV), guiaShipDe(fV), guiaFeynmanDe(fV), guiaSynapseDe(dia.fecha)].filter((g): g is NonNullable<typeof g> => !!g);
         return gs.length ? (
           <View>
             <Text style={st.secLbl}>🧭 guía del día · qué · cuánto · cómo</Text>
-            {gs.map((g, i) => <FadeUp key={i} delay={35 + i * 20}><GuiaBloqueCard g={reemplazosCorrida(g, dia.fecha)} color={g.plan === 'synapse' ? INDIGO : OBS} /></FadeUp>)}
+            {gs.map((g, i) => <FadeUp key={i} delay={35 + i * 20}><GuiaBloqueCard g={reemplazosCorrida(g, g.plan === 'synapse' ? dia.fecha : fV)} color={g.plan === 'synapse' ? INDIGO : OBS} /></FadeUp>)}
           </View>
         ) : null;
       })()}
