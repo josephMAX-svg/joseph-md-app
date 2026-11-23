@@ -635,7 +635,7 @@ function unidades(it) {
     const mQ = Math.ceil(it.n * 72 / 60), mC = Math.ceil(it.n * CORR_Q);
     if (mQ + mC !== durJ) aborta(`«${it.item}» (${it.fecha}): ${it.n}Q × 72 s + corrección ${it.n} × ${CORR_Q}′ = ${mQ + mC}′ y la duración dice ${it.duracion}`);
     return [
-      { tipo: 'preguntas', min: mQ, exact: it.n * 1.2, que: (min) => `${it.n}Q de ${it.item} · EN BLOQUE CRONOMETRADO · modo examen (72 s c/u) → ${min}′`, como: `Sin mirar nada. ${it.motivo} ${CONFIANZA} ${RESERVA}` },
+      { tipo: 'preguntas', min: mQ, exact: it.n * 1.2, que: (min) => `${it.n}Q de ${it.item} · EN BLOQUE CRONOMETRADO · modo examen (72 s c/u) → ${min}′`, como: `Sin mirar nada. ${RESERVA} ${it.motivo} ${CONFIANZA}` },
       { tipo: 'preguntas', min: mC, exact: it.n * CORR_Q, que: (min) => `Cada fallo y cada dudosa de las ${it.n}Q → ${min}′`, como: `${cap(TIPOS_ERROR)}. ${String(CORR_Q).replace('.', ',')}′ por pregunta.` },
     ];
   }
@@ -709,7 +709,8 @@ function repartir(dia) {
 
 // ── textos comunes ─────────────────────────────────────────────────────────────────────────────────────────────
 const FUENTES = J._meta.banqueo_fuentes.replace(/^por orden:\s*/, '').replace(/\.?\s*El material de academias no se copia al repo ni a la app\.?$/, '');
-const RESERVA = 'Reservados: el ENCAPS 2026-II real (pre-test ciego del vie 8-ene) y el 2026-I (ensayo general del jue 11-mar). Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8-ene.';
+// v6.10z-e (chat ENCAPS): la cuarentena va PRIMERO y justo detrás de «Sin mirar nada.» (el corte del Calendar la dejaba fuera en los banqueos de 50Q)
+const RESERVA = 'Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8-ene. Reservados: el ENCAPS 2026-II real (pre-test ciego del vie 8-ene) y el 2026-I (ensayo general del jue 11-mar).';
 // v6.10z-d (lun 23-nov, chat ENCAPS): % CIEGO = correctas Y seguras ÷ total (como FASE_INTENSIVA_2027-I.md: «correctas seguras / total»), y se calcula en la
 //   CORRECCIÓN, con la clave (antes «el % CIEGO = seguras ÷ total», que contaba una segura FALLADA como ciega). La definición, en frase propia: el corte del
 //   Calendar (110) llega hasta «÷ total» en el paso del banqueo («Sin mirar nada. Confianza…»); el «cuándo», detrás
@@ -952,7 +953,7 @@ for (const dia of J.mananas) {
     const mezcla = /mezcla/.test(dia.banqueo.area);
     const pasosB = [P(Math.min(minQ, aMin(finB) - aMin('09:45')), `${nQ}Q de ${dia.banqueo.area}${dia.banqueo.cronometrado ? ' · EN BLOQUE CRONOMETRADO' : ''} · modo examen (72 s c/u)`,
       // v6.09 (fix revisión 16-nov, joseph 1): la 1.ª mañana no tiene reglas ★ del arranque (es la orientación en el campus) → sin esa frase
-      `Sin mirar nada. ${CONFIANZA} ${mezcla ? 'Reparto del vector v3: CI 30 · SP 27 · GES 21 · ET 13 · INV 9 (los 8 críticos primero). Fuentes: DR LOPEZ post-tests y Qx banqueo F2 de varias áreas' : `Fuentes, por orden: ${FUENTES}`}.${primera ? '' : ' Las reglas con ★ del arranque, primero.'} ${RESERVA}${trampasMezcla(dia.banqueo.area, dia.fecha)}`)];
+      `Sin mirar nada. ${RESERVA} ${CONFIANZA} ${mezcla ? 'Reparto del vector v3: CI 30 · SP 27 · GES 21 · ET 13 · INV 9 (los 8 críticos primero). Fuentes: DR LOPEZ post-tests y Qx banqueo F2 de varias áreas' : `Fuentes, por orden: ${FUENTES}`}.${primera ? '' : ' Las reglas con ★ del arranque, primero.'}${trampasMezcla(dia.banqueo.area, dia.fecha)}`)];
     const restoB = aMin(finB) - aMin('09:45') - pasosB[0].min;
     const nMax = restoB >= 15 ? Math.min(40, nQ + Math.floor((restoB - 5) * 60 / 72)) : nQ; // v6.09b: lo que de verdad se corrige (las del «hasta NQ si sobra» también)
     if (restoB > 0) pasosB.push(P(restoB, restoB >= 15 ? `Vuelta a las marcadas + hasta ${nMax}Q del mismo tema si sobra` : 'Vuelta a las marcadas', restoB >= 15 ? 'Como en el examen: primero las dudosas, sin clave. Si sobra, sigue con preguntas del mismo tema (o los post-tests que no cupieron a las 09:15).' : 'Como en el examen: las dudosas al final, sin clave.'));
@@ -1088,7 +1089,7 @@ for (const dia of J.mananas) {
     if (!(tx.q > 0) || !tx.area || !tx.de || !tx.motivo || !J.mananas.some((x) => x.fecha === tx.de)) aborta(`${dia.fecha}: tarde_extra sin q / area / de (una mañana del JSON) / motivo`);
     if (pend.length) aborta(`${dia.fecha}: tarde_extra en un día con pendiente de la mañana a las 18:00 (tiene que ser un día sin pendiente)`);
     const mQ = Math.ceil(tx.q * 72 / 60), mC = Math.ceil(tx.q * CORR_Q);
-    pasosP.push(P(mQ, `${tx.q}Q de ${tx.area} (las de la mañana ${J.mananas.find((x) => x.fecha === tx.de).n}/${NM}, ${corta(tx.de)}, que ya no caben allí) · modo examen (72 s c/u)`, `Sin mirar nada, en bloque cronometrado. ${CONFIANZA} ${RESERVA}`),
+    pasosP.push(P(mQ, `${tx.q}Q de ${tx.area} (las de la mañana ${J.mananas.find((x) => x.fecha === tx.de).n}/${NM}, ${corta(tx.de)}, que ya no caben allí) · modo examen (72 s c/u)`, `Sin mirar nada, en bloque cronometrado. ${RESERVA} ${CONFIANZA}`),
       P(mC, `Cada fallo y cada dudosa de las ${tx.q}Q → ${mC}′`, `${cap(TIPOS_ERROR)}. ${String(CORR_Q).replace('.', ',')}′ por pregunta.`));
   }
   const P_ = pasosP.reduce((a, p) => a + p.min, 0);
