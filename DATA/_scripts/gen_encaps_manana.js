@@ -1407,6 +1407,11 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
 //   uso antes del pre-test del vie 8-ene es el permitido (§3-bis-LN, cabecera de CIFRAS_CRITICAS). Lo que falte lo completa el relleno con filas permitidas.
 const RE_ITEM_REAL = /\b(\d{4}-[0-9A-Z]+)-Q0*(\d+)\b/g;
 const itemsRealesDe = (t) => [...String(t || '').matchAll(RE_ITEM_REAL)].map((m) => `${m[1]}-Q${m[2]}`);
+// v6.11 (ítem 34, lun 23-nov, chat ENCAPS · ronda c38 · FUGA POR CONCEPTO): fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente
+//   verificada» no los cite (el filtro por id no los ve). Lista MANUAL, fila a fila (la decide el chat ENCAPS): cada ítem cuenta igual que uno de la fuente, así
+//   que la fila no sale (ni en el relleno) hasta que termine su runner y luego vuelve, primera, en el siguiente paso de cifras. #102 (método científico, enfoque
+//   sistemático) responde R-2024-2A-Q46 (mini-sim del vie 4-dic de plan). La #103 no va aquí (decisión del chat ENCAPS).
+const CONCEPTOS_LIGADOS = { 102: ['2024-2A-Q46'] };
 const CIF = (() => {
   const filas = [];
   for (const l of fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', 'CIFRAS_CRITICAS_2027-I.md'), 'utf8').split(/\r?\n/)) {
@@ -1415,11 +1420,20 @@ const CIF = (() => {
     filas.push({ n: Number(m[1]), cod: m[2].replace(/[*★]/g, '').trim(), items: itemsRealesDe(c.slice(5, c.length - 1).join('|')) });
   }
   if (filas.length < 100) aborta(`CIFRAS_CRITICAS_2027-I.md §3: solo ${filas.length} filas leídas`);
+  for (const [n, ids] of Object.entries(CONCEPTOS_LIGADOS)) {
+    const r = filas.find((x) => x.n === Number(n));
+    if (!r) aborta(`CONCEPTOS_LIGADOS: la fila #${n} no está en CIFRAS_CRITICAS_2027-I.md §3`);
+    for (const id of ids) {
+      const it = itemsRealesDe(id);
+      if (it.length !== 1) aborta(`CONCEPTOS_LIGADOS #${n}: «${id}» no es un ítem real (AAAA-XX-Qn)`);
+      if (!r.items.includes(it[0])) r.items.push(it[0]);
+    }
+  }
   return filas;
 })();
 const RUNNERS_CIEGOS = (() => {
   const BP = path.join(ROOT, 'DATA', 'ENCAPS', 'BANCO_PROPIO'), FR = require('./gen_fechas_v6');
-  const FIN_ENCAPS_F1 = '17:15'; // la hora ENCAPS de F1 (16:15-17:15, gen_encaps_guia.js FRANJA): ahí van los pre-tests y los mini-sims
+  const INI_ENCAPS_F1 = '16:15', FIN_ENCAPS_F1 = '17:15'; // la hora ENCAPS de F1 (16:15-17:15, gen_encaps_guia.js FRANJA): ahí van los pre-tests y los mini-sims
   const out = [];
   for (const f of fs.readdirSync(BP).filter((x) => /\.json$/.test(x) && !x.startsWith('_')).sort()) {
     let j = null;
@@ -1432,10 +1446,14 @@ const RUNNERS_CIEGOS = (() => {
     if (!/^\d{4}-\d\d-\d\d$/.test(j.fecha || '') || !Array.isArray(j.items)) aborta(`BANCO_PROPIO/${f}: runner ciego (${j.tipoRonda}) sin fecha o sin items`);
     const real = FR.ordenRealDe(j.fecha, F6, 'encaps');
     const x = FR.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === j.fecha);
-    out.push({ f, plan: j.fecha, real, fin: x ? x.fin : FIN_ENCAPS_F1, items: new Set(j.items.flatMap((it) => itemsRealesDe(it.id))) });
+    out.push({ f, plan: j.fecha, real, ini: x ? x.ini : INI_ENCAPS_F1, fin: x ? x.fin : FIN_ENCAPS_F1, items: new Set(j.items.flatMap((it) => itemsRealesDe(it.id))),
+      tipo: j.tipoRonda, parte: j._meta && j._meta.parte && j._meta.de ? `${j._meta.parte}/${j._meta.de}` : null }); // tipo y parte: para nombrarlo (pizarra, ítem 28)
   }
   return out;
 })();
+for (const [n, ids] of Object.entries(CONCEPTOS_LIGADOS)) for (const id of ids.flatMap(itemsRealesDe)) {
+  if (!RUNNERS_CIEGOS.some((x) => x.items.has(id))) AVISOS.push(`CONCEPTOS_LIGADOS #${n}: ${id} no está en ningún runner ciego de BANCO_PROPIO (pre-test · mini-sim · simulacro): no aparta la fila`);
+}
 /** filas de CIFRAS_CRITICAS citadas por un runner ciego → esos runners */
 const CIF_CIEGAS = new Map(CIF.map((r) => [r.n, RUNNERS_CIEGOS.filter((x) => r.items.some((i) => x.items.has(i)))]).filter(([, xs]) => xs.length));
 /** ¿la fila `n` está en un runner ciego que aún no terminó cuando empieza el paso del día real `dia` a las `ini`? */
@@ -1524,6 +1542,42 @@ const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.r
     carry = resto.length ? { filas: resto, de: x.f } : null;
   });
   if (aplaz.length) aborta(`cifras de F1: ${aplaz.length} filas apartadas por un test ciego (${aplaz.map((r) => `#${r.n}`).join(', ')}) no tienen un paso de cifras posterior a su runner en F1`);
+}
+// v6.11 (ítem 28, lun 23-nov, chat ENCAPS · FUGA POR LA PIZARRA): la pizarra del mes tiene temas de los tests ciegos (la dosis de hierro responde 2 ítems del
+//   pre-test 2/2). (a) La pizarra que recibe las cifras de otro día («Pizarra del mes · hoy con las cifras y plazos del X») ya pasa por el filtro de fuga de
+//   arriba: es un paso de cifras más (pasos[].piz). (b) La pizarra de siempre, en un día con un runner ciego (RUNNERS_CIEGOS) que aún no terminó cuando empieza
+//   el paso —el mismo día real o en los 2 días reales siguientes— → «Pizarra: HOY NO. Tápala entera hasta <el último de esos runners>», con
+//   los mismos minutos y sin nombrar sus temas (sería una pista). Una pizarra con material de otro día y condición («si fueron las normales, estos 10′ son la
+//   pizarra del mes de siempre») dice lo mismo en esa rama, y su aviso también.
+// ronda c38 (revisión): el runner se nombra por su FECHA DE PLAN, como todas las fechas de las guías (la app la pinta con su día real: con el día real se
+//   traducía dos veces, «mini-sim del mié 2-dic»). Si ese mismo día real hubo un runner ciego ANTES del paso (el pre-test de las 16:15), «desde ya» llega
+//   tarde: el paso dice desde la hora del primer bloque ENCAPS de la mañana y ese bloque lo avisa (aviso de la mañana).
+{
+  const TIPO_TXT = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
+  const nombreR = (x) => `${TIPO_TXT[x.tipo] || x.tipo}${x.parte ? ` ${x.parte}` : ''}`;
+  const tapaHasta = (dia, ini) => RUNNERS_CIEGOS.filter((x) => (x.real === dia && aMin(x.fin) > aMin(ini)) || (x.real > dia && x.real <= addDias(dia, 2)))
+    .sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : aMin(a.fin) - aMin(b.fin))).pop() || null;
+  const RE_COND = /si fueron las normales, estos (\d+)′ son la pizarra del mes de siempre \([^)]*\)/;
+  for (const [f, g] of Object.entries(GT)) {
+    const ini = G.partesFranja(g.franja).ini, x = tapaHasta(realDe(f), ini); if (!x) continue;
+    const hasta = `el ${nombreR(x)} del ${corta(x.plan)}`;
+    const antes = RUNNERS_CIEGOS.filter((y) => y.real === realDe(f) && aMin(y.fin) <= aMin(ini)).sort((a, b) => aMin(a.ini) - aMin(b.ini))[0] || null;
+    const gm0 = antes && (GM[f] || [])[0];
+    const desde = antes ? `desde las ${gm0 ? G.partesFranja(gm0.franja).ini : '07:15'} de hoy (antes del ${nombreR(antes)} de las ${antes.ini})` : 'desde ya';
+    let tapa = false;
+    g.pasos.forEach((p, i) => {
+      if (p.que === PIZARRA_QUE) {
+        g.pasos[i] = P(p.min, `Pizarra: HOY NO. Tápala entera hasta ${hasta} (tiene temas de los tests ciegos)`,
+          `Tápala (o quítala de la vista) ${desde} y no la mires hasta que termine ${hasta} (${x.fin}). Estos ${p.min}′ quedan libres: termina antes.`);
+        tapa = true;
+      } else if (/^Pizarra del mes · hoy con /.test(p.que) && RE_COND.test(p.como)) {
+        p.como = p.como.replace(RE_COND, (m0, min) => `si fueron las normales, la pizarra HOY NO: tápala entera hasta ${hasta} (tiene temas de los tests ciegos) y estos ${min}′ quedan libres`);
+        if (g.aviso) g.aviso = g.aviso.replace('si lo fueron, la pizarra de siempre)', `si lo fueron, la pizarra HOY NO: tápala entera hasta ${hasta})`);
+        tapa = true;
+      }
+    });
+    if (tapa && gm0) gm0.aviso = `${gm0.aviso ? `${gm0.aviso} ` : ''}Pizarra del mes: tápala ya, antes del ${nombreR(antes)} de las ${antes.ini} (tiene temas de los tests ciegos); hasta cuándo, en su paso de las ${ini}.`; // sin fecha: el aviso de la mañana ya es largo (check 26j: fecha > 230)
+  }
 }
 
 // ── sábado · THEOMED EN VIVO (14:45 preparar · 15:00-17:00 en vivo) ─────────────────────────────────────────────

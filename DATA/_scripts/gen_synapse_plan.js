@@ -682,10 +682,13 @@ function bloqueDom(semana, fecha) {
   const n = (vs || vc || {}).s || semana;
   const tp = TAPER.find((x) => x.s === n);
   if (tp) {
+    // ronda c38 (revisión del ítem 33): la retro con journal_hoy solo el domingo que tiene PC de mantenimiento (30′: el de su taper o uno desplazado, dom 21-mar);
+    //   un domingo solo de deload total (PC de 0′, dom 28-mar) no tiene bloque de vibecoding y journal_hoy no escribe nada ese día
+    const conPC = [tp, ...(PC_DESPLAZADOS.get(fecha) || [])].some((t) => t.tipo === 'mantenimiento');
     return {
       tag: 'R', min: 5, formato: 'repaso',
       material: `Domingo libre · taper S${tp.s}`,
-      leccion: `Sin Feynman de proyecto (no hay proyecto nuevo). Si quieres, 5' de retro en el journal (node DATA/_scripts/journal_hoy.js) + 20' de revisión semanal (DATA/REVISION_SEMANAL.md). Marca ✓ igual: el domingo es libre.`,
+      leccion: `Sin Feynman de proyecto (no hay proyecto nuevo). Si quieres, ${conPC ? `5' de retro en el journal (node DATA/_scripts/journal_hoy.js) + ` : ''}20' de revisión semanal (DATA/REVISION_SEMANAL.md). Marca ✓ igual: el domingo es libre.`,
       url: assertUrl(ccDoc(13).url), real: true,
     };
   }

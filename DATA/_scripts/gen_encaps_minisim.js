@@ -67,7 +67,8 @@
  *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v6.02: la del lun 26-oct (cierre del vie 23-oct) · v6.01: la del lun 19-oct (cierre del vie 16-oct) · v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
  *   node DATA/_scripts/gen_encaps_minisim.js --check                   → (v6.10e) exit 1 si una salida vigente (eval/banco/mini-sim/pre-test) con fecha
  *        ≥ BASE_CERO_DESDE (mié 18-nov-2026) lleva algún ítem que no sea de EXAMEN REAL (ids N- = redacción propia · BP- = espejo v1), o si una eval
- *        anclada cuya sesión anterior fue el PRE-TEST DE ARRANQUE (sustituyó al banco) la declara como «banqueo1h». No escribe nada.
+ *        anclada cuya sesión anterior fue el PRE-TEST DE ARRANQUE (sustituyó al banco) la declara como «banqueo1h». No escribe nada ni compara el HTML
+ *        (v6.11: la plantilla del runner va por versiones, PLANTILLA_RUNNER; un runner ya publicado nunca sale «desfasado»).
  *   node DATA/_scripts/gen_encaps_minisim.js --sesion-pretest [--dry]  → (v6.10e) en las evals ancladas YA ARMADAS cuya sesión anterior fue el pre-test de
  *        arranque, corrige _meta.sesion_anterior (tipo «pretest_arranque» + el fichero + el banco que sustituyó) y su texto (modo, tema, instrucciones) SIN
  *        re-seleccionar (ids, orden y claves intactos) y re-emite su HTML. Después: sync_encaps_bp_web.js + gen_encaps_guia.js.
@@ -442,9 +443,39 @@ function armarSet(fecha, pool, usados, cola, fallosReg, debiles) {
   return { items: final, conteos, avisos };
 }
 
+// v6.11 (ítem 30, lun 23-nov · chat ENCAPS): PLANTILLA 2 del runner, solo para las salidas que se generan DESDE AHORA: escribir() la marca en _meta.plantilla
+//   cuando su HTML aún no existe; una salida que ya existe conserva la suya (sin marca = la 1). Los runners ya publicados (pretest_arranque_2026-11-18/19,
+//   minisim_2026-11-20/27 y 2026-12-04, banco_/eval_ del 18 al 24-nov: víspera de dos líneas base ciegas) se re-emiten con la 1 byte a byte (--refrescar ·
+//   --textos-reales · --sesion-pretest no los cambian) y --check no mira el HTML. La 2: (a) el export pone primero «Descargar .json» (baja <ID>.json, el que lee
+//   --registrar) y los textos lo nombran (antes «Generar JSON» → guardar); (b) el pre-test de arranque dice su hora entera, 16:15-17:15 (antes «16:30 pre-test ·
+//   17:10 cierre»); (c) la eval anclada de un día con TEST CIEGO de la misma fecha (pre-test · mini-sim · simulacro → _meta.soluciones_tras) no tiene
+//   «Terminar y corregir»: «Terminar» guarda sin enseñar nada y las soluciones salen con «Ver soluciones», después del test.
+const PLANTILLA_RUNNER = 2;
+const plantillaDe = (base) => {
+  if (!fs.existsSync(path.join(OUT_DIR, base + '.html'))) return PLANTILLA_RUNNER;
+  try { return (readJSON(path.join(OUT_DIR, base + '.json'))._meta || {}).plantilla || 1; } catch (e) { return 1; }
+};
+const TEST_CIEGO_TXT = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
+/** el test ciego (no sustituido) con la misma fecha de plan → su nombre («pre-test» · «mini-sim» · «simulacro»); si no hay, null */
+const testCiegoDe = (fecha) => {
+  for (const f of fs.readdirSync(OUT_DIR).filter((x) => /^(pretest_|minisim_|sim100_).*\.json$/.test(x)).sort()) {
+    let j = null; try { j = readJSON(path.join(OUT_DIR, f)); } catch (e) { continue; }
+    if (j && j.fecha === fecha && TEST_CIEGO_TXT[j.tipoRonda] && !estaSustituida(j)) return TEST_CIEGO_TXT[j.tipoRonda];
+  }
+  return null;
+};
+/** plantilla 2: la eval anclada de un día con test ciego lo lleva en _meta.soluciones_tras y sus instrucciones lo dicen (la 1 no se toca) */
+function ajustaEvalCiega(doc) {
+  if (doc.tipoRonda !== 'eval_anclada' || ((doc._meta || {}).plantilla || 1) < 2) return;
+  const t = testCiegoDe(doc.fecha);
+  if (t) doc._meta.soluciones_tras = t; else delete doc._meta.soluciones_tras;
+  doc.instrucciones = String(doc.instrucciones || '').replace(/; (?:solución al final|sin solución al terminar: «Ver soluciones», después del [a-z-]+)\./, t ? `; sin solución al terminar: «Ver soluciones», después del ${t}.` : '; solución al final.');
+}
 // ── runner HTML (autocontenido, sin librerías; localStorage con prefijo jmd- y try/catch) ──
 function html(doc) {
   const data = JSON.stringify(doc).replace(/<\/script/gi, '<\\/script');
+  // v6.11 (ítem 30): plantilla 2 (solo salidas nuevas: PLANTILLA_RUNNER) · tras = el test ciego del mismo día; hasta después de él, la eval no enseña soluciones
+  const v2 = ((doc._meta || {}).plantilla || 1) >= 2, tras = v2 && doc.tipoRonda === 'eval_anclada' ? doc._meta.soluciones_tras || null : null;
   return `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${tituloVis(doc)}</title>
@@ -466,11 +497,11 @@ textarea{width:100%;min-height:180px;font:12px/1.4 ui-monospace,Consolas,monospa
 .rev{margin-top:8px;display:grid;gap:6px;grid-template-columns:1fr 2fr 1fr}select,input[type=text]{width:100%;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg)}
 .hidden{display:none!important}.wrap{overflow-x:auto}.note{font-size:12px;color:var(--mut)}.q.locked .opts label{cursor:default;opacity:.85}.q.locked .opts label.right{outline:2px solid var(--ok)}.q.locked .opts label.wrong{outline:2px solid var(--bad)}
 </style></head><body>
-<header><h1>${tituloVis(doc)}</h1><span class="pill">${doc.n} preguntas · ${doc.seg_por_q} s/Q · ${Math.round(doc.n * doc.seg_por_q / 60)} min</span><span class="pill">${doc.correccion_inmediata ? 'corrección inmediata (Palmerton)' : 'vector v3 · modo examen: solución al final'}</span>
-<span id="timer">--:--</span><span id="prog" class="pill">0/${doc.n}</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>Terminar y corregir</button><button id="reset" class="sec">Reiniciar</button></header>
+<header><h1>${tituloVis(doc)}</h1><span class="pill">${doc.n} preguntas · ${doc.seg_por_q} s/Q · ${Math.round(doc.n * doc.seg_por_q / 60)} min</span><span class="pill">${doc.correccion_inmediata ? 'corrección inmediata (Palmerton)' : tras ? `vector v3 · modo examen: soluciones después del ${tras}` : 'vector v3 · modo examen: solución al final'}</span>
+<span id="timer">--:--</span><span id="prog" class="pill">0/${doc.n}</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>${tras ? 'Terminar' : 'Terminar y corregir'}</button><button id="reset" class="sec">Reiniciar</button></header>
 <main>
 ${estaSustituida(doc) ? `<div class="q" style="border:2px solid var(--bad)"><p><b class="bad">⛔ SESIÓN SUSTITUIDA — NO RESOLVER ESTE BANCO.</b> El ${doc.fecha} se resuelve <b>${doc._meta.sustituido_por}.html</b> (${doc._meta.sustituido_motivo || 'pre-test de arranque'}). Este fichero se conserva solo como registro; sus ítems no cuentan como usados.</p></div>` : ''}
-<div id="intro" class="q"><p><b>Instrucciones.</b> ${doc.instrucciones}</p><p class="note">Regla Palmerton: marca la <b>confianza</b> en cada ítem. Un acierto con confianza «adivinada» o «dudosa» NO cuenta como conocimiento (% CIEGO = correctas Y seguras ÷ total). El reloj no se detiene. Al terminar, exporta el JSON y guárdalo en <code>TRACKING_ERRORES/RONDAS/</code>; la línea de cierre va a <code>gen_encaps_semana.js --cerrar</code>.</p></div>
+<div id="intro" class="q"><p><b>Instrucciones.</b> ${doc.instrucciones}</p><p class="note">Regla Palmerton: marca la <b>confianza</b> en cada ítem. Un acierto con confianza «adivinada» o «dudosa» NO cuenta como conocimiento (% CIEGO = correctas Y seguras ÷ total). El reloj no se detiene. ${v2 ? `${tras ? `Esta eval NO se corrige al terminar: «Terminar» guarda tus respuestas en este navegador, sin enseñar nada; las soluciones, con «Ver soluciones», después del ${tras}. ` : ''}Al terminar${tras ? ' la corrección' : ''}: «Descargar .json» (en Exportar) → <code>node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append</code> (lo guarda en <code>TRACKING_ERRORES/RONDAS/</code>).` : 'Al terminar, exporta el JSON y guárdalo en <code>TRACKING_ERRORES/RONDAS/</code>; la línea de cierre va a <code>gen_encaps_semana.js --cerrar</code>.'}</p></div>
 <div id="qs" class="hidden"></div>
 <div id="res" class="hidden"></div>
 </main>
@@ -498,7 +529,7 @@ let tick=null;function startTimer(){clearInterval(tick);tick=setInterval(()=>{if
  $('#timer').textContent=fmt(state.left);if(state.left<=120)$('#timer').classList.add('low');if(state.left%5===0)save();if(state.left<=0){finish(true);}},1000);}
 function start(){state.started=true;state.startAt=state.startAt||new Date().toISOString();save();$('#intro').classList.add('hidden');$('#qs').classList.remove('hidden');$('#start').disabled=true;$('#finish').disabled=false;startTimer();}
 function finish(auto){if(state.done)return;if(!auto){const sinConf=DOC.items.filter((it)=>state.ans[it.n]&&!state.conf[it.n]).length;if(sinConf){alert(sinConf+' pregunta(s) respondida(s) SIN confianza (adivinada / dudosa / segura). Es obligatoria: el % CIEGO se calcula con ella. Márcala y vuelve a Terminar.');return;}const sin=DOC.items.filter((it)=>!state.ans[it.n]).length;if(sin&&!confirm(sin+' preguntas sin responder. ¿Terminar igual? (quedan como fallo)'))return;}
- state.done=true;clearInterval(tick);save();$('#qs').classList.add('hidden');$('#finish').disabled=true;corregir();}
+ state.done=true;clearInterval(tick);save();$('#qs').classList.add('hidden');$('#finish').disabled=true;${tras ? 'fin();' : 'corregir();'}}
 function corregir(){const res=$('#res');res.classList.remove('hidden');const rows=DOC.items.map((it)=>{const tu=state.ans[it.n]||null,ok=tu===it.clave,conf=state.conf[it.n]||1;return {it,tu,ok,conf,seg:state.seg[it.n]||0};});
  const n=rows.length,ok=rows.filter((r)=>r.ok).length,seg=rows.filter((r)=>r.ok&&r.conf===3).length,dud=ok-seg,pct=(a,b)=>b?Math.round(a/b*1000)/10:0;
  const grp=(f)=>{const m={};rows.forEach((r)=>{const k=f(r.it)||'—';(m[k]=m[k]||{n:0,ok:0,seg:0});m[k].n++;if(r.ok)m[k].ok++;if(r.ok&&r.conf===3)m[k].seg++;});return m;};
@@ -512,7 +543,7 @@ function corregir(){const res=$('#res');res.classList.remove('hidden');const row
   rows.map((r)=>{const it=r.it;return '<div class="q" style="margin:8px 0"><h3>'+it.n+' · '+(it.codigo||'')+(it.sub_eje?' · '+it.sub_eje:'')+' · '+(it.formato||'')+' · '+(r.ok?'<span class=ok>OK</span>':'<span class=bad>FALLO</span>')+' · tu: '+(r.tu||'—')+' · clave: <b>'+it.clave+'</b> · confianza: '+({1:'adivinada',2:'dudosa',3:'segura'})[r.conf]+' · '+r.seg+' s'+(r.ok&&r.conf<3?' · <span class=bad>acierto NO ciego</span>':'')+(r.seg>DOC.seg_por_q?' · <span class=bad>TIEMPO</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p>'+
   '<div class="exp"><b>'+it.clave+') '+esc(it.respuesta||it.opciones[it.clave])+'</b>'+(it.explicacion?'<br>'+esc(it.explicacion):'')+(it.fuente?'<br><span class=note>Fuente: '+esc(it.fuente)+'</span>':'')+(it.verificado_contra?'<br><span class=note>Verificado contra: '+esc(it.verificado_contra)+'</span>':'')+'</div>'+
   (!r.ok||r.conf<3?'<div class="rev"><select data-n="'+it.n+'" data-k="error"><option value="">tipo de error…</option>'+['CONCEPTO','OLVIDO','CRONOLOGIA','CCSN','CONTEXTO','CAMBIO','TIEMPO','LECTURA'].map((e)=>'<option>'+e+'</option>').join('')+'</select><input type="text" data-n="'+it.n+'" data-k="causa" placeholder="causa en una línea (qué razonamiento te llevó ahí)"><select data-n="'+it.n+'" data-k="ruta"><option value="">ruta…</option><option>ANKI</option><option>OBSIDIAN</option><option>AMBOS</option></select></div>':'')+'</div>';}).join('')+'</div>';
- h+='<div class="q"><h2 style="margin:0 0 6px">Exportar</h2><p><button id="build">Generar JSON de la ronda</button> <button id="copy" class="sec">Copiar</button> <button id="dl" class="sec">Descargar .json</button></p><textarea id="out" readonly></textarea><p class="note" id="linea"></p></div>';
+ h+='<div class="q"><h2 style="margin:0 0 6px">Exportar</h2><p>${v2 ? '<button id="dl">Descargar .json</button> <button id="build" class="sec">Generar JSON de la ronda</button> <button id="copy" class="sec">Copiar</button>' : '<button id="build">Generar JSON de la ronda</button> <button id="copy" class="sec">Copiar</button> <button id="dl" class="sec">Descargar .json</button>'}</p><textarea id="out" readonly></textarea><p class="note" id="linea"></p></div>';
  res.innerHTML=h;
  res.querySelectorAll('[data-k]').forEach((el)=>el.addEventListener('change',()=>{const n=el.dataset.n;(state.rev[n]=state.rev[n]||{})[el.dataset.k]=el.value;save();}));
  const build=()=>{const fall={knowledge:{CONCEPTO:0,OLVIDO:0,CRONOLOGIA:0},transfer:{CCSN:0,CONTEXTO:0},proceso:{CAMBIO:0,TIEMPO:0,LECTURA:0}};const T={CONCEPTO:'knowledge',OLVIDO:'knowledge',CRONOLOGIA:'knowledge',CCSN:'transfer',CONTEXTO:'transfer',CAMBIO:'proceso',TIEMPO:'proceso',LECTURA:'proceso'};
@@ -527,12 +558,14 @@ function corregir(){const res=$('#res');res.classList.remove('hidden');const row
  $('#build').addEventListener('click',build);$('#copy').addEventListener('click',()=>{build();$('#out').select();try{navigator.clipboard.writeText($('#out').value);}catch(e){document.execCommand('copy');}});
  $('#dl').addEventListener('click',()=>{const r=build();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(r,null,1)],{type:'application/json'}));a.download=DOC.id+'.json';a.click();});
  build();}
-load();render();prog();$('#timer').textContent=fmt(state.left);
+${tras ? `function fin(){if(state.verSol)return corregir();const res=$('#res');res.classList.remove('hidden');res.innerHTML='<div class="q"><h2 style="margin:0 0 6px">Respuestas guardadas</h2><p>Esta eval se corrige <b>después del ${tras}</b>: no mires nada ahora. Al terminar el ${tras}, vuelve a abrir este runner en este mismo navegador y pulsa «Ver soluciones».</p><p><button id="versol">Ver soluciones</button></p></div>';
+ $('#versol').addEventListener('click',()=>{if(!confirm('¿Ya terminaste el ${tras}? Las soluciones de esta eval no se miran antes.'))return;state.verSol=true;save();corregir();});}
+` : ''}load();render();prog();$('#timer').textContent=fmt(state.left);
 if(DOC._meta&&DOC._meta.sustituido_por){$('#start').disabled=true;$('#finish').disabled=true;}
 $('#start').addEventListener('click',start);$('#finish').addEventListener('click',()=>finish(false));
 $('#reset').addEventListener('click',()=>{if(!confirm('¿Borrar respuestas y reiniciar el reloj?'))return;try{localStorage.removeItem(KEY);}catch(e){}location.reload();});
 if(state.started&&!state.done){$('#intro').classList.add('hidden');$('#qs').classList.remove('hidden');$('#start').disabled=true;$('#finish').disabled=false;startTimer();}
-if(state.done){$('#intro').classList.add('hidden');corregir();}
+if(state.done){$('#intro').classList.add('hidden');${tras ? 'fin();' : 'corregir();'}}
 </script></body></html>`;
 }
 
@@ -644,7 +677,7 @@ function modoBanco(fecha, ignorar) {
     id: `BANCO_${fecha}`, titulo: `Banco del día ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${fila.codigo}${subEje ? ' · ' + subEje : ''}`, tipoRonda: 'banco_dia', fecha, codigo: fila.codigo, sub_eje: subEje,
     tema: fila.subtema, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 90, umbral: 75, alerta: 60, mostrar_codigo: true, correccion_inmediata: true,
-    instrucciones: `${principal.length}Q CIEGAS de ${fila.codigo}${subEje ? ' (sub-eje: ' + subEje + ')' : ''} + ${sec.length}Q del secundario de cola larga ${secundario || ''}. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.`,
+    instrucciones: `${principal.length}Q CIEGAS de ${fila.codigo}${subEje ? ' (sub-eje: ' + subEje + ')' : ''} + ${sec.length}Q del secundario de cola larga ${secundario || ''}. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. ${plantillaDe(`banco_${fecha}`) >= 2 ? 'Al terminar: «Descargar .json» (en Exportar) → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (o, en el móvil, el CIERRE DE SESIÓN de la app; nunca las dos).' : 'Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.'}`,
     _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de, ...(fila.carril_b ? { carril_b: fila.carril_b } : {}) }, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
@@ -1004,7 +1037,7 @@ function modoPretestArranque(lunesArg) {
       tema: `pre-test de arranque · 5Q × 4 críticos (${parte.codigos.join(' · ')}) · ${parte.etiqueta}`,
       fuente_preguntas: `ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: ${[...new Set(items.map((x) => x._file || 'set'))].join(', ')})${items.length - nReales ? ` + ${items.length - nReales} ítem(s) nuevos verificados contra compendio/norma` : ''} · ${FP_LN_ARRANQUE}`,
       n: items.length, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, correccion_inmediata: false,
-      instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = correctas Y seguras ÷ total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
+      instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = correctas Y seguras ÷ total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); ${plantillaDe(`pretest_arranque_${fecha}`) >= 2 ? 'el horario no cambia (16:15-17:15). Al terminar: «Descargar .json» (en Exportar) →' : 'el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar →'} node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
       _meta: {
         generado: new Date().toISOString().slice(0, 10), parte: i + 1, de: PARTES_ARRANQUE.length, codigos: parte.codigos, q_por_codigo: Q_POR_CODIGO_ARRANQUE,
         sustituye: { fichero: `banco_${fecha}`, dia: fila.dia, codigo: fila.codigo, sub_eje: fila.extra.sub_eje || null, secundario: fila.extra.secundario || null, horario: 'sin cambio (16:15-17:15)' },
@@ -1190,9 +1223,15 @@ function modoTextosReales() {
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const j = path.join(OUT_DIR, base + '.json'), h = path.join(OUT_DIR, base + '.html');
+  // v6.11 (ítem 30): la plantilla 2 solo para una salida NUEVA; la que ya existe conserva la suya (sin marca = la 1: su JSON y su HTML salen como siempre)
+  if (!(doc._meta && doc._meta.plantilla)) { const p = plantillaDe(base); if (p >= 2) doc._meta = { ...(doc._meta || {}), plantilla: p }; }
+  ajustaEvalCiega(doc);
   fs.writeFileSync(j, JSON.stringify(doc, null, 1) + '\n', 'utf8');
   fs.writeFileSync(h, html(doc), 'utf8');
   console.log('OK →', j, '·', h);
+  // un test ciego nuevo con una eval anclada de plantilla 2 del mismo día ya armada → esa eval pasa a «soluciones después del test»
+  const ev = `eval_${doc.fecha}`;
+  if (TEST_CIEGO_TXT[doc.tipoRonda] && !estaSustituida(doc) && fs.existsSync(path.join(OUT_DIR, ev + '.json')) && plantillaDe(ev) >= 2) escribir(ev, readJSON(path.join(OUT_DIR, ev + '.json')));
 }
 
 // ── main ──

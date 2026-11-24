@@ -6,7 +6,8 @@
  * y `npx expo export --platform web` copia public/ a dist/ (Vercel sirve el fichero antes de la regla SPA de vercel.json):
  *   https://joseph-md-app.vercel.app/encaps/bp/pretest_arranque_2026-11-02.html   (v6.06; v6.05: …_2026-10-26.html · v6.03: …_2026-10-21.html · v6.02: …_2026-10-19.html)
  * Los runners son HTML autocontenidos (CSS + JS inline, sin fetch): el progreso vive en el localStorage de ese origen y el botón
- * «Generar JSON» descarga el export para `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`.
+ * «Descargar .json» baja el export para `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append` («Generar JSON de la
+ * ronda» solo lo enseña en pantalla). Este script no pinta textos: copia el HTML tal cual (la plantilla es la de gen_encaps_minisim.js).
  *
  * LISTA NEGRA (examen ENCAPS 2026-II = pre-test del vie 8-ene-2027): NUNCA se publican pretest_2026-II.* ni sim100_* ni nada que no
  * case con el patrón de arriba; además cada runner se valida contra su .json: aborta si algún ítem tiene `fuente` / `verificado_contra` /

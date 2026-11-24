@@ -381,7 +381,7 @@ if (SAB_DD0 === SAB_NP && conTexto(gSynDe(SAB_NP), /deep dive.*minutos/)) errore
   const WDl = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
   // (21) Business: OUTPUT nunca antes de la última lectura de su módulo (orden del JSON) en F1 / transición; avisos del viernes y del lunes
   const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'BUSINESS', 'plan_pulso_v3_L.json'), 'utf8')).dias;
-  let nOut21 = 0, nCaso21 = 0;
+  let nOut21 = 0, nCaso21 = 0, nOutVie21 = 0;
   for (const r of B.BIZ_DIAS) {
     if (B.bizModo(r) !== 'OUTPUT' || r.fecha > TH) continue;
     const j = PJ.findIndex((x) => x.modo === 'OUTPUT' && x.lectura === r.lectura);
@@ -390,7 +390,10 @@ if (SAB_DD0 === SAB_NP && conTexto(gSynDe(SAB_NP), /deep dive.*minutos/)) errore
     if (j < 0 || hechas < req) errores.push(`${r.fecha} (21): OUTPUT D${r.d} con ${hechas} lecturas antes y su módulo exige ${req}`);
     if (dow(r.fecha) !== 5) {
       nOut21++;
-      const g = RG.guiaBusinessDe(r.fecha); if (!g || !/en F1 no va el viernes/.test(g.aviso || '')) errores.push(`${r.fecha} (21): el OUTPUT D${r.d} va en ${WDl[dow(r.fecha)]} y su guía no lo explica`);
+      // v6.11 (ítem 29): el aviso nombra el día REAL (alias) → «(en F1 no va el viernes)» solo si ese día real no es viernes; en viernes real, sin el paréntesis
+      const nomR = WDl[dow(FV.fechaRealDe(r.fecha, 'business'))], esVieR = nomR === 'viernes'; if (esVieR) nOutVie21++;
+      const g = RG.guiaBusinessDe(r.fecha), av21 = (g && g.aviso) || '';
+      if (!g || !new RegExp(`Hoy ${nomR}, `).test(av21) || /en F1 no va el viernes/.test(av21) === esVieR) errores.push(`${r.fecha} (21): el OUTPUT D${r.d} va el ${nomR} real y su guía ${esVieR ? 'dice «(en F1 no va el viernes)» o no nombra el viernes' : 'no lo explica'}`);
       const vie = [...B.BIZ_DIAS].reverse().find((x) => x.fecha < r.fecha && dow(x.fecha) === 5 && B.bizModo(x) !== 'DESCANSO');
       const gv = vie && RG.guiaBusinessDe(vie.fecha); if (vie && ['L', 'CRITICA'].includes(B.bizModo(vie)) && (!gv || !/ÚLTIMA lectura del módulo, no el OUTPUT|no va el OUTPUT: faltan lecturas del módulo/.test(gv.aviso || ''))) errores.push(`${vie.fecha} (21): el viernes de la última lectura no avisa de que el OUTPUT va el ${r.fecha}`);
     }
@@ -450,7 +453,7 @@ if (SAB_DD0 === SAB_NP && conTexto(gSynDe(SAB_NP), /deep dive.*minutos/)) errore
     if (c.excede) errores.push(`${sb} (24): cierre Business de ${c.outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0) + 10 * c.soloTracker.length}′ en sábado con clase en vivo: sin hueco (07:45-08:25 = 40′; 14:00 = revisión + preparar la clase): partirlo a mano`);
     if (RG.sabadoTheomed(sb) && c.ini === '14:00') errores.push(`${sb} (24): cierre Business a las 14:00 en sábado con clase en vivo (pisa la revisión)`);
   }
-  console.log(`v6.09 · (21) OUTPUT de F1 tras su última lectura: ${nOut21} en lunes · casos LIVIANO de F1 tras su lección: ${nCaso21} en lunes · (23) sesiones de recursos repartidos del SYNAPSE: ${nSes23} · (24) cierres de sábado de F1: ${nSab24}`);
+  console.log(`v6.09 · (21) OUTPUT de F1 tras su última lectura: ${nOut21} fuera del viernes de plan (${nOutVie21} en viernes real, sin «(en F1 no va el viernes)») · casos LIVIANO de F1 tras su lección: ${nCaso21} en lunes · (23) sesiones de recursos repartidos del SYNAPSE: ${nSes23} · (24) cierres de sábado de F1: ${nSab24}`);
 }
 // v6.05 (fix): la guía del PC nombra TODAS las piezas PC de ese día (v6.07: el DOMINGO — dom 7-mar-2027: S16 30′ + S17 0′). Un domingo con solo
 //   piezas de 0′ no tiene guía: lo nombran las notas de la plantilla (lo comprueba la simulación del día)

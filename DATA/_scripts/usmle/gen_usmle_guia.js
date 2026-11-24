@@ -196,6 +196,8 @@ for (const [d, m] of Object.entries(MAPA)) {
 }
 
 // ── utilidades ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// QBQ: verificado en vivo (lun 23-nov-2026): abre «Question Bank Library» (cada banco con su «Select»); el test, en su Dashboard › «+ New Test» (composer: 20Q ·
+//   Unused · Tutor por defecto)
 const QBQ = 'https://qbankly.app/qbanks', QBV = 'https://qbankly.app/videos';
 const lib = (e, doc) => `https://qbankly.app/library?e=${e}&doc=${doc}`;
 const yt = (id, t0) => `https://www.youtube.com/watch?v=${id}${t0 ? `&t=${t0}s` : ''}`;
@@ -427,7 +429,14 @@ const R_FRENTE = 'FRENTE en inglés «Subject - question», escrito por ti, exig
 // v6.11 (lun 23-nov-2026 · chat USMLE): sin «(o ⚡ APEX 1-TAP)»: el 1-TAP solo encola («APEX Encolado») y su lista de UWorld no trae Pathology
 const R_ENVIO = 'copia el BLOQUE APEX → Ctrl+Shift+A → el toast ✓ = tarjeta en Anki + nota en Obsidian';
 // v6.11 (chat USMLE): una tarjeta ya enviada se corrige en Anki, no reenviándola (el motor APEX hace addNote con allowDuplicate: saldría duplicada)
-const R_CORRIGE = 'Si hay que corregir una, edita la tarjeta en Anki › Browse; nunca la reenvíes (saldría duplicada)';
+// ronda c38 (chat USMLE, ítem 31b): y también su nota de Obsidian (el motor la escribe en 01_USMLE\UWorld\<Especialidad>\APEX_creados\FECHA_HHMM_<subtema>.md
+//   con FUENTE UWorld, la de las preguntas a fondo que lo usan), o se dicta al chat USMLE, que corrige las dos (como el D2 antes del redeploy)
+const R_CORRIGE = 'Si hay que corregir una, edita la tarjeta en Anki › Browse; nunca la reenvíes (saldría duplicada), y corrige también su nota en Obsidian (01_USMLE › UWorld › <Especialidad> › APEX_creados › fecha_HHMM_subtema.md), o díctale la corrección al chat USMLE, que corrige las dos';
+// ronda c38 (revisión): con la carpeta del día (Pathology el D2), no el marcador «<Especialidad>»
+const rCorrige = (r) => R_CORRIGE.replace('<Especialidad>', espApex(r));
+// ronda c38 (revisión, misma regla que R_CORRIGE): la 1.ª pasada de las 18:00 corrige la tarjeta en Anki Y su nota de Obsidian (reescribirla solo en Anki
+//   desincroniza la nota)
+const R_PASADA = 'si una tarjeta no se entiende, corrígela ahora en Anki › Browse y en su nota de Obsidian, o díctale la corrección al chat USMLE (Anki es para retener, no para aprender)';
 /** Ruta de cada error (Palmerton: Educational Objective como filtro; PC card si fallaste el diagnóstico; los errores de lectura no son de tarjeta). */
 const R_ERROR = 'por cada incorrecta y cada acierto con duda, lee el Educational Objective y clasifica: K (no lo sabías) → 1 concept card del PRINCIPIO (abstraído: sin edad ni sexo del paciente) · no reconociste el diagnóstico → 1 PC card (cronología en presente, 4-6 pasos) · QI (lo sabías y leíste o interpretaste mal) → sin tarjeta: la micro-destreza al log de 📏 Medición. Filtro: «¿vale repasarlo a diario 6 meses?»; agotado el tope, el resto va a la shopping list';
 /** Presupuesto de tarjetas NUEVAS del día (tope 20): primero las PC cards / tarjetas de experimento del Day-After, luego deep prime ≤10,
@@ -992,7 +1001,9 @@ function deepPrime(r) {
     //   concept («use the pathophysiology to explain…») …», lista a medias en el DEEP PRIME del 4, 9, 16, 18, 23 y 28-dic); los ejemplos de concept y transfer,
     //   detrás de la Whole Page Rule (mismo contenido)
     P(18,`≤${AK.deepPrime} tarjetas APEX (Whole Page Rule) → ${deckApex(r)} · antes de cada una, EN VOZ ALTA: patogenia → presentación → cómo se conectan`, `${tarjetaDiaTxt(r).trim() ? tarjetaDiaTxt(r).trim() + ' ' : ''}Tipos: «concept · P-to-P · compare & contrast · transfer». Whole Page Rule: toda la sección que acabas de leer/ver, no solo el dato. Ejemplos: concept («use the pathophysiology to explain…») · transfer (dato o lab → estado fisiopatológico).${r.matType === 'pharm' ? ' Día Pharm: 1 tarjeta por CLASE con el mecanismo que explica uso y toxicidad (Palmerton agrupa los efectos adversos por mecanismo); la pregunta inversa (efecto → fármaco) solo si se evalúa, como 2.º bloque.' : ''} ${mayus(R_FRENTE)}.`),
-    P(2, `Envío APEX · cabecera: EXAMEN: USMLE · ${cabCorta(espApex(r), subApex(r), 'First_Aid', 'estudio')} · IMAGEN: no${deckDe(r) !== deckApex(r) ? ` (la app muestra ${deckDe(r)}; ${/::General$/.test(deckDe(r)) ? 'el motor APEX no acepta «General»' : `la bioestadística va a ::${espApex(r)}, su tag APEX`})` : ''}`, `${mayus(R_ENVIO)}. Si el toast falla, el bloque queda en la cola de ⚡ APEX 1-TAP: nunca lo pases a mano a otro mazo. Las tarjetas de IMAGEN (ECG, histología, TC) no van por APEX (el motor pone la imagen en el reverso): créalas en Anki escritorio en el submazo del día, con la imagen en el frente.`),
+    // ronda c38 (chat USMLE, ítem 31a): si el toast falla, las tarjetas se DICTAN al chat USMLE (como el D2), no «la cola de ⚡ APEX 1-TAP» (solo encola y su
+    //   lista de especialidades no es la del parser)
+    P(2, `Envío APEX · cabecera: EXAMEN: USMLE · ${cabCorta(espApex(r), subApex(r), 'First_Aid', 'estudio')} · IMAGEN: no${deckDe(r) !== deckApex(r) ? ` (la app muestra ${deckDe(r)}; ${/::General$/.test(deckDe(r)) ? 'el motor APEX no acepta «General»' : `la bioestadística va a ::${espApex(r)}, su tag APEX`})` : ''}`, `${mayus(R_ENVIO)}. Si el toast falla, díctaselas al chat USMLE (las escribe en Anki y en Obsidian): nunca las pases a mano a otro mazo. Las tarjetas de IMAGEN (ECG, histología, TC) no van por APEX (el motor pone la imagen en el reverso): créalas en Anki escritorio en el submazo del día, con la imagen en el frente.`),
     P(5, 'Free recall final (sin mirar)', 'Dibuja la cadena causal del día en 1 hoja; compárala con tus notas y corrige en rojo.'),
   ];
   const avisos = [];
@@ -1314,7 +1325,7 @@ function preguntaAFondo(r, k, n, franja) {
     P(7, `Clasificar el error + SAQ y PC por escrito + ${tj} tarjetas APEX · ${cabCorta(espApex(r), subApex(r), 'UWorld', 'estudio')}`, `Clasifica: knowledge / transfer / unforced («no conocía la palabra» = knowledge de vocabulario) · escribe solo la SAQ y la cronología fisiopatológica (PC: 4-6 pasos en presente) · ${tj} tarjetas de MECANISMO o PC: ${R_FRENTE} · ${R_ENVIO}.${tarjetaDiaTxt(r)}`),
   ];
   if (conPulido) pasos.push(
-    P(10, 'Pulir las tarjetas de esta pregunta y la shopping list', `Relee cada tarjeta: ¿se entiende sola dentro de 6 meses?, ¿la respuesta es un porqué y no un dato suelto? ${R_CORRIGE}. La shopping list, con la palabra o el concepto exacto que faltó.`),
+    P(10, 'Pulir las tarjetas de esta pregunta y la shopping list', `Relee cada tarjeta: ¿se entiende sola dentro de 6 meses?, ¿la respuesta es un porqué y no un dato suelto? ${rCorrige(r)}. La shopping list, con la palabra o el concepto exacto que faltó.`),
     P(5, 'Bitácora de la pregunta (📏 Medición)', 'Minutos usados · relecturas de la viñeta · seguridad (seguro / dudo / adivino) · tipo de error. Si llegaste a los 45′, lo que falte pasa a la shopping list de la próxima sesión.'));
   const aviso = k === 1 ? `NIVEL 0 (decisión de Joseph del 17-nov, DATA/USMLE/PALMERTON_NIVEL0_ARRANQUE.md §3): sin simulacro ni reloj; ${n} preguntas a fondo, una ${conPulido ? 'por hora (≤45′ cada una + 10′ de tarjetas y shopping list + 5′ de bitácora)' : 'cada 45′ (tope duro: sin los 15′ de pulido, §3.2)'}, del mismo subtema y con su análisis completo. Funcionan como PRE-TEST: 40-60 % es normal. ${conPulido ? `Al final de la mañana, la validación con 5Q NUEVAS de Mehlman (11:00).` : 'Al final, la validación con 5Q NUEVAS de otro banco (A5/A6).'}` : undefined;
   return B(r.fecha, franja, tit85(`PREGUNTA ${k}/${n} a fondo · NIVEL 0 · `, txtSub(r), ' (Tutor, sin tiempo por pregunta, ≤45′)'), pasos, [R_UW], `pregunta ${k} respondida y analizada en ≤45′, su SAQ + PC escritas y ${tj} tarjetas APEX confirmadas (toast ✓)`, { planB: respaldo1(d, 1), aviso });
@@ -1425,7 +1436,7 @@ function anki18(r) {
   //   para la nota → la nota baja a ≥ 4′ y el free recall se queda con lo que sobre (antes: Σ 46 ≠ 45)
   const notaMin = V && sinNota < 6 ? Math.max(4, sinNota - Math.ceil(1.5 * nVid)) : V && sinNota - 6 > 0 && sinNota - 6 < Math.ceil(1.5 * nVid) ? Math.max(4, sinNota - Math.ceil(1.5 * nVid)) : 6; // sin paso de free recall (el vídeo llena la franja), como antes
   const pasos = [
-    P(minA, `1.ª pasada de Anki: las ≤${nA} tarjetas APEX de hoy (APEX::USMLE › Study Now)`, 'Con sus pasos de aprendizaje (≈50 s por tarjeta nueva): responde EN VOZ ALTA antes de girar · Good / Again, nunca Hard ni Easy · lee primero la línea «Summary:» · si una tarjeta no se entiende, reescríbela ahora (Anki es para retener, no para aprender).' + (metDia(r) ? ` Control del método: ¿hay al menos una del tipo del día? (${metDia(r).tarjetas}); si es una lista o un dato suelto, conviértela en mecanismo.` : '')),
+    P(minA, `1.ª pasada de Anki: las ≤${nA} tarjetas APEX de hoy (APEX::USMLE › Study Now)`, 'Con sus pasos de aprendizaje (≈50 s por tarjeta nueva): responde EN VOZ ALTA antes de girar · Good / Again, nunca Hard ni Easy · lee primero la línea «Summary:» · ' + R_PASADA + '.' + (metDia(r) ? ` Control del método: ¿hay al menos una del tipo del día? (${metDia(r).tarjetas}); si es una lista o un dato suelto, conviértela en mecanismo.` : '')),
     P(nV * 2, `Vocabulario: ≤${nV} palabras de la shopping list → tarjetas de vocabulario (≈2′ cada una)`, `Anki escritorio, mazo propio «USMLE::Vocabulario» (fuera de APEX: no cuenta en el tope de ${AK.topeDia} tarjetas de mecanismo${esD2 ? '; se crea hoy, con las primeras palabras' : ''}): frente = la palabra en inglés con su etimología (adeno + -oma) · reverso = el significado en 1 línea + audio de pronunciación en fármacos y microbios (§5.6 del arranque).`),
     P(notaMin, 'Nota del día (bitácora) en 📏 Medición', `Minutos por pregunta · relecturas · seguridad (seguro / dudo / adivino) · tipo de error (knowledge / transfer / unforced) · % de la validación y qué falta para el gate del 80 % · horas netas de Step 1 del día (GO/NO-GO por horas).`),
     ...vids,
@@ -1607,12 +1618,12 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
         for (const p of g.pasos) {
           const c0 = p.como;
           p.como = p.como.split(mayus(R_ENVIO)).join(`Cada tarjeta, ${dir(r)}`).split(R_ENVIO).join(`cada tarjeta, ${dir(r)}`)
-            .replace(R_CORRIGE, 'Si hay que corregir una, díctale el cambio al chat (lo aplica en Anki y en Obsidian)');
+            .replace(rCorrige(r), 'Si hay que corregir una, díctale el cambio al chat (lo aplica en Anki y en Obsidian)');
           if (p.como !== c0) toca = true;
         }
         // la 1.ª pasada de las 18:00 tampoco reescribe en Anki (desincronizaría la nota de Obsidian): la corrección se dicta. Fuera de `toca`: ese bloque no crea
         //   tarjetas APEX (el vocabulario, en su mazo propio, sigue en Anki escritorio) y no lleva el aviso de la ruta
-        for (const p of g.pasos) p.como = p.como.replace('si una tarjeta no se entiende, reescríbela ahora (Anki es para retener, no para aprender)',
+        for (const p of g.pasos) p.como = p.como.replace(R_PASADA,
           'si una tarjeta no se entiende, díctale la corrección al chat USMLE (la aplica en Anki y en Obsidian; Anki es para retener, no para aprender)')
           .replace('si es una lista o un dato suelto, conviértela en mecanismo.', 'si es una lista o un dato suelto, díctale al chat la versión de mecanismo.');
         if (!toca) continue;

@@ -8,7 +8,8 @@
 // Qué hace:
 //   1) Calcula la semana ISO de la fecha (hoy o --fecha) y crea journal/<semana>.md desde la plantilla si no existe
 //      (cabecera con la semana del Step 1, el proyecto S<n> de la semana leído de src/lib/vibecodingPlan.ts y sus criterios).
-//   2) Añade la sección del día ("## Lun 14-sep · D1 · S1 · <proyecto>") si aún no está, con los 6 campos + freno.
+//   2) Añade la sección del día ("## Lun 14-sep · D1 · S1 · <proyecto>") si aún no está, con los 6 campos + freno. El domingo de SHIP (o de PC opcional
+//      del taper) sin paso del proyecto no lleva sección: se escribe en «Cierre de semana».
 //   3) --abrir: abre el fichero en VS Code (code) o, si no hay `code`, con el programa por defecto de Windows.
 //
 // Uso:
@@ -81,16 +82,26 @@ const D1 = (VP.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1] || null;
 const unesc = (s) => s.replace(/\\(.)/g, (_, c) => (c === 'n' ? ' ' : c));
 const DIAS = [...VP.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]+",semana:(\d+),proyecto:"([^"]+)",k:\d+,tipo:"([^"]+)",min:(\d+),deload:(true|false),paso:"((?:[^"\\]|\\.)*)"\}/g)]
   .map((m) => ({ d: +m[1], fecha: m[2], semana: +m[3], proyecto: m[4], tipo: m[5], min: +m[6], deload: m[7] === 'true', paso: unesc(m[8]) }));
-const PROY = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",rotacion:"[^"]+",deload:(?:true|false),ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"[\s\S]*?aceptacion:\[((?:"(?:[^"\\]|\\.)*",?)*)\]/g)]
-  .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), ini: m[4], fin: m[5], ship: m[6], aceptacion: [...m[7].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => x[1].replace(/\\"/g, '"')) }));
-const TAPER = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",tipo:"(mantenimiento|deload)",ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"/g)]
-  .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), tipo: m[4], ini: m[5], fin: m[6], ship: m[7], aceptacion: [] }));
+// c38 (lun 23-nov): + pcSab (el domingo del PC en la app, vibePCDomingo; '' = sin PC; sin el campo, el del ship)
+const PROY = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",rotacion:"[^"]+",deload:(?:true|false),ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"(?:,pcSab:"(\d{4}-\d{2}-\d{2}|)")?[\s\S]*?aceptacion:\[((?:"(?:[^"\\]|\\.)*",?)*)\]/g)]
+  .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), ini: m[4], fin: m[5], ship: m[6], pcSab: m[7] ?? m[6], aceptacion: [...m[8].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => x[1].replace(/\\"/g, '"')) }));
+const TAPER = [...VP.matchAll(/\{s:(\d+),id:"([^"]+)",nombre:"((?:[^"\\]|\\.)*)",tipo:"(mantenimiento|deload)",ini:"(\d{4}-\d{2}-\d{2})",fin:"(\d{4}-\d{2}-\d{2})",ship:"(\d{4}-\d{2}-\d{2})"(?:,pcSab:"(\d{4}-\d{2}-\d{2}|)")?/g)]
+  .map((m) => ({ s: +m[1], id: m[2], nombre: m[3].replace(/\\"/g, '"'), tipo: m[4], ini: m[5], fin: m[6], ship: m[7], pcSab: m[8] ?? m[7], aceptacion: [] }));
 const diaHoy = DIAS.find((x) => x.fecha === FECHA) || null;
 // v6.11 (lun 23-nov, chat vibecoding): un día sin bloque de vibecoding DENTRO del plan (sábado, feriado, día protegido: su fecha de plan no tiene paso ni
 //   SHIP) no escribe nada, igual que un día sin sesión: antes el sáb 28-nov creaba «## Sáb 28-nov» fuera del plan. Fuera del rango del plan (antes del
 //   primer paso o tras el último SHIP) sigue la entrada libre de siempre.
-const _ships = new Set([...PROY, ...TAPER].map((p) => p.ship));
-const _rango = DIAS.length ? [DIAS.map((x) => x.fecha).sort()[0], [...DIAS.map((x) => x.fecha), ..._ships].sort().pop()] : null;
+// c38 (lun 23-nov, chat vibecoding): los domingos de SHIP del journal = los que la app pinta con bloque PC (vibePCDomingo de vibecodingPlan.ts → guiaShipDe):
+//   el pcSab de un proyecto (SHIP) o de un taper de mantenimiento (PC opcional, 30′), en el día del SHIP (diaShip) y fuera de los días protegidos o sin
+//   sesión. Un taper de deload total (PC de 0′: dom 28-mar, 4-abr y 11-abr-2027) no tiene bloque (plantillasV6 solo lo nombra en las notas) → no cuenta.
+//   El rango del plan sigue cerrando en el último ship del .ts (esos domingos siguen dentro: no escriben nada).
+//   Límite conocido (sin caso en el plan actual): un domingo de «avance» (proyecto en curso, sin SHIP) tampoco está en _ships → daría SIN VIBECODING.
+const _setTS = (n) => { try { return JSON.parse((VP.match(new RegExp(`const ${n} = new Set<string>\\((\\[[^\\]]*\\])\\)`)) || [])[1] || '[]'); } catch { return []; } };
+const _sinPC = new Set([..._setTS('VIBE_PROTEGIDOS'), ..._setTS('VIBE_SIN_SESION')]);
+const _diaShip = Number((VP.match(/diaShip:\s*(\d)/) || [])[1] || 0);
+const _conPC = (p) => !!p.pcSab && dow(p.pcSab) === _diaShip && !_sinPC.has(p.pcSab);
+const _ships = new Set([...PROY, ...TAPER.filter((t) => t.tipo === 'mantenimiento')].filter(_conPC).map((p) => p.pcSab));
+const _rango = DIAS.length ? [DIAS.map((x) => x.fecha).sort()[0], [...DIAS.map((x) => x.fecha), ...[...PROY, ...TAPER].map((p) => p.ship)].sort().pop()] : null;
 if (!diaHoy && _rango && FECHA >= _rango[0] && FECHA <= _rango[1] && !_ships.has(FECHA)) {
   console.log(`SIN VIBECODING ${REAL}: ${fmt(REAL)} no tiene bloque de vibecoding en el plan (ni paso ni SHIP) · hoy no se escribe nada en el journal`);
   process.exit(0);
@@ -114,6 +125,14 @@ const dir = path.join(JOURNAL, 'journal');
 fs.mkdirSync(dir, { recursive: true });
 const file = path.join(dir, SEM + '.md');
 let creado = false;
+const CIERRE = [
+  '## Cierre de semana (domingo, tras el verify del SHIP)', // v6.10z-b (lun 23-nov): el SHIP es el domingo (PC del domingo), no el sábado
+  '',
+  '- shipped (verify): ☐ sí ☐ no · criterios __/4 · evidencia (commit/URL/test): ',
+  '- lección de la semana (1 línea): ',
+  '- Feynman del domingo (opcional, 3 líneas): ',
+  '',
+];
 if (!fs.existsSync(file)) {
   const L = [];
   L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : ''}`);
@@ -127,12 +146,7 @@ if (!fs.existsSync(file)) {
   L.push('');
   L.push("> Ciclo diario 04:15-05:00: 5' objetivo → 35' construir → 5' esta entrada. **04:55 commit selectivo o nota de estado (nunca git stash) · 05:00 Anki sin excepción** (si el día se recorta pierde el proyecto, nunca el Anki). Commits `[S<n>] …`.");
   L.push('');
-  L.push('## Cierre de semana (domingo, tras el verify del SHIP)'); // v6.10z-b (lun 23-nov): el SHIP es el domingo (PC del domingo), no el sábado
-  L.push('');
-  L.push('- shipped (verify): ☐ sí ☐ no · criterios __/4 · evidencia (commit/URL/test): ');
-  L.push('- lección de la semana (1 línea): ');
-  L.push('- Feynman del domingo (opcional, 3 líneas): ');
-  L.push('');
+  L.push(...CIERRE);
   fs.writeFileSync(file, L.join('\n'), 'utf8');
   creado = true;
 }
@@ -141,11 +155,21 @@ if (!fs.existsSync(file)) {
 let txt = fs.readFileSync(file, 'utf8');
 const titulo = `## ${fmt(FECHA)}${REAL !== FECHA ? ` (hecho el ${fmt(REAL)})` : ''}${diaHoy ? ` · D${diaHoy.d} · S${diaHoy.semana}` : ''}`;
 let anadido = false;
+// c38 (lun 23-nov, chat vibecoding): domingo de SHIP o de PC opcional del taper SIN paso que absorber (todos salvo el dom 29-nov): el journal del SHIP es el
+//   «Cierre de semana» → no se añade la sección de un día de paso (antes «## Dom 06-dic» con objetivo · qué construí … encima del cierre); solo se abre el
+//   fichero de la semana (creado si faltaba; si le falta el cierre, se le añade al final)
+const SOLO_CIERRE = !diaHoy && _ships.has(FECHA);
+const _pcHoy = [...PROY, ...TAPER].filter((p) => p.pcSab === FECHA);
+const PC_TXT = _pcHoy.some((p) => !p.tipo) ? `SHIP ${_pcHoy.filter((p) => !p.tipo).map((p) => `S${p.s}`).join(' + ')}` : `PC opcional del taper (${_pcHoy.map((p) => `S${p.s}`).join(' · ')})`;
+if (SOLO_CIERRE && !txt.includes('## Cierre de semana')) {
+  txt = txt.replace(/\s*$/, '\n\n') + CIERRE.join('\n');
+  fs.writeFileSync(file, txt, 'utf8');
+}
 // v6.10w: una sola sección por fecha de PLAN (aunque se escribiera otro día real: «## Mié 18-nov …» con o sin «(hecho el …)»)
 const _esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const yaPlan = new RegExp(`^## ${_esc(fmt(FECHA))}(?= |$)`, 'm').test(txt);
-if (yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FECHA)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
-if (!txt.includes(titulo) && !yaPlan) {
+if (!SOLO_CIERRE && yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FECHA)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
+if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
   const S = [];
   S.push(titulo);
   S.push('');
@@ -166,7 +190,8 @@ if (!txt.includes(titulo) && !yaPlan) {
 }
 
 const rel = path.relative(JOURNAL, file).replace(/\\/g, '/');
-console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadido ? ' · +sección ' + fmt(FECHA) : ' · sección de hoy ya existía'}${diaHoy ? ` · D${diaHoy.d} S${diaHoy.semana} ${diaHoy.proyecto}` : ' · fuera del plan'}`);
+if (SOLO_CIERRE) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)}, ${PC_TXT}: hoy no se añade sección de día · escribe en «Cierre de semana»`);
+else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadido ? ' · +sección ' + fmt(FECHA) : ' · sección de hoy ya existía'}${diaHoy ? ` · D${diaHoy.d} S${diaHoy.semana} ${diaHoy.proyecto}` : ' · fuera del plan'}`);
 if (has('--print')) console.log('\n' + fs.readFileSync(file, 'utf8'));
 if (has('--abrir')) {
   try { cp.execSync(`code "${file}"`, { stdio: 'ignore', timeout: 15000, windowsHide: true }); console.log('abierto en VS Code'); }

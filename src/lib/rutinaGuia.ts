@@ -820,7 +820,7 @@ function synCurDe(iso: string, tag: string): SynCur | undefined {
  *  salga se decide al terminar, en el chat SYNAPSE y con su OK (regla «mazos y notas se crean el día que aprendes algo que va ahí»). Va en el «hecho» de
  *  toda sesión A/B/C, de recuperación y de la cola (≤ 180 caracteres con el criterio: el volcado del Calendar corta la línea «Hecho» en 180). */
 const SYN_REGLA_NOTAS = 'Anki · Obsidian · GoodNotes: hoy nada fijo; lo que salga se decide al terminar, en el chat SYNAPSE y con tu OK.';
-const SYN_HECHO = `A, B y C con su parada anotada + ✓ en Estudio › SYNAPSE. ${SYN_REGLA_NOTAS}`;
+const SYN_HECHO = `A, B y C con su parada anotada + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`;
 function pasoSyn(b: SynBloque, iso: string, origen?: string): GuiaPaso {
   // v6.10w: la curaduría se busca con la fila ORIGINAL del contenido (cadenas); la sesión a hora fija de una cadena pasa su fila de origen
   const cur = synCurDe(origen ?? CAD_ORIG.get(iso) ?? iso, b.tag);
@@ -1120,7 +1120,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
   const franja = `${c.ini}–${c.fin}`;
   if (post < 0) {
     return bloque(franja, 'synapse', 'SYNAPSE · audio que no cupo en los comodines del sábado (cola de F1)', pasos, recursos,
-      `tramo escuchado entero, con el minuto anotado en el journal + ✓ en Estudio › SYNAPSE. ${SYN_REGLA_NOTAS}`,
+      `tramo escuchado entero, con el minuto anotado en el journal + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`,
       { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
         planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
           const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
@@ -1130,7 +1130,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
   }
   const n = SYN_COLA_POST_STEP1.length;
   return bloque(franja, 'synapse', `SYNAPSE · cola post-Step 1 (día ${post + 1}/${n}) — lo que no cupo en su día (nov-2026 → ene-2027)`, pasos, recursos,
-    `cada pieza con su parada anotada + ✓ en Estudio › SYNAPSE. ${SYN_REGLA_NOTAS}`,
+    `cada pieza con su parada anotada + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`,
     { aviso: `Nada nuevo: lo que no cupo en las sesiones del SYNAPSE de F1 (18-nov-2026 → 3-ene-2027), en orden y con su tramo exacto. ${c.ini}-${c.fin}: en F5 el bloque A del Step 1 (04:05) ya no existe y a esa hora no hay turno del SERUMS.${post === n - 1 ? ' Último día de la cola: con esto el SYNAPSE de F1 queda completo.' : ''}`,
       // v6.09b lote 1-quater FX1 (revisión V2): «en el tiempo muerto de la guardia» no era un destino (sin franja) → la cola SE CORRE un día por cada día de guardia,
       //   como la semana corrida (cada día conserva sus 30′ y su orden), y el último pasa al siguiente día libre tras su fin, a la misma hora (sin turno a las 04:15 en F5)
@@ -2473,7 +2473,9 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   const nomOut = (x: DiaBiz): string => x.lectura.split(':')[0].split(' · ')[0] as string;
   if (iso <= FECHAS_V6.transicion.hasta && modo === 'OUTPUT' && dow(iso) !== 5) {
     const ult = BIZ_DIAS.filter((x) => x.fecha < iso && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).pop();
-    if (ult) avisos.push(`Hoy ${diaRealNom(iso, 'business')}, ${nomOut(r)} (en F1 no va el viernes): su última lectura (${ult.lectura.split(':')[0]}) fue el ${fCorta(ult.fecha)} y el OUTPUT va siempre DESPUÉS de ella.`); // v6.10g: sin paréntesis (el Calendar corta el aviso a 240: «OUTPUT = 40′: 25′ hoy + 15′ el sábado HH:MM» va detrás)
+    // v6.11 (ítem 29): el paréntesis habla del día REAL (el que nombra el aviso): si el alias lleva el OUTPUT a un viernes real, va sin él (como el CASO de LIVIANO)
+    const esVieR = diaRealNom(iso, 'business') === 'viernes';
+    if (ult) avisos.push(`Hoy ${diaRealNom(iso, 'business')}, ${nomOut(r)}${esVieR ? '' : ' (en F1 no va el viernes)'}: su última lectura (${ult.lectura.split(':')[0]}) fue el ${fCorta(ult.fecha)} y el OUTPUT va siempre DESPUÉS de ella.`); // v6.10g: sin paréntesis (el Calendar corta el aviso a 240: «OUTPUT = 40′: 25′ hoy + 15′ el sábado HH:MM» va detrás)
   }
   if (iso <= FECHAS_V6.transicion.hasta && dow(iso) === 5 && (modo === 'L' || modo === 'CRITICA')) {
     const sig = BIZ_DIAS.find((x) => x.fecha > iso && bizModo(x) !== 'DESCANSO');

@@ -1,7 +1,7 @@
 # MÉTODO ANKI · APEX — USMLE Step 1 (v6.03b · mar 20-oct-2026)
 
 > **Qué es.** El método de repetición espaciada del Step 1, cerrado y operativo: cómo se configuran los mazos, cómo nace cada
-> tarjeta en cada bloque del día (vía el flujo **APEX**: bloque → `Ctrl+Shift+A` / ⚡ APEX 1-TAP → parser n8n → tarjeta en Anki +
+> tarjeta en cada bloque del día (vía el flujo **APEX**: bloque → `Ctrl+Shift+A` → parser n8n → tarjeta en Anki +
 > nota en Obsidian), cuántas, con qué formato, cuándo se repasan, qué se hace con el backlog y qué se mide. Está metido **dentro de
 > los pasos existentes** de la guía (`src/lib/usmleGuia.ts`, generada por `DATA/_scripts/usmle/gen_usmle_guia.js`): **no cambia
 > ninguna franja ni los minutos de ningún bloque**.
@@ -143,7 +143,7 @@ IMAGEN: no
 | SUBTEMA | **`<D# de 2 cifras>_<subtema uWorld en inglés>`** — la guía lo da hecho en cada paso (p. ej. `06_normal_cardiovascular_system`, `13_coronary_heart_disease`) · eval de las 18:00: `<D#>_eval` · tarjetas de un hito: `<D# del hito>_uwsa1` / `_nbme25` / `_nbme26` / `_nbme27` / `_nbme28`. Cumple el patrón del parser (`NN_lowercase`) y deja trazar cada tarjeta a su día en Anki (`tag:Subtopic::13_*`) y en el informe APEX |
 | FUENTE | lectura/vídeo del deep prime → `First_Aid` · preguntas de uWorld y el UWSA1 → `UWorld` · Mehlman (respaldo) → `mix_examen_usmle` · formas NBME → `NBME`. B&B, PassMedicine o Mehlman no están en la lista blanca del parser: se usa la más cercana y el recurso exacto va en RELACIONES |
 | MODO | `estudio` en los días de contenido · `simulacro_step1` en todo lo que nace de un UWSA/NBME (Day-After) |
-| Envío | copia el bloque → **`Ctrl+Shift+A`** (PC) o el botón **⚡ APEX 1-TAP** de la app (queda en cola si el PC no está) → *toast* ✓ = nota `Basic` en `APEX::USMLE::<Especialidad>` con etiquetas `apex-import`, `EXAMEN::USMLE`, `FUENTE::…`, `MODO::…`, `FECHA::…`, `Specialty::…`, `Subtopic::…` + nota en `01_USMLE\UWorld|AMBOSS\<Especialidad>\APEX_creados\` del vault. No etiquetes a mano: el motor ya lo hace |
+| Envío | copia el bloque → **`Ctrl+Shift+A`** (PC) → *toast* ✓ = nota `Basic` en `APEX::USMLE::<Especialidad>` con etiquetas `apex-import`, `EXAMEN::USMLE`, `FUENTE::…`, `MODO::…`, `FECHA::…`, `Specialty::…`, `Subtopic::…` + nota en `01_USMLE\UWorld|AMBOSS\<Especialidad>\APEX_creados\` del vault. No etiquetes a mano: el motor ya lo hace. Si el toast falla: díctaselas al chat USMLE, que las escribe en Anki y en Obsidian (el botón ⚡ APEX 1-TAP de la app no se usa para USMLE: solo encola y su lista de especialidades no es la del parser) |
 
 > Rareza conocida del motor: con FUENTE `First_Aid` o `NBME` la nota de Obsidian cae en la carpeta `AMBOSS` (el parser solo separa
 > `UWorld`/`mix_examen_usmle` del resto). No afecta a Anki. [APEX `node_parsear_tarjeta_v2_3.js`]
