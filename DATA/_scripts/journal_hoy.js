@@ -211,7 +211,7 @@ if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
 const rel = path.relative(JOURNAL, file).replace(/\\/g, '/');
 if (SOLO_ABRIR) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)} sin vibecoding: hoy no se añade sección (la del paso del ${fmt(FECHA)} la añade el ${fmt(_REAL(FECHA))})`);
 else if (SOLO_CIERRE) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)}, ${PC_TXT}: hoy no se añade sección de día · escribe en «Cierre de semana»`);
-else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadidas.length ? ' · +sección ' + anadidas.join(' + ') : ` · sección${FECHAS_SEC.length > 1 ? 'es' : ''} de hoy ya existía${FECHAS_SEC.length > 1 ? 'n' : ''}`}${diaHoy ? ` · ${FECHAS_SEC.map((fx) => DIAS.find((x) => x.fecha === fx)).filter(Boolean).map((x) => `D${x.d}`).join(' + ')} S${diaHoy.semana} ${diaHoy.proyecto}${PASOS_SHIP.length ? ' (dentro del SHIP)' : ''}` : ' · fuera del plan'}`);
+else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadidas.length ? ' · +sección ' + anadidas.join(' + ') : ` · ${FECHAS_SEC.length > 1 ? 'secciones' : 'sección'} de hoy ya existía${FECHAS_SEC.length > 1 ? 'n' : ''}`}${diaHoy ? ` · ${FECHAS_SEC.map((fx) => DIAS.find((x) => x.fecha === fx)).filter(Boolean).map((x) => `D${x.d}`).join(' + ')} S${diaHoy.semana} ${diaHoy.proyecto}${PASOS_SHIP.length ? ' (dentro del SHIP)' : ''}` : ' · fuera del plan'}`);
 if (has('--print')) console.log('\n' + fs.readFileSync(file, 'utf8'));
 if (has('--abrir')) {
   try { cp.execSync(`code "${file}"`, { stdio: 'ignore', timeout: 15000, windowsHide: true }); console.log('abierto en VS Code'); }
