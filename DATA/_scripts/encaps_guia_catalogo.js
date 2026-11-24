@@ -347,8 +347,8 @@ const TECNICA_SIM = {
   COMPARA: 'La nota se compara SOLO con tus mini-sims anteriores (misma receta), nunca con notas de QX, Theomed u otro instrumento; una bajada aislada no dice nada: manda la regla de dos mini-sims seguidos.',
   /** Qué genera tarjeta (Ravi: pocas tarjetas, solo fallos «tontos» y detalles discriminativos; nunca la norma entera). */
   TARJETAS: 'Tarjeta solo de fallos «tontos» y de detalles discriminativos, en formato pregunta → respuesta breve (nunca un párrafo de la norma): OLVIDO de cifra/plazo → ENCAPS::Cifras (ANKI_COLA/ENCAPS_Cifras_2027-I.csv) · CONCEPTO/CCSN → el porqué a la nota Obsidian del código · fallos de proceso → regla de examen, sin tarjeta.',
-  /** Envío de los APEX (flujo vigente: APEX directo en el chat ENCAPS desde el 16-nov; ronda c40: sin botón ni atajo). */
-  ENVIO: 'Me las dictas en el chat ENCAPS y yo las creo en Anki (APEX::ENCAPS::…) y en Obsidian; Anki abierto en el PC.',
+  /** Envío de los APEX (flujo vigente: APEX directo en el chat ENCAPS desde el 16-nov; ronda c40: sin botón ni atajo; ronda c42: en 2.ª persona, como el resto de la guía). */
+  ENVIO: 'Díctaselas al chat ENCAPS, que las crea en Anki (APEX::ENCAPS::…) y en Obsidian; Anki abierto en el PC.',
 };
 
 /**
@@ -394,6 +394,17 @@ const reservaDe = (realISO) => (realISO < RESERVA_FECHAS.pretest ? RESERVA : rea
  *     «Pizarra: HOY NO» de las 18:00, ítem 28: PIZARRA.hasta);
  *   · el primer bloque ENCAPS después de un runner, si ya no queda ninguno pendiente, lleva PIZARRA.DESTAPA.
  * El runner se nombra por su FECHA DE PLAN y su hora, como todas las fechas de las guías (la app y el Calendar la pintan con su día real).
+ * Ronda c42 (ítem 39, lun 23-nov, chat ENCAPS · los huecos entre runners de F1 dejaban a la vista cifras del siguiente: #150, #127 y #74 del mini-sim 2/5,
+ * #122 del 3/5): en F1 la pizarra va tapada SIN VENTANA. Desde el primer día de F1 (su día real: mar 24-nov) y mientras quede pendiente algún runner ciego de
+ * F1 (día real antes de la intensiva), el primer bloque ENCAPS de CADA día real lleva la línea con el ÚLTIMO de ellos, y DESTAPA va solo tras ese último: sin
+ * destapes intermedios. Un runner de F1 generado más tarde (el mini-sim 4/5 o el 5/5) alarga la regla solo. Los de la intensiva conservan la ventana de 2 días:
+ * el pre-test 2026-II del vie 8-ene (con guía local, PIZARRA.cubre) y los de F2, después del pre-test, cuya línea va en el SQL de la intensiva (PIZARRA.faltaSQL:
+ * gen_encaps_manana.js sale con código 1 mientras falte). La línea dice el número del runner (PIZARRA.parteDe) y su franja: «Pizarra tapada entera hasta que
+ * termine el mini-sim 3/5 del vie 4-dic (16:15-17:15).»
+ * Remate de la c42 (revisiones): el pre-test 2026-II cuenta aunque aún no tenga JSON (PIZARRA.conPretest) · la franja de un runner del carril sábado o del
+ * carril B sale del SQL (PIZARRA.carrilSQL) · faltaSQL pide en cada fila la línea de la regla común (una sola, la del último runner pendiente) y el destape
+ * del pre-test 2026-II · un mini-sim de F1 programado sin runner no alarga la regla (solo los que tienen JSON): gen_encaps_manana.js avisa si hay
+ * «ya puedes destaparla» antes de uno (PIZARRA.f1SinRunner).
  */
 const PIZARRA_TIPO = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
 const pzMin = (h) => { const [a, b] = String(h).split(':').map(Number); return a * 60 + b; };
@@ -401,9 +412,25 @@ const pzMas = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate
 const PIZARRA = {
   DESTAPA: 'Pizarra: ya puedes destaparla.',
   nombre: (x) => `${PIZARRA_TIPO[x.tipo] || x.tipo}${x.parte ? ` ${x.parte}` : ''}`,
-  tapa: (x, corta) => `Pizarra tapada entera hasta el ${PIZARRA.nombre(x)} del ${corta(x.plan)} ${x.ini}.`,
-  /** runners = [{ plan, real, ini, fin, tipo, parte }] → el último que aún no terminó a las `ini` del día real `dia` o que cae en los 2 días reales siguientes */
-  hasta: (runners, dia, ini) => runners.filter((x) => (x.real === dia && pzMin(x.fin) > pzMin(ini)) || (x.real > dia && x.real <= pzMas(dia, 2)))
+  /** «que termine el mini-sim 3/5 del vie 4-dic (16:15-17:15)»: lo dicen igual la línea del primer bloque y el paso «Pizarra: HOY NO» de las 18:00 */
+  hastaTxt: (x, corta) => `que termine el ${PIZARRA.nombre(x)} del ${corta(x.plan)} (${x.ini}-${x.fin})`,
+  tapa: (x, corta) => `Pizarra tapada entera hasta ${PIZARRA.hastaTxt(x, corta)}.`,
+  /** número del runner: el de su JSON (_meta.parte/_meta.de: pre-test de arranque 1/2 y 2/2) · el de un mini-sim de F1, su orden entre las filas mini_sim del
+   *  SQL de mantenimiento (= «MINI-SIM n/N» de su guía, gen_encaps_guia.js › MS_F1) · null si no tiene */
+  parteDe: (j) => {
+    if (j._meta && j._meta.parte && j._meta.de) return `${j._meta.parte}/${j._meta.de}`;
+    if (j.tipoRonda !== 'mini_sim') return null;
+    const fs = require('fs'), path = require('path');
+    const ms = fs.readFileSync(path.join(__dirname, '_encaps_mantenimiento_2027.sql'), 'utf8').split(/\r?\n/)
+      .map((l) => /^\('ENCAPS',\d+,'(\d{4}-\d\d-\d\d)','[^']*','mini_sim'/.exec(l)).filter(Boolean).map((m) => m[1]).sort();
+    const i = ms.indexOf(j.fecha);
+    return i >= 0 ? `${i + 1}/${ms.length}` : null;
+  },
+  /** runner de F1 (día real antes de la intensiva) → día real desde el que su pizarra va tapada sin ventana (el primer día de F1) · si no, null (ventana de 2 días) */
+  sinVentanaDe: (real, F6, FR) => (real < F6.encaps.intensiva_desde ? FR.ordenRealDe(F6.f1.inicio, F6, 'encaps') : null),
+  /** runners = [{ plan, real, ini, fin, tipo, parte, sinVentana }] → el último que aún no terminó a las `ini` del día real `dia` y que es de ese día, cae en los
+   *  2 días reales siguientes o es de F1 y `dia` ya está en F1 (sinVentana) */
+  hasta: (runners, dia, ini) => runners.filter((x) => (x.real === dia && pzMin(x.fin) > pzMin(ini)) || (x.real > dia && (x.real <= pzMas(dia, 2) || (!!x.sinVentana && dia >= x.sinVentana))))
     .sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : pzMin(a.fin) - pzMin(b.fin))).pop() || null,
   /** bloques = [{ key, real, ini }] (TODOS los bloques ENCAPS de los días que se miran) → Map key → { tipo: 'tapa' | 'destapa', texto } */
   lineas: (runners, bloques, corta) => {
@@ -428,13 +455,43 @@ const PIZARRA = {
     const fin = pzMin(s.hora) + Math.ceil((s.n * s.seg_por_q) / 60);
     return { ini: s.hora, fin: `${String(Math.floor(fin / 60)).padStart(2, '0')}:${String(fin % 60).padStart(2, '0')}` };
   },
-  /** hora real de un runner ciego: la de su bloque movido (corrida_s1.extra) · en la intensiva, la de su SIM en el SQL (el pre-test 2026-II = 07:15-09:15) ·
-   *  si no, la hora ENCAPS de F1 (16:15-17:15). fuente 'sin_fuente' = runner de la intensiva sin SIM en el SQL (el que llama avisa: la hora es un supuesto) */
+  /** franja de un runner de la intensiva sin SIM en su fila: la del CARRIL SÁBADO (extra.carril_sabado.ini/fin de la fila del viernes host, fecha = el sábado:
+   *  14:00-15:00) · la del CARRIL B de su fila (extra.carril_b: a las 16:15, 16:15-17:15) · null si no hay */
+  carrilSQL: (fecha) => {
+    const fs = require('fs'), path = require('path');
+    const ls = fs.readFileSync(path.join(__dirname, '_encaps_intensivo_2027.sql'), 'utf8').split(/\r?\n/).filter((x) => x.startsWith("('ENCAPS',"));
+    for (const l of ls) {
+      const i = l.indexOf('"carril_sabado":{'); if (i < 0) continue;
+      const cs = l.slice(i, l.indexOf('{', i + 17) > 0 ? l.indexOf('{', i + 17) : undefined), g = (k) => (new RegExp(`"${k}":"([^"]*)"`).exec(cs) || [])[1];
+      if (g('fecha') === fecha && /^\d\d:\d\d$/.test(g('ini') || '') && /^\d\d:\d\d$/.test(g('fin') || '')) return { ini: g('ini'), fin: g('fin') };
+    }
+    const l = ls.find((x) => x.includes(`,'${fecha}',`));
+    return l && l.includes('"carril_b":{') ? { ini: '16:15', fin: '17:15' } : null;
+  },
+  /** hora real de un runner ciego: la de su bloque movido (corrida_s1.extra) · en la intensiva, la de su SIM en el SQL (el pre-test 2026-II = 07:15-09:15) o la
+   *  de su carril (sábado 14:00-15:00 · carril B 16:15-17:15: PIZARRA.carrilSQL) · si no, la hora ENCAPS de F1 (16:15-17:15). fuente 'sin_fuente' = runner de la
+   *  intensiva sin SIM ni carril en el SQL (el que llama avisa: la hora es un supuesto) */
   horaDe: (plan, real, F6, FR) => {
     const x = FR.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === plan);
     if (x) return { ini: x.ini, fin: x.fin, fuente: 'extra' };
-    const s = real >= F6.encaps.intensiva_desde ? PIZARRA.simSQL(plan) : null;
+    const s = real >= F6.encaps.intensiva_desde ? PIZARRA.simSQL(plan) || PIZARRA.carrilSQL(plan) : null;
     return s ? { ...s, fuente: 'sql' } : { ini: '16:15', fin: '17:15', fuente: real >= F6.encaps.intensiva_desde ? 'sin_fuente' : 'f1' };
+  },
+  /** los runners de la pizarra = los de BANCO_PROPIO + el pre-test 2026-II (encaps.pretest) aunque aún no tenga JSON (gen_encaps_minisim.js --pretest lo arma
+   *  antes del lun 4-ene): su ventana de 2 días no depende de cuándo se genere. Solo para la pizarra: sin ítems, no aparta filas de cifras */
+  conPretest: (runners, F6, FR) => {
+    const plan = F6.encaps.pretest;
+    if (runners.some((x) => x.tipo === 'pretest' && x.plan === plan)) return runners;
+    const real = FR.ordenRealDe(plan, F6, 'encaps'), h = PIZARRA.horaDe(plan, real, F6, FR);
+    return [...runners, { f: '(pre-test 2026-II, aún sin runner)', plan, real, ini: h.ini, fin: h.fin, items: new Set(), tipo: 'pretest', parte: null, sinVentana: PIZARRA.sinVentanaDe(real, F6, FR) }];
+  },
+  /** mini-sims de F1 programados (filas mini_sim del SQL de mantenimiento, día real antes de la intensiva) que aún no tienen runner → [{ plan, real, parte }] */
+  f1SinRunner: (runners, F6, FR) => {
+    const fs = require('fs'), path = require('path');
+    const ms = fs.readFileSync(path.join(__dirname, '_encaps_mantenimiento_2027.sql'), 'utf8').split(/\r?\n/)
+      .map((l) => /^\('ENCAPS',\d+,'(\d{4}-\d\d-\d\d)','[^']*','mini_sim'/.exec(l)).filter(Boolean).map((m) => m[1]).sort();
+    return ms.map((plan, i) => ({ plan, real: FR.ordenRealDe(plan, F6, 'encaps'), parte: `${i + 1}/${ms.length}` }))
+      .filter((y) => y.real < F6.encaps.intensiva_desde && !runners.some((x) => x.plan === y.plan && x.tipo === 'mini_sim'));
   },
   /** los runners ciegos de BANCO_PROPIO, como RUNNERS_CIEGOS de gen_encaps_manana.js (día real y hora con el alias de ENCAPS: FR = gen_fechas_v6) */
   runners: (dir, F6, FR) => {
@@ -447,9 +504,32 @@ const PIZARRA = {
       }
       if (!j || !['pretest', 'mini_sim', 'simulacro'].includes(j.tipoRonda) || (j._meta && j._meta.sustituido_por) || !/^\d{4}-\d\d-\d\d$/.test(j.fecha || '')) continue;
       const real = FR.ordenRealDe(j.fecha, F6, 'encaps'), h = PIZARRA.horaDe(j.fecha, real, F6, FR);
-      out.push({ f, plan: j.fecha, real, ini: h.ini, fin: h.fin, tipo: j.tipoRonda, parte: j._meta && j._meta.parte && j._meta.de ? `${j._meta.parte}/${j._meta.de}` : null });
+      out.push({ f, plan: j.fecha, real, ini: h.ini, fin: h.fin, tipo: j.tipoRonda, parte: PIZARRA.parteDe(j), sinVentana: PIZARRA.sinVentanaDe(real, F6, FR) });
     }
     return out;
+  },
+  /** la pizarra de los runners ciegos de la intensiva en el SQL de la intensiva (sin guía local) → [{ x, falta: [días reales sin la línea], destapa: bool, sig,
+   *  texto }]. Runners de F2 (día real después del pre-test 2026-II): cada fila del D-2 al D lleva la línea que pide la regla común ese día (PIZARRA.hasta: la
+   *  del ÚLTIMO runner pendiente, una sola por fila aunque dos runners caigan juntos); si un runner no tiene ninguna fila en su ventana, falta el propio D.
+   *  DESTAPA (también el del pre-test 2026-II: después de él no hay guía local) va en la primera fila desde el día del runner, salvo que siga pendiente otro.
+   *  Lo que no está en el SQL tampoco puede estar en study_schedule_reshift25_backup. */
+  faltaSQL: (runners, F6, FR, corta) => {
+    const fs = require('fs'), path = require('path');
+    const filas = fs.readFileSync(path.join(__dirname, '_encaps_intensivo_2027.sql'), 'utf8').split(/\r?\n/).filter((l) => l.startsWith("('ENCAPS',"))
+      .map((l) => { const m = /^\('ENCAPS',\d+,'(\d{4}-\d\d-\d\d)'/.exec(l); return m ? { real: FR.ordenRealDe(m[1], F6, 'encaps'), l } : null; }).filter(Boolean)
+      .sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : 0));
+    const f2 = runners.filter((r) => r.real > F6.encaps.pretest), ven = (x) => [pzMas(x.real, -2), pzMas(x.real, -1), x.real];
+    const out = new Map(), de = (x) => { if (!out.has(x)) out.set(x, { x, falta: [], destapa: true, sig: null, texto: PIZARRA.tapa(x, corta) }); return out.get(x); };
+    for (const y of filas.filter((z) => f2.some((x) => ven(x).includes(z.real)))) {
+      const x = PIZARRA.hasta(f2, y.real, '00:00');
+      if (x && !y.l.includes(PIZARRA.tapa(x, corta))) de(x).falta.push(y.real);
+    }
+    for (const x of f2) if (!filas.some((y) => ven(x).includes(y.real))) de(x).falta.push(x.real);
+    for (const x of runners.filter((r) => r.real >= F6.encaps.pretest)) {
+      const sig = filas.find((y) => y.real >= x.real);
+      if (sig && !PIZARRA.hasta(runners.filter((y) => y !== x), sig.real, sig.real === x.real ? x.fin : '00:00') && !sig.l.includes(PIZARRA.DESTAPA)) Object.assign(de(x), { destapa: false, sig: sig.real });
+    }
+    return [...out.values()].sort((a, b) => (a.x.real < b.x.real ? -1 : a.x.real > b.x.real ? 1 : 0));
   },
 };
 

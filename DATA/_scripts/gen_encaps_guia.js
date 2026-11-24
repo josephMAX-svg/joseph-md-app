@@ -631,7 +631,8 @@ function construirGuia(fila, sab = null) {
             const ll = llegadaDe(pend);
             return !pend.length || ll ? '' : ` Este fin de semana no hay revisión (sin sesión): antes del ${corta(pend[0])}: ${cmdRunnersDias(pend)} (o pídeselo a Claude).`; // v6.10j: con domingo de llegada, la regla va en el «Ojo»
           })()}` },
-        { min: rcM ? rcM.apex : 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota${rcM ? ' (1 cifra por código, ≤1 p; el resto del código, en su próxima sesión de banco vía el override de la semana siguiente)' : ''}. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
+        // remate c42 (revisión): «díctaselas al chat ENCAPS» también en el «qué» (el Calendar corta el «cómo» a 110 y TECNICA_SIM.ENVIO va al final)
+        { min: rcM ? rcM.apex : 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes · díctaselas al chat ENCAPS', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota${rcM ? ' (1 cifra por código, ≤1 p; el resto del código, en su próxima sesión de banco vía el override de la semana siguiente)' : ''}. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
       ],
       recursos: [...recursoRunner(r, `Runner ${r ? r.f : ''}`), ...matCola, ...obsCola, CAT.PROYECTO.LOPEZ],
       hecho: sab ? `25/25 respondidas en ≤30′ con la revisión formal hecha · nota /25 con sim_n ${sab.simN} (CIERRE DE SESIÓN) y ronda en el registro (--registrar) · 1-3 APEX creados.`
@@ -911,6 +912,7 @@ let MANANA_DESFASADA = null; // ronda c40 (remate): encapsManana.ts generado con
 //   ENCAPS) lleva al principio de su aviso la línea de la pizarra (encaps_guia_catalogo.PIZARRA): «Pizarra tapada entera hasta …» con un runner ciego pendiente
 //   (ese día o en los 2 días reales siguientes); «Pizarra: ya puedes destaparla.» si es el primer bloque tras un runner y ya no queda ninguno. Los demás bloques
 //   del día salen de _encaps_manana_v607.json (mañana 07:15 y 18:00 · sábado en vivo · domingo); gen_encaps_manana.js lo comprueba con todos los bloques reales.
+//   Ronda c42 (ítem 39): en F1, sin ventana (PIZARRA.hasta) y con el número y la franja del runner (PIZARRA.tapa).
 {
   const FRV = require('./gen_fechas_v6');
   const JM = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps_manana_v607.json'), 'utf8'));
@@ -922,7 +924,7 @@ let MANANA_DESFASADA = null; // ronda c40 (remate): encapsManana.ts generado con
     ...FILAS.map((r) => { const real = realO(r.fecha), x = FRV.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === r.fecha); return { key: `16 ${r.fecha}`, real, ini: x ? x.ini : '16:15' }; }),
   ].filter((b) => CAT.PIZARRA.cubre(b.real, F6)); // F1 + transición + semana 1 de la intensiva hasta el pre-test (después manda el SQL de la intensiva)
   const RUN = CAT.PIZARRA.runners(BP, F6, FRV);
-  const L = CAT.PIZARRA.lineas(RUN, bloques, corta);
+  const L = CAT.PIZARRA.lineas(CAT.PIZARRA.conPretest(RUN, F6, FRV), bloques, corta); // remate c42: + el pre-test 2026-II aunque aún no tenga JSON
   // ronda c40 (remate): las líneas de las mañanas y de las 18:00, el filtro de cifras y el «HOY NO» los pone gen_encaps_manana.js con los mismos runners
   //   (ENCAPS_MANANA_META.runnersCiegos): si encapsManana.ts se generó con otros (un runner ciego nuevo), se avisa al final y sale con código 1
   const mm = /"runnersCiegos": (\[[^\]]*\])/.exec(fs.readFileSync(path.join(ROOT, 'src', 'lib', 'encapsManana.ts'), 'utf8'));

@@ -161,6 +161,7 @@ const THEO = path.join(ROOT, 'DATA', 'ENCAPS', 'INVESTIGACION_2027-1', 'THEOMED_
 const FECHAS = path.join(ROOT, 'DATA', '_scripts', '_fechas_v6.json');
 const aborta = (m) => { console.error('✗ ' + m + ' — ABORTO, no se escribe src/lib/encapsManana.ts'); process.exit(1); };
 const AVISOS = [];
+const PIZ_F2 = []; // ronda c42 (ítem 39b): runners ciegos de F2 sin la pizarra en el SQL de la intensiva → código 1 al final (no solo aviso)
 
 const J = JSON.parse(fs.readFileSync(SRC, 'utf8'));
 const F6 = JSON.parse(fs.readFileSync(FECHAS, 'utf8'));
@@ -1449,7 +1450,8 @@ const RUNNERS_CIEGOS = (() => {
     const x = PIZARRA.horaDe(j.fecha, real, F6, FR);
     if (x.fuente === 'sin_fuente') AVISOS.push(`BANCO_PROPIO/${f}: runner ciego de la intensiva (día real ${real}) sin SIM en su fila del SQL: su hora se supone ${x.ini}-${x.fin} (filtro de cifras y pizarra)`);
     out.push({ f, plan: j.fecha, real, ini: x.ini, fin: x.fin, items: new Set(j.items.flatMap((it) => itemsRealesDe(it.id))),
-      tipo: j.tipoRonda, parte: j._meta && j._meta.parte && j._meta.de ? `${j._meta.parte}/${j._meta.de}` : null }); // tipo y parte: para nombrarlo (pizarra, ítem 28)
+      tipo: j.tipoRonda, parte: PIZARRA.parteDe(j), // tipo y parte: para nombrarlo (pizarra, ítem 28; ronda c42: el mini-sim con su número de F1, «3/5»)
+      sinVentana: PIZARRA.sinVentanaDe(real, F6, FR) }); // ronda c42 (ítem 39): runner de F1 → pizarra tapada sin ventana desde el primer día de F1
   }
   return out;
 })();
@@ -1458,8 +1460,15 @@ for (const [n, ids] of Object.entries(CONCEPTOS_LIGADOS)) for (const id of ids.f
 }
 /** filas de CIFRAS_CRITICAS citadas por un runner ciego → esos runners */
 const CIF_CIEGAS = new Map(CIF.map((r) => [r.n, RUNNERS_CIEGOS.filter((x) => r.items.some((i) => x.items.has(i)))]).filter(([, xs]) => xs.length));
-/** ¿la fila `n` está en un runner ciego que aún no terminó cuando empieza el paso del día real `dia` a las `ini`? */
-const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.real < dia || (x.real === dia && aMin(x.fin) <= aMin(ini))));
+/** ¿la fila `n` está en un runner ciego que aún no terminó cuando empieza el paso del día real `dia` a las `ini`? Un runner de F2 (fuera de PIZARRA.cubre) solo
+ *  aparta en su ventana de 2 días reales (ítem 39b: «solo ventana» para las cifras de F2): ningún paso de F1 cae en ella */
+const enVentanaF2 = (x, dia) => PIZARRA.cubre(x.real, F6) || dia >= new Date(Date.parse(x.real + 'T12:00:00Z') - 2 * 864e5).toISOString().slice(0, 10);
+const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.real < dia || (x.real === dia && aMin(x.fin) <= aMin(ini))) && enVentanaF2(x, dia));
+/** los runners de la pizarra: los de BANCO_PROPIO + el pre-test 2026-II aunque aún no tenga JSON (PIZARRA.conPretest; sin ítems: no aparta cifras) */
+const RUNNERS_PIZ = PIZARRA.conPretest(RUNNERS_CIEGOS, F6, require('./gen_fechas_v6'));
+/** pasos «Pizarra: HOY NO» de las 18:00: «Sigue tapada» o «Tápala … desde …» lo decide el bloque de la pizarra (¿un bloque ENCAPS anterior del mismo día
+ *  real ya lleva la línea de tapar?) */
+const HOY_NO = [];
 {
   const FILAS_PASO = 40, SEG_FILA = 15;
   const ROM = { SP: 'I', CI: 'II', ET: 'III', INV: 'IV', GES: 'V' };
@@ -1554,31 +1563,40 @@ const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.r
 // ronda c38 (revisión): el runner se nombra por su FECHA DE PLAN, como todas las fechas de las guías (la app la pinta con su día real: con el día real se
 //   traducía dos veces, «mini-sim del mié 2-dic»). Si ese mismo día real hubo un runner ciego ANTES del paso (el pre-test de las 16:15), «desde ya» llega
 //   tarde: el paso dice desde la hora del primer bloque ENCAPS de la mañana y ese bloque lo avisa (aviso de la mañana).
+// ronda c42 (ítem 39, chat ENCAPS): el paso nombra el runner como la línea del primer bloque (PIZARRA.hastaTxt: «que termine el mini-sim 3/5 del vie 4-dic
+//   (16:15-17:15)», con su número y su franja; la fecha, dentro del corte del «qué» del Calendar: check 26h). En F1 la pizarra va tapada sin ventana desde el
+//   primer bloque ENCAPS de cada día real, que lo dice (PIZARRA.lineas): el paso dice «Sigue tapada» (no «desde ya») y la mañana no repite el aviso de taparla.
 {
   // ronda c40: el nombre del runner y el criterio (mismo día o 2 días reales) viven en encaps_guia_catalogo.PIZARRA (los usa también la línea del primer bloque)
   const nombreR = PIZARRA.nombre;
-  const tapaHasta = (dia, ini) => PIZARRA.hasta(RUNNERS_CIEGOS, dia, ini);
+  const tapaHasta = (dia, ini) => PIZARRA.hasta(RUNNERS_PIZ, dia, ini);
   const RE_COND = /si fueron las normales, estos (\d+)′ son la pizarra del mes de siempre \([^)]*\)/;
+  // remate de la c42 (revisiones): «Sigue tapada» o «Tápala desde …» ya no sale de sinVentana (con la ventana del pre-test 2026-II, el mié 6 y el jue 7-ene
+  //   decían «Tápala desde ya» a las 18:00 con la línea ya puesta a las 07:15): lo fija el bloque de la pizarra (HOY_NO), que sabe si un bloque ENCAPS anterior del
+  //   mismo día real lleva la línea. El aviso de la rama condicional ya no repite el runner ni su fecha (con el mini-sim 5/5, la fecha quedaba en el carácter 277
+  //   del aviso: check 26j); lo dicen su paso y la línea del primer bloque. La mañana ya no lleva «Pizarra del mes: tápala ya, antes del …»: su primer bloque
+  //   lleva la línea de tapar (ronda c40).
   for (const [f, g] of Object.entries(GT)) {
     const ini = G.partesFranja(g.franja).ini, x = tapaHasta(realDe(f), ini); if (!x) continue;
-    const hasta = `el ${nombreR(x)} del ${corta(x.plan)}`;
-    const antes = RUNNERS_CIEGOS.filter((y) => y.real === realDe(f) && aMin(y.fin) <= aMin(ini)).sort((a, b) => aMin(a.ini) - aMin(b.ini))[0] || null;
-    const gm0 = antes && (GM[f] || [])[0];
-    const desde = antes ? `desde las ${gm0 ? G.partesFranja(gm0.franja).ini : '07:15'} de hoy (antes del ${nombreR(antes)} de las ${antes.ini})` : 'desde ya';
-    let tapa = false;
+    const hasta = PIZARRA.hastaTxt(x, corta);
+    const antes = RUNNERS_PIZ.filter((y) => y.real === realDe(f) && aMin(y.fin) <= aMin(ini)).sort((a, b) => aMin(a.ini) - aMin(b.ini))[0] || null;
+    const desde = antes ? `desde las 07:15 de hoy (antes del ${nombreR(antes)} de las ${antes.ini})` : 'desde ya';
     g.pasos.forEach((p, i) => {
       if (p.que === PIZARRA_QUE) {
-        g.pasos[i] = P(p.min, `Pizarra: HOY NO. Tápala entera hasta ${hasta} (tiene temas de los tests ciegos)`,
-          `Tápala (o quítala de la vista) ${desde} y no la mires hasta que termine ${hasta} (${x.fin}). Estos ${p.min}′ quedan libres: termina antes.`);
-        tapa = true;
+        const q = P(p.min, `Pizarra: HOY NO (tiene temas de los tests ciegos). Tápala entera hasta ${hasta}`, '');
+        g.pasos[i] = q;
+        HOY_NO.push({ f, set: (sigue) => { q.como = `${sigue ? 'Sigue tapada (o fuera de la vista): no la mires' : `Tápala (o quítala de la vista) ${desde} y no la mires`} hasta entonces. Estos ${p.min}′ quedan libres: termina antes.`; } });
       } else if (/^Pizarra del mes · hoy con /.test(p.que) && RE_COND.test(p.como)) {
-        p.como = p.como.replace(RE_COND, (m0, min) => `si fueron las normales, la pizarra HOY NO: tápala entera hasta ${hasta} (tiene temas de los tests ciegos) y estos ${min}′ quedan libres`);
-        if (g.aviso) g.aviso = g.aviso.replace('si lo fueron, la pizarra de siempre)', `si lo fueron, la pizarra HOY NO: tápala entera hasta ${hasta})`);
-        tapa = true;
+        const c0 = p.como;
+        HOY_NO.push({ f, set: (sigue) => { p.como = c0.replace(RE_COND, (m0, min) => `si fueron las normales, la pizarra HOY NO (tiene temas de los tests ciegos): ${sigue ? 'sigue tapada' : 'tápala'} entera hasta ${hasta} y estos ${min}′ quedan libres`); } });
+        if (g.aviso) g.aviso = g.aviso.replace('si lo fueron, la pizarra de siempre)', 'si lo fueron, la pizarra HOY NO: sigue tapada)');
+      } else if (/^Pizarra del mes · hoy con /.test(p.que)) {
+        // la pizarra que recibe cifras de otro día sin condición: sus filas se dicen con la tabla (CIFRAS_CRITICAS); la pizarra física no se destapa
+        p.como = `${p.como} La pizarra, tapada (tiene temas de los tests ciegos): estas filas, solo en la tabla.`;
       }
     });
-    if (tapa && gm0) gm0.aviso = `${gm0.aviso ? `${gm0.aviso} ` : ''}Pizarra del mes: tápala ya, antes del ${nombreR(antes)} de las ${antes.ini} (tiene temas de los tests ciegos); hasta cuándo, en su paso de las ${ini}.`; // sin fecha: el aviso de la mañana ya es largo (check 26j: fecha > 230)
   }
+  for (const h of HOY_NO) h.set(true); // provisional: el bloque de la pizarra lo fija con todos los bloques del día
 }
 
 // ── sábado · THEOMED EN VIVO (14:45 preparar · 15:00-17:00 en vivo) ─────────────────────────────────────────────
@@ -2428,6 +2446,8 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
 //   230 (check 26j: el Calendar corta el aviso a 240); en la mañana, la del ARRANQUE o la de la TEORÍA (las dos van en el primer evento del Calendar, el de las
 //   07:15). Si no cabe en ninguna: la de tapar ABORTA (es la que evita la fuga); la de destapar va al final del aviso (la app la enseña entera) y se avisa.
 //   La hora de las 16:15 (encapsGuia.ts) la pone gen_encaps_guia.js con la misma regla: aquí se comprueba con todos los bloques reales del día.
+// ronda c42 (ítem 39): en F1, sin ventana (PIZARRA.hasta: desde el mar 24-nov, cada día real hasta el último runner ciego de F1, y un solo «ya puedes
+//   destaparla», tras ese último); la línea dice «hasta que termine el mini-sim 3/5 del <fecha de plan> (16:15-17:15)».
 {
   const FRV = require('./gen_fechas_v6');
   const EGI = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'));
@@ -2442,10 +2462,32 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
   for (const [f, g] of Object.entries(GR)) mete(`rec ${f}`, f, [g]);
   for (const [f, gs] of Object.entries(GR_SAB)) gs.forEach((g, i) => mete(`rec ${f} ${i}`, f, [g]));
   for (const f of EGI.GUIA_ENCAPS_FECHAS) { const r = realO(f), x = FRV.extraListaDe(r, F6).find((y) => y.frente === 'encaps' && y.plan === f); mete(`16 ${f}`, f, [EGI.guiaEncapsDe(f)], x ? x.ini : '16:15', r); }
-  const L = PIZARRA.lineas(RUNNERS_CIEGOS, bloques, corta);
+  const L = PIZARRA.lineas(RUNNERS_PIZ, bloques, corta);
+  // remate de la c42: el paso «Pizarra: HOY NO» de las 18:00 dice «Sigue tapada» si un bloque ENCAPS anterior del mismo día real lleva la línea (las 18:00 no
+  //   son el primer bloque del día: la línea no va en ellas) y «Tápala … desde …» si las 18:00 son el primer bloque ENCAPS del día
+  for (const h of HOY_NO) h.set(!L.has(`18 ${h.f}`));
+  // remate de la c42: un mini-sim de F1 programado (SQL de mantenimiento) sin runner no alarga la regla; si hay «ya puedes destaparla» antes de él, se avisa
+  //   (la regla de las guías lo genera el viernes de plan anterior a su semana: si se genera después de ese bloque, la pizarra queda a la vista entre medias)
+  {
+    const prog = PIZARRA.f1SinRunner(RUNNERS_CIEGOS, F6, FRV);
+    const d = bloques.filter((y) => (L.get(y.key) || {}).tipo === 'destapa').map((y) => ({ y, z: prog.find((z) => z.real > y.real || (z.real === y.real && aMin(y.ini) < 16 * 60 + 15)) })).find((w) => w.z);
+    if (d) AVISOS.push(`pizarra: «${PIZARRA.DESTAPA}» el ${corta(d.y.f)} ${d.y.ini} (día real ${d.y.real}) con el mini-sim ${d.z.parte} del ${corta(d.z.plan)} de F1 (día real ${d.z.real}) programado y aún sin runner: en cuanto exista su JSON, la pizarra sigue tapada hasta él; genéralo, regenera y vuelve a volcar el Calendar antes de ese bloque o quedará a la vista entre medias`);
+  }
   // ronda c40 (remate): la regla cubre F1, la transición y la semana 1 de la intensiva hasta el pre-test 2026-II (PIZARRA.cubre; las mañanas 19-21 del
   //   mar 5 al jue 7-ene tienen guía local). Un runner ciego más tarde (los mini-sims del carril sábado de F2) no tiene guía local donde avisar: se dice aquí
-  for (const r of RUNNERS_CIEGOS) if (!PIZARRA.cubre(r.real, F6)) AVISOS.push(`pizarra: ${r.f} (día real ${r.real} ${r.ini}) cae fuera de la regla de la pizarra (F1, transición y semana 1 hasta el pre-test del ${corta(F6.encaps.pretest)}): sus bloques previos no tienen guía local; avisa a mano`);
+  // ronda c42 (ítem 39b): y ya no es solo un aviso. Su línea (con la ventana de 2 días) va en el SQL de la intensiva y de ahí, con el OK de Joseph, a la tabla
+  //   que lee el reshift (study_schedule_reshift25_backup): mientras el SQL no la tenga, el generador sale con código 1 (PIZARRA.faltaSQL; al final, tras escribir)
+  //   Remate: una sola línea por fila (la de la regla común) y el destape del pre-test 2026-II (después de él no hay guía local), que solo se avisa
+  for (const r of PIZARRA.faltaSQL(RUNNERS_PIZ, F6, FRV, corta)) {
+    const txt = `${/^\(/.test(r.x.f) ? r.x.f : `BANCO_PROPIO/${r.x.f}`} (${PIZARRA.nombre(r.x)} del ${corta(r.x.plan)}, día real ${r.x.real} ${r.x.ini}-${r.x.fin}) es un runner ciego de la intensiva y no tiene guía local`;
+    const sinDest = `«${PIZARRA.DESTAPA}» en el primer bloque ENCAPS tras el runner (fila del ${r.sig ? corta(r.sig) : '—'})`;
+    if (r.falta.length) PIZ_F2.push(`${txt}: en DATA/_scripts/_encaps_intensivo_2027.sql falta «${r.texto}» en el primer bloque ENCAPS de ${r.falta.map(corta).join(', ')} (del D-2 al D)${r.destapa ? '' : ` y ${sinDest}`}. Ponlas en el SQL y llévalas a study_schedule_reshift25_backup (Supabase, la tabla que lee el reshift) con el OK de Joseph: sin eso, la pizarra está a la vista antes del test.`);
+    else AVISOS.push(`pizarra: ${txt}: en DATA/_scripts/_encaps_intensivo_2027.sql falta ${sinDest}; con el OK de Joseph, también en study_schedule_reshift25_backup`);
+  }
+  // remate de la c42: el primer día real con la pizarra tapada (el día ENCAPS anterior no la tapaba: mar 24-nov, mié 6-ene) la mañana empieza por taparla aunque
+  //   la línea vaya en la guía de la TEORÍA (en la del ARRANQUE empujaría una fecha): una frase sin fecha al final del aviso del ARRANQUE (no mueve ninguna fecha)
+  const diasConB = [...new Set(bloques.map((y) => y.real))].sort(), diasTapa = new Set(bloques.filter((y) => (L.get(y.key) || {}).tipo === 'tapa').map((y) => y.real));
+  const primerDiaTapa = (real) => !diasTapa.has(diasConB.filter((d) => d < real).pop());
   const orden = [...bloques].sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : aMin(a.ini) - aMin(b.ini)));
   // fechas de destino del aviso más allá del carácter 230 que no estén ya en los 230 primeros (= check_rutina_guia 26j, con sus referencias y URLs)
   const FRX = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
@@ -2459,6 +2501,13 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
   };
   const con = (t, av) => `${t}${av ? ` ${av}` : ''}`;
   const cabe = (g, f, t) => { const antes = new Set(fuera(g.aviso, f)); return fuera(con(t, g.aviso), f).every((x) => antes.has(x)); };
+  // ronda c42 (ítem 39): la hora de las 16:15 (encapsGuia.ts) no la mira el check 26j (solo mira las guías de encapsManana.ts): manda el Calendar, que corta el
+  //   aviso tal como lo pinta la app ese día real (textos de corrida_s1 y fechas reales: corridaTexto), y lo futuro se mide desde el día REAL. Con el texto de
+  //   plan, la línea del mié 25-nov (pre-test 2/2) «empujaba» el «I-10 (cola larga) entra en el mini-sim del …», que en el Calendar ya iba detrás del corte (la
+  //   app pone antes el aviso del adelanto, cuyos 19 y 20-nov ese día ya pasaron).
+  const CT = cargarModuloTS(path.join('src', 'lib', 'corridaTexto.ts'));
+  const cal = (av, f) => CT.guiaConFechasReales(CT.reemplazosCorrida({ plan: 'encaps', franja: '', titulo: '', pasos: [], recursos: [], hecho: '', aviso: av }, f)).aviso || '';
+  const cabeCal = (av, b, t) => { const antes = new Set(fuera(cal(av, b.f), b.real)); return fuera(cal(con(t, av), b.f), b.real).every((x) => antes.has(x)); };
   const RX_LINEA = /^(Pizarra tapada entera hasta [^.]*\.|Pizarra: ya puedes destaparla\.)/;
   for (const b of bloques) {
     const l = L.get(b.key) || null;
@@ -2466,7 +2515,8 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
       const m = RX_LINEA.exec(b.gs[0].aviso || ''), tiene = m ? m[1] : null;
       if (tiene !== (l ? l.texto : null)) aborta(`encapsGuia.ts ${b.f} (16:15, día real ${b.real}): la línea de la pizarra es «${tiene || '—'}» y la regla con todos los bloques del día pide «${l ? l.texto : '—'}» (regenera con gen_encaps_guia.js; si sigue, sus bloques del día no son los de aquí)`);
       // ronda c40 (remate): gen_encaps_guia.js la antepone sin mirar el corte del Calendar → aquí, el mismo control que en las mañanas (check 26j)
-      if (tiene && !cabe({ aviso: b.gs[0].aviso.slice(tiene.length).trim() }, b.f, tiene)) {
+      // ronda c42: con el aviso como lo enseña el Calendar ese día real (cabeCal)
+      if (tiene && !cabeCal(b.gs[0].aviso.slice(tiene.length).trim(), b, tiene)) {
         if (l.tipo === 'tapa') aborta(`encapsGuia.ts ${b.f} (16:15, día real ${b.real}): «${tiene}» al principio del aviso empuja una fecha de destino más allá del corte del Calendar (check 26j)`);
         AVISOS.push(`pizarra ${b.f} (16:15, día real ${b.real}): «${tiene}» empuja una fecha de destino más allá del corte del Calendar`);
       }
@@ -2474,8 +2524,10 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
     }
     if (!l) continue;
     const g = b.gs.find((y) => cabe(y, b.f, l.texto));
-    if (g) g.aviso = con(l.texto, g.aviso);
-    else if (l.tipo === 'tapa') aborta(`${b.f} (día real ${b.real}, ${b.ini}): «${l.texto}» no cabe al principio del aviso de ninguna guía del primer bloque ENCAPS sin empujar una fecha de destino más allá del corte del Calendar (check 26j)`);
+    if (g) {
+      g.aviso = con(l.texto, g.aviso);
+      if (l.tipo === 'tapa' && g !== b.gs[0] && primerDiaTapa(b.real)) b.gs[0].aviso = `${b.gs[0].aviso ? `${b.gs[0].aviso} ` : ''}Pizarra: tápala ya, antes de empezar (tiene temas de los tests ciegos); hasta cuándo, en el aviso de las ${G.partesFranja(g.franja).ini}.`;
+    } else if (l.tipo === 'tapa') aborta(`${b.f} (día real ${b.real}, ${b.ini}): «${l.texto}» no cabe al principio del aviso de ninguna guía del primer bloque ENCAPS sin empujar una fecha de destino más allá del corte del Calendar (check 26j)`);
     else {
       // ronda c40 (remate): «ya puedes destaparla» no cabe al principio → el primer bloque ENCAPS SIGUIENTE (no las 16:15, que las pone gen_encaps_guia.js)
       //   donde quepa, mientras no haya otro runner pendiente (un bloque con su propia línea corta la búsqueda); si no hay ninguno, al final del aviso
@@ -2680,6 +2732,9 @@ if (INFORME) {
 }
 const resumen = `${NM} mañanas (${Object.values(GM).reduce((a, g) => a + g.length, 0)} franjas) · ${Object.keys(GT).length} tardes 18:00 (${Object.values(MD).filter((x) => x.tarde.length).length} con pendiente de la mañana) · ${Object.keys(GA).length} Anki 05:30 · ${Object.keys(GSV).length} sábados en vivo · ${Object.keys(GD).length} domingos · ${Object.keys(GR).length + Object.values(GR_SAB).reduce((a, gs) => a + gs.length, 0)} bloque(s) fijo(s) de recuperación (domingo · L-V en diferido · sábado: lo que no cupo)`; // v6.10z: ya no solo de domingo
 if (AVISOS.length) console.warn(`⚠ ${AVISOS.length} aviso(s):\n  ` + AVISOS.join('\n  '));
+// ronda c42 (ítem 39b): código 1 si falta la pizarra de un runner de F2 en el SQL; antes de la comparación de --check (que sale con process.exit si el .ts está
+//   desfasado), para que el mensaje se vea siempre
+if (PIZ_F2.length) { console.error(`✗ pizarra de F2 sin cubrir (${PIZ_F2.length}):\n  ` + PIZ_F2.join('\n  ')); process.exitCode = 1; }
 if (CHECK) {
   const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').replace(/\r\n/g, '\n') : '';
   if (actual !== ts) { console.error(`✗ src/lib/encapsManana.ts no coincide con lo que genera gen_encaps_manana.js (${resumen}) — regenera: node DATA/_scripts/gen_encaps_manana.js`); process.exit(1); }
