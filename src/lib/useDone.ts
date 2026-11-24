@@ -1,7 +1,8 @@
 /**
  * useDone.ts — los ✓ de un plan para un componente (hubs y planes del día de todos los frentes).
- *   · refresca el estado cada vez que avisa onProgressSync (pull con lo marcado en otro dispositivo, push confirmado, import) y al
- *     volver a la pestaña (web: focus / visibilitychange), que además lanza el pull si toca;
+ *   · refresca el estado cada vez que avisa onProgressSync (pull con lo marcado en otro dispositivo, push confirmado, import, y —c45— otra
+ *     pestaña de este navegador que cambia la caché: evento 'storage') y al volver a la pestaña (web: focus / visibilitychange), que
+ *     además lanza el pull si toca;
  *   · cada marca parte de lo guardado en ese momento (marcarDone) y solo cambia esa fila: un estado montado antes del pull
  *     ya no puede borrar en plan_checks un ✓ hecho en el móvil (o resucitar uno desmarcado allí).
  * Devuelve [done, marcar]: marcar(d) invierte lo que el componente muestra; marcar(d, true / false) lo fija.

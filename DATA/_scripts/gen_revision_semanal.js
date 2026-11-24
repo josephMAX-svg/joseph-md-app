@@ -284,6 +284,20 @@ function mkClient(url, key) {
         if (error) throw new Error(`${table}: ${error.message}`);
         return data || [];
       },
+      // c45 (B): TODAS las filas por páginas. PostgREST corta cada respuesta en max-rows (1000 en Supabase) y, sin orden, el corte se
+      // lleva filas al azar: orden estable + range hasta una página vacía (una página corta no se toma por la última).
+      async selectTodo(table, cols, orden) {
+        const out = [];
+        for (let desde = 0, n = 0; n < 200; n++) {
+          let q = c.from(table).select(cols);
+          for (const col of orden) q = q.order(col, { ascending: true });
+          const { data, error } = await q.range(desde, desde + 999);
+          if (error) throw new Error(`${table}: ${error.message}`);
+          if (!data || !data.length) break;
+          out.push(...data); desde += data.length;
+        }
+        return out;
+      },
     };
   } catch {
     // fallback REST (PostgREST) si supabase-js no está disponible
@@ -295,6 +309,18 @@ function mkClient(url, key) {
         if (!r.ok) throw new Error(`${table}: HTTP ${r.status}`);
         return r.json();
       },
+      async selectTodo(table, cols, orden) {
+        const out = [];
+        for (let desde = 0, n = 0; n < 200; n++) {
+          const params = new URLSearchParams({ select: cols, order: orden.map((c) => `${c}.asc`).join(','), offset: String(desde), limit: '1000' });
+          const r = await fetch(`${url}/rest/v1/${table}?${params}`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+          if (!r.ok) throw new Error(`${table}: HTTP ${r.status}`);
+          const data = await r.json();
+          if (!data.length) break;
+          out.push(...data); desde += data.length;
+        }
+        return out;
+      },
     };
   }
 }
@@ -303,8 +329,9 @@ async function supabaseSemana() {
   let cli;
   try { const { url, key } = credsApp(); cli = mkClient(url, key); } catch (e) { out.estado = 'error: ' + e.message; return out; }
   const safe = async (fn, nombre) => { try { return await fn(); } catch (e) { out.errores.push(`${nombre}: ${e.message.slice(0, 80)}`); return null; } };
-  // v5.10 · plan_checks: todos los ✓ (los planes son de ≤130 días × 10 claves → cabe en una página)
-  const pc = await safe(() => cli.select('plan_checks', 'plan_key,dia,checked_at'), 'plan_checks');
+  // v5.10 · plan_checks: todos los ✓. c45 (B): paginado (order plan_key, dia + range); 10 planes de ≈130 días ya pasan de las 1000 filas
+  // que PostgREST devuelve por respuesta, así que una sola página contaría un subconjunto al azar
+  const pc = await safe(() => cli.selectTodo('plan_checks', 'plan_key,dia,checked_at', ['plan_key', 'dia']), 'plan_checks');
   if (pc) {
     out.planChecks = {};
     for (const r of pc) { (out.planChecks[r.plan_key] = out.planChecks[r.plan_key] || new Set()).add(Number(r.dia)); if (enSemana(String(r.checked_at || ''), LUNES, DOMINGO)) out.planChecksSemana++; }

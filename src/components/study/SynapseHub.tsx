@@ -13,12 +13,13 @@ import { obsUrl } from '../../lib/obsidianMap';
 import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVaultMap';
 
 const OBS = '#A78BFA'; // mismo morado ◆ que USMLE/MIR/ENCAPS
-import { SYN_PLAN_META, SYN_DIAS, synDiaDe } from '../../lib/synapseDailyPlan';
+import { SYN_PLAN_META, SYN_DIAS } from '../../lib/synapseDailyPlan';
 import { vibeShipped, vibeShippedVerificado } from '../../lib/vibecodingPlan';
 import { planHoyD } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
-import { synTodayISO } from './SynapseTodayPlan';
-import { synHoyReal, synContarHechas, synSesionesMarcadas } from '../../lib/synapseProgreso';
+import { fechaPlanDe } from '../../lib/fechasV6';
+import { synFilaDeReal, synContarHechas, synSesionesMarcadas, synFaseCurriculoDe, synFaseEtiqueta } from '../../lib/synapseProgreso';
+import { useHoyReal } from '../../lib/useHoyReal'; // c45: la cabecera repinta al cambiar el día con la pestaña abierta
 import SynapseTodayPlan from './SynapseTodayPlan';
 import {
   CONSOLE, TelemetryStrip, PhaseGraph, ConsoleGrid,
@@ -40,13 +41,12 @@ function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 type Sub = 'hoy' | 'agosto' | 'ruta' | 'biblioteca' | 'protocolo';
 
 // ── Telemetría del run (derivada de SYN_DIAS + progreso REAL, sin tocar el motor) ──
-function useSynTelemetry(done: Set<number>) {
-  const iso = synTodayISO();
+function useSynTelemetry(done: Set<number>, hoyReal: string) {
+  const iso = fechaPlanDe(hoyReal, 'synapse'); // = synTodayISO() del mismo día
   const hoyD = planHoyD(SYN_DIAS, iso, 'synapse');
-  const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === hoyD) || SYN_DIAS[0];
+  const hoy = synFilaDeReal(hoyReal); // la fila que «⚡ run» pinta hoy (= synDiaDe(iso) o la siguiente)
   const total = SYN_PLAN_META.totalDias;
   // las filas sin sesión (viaje, feriado, protegido) cuentan como hechas al llegar su día, como en «⚡ run» (synapseProgreso)
-  const hoyReal = synHoyReal();
   const pct = Math.round((synContarHechas(SYN_DIAS, done, hoyReal) / total) * 100);
   const faseDias = SYN_DIAS.filter((x) => x.faseId === hoy.faseId);
   const faseHechos = synContarHechas(faseDias, done, hoyReal);
@@ -54,9 +54,12 @@ function useSynTelemetry(done: Set<number>) {
   return { hoyD, hoy, total, pct, fasePct };
 }
 
-// Grafo de fases (SYNAPSE_FASES → nodos con estado) para el PhaseGraph.
-const PHASE_ITEMS: PhaseGraphItem[] = SYNAPSE_FASES.map((f) => ({
-  id: f.id, fase: f.fase, titulo: f.titulo, estado: f.estado,
+// Grafo de fases (SYNAPSE_FASES → nodos con estado) para el PhaseGraph. c45 (H): la fase ▶ RUNNING es la del plan de HOY (synFaseCurriculoDe:
+// F0 hasta el dom 10-ene, F1 desde el lun 11-ene; el taper F2·CCA-F del plan sigue en F1), no el 'activa' fijo de synapseData; META queda igual.
+const faseEstado = (f: (typeof SYNAPSE_FASES)[number], activa: string): PhaseGraphItem['estado'] =>
+  f.estado === 'meta' ? 'meta' : f.id === activa ? 'activa' : 'pendiente';
+const phaseItems = (activa: string): PhaseGraphItem[] => SYNAPSE_FASES.map((f) => ({
+  id: f.id, fase: f.fase, titulo: f.titulo, estado: faseEstado(f, activa),
 }));
 
 const NIVEL_COLOR: Record<SynapseNivel, string> = {
@@ -97,16 +100,17 @@ function MaterialRow({ m }: { m: SynapseMaterial }) {
 }
 
 /** RUTA — los checkpoints del entrenamiento, de la escuela de Anthropic al nivel Fellows. */
-function RutaView({ isDesktop }: { isDesktop: boolean }) {
+function RutaView({ isDesktop, faseActiva }: { isDesktop: boolean; faseActiva: string }) {
+  const items = phaseItems(faseActiva);
   return (
     <View>
       <SectionLabel>◈ graph · checkpoints F0 → META (el orden importa)</SectionLabel>
       {/* mini-grafo de fases arriba de las tarjetas */}
       <View style={st.graphBand}>
-        {isDesktop ? <PhaseGraph items={PHASE_ITEMS} /> : <PhaseGraph items={PHASE_ITEMS} vertical />}
+        {isDesktop ? <PhaseGraph items={items} /> : <PhaseGraph items={items} vertical />}
       </View>
       {SYNAPSE_FASES.map((f, i) => {
-        const activa = f.estado === 'activa';
+        const activa = faseEstado(f, faseActiva) === 'activa';
         const meta = f.estado === 'meta';
         const acc = activa ? INDIGO : meta ? CONSOLE.milestone : Colors.muted;
         return (
@@ -276,8 +280,10 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
 
-  const t = useSynTelemetry(done);
-  const activa = SYNAPSE_FASES.find((f) => f.estado === 'activa');
+  const hoyReal = useHoyReal(); // c45 (A): repinta la cabecera al cambiar el día real con la pestaña abierta
+  const t = useSynTelemetry(done, hoyReal);
+  const faseActiva = synFaseCurriculoDe(hoyReal); // c45 (H): ▶ RUNNING del grafo = la fase del plan de hoy (mismo criterio que la cabecera)
+  const phaseNow = phaseItems(faseActiva);
   // v5.10-b: 'ship 04:15' = proyectos cuyo último verify_vibecoding.js dio shipped (VIBE_SHIP_LOG + localStorage jmd-vibe-ship);
   // el ✓ manual (5/5 días) se muestra aparte en la etiqueta: es auto-reporte, no evidencia.
   const shipVerif = vibeShippedVerificado();
@@ -285,7 +291,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
   const telemetry = [
     { label: 'run', value: `D${t.hoyD}/${t.total}`, accent: true as const },
     { label: 'loss ↓ dominio', value: `${t.pct}%`, color: t.pct > 0 ? CONSOLE.passed : Colors.muted },
-    { label: `checkpoint ${activa?.fase ?? 'F0'}`, value: `${t.fasePct}%`, accent: true as const },
+    { label: `checkpoint ${synFaseEtiqueta(t.hoy)}`, value: `${t.fasePct}%`, accent: true as const }, // c45 (H): la fase del plan de HOY (F1 desde el lun 11-ene; el taper, «F2·CCA-F», no la F2 de datos del grafo), la misma del %
     { label: 'uptime', value: `${synSesionesMarcadas(done)}d`, color: Colors.onSurface }, // ✓ de sesiones (un ✓ antiguo en una fila sin sesión no suma)
     { label: `ship 04:15 (verify · ✓${vibeShipped(vibeDone)})`, value: `${shipVerif}/12`, color: shipVerif > 0 ? CONSOLE.passed : Colors.muted },
     { label: 'registry', value: `${SYNAPSE_KPIS.materialesVerificados}`, color: CONSOLE.milestone },
@@ -337,7 +343,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
         {/* PHASE GRAPH — banda de checkpoints F0 → META */}
         <View style={st.graphBandTop}>
           <Text style={st.bandLabel}>◈ training graph · F0 → META</Text>
-          {isDesktop ? <PhaseGraph items={PHASE_ITEMS} /> : <PhaseGraph items={PHASE_ITEMS} vertical />}
+          {isDesktop ? <PhaseGraph items={phaseNow} /> : <PhaseGraph items={phaseNow} vertical />}
         </View>
 
         {/* Motor día-a-día → chat SYNAPSE */}
@@ -359,7 +365,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
 
         {sub === 'hoy' && <SynapseTodayPlan done={done} onToggle={toggleDone} vibeDone={vibeDone} onToggleVibe={toggleVibe} />}
         {sub === 'agosto' && <MiniFaseView />}
-        {sub === 'ruta' && <RutaView isDesktop={isDesktop} />}
+        {sub === 'ruta' && <RutaView isDesktop={isDesktop} faseActiva={faseActiva} />}
         {sub === 'biblioteca' && <BibliotecaView />}
         {sub === 'protocolo' && <ProtocoloView />}
       </View>

@@ -15,6 +15,7 @@ import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
 import { aurumRacha } from '../../lib/aurumProgreso';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: los KPIs y la semana del scoreboard repintan al cambiar el día con la pestaña abierta
 import AurumTodayPlan, { aurumTodayISO, aurumVentanaDe } from './AurumTodayPlan';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
@@ -421,7 +422,7 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
   // v3 · Closer Scoreboard EDITABLE por semana ISO ('jmd-aurum-scoreboard-v1') + semáforo contra la meta
   const [scoreboard, setScoreboard] = useState<AurumScoreboardStore>(() => loadAurumScoreboard());
   const semanaHoy = aurumSemanaISO();
-  const [semanaSel, setSemanaSel] = useState<string>(semanaHoy);
+  const [semanaSel, setSemanaSel] = useSelDeHoy<string>(semanaHoy, semanaHoy); // c45: con la pestaña abierta de domingo a lunes vuelve a la semana nueva (dentro de la semana, la que elijas)
   const [editScore, setEditScore] = useState(false);
   const semValores = scoreboard[semanaSel] || {};
   const semPrev = scoreboard[aurumSemanaPrev(semanaSel)];
@@ -443,7 +444,8 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
   });
   const semanasRegistradas = Object.keys(scoreboard).length;
 
-  // KPIs REALES desde el progreso + el calendario
+  // KPIs REALES desde el progreso + el calendario (c45: con el día real del render; cambia solo a medianoche / al volver a la pestaña)
+  const hoyReal = useHoyReal();
   const hoyD = planHoyD(AURUM_DIAS, aurumTodayISO(), 'aurum');
   const glob = progresoGlobal(AURUM_DIAS, done);
   const diaHoy = AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
@@ -452,7 +454,7 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
   const faseHechos = faseActual.filter((x) => done.has(x.d)).length;
   const fasePct = faseActual.length ? Math.round((faseHechos / faseActual.length) * 100) : 0;
   // racha real: días REALES seguidos con ✓ en su sesión, terminando en hoy (o ayer); los días sin sesión propia no la rompen (aurumProgreso)
-  const racha = aurumRacha(done);
+  const racha = aurumRacha(done, hoyReal);
 
   return (
     <View>

@@ -8,10 +8,11 @@ import {
   SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque,
   SYN_FORMATO_ICON, SYN_FASES_BC, synFaseBCDe, // v6.10 · base cero: fase explícita del día (1-6)
 } from '../../lib/synapseDailyPlan';
-import { planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { planHoyD, progresoGlobal, GrupoProgreso, claveGrupoDeHoy } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
 // racha por día REAL y semana/fase/total con las filas sin sesión contadas como hechas al llegar su día (con el alias las filas no van en orden de días reales)
-import { synHoyReal, synFilaDeReal, synFilaSinSesion, synContarHechas, synDoneEfectivo, synGruposSemana, synRacha, synSinDiaPropio, synRunsDesde, synFilaVecina } from '../../lib/synapseProgreso';
+import { synHoyReal, synFilaDeReal, synFilaSinSesion, synContarHechas, synDoneEfectivo, synGruposSemana, synRacha, synSinDiaPropio, synRunsDesde, synFilaVecina, synDiaRealDe, synSesionDeReal } from '../../lib/synapseProgreso';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a la fila de hoy
 import { FECHAS_V6, fechaPlanDe, fechaRealDe, enShipDe } from '../../lib/fechasV6'; // v6.10y: + FECHAS_V6 (alias propio del vibecoding, vibeFechaDe) y enShipDe (el paso que absorbe el SHIP del domingo)
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
@@ -144,8 +145,15 @@ function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibe
   const accent = OBS;
   const journal = vibeJournalUrl(fecha);
   // v6.10y (revisión): el paso de hoy va OTRO día real (vaEl) → sin ✓ (lo marcarías el día que no es)
+  // c45 (F): como el ✓ del SYNAPSE, el paso de un día REAL que aún no llega no se marca (desmarcar sí se puede); el SHIP que absorbe un paso, su domingo
+  const realBtn = vdBtn ? fechaRealDe(vdBtn.fecha, 'vibecoding') : null;
+  const btnFuturo = !!realBtn && !hecho && realBtn > synHoyReal();
   const btnDia = vaEl ? (
     <Text style={[st.vibeSub, { flex: 1 }]}>Hoy sin vibecoding: este paso va el {fmtFecha(vaEl)} (márcalo ese día).</Text>
+  ) : vdBtn && btnFuturo ? (
+    <View style={[st.doneBtn, { flex: 1, marginTop: 0, borderColor: Hairline.medium }]}>
+      <Text style={[st.doneBtnTxt, { color: Colors.muted }]}>{`es el paso del ${fmtFecha(realBtn!)}: el ✓ se marca ese día`}</Text>
+    </View>
   ) : vdBtn ? (
     <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vdBtn.d)}
       style={[st.doneBtn, { flex: 1, marginTop: 0 }, hecho ? { backgroundColor: accent, borderColor: accent } : { backgroundColor: accent + '14', borderColor: accent + '66' }]}>
@@ -242,7 +250,15 @@ function HoyView({ dia, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSyna
   const sinSesion = synFilaSinSesion(dia); // ✈ · ⏸ · 🎄 · 🛡: nada que marcar (cuenta sola al llegar su día y no toca la racha)
   const hoyReal = synHoyReal();
   const diaReal = fechaRealDe(dia.fecha, 'synapse');
+  const fV = dia.d === SYN_DIAS[SYN_DIAS.length - 1].d && hoyReal > diaReal ? fechaPlanDe(hoyReal, 'vibecoding') : vibeFechaDe(dia.fecha); // fecha de plan del VibeCard
   const otroDia = !sinSesion && !hecho && diaReal > hoyReal; // sesión de un día real que aún no llega (lun 23-nov pinta la del mar 24): su ✓ va ese día
+  // c45 (I): una fila sin sesión cuyo día real hace OTRA sesión (🎄 D40 → D37 del vie 25-dic · D47 → D45 · ⏸ que abre una cadena → la sesión del día que cita
+  //   su texto): ese día la racha depende de esa sesión, no «se conserva»
+  const realSin = sinSesion ? synDiaRealDe(dia) : null;
+  const sesionSust = realSin ? synSesionDeReal(realSin) : null;
+  const txtSinSesion = realSin && sesionSust && sesionSust.d !== dia.d
+    ? `nada que marcar en esta fila (cuenta sola); la racha del ${fmtFecha(realSin)} depende de la sesión D${sesionSust.d}: márcala ese día`
+    : 'nada que marcar en esta fila: cuenta sola y la racha se conserva';
   const faseDias = SYN_DIAS.filter((x) => x.faseId === dia.faseId);
   const faseHechos = synContarHechas(faseDias, done, hoyReal);
   const fasePct = Math.round((faseHechos / faseDias.length) * 100);
@@ -271,7 +287,7 @@ function HoyView({ dia, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSyna
           <Text style={st.misionTitle}>{dia.wd === 'Dom' ? '🌿 Domingo de repaso' : `Misión del día ${dia.d}`}</Text>
           {sinSesion || otroDia ? (
             <View style={[st.doneBtn, { borderColor: Hairline.medium }]}>
-              <Text style={[st.doneBtnTxt, { color: Colors.muted }]}>{sinSesion ? 'nada que marcar en esta fila: cuenta sola y la racha se conserva' : `es la sesión del ${fmtFecha(diaReal)}: el ✓ se marca ese día`}</Text>
+              <Text style={[st.doneBtnTxt, { color: Colors.muted }]}>{sinSesion ? txtSinSesion : `es la sesión del ${fmtFecha(diaReal)}: el ✓ se marca ese día`}</Text>
             </View>
           ) : (
             <TouchableOpacity
@@ -285,8 +301,9 @@ function HoyView({ dia, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSyna
         </View>
       </FadeUp>
 
-      {/* v6.10y: el vibecoding puede ir con su alias PROPIO (corrida_s1.alias_frente: S1 corre una sesión) → su fecha de plan sale del día REAL de este SYNAPSE */}
-      <FadeUp delay={30}><VibeCard fecha={vibeFechaDe(dia.fecha)} vibeDone={vibeDone} onToggleVibe={onToggleVibe} vaEl={vibeVaOtroDia(dia.fecha, vibeFechaDe(dia.fecha))} /></FadeUp>
+      {/* v6.10y: el vibecoding puede ir con su alias PROPIO (corrida_s1.alias_frente: S1 corre una sesión) → su fecha de plan sale del día REAL de este SYNAPSE.
+          c45: terminado el SYNAPSE (hoy después del día real de su última fila, que «⚡ run» sigue pintando), el paso es el del vibecoding de HOY: S20 cierra después */}
+      <FadeUp delay={30}><VibeCard fecha={fV} vibeDone={vibeDone} onToggleVibe={onToggleVibe} vaEl={vibeVaOtroDia(dia.fecha, fV)} /></FadeUp>
 
       {/* v6.02c (E5) · guías del día (formato común): 04:15 vibecoding · SYNAPSE de L-V · sábado PC (SHIP + A/B/C) · domingo Feynman */}
       {(() => {
@@ -396,7 +413,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <ProgressBar pct={glob.pct} color={INDIGO} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs al día · F0 sem 1-8 (base cero: fases 1-4, se cursa entera) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · avance manual real: cuentan las sesiones con ✓ y, al llegar su día, las filas sin nada que marcar (–: viaje, feriado, protegido, día sin sesión); las sesiones a hora fija de las cadenas y recuperaciones van sin ✓</Text>
       </View>
-      {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      {grupos.map((g) => <SemanaCard key={claveGrupoDeHoy(g, hoyD)} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
       <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos y lo lee la revisión semanal). ▶ = run de hoy. – = nada que marcar: cuenta sola al llegar su día. ☐ tenue = sesión de un día que aún no llega: se marca ese día. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */}, con las mismas 110 A-units; sin SYNAPSE en los días PROTEGIDOS del ENCAPS ni en los feriados que conservan su día (un feriado de plan sin día propio, con fecha «—», no quita la sesión de ese día real: la hace otra fila) (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
@@ -406,10 +423,12 @@ export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDonePro
   done: Set<number>; onToggle: (d: number) => void;
   vibeDone?: Set<number>; onToggleVibe?: (d: number) => void; // v5.7: ✓ del vibecoding (PlanKey 'vibecoding'); si el hub no los pasa, estado local
 }) {
-  const iso = synTodayISO();
+  // c45 (A): el día real de este render; con la pestaña abierta de un día para otro repinta (medianoche, focus, visibilitychange) y la selección vuelve a hoy
+  const hoyReal = useHoyReal();
+  const iso = fechaPlanDe(hoyReal, 'synapse'); // = synTodayISO() del mismo día
   const hoyD = planHoyD(SYN_DIAS, iso, 'synapse');
-  const todayDia = synFilaDeReal(synHoyReal()); // la misma fila que usa la racha (synapseProgreso)
-  const [sel, setSel] = useState<number>(todayDia.d);
+  const todayDia = synFilaDeReal(hoyReal); // la misma fila que usa la racha (synapseProgreso)
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d);
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
   const [vibeLocal, marcarVibeLocal] = useDone('vibecoding');
   const vibeDone = vibeDoneProp ?? vibeLocal;
@@ -420,7 +439,8 @@ export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDonePro
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
   // ◄/► por DÍAS REALES: la fila que «⚡ run» pinta el día real anterior / siguiente (las filas sin día real propio no se recorren; se abren desde ◈ checkpoints)
   const filaAnt = synFilaVecina(dia, -1), filaSig = synFilaVecina(dia, 1);
-  const diaReal = fechaRealDe(dia.fecha, 'synapse');
+  // c45 (G): el día real de la fila; en una fila que abre una cadena (⏸ D16 · D46), el de su sesión (el que dice su texto: sáb 5-dic · sáb 2-ene) → ◷ 7 runs parte de ahí
+  const diaReal = synDiaRealDe(dia);
 
   return (
     <View>

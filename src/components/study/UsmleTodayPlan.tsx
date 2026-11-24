@@ -26,6 +26,7 @@ import { mirBloques } from '../../lib/mirDailyPlan';
 import * as dermaPlan from '../../lib/dermaDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { usmleObsUrl } from '../../lib/obsidianMap';
 import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ankiLinks';
 import { guiaUsmleDe, GUIA_USMLE_META } from '../../lib/usmleGuia';
@@ -111,10 +112,6 @@ const READ = Colors.blue;     // sapphire (active reading) — migrado de #7BB1F
 const APEX = Colors.gold;     // oro-firma para el APEX transversal — migrado de #F5A623
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
-function todayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return DAILY_META.inicio; }
-}
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
@@ -894,13 +891,14 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} filas ({DIAS.length} F1 + {DIAS_T2.length} tramo 2) · hoy = {hoyRow ? etiquetaDiaUSMLE(hoyRow) : 'PAUSA del Step 1'} · {grupos.length} grupos tramo:sistema</Text>
       </View>
       {grupos.map((g) => <SistemaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un subtema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un subtema para ir a ese día.</Text>
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un subtema como completado (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = día de hoy. Toca el título de un subtema para ir a ese día.</Text>
     </View>
   );
 }
 
 export default function UsmleTodayPlan() {
-  const iso = fechaPlanDe(todayISO(), 'usmle'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'usmle'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   // v6.00: PAUSA (jue 31-dic → lun 15-mar) → sin «hoy» (planHoyD mostraría T1); si no, planHoyD sobre los 2 tramos.
   const pausa = enPausaStep1(iso);
   const hoyD = pausa ? -1 : planHoyD(DIAS_TODOS, iso);
@@ -908,7 +906,7 @@ export default function UsmleTodayPlan() {
   const filaF4 = !pausa && iso >= FECHAS_V6.serums.inicio ? filaT2DelDia(iso) : undefined;
   const todayDia: DiaUSMLEPlan = (filaF4 || diaDe(iso) || DIAS_TODOS.find((x) => x.d === hoyD) || (pausa ? DIAS_T2[0] : undefined) || DIAS_TODOS[0]) as DiaUSMLEPlan;
   const idxDe = (d: number) => Math.max(0, DIAS_TODOS.findIndex((x) => x.d === d));
-  const [sel, setSel] = useState<number>(() => idxDe(todayDia.d)); // ÍNDICE en DIAS_TODOS (los d no son contiguos)
+  const [sel, setSel] = useSelDeHoy(hoyReal, () => idxDe(todayDia.d)); // ÍNDICE en DIAS_TODOS (los d no son contiguos) · vuelve a hoy cuando cambia el día
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, toggleDone] = useDone('usmle');
   const [, setTick] = useState(0);

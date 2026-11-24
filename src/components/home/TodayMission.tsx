@@ -44,6 +44,7 @@ import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { guiaVibeDe, guiaSynapseDe, guiaSynapseColaDe, guiaSynapseRecDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaAurumSabadoDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe, revisionSabadoDe } from '../../lib/rutinaGuia';
 import { aurumObsUrl } from '../../lib/aurumDailyPlan';
 import { bizDiaDe } from '../../lib/businessStudyPlan';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: con la pestaña abierta de un día para otro, la misión y el modo pasan al día nuevo
 /** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
 const researchAtomoDe = (iso: string) => [...RESEARCH_DIAS, ...RESEARCH_DIAS_2027].find((x) => x.fecha === iso);
 /** v6.02c (E5): 1.er enlace https de una guía (paso o recurso) — botón directo «al recurso de hoy». */
@@ -377,7 +378,7 @@ const CICLO_TURNO: (Turno | null)[] = [null, 'M', 'T', 'L', 'G'];
 /** v6.00 · rol semanal (L-S) para pre-cargar los turnos del mes: tocar un día rota sin marcar → M → T → L → G. */
 function RolSemanal({ iso }: { iso: string }) {
   // v6.00: el domingo (libre) abre la semana SIGUIENTE (la que hay que pre-cargar); semanaLS(dom) sería la que acaba de terminar
-  const [off, setOff] = useState(() => (dowCorto(iso) === 'dom' ? 1 : 0));
+  const [off, setOff] = useSelDeHoy(iso, () => (dowCorto(iso) === 'dom' ? 1 : 0)); // c45: vuelve a la semana de hoy cuando cambia el día
   const dias = semanaLS(addDiasISO(iso, off * 7));
   const hitoDe = (f: string) => DIAS_T2.find((x) => x.fecha === f && x.tipo === 'hito');
   const rotar = (f: string) => {
@@ -789,10 +790,10 @@ function cabeceraBloque(b: BloqueV6, c: { tema: string; sub: string; guias?: Gui
 }
 
 export default function TodayMission({ onGo }: { onGo?: (screen: string) => void }) {
-  const iso = todayISO();
+  const iso = useHoyReal(); // c45 (A): = todayISO(); repinta a medianoche / al volver a la pestaña (antes, con el reloj de 30 s del Home)
   const ahora = nowMin();
   const sem = semanaStep1(iso);
-  const [modo, setModo] = useState<ModoNivel>(() => leerModo(iso));
+  const [modo, setModo] = useSelDeHoy<ModoNivel>(iso, () => leerModo(iso)); // c45: el nivel guardado del día nuevo
   const cambiarModo = (n: ModoNivel) => { setModo(n); guardarModo(iso, n); };
   const [, setTick] = useState(0);
   // v6.00: el turno re-renderiza la plantilla; en F4 se trae el rol de Supabase (serums_turnos; tolerante a que no exista)

@@ -11,6 +11,7 @@ import {
 } from '../../lib/livianoCasos';
 import { planHoyD } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
@@ -235,10 +236,11 @@ function AnkiBlock({ cards, modulo, color }: { cards: LivAnkiCard[]; modulo: str
 }
 
 export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: () => void } = {}) {
-  const iso = fechaPlanDe(todayISO(), 'liviano'); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'liviano'); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
   const hoyD = planHoyD(LIV_DIAS, iso, 'liviano');
   const todayDia = livDiaDe(iso) || LIV_DIAS.find((x) => x.d === hoyD) || LIV_DIAS[0];
-  const [sel, setSel] = useState<number>(todayDia.d);
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d); // vuelve a la fila de hoy cuando cambia el día
   const [done, marcarHecho] = useDone('liviano');
   const [score, setScore] = useState<ScoreStore>(loadScore);
   const dia: DiaLiviano = LIV_DIAS.find((x) => x.d === sel) || LIV_DIAS[0];

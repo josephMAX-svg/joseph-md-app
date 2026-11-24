@@ -16,7 +16,7 @@
  * Solo LEE `done` (ids de fila de loadDone('synapse') / plan_checks): no cambia nada de lo guardado.
  * La revisión semanal (DATA/_scripts/gen_revision_semanal.js › synSemana) aplica el mismo criterio de fila sin sesión: la saca de sus misiones.
  */
-import { SYN_DIAS, SYN_PLAN_META, synDiaDe } from './synapseDailyPlan';
+import { SYN_DIAS, SYN_PLAN_META, SYN_SESION_EN, synDiaDe } from './synapseDailyPlan';
 import type { DiaSynapse } from './synapseDailyPlan';
 import { fechaPlanDe, fechaRealDe } from './fechasV6';
 import { planHoyD, agruparProgreso } from './studyProgress';
@@ -38,8 +38,20 @@ export function synFilaDeReal(real: string): DiaSynapse {
   return SYN_DIAS.find((x) => x.d === hd) || SYN_DIAS[0];
 }
 
+/** c45 (ítem 42 H) · fase del CURRÍCULO (SYNAPSE_FASES: F0 escuela de Anthropic · F1 stack del vibecoding · F2 datos, dic-2027+) que corre el día real
+ *  `real`, según la fila que «⚡ run» pinta ese día: f0 → 'f0' y f1 → 'f1'. El f2 del PLAN (sem 13-19 = taper por el ENCAPS: Academy restante + prep CCA-F)
+ *  no es la F2 de datos del currículo: el grafo sigue en F1. */
+export function synFaseCurriculoDe(real: string): 'f0' | 'f1' { return synFilaDeReal(real).faseId === 'f0' ? 'f0' : 'f1'; }
+/** Etiqueta corta de la fase del PLAN de una fila (cabecera «checkpoint …»): F0 · F1 · «F2·CCA-F» (el taper; no la F2 de datos del currículo). */
+export function synFaseEtiqueta(x: DiaSynapse): string { return x.faseId === 'f2' ? 'F2·CCA-F' : x.faseId.toUpperCase(); }
+
 /** Fila sin día real propio: ningún día real la pinta en «⚡ run» (su día real hace otra fecha de plan). Su fecha se pinta «—»; su texto lo dice el generador. */
 export function synSinDiaPropio(x: DiaSynapse): boolean { return fechaPlanDe(fechaRealDe(x.fecha, 'synapse'), 'synapse') !== x.fecha; }
+
+/** c45 (ítem 42 G) · día REAL de la fila `x` para navegar («◷ 7 runs», ◄/►) y para los textos: el de su fecha de plan (fechaRealDe), salvo en una fila que
+ *  abre una cadena del generador (SYN_SESION_EN: ⏸ D16 → sáb 5-dic · D46 → sáb 2-ene · D7 → mar 24-nov), cuya sesión hace el día que dice su texto; para
+ *  ella fechaRealDe caía en el alias global (lun 7-dic) o en su propia fecha (jue 31-dic). Los contadores (synCuentaHecha) siguen con fechaRealDe. */
+export function synDiaRealDe(x: DiaSynapse): string { return SYN_SESION_EN[x.fecha] ?? fechaRealDe(x.fecha, 'synapse'); }
 
 /** Fila sin sesión ni guía (✈ · ⏸ · 🎄 · 🛡): solo bloques R de 0′. No hay nada que marcar: cuenta sola al llegar su día y no toca la racha. */
 export function synFilaSinSesion(x: DiaSynapse): boolean { return x.bloques.every((b) => b.tag === 'R' && b.min === 0); }
@@ -132,10 +144,11 @@ export function synRunsDesde(desde: string, n: number = 7): SynRun[] {
 }
 
 /** ◄/►: la fila del día real anterior (-1) o siguiente (+1) al de `x` que «⚡ run» pinta como suya (los días que pintan la fila de otro día se saltan); null si
- *  no hay (antes de la 1.ª sesión real o tras la última). Desde una fila sin día propio, ► lleva primero a la sesión de su día real (D40 → D37 del vie 25-dic). */
+ *  no hay (antes de la 1.ª sesión real o tras la última). Desde una fila sin día propio, ► lleva primero a la sesión de su día real (D40 → D37 del vie 25-dic;
+ *  c45: en una fila que abre una cadena, el de synDiaRealDe → D16 → D20 del sáb 5-dic, el día que dice su texto). */
 export function synFilaVecina(x: DiaSynapse, paso: 1 | -1): DiaSynapse | null {
   const { desde, hasta } = _rangoReal();
-  const r0 = fechaRealDe(x.fecha, 'synapse');
+  const r0 = synDiaRealDe(x);
   for (let r = paso === 1 && synSinDiaPropio(x) ? r0 : _mover(r0, paso); r >= desde && r <= hasta; r = _mover(r, paso)) {
     const y = synFilaDeReal(r);
     if (y.d !== x.d && fechaRealDe(y.fecha, 'synapse') === r) return y;

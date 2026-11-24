@@ -158,8 +158,9 @@ const SYNC_LABEL: Record<SyncInfo['estado'], string> = { idle: '☁ —', sync: 
 
 /**
  * Panel "Exportar / Importar progreso" (v5.10). Exportar = JSON de los ✓ de los 10 planes (+ jmd-modo-log) al
- * portapapeles; Importar = lee el portapapeles (si el navegador lo permite) o el campo de texto, fusiona por UNIÓN
- * (nunca borra un ✓) y empuja a Supabase. También sirve para pegar el export jmd-* del instrumento SEMANA.
+ * portapapeles; Importar = lee el portapapeles (si el navegador lo permite) o el campo de texto, añade los ✓ que falten
+ * (nunca borra un ✓; c45: no resucita un ✓ que este navegador sabe desmarcado, salvo que el export traiga un ✓ posterior) y empuja a Supabase. También sirve para
+ * pegar el export jmd-* del instrumento SEMANA.
  */
 function ProgresoPanel({ info, onClose }: { info: SyncInfo; onClose: () => void }) {
   const [texto, setTexto] = useState('');
@@ -175,7 +176,7 @@ function ProgresoPanel({ info, onClose }: { info: SyncInfo; onClose: () => void 
     if (!t) { const clip = await leerPortapapeles(); if (clip) t = clip.trim(); }
     if (!t) { setMsg('nada que importar: pega el JSON en el campo (el navegador no deja leer el portapapeles)'); return; }
     const r = importProgresoJSON(t);
-    setMsg(r.ok ? `importado: ${r.planes} plan(es), +${r.nuevos} ✓ nuevos (total ${r.total}) · subiendo a Supabase…` : `no importado: ${r.error}`);
+    setMsg(r.ok ? `importado: ${r.planes} plan(es), +${r.nuevos} ✓ nuevos (total ${r.total})${r.descartados ? ` · ${r.descartados} ✓ no vuelven (este navegador los sabe desmarcados y el export no trae un ✓ posterior)` : ''} · subiendo a Supabase…` : `no importado: ${r.error}`);
     if (r.ok) setTexto('');
   };
   const sincronizar = async () => { setMsg('sincronizando…'); const ok = await pullAll(true); setMsg(ok ? 'sincronizado con Supabase (plan_checks)' : `sin conexión: ${estadoSync().error || 'reintenta luego'} · el progreso sigue guardado en este navegador`); };

@@ -9,7 +9,8 @@ import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL } fr
 import { synTodayISO } from '../components/study/SynapseTodayPlan';
 import { planHoyD } from '../lib/studyProgress';
 import { useDone } from '../lib/useDone';
-import { synContarHechas } from '../lib/synapseProgreso';
+import { synContarHechas, synFaseCurriculoDe } from '../lib/synapseProgreso';
+import { useHoyReal } from '../lib/useHoyReal';
 import { semaforoColor } from '../components/empresa/primitives';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -643,11 +644,12 @@ function ResearchRightPanel() {
 // ═══════════════════════════════════════════════
 function SynapseRightPanel() {
   const INDIGO = SYNAPSE_META.accent;
-  const faseActiva = SYNAPSE_FASES.find((f) => f.estado === 'activa');
+  const hoyReal = useHoyReal(); // c45 (A): la misión de hoy cambia sola al cambiar el día con la pestaña abierta
+  const faseActiva = SYNAPSE_FASES.find((f) => f.id === synFaseCurriculoDe(hoyReal)); // c45 (H): la fase del plan de hoy (F1 desde el lun 11-ene), como la cabecera del hub
   const iso = synTodayISO();
   const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === planHoyD(SYN_DIAS, iso, 'synapse'));
   const [doneSyn] = useDone('synapse');
-  const hechas = synContarHechas(SYN_DIAS, doneSyn); // las filas sin sesión cuentan solas al llegar su día, como en «⚡ run»
+  const hechas = synContarHechas(SYN_DIAS, doneSyn, hoyReal); // las filas sin sesión cuentan solas al llegar su día, como en «⚡ run»
   return (
     <View>
       <Text style={desktopStyles.rightPanelTitle}>SYNAPSE · AI TRACK</Text>

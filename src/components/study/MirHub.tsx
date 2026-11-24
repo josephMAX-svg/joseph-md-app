@@ -17,6 +17,7 @@ import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mi
 import { MIR_DIAS } from '../../lib/mirDailyPlan';
 import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import ReadinessBar from './ReadinessBar';
@@ -47,10 +48,11 @@ const TABS = [
 export default function MirHub() {
   const [sub, setSub] = useState('hoy');
   const [done] = useDone('mir');
-  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO(), 'mir'), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(hoyReal, 'mir'), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const glob = progresoGlobal(MIR_DIAS, done);
   const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
-  const iso = todayISO();
+  const iso = hoyReal;
   const dist = mirDistanciaOnTrack(iso); // 'a X pts del mínimo on-track del siguiente hito' (como el USMLE)
   const proximoHito = MIR_HITOS.find((h) => h.fecha >= iso);
 

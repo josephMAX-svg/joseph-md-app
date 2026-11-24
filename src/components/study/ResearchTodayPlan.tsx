@@ -11,6 +11,7 @@ import {
 import { DIAS_2027, DAILY_META_2027 } from '../../lib/researchDailyPlan2027';
 import { agruparProgreso, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
@@ -64,10 +65,6 @@ const ANCLA = InkColors.periwinkle; // #7C83D6 — eval anclada
 const TODOS: DiaResearch[] = [...DIAS, ...DIAS_2027];
 const PAUSA = (() => { const m = /^(20\d\d-\d\d-\d\d) → (20\d\d-\d\d-\d\d)/.exec(DAILY_META.pausa); return m ? { desde: m[1], hasta: m[2] } : null; })();
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
-function todayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return DAILY_META.inicio; }
-}
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
@@ -344,17 +341,18 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         </View>
       </View>
       {grupos.map((g) => <FaseCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca el {fmtFecha(fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma'))}-{fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma').slice(0, 4)} (v6.00: en plena intensiva ENCAPS; v5.20: «tras el Step 1»).</Text>{/* v6.02d: fecha real visible (semana corrida) */}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca el {fmtFecha(fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma'))}-{fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma').slice(0, 4)} (v6.00: en plena intensiva ENCAPS; v5.20: «tras el Step 1»).</Text>{/* v6.02d: fecha real visible (semana corrida) */}
     </View>
   );
 }
 
 export default function ResearchTodayPlan() {
-  const iso = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const hoyD = proximoD(iso, TODOS);
   const todayDia = TODOS.find((x) => x.fecha === iso) || TODOS.find((x) => x.d === hoyD) || TODOS[0];
-  const [sel, setSel] = useState<number>(todayDia.d);
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d); // vuelve a la fila de hoy cuando cambia el día
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, toggleDone] = useDone('research');
   const dia = TODOS.find((x) => x.d === sel) || TODOS[0];

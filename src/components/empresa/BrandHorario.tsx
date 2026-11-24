@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -8,6 +8,7 @@ import { TIME_SPLIT, ESTANDARES, FLUJO_DICTADO, METRICAS, BRAND_PLANS } from '..
 import { HERRAMIENTAS, REFERENTES } from '../../lib/brandContentExtras';
 import { bizDiaDe, BIZ_DIAS } from '../../lib/businessStudyPlan';
 import { fechaPlanDe } from '../../lib/fechasV6';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: el día abierto vuelve a hoy cuando cambia el día real
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 
 /**
@@ -32,8 +33,9 @@ function todayISO(): string {
 export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'terrenos' | 'golden' }) {
   const plan = BRAND_PLANS[brand];
   const refs = REFERENTES[brand] || [];
+  const hoyReal = useHoyReal();
   const hoy = hoyDia();
-  const [openDia, setOpenDia] = useState<string>(hoy);
+  const [openDia, setOpenDia] = useSelDeHoy(hoyReal, hoy);
   if (!plan) return null;
   const A = plan.accent;
   // El 70% de LIVIANO = lectura del plan 96 días + aplicación directa (contenido)

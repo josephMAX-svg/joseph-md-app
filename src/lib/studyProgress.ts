@@ -47,6 +47,12 @@ export function agruparProgreso<T extends DiaBase>(
     return { clave, dias: ds, primerD, ultimoD, total, hechos, pct, estado, diaActual };
   });
 }
+/** c45 · `key` de la tarjeta de un grupo (◈ checkpoints · temario): cambia cuando el día de hoy entra en su rango o sale de él, así que con la pestaña
+ *  abierta de un día para otro esa tarjeta se vuelve a montar con su estado inicial (desplegada la de hoy), como al recargar; las demás conservan lo
+ *  que Joseph abrió o cerró. */
+export function claveGrupoDeHoy<T extends DiaBase>(g: GrupoProgreso<T>, hoyD: number): string {
+  return hoyD >= g.primerD && hoyD <= g.ultimoD ? `${g.clave}·hoy` : g.clave;
+}
 
 /** Día del plan correspondiente a hoy (clamp a los extremos si fuera de rango).
  *  Si hoy es una fecha-hueco (p. ej. dom 14/21-jun-2026, días libres), devuelve el
@@ -127,10 +133,11 @@ export function progresoGlobal(dias: DiaBase[], done: Set<number>) {
  * Estructura: { usmle: number[], mir: number[], … } = días marcados como hechos.
  * v5.10 (12-sep-2026): localStorage 'jmd-study-progress-v1' sigue siendo la caché/fallback offline,
  * pero la fuente de verdad entre dispositivos es Supabase `plan_checks` (src/lib/studyProgressSync.ts):
- * `saveDone` empuja el diff y el primer `loadDone` de la sesión dispara el pull (fusión + migración única).
+ * `saveDone` anota la intención de cada fila que cambia (c45: cola hasta que Supabase la confirme) y la sube; el primer `loadDone`
+ * de la sesión dispara el pull (remoto paginado + intenciones pendientes encima; migración única).
  * La API (loadDone/saveDone/PlanKey) no cambia: los componentes siguen leyendo síncrono.
  * -------------------------------------------------------------------------- */
-import { leerStoreLS, escribirStoreLS, syncSaveDone, ensurePulled } from './studyProgressSync';
+import { leerStoreLS, escribirStoreLS, syncSaveDone, ensurePulled, anotarIntenciones } from './studyProgressSync';
 
 export type PlanKey = 'usmle' | 'mir' | 'research' | 'derma' | 'business' | 'synapse' | 'aurum' | 'liviano' | 'vibecoding' | 'research-infra';
 
@@ -145,6 +152,7 @@ export function loadDone(plan: PlanKey): number[] {
 /** Guarda los días marcados como hechos para un plan (local al instante + upsert/delete en plan_checks). */
 export function saveDone(plan: PlanKey, days: number[]): void {
   const s = leerStoreLS();
+  anotarIntenciones(plan, s[plan] || [], days);   // c45: cada fila que cambia queda en la cola de intenciones hasta que Supabase la confirme
   s[plan] = days;
   escribirStoreLS(s);
   syncSaveDone(plan);

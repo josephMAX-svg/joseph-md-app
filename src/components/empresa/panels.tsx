@@ -18,6 +18,7 @@ import {
 } from '../../lib/empresaData';
 import type { KpiSemanalKey } from '../../lib/empresaData';
 import { fechaRealDe } from '../../lib/fechasV6';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal';
 
 /**
  * Paneles del Hub de Empresa. Presentacionales y data-driven (todo viene de
@@ -133,12 +134,14 @@ const fmtVal = (def: { unidad: string }, v: number | undefined) => (v === undefi
 
 export function LivianoKpiLog() {
   const [store, setStore] = useState<KpiStore>(loadKpiStore);
-  const [offset, setOffset] = useState(0); // 0 = semana actual · −1 = anterior …
+  // c45: con la pestaña abierta de un día para otro, «semana actual» sigue al día real (useHoyReal) y, al cambiar la semana ISO, vuelve a ella
+  const hoyReal = useHoyReal();
+  const [offset, setOffset] = useSelDeHoy(isoWeekKey(new Date()), 0); // 0 = semana actual · −1 = anterior …
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [nota, setNota] = useState('');
   const [msg, setMsg] = useState('');
 
-  const semanaDate = useMemo(() => { const d = new Date(); d.setDate(d.getDate() + offset * 7); return d; }, [offset]);
+  const semanaDate = useMemo(() => { const d = new Date(); d.setDate(d.getDate() + offset * 7); return d; }, [offset, hoyReal]); // eslint-disable-line react-hooks/exhaustive-deps
   const key = isoWeekKey(semanaDate);
   const lunes = isoDate(lunesDe(semanaDate));
   const existente = store.semanas.find(x => x.key === key);

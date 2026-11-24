@@ -15,6 +15,7 @@ import { FECHAS_V6, reservaStep1, fechaPlanDe, fechaRealDe } from '../../lib/fec
 import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
   hitosPlan, HITOS_ONTRACK_FUENTE, HITOS_ONTRACK, gateHito, GateHito, BURNOUT_PROTOCOLO,
@@ -67,7 +68,7 @@ export default function UsmleHub() {
   const [sub, setSub] = useState('hoy');
   // Command-bar readiness metrics (derived, no data mutation).
   const [done] = useDone('usmle');
-  const iso = todayISO();
+  const iso = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
   // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
   const pausa = enPausaStep1(iso);
   const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → fila de la fecha de plan

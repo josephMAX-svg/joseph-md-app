@@ -6,8 +6,9 @@ import { Chip, GlassPanel } from './primitives';
 import { FadeUp } from './visuals';
 import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, filaDeReal, filaSinDiaPropio, filasDesdeReal, filaVecinaReal } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, claveGrupoDeHoy, filaDeReal, filaSinDiaPropio, filasDesdeReal, filaVecinaReal } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
@@ -24,10 +25,6 @@ import { guiaBusinessDe } from '../../lib/rutinaGuia'; // v6.02c (E5): franja pr
 const GOLD = '#D9BE8A';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 const MODO_LABEL: Record<string, string> = { L: 'lectura en huecos', CRITICA: 'lectura crítica', OUTPUT: 'output del viernes', DESCANSO: 'descanso' };
-function todayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return BIZ_META.inicio; }
-}
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
@@ -233,17 +230,18 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <ProgressBar pct={glob.pct} color={GOLD} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} sesiones · {grupos.length} materias · empieza en 0% (avance manual real)</Text>
       </View>
-      {grupos.map((g) => <MateriaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca una sesión como completada (se guarda en este dispositivo). ▶ = día de hoy. Toca el título para ir a ese día.</Text>
+      {grupos.map((g) => <MateriaCard key={claveGrupoDeHoy(g, hoyD)} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      <Text style={st.note}>☑ marca una sesión como completada (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = día de hoy. Toca el título para ir a ese día.</Text>
     </View>
   );
 }
 
 export default function PulsoTodayPlan() {
-  const iso = fechaPlanDe(todayISO(), 'business'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'business'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const hoyD = planHoyD(BIZ_DIAS, iso, 'business');
   const todayDia = bizDiaDe(iso) || BIZ_DIAS.find((x) => x.d === hoyD) || BIZ_DIAS[0];
-  const [sel, setSel] = useState<number>(todayDia.d);
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d); // vuelve a la fila de hoy cuando cambia el día
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, toggleDone] = useDone('business');
   const dia = BIZ_DIAS.find((x) => x.d === sel) || BIZ_DIAS[0];

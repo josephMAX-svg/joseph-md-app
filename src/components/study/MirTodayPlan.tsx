@@ -23,8 +23,9 @@ import {
 } from '../../lib/mirPreguntasOficiales';
 import { MirPoolLista, poolConFallback } from './MirPoolEval';
 import { mirUsmleBridge } from '../../lib/mirUsmleBridge';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, claveGrupoDeHoy } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 import GuiaBloqueCard from '../GuiaBloqueCard';
@@ -87,10 +88,6 @@ const APEX_DIRECTO_ANKI = 'Crea los APEX DIRECTAMENTE en Anki escritorio (no por
 const FB_MIR_CAP = 'MIR oficiales citadas en el capítulo ProMIR (/pregunta/MIR/AAAA-NNN)';
 const FB_MIR_ASIG = 'MIR oficiales citadas en los capítulos ProMIR de la asignatura o cuadernillos oficiales (examenesmir)';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
-function todayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return MIR_DAILY_META.inicio; }
-}
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
@@ -799,8 +796,8 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} días · hoy = Día {hoyD} de {glob.total} · {grupos.length} bloques · 1ª vuelta · selección top-N por Peso MIR + núcleo rabi_94 · cobertura {MIR_DAILY_META.coberturaPeso} pts (óptimo {MIR_DAILY_META.optimoTopN}; plan previo 744)</Text>
         <Text style={[st.globSub, { marginTop: 4 }]}>Gate Palmerton: <Text style={{ color: GREEN }}>✓ {nVal} validado{nVal === 1 ? '' : 's'}</Text> · <Text style={{ color: CORAL }}>● {nCal} caliente{nCal === 1 ? '' : 's'}</Text> · {MIR_VALIDACION_TXT.validado} · {MIR_VALIDACION_TXT.caliente}</Text>
       </View>
-      {grupos.map((g) => <AsignaturaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} estados={estados} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un tema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un tema para ir a ese día. "% cubierto" = suma del Peso MIR de los capítulos elegidos de esa asignatura. ✓ / ● / ○ = gate por tema (validado / caliente / medido sin veredicto); "agregado" = cierre + ancladas + quiz con n≥{MIR_AGREGADO_MIN_Q} (manda sobre el cierre de 10Q). 🇪🇸 = delta-España previsible.</Text>
+      {grupos.map((g) => <AsignaturaCard key={claveGrupoDeHoy(g, hoyD)} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} estados={estados} />)}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un tema como completado (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = día de hoy. Toca el título de un tema para ir a ese día. "% cubierto" = suma del Peso MIR de los capítulos elegidos de esa asignatura. ✓ / ● / ○ = gate por tema (validado / caliente / medido sin veredicto); "agregado" = cierre + ancladas + quiz con n≥{MIR_AGREGADO_MIN_Q} (manda sobre el cierre de 10Q). 🇪🇸 = delta-España previsible.</Text>
     </View>
   );
 }
@@ -933,14 +930,16 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
 }
 
 export default function MirTodayPlan() {
-  const iso = fechaPlanDe(todayISO(), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const sesion = mirSesionDe(iso);
   const hoyD = planHoyD(MIR_DIAS, iso, 'mir');
   const todayDia = mirDiaDe(iso) || MIR_DIAS.find((x) => x.d === hoyD) || MIR_DIAS[0];
   const enMant = !mirDiaDe(iso) && iso > MIR_DAILY_META.fin && MIR_MANT_DIAS.length > 0;
-  const [modo, setModo] = useState<'plan' | 'mant'>(sesion?.tipo === 'mantenimiento' || enMant ? 'mant' : 'plan');
-  const [sel, setSel] = useState<number>(todayDia.d);
-  const [selM, setSelM] = useState<number>(() => planHoyD(MIR_MANT_DIAS, iso, 'mir'));
+  // modo, fila y fila del banqueo vuelven a las de hoy cuando cambia el día real
+  const [modo, setModo] = useSelDeHoy<'plan' | 'mant'>(hoyReal, sesion?.tipo === 'mantenimiento' || enMant ? 'mant' : 'plan');
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d);
+  const [selM, setSelM] = useSelDeHoy(hoyReal, () => planHoyD(MIR_MANT_DIAS, iso, 'mir'));
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, toggleDone] = useDone('mir');
   const [, setTick] = useState(0);

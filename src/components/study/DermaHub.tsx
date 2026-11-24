@@ -21,6 +21,7 @@ import { dermaPctCiego, dermaPctFalloPorModulo, DERMA_AREAS, DERMA_MODULO_POR_BL
 import { DERMA_CEREBRO, type DermaCerebroFicha } from '../../lib/dermaCerebro';
 import { agruparProgreso, planHoyD } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import DermaTodayPlan from './DermaTodayPlan';
 import DermaWeaknessWidget from '../derma/DermaWeaknessWidget';
 import DermaCerebroCard from '../derma/DermaCerebroCard';
@@ -721,7 +722,7 @@ const ATLAS_NAV: { k: Sub; label: string; icon: React.ComponentProps<typeof Derm
 
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const isoHoy = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan (tipo, protegido y átomo de hoy)
+  const isoHoy = fechaPlanDe(useHoyReal(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan (tipo, protegido y átomo de hoy) · c45 (A): repinta al cambiar el día real
   const hoy = diaEstudioTipo(new Date(isoHoy + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   /** Salto externo a un día del plan (Cerebro/Atlas → HOY); `k` = nonce para repetir el mismo d. Se limpia al cambiar de pestaña. */

@@ -13,8 +13,9 @@ import {
   dermaCicloDe, dermaDiaPorD, dermaVentana7Todos, dermaGplusDe,
 } from '../../lib/dermaCiclo2';
 import { VUELTAS, INTERVALOS, type Prioridad } from '../../lib/researchData';
-import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso, claveGrupoDeHoy } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { DermaAtlas, SKIN_TONES, SkinTone, DERMA_NOTEBOOKLM } from '../../lib/dermaData';
 import { dermaCasoEstado, dermaPctCiego, dermaLedgerExportJSON, dermaBancoCursorDeUrl, dermaCuraPendiente, dermaCuraAplicaA, type DermaFuente } from '../../lib/dermaLedger';
 import { DERMA_CEREBRO } from '../../lib/dermaCerebro';
@@ -95,10 +96,6 @@ const OBS = '#A78BFA';               // ◆ Obsidian (mismo tono que MIR/USMLE/E
 const MIR_AMBER = '#F5A623';         // ámbar España (chip MIR 10Q)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
-function todayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return DERMA_DAILY_META.inicio; }
-}
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
@@ -758,8 +755,8 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <ProgressBar pct={glob.pct} color={PURPLE} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos del ciclo 1 (+{c2}/{DERMA_CICLO2_META.totalDias} del ciclo 2, d{DERMA_CICLO2_META.dOffset + 1}-d{DERMA_TOTAL_DIAS_TODOS}) · hoy = Día {hoyD} · {grupos.length} bloques (A–H board · Z cierre · X estética · ciclo 2) · vueltas: CRÍT {VUELTAS.CRITICA}v D+{INTERVALOS.CRITICA.join('/')} · ALTA {VUELTAS.ALTA}v · MEDIA {VUELTAS.MEDIA}v · ◆ = nota Obsidian (10_DERMATOLOGIA) · MIR = sesión con 10Q ProMIR</Text>
       </View>
-      {grupos.map((g) => <BloqueCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (1ª vuelta; se guarda en este dispositivo). ▶ = átomo de hoy. Nv = vueltas objetivo según prioridad. Toca el subtema para ir a ese día.</Text>
+      {grupos.map((g) => <BloqueCard key={claveGrupoDeHoy(g, hoyD)} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (1ª vuelta; se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = átomo de hoy. Nv = vueltas objetivo según prioridad. Toca el subtema para ir a ese día.</Text>
     </View>
   );
 }
@@ -769,12 +766,13 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
  * pedirse dos veces seguidas.
  */
 export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?: { d: number; k: number } }) {
-  const iso = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Derma (§A3)
   // Fallback al CICLO 2: cuando la fecha pasa del último átomo del ciclo 1 (d73), planHoyD cae en dermaCiclo2.ts.
   const hoyD = planHoyD(DERMA_DIAS_TODOS, iso, 'research-derma');
-  const [sel, setSel] = useState<number>(hoyD);
+  const [sel, setSel] = useSelDeHoy(hoyReal, hoyD); // vuelve a la fila de hoy cuando cambia el día
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, toggleDone] = useDone('derma');
   const { entries } = useDermaLedger();

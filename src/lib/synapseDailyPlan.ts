@@ -202,6 +202,10 @@ export const SYN_DIAS: DiaSynapse[] = [
 
 export function synDiaDe(fechaISO: string): DiaSynapse | undefined { return SYN_DIAS.find(x => x.fecha === fechaISO); }
 
+/** c45 (ítem 42 G): fila que abre una CADENA (gen_synapse_plan.js › CADENAS_V610W: ⏸ sin sesión ni día real propio) → día REAL en que se hace su sesión, el
+ *  que dice su texto («su sesión la hace el sáb 5-dic»). «◷ 7 runs», ► y el botón de la fila parten de ese día (synapseProgreso.synDiaRealDe). */
+export const SYN_SESION_EN: Record<string, string> = {"2026-11-22":"2026-11-24","2026-12-01":"2026-12-05","2026-12-31":"2027-01-02"};
+
 /** v6.09b (S1, 17-nov-2026): COLA POST-STEP 1 del SYNAPSE de F1 — lo que no cupo en su sesión de F1 (ni en los comodines del sábado, el hueco de Lex o
  *  las sesiones de 2027 que ya lo prevén), con fecha: 30′/día L-V desde el lun 13-dic-2027 (tras el examen del lun 6-dic). Audio a la velocidad de su
  *  serie; lectura a 100 palabras/min. Cada sesión de F1 que deja un resto dice aquí qué días le tocan.

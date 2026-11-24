@@ -9,9 +9,10 @@ import {
 import {
   AurumRubricaStore, AurumRubricaScore, aurumRubricaKey, loadAurumRubrica, saveAurumRubrica,
 } from '../../lib/aurumData';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, claveGrupoDeHoy } from '../../lib/studyProgress';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { aurumRacha, aurumHoyReal } from '../../lib/aurumProgreso'; // racha por día REAL (como synapseProgreso)
+import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a la fila de hoy
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
@@ -343,8 +344,8 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <AurumProgressBar pct={glob.pct} height={9} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} misiones · 7 fases · L-V · empieza en 0% (avance manual real)</Text>
       </AurumPanel>
-      {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca una misión como completada (se guarda en este dispositivo). ▶ = día de hoy. ☐ tenue = sesión de un día que aún no llega: se marca ese día. Regenerar el plan: node DATA/_scripts/gen_aurum_plan.js.</Text>
+      {grupos.map((g) => <SemanaCard key={claveGrupoDeHoy(g, hoyD)} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      <Text style={st.note}>☑ marca una misión como completada (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos). ▶ = día de hoy. ☐ tenue = sesión de un día que aún no llega: se marca ese día. Regenerar el plan: node DATA/_scripts/gen_aurum_plan.js.</Text>
     </View>
   );
 }
@@ -374,10 +375,11 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false, rubr
   const saveRub = onSaveRubrica ?? ((s: AurumRubricaScore) => setRubLocal((prev) => {
     const n = { ...prev, [aurumRubricaKey(s.pitch, s.variante)]: s }; saveAurumRubrica(n); return n;
   }));
-  const iso = aurumTodayISO();
+  const hoyReal = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
+  const iso = fechaPlanDe(hoyReal, 'aurum'); // = aurumTodayISO() del mismo día
   const hoyD = planHoyD(AURUM_DIAS, iso, 'aurum');
   const todayDia = aurumDiaDe(iso) || AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
-  const [sel, setSel] = useState<number>(todayDia.d);
+  const [sel, setSel] = useSelDeHoy(hoyReal, todayDia.d); // vuelve a la fila de hoy cuando cambia el día
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
   const dia = AURUM_DIAS.find((x) => x.d === sel) || AURUM_DIAS[0];
   const esHoy = dia.fecha === iso;

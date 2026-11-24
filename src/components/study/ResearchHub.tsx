@@ -17,6 +17,7 @@ import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_IN
 const R0_DIA = DIAS.find((x) => x.code === 'R0');
 import { pullEntregables, pushEntregable, aplicarCambio, EntregableRegistroSync, TABLA_ENTREGABLES } from '../../lib/researchEntregablesSync';
 import { useDone } from '../../lib/useDone';
+import { useHoyReal } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
 import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
@@ -53,7 +54,6 @@ function notaRDDe(iso: string, hoy: 'research' | 'derma' | 'descanso'): string {
 }
 type SyncEstado = { estado: 'cargando' | 'ok' | 'error'; detalle: string };
 function hhmm(): string { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
-function isoHoy(): string { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
 const TEAL = RESEARCH_META.accent;   // #6BB8B0 (token)
 const GOLD = InkColors.gold;         // #C8A96A — capa de estatus (manuscrito/PIP/sellos)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
@@ -591,7 +591,7 @@ function PanelView({ reg, onChange, infra, onToggleInfra, kpis, sync }: {
 
 export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const isoPlan = fechaPlanDe(isoHoy(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const isoPlan = fechaPlanDe(useHoyReal(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan · c45 (A): repinta al cambiar el día real
   const hoy = diaEstudioTipo(new Date(isoPlan + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   // Estado real de la Mesa editorial: caché localStorage 'jmd-research-entregables' + espejo Supabase research_entregables

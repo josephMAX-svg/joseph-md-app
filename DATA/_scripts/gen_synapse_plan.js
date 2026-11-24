@@ -1019,6 +1019,10 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     if (!CHECK) console.log(`v6.09b · F1 troceado con material medido: ${n} bloques A/B/C reescritos · cola post-Step 1: ${COLA_POST.length} días (${COLA_POST[0] ? COLA_POST[0].fecha : '—'} → ${COLA_POST.length ? COLA_POST[COLA_POST.length - 1].fecha : '—'})`);
   }
 }
+// c45 (ítem 42 G, mar 24-nov-2026): fila que abre cada cadena → día REAL de su sesión (el mismo `reales[1]` que cita su texto «su sesión la hace el …»):
+//   la app (synapseProgreso.synDiaRealDe) hace partir de ahí «◷ 7 runs» y ► (antes, fechaRealDe caía en el alias GLOBAL del lun 7-dic para la fila del mar 1-dic,
+//   que el alias propio del SYNAPSE no hace, y en el propio jue 31-dic para la del jue 31-dic). Se emite como SYN_SESION_EN.
+const SYN_SESION_EN = {};
 // v6.10w · CADENAS_V610W (arriba): el contenido A/B/C de cada fila pasa a la siguiente; el de la última, a la sesión a hora fija. Se comprueba: filas en orden de día
 //   REAL (alias de corrida_s1), sesión a hora fija dentro de las ventanas del domingo y, la de la semana 1, = corrida_s1.extra › synapse.
 {
@@ -1049,6 +1053,7 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     const f0 = c.filas[0];
     filas[0].bloques = [{ tag: 'R', min: 0, formato: 'repaso', material: `⏸ Sin sesión · ${f0.slice(8, 10)}-${f0.slice(5, 7)}`, leccion: `Sin SYNAPSE en este día de plan (${c.motivo}): su sesión la hace el ${['dom','lun','mar','mié','jue','vie','sáb'][new Date(reales[1] + 'T12:00:00Z').getUTCDay()]} ${Number(reales[1].slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(reales[1].slice(5, 7)) - 1]} y cada sesión corre una, hasta la de ${['dom','lun','mar','mié','jue','vie','sáb'][w]} ${Number(c.rec.fecha.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(c.rec.fecha.slice(5, 7)) - 1]} a las ${c.rec.ini}. Nada que marcar.`, real: true }];
     SIN_SES_CAD.set(f0, filas[0].bloques[0].leccion); // v6.11 fase 2 (remate): su motivo no pasa por el remap de fechas de abajo
+    SYN_SESION_EN[f0] = reales[1]; // c45 (G): el día que cita el texto de arriba
     const ult = contenido[contenido.length - 1];
     const minT = ult.reduce((a, b) => a + b.min, 0);
     if (minT !== 30) throw new Error(`v6.10w · cadena ${c.id}: la sesión que va a hora fija suma ${minT}′ (A + B + C debe ser 30′)`);
@@ -1254,6 +1259,10 @@ ${dias.map(diaTs).join(',\n')}
 ];
 
 export function synDiaDe(fechaISO: string): DiaSynapse | undefined { return SYN_DIAS.find(x => x.fecha === fechaISO); }
+
+/** c45 (ítem 42 G): fila que abre una CADENA (gen_synapse_plan.js › CADENAS_V610W: ⏸ sin sesión ni día real propio) → día REAL en que se hace su sesión, el
+ *  que dice su texto («su sesión la hace el sáb 5-dic»). «◷ 7 runs», ► y el botón de la fila parten de ese día (synapseProgreso.synDiaRealDe). */
+export const SYN_SESION_EN: Record<string, string> = ${JSON.stringify(SYN_SESION_EN)};
 
 /** v6.09b (S1, 17-nov-2026): COLA POST-STEP 1 del SYNAPSE de F1 — lo que no cupo en su sesión de F1 (ni en los comodines del sábado, el hueco de Lex o
  *  las sesiones de 2027 que ya lo prevén), con fecha: 30′/día L-V desde el lun 13-dic-2027 (tras el examen del lun 6-dic). Audio a la velocidad de su
