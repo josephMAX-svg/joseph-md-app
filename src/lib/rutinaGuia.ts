@@ -135,7 +135,7 @@ import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from
 import { guiaUsmleDe } from './usmleGuia'; // remate v6.10j: la eval 10Q del DAY-AFTER 6/6 en la métrica 1 de la revisión
 import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe, encapsMananaDe, encapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De, ENCAPS_F2_FECHAS } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, fechaPlanDe, motivoProtegido, corridaS1De, extraCorridaDe, extraDePlan, enShipDe, ordenRealDe } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10y: + enShipDe (el paso 5/5 de S1 va PRIMERO en el SHIP del dom 29) y fechaPlanDe (día de la configuración del Anki, en el paso 2 de S1)
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, fechaPlanDe, motivoProtegido, corridaS1De, extraCorridaDe, extraDePlan, enShipDe, ordenRealDe, esSabadoHabil } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10y: + enShipDe (el paso 5/5 de S1 va PRIMERO en el SHIP del dom 29) y fechaPlanDe (día de la configuración del Anki, en el paso 2 de S1)
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -975,6 +975,9 @@ export function synFranjaDe(iso: string, min = 30, hIso: string = iso): { franja
   //   vivo hasta el sáb 13-mar.
   const sabTh = dow(iso) === 6 ? theomedSabadoDe(iso) : null;
   const vivoTxt = (sabTh ? !!sabTh.vivo : faseV6(iso) === 'F2') ? ' · 15:00-17:00 Theomed en vivo' : '';
+  // v6.12 (mar 24-nov-2026): un SÁBADO HÁBIL (corrida_s1.sabado_habil: día de estudio completo, sin gimnasio ni baile) → A/B/C a las 21:00 como cada sábado, sin
+  //   el horario del gimnasio y del baile, que ese día no hay
+  if (dow(iso) === 6 && esSabadoHabil(iso)) return { franja: franjaDesde('21:00', min), aviso: `Sábado hábil (hoy sin gimnasio ni baile): A/B/C a las 21:00, como cada sábado${faseV6(iso) === 'F1' ? '; después, el Anki de las 21:30' : ''}.${pcDomingoTxt(iso)}` };
   if (dow(iso) === 6) return sabadoTheomed(iso)
     // v6.07b (mar 10-nov): sábado real de Joseph = gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 en vivo · baile 17:00-20:00 → A/B/C a las 21:00, al volver
     ? { franja: franjaDesde('21:00', min), aviso: `Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00)${faseV6(iso) === 'F1' || ((FECHAS_V6.step1 as { f1_extra?: string[] }).f1_extra ?? []).includes(iso) /* v6.10: el sáb 2-ene (D13 del Step) también lleva el Anki de las 21:30 · tanda C: decisión 4 (el Step ya no usa el sáb 2-ene) quita step1.f1_extra → sin él, solo F1 (como la v6.09) */ ? '; después, el Anki de las 21:30' : ''}.${pcDomingoTxt(iso)}` }
@@ -1171,7 +1174,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
       // ronda c40 (remate): sin ✓ — la cola no tiene fila en «⚡ run» (ese día pinta la sesión de las 21:00, que lleva el suyo: pulsarlo dos veces lo desmarca);
       //   ≤ 180 (la línea «Hecho» del Calendar; antes 201 con «, con el minuto…», cortado)
       `tramo escuchado entero + el minuto anotado en el journal. ${SYN_REGLA_NOTAS}`,
-      { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
+      { aviso: `${esSabadoHabil(iso) /* v6.12: sábado hábil → 04:15, antes del Anki de las 05:00 */ ? `Sábado hábil ${c.ini}-${c.fin}: antes del Anki de las 05:00 (hoy sin gimnasio ni baile)` : `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30)`}. Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
         planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
           const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
           // (synapse_f1_tramos.F1_EXTRA solo usa sábados SIN clase en vivo: sáb 26-dic)
@@ -1579,6 +1582,8 @@ let AURUM_F1_CACHE: { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
 /** Reparto de F1 (memo): por sesión, minutos de A y de L que caben en los 60′ (misma cuenta que guiaAurumDe) y lo que no cabe → sábado 04:15 de su
  *  semana; el hilo de Tracy (A de D16/D29/D31 + L de D16-D32 + sábados) con sus tramos. El último sábado con Tracy (26-dic) lleva lo que falte para
  *  terminar el libro (incluida, adelantada, la parte que no cabe del 28 al 31-dic: no hay sábado de F1 después). */
+/** v6.12 · franja de la «L de la semana» de AURUM en un SÁBADO HÁBIL (corrida_s1.sabado_habil): tras la mañana ENCAPS (12:00) y el almuerzo, antes de la revisión (14:00). */
+const L_SAB_HABIL: [string, string] = ['12:30', '14:00'];
 function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab> } {
   if (AURUM_F1_CACHE) return AURUM_F1_CACHE;
   const W = 60, INI_SAB = '04:15';
@@ -1634,10 +1639,13 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   if (ultT) (sabs.get(ultT) as AurumLSab).tracy!.min = Math.max(0, TOT - enFranja - conT.slice(0, -1).reduce((a, s) => a + (sabs.get(s) as AurumLSab).tracy!.min, 0));
   // v6.11 (lun 23-nov-2026): con el alias un hábil más, el último sábado con Tracy (sáb 26-dic) recibía 103′ y pasaba de la rutina de las 05:45 → lo que no cabe
   //   en su ventana (04:15-05:45) va al sábado ANTERIOR con Tracy (y así hacia atrás): el hilo es el mismo y en el mismo orden; solo cambia dónde corta cada tramo
-  { const VEN = aMin('05:45') - aMin(INI_SAB);
+  // v6.12 (mar 24-nov-2026): un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic, día de estudio completo sin gimnasio ni baile) tiene el Anki a las 05:00 → su L va
+  //   de 12:30 (tras la mañana ENCAPS y el almuerzo) a 14:00 (la revisión semanal): la misma ventana de 90′ que el 04:15-05:45 de los demás sábados
+  const venSab = (s: string): number => (esSabadoHabil(s) ? aMin(L_SAB_HABIL[1]) - aMin(L_SAB_HABIL[0]) : aMin('05:45') - aMin(INI_SAB));
+  {
     for (let k = conT.length - 1; k > 0; k--) {
       const S = sabs.get(conT[k] as string) as AurumLSab, A = sabs.get(conT[k - 1] as string) as AurumLSab;
-      const exc = S.items.reduce((a, it) => a + it.min, 0) + S.tracy!.min - VEN;
+      const exc = S.items.reduce((a, it) => a + it.min, 0) + S.tracy!.min - venSab(S.sab);
       if (exc <= 0) break;
       S.tracy!.min -= exc; A.tracy!.min += exc; A.tracy!.deSig = { min: (A.tracy!.deSig?.min ?? 0) + exc, sab: conT[k] as string };
     } }
@@ -1654,7 +1662,8 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
     S.min = S.items.reduce((a, it) => a + it.min, 0) + (S.tracy ? S.tracy.min : 0);
     // v6.11 (mar 24-nov): detrás de la sesión de AURUM a hora fija del sábado (o del domingo siguiente, si el sábado ya no tiene sitio antes de las 05:45)
     const eS = exAurSab(S.sab), eD = eS ? exAurSab(addDias(S.sab, 1)) : null;
-    if (eS && (aMin(eS.fin) + S.min <= aMin('05:45') || !eD)) S.ini = eS.fin;
+    if (esSabadoHabil(S.sab) && !eS) S.ini = L_SAB_HABIL[0]; // v6.12: sábado hábil → 12:30 (el Anki es a las 05:00)
+    else if (eS && (aMin(eS.fin) + S.min <= aMin('05:45') || !eD)) S.ini = eS.fin;
     else if (eS && eD) { S.dia = addDias(S.sab, 1); S.ini = eD.fin; }
     S.fin = aHHMM(aMin(S.ini) + S.min);
   }
@@ -1718,7 +1727,10 @@ export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
   }
   return bloque(`${S.ini}–${S.fin}`, 'aurum', `AURUM · L de la semana (${S.min}′: lo que no cupo ${aurumLCupoDe(S)})`, pasos, recursos,
     'cada tramo leído o escuchado, con su marca (página o minuto) en la nota ◆ del día',
-    { aviso: S.dia && S.dia !== S.sab ? `Domingo ${S.ini}, al terminar la sesión de AURUM de hoy y antes del baile (17:00): la lectura L de AURUM que no cupo en las 14:15 de esta semana ni en la sesión del sábado (el sábado ya no tenía sitio antes de la rutina de las 05:45). Ya no queda nada como «lectura de huecos» sin fecha.` : `Sábado ${S.ini}, ${S.ini !== '04:15' ? 'al terminar la sesión de AURUM de hoy y ' : ''}antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo ${aurumLCupoDe(S) === 'a las 14:15' ? 'en las 14:15 de esta semana' : 'en su sesión'}${S.ini !== '04:15' ? ' ni en la sesión de hoy' : ''}${sabadoLibre(addDias(iso, -7)) && [...aurumF1().dias.values()].some((r) => { const x = fechaRealDe(r.fecha, 'aurum'); return x > addDias(iso, -13) && x < addDias(iso, -7); }) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
+    { aviso: S.dia && S.dia !== S.sab ? `Domingo ${S.ini}, al terminar la sesión de AURUM de hoy y antes del baile (17:00): la lectura L de AURUM que no cupo en las 14:15 de esta semana ni en la sesión del sábado (el sábado ya no tenía sitio antes de la rutina de las 05:45). Ya no queda nada como «lectura de huecos» sin fecha.`
+      // v6.12: el sábado hábil (día de estudio completo, sin gimnasio ni baile) la L va tras la mañana ENCAPS y el almuerzo, antes de la revisión de las 14:00
+      : esSabadoHabil(S.sab) && S.ini === L_SAB_HABIL[0] ? `Sábado hábil ${S.ini}, tras la mañana ENCAPS y el almuerzo y antes de la revisión semanal (14:00): la lectura L de AURUM que no cupo ${aurumLCupoDe(S) === 'a las 14:15' ? 'en las 14:15 de esta semana' : 'en su sesión'} (hoy el Anki es a las 05:00). Ya no queda nada como «lectura de huecos» sin fecha.`
+      : `Sábado ${S.ini},${S.ini !== '04:15' ? 'al terminar la sesión de AURUM de hoy y ' : ''}antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo ${aurumLCupoDe(S) === 'a las 14:15' ? 'en las 14:15 de esta semana' : 'en su sesión'}${S.ini !== '04:15' ? ' ni en la sesión de hoy' : ''}${sabadoLibre(addDias(iso, -7)) && [...aurumF1().dias.values()].some((r) => { const x = fechaRealDe(r.fecha, 'aurum'); return x > addDias(iso, -13) && x < addDias(iso, -7); }) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
 }
 /** v6.05 (fix 24-oct-2026): AURUM en F4 (SERUMS) = 30′ en el TIEMPO MUERTO del turno, justo DESPUÉS de los 30′ de R↔D (DJ-4), y no a la franja
  *  nominal 14:15–14:45 de F2/F3 (en el turno M chocaba con el almuerzo 13:40-14:30 y con el bloque B del Step 1 14:30-16:00). `rd` = bloque R↔D

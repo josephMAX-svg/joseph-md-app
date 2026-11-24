@@ -170,7 +170,9 @@ const ALIAS_S1 = Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).sort(
 // v6.10d (fix revisión 18-nov): día REAL en que se hace una fecha de PLAN (alias de corrida_s1: el plan del vie 20-nov se hace el lun 23; sin alias = la propia).
 //   Los textos siguen citando fechas de PLAN (la app las traduce), pero lo que depende del orden REAL (qué hubo entre dos sesiones, «hoy lunes») se mira aquí.
 const _AL6 = (F6.corrida_s1 && F6.corrida_s1.alias) || {};
-const realDe = (f) => Object.keys(_AL6).find((k) => _AL6[k] === f) || f;
+// v6.12 (mar 24-nov-2026): + el plan que hace un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic = el plan del lun 21-dic; gen_fechas_v6.planSabadoHabilDe)
+const _PSH = new Map(((F6.corrida_s1 && F6.corrida_s1.sabado_habil) || []).map((s) => [require('./gen_fechas_v6').planSabadoHabilDe(s, F6), s]).filter(([p]) => p));
+const realDe = (f) => Object.keys(_AL6).find((k) => _AL6[k] === f) || _PSH.get(f) || f;
 const conAlias = (f) => realDe(f) !== f;
 // v6.11 fase 2 (lun 23-nov): con un día EXTRA de ENCAPS (corrida_s1.extra { hora, plan }: el D30 del mié 30-dic el sáb 2-ene, el D31 del jue 31-dic el lun 4-ene)
 //   la sesión de la fecha de plan anterior NO es la de ayer aunque las fechas de plan sean seguidas (sáb 2 → lun 4). Solo cuando entra un día extra; el resto,
@@ -371,7 +373,10 @@ const excepcionLunes = (fila, rEval) => {
  *  fue el día REAL anterior y el runner de la eval ya estaba hecho; sin alias, el fin de semana sin sesión no dejaba generarla. */
 function excepcionCorta(fila, exc, cod) {
   const diaAntes = conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha);
-  return `no los fallos del mini-sim del ${corta(exc.ms.fecha)} (EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'}: ${diaAntes ? `el runner de ${cod} ya estaba hecho` : 'el fin de semana fue sin sesión'})`;
+  // v6.12 (mar 24-nov-2026): con el alias de la v6.12 el fin de semana REAL entre el mini-sim (vie 27-nov) y esta sesión (lun 30-nov) sí tiene sesión: el motivo es
+  //   que el runner ya estaba hecho (publicado), no «el fin de semana fue sin sesión» (eso era el del plan, sáb 21 y dom 22-nov)
+  const finSin = SIN_SESION_S1.has(addD(realDe(exc.ms.fecha), 1));
+  return `no los fallos del mini-sim del ${corta(exc.ms.fecha)} (EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'}: ${diaAntes || !finSin ? `el runner de ${cod} ya estaba hecho` : 'el fin de semana fue sin sesión'})`;
 }
 /** v6.10i (hallazgos 0/18): ¿alguna pregunta del runner `r` salió ya en una ronda anterior? Por ids de BANCO_PROPIO: las rondas anteriores a `fila` (fecha de
  *  plan) con preguntas de `cod` (pre-test de arranque · evals · mini-sims · bancos) → { txt: «ninguna de estas 5 salió en el pre-test de arranque ni en la eval
@@ -831,6 +836,9 @@ function construirGuia(fila, sab = null) {
           const excDe = exc && exc.sa.tipo === 'pretest_arranque' ? `del código del banco que el pre-test de arranque del ${corta(exc.sa.fecha)} sustituyó (5Q reales que no salieron en él)` : exc ? `del ${corta(exc.sa.fecha)} (la última sesión de banco)` : '';
           if (exc) av.push(conAlias(fila.fecha) && addD(realDe(fila.fecha), -1) === realDe(exc.ms.fecha)
             ? `EXCEPCIÓN de hoy: la eval es la de ${rEval.j.codigo} ${excDe}, no las 5Q reales de los códigos que fallaste en el mini-sim del ${corta(exc.ms.fecha)} que pide la regla del día siguiente al mini-sim: el mini-sim fue el día anterior y el runner de ${rEval.j.codigo} ya estaba hecho; sus fallos quedan en el registro de ese día.`
+            // v6.12: si el fin de semana REAL tras el mini-sim tuvo sesión, el motivo es solo que el runner ya estaba hecho (publicado)
+            : !SIN_SESION_S1.has(addD(realDe(exc.ms.fecha), 1))
+              ? `EXCEPCIÓN de ${conAlias(fila.fecha) ? 'hoy' : 'este lunes'}: la eval es la de ${rEval.j.codigo} ${excDe} (su runner ya está hecho y publicado), no las 5Q reales de los códigos que fallaste en el mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes. Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`
             : `EXCEPCIÓN de este lunes: la eval es la de ${rEval.j.codigo} ${excDe} (su runner ya está hecho), no las 5Q reales de los códigos que fallaste en el mini-sim del ${corta(exc.ms.fecha)} que pide la regla de los lunes: generarlas exigía el fin de semana, que fue sin sesión (viaje). Los fallos del mini-sim ya quedaron con su regla en el registro del viernes.`);
           // v6.09 (fix revisión 16-nov, joseph 6): sesión con runners y, en la misma semana, bancos sin runner → la orden de generarlos, hoy (lun 23-nov)
           if (!pendiente && !sab) {

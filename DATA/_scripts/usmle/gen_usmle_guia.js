@@ -562,7 +562,12 @@ if (!TEST_S1) aborta('vibecodingPlan.ts: sin el paso 2 de S1 (la [TEST S1] del v
 const TEST_S1_REAL = V6.fechaRealDe(TEST_S1, FV6, 'vibecoding');
 const TEST_S1_MISMO_DIA = TEST_S1_REAL === V6.fechaRealDe(D2.fecha, FV6, 'usmle');
 const fdTestS1 = () => fd(V6.fechaPlanDe(TEST_S1_REAL, FV6));
-const antesRedeploy = (r) => V6.fechaRealDe(r.fecha, FV6, 'usmle') < TEST_S1_REAL;
+// v6.12 (mar 24-nov-2026, «solo corre un día»): el D2 vuelve a caer el MISMO día real que el redeploy del parser (jue 26-nov, 04:15) y el 1-TAP no es fiable (solo
+//   encola; un toast ✓ no prueba que corra el código nuevo): ese día también se DICTAN las tarjetas al chat USMLE → antesRedeploy incluye el día del redeploy
+//   (DICTA_DIA_REDEPLOY) y el texto dice «su redeploy es hoy a las 04:15» (no «es el <día>», que se leía como otro día)
+const DICTA_DIA_REDEPLOY = true;
+const antesRedeploy = (r) => (DICTA_DIA_REDEPLOY ? V6.fechaRealDe(r.fecha, FV6, 'usmle') <= TEST_S1_REAL : V6.fechaRealDe(r.fecha, FV6, 'usmle') < TEST_S1_REAL);
+const redeployTxt = (r) => (V6.fechaRealDe(r.fecha, FV6, 'usmle') === TEST_S1_REAL ? 'su redeploy es hoy a las 04:15, aún sin comprobar' : `su redeploy es el ${fdTestS1()}`);
 // v6.10u (jue 19-nov-2026 · orden de Joseph «todo inicia el 20»): con el alias global la CONFIGURACIÓN (plan del mié 18) va el vie 20 y el D2 (plan del jue 19)
 //   el lun 23, con la [TEST S1] del vibecoding a las 04:15 del mismo día (TEST_S1_MISMO_DIA). Vuelve el diseño de la v6.10b con lo verificado EN VIVO por el chat
 //   USMLE (19-nov): APEX::USMLE ya existe, vacío, con sus 8 submazos (APEX_USMLE_SUBMAZOS), así que la CONFIGURACIÓN (45′) = Sync 1′ · preset «APEX USMLE» desde
@@ -1668,7 +1673,7 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
 {
   const dictar = 'díctale cada tarjeta al chat USMLE, que la escribe en Anki (AnkiConnect) y en Obsidian';
   const conRuta = (r) => GUIA[r.fecha].find((x) => x.pasos.some((p) => p.como.includes(R_ENVIO) || p.como.includes(mayus(R_ENVIO))));
-  if (TEST_S1_MISMO_DIA) {
+  if (TEST_S1_MISMO_DIA && !DICTA_DIA_REDEPLOY) { // v6.12: con DICTA_DIA_REDEPLOY el día del redeploy también dicta (rama de abajo)
     const conTarjetas = F1.filter((r) => !esHito(r) && GUIA[r.fecha] && r.fecha >= D2.fecha).slice(0, 3);
     if (!conTarjetas.length || conTarjetas[0].fecha !== D2.fecha) aborta(`la [TEST S1] (${TEST_S1}) no es el día del D2 (${D2.fecha}): revisa la ruta de las tarjetas del D2`);
     for (const r of conTarjetas) {
@@ -1679,7 +1684,7 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
         : `Si Ctrl+Shift+A no da el toast ✓ (el redeploy del parser fue el ${fdTestS1()}): ${dictar}, como el ${fd(D2.fecha)}.`) + (g.aviso ? ` ${g.aviso}` : '');
     }
   } else {
-    const dir = (r) => `dictada al chat USMLE: él la escribe en Anki (AnkiConnect → APEX::USMLE::${espApex(r)}) y en Obsidian; sin Ctrl+Shift+A ni parser (su redeploy es el ${fdTestS1()})`;
+    const dir = (r) => `dictada al chat USMLE: él la escribe en Anki (AnkiConnect → APEX::USMLE::${espApex(r)}) y en Obsidian; sin Ctrl+Shift+A ni parser (${redeployTxt(r)})`;
     const antes = [...F1, ...TG].filter((r) => !esHito(r) && antesRedeploy(r) && GUIA[r.fecha]);
     // c47 (mar 24-nov · vibecoding opción A: el redeploy pasa al jue 26 real y el D2 es el mié 25): regla general, TODO día de Step anterior al día real del
     //   redeploy (paso 2 de S1 por el alias propio del vibecoding) dicta sus tarjetas; el primero tiene que ser el D2 (antes: «solo el D2»)
@@ -1704,7 +1709,7 @@ for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
         g.hecho = g.hecho.replace(/ confirmadas \(toast ✓\)/g, ' confirmadas por el chat USMLE (dictadas)');
         if (g.hecho.length > 180) g.hecho = g.hecho.replace(' (Save to All Subdecks)', '');
         if (g.hecho.length > 180) aborta(`${etq(r)} ${g.franja}: el «Hecho» dictado no cabe en los 180 del Calendar (${g.hecho.length})`);
-        g.aviso = `Hoy cada tarjeta la DICTAS al chat USMLE y él la escribe en Anki (AnkiConnect) y en Obsidian: sin Ctrl+Shift+A ni parser (su redeploy es el ${fdTestS1()}).${g.aviso ? ` ${g.aviso}` : ''}`;
+        g.aviso = `Hoy cada tarjeta la DICTAS al chat USMLE y él la escribe en Anki (AnkiConnect) y en Obsidian: sin Ctrl+Shift+A, 1-TAP ni parser (${redeployTxt(r)}).${g.aviso ? ` ${g.aviso}` : ''}`;
       }
     }
     const tras = F1.filter((r) => !esHito(r) && !antesRedeploy(r) && GUIA[r.fecha]).slice(0, 2);

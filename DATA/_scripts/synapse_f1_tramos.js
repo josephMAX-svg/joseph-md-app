@@ -56,7 +56,10 @@ const DESDE = '2026-11-18', HASTA = '2027-01-03', COLA_DESDE = '2027-12-13', COL
 /** v6.09b lote 1-ter: hora del bloque de la cola post-Step 1 (F5, L-V). */
 const COLA_INI = '04:15';
 /** v6.09b lote 1-ter: huecos REALES de F1 (con hora) para lo que no cabe en los comodines del sábado (hallazgo 1 de R: el final del deep dive). */
-const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:15', id: 'deepDivePE' }];
+// v6.12 (mar 24-nov-2026): un hueco que cae en un SÁBADO HÁBIL (_fechas_v6.json › corrida_s1.sabado_habil: día de estudio completo, con el Anki a las 05:00 y la
+//   mañana ENCAPS 07:15-12:00) va a las 04:15, libre ese día (el sábado no hay vibecoding); mismo material y minutos
+const SAB_HABIL = new Set((JSON.parse(fs.readFileSync(path.join(__dirname, '_fechas_v6.json'), 'utf8')).corrida_s1 || {}).sabado_habil || []);
+const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:15', id: 'deepDivePE' }].map((x) => (SAB_HABIL.has(x.fecha) ? { ...x, ini: '04:15' } : x));
 /** v6.09b lote 1-quater (QS · hallazgo a de R2): fechas de 2027 cuyo bloque este módulo SÍ reescribe (y solo esas): el vie 8-ene «termina los tramos
  *  pendientes» recibe dos restos de F1 y su paso B dice cuáles. gen_synapse_plan.js aborta si llega cualquier otra fecha fuera de F1. */
 const EXTRA_2027 = ['2027-01-08'];

@@ -635,10 +635,13 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       //   (15) todo día con Business (bizFranjaDe: fila de lectura / OUTPUT o cierre de la semana) tiene su bloque en la plantilla (v6.08: el plan llega
       //   a F3, mar 16 → sáb 20-mar)
       if (!turno && !p.corrida && dow(iso) === 6 && ['F1', 'TRANSICION', 'F2', 'F3'].includes(F62.faseV6(iso))) {
-        const VENT = [['04:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']];
+        // v6.12 (mar 24-nov-2026): un SÁBADO HÁBIL (corrida_s1.sabado_habil: día de estudio completo, sin gimnasio ni baile) estudia de 04:15 a 20:30 (como un L-V;
+        //   = gen_fechas_v6.VENTANA_SABADO_HABIL) + su SYNAPSE y Anki de las 21:00-22:00, como cualquier sábado
+        const habil = (F62.FECHAS_V6.corrida_s1.sabado_habil || []).includes(iso);
+        const VENT = habil ? [['04:15', '20:30'], ['21:00', '22:00']] : [['04:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']];
         for (const b of bs) {
           if (!b.ini || !b.fin || b.ini === b.fin || tmB(b)) continue;
-          if (!VENT.some(([a, c]) => hm(a) <= hm(b.ini) && hm(b.fin) <= hm(c))) errores.push(`${tag}: ${b.hora} ${b.nombre.slice(0, 40)} fuera de las ventanas de estudio del sábado (04:15-08:25 · 14:00-17:00 · 21:00-22:00)`);
+          if (!VENT.some(([a, c]) => hm(a) <= hm(b.ini) && hm(b.fin) <= hm(c))) errores.push(`${tag}: ${b.hora} ${b.nombre.slice(0, 40)} fuera de las ventanas de estudio del ${habil ? 'sábado hábil' : 'sábado'} (${VENT.map((x) => x.join('-')).join(' · ')})`);
           else if (F62.faseV6(iso) === 'F2' && b.id !== 'theomed-vivo' && hm(b.ini) < hm('17:00') && hm('15:00') < hm(b.fin)) errores.push(`${tag}: ${b.hora} ${b.nombre.slice(0, 40)} encima de la clase EN VIVO de Theomed (15:00-17:00, sábados de ene-mar)`);
         }
         // v6.08 (fix revisión 14-nov, est6): el sábado de F2 con clase (encapsManana.theomedSabadoDe) PINTA la clase: theomed-vivo 15:00-17:00 y, si
@@ -1282,6 +1285,8 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     let nSab = 0;
     for (let s = '2026-11-21'; s <= FVs.FECHAS_V6.transicion.hasta; s = (() => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })()) {
       const l = RG.aurumLSabadoDe(s); if (!l) continue; nSab++;
+      // v6.12 (mar 24-nov-2026): en un SÁBADO HÁBIL (corrida_s1.sabado_habil; Anki a las 05:00) la L va de 12:30 a 14:00, tras la mañana ENCAPS y antes de la revisión
+      if ((FVs.FECHAS_V6.corrida_s1.sabado_habil || []).includes(s)) { if (hm(l.ini) < hm('12:30') || hm(l.fin) > hm('14:00')) secErr.push(`(v610-s3) ${s} (sábado hábil): la L de AURUM ${l.ini}-${l.fin} fuera de 12:30-14:00`); continue; }
       if (hm(l.fin) > hm('05:45')) secErr.push(`(v610-s3) ${s}: la L de AURUM termina a las ${l.fin} (> 05:45, rutina)`);
       const vx = EX[s] && EX[s].vibecoding;
       if (vx) { const [vi, vf] = vx.split('-'); if (hm(l.fin) > hm(vi)) secErr.push(`(v610-s3) ${s}: la L de AURUM (${l.ini}-${l.fin}) pisa el vibecoding ${vx}`); if (hm(vf) - Math.max(hm(vi), hm(l.fin)) < 39) secErr.push(`(v610-s3) ${s}: el vibecoding queda con < 39′`); }

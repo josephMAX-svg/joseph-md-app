@@ -16,14 +16,14 @@
  * v6.09 (lun 16-nov-2026): corrimiento rígido del D1 lun 16-nov-2026 → mar 17-nov-2026 (perdidos: lun 16-nov).
  * v6.10 (mar 17-nov-2026): corrimiento rígido del D1 mar 17-nov-2026 → mié 18-nov-2026 (perdidos: mar 17-nov).
  * v6.10d (mié 18-nov-2026): SIN re-fecha — alias de corrida_s1 (el plan del mié 18-nov lo hace el jue 19-nov y cada hábil hasta el vie 1-ene hace el del anterior; las filas conservan su fecha de plan).
- * v6.11 (lun 23-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · jue 19-nov · vie 20-nov · sáb 21-nov · dom 22-nov · lun 23-nov · mar 24-nov = plan del mié 18-nov · mié 25-nov = plan del jue 19-nov · jue 26-nov = plan del vie 20-nov · vie 27-nov = plan del lun 23-nov · lun 30-nov = plan del mar 24-nov · mar 1-dic = plan del mié 25-nov · mié 2-dic = plan del jue 26-nov · jue 3-dic = plan del vie 27-nov · vie 4-dic = plan del lun 30-nov · lun 7-dic = plan del mar 1-dic · mar 8-dic = plan del mié 2-dic · mié 9-dic = plan del jue 3-dic · jue 10-dic = plan del vie 4-dic · vie 11-dic = plan del lun 7-dic · lun 14-dic = plan del mar 8-dic · mar 15-dic = plan del mié 9-dic · mié 16-dic = plan del jue 10-dic · jue 17-dic = plan del vie 11-dic · vie 18-dic = plan del lun 14-dic · lun 21-dic = plan del mar 15-dic · mar 22-dic = plan del mié 16-dic · mié 23-dic = plan del jue 17-dic · jue 24-dic = plan del vie 18-dic · vie 25-dic = plan del lun 21-dic · lun 28-dic = plan del mar 22-dic · mar 29-dic = plan del mié 23-dic · mié 30-dic = plan del jue 24-dic · jue 31-dic = plan del lun 28-dic · vie 1-ene = plan del mar 29-dic; ningún plan cambia de fecha.
- * mar 24-nov-2026 · alias propio de «vibecoding» (manda sobre el global en su consulta): mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic · dom 29-nov = el plan del lun 23-nov y el plan del mar 24-nov dentro del SHIP.
- * mar 24-nov-2026 · alias propio de «aurum» (manda sobre el global en su consulta): mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
- * mar 24-nov-2026 · alias propio de «business» (manda sobre el global en su consulta): mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
- * mar 24-nov-2026 · alias propio de «research-derma» (manda sobre el global en su consulta): mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
- * lun 23-nov-2026 · alias propio de «mir» (manda sobre el global en su consulta): lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
- * mar 24-nov-2026 · alias propio de «synapse» (manda sobre el global en su consulta): mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
- * lun 23-nov-2026 · alias propio de «liviano» (manda sobre el global en su consulta): lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * v6.12 (mar 24-nov-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · jue 19-nov · vie 20-nov · sáb 21-nov · dom 22-nov · lun 23-nov · mar 24-nov · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del lun 23-nov · mar 1-dic = plan del mar 24-nov · mié 2-dic = plan del mié 25-nov · jue 3-dic = plan del jue 26-nov · vie 4-dic = plan del vie 27-nov · lun 7-dic = plan del lun 30-nov · mar 8-dic = plan del mar 1-dic · mié 9-dic = plan del mié 2-dic · jue 10-dic = plan del jue 3-dic · vie 11-dic = plan del vie 4-dic · lun 14-dic = plan del lun 7-dic · mar 15-dic = plan del mar 8-dic · mié 16-dic = plan del mié 9-dic · jue 17-dic = plan del jue 10-dic · vie 18-dic = plan del vie 11-dic · lun 21-dic = plan del lun 14-dic · mar 22-dic = plan del mar 15-dic · mié 23-dic = plan del mié 16-dic · jue 24-dic = plan del jue 17-dic · vie 25-dic = plan del vie 18-dic · lun 28-dic = plan del mar 22-dic · mar 29-dic = plan del mié 23-dic · mié 30-dic = plan del jue 24-dic · jue 31-dic = plan del lun 28-dic · vie 1-ene = plan del mar 29-dic; ningún plan cambia de fecha.
+ * mar 24-nov-2026 · alias propio de «vibecoding» (manda sobre el global en su consulta): mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic · dom 29-nov = el plan del lun 23-nov y el plan del mar 24-nov dentro del SHIP.
+ * mar 24-nov-2026 · alias propio de «aurum» (manda sobre el global en su consulta): mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * mar 24-nov-2026 · alias propio de «business» (manda sobre el global en su consulta): mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mié 25-nov · mar 1-dic = plan del jue 26-nov · mié 2-dic = plan del vie 27-nov · jue 3-dic = plan del lun 30-nov · vie 4-dic = plan del mar 1-dic · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * mar 24-nov-2026 · alias propio de «research-derma» (manda sobre el global en su consulta): mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mar 24-nov · mar 1-dic = plan del mié 25-nov · mié 2-dic = plan del jue 26-nov · jue 3-dic = plan del vie 27-nov · vie 4-dic = plan del lun 30-nov · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * lun 23-nov-2026 · alias propio de «mir» (manda sobre el global en su consulta): lun 7-dic = plan del mar 1-dic · mar 8-dic = plan del mié 2-dic · mié 9-dic = plan del jue 3-dic · jue 10-dic = plan del vie 4-dic · vie 11-dic = plan del lun 7-dic · lun 14-dic = plan del mar 8-dic · mar 15-dic = plan del mié 9-dic · mié 16-dic = plan del jue 10-dic · jue 17-dic = plan del vie 11-dic · vie 18-dic = plan del lun 14-dic · lun 21-dic = plan del mar 15-dic · mar 22-dic = plan del mié 16-dic · mié 23-dic = plan del jue 17-dic · jue 24-dic = plan del vie 18-dic · vie 25-dic = plan del lun 21-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * mar 24-nov-2026 · alias propio de «synapse» (manda sobre el global en su consulta): mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del mar 24-nov · mar 1-dic = plan del mié 25-nov · mié 2-dic = plan del jue 26-nov · jue 3-dic = plan del vie 27-nov · vie 4-dic = plan del lun 30-nov · lun 7-dic = plan del mié 2-dic · mar 8-dic = plan del jue 3-dic · mié 9-dic = plan del vie 4-dic · jue 10-dic = plan del lun 7-dic · vie 11-dic = plan del mar 8-dic · lun 14-dic = plan del mié 9-dic · mar 15-dic = plan del jue 10-dic · mié 16-dic = plan del vie 11-dic · jue 17-dic = plan del lun 14-dic · vie 18-dic = plan del mar 15-dic · lun 21-dic = plan del mié 16-dic · mar 22-dic = plan del jue 17-dic · mié 23-dic = plan del vie 18-dic · jue 24-dic = plan del lun 21-dic · vie 25-dic = plan del mar 22-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
+ * lun 23-nov-2026 · alias propio de «liviano» (manda sobre el global en su consulta): lun 7-dic = plan del mar 1-dic · mar 8-dic = plan del mié 2-dic · mié 9-dic = plan del jue 3-dic · jue 10-dic = plan del vie 4-dic · vie 11-dic = plan del lun 7-dic · lun 14-dic = plan del mar 8-dic · mar 15-dic = plan del mié 9-dic · mié 16-dic = plan del jue 10-dic · jue 17-dic = plan del vie 11-dic · vie 18-dic = plan del lun 14-dic · lun 21-dic = plan del mar 15-dic · mar 22-dic = plan del mié 16-dic · mié 23-dic = plan del jue 17-dic · jue 24-dic = plan del vie 18-dic · vie 25-dic = plan del lun 21-dic · lun 28-dic = plan del mié 23-dic · mar 29-dic = plan del jue 24-dic · mié 30-dic = plan del lun 28-dic · jue 31-dic = plan del mar 29-dic · vie 1-ene = plan del mié 30-dic.
  * Versión vigente del JSON: v6.10.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -87,6 +87,8 @@ export interface FechasV6 {
     /** v6.11 (mar 24-nov): la CONFIGURACIÓN del Anki USMLE que no se hizo el día real `no_hecha`: el preset, delante en el Anki del D2; el vídeo FSRS + el manual,
      *  en `fsrs` (fin de semana a hora fija). La aplica gen_usmle_guia.js (USMLE_FIJO) */
     config_anki?: { decidido: string; motivo: string; no_hecha: string; fsrs: { fecha: string; hora: string } };
+    /** v6.12 (mar 24-nov): sábados que pasan a ser un día de estudio completo (sin gimnasio ni baile): sus extras, de 04:15 a 20:30 */
+    sabado_habil?: string[];
   };
 }
 export const FECHAS_V6: FechasV6 = {
@@ -346,9 +348,9 @@ export const FECHAS_V6: FechasV6 = {
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-11-23",
-    "version": "v6.11",
-    "motivo": "v6.09 (lun 16-nov-2026): el lun 16 no se estudió y el sáb 21 y el dom 22-nov son libres (viaje). Esta capa solo marca los días sin sesión; los planes ya están re-fechados (D1 mar 17-nov; el jue 31-dic recupera el día perdido). v6.09 (mar 17-nov): el dom 22 es DOMINGO DE LLEGADA: sigue sin sesión para los planes, pero desde las 14:00 lleva la recuperación fija del viaje (ENCAPS 15:00-16:30) (encapsManana: domingos[].llegada). v6.09b (mar 17-nov, auditoría tiempo ↔ material): + la revisión semanal S01 a las 14:30 y el SYNAPSE de recuperación (el del lun 16 y el sáb 21) a las 16:30; sin Anki ese día. v6.10 (mar 17-nov): el mar 17 tampoco se estudió; todo arranca el mié 18. v6.10c (decisión de Joseph, 17:20): cada plan corre un hábil hasta fin de año y su última sesión de F1 va el sáb 2-ene a hora fija (extra; el SYNAPSE de recuperación, el dom 3-ene 05:00), sin recuperación por partes. v6.10b (decisión 4 de Joseph, 17:05): el Step 1 no corre: el jue 19 es su D2 en NIVEL 0, el UWSA1 pasa al tramo 2 (T82 mar 29-jun-2027) y D2-D13 siguen en sus fechas de la v6.09. v6.10u (jue 19-nov, orden de Joseph a las 11:40: «mueve 1 día el calendario … solo puedes correr y se alargan los tiempos, no hay necesidad de una reestructuración … todo inicia el 20»; «que no haya dos programaciones para el mismo día, que se cumpla toda la programación, que no se omita nada»): el jue 19 tampoco cuenta (lo que se haga es adelanto) y la mañana ENCAPS 1/21 se repite entera el vie 20. Desde el vie 20 cada hábil hace el plan de dos hábiles antes (= el que tenía su hábil real anterior) y el vie 25-dic, el único hábil libre hasta fin de año, pasa a tener sesión (el plan del mié 23-dic; como fecha de plan sigue siendo SKIP/feriado); desde el lun 28-dic, igual que antes, y 2027 sin cambio. El vibecoding ya no lleva alias propio (el global le da paso 1 el vie 20 … paso 5 el jue 26 y el SHIP S1 del dom 29 vuelve a ser solo SHIP). v6.10w (dom 22-nov, orden de Joseph: «todo inicia a partir del 23; corre lo que tengas que correr»): el vie 20 tampoco tuvo sesión → desde el lun 23 cada día real hace el plan que la v6.10u le daba a su hábil real anterior (lun 23 = plan mié 18 … vie 1-ene = plan mié 30-dic). El plan del jue 31-dic, que se queda sin día real, va por frente a la primera holgura de cada uno (extra { hora, plan }): sáb 2-ene a hora fija (16:15 ENCAPS, MIR, AURUM, LIVIANO, Business; el SYNAPSE a las 21:00) y lo del sáb 2-ene al dom 3-ene; Derma d17 el dom 3; la mañana 20/21 el mar 5-ene y la 21/21 el mié 6 (en lugar del calentamiento V-2); el ENCAPS 16:15 del sáb 2 y la SP 6/11 en la holgura del RE-SCAN del lun 4; el vibecoding S7 repartido en su semana deload. El dom 22 deja de ser domingo de llegada: el SYNAPSE corre una sesión en la semana 1 (la última, dom 29 05:00), la recuperación ENCAPS del viaje va el dom 29 07:15-08:45 y la revisión S01 va con la S02 el sáb 28 14:00. v6.11 (lun 23-nov, orden de Joseph a las 11:20: «a partir del día 24 con ENCAPS iniciamos todo … con el mínimo esfuerzo, solamente moviendo un día todo a partir del día de mañana»): el lun 23 tampoco cuenta (lo que hizo de la mañana ENCAPS —teoría INV S1-S3 y post-tests, 10:00-12:00— es adelanto: la mañana 1/21 se repite entera el mar 24). Desde el mar 24 cada hábil real hace el plan que la v6.10w le daba a su hábil real anterior (mar 24 = plan mié 18 … vie 1-ene = plan mar 29-dic); el plan del mié 30-dic se queda sin día real (lo coloca otra ronda) y el del jue 31-dic sigue repartido como en la v6.10w (extra del sáb 2, dom 3 y lun 4-ene). Se deshacen las recolocaciones de la mañana ENCAPS del lun 23 (sáb 28 y dom 29: _meta.no_cupo sin entradas) y el reparto de la configuración del Anki (vuelve entera al mar 24 05:00). El vibecoding conserva su alineación semanal (alias_frente). Desde el lun 4-ene, 2027 igual. v6.11 fase 2 (lun 23-nov): el plan del mié 30-dic tiene día por frente. ENCAPS: la mañana 19/21 (simulacro de cierre) el mar 5-ene, la 20/21 el mié 6 y la 21/21 el jue 7 (en lugar del calentamiento II-3, que va entero al dom 17-ene 07:15-13:30); su 16:15 (D30) el sáb 2-ene 04:30, el D31 el lun 4-ene 09:45 y el D32 el dom 24-ene 07:15-08:15 (extra { hora, plan }); el Anki es cola FSRS. Los planes de la tarde recuperan su día en un fin de semana y vuelven al alias de la v6.10w (alias_frente): AURUM y Business el sáb 28-nov (desde el lun 30), Research ↔ Derma y MIR el sáb 5-dic, SYNAPSE en cadena (sáb 5 21:00 = plan del mar 1-dic; dom 6 05:00 = la sesión del sáb 5) y LIVIANO el dom 6-dic (desde el lun 7); su plan del 30-dic, el vie 1-ene a su hora. v6.11 (mar 24-nov, orden de Joseph de las 10:00-10:07: hoy solo ENCAPS): el mar 24 no tiene SYNAPSE, Business, Research ↔ Derma ni AURUM (alias_frente[frente].sin_sesion); cada uno corre un día dentro de su frente (mié 25 = su plan del mié 18 … vie 27 = el del vie 20) y el fin de semana del 28-29 absorbe ese día a hora fija (corrida_s1.extra; SYNAPSE con su cadena): desde el lun 30, todo como estaba. Ningún otro frente cambia. Remate r24: el dom 29 tiene un compromiso personal de 12:30 a 14:00 → Business 14:00-14:40 y AURUM 14:40-15:40 (su L, 15:40-15:55; la L no cae entre las 14:15 y las 15:15, que la app corre con la hora del bloque de AURUM del sáb 28); ese domingo los bloques flexibles (ENCAPS 3 h 30′, SHIP 2 h, Feynman) ya no caben enteros en lo que queda de la ventana (≈47′ de menos): decide Joseph qué se recorta.",
+    "decidido": "2026-11-24",
+    "version": "v6.12",
+    "motivo": "v6.09 (lun 16-nov-2026): el lun 16 no se estudió y el sáb 21 y el dom 22-nov son libres (viaje). Esta capa solo marca los días sin sesión; los planes ya están re-fechados (D1 mar 17-nov; el jue 31-dic recupera el día perdido). v6.09 (mar 17-nov): el dom 22 es DOMINGO DE LLEGADA: sigue sin sesión para los planes, pero desde las 14:00 lleva la recuperación fija del viaje (ENCAPS 15:00-16:30) (encapsManana: domingos[].llegada). v6.09b (mar 17-nov, auditoría tiempo ↔ material): + la revisión semanal S01 a las 14:30 y el SYNAPSE de recuperación (el del lun 16 y el sáb 21) a las 16:30; sin Anki ese día. v6.10 (mar 17-nov): el mar 17 tampoco se estudió; todo arranca el mié 18. v6.10c (decisión de Joseph, 17:20): cada plan corre un hábil hasta fin de año y su última sesión de F1 va el sáb 2-ene a hora fija (extra; el SYNAPSE de recuperación, el dom 3-ene 05:00), sin recuperación por partes. v6.10b (decisión 4 de Joseph, 17:05): el Step 1 no corre: el jue 19 es su D2 en NIVEL 0, el UWSA1 pasa al tramo 2 (T82 mar 29-jun-2027) y D2-D13 siguen en sus fechas de la v6.09. v6.10u (jue 19-nov, orden de Joseph a las 11:40: «mueve 1 día el calendario … solo puedes correr y se alargan los tiempos, no hay necesidad de una reestructuración … todo inicia el 20»; «que no haya dos programaciones para el mismo día, que se cumpla toda la programación, que no se omita nada»): el jue 19 tampoco cuenta (lo que se haga es adelanto) y la mañana ENCAPS 1/21 se repite entera el vie 20. Desde el vie 20 cada hábil hace el plan de dos hábiles antes (= el que tenía su hábil real anterior) y el vie 25-dic, el único hábil libre hasta fin de año, pasa a tener sesión (el plan del mié 23-dic; como fecha de plan sigue siendo SKIP/feriado); desde el lun 28-dic, igual que antes, y 2027 sin cambio. El vibecoding ya no lleva alias propio (el global le da paso 1 el vie 20 … paso 5 el jue 26 y el SHIP S1 del dom 29 vuelve a ser solo SHIP). v6.10w (dom 22-nov, orden de Joseph: «todo inicia a partir del 23; corre lo que tengas que correr»): el vie 20 tampoco tuvo sesión → desde el lun 23 cada día real hace el plan que la v6.10u le daba a su hábil real anterior (lun 23 = plan mié 18 … vie 1-ene = plan mié 30-dic). El plan del jue 31-dic, que se queda sin día real, va por frente a la primera holgura de cada uno (extra { hora, plan }): sáb 2-ene a hora fija (16:15 ENCAPS, MIR, AURUM, LIVIANO, Business; el SYNAPSE a las 21:00) y lo del sáb 2-ene al dom 3-ene; Derma d17 el dom 3; la mañana 20/21 el mar 5-ene y la 21/21 el mié 6 (en lugar del calentamiento V-2); el ENCAPS 16:15 del sáb 2 y la SP 6/11 en la holgura del RE-SCAN del lun 4; el vibecoding S7 repartido en su semana deload. El dom 22 deja de ser domingo de llegada: el SYNAPSE corre una sesión en la semana 1 (la última, dom 29 05:00), la recuperación ENCAPS del viaje va el dom 29 07:15-08:45 y la revisión S01 va con la S02 el sáb 28 14:00. v6.11 (lun 23-nov, orden de Joseph a las 11:20: «a partir del día 24 con ENCAPS iniciamos todo … con el mínimo esfuerzo, solamente moviendo un día todo a partir del día de mañana»): el lun 23 tampoco cuenta (lo que hizo de la mañana ENCAPS —teoría INV S1-S3 y post-tests, 10:00-12:00— es adelanto: la mañana 1/21 se repite entera el mar 24). Desde el mar 24 cada hábil real hace el plan que la v6.10w le daba a su hábil real anterior (mar 24 = plan mié 18 … vie 1-ene = plan mar 29-dic); el plan del mié 30-dic se queda sin día real (lo coloca otra ronda) y el del jue 31-dic sigue repartido como en la v6.10w (extra del sáb 2, dom 3 y lun 4-ene). Se deshacen las recolocaciones de la mañana ENCAPS del lun 23 (sáb 28 y dom 29: _meta.no_cupo sin entradas) y el reparto de la configuración del Anki (vuelve entera al mar 24 05:00). El vibecoding conserva su alineación semanal (alias_frente). Desde el lun 4-ene, 2027 igual. v6.11 fase 2 (lun 23-nov): el plan del mié 30-dic tiene día por frente. ENCAPS: la mañana 19/21 (simulacro de cierre) el mar 5-ene, la 20/21 el mié 6 y la 21/21 el jue 7 (en lugar del calentamiento II-3, que va entero al dom 17-ene 07:15-13:30); su 16:15 (D30) el sáb 2-ene 04:30, el D31 el lun 4-ene 09:45 y el D32 el dom 24-ene 07:15-08:15 (extra { hora, plan }); el Anki es cola FSRS. Los planes de la tarde recuperan su día en un fin de semana y vuelven al alias de la v6.10w (alias_frente): AURUM y Business el sáb 28-nov (desde el lun 30), Research ↔ Derma y MIR el sáb 5-dic, SYNAPSE en cadena (sáb 5 21:00 = plan del mar 1-dic; dom 6 05:00 = la sesión del sáb 5) y LIVIANO el dom 6-dic (desde el lun 7); su plan del 30-dic, el vie 1-ene a su hora. v6.11 (mar 24-nov, orden de Joseph de las 10:00-10:07: hoy solo ENCAPS): el mar 24 no tiene SYNAPSE, Business, Research ↔ Derma ni AURUM (alias_frente[frente].sin_sesion); cada uno corre un día dentro de su frente (mié 25 = su plan del mié 18 … vie 27 = el del vie 20) y el fin de semana del 28-29 absorbe ese día a hora fija (corrida_s1.extra; SYNAPSE con su cadena): desde el lun 30, todo como estaba. Ningún otro frente cambia. Remate r24: el dom 29 tiene un compromiso personal de 12:30 a 14:00 → Business 14:00-14:40 y AURUM 14:40-15:40 (su L, 15:40-15:55; la L no cae entre las 14:15 y las 15:15, que la app corre con la hora del bloque de AURUM del sáb 28); ese domingo los bloques flexibles (ENCAPS 3 h 30′, SHIP 2 h, Feynman) ya no caben enteros en lo que queda de la ventana (≈47′ de menos): decide Joseph qué se recorta. v6.12 (mar 24-nov-2026 ≈13:35, orden de Joseph: «comenzamos a partir de mañana… no quiero reestructuración… solamente corre un día en todo… rellena ese espacio»): el mar 24 tampoco se estudió → sin_sesion += mar 24 y el alias GLOBAL (mañana ENCAPS/USMLE 07:15, Anki 05:00, ENCAPS 16:15 y 18:00) corre un hábil más: mié 25-nov = plan del mié 18 … vie 25-dic = plan del vie 18-dic. Como no queda ningún hábil libre hasta el 1-ene, Joseph eligió que el SÁB 26-DIC sea un día de estudio completo, sin gimnasio ni baile (corrida_s1.sabado_habil; gen_fechas_v6.planSabadoHabilDe = el hábil de plan que el alias deja sin día): hace el plan del lun 21-dic a sus horas de L-V (plantillasV6 › bloquesSabadoHabil) con la revisión semanal, el cierre de Business, la L de AURUM (12:30, rutinaGuia) y el hueco del SYNAPSE (04:15, synapse_f1_tramos); desde el lun 28-dic (= plan del mar 22-dic) nada cambia. Los frentes con alias propio que ya tenían el mar 24 sin sesión (vibecoding, SYNAPSE, Business, Research ↔ Derma, AURUM) no cambian (sus días del 30-nov al 4-dic se fijaron a su alias v6.11). MIR y LIVIANO corren un día con el global hasta el vie 4-dic, su recuperación de fin de semana (sáb 5-dic MIR · dom 6-dic LIVIANO) hace el plan del lun 30-nov, del lun 7 al vie 25-dic su alias propio va un día detrás (lun 7 = plan del mar 1-dic … vie 25 = plan del lun 21-dic) y el sáb 26-dic hacen el del mar 22-dic (corrida_s1.extra). Sin config_anki: la configuración del Anki USMLE se hace entera el mié 25 (plan del mié 18) y el D2 (jue 26, el mismo día del redeploy del parser) dicta sus tarjetas al chat USMLE (gen_usmle_guia.js › DICTA_DIA_REDEPLOY). ENCAPS: diaActual no cuenta el sábado hábil como fila de fin de semana (es la del lun 21-dic); los restos de la SP 1/11 y la CI 1/8 pasan al dom 20-dic y al dom 3-ene y el Theoesencial CI del dom 6-dic al dom 13-dic (sus mañanas se hacen después de esos domingos). Supabase y los runners siguen con la fecha de plan.",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -385,33 +387,33 @@ export const FECHAS_V6: FechasV6 = {
       "2026-11-20",
       "2026-11-21",
       "2026-11-22",
-      "2026-11-23"
+      "2026-11-23",
+      "2026-11-24"
     ],
     "alias": {
-      "2026-11-24": "2026-11-18",
-      "2026-11-25": "2026-11-19",
-      "2026-11-26": "2026-11-20",
-      "2026-11-27": "2026-11-23",
-      "2026-11-30": "2026-11-24",
-      "2026-12-01": "2026-11-25",
-      "2026-12-02": "2026-11-26",
-      "2026-12-03": "2026-11-27",
-      "2026-12-04": "2026-11-30",
-      "2026-12-07": "2026-12-01",
-      "2026-12-08": "2026-12-02",
-      "2026-12-09": "2026-12-03",
-      "2026-12-10": "2026-12-04",
-      "2026-12-11": "2026-12-07",
-      "2026-12-14": "2026-12-08",
-      "2026-12-15": "2026-12-09",
-      "2026-12-16": "2026-12-10",
-      "2026-12-17": "2026-12-11",
-      "2026-12-18": "2026-12-14",
-      "2026-12-21": "2026-12-15",
-      "2026-12-22": "2026-12-16",
-      "2026-12-23": "2026-12-17",
-      "2026-12-24": "2026-12-18",
-      "2026-12-25": "2026-12-21",
+      "2026-11-25": "2026-11-18",
+      "2026-11-26": "2026-11-19",
+      "2026-11-27": "2026-11-20",
+      "2026-11-30": "2026-11-23",
+      "2026-12-01": "2026-11-24",
+      "2026-12-02": "2026-11-25",
+      "2026-12-03": "2026-11-26",
+      "2026-12-04": "2026-11-27",
+      "2026-12-07": "2026-11-30",
+      "2026-12-08": "2026-12-01",
+      "2026-12-09": "2026-12-02",
+      "2026-12-10": "2026-12-03",
+      "2026-12-11": "2026-12-04",
+      "2026-12-14": "2026-12-07",
+      "2026-12-15": "2026-12-08",
+      "2026-12-16": "2026-12-09",
+      "2026-12-17": "2026-12-10",
+      "2026-12-18": "2026-12-11",
+      "2026-12-21": "2026-12-14",
+      "2026-12-22": "2026-12-15",
+      "2026-12-23": "2026-12-16",
+      "2026-12-24": "2026-12-17",
+      "2026-12-25": "2026-12-18",
       "2026-12-28": "2026-12-22",
       "2026-12-29": "2026-12-23",
       "2026-12-30": "2026-12-24",
@@ -649,7 +651,7 @@ export const FECHAS_V6: FechasV6 = {
         }
       ]
     },
-    "resumen": "Orden del lun 23-nov («a partir del día 24 iniciamos todo»): del lun 16 al lun 23 no hubo sesión (lo que hiciste el lun 23 de la mañana ENCAPS es adelanto). Desde el MAR 24 cada día hábil hace el plan que le toca en orden, con sus hitos (mar 24 = el del mié 18: la mañana ENCAPS 1/21 entera (la configuración del Anki de las 05:00 no se hizo: el preset va delante en el Anki del mié 25 a las 05:00 y «Anki Almost Broke Me…» con el manual FSRS, el dom 6-dic a las 10:10); mié 25 = el D2 del Step 1 en nivel 0, con sus tarjetas dictadas al chat USMLE: el redeploy del vibecoding y su [TEST S1] van el jue 26), y el vie 25-dic tiene sesión, hasta el vie 1-ene. Los planes de la tarde recuperan su día en un fin de semana y vuelven a sus fechas: AURUM y Business el sáb 28-nov; Research ↔ Derma, MIR y SYNAPSE el sáb 5-dic; SYNAPSE y LIVIANO el dom 6-dic. El mar 24 (orden de las 10:00: hoy solo ENCAPS) no tiene SYNAPSE, Business, Research ↔ Derma ni AURUM: cada uno corre un día dentro de su frente (el mié 25 hace su plan del mié 18) y lo recupera ese fin de semana a hora fija: SYNAPSE sáb 28 04:15; AURUM sáb 28 04:45 y dom 29 14:40 (y su L de la semana a las 15:40); Business sáb 28 07:15 y su OUTPUT S1 entero el dom 29 14:00; Research ↔ Derma sáb 28 07:40. Desde el lun 30, como estaba. Desde el lun 7-dic la mañana, las 16:15, las 18:00 y el Anki hacen el plan de un día y las 04:15 y la tarde, el del día siguiente. El vibecoding sigue su semana (SHIP los domingos): el mar 24 sin vibecoding, S1 del mié 25 al vie 27 y sus pasos 4 y 5 dentro del SHIP del dom 29. Las 3 últimas mañanas ENCAPS de F1, sin día en diciembre, van el mar 5-ene (19/21: el simulacro de cierre, plan del mié 30-dic), el mié 6 (20/21: la del plan del jue 31-dic) y el jue 7 (21/21), con el calentamiento II-3 entero el dom 17-ene 07:15-13:30. El ENCAPS de las 16:15 del plan del mié 30-dic va el sáb 2-ene a las 04:30 (el del jue 31-dic, el lun 4-ene a las 09:45, y el del sáb 2-ene, el dom 24-ene a las 07:15); los planes de la tarde del mié 30-dic, el vie 1-ene a sus horas. Los del jue 31-dic van el sáb 2-ene a hora fija y lo del sáb 2-ene, el dom 3-ene, salvo Research ↔ Derma (el del jue 31-dic, el dom 3-ene a las 10:45). La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
+    "resumen": "Orden del mar 24-nov (v6.12, «comenzamos a partir de mañana… solo corre un día»): del lun 16 al mar 24-nov no hubo sesión (lo que hiciste el lun 23 de la mañana ENCAPS es adelanto). Desde el MIÉ 25-nov cada hábil hace el plan del hábil anterior, en orden y con sus hitos (mié 25 = el del mié 18: la mañana ENCAPS 1/21 y la configuración del Anki a las 05:00, entera; jue 26 = el D2 del Step 1 en nivel 0, el mismo día que el redeploy del vibecoding de las 04:15: sus tarjetas se dictan al chat USMLE), hasta el vie 25-dic, que tiene sesión. El SÁB 26-DIC es un día hábil completo, sin gimnasio ni baile: el plan del lun 21-dic (Anki 05:00, mañana ENCAPS 07:15-12:00, ENCAPS 16:15 y 18:00) con MIR y LIVIANO del mar 22-dic, la L de AURUM a las 12:30, la revisión semanal a las 14:00 y el cierre de Business a las 14:30. Desde el lun 28-dic nada cambia. MIR y LIVIANO corren un día con la mañana hasta el vie 4-dic, recuperan el plan del lun 30-nov el sáb 5-dic (MIR 07:15) y el dom 6-dic (LIVIANO 07:15) y desde el lun 7-dic hacen el plan del hábil siguiente al de la mañana. El vibecoding, SYNAPSE, Business, Research ↔ Derma y AURUM no cambian: el mar 24 no tuvieron sesión, el mié 25 hacen su plan del mié 18 y recuperan su día a hora fija (SYNAPSE sáb 28 04:15; AURUM sáb 28 04:45 y dom 29 14:40, con su L de la semana a las 15:40; Business sáb 28 07:15 y su OUTPUT S1 entero el dom 29 14:00; Research ↔ Derma sáb 28 07:40 y sáb 5-dic 05:00; SYNAPSE también sáb 5-dic 21:00 y dom 6-dic 05:00); el vibecoding hace S1 del mié 25 al vie 27 y sus pasos 4 y 5 dentro del SHIP del dom 29. Las 3 últimas mañanas ENCAPS de F1 van el mar 5-ene (19/21: el simulacro de cierre, plan del mié 30-dic), el mié 6 (20/21) y el jue 7 (21/21), con el calentamiento II-3 entero el dom 17-ene 07:15-13:30. El ENCAPS de las 16:15 del plan del mié 30-dic va el sáb 2-ene a las 04:30 (el del jue 31-dic, el lun 4-ene a las 09:45, y el del sáb 2-ene, el dom 24-ene a las 07:15); los planes de la tarde del mié 30-dic, el vie 1-ene a sus horas. Los del jue 31-dic van el sáb 2-ene a hora fija y lo del sáb 2-ene, el dom 3-ene, salvo Research ↔ Derma (el del jue 31-dic, el dom 3-ene a las 10:45). La recuperación ENCAPS del viaje va el dom 29-nov a las 07:15. Examen ENCAPS dom 14-mar y Step 1 lun 6-dic-2027 sin cambio.",
     "notas": {
       "2026-11-16": [
         "Hoy lunes, sin sesión. La clase en vivo de Theomed de hoy (19:30, INV 2/4) va en diferido: el PPT el domingo 29-nov a las 07:15 (bloque fijo de recuperación del viaje) y la grabación, 30′ de tramos útiles en la mañana ENCAPS que la lleva; el resto, en audio en tiempos muertos."
@@ -713,14 +715,28 @@ export const FECHAS_V6: FechasV6 = {
         },
         "mir": {
           "hora": "07:15-08:15",
-          "plan": "2026-12-01"
+          "plan": "2026-11-30"
         }
       },
       "2026-12-06": {
         "synapse": "05:00-05:30",
         "liviano": {
           "hora": "07:15-08:00",
-          "plan": "2026-12-01"
+          "plan": "2026-11-30"
+        }
+      },
+      "2026-12-26": {
+        "mir": {
+          "hora": "15:15-16:15",
+          "plan": "2026-12-22"
+        },
+        "encaps": {
+          "hora": "16:15-17:15",
+          "plan": "2026-12-21"
+        },
+        "liviano": {
+          "hora": "17:15-18:00",
+          "plan": "2026-12-22"
         }
       },
       "2027-01-02": {
@@ -787,9 +803,6 @@ export const FECHAS_V6: FechasV6 = {
       "vibecoding": {
         "decidido": "2026-11-24",
         "motivo": "Lun 23-nov-2026 (chat de plan, comprobado por los chats de vibecoding y USMLE): las sesiones de las 04:15 y de las 05:00 no se hicieron; la de las 04:15 era el paso 1 de S1 (plan del mié 18: test del parser, respaldo del n8n vivo y qué se pega; sin pegar ni publicar). Regla de un día que empieza tarde: lo de antes pasa a la próxima sesión de SU frente, sin cascada a otros frentes. Solo el vibecoding S1 corre una sesión, dentro de su semana: paso 1 el mar 24, paso 2 el mié 25 (redeploy + Publish como tarde a las 04:40 + [TEST S1]), paso 3 el jue 26, paso 4 el vie 27 y el paso 5 (commit [S1] + verify 1) PRIMERO dentro del SHIP S1 del dom 29 (en_ship: domingo → fecha de plan del paso que absorbe su SHIP; el SHIP es flexible, 2 h, y se hace con lo que quede). El lun 23 real hizo el plan del mié 18 por el alias global y su texto no se reescribe. Desde el lun 30 (S2 paso 1 = plan del mié 25) manda el alias global: de S2 en adelante no cambia nada; los demás frentes siguen siempre con el alias global. El journal de S1 sigue en 2026-W48 (semana ISO de sus días reales). La CONFIGURACIÓN del Anki de las 05:00 (frente USMLE) va repartida, sin cascada: el preset, delante en el Anki del D2 (mar 24, 05:00-05:30; «The ONLY Video…» sigue con su corte de siempre) y el manual FSRS + «Anki Almost Broke Me…» entero, el sáb 28 04:45-05:30 (hueco libre): eso lo hace gen_usmle_guia.js (USMLE_FIJO_SAB), sin alias. v6.11 (lun 23-nov, orden de Joseph «a partir del día 24 iniciamos todo»): el lun 23 queda sin sesión y el alias global corre un hábil más; el vibecoding conserva su alineación semanal (SHIP los domingos): S1 igual (mar 24 paso 1 … vie 27 paso 4, el paso 5 dentro del SHIP del dom 29) y desde el lun 30 su alias es el global de la v6.10w (lun 30 = plan del mié 25 … vie 1-ene = plan del mié 30-dic): el vibecoding no corre desde el lun 30. La CONFIGURACIÓN del Anki vuelve entera al mar 24 05:00 (la fila del mié 18) y el D2 del mié 25 vuelve a llevar la [TEST S1] de las 04:15 del mismo día (sin bloque del sáb 28). Mar 24-nov-2026 (chats de vibecoding y USMLE, opción A; manda sobre lo anterior): el paso 1 de S1 tampoco se hizo el mar 24 a las 04:15 → el mar 24 queda SIN vibecoding (sin_sesion) y S1 corre un día más DENTRO de su semana, sin cascada a otros frentes: paso 1 (plan del mié 18) el mié 25, paso 2 (plan del jue 19: redeploy + Publish + [TEST S1]) el jue 26, paso 3 (plan del vie 20) el vie 27 y los pasos 4 (plan del lun 23) y 5 (plan del mar 24) PRIMERO dentro del SHIP S1 del dom 29, en ese orden y después el SHIP (en_ship admite una lista de fechas de plan; el SHIP es flexible, 2 h, y se hace con lo que quede). Desde el lun 30 no cambia nada. El D2 USMLE del mié 25 va un día real antes del redeploy del parser (jue 26): sus tarjetas APEX se dictan al chat USMLE (gen_usmle_guia.js › antesRedeploy).",
-        "sin_sesion": [
-          "2026-11-24"
-        ],
         "alias": {
           "2026-11-25": "2026-11-18",
           "2026-11-26": "2026-11-19",
@@ -830,9 +843,6 @@ export const FECHAS_V6: FechasV6 = {
       "aurum": {
         "decidido": "2026-11-24",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. AURUM y Business recuperan ese hábil el sáb 28-nov a hora fija (corrida_s1.extra: AURUM 04:30-05:30 y Business 07:15-07:40, el plan del mar 24-nov; Business hace su OUTPUT S1 1/2 justo antes de su cierre de las 07:45) y desde el lun 30-nov vuelven al alias de la v6.10w (lun 30 = plan del mié 25 … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 30 al vie 1-ene hacen exactamente lo que ya tiene el Calendar. Mar 24-nov-2026 (orden de Joseph de las 10:00-10:07: «hoy solo ENCAPS … hoy no derma ni aurum … quita synapse, business … mañana recién van a comenzar»; el Calendar de hoy ya los borró a mano): el mar 24 queda SIN AURUM (sin_sesion) y AURUM corre un día DENTRO de su frente, sin cascada a otros frentes ni compactar: mié 25 = plan del mié 18 (D1), jue 26 = el del jue 19, vie 27 = el del vie 20, sáb 28 04:45-05:45 = el del lun 23 (D4; su recuperación de siempre, 15′ más tarde por el SYNAPSE de las 04:15) y el dom 29 14:40-15:40 (tras el compromiso personal de las 12:30-14:00 y el OUTPUT de Business) = el del mar 24 (D5), con la «L de la semana» (lo que no cupo a las 14:15 del mié 25 al sáb 28) detrás, 15:40-15:55 (rutinaGuia.aurumF1: el sáb 28 ya no tiene sitio para ella). Desde el lun 30 (plan del mié 25) nada cambia; la L del sáb 5-dic sigue en 04:15-04:56.",
-        "sin_sesion": [
-          "2026-11-24"
-        ],
         "alias": {
           "2026-11-25": "2026-11-18",
           "2026-11-26": "2026-11-19",
@@ -867,9 +877,6 @@ export const FECHAS_V6: FechasV6 = {
       "business": {
         "decidido": "2026-11-24",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. AURUM y Business recuperan ese hábil el sáb 28-nov a hora fija (corrida_s1.extra: AURUM 04:30-05:30 y Business 07:15-07:40, el plan del mar 24-nov; Business hace su OUTPUT S1 1/2 justo antes de su cierre de las 07:45) y desde el lun 30-nov vuelven al alias de la v6.10w (lun 30 = plan del mié 25 … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 30 al vie 1-ene hacen exactamente lo que ya tiene el Calendar. Mar 24-nov-2026 (orden de Joseph de las 10:00-10:07: «hoy solo ENCAPS … hoy no derma ni aurum … quita synapse, business … mañana recién van a comenzar»; el Calendar de hoy ya los borró a mano): el mar 24 queda SIN Business (sin_sesion) y Business corre un día DENTRO de su frente, sin cascada a otros frentes ni compactar: mié 25 = plan del mié 18, jue 26 = el del jue 19, vie 27 = el del vie 20, sáb 28 07:15-07:40 = el del lun 23 (In Defense of Food parte 3, la última lectura del módulo) y el OUTPUT S1 (plan del mar 24) va ENTERO el dom 29 14:00-14:40, al terminar el compromiso personal de las 12:30-14:00 (escribir 25′ + fila del tracker de su semana 10′ + releer y cerrar 4′: el sáb 28 no tiene hueco para el OUTPUT y su cierre, y el cierre del sáb 5-dic tampoco: R↔D 05:00 y MIR 07:15 a hora fija). El sáb 28 Business lleva además, como ya tocaba, la fila del tracker de la semana del lun 16 (14:30-14:40, tras la revisión). Desde el lun 30 (plan del mié 25) nada cambia; el cierre del sáb 5-dic sigue siendo el del OUTPUT S2 (14:30-14:45).",
-        "sin_sesion": [
-          "2026-11-24"
-        ],
         "alias": {
           "2026-11-25": "2026-11-18",
           "2026-11-26": "2026-11-19",
@@ -904,13 +911,15 @@ export const FECHAS_V6: FechasV6 = {
       "research-derma": {
         "decidido": "2026-11-24",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. Research ↔ Derma recupera ese hábil el sáb 5-dic 05:00-05:45 (corrida_s1.extra: el plan del mar 1-dic, Research M2) y desde el lun 7-dic vuelve al alias de la v6.10w (lun 7 = plan del mié 2-dic … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 7 al vie 1-ene hace exactamente lo que ya tiene el Calendar. Mar 24-nov-2026 (orden de Joseph de las 10:00-10:07: «hoy solo ENCAPS … hoy no derma ni aurum … quita synapse, business … mañana recién van a comenzar»; el Calendar de hoy ya los borró a mano): el mar 24 queda SIN Research ↔ Derma (sin_sesion) y R↔D corre un día DENTRO de su frente, sin cascada a otros frentes ni compactar: mié 25 = plan del mié 18 (Derma d1), jue 26 = el del jue 19 (Research M1), vie 27 = el del vie 20 (Derma d2) y el sáb 28 07:40-08:25 = el del lun 23 (Research R0), en el hueco que deja el cierre de Business (pasa a las 14:30) antes del gimnasio. Desde el lun 30 (plan del mar 24, alias global) nada cambia: sáb 5-dic 05:00 y desde el lun 7-dic, igual.",
-        "sin_sesion": [
-          "2026-11-24"
-        ],
         "alias": {
           "2026-11-25": "2026-11-18",
           "2026-11-26": "2026-11-19",
           "2026-11-27": "2026-11-20",
+          "2026-11-30": "2026-11-24",
+          "2026-12-01": "2026-11-25",
+          "2026-12-02": "2026-11-26",
+          "2026-12-03": "2026-11-27",
+          "2026-12-04": "2026-11-30",
           "2026-12-07": "2026-12-02",
           "2026-12-08": "2026-12-03",
           "2026-12-09": "2026-12-04",
@@ -937,21 +946,21 @@ export const FECHAS_V6: FechasV6 = {
         "decidido": "2026-11-23",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. MIR recupera ese hábil el sáb 5-dic 07:15-08:15 (corrida_s1.extra: el plan del mar 1-dic, D10) y desde el lun 7-dic vuelve al alias de la v6.10w (lun 7 = plan del mié 2-dic … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 7 al vie 1-ene hace exactamente lo que ya tiene el Calendar.",
         "alias": {
-          "2026-12-07": "2026-12-02",
-          "2026-12-08": "2026-12-03",
-          "2026-12-09": "2026-12-04",
-          "2026-12-10": "2026-12-07",
-          "2026-12-11": "2026-12-08",
-          "2026-12-14": "2026-12-09",
-          "2026-12-15": "2026-12-10",
-          "2026-12-16": "2026-12-11",
-          "2026-12-17": "2026-12-14",
-          "2026-12-18": "2026-12-15",
-          "2026-12-21": "2026-12-16",
-          "2026-12-22": "2026-12-17",
-          "2026-12-23": "2026-12-18",
-          "2026-12-24": "2026-12-21",
-          "2026-12-25": "2026-12-22",
+          "2026-12-07": "2026-12-01",
+          "2026-12-08": "2026-12-02",
+          "2026-12-09": "2026-12-03",
+          "2026-12-10": "2026-12-04",
+          "2026-12-11": "2026-12-07",
+          "2026-12-14": "2026-12-08",
+          "2026-12-15": "2026-12-09",
+          "2026-12-16": "2026-12-10",
+          "2026-12-17": "2026-12-11",
+          "2026-12-18": "2026-12-14",
+          "2026-12-21": "2026-12-15",
+          "2026-12-22": "2026-12-16",
+          "2026-12-23": "2026-12-17",
+          "2026-12-24": "2026-12-18",
+          "2026-12-25": "2026-12-21",
           "2026-12-28": "2026-12-23",
           "2026-12-29": "2026-12-24",
           "2026-12-30": "2026-12-28",
@@ -962,13 +971,15 @@ export const FECHAS_V6: FechasV6 = {
       "synapse": {
         "decidido": "2026-11-24",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. SYNAPSE recupera ese hábil en cadena, como en la semana 1 (gen_synapse_plan.js › CADENAS_V610W «semana 2»): el sáb 5-dic 21:00 hace la sesión del plan del mar 1-dic y el dom 6-dic 05:00-05:30 la del sáb 5 (corrida_s1.extra) y desde el lun 7-dic vuelve al alias de la v6.10w (lun 7 = plan del mié 2-dic … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 7 al vie 1-ene hace exactamente lo que ya tiene el Calendar. Mar 24-nov-2026 (orden de Joseph de las 10:00-10:07: «hoy solo ENCAPS … hoy no derma ni aurum … quita synapse, business … mañana recién van a comenzar»; el Calendar de hoy ya los borró a mano): el mar 24 queda SIN SYNAPSE (sin_sesion) y el SYNAPSE corre una sesión más DENTRO de su frente, sin cascada a otros frentes ni compactar: mié 25 = la fila del mié 18, jue 26 = la del jue 19, vie 27 = la del vie 20 y el sáb 28 absorbe el día de más con una sesión a hora fija a las 04:15-04:45 (cadena «semana 1» de gen_synapse_plan.js, que acaba ahí: hace el contenido de la fila del vie 20); la fila del lun 23 abre la cadena «mar 24» (FILAS_FUERA_CORRIDA): su contenido lo hace el sáb 28 a las 21:00 (su hora de siempre) y el de la fila del sáb 28, el dom 29 05:00-05:30, como ya estaba. Desde el lun 30 (fila del mar 24, alias global) nada cambia. Contenido en orden de día real: mié 25 = el del dom 22, jue 26 = el del mié 18, vie 27 = el del jue 19, sáb 28 04:15 = el del vie 20, sáb 28 21:00 = el del lun 23, dom 29 05:00 = el del sáb 28.",
-        "sin_sesion": [
-          "2026-11-24"
-        ],
         "alias": {
           "2026-11-25": "2026-11-18",
           "2026-11-26": "2026-11-19",
           "2026-11-27": "2026-11-20",
+          "2026-11-30": "2026-11-24",
+          "2026-12-01": "2026-11-25",
+          "2026-12-02": "2026-11-26",
+          "2026-12-03": "2026-11-27",
+          "2026-12-04": "2026-11-30",
           "2026-12-07": "2026-12-02",
           "2026-12-08": "2026-12-03",
           "2026-12-09": "2026-12-04",
@@ -995,21 +1006,21 @@ export const FECHAS_V6: FechasV6 = {
         "decidido": "2026-11-23",
         "motivo": "Lun 23-nov-2026 (v6.11, fase 2): el lun 23 quedó sin sesión y el alias global corrió un hábil (mar 24 = plan del mié 18 … vie 1-ene = plan del mar 29-dic), con lo que el plan del mié 30-dic se quedaba sin día. LIVIANO recupera ese hábil el dom 6-dic 07:15-08:00 (corrida_s1.extra: el plan del mar 1-dic, D10 · CASO 2/16) y desde el lun 7-dic vuelve al alias de la v6.10w (lun 7 = plan del mié 2-dic … vie 1-ene = plan del mié 30-dic, el mismo del vibecoding): del lun 7 al vie 1-ene hace exactamente lo que ya tiene el Calendar.",
         "alias": {
-          "2026-12-07": "2026-12-02",
-          "2026-12-08": "2026-12-03",
-          "2026-12-09": "2026-12-04",
-          "2026-12-10": "2026-12-07",
-          "2026-12-11": "2026-12-08",
-          "2026-12-14": "2026-12-09",
-          "2026-12-15": "2026-12-10",
-          "2026-12-16": "2026-12-11",
-          "2026-12-17": "2026-12-14",
-          "2026-12-18": "2026-12-15",
-          "2026-12-21": "2026-12-16",
-          "2026-12-22": "2026-12-17",
-          "2026-12-23": "2026-12-18",
-          "2026-12-24": "2026-12-21",
-          "2026-12-25": "2026-12-22",
+          "2026-12-07": "2026-12-01",
+          "2026-12-08": "2026-12-02",
+          "2026-12-09": "2026-12-03",
+          "2026-12-10": "2026-12-04",
+          "2026-12-11": "2026-12-07",
+          "2026-12-14": "2026-12-08",
+          "2026-12-15": "2026-12-09",
+          "2026-12-16": "2026-12-10",
+          "2026-12-17": "2026-12-11",
+          "2026-12-18": "2026-12-14",
+          "2026-12-21": "2026-12-15",
+          "2026-12-22": "2026-12-16",
+          "2026-12-23": "2026-12-17",
+          "2026-12-24": "2026-12-18",
+          "2026-12-25": "2026-12-21",
           "2026-12-28": "2026-12-23",
           "2026-12-29": "2026-12-24",
           "2026-12-30": "2026-12-28",
@@ -1018,15 +1029,9 @@ export const FECHAS_V6: FechasV6 = {
         }
       }
     },
-    "config_anki": {
-      "decidido": "2026-11-24",
-      "motivo": "Mar 24-nov-2026 (chat USMLE): la CONFIGURACIÓN del Anki de las 05:00 (plan del mié 18) no se hizo el mar 24. Regla de lo que no se hizo: va a la próxima sesión de SU frente, sin cascada a otros frentes, y lo que no cabe, a un hueco libre a hora fija. Lo que bloquea (el preset «APEX USMLE», que tiene que existir antes de la 1.ª tarjeta USMLE) va DELANTE en el Anki del D2 (mié 25, 05:00-05:30: Sync 1′ · preset y su comprobación 10′ · «The ONLY Video…» de 0:00 a 15:04, 19′, con su corte de siempre) y «Anki Almost Broke Me…» entero + el manual FSRS (42′), en el hueco de fin de semana de `fsrs` (dom 6-dic 10:10-10:52). El 05:00 del mar 24 solo dice adónde fue cada parte. Lo hace gen_usmle_guia.js (bloque del D2, USMLE_FIJO) y lo pinta plantillasV6 (bloque anki-fsrs).",
-      "no_hecha": "2026-11-24",
-      "fsrs": {
-        "fecha": "2026-12-06",
-        "hora": "10:10-10:52"
-      }
-    }
+    "sabado_habil": [
+      "2026-12-26"
+    ]
   }
 };
 
@@ -1266,7 +1271,7 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
   };
 }
 
-// ── v6.11: semana 1 corrida (orden de Joseph del lun 23-nov-2026) ──
+// ── v6.12: semana 1 corrida (orden de Joseph del mar 24-nov-2026) ──
 /** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
 export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
@@ -1274,7 +1279,7 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · jue 19-nov · vie 20-nov · sáb 21-nov · dom 22-nov · lun 23-nov sin sesión · mar 24-nov = plan del mié 18-nov · mié 25-nov = plan del jue 19-nov · jue 26-nov = plan del vie 20-nov · vie 27-nov = plan del lun 23-nov · lun 30-nov = plan del mar 24-nov · mar 1-dic = plan del mié 25-nov · mié 2-dic = plan del jue 26-nov · jue 3-dic = plan del vie 27-nov · vie 4-dic = plan del lun 30-nov · lun 7-dic = plan del mar 1-dic · mar 8-dic = plan del mié 2-dic · mié 9-dic = plan del jue 3-dic · jue 10-dic = plan del vie 4-dic · vie 11-dic = plan del lun 7-dic · lun 14-dic = plan del mar 8-dic · mar 15-dic = plan del mié 9-dic · mié 16-dic = plan del jue 10-dic · jue 17-dic = plan del vie 11-dic · vie 18-dic = plan del lun 14-dic · lun 21-dic = plan del mar 15-dic · mar 22-dic = plan del mié 16-dic · mié 23-dic = plan del jue 17-dic · jue 24-dic = plan del vie 18-dic · vie 25-dic = plan del lun 21-dic · lun 28-dic = plan del mar 22-dic · mar 29-dic = plan del mié 23-dic · mié 30-dic = plan del jue 24-dic · jue 31-dic = plan del lun 28-dic · vie 1-ene = plan del mar 29-dic.
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct · vie 23-oct · sáb 24-oct · dom 25-oct · lun 26-oct · mar 27-oct · mié 28-oct · jue 29-oct · vie 30-oct · sáb 31-oct · dom 1-nov · lun 2-nov · mar 3-nov · mié 4-nov · jue 5-nov · vie 6-nov · sáb 7-nov · dom 8-nov · lun 9-nov · mar 10-nov · mié 11-nov · jue 12-nov · vie 13-nov · sáb 14-nov · dom 15-nov · lun 16-nov · mar 17-nov · mié 18-nov · jue 19-nov · vie 20-nov · sáb 21-nov · dom 22-nov · lun 23-nov · mar 24-nov sin sesión · mié 25-nov = plan del mié 18-nov · jue 26-nov = plan del jue 19-nov · vie 27-nov = plan del vie 20-nov · lun 30-nov = plan del lun 23-nov · mar 1-dic = plan del mar 24-nov · mié 2-dic = plan del mié 25-nov · jue 3-dic = plan del jue 26-nov · vie 4-dic = plan del vie 27-nov · lun 7-dic = plan del lun 30-nov · mar 8-dic = plan del mar 1-dic · mié 9-dic = plan del mié 2-dic · jue 10-dic = plan del jue 3-dic · vie 11-dic = plan del vie 4-dic · lun 14-dic = plan del lun 7-dic · mar 15-dic = plan del mar 8-dic · mié 16-dic = plan del mié 9-dic · jue 17-dic = plan del jue 10-dic · vie 18-dic = plan del vie 11-dic · lun 21-dic = plan del lun 14-dic · mar 22-dic = plan del mar 15-dic · mié 23-dic = plan del mié 16-dic · jue 24-dic = plan del jue 17-dic · vie 25-dic = plan del vie 18-dic · lun 28-dic = plan del mar 22-dic · mar 29-dic = plan del mié 23-dic · mié 30-dic = plan del jue 24-dic · jue 31-dic = plan del lun 28-dic · vie 1-ene = plan del mar 29-dic.
  * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {
@@ -1350,6 +1355,8 @@ export function fechaRealDe(plan: string, frente?: string): string {
   // v6.10w: con `frente`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) { const x = extraDePlan(plan, frente); if (x && x.real !== plan) return x.real; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  // v6.12: el plan que el alias global deja sin día y hace un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic = el plan del lun 21-dic)
+  for (const s of c.sabado_habil ?? []) if (planSabadoHabilDe(s) === plan) return s;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
   const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] ?? []) : [];
@@ -1358,6 +1365,20 @@ export function fechaRealDe(plan: string, frente?: string): string {
   // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
+}
+/** v6.12 (mar 24-nov-2026) · ¿es `iso` un SÁBADO HÁBIL (corrida_s1.sabado_habil: un día de estudio completo, sin gimnasio ni baile)? */
+export function esSabadoHabil(iso: string): boolean { return (FECHAS_V6.corrida_s1.sabado_habil ?? []).includes(iso); }
+/** v6.12 · fecha de PLAN que hace un SÁBADO HÁBIL (gemelo de gen_fechas_v6.planSabadoHabilDe): el 1.er hábil de plan (L-V, sin SKIP ni feriado) que el alias
+ *  GLOBAL deja sin día entre el hábil real anterior al sábado y el siguiente (sáb 26-dic: vie 25 = plan del vie 18 y lun 28 = plan del mar 22 → el lun 21-dic).
+ *  null si `iso` no es sábado hábil. Sus frentes con alias propio (corrida_s1.alias_frente) hacen ese día lo que diga corrida_s1.extra. */
+export function planSabadoHabilDe(iso: string): string | null {
+  const c = FECHAS_V6.corrida_s1;
+  if (!esSabadoHabil(iso)) return null;
+  const ks = Object.keys(c.alias).sort();
+  const prev = ks.filter((r) => r < iso).pop(), next = ks.find((r) => r > iso);
+  if (!prev || !next) return null;
+  for (let d = _add(c.alias[prev] as string, 1); d < (c.alias[next] as string); d = _add(d, 1)) { const w = _wd(d); if (w >= 1 && w <= 5 && !SKIP_V6.has(d) && !FERIADOS_V6.has(d)) return d; }
+  return null;
 }
 /** v6.10 · bloques que un día de fin de semana recupera a hora fija (corrida_s1.extra): [{ frente, ini, fin, plan }] por hora; [] si ninguno.
  *  v6.10w: `plan` = la fecha de PLAN cuya fila de ese frente se hace a esa hora (la propia fecha si la entrada es solo la franja). */

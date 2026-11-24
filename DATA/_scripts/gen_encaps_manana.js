@@ -180,7 +180,10 @@ const corta = (iso) => `${WD[dow(iso)]} ${Number(iso.slice(8))}-${MES[Number(iso
 //   LUNES real siguiente: lo que mandaba «al domingo» (lo que falta hasta el 60 %, las cifras que no caben a las 18:00, la teoría que no cabe, el plan B)
 //   iría a un domingo YA PASADO. Todo destino de domingo se compara con el día REAL de su origen (gen_fechas_v6.fechaRealDe; sin alias = la propia fecha).
 const _A1 = (F6.corrida_s1 && F6.corrida_s1.alias) || {};
-const realDe = (f) => { for (const [r, de] of Object.entries(_A1)) if (de === f) return r; return f; };
+// v6.12 (mar 24-nov-2026): el plan que el alias global deja sin día y hace un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic = el plan del lun 21-dic, día
+//   de estudio completo) → su día real es ese sábado (gen_fechas_v6.planSabadoHabilDe): su mañana va ahí, 07:15-12:00, como un L-V
+const PLAN_SAB_HABIL = new Map(((F6.corrida_s1 && F6.corrida_s1.sabado_habil) || []).map((s) => [require('./gen_fechas_v6').planSabadoHabilDe(s, F6), s]).filter(([p]) => p));
+const realDe = (f) => { for (const [r, de] of Object.entries(_A1)) if (de === f) return r; return PLAN_SAB_HABIL.get(f) || f; };
 const durTxt = (m) => (m < 60 ? `${m}′` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}′`);
 const vel = (v) => String(v).replace('.', ',') + '×';
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
@@ -278,7 +281,8 @@ for (const [f, motivo] of EXTRA) {
 // v6.10w (dom 22-nov): salvo un hábil de la transición cuyo PLAN no tiene día real (corrida_s1: el jue 31-dic real hace el plan del mar 29 y nadie hace el del
 //   jue 31): su mañana va a un día extra posterior (mar 5-ene) y su 16:15 al sábado a hora fija (corrida_s1.extra { hora, plan })
 const _AV = new Set(Object.values((F6.corrida_s1 && F6.corrida_s1.alias) || {}));
-const SIN_DIA_REAL = new Set(Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).filter((r) => !_AV.has(r)));
+// v6.12: salvo el plan que hace un SÁBADO HÁBIL (PLAN_SAB_HABIL: el lun 21-dic, el sáb 26-dic): su mañana se espera en su fecha de plan, como un día más de F1
+const SIN_DIA_REAL = new Set(Object.keys((F6.corrida_s1 && F6.corrida_s1.alias) || {}).filter((r) => !_AV.has(r) && !PLAN_SAB_HABIL.has(r)));
 // v6.11 fase 2 (lun 23-nov): igual en F1: un hábil de F1 cuyo PLAN no tiene día real en el alias GLOBAL (el mié 30-dic: el alias global llega al plan del mar 29)
 //   no espera mañana en su fecha: su mañana (19/21, el simulacro de cierre) va a un día extra (mar 5-ene) y su 16:15, al sábado a hora fija (corrida_s1.extra)
 for (const d of [...ESPERADAS]) if (d >= F6.f1.inicio && d <= F6.f1.fin && SIN_DIA_REAL.has(d) && !EXTRA.has(d)) ESPERADAS.splice(ESPERADAS.indexOf(d), 1);

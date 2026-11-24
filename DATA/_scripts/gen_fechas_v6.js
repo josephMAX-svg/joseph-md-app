@@ -246,7 +246,20 @@ function comprobarCorridaS1(c, F) {
   // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos) · v6.10: + «extra»
   // v6.10y: + «alias_frente» (alias PROPIO de un frente; vuelve el mecanismo de la v6.10q)
   // v6.11 (mar 24-nov): + «config_anki» (la CONFIGURACIÓN del Anki USMLE que no se hizo y adónde va cada parte; la aplica gen_usmle_guia.js)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente', 'config_anki'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente', 'config_anki', 'sabado_habil'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  // v6.12 (mar 24-nov, orden de Joseph «comenzamos a partir de mañana… solo corre un día… rellena un día libre»): + «sabado_habil» = sábados que pasan a ser
+  //   un DÍA DE ESTUDIO COMPLETO (sin gimnasio ni baile, decisión de Joseph): sus extras pueden ir de 04:15 a 20:30 (VENTANA_SABADO_HABIL)
+  if ('sabado_habil' in c) {
+    const sh = c.sabado_habil; if (!Array.isArray(sh) || sh.some((d) => !esISO(d) || wd(d) !== 6)) err.push('«corrida_s1.sabado_habil» debe ser una lista de sábados (AAAA-MM-DD)');
+    // v6.12: cada sábado hábil hace el plan que el alias GLOBAL deja sin día entre el hábil anterior y el siguiente (planSabadoHabilDe); si corrida_s1.extra le da
+    //   el ENCAPS de las 16:15, es el de ese mismo plan
+    else for (const s of sh) {
+      const p = planSabadoHabilDe(s, { ...F, corrida_s1: c });
+      if (!p) err.push(`«corrida_s1.sabado_habil» ${s}: el alias global no deja ningún hábil de plan sin día entre el hábil anterior y el siguiente`);
+      const xe = ((c.extra || {})[s] || {}).encaps;
+      if (p && xe && typeof xe === 'object' && xe.plan !== p) err.push(`«corrida_s1.sabado_habil» ${s}: el ENCAPS de corrida_s1.extra hace el plan del ${xe.plan} y el sábado hábil, el del ${p}`);
+    }
+  }
   if ('extra' in c) err.push(...comprobarExtra(c, F));
   if ('config_anki' in c) err.push(...comprobarConfigAnki(c));
   if ('alias_frente' in c) err.push(...comprobarAliasFrente(c));
@@ -311,6 +324,8 @@ const extraHabilesDe = (frente, F = fechasPorDefecto()) => {
 /** v6.10w · ventana del lunes del RE-SCAN (1.er día de la intensiva ENCAPS: bloque de 285′ con 135′ de contenido, 07:15-09:30): la holgura que el plan
  *  del jue 31-dic usa entre semana (corrida_s1.extra en un L-V solo ese día y dentro de esta ventana). */
 const VENTANA_RESCAN = [['09:45', '12:00']];
+/** v6.12 · ventana de un SÁBADO HÁBIL (corrida_s1.sabado_habil): el día entero, como un L-V (04:15-20:30; sin gimnasio ni baile ese día). */
+const VENTANA_SABADO_HABIL = [['04:15', '20:30']];
 /** v6.10 · `corrida_s1.extra` = { día de fin de semana: { frente: 'HH:MM-HH:MM' } }: el día que cada plan recupera, a hora fija, el día perdido.
  *  v6.10w (dom 22-nov): el valor también puede ser { hora: 'HH:MM-HH:MM', plan: fecha de PLAN } = ese día real hace, a esa hora, la fila de ese frente
  *  de otra fecha de plan (sáb 2-ene = el plan del jue 31-dic, que no tiene día real; dom 3-ene = el del sáb 2-ene); fechaPlanDe / fechaRealDe lo
@@ -343,7 +358,8 @@ function comprobarExtra(c, F) {
       const m = typeof hv === 'string' ? /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(hv) : null;
       const a = m ? hm(m[1]) : NaN, b = m ? hm(m[2]) : NaN;
       if (!m || !(a < b)) { err.push(`«corrida_s1.extra» ${d} ${k}: franja «${hv}» inválida (HH:MM-HH:MM)`); continue; }
-      const ven = rescan ? VENTANA_RESCAN : VENTANAS_FINDE[w] || [];
+      const habil = Array.isArray(c.sabado_habil) && c.sabado_habil.includes(d); // v6.12
+      const ven = rescan ? VENTANA_RESCAN : habil ? VENTANA_SABADO_HABIL : VENTANAS_FINDE[w] || [];
       if (!ven.some(([i, f2]) => a >= hm(i) && b <= hm(f2))) err.push(`«corrida_s1.extra» ${d} ${k}: ${hv} fuera de las ventanas fijas del ${rescan ? 'lunes del RE-SCAN' : w === 6 ? 'sábado' : 'domingo'} (${ven.map((y) => y.join('-')).join(' · ')})`);
       tramos.push([a, b, k]);
     }
@@ -508,7 +524,10 @@ function comprobarPorFrente(F) {
 function ordenRealDe(plan, F = fechasPorDefecto(), frente) {
   const al = (F.corrida_s1 || {}).alias || {};
   if (frente) { const r = fechaRealDe(plan, F, frente); if (r !== plan) return r; }
-  else for (const [r, de] of Object.entries(al)) if (de === plan) return r;
+  else {
+    for (const [r, de] of Object.entries(al)) if (de === plan) return r;
+    for (const s of (F.corrida_s1 || {}).sabado_habil || []) if (planSabadoHabilDe(s, F) === plan) return s; // v6.12: el plan que hace un sábado hábil
+  }
   if (planesSinDia(F, frente).includes(plan)) { const ks = Object.keys(al).sort(); return ks[ks.length - 1] + '~'; }
   return plan;
 }
@@ -569,6 +588,19 @@ const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
   if (vig.length) return vig[vig.length - 1];
   return frente === 'revision' && ds.length ? ds[ds.length - 1] : s;
 };
+/** v6.12 (mar 24-nov-2026) · fecha de PLAN que hace un SÁBADO HÁBIL (corrida_s1.sabado_habil; gemelo node de planSabadoHabilDe del .ts): el 1.er hábil de plan
+ *  (L-V, sin SKIP ni feriado) que el alias GLOBAL deja sin día entre el hábil real anterior al sábado y el siguiente (sáb 26-dic: vie 25 = plan del vie 18 y
+ *  lun 28 = plan del mar 22 → el lun 21-dic). null si `s` no es sábado hábil o no queda ningún plan sin día. */
+function planSabadoHabilDe(s, F = fechasPorDefecto()) {
+  const c = F.corrida_s1 || {};
+  if (!(c.sabado_habil || []).includes(s)) return null;
+  const al = c.alias || {}, ks = Object.keys(al).sort();
+  const prev = ks.filter((r) => r < s).pop(), next = ks.find((r) => r > s);
+  if (!prev || !next) return null;
+  const skip = new Set(F.skip || []), fer = new Set(F.feriados || []);
+  for (let d = add(al[prev], 1); d < al[next]; d = add(d, 1)) if (wd(d) >= 1 && wd(d) <= 5 && !skip.has(d) && !fer.has(d)) return d;
+  return null;
+}
 /** Inversa para MOSTRAR (gemelo node de fechaRealDe del .ts): día real en que se hace la fila con fecha de plan `plan`. */
 const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   const c = F.corrida_s1;
@@ -582,6 +614,8 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   // v6.10w: con `frente`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) for (const r of Object.keys(c.extra || {}).sort()) { const x = extraListaDe(r, F).find((y) => y.frente === frente && y.plan === plan); if (x && r !== plan) return r; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  // v6.12: el plan que el alias global deja sin día y hace un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic = el plan del lun 21-dic)
+  for (const s of c.sabado_habil || []) if (planSabadoHabilDe(s, F) === plan) return s;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] || []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
   const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] || []) : [];
@@ -859,6 +893,8 @@ export interface FechasV6 {
     /** v6.11 (mar 24-nov): la CONFIGURACIÓN del Anki USMLE que no se hizo el día real \`no_hecha\`: el preset, delante en el Anki del D2; el vídeo FSRS + el manual,
      *  en \`fsrs\` (fin de semana a hora fija). La aplica gen_usmle_guia.js (USMLE_FIJO) */
     config_anki?: { decidido: string; motivo: string; no_hecha: string; fsrs: { fecha: string; hora: string } };
+    /** v6.12 (mar 24-nov): sábados que pasan a ser un día de estudio completo (sin gimnasio ni baile): sus extras, de 04:15 a 20:30 */
+    sabado_habil?: string[];
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -1180,6 +1216,8 @@ export function fechaRealDe(plan: string, frente?: string): string {
   // v6.10w: con \`frente\`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) { const x = extraDePlan(plan, frente); if (x && x.real !== plan) return x.real; }
   for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  // v6.12: el plan que el alias global deja sin día y hace un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic = el plan del lun 21-dic)
+  for (const s of c.sabado_habil ?? []) if (planSabadoHabilDe(s) === plan) return s;
   const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
   // v6.07a: primero la parte que lleva el bloque PRINCIPAL del frente (vie 13 ENCAPS → el dom 15 de la sesión de las 16:15, no el sáb 14 de la mañana)
   const pri = frente ? (PRINCIPAL_POR_FRENTE[frente] ?? []) : [];
@@ -1188,6 +1226,20 @@ export function fechaRealDe(plan: string, frente?: string): string {
   // v6.06e: la guía de un frente que cita un sábado cuyo bloque es de otro frente (p. ej. la revisión desde USMLE): vale cualquier parte de esa fecha
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
+}
+/** v6.12 (mar 24-nov-2026) · ¿es \`iso\` un SÁBADO HÁBIL (corrida_s1.sabado_habil: un día de estudio completo, sin gimnasio ni baile)? */
+export function esSabadoHabil(iso: string): boolean { return (FECHAS_V6.corrida_s1.sabado_habil ?? []).includes(iso); }
+/** v6.12 · fecha de PLAN que hace un SÁBADO HÁBIL (gemelo de gen_fechas_v6.planSabadoHabilDe): el 1.er hábil de plan (L-V, sin SKIP ni feriado) que el alias
+ *  GLOBAL deja sin día entre el hábil real anterior al sábado y el siguiente (sáb 26-dic: vie 25 = plan del vie 18 y lun 28 = plan del mar 22 → el lun 21-dic).
+ *  null si \`iso\` no es sábado hábil. Sus frentes con alias propio (corrida_s1.alias_frente) hacen ese día lo que diga corrida_s1.extra. */
+export function planSabadoHabilDe(iso: string): string | null {
+  const c = FECHAS_V6.corrida_s1;
+  if (!esSabadoHabil(iso)) return null;
+  const ks = Object.keys(c.alias).sort();
+  const prev = ks.filter((r) => r < iso).pop(), next = ks.find((r) => r > iso);
+  if (!prev || !next) return null;
+  for (let d = _add(c.alias[prev] as string, 1); d < (c.alias[next] as string); d = _add(d, 1)) { const w = _wd(d); if (w >= 1 && w <= 5 && !SKIP_V6.has(d) && !FERIADOS_V6.has(d)) return d; }
+  return null;
 }
 /** v6.10 · bloques que un día de fin de semana recupera a hora fija (corrida_s1.extra): [{ frente, ini, fin, plan }] por hora; [] si ninguno.
  *  v6.10w: \`plan\` = la fecha de PLAN cuya fila de ese frente se hace a esa hora (la propia fecha si la entrada es solo la franja). */
@@ -1272,6 +1324,8 @@ function compararTS(T, F, d) {
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaRealDe ${s} ${fr}`, T.fechaRealDe(s, fr), fechaRealDe(s, F, fr));
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`enShipDe ${s} ${fr}`, T.enShipDe(s, fr), enShipDe(s, F, fr)); // v6.10y
     eq('enShipDe ' + s, T.enShipDe(s), enShipDe(s, F));
+    eq('planSabadoHabilDe ' + s, T.planSabadoHabilDe(s), planSabadoHabilDe(s, F)); // v6.12
+    for (const fr of [undefined, 'encaps']) eq(`ordenRealDe ${s} ${fr}`, T.ordenRealDe(s, fr), ordenRealDe(s, F, fr)); // v6.12
     if (err.length > 20) break;
   }
   // derivaciones en los escenarios (A5) × los exámenes de prueba (DJ-1 vigente ∪ DJ-1 v6.00: 31-ago · 27-sep · 25-oct) × SERUMS 3-may / 6-may
@@ -1358,6 +1412,8 @@ module.exports = {
   fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1, extraListaDe, extraNorm, extraHabilesDe, // v6.10w: + extraListaDe, extraNorm, extraHabilesDe
   // v6.02d: semana 1 corrida (alias en la consulta)
   comprobarCorridaS1, corridaS1De, fechaPlanDe, fechaRealDe, BLOQUES_POR_FRENTE,
+  // v6.12: el plan que hace un sábado hábil (corrida_s1.sabado_habil)
+  planSabadoHabilDe,
   // v6.10y: alias propio de un frente (corrida_s1.alias_frente) · el paso que absorbe un SHIP del domingo
   comprobarAliasFrente, aliasFrenteDe, enShipDe, enShipLista,
   // v6.10d: alias → los generadores no cuentan como perdido el día cuyo plan hace otro día real

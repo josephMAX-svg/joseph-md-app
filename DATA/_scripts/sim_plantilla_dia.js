@@ -186,6 +186,9 @@ function controlAnkiEncaps(iso, p) {
 const VENTANAS_FINDE = { 6: [['04:15', '05:45'], ['07:15', '08:25'], ['14:00', '17:00'], ['21:00', '22:00']], 0: [['05:00', '05:45'], ['07:15', '17:00']] };
 // v6.10w: el lunes del RE-SCAN (encaps.intensiva_desde) admite corrida_s1.extra en su holgura (= gen_fechas_v6.VENTANA_RESCAN)
 const VENTANA_RESCAN = [['09:45', '12:00']];
+// v6.12 (mar 24-nov-2026): un SÁBADO HÁBIL (corrida_s1.sabado_habil: día de estudio completo, sin gimnasio ni baile) admite sus extras de 04:15 a 20:30
+//   (= gen_fechas_v6.VENTANA_SABADO_HABIL)
+const VENTANA_SABADO_HABIL = [['04:15', '20:30']];
 const ID_EXTRA = { vibecoding: ['vibe'], synapse: ['syn-rec', 'syn-rec2'], business: ['biz'], 'research-derma': ['rd'], aurum: ['aurum'], mir: ['mir'], encaps: ['encaps'], liviano: ['liv'] };
 function controlExtra(iso, p) {
   const xs = F6.extraCorridaDe(iso);
@@ -194,8 +197,8 @@ function controlExtra(iso, p) {
   for (const x of xs) {
     const b = p.bloques.find((y) => (ID_EXTRA[x.frente] || []).includes(y.id) && y.ini === x.ini && y.fin === x.fin);
     if (!b) e.push(`corrida_s1.extra: sin bloque de ${x.frente} en ${x.ini}-${x.fin}`);
-    const ven = iso === F6.FECHAS_V6.encaps.intensiva_desde && w >= 1 && w <= 5 ? VENTANA_RESCAN : VENTANAS_FINDE[w] || [];
-    if (!ven.some(([a, z]) => hm(x.ini) >= hm(a) && hm(x.fin) <= hm(z))) e.push(`corrida_s1.extra: ${x.frente} ${x.ini}-${x.fin} fuera de las ventanas fijas del fin de semana (o de la holgura del RE-SCAN)`);
+    const ven = iso === F6.FECHAS_V6.encaps.intensiva_desde && w >= 1 && w <= 5 ? VENTANA_RESCAN : F6.esSabadoHabil(iso) ? VENTANA_SABADO_HABIL : VENTANAS_FINDE[w] || [];
+    if (!ven.some(([a, z]) => hm(x.ini) >= hm(a) && hm(x.fin) <= hm(z))) e.push(`corrida_s1.extra: ${x.frente} ${x.ini}-${x.fin} fuera de las ventanas fijas del fin de semana (o de la holgura del RE-SCAN o del sábado hábil)`);
   }
   const conHora = p.bloques.filter((b) => b.ini && b.fin && b.ini !== b.fin);
   for (let i = 0; i < conHora.length; i++) for (let j = i + 1; j < conHora.length; j++) { const a = conHora[i], b = conHora[j]; if (hm(a.ini) < hm(b.fin) && hm(b.ini) < hm(a.fin)) e.push(`día de corrida_s1.extra: ${a.id} ${a.hora} ⟂ ${b.id} ${b.hora}`); }

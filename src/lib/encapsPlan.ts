@@ -110,7 +110,7 @@
 // ni postest; registro por --registrar --append) y tipoRondaDe da 'pretest'. Claves D{dia}:m_* sin cambio.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
-import { SKIP_V6, FECHAS_V6, fechaPlanDe, fechaRealDe } from './fechasV6';
+import { SKIP_V6, FECHAS_V6, fechaPlanDe, fechaRealDe, esSabadoHabil } from './fechasV6';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
@@ -950,8 +950,10 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
   return Math.max(1, Math.min(total, diff));
 }
 /** v6.10 (17-nov-2026): días de FIN DE SEMANA con fila ENCAPS (corrida_s1.extra[fecha].encaps; v6.10c: sáb 2-ene = dia 32 · v6.10: dom 29-nov) entre `d1` y `hoy`, ambos incluidos. */
+// v6.12 (mar 24-nov-2026): sin los SÁBADOS HÁBILES (corrida_s1.sabado_habil: sáb 26-dic): su ENCAPS de las 16:15 es la fila de un hábil de plan (el lun 21-dic), que
+//   ya cuenta como L-V; sumarla otra vez corría un día el dia de todo lo posterior (31-dic, 1-ene, 2-ene y 4-ene: 34 en lugar de 33)
 export function extraEncapsEntre(d1: string, hoy: string): number {
-  return Object.entries(FECHAS_V6.corrida_s1.extra ?? {}).filter(([f, x]) => !!x.encaps && f >= d1 && f <= hoy && [0, 6].includes(new Date(f + 'T12:00:00Z').getUTCDay())).length;
+  return Object.entries(FECHAS_V6.corrida_s1.extra ?? {}).filter(([f, x]) => !!x.encaps && f >= d1 && f <= hoy && [0, 6].includes(new Date(f + 'T12:00:00Z').getUTCDay()) && !esSabadoHabil(f)).length;
 }
 /**
  * v6.05 (fix 24-oct-2026): fecha del D1 si HOY (Lima, fecha de plan) es ANTERIOR al D1, si no null. diaActual() sigue devolviendo 1 antes del
