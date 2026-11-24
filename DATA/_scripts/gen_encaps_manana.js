@@ -720,7 +720,7 @@ const FUENTES = J._meta.banqueo_fuentes.replace(/^por orden:\s*/, '').replace(/\
 // v6.10z-e (chat ENCAPS): la cuarentena va PRIMERO y justo detrás de «Sin mirar nada.» (el corte del Calendar la dejaba fuera en los banqueos de 50Q)
 // v6.11 (pendiente 21.2): la frase vive en encaps_guia_catalogo.js (la misma la dicen los pasos de las 16:15 con preguntas de QX / DR LOPEZ / Theomed);
 //   sus fechas = el pre-test 2026-II de _fechas_v6.json y el dress_rehearsal del SQL de la intensiva (si se mueven, aborta en vez de citar un día falso)
-const { RESERVA, RESERVA_FECHAS, reservaDe, PIZARRA } = require('./encaps_guia_catalogo'); // ronda c40: + PIZARRA (regla de la pizarra, común con gen_encaps_guia.js)
+const { RESERVA, RESERVA_FECHAS, reservaDe, PIZARRA, FUGA } = require('./encaps_guia_catalogo'); // ronda c40: + PIZARRA (regla de la pizarra, común con gen_encaps_guia.js) · ronda c44: + FUGA (regla de fuga por id, común con gen_encaps_minisim.js)
 if (F6.encaps.pretest !== RESERVA_FECHAS.pretest || !RESERVA.includes(corta(RESERVA_FECHAS.pretest)) || !RESERVA.includes(corta(RESERVA_FECHAS.ensayo))) aborta(`RESERVA (encaps_guia_catalogo.js): pre-test ${RESERVA_FECHAS.pretest} / ensayo ${RESERVA_FECHAS.ensayo} ≠ _fechas_v6.json (${F6.encaps.pretest}) o la frase no los cita`);
 // v6.10z-d (lun 23-nov, chat ENCAPS): % CIEGO = correctas Y seguras ÷ total (como FASE_INTENSIVA_2027-I.md: «correctas seguras / total»), y se calcula en la
 //   CORRECCIÓN, con la clave (antes «el % CIEGO = seguras ÷ total», que contaba una segura FALLADA como ciega). La definición, en frase propia: el corte del
@@ -1406,31 +1406,14 @@ for (const x of NO_CUPO.filter((y) => dow(y.fecha) === 0)) {
 //   (ordenRealDe del frente encaps: el alias de corrida_s1 y sus días extra) y su franja (la hora ENCAPS 16:15-17:15 de F1 o la de corrida_s1.extra) → las
 //   18:00 del mismo día real; si el runner va después del paso, desde el día siguiente. Las filas del 2026-II («pregunta real Qn del 2026-II») no cuentan: su
 //   uso antes del pre-test del vie 8-ene es el permitido (§3-bis-LN, cabecera de CIFRAS_CRITICAS). Lo que falte lo completa el relleno con filas permitidas.
-const RE_ITEM_REAL = /\b(\d{4}-[0-9A-Z]+)-Q0*(\d+)\b/g;
-const itemsRealesDe = (t) => [...String(t || '').matchAll(RE_ITEM_REAL)].map((m) => `${m[1]}-Q${m[2]}`);
 // v6.11 (ítem 34, lun 23-nov, chat ENCAPS · ronda c38 · FUGA POR CONCEPTO): fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente
 //   verificada» no los cite (el filtro por id no los ve). Lista MANUAL, fila a fila (la decide el chat ENCAPS): cada ítem cuenta igual que uno de la fuente, así
-//   que la fila no sale (ni en el relleno) hasta que termine su runner y luego vuelve, primera, en el siguiente paso de cifras. #102 (método científico, enfoque
-//   sistemático) responde R-2024-2A-Q46 (mini-sim del vie 4-dic de plan). La #103 no va aquí (decisión del chat ENCAPS).
-const CONCEPTOS_LIGADOS = { 102: ['2024-2A-Q46'] };
+//   que la fila no sale (ni en el relleno) hasta que termine su runner y luego vuelve, primera, en el siguiente paso de cifras.
+// ronda c44 (ítem 41, PROPUESTA): la regex, CONCEPTOS_LIGADOS y la lectura de la tabla viven en encaps_guia_catalogo.FUGA (las usa también gen_encaps_minisim.js:
+//   un mini-sim de F1 nuevo no toma un ítem citado por una fila de la tabla); se editan ahí.
+const { itemsRealesDe, CONCEPTOS_LIGADOS } = FUGA;
 const CIF = (() => {
-  const filas = [];
-  for (const l of fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', 'CIFRAS_CRITICAS_2027-I.md'), 'utf8').split(/\r?\n/)) {
-    const m = /^\| (\d+) \| ([^|]+)\|/.exec(l); if (!m) continue;
-    const c = l.split('|');
-    filas.push({ n: Number(m[1]), cod: m[2].replace(/[*★]/g, '').trim(), items: itemsRealesDe(c.slice(5, c.length - 1).join('|')) });
-  }
-  if (filas.length < 100) aborta(`CIFRAS_CRITICAS_2027-I.md §3: solo ${filas.length} filas leídas`);
-  for (const [n, ids] of Object.entries(CONCEPTOS_LIGADOS)) {
-    const r = filas.find((x) => x.n === Number(n));
-    if (!r) aborta(`CONCEPTOS_LIGADOS: la fila #${n} no está en CIFRAS_CRITICAS_2027-I.md §3`);
-    for (const id of ids) {
-      const it = itemsRealesDe(id);
-      if (it.length !== 1) aborta(`CONCEPTOS_LIGADOS #${n}: «${id}» no es un ítem real (AAAA-XX-Qn)`);
-      if (!r.items.includes(it[0])) r.items.push(it[0]);
-    }
-  }
-  return filas;
+  try { return FUGA.filasCifras(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', 'CIFRAS_CRITICAS_2027-I.md'), 'utf8')); } catch (e) { return aborta(e.message); }
 })();
 const RUNNERS_CIEGOS = (() => {
   const BP = path.join(ROOT, 'DATA', 'ENCAPS', 'BANCO_PROPIO'), FR = require('./gen_fechas_v6');
@@ -1464,8 +1447,9 @@ const CIF_CIEGAS = new Map(CIF.map((r) => [r.n, RUNNERS_CIEGOS.filter((x) => r.i
  *  aparta en su ventana de 2 días reales (ítem 39b: «solo ventana» para las cifras de F2): ningún paso de F1 cae en ella */
 const enVentanaF2 = (x, dia) => PIZARRA.cubre(x.real, F6) || dia >= new Date(Date.parse(x.real + 'T12:00:00Z') - 2 * 864e5).toISOString().slice(0, 10);
 const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.real < dia || (x.real === dia && aMin(x.fin) <= aMin(ini))) && enVentanaF2(x, dia));
-/** los runners de la pizarra: los de BANCO_PROPIO + el pre-test 2026-II aunque aún no tenga JSON (PIZARRA.conPretest; sin ítems: no aparta cifras) */
-const RUNNERS_PIZ = PIZARRA.conPretest(RUNNERS_CIEGOS, F6, require('./gen_fechas_v6'));
+/** los runners de la pizarra: los de BANCO_PROPIO + el pre-test 2026-II aunque aún no tenga JSON + los mini-sims de F1 programados aún sin runner
+ *  (PIZARRA.conProgramados, ronda c44: el 4/5 y el 5/5 alargan la pizarra tapada hasta el 5/5; sin ítems: no apartan cifras, CIF_CIEGAS usa RUNNERS_CIEGOS) */
+const RUNNERS_PIZ = PIZARRA.conProgramados(RUNNERS_CIEGOS, F6, require('./gen_fechas_v6'));
 /** pasos «Pizarra: HOY NO» de las 18:00: «Sigue tapada» o «Tápala … desde …» lo decide el bloque de la pizarra (¿un bloque ENCAPS anterior del mismo día
  *  real ya lleva la línea de tapar?) */
 const HOY_NO = [];
@@ -1586,13 +1570,20 @@ const HOY_NO = [];
         const q = P(p.min, `Pizarra: HOY NO (tiene temas de los tests ciegos). Tápala entera hasta ${hasta}`, '');
         g.pasos[i] = q;
         HOY_NO.push({ f, set: (sigue) => { q.como = `${sigue ? 'Sigue tapada (o fuera de la vista): no la mires' : `Tápala (o quítala de la vista) ${desde} y no la mires`} hasta entonces. Estos ${p.min}′ quedan libres: termina antes.`; } });
-      } else if (/^Pizarra del mes · hoy con /.test(p.que) && RE_COND.test(p.como)) {
-        const c0 = p.como;
-        HOY_NO.push({ f, set: (sigue) => { p.como = c0.replace(RE_COND, (m0, min) => `si fueron las normales, la pizarra HOY NO (tiene temas de los tests ciegos): ${sigue ? 'sigue tapada' : 'tápala'} entera hasta ${hasta} y estos ${min}′ quedan libres`); } });
-        if (g.aviso) g.aviso = g.aviso.replace('si lo fueron, la pizarra de siempre)', 'si lo fueron, la pizarra HOY NO: sigue tapada)');
       } else if (/^Pizarra del mes · hoy con /.test(p.que)) {
-        // la pizarra que recibe cifras de otro día sin condición: sus filas se dicen con la tabla (CIFRAS_CRITICAS); la pizarra física no se destapa
-        p.como = `${p.como} La pizarra, tapada (tiene temas de los tests ciegos): estas filas, solo en la tabla.`;
+        // la pizarra que recibe material de otro día (cifras o norma, con o sin condición): ese material va con la tabla (CIFRAS_CRITICAS) o en la tarjeta; la
+        //   pizarra física no se destapa. Ronda c44 (revisión): lo dice el «cómo» EN LUGAR de «Es el repaso de la pizarra del mes, con ese material.» (antes se
+        //   añadía detrás, solo sin condición) y lo dice el AVISO, que el Calendar enseña entero, en lugar de «(es repaso sin material propio)» (el mar 15-dic real
+        //   el Calendar decía «Hoy la pizarra del mes ES las cifras…» sin decir tapada). Va al final de los dos: no mueve ninguna fecha (checks 26h y 26j).
+        const solo = /^Pizarra del mes · hoy con las cifras/.test(p.que) ? 'estas filas, solo en la tabla' : 'la tabla o el flujograma, solo en la tarjeta';
+        const tap = `La pizarra, tapada (tiene temas de los tests ciegos): ${solo}.`, REPASO = 'Es el repaso de la pizarra del mes, con ese material.';
+        p.como = p.como.includes(REPASO) ? p.como.replace(REPASO, tap) : `${p.como} ${tap}`;
+        if (g.aviso) g.aviso = g.aviso.replace('(es repaso sin material propio)', `(está tapada: ${solo})`);
+        if (RE_COND.test(p.como)) {
+          const c0 = p.como;
+          HOY_NO.push({ f, set: (sigue) => { p.como = c0.replace(RE_COND, (m0, min) => `si fueron las normales, la pizarra HOY NO (tiene temas de los tests ciegos): ${sigue ? 'sigue tapada' : 'tápala'} entera hasta ${hasta} y estos ${min}′ quedan libres`); } });
+          if (g.aviso) g.aviso = g.aviso.replace('si lo fueron, la pizarra de siempre)', 'si lo fueron, la pizarra HOY NO: sigue tapada)');
+        }
       }
     });
   }
@@ -2448,6 +2439,7 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
 //   La hora de las 16:15 (encapsGuia.ts) la pone gen_encaps_guia.js con la misma regla: aquí se comprueba con todos los bloques reales del día.
 // ronda c42 (ítem 39): en F1, sin ventana (PIZARRA.hasta: desde el mar 24-nov, cada día real hasta el último runner ciego de F1, y un solo «ya puedes
 //   destaparla», tras ese último); la línea dice «hasta que termine el mini-sim 3/5 del <fecha de plan> (16:15-17:15)».
+// ronda c44 (ítem 41): el último runner de F1 cuenta aunque solo esté programado (PIZARRA.conProgramados): hoy, el mini-sim 5/5 del vie 18-dic de plan.
 {
   const FRV = require('./gen_fechas_v6');
   const EGI = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'));
@@ -2466,12 +2458,14 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
   // remate de la c42: el paso «Pizarra: HOY NO» de las 18:00 dice «Sigue tapada» si un bloque ENCAPS anterior del mismo día real lleva la línea (las 18:00 no
   //   son el primer bloque del día: la línea no va en ellas) y «Tápala … desde …» si las 18:00 son el primer bloque ENCAPS del día
   for (const h of HOY_NO) h.set(!L.has(`18 ${h.f}`));
-  // remate de la c42: un mini-sim de F1 programado (SQL de mantenimiento) sin runner no alarga la regla; si hay «ya puedes destaparla» antes de él, se avisa
-  //   (la regla de las guías lo genera el viernes de plan anterior a su semana: si se genera después de ese bloque, la pizarra queda a la vista entre medias)
-  {
-    const prog = PIZARRA.f1SinRunner(RUNNERS_CIEGOS, F6, FRV);
-    const d = bloques.filter((y) => (L.get(y.key) || {}).tipo === 'destapa').map((y) => ({ y, z: prog.find((z) => z.real > y.real || (z.real === y.real && aMin(y.ini) < 16 * 60 + 15)) })).find((w) => w.z);
-    if (d) AVISOS.push(`pizarra: «${PIZARRA.DESTAPA}» el ${corta(d.y.f)} ${d.y.ini} (día real ${d.y.real}) con el mini-sim ${d.z.parte} del ${corta(d.z.plan)} de F1 (día real ${d.z.real}) programado y aún sin runner: en cuanto exista su JSON, la pizarra sigue tapada hasta él; genéralo, regenera y vuelve a volcar el Calendar antes de ese bloque o quedará a la vista entre medias`);
+  // ronda c44 (ítem 41): el aviso de la c42 por un «ya puedes destaparla» antes de un mini-sim de F1 programado sin runner ya no hace falta: RUNNERS_PIZ los
+  //   cuenta (PIZARRA.conProgramados) y la pizarra sigue tapada hasta el último.
+  //   Remate (revisión): en su lugar, un aviso fijo mientras quede alguno sin JSON. La regla va por fecha: la pizarra los da por hechos en su día real y su franja,
+  //   exista o no el runner (el destape sale igual); si no se generan a tiempo (gen_encaps_minisim.js sale con código 1 si no llega a 25Q) y se hacen otro día,
+  //   la pizarra se destaparía antes del test
+  for (const y of PIZARRA.f1SinRunner(RUNNERS_CIEGOS, F6, FRV)) {
+    const x = RUNNERS_PIZ.find((z) => z.plan === y.plan && z.tipo === 'mini_sim');
+    AVISOS.push(`pizarra: el mini-sim ${y.parte} de F1 (fila del ${corta(y.plan)}, día real ${y.real}${x ? ` ${x.ini}-${x.fin}` : ''}) está solo programado (sin JSON en BANCO_PROPIO) y la pizarra lo da por hecho ese día: genéralo antes (gen_encaps_minisim.js ${y.plan}) y, si se hace otro día, re-fecha y regenera antes del destape`);
   }
   // ronda c40 (remate): la regla cubre F1, la transición y la semana 1 de la intensiva hasta el pre-test 2026-II (PIZARRA.cubre; las mañanas 19-21 del
   //   mar 5 al jue 7-ene tienen guía local). Un runner ciego más tarde (los mini-sims del carril sábado de F2) no tiene guía local donde avisar: se dice aquí
@@ -2492,22 +2486,34 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
   // fechas de destino del aviso más allá del carácter 230 que no estén ya en los 230 primeros (= check_rutina_guia 26j, con sus referencias y URLs)
   const FRX = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
   const REF = /\((?:pre-test ciego|ensayo general) del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}\)|de ninguna carrera antes del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}|la usa el GATE del CHECKPOINT del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}/gu;
+  const RX_URL = /(https?|file|obsidian|vscode):\/\/[^\s)»\]]+/g;
+  const isoFRX = (m) => { const mes = MES.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027; return `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}`; };
   const fuera = (aviso, f) => {
     const av = String(aviso || '').replace(REF, (m) => '·'.repeat(m.length)), ini = av.slice(0, 230);
-    return [...av.replace(/(https?|file|obsidian|vscode):\/\/[^\s)»\]]+/g, '').matchAll(FRX)].filter((m) => {
-      const mes = MES.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027;
-      return `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}` > f && m.index + m[0].length > 230 && !ini.includes(m[0]);
-    }).map((m) => m[0]);
+    return [...av.replace(RX_URL, '').matchAll(FRX)].filter((m) => isoFRX(m) > f && m.index + m[0].length > 230 && !ini.includes(m[0])).map((m) => m[0]);
   };
+  // ronda c44 (revisión): además, por OCURRENCIA. La exención de `fuera` (una fecha que ya sale en los 230 primeros caracteres cuenta como visible) dejaba
+  //   pasar una línea que empuja fuera del corte el destino de OTRA cosa con la misma fecha: el jue 24-dic real, «GES 1/6 y GES 2/6 … → dom 3-ene» y el
+  //   «CHECKPOINT DEL AÑO a las 16:15» salían del corte del ARRANQUE porque el «dom 3-ene» del banqueo seguía dentro (el vie 4-dic, el segundo «jue 17-dic»).
+  //   Ahora se cuentan, fecha a fecha, sus apariciones futuras que acaban antes del carácter 230, en el aviso y en el aviso con la línea (las de la propia línea
+  //   no cuentan): si alguna baja, esa guía no vale y se prueba la siguiente del bloque (la de la TEORÍA, sin aviso, como el 17 y el 18-dic). El check 26j no
+  //   cambia: es un control estático y su exención (el resumen del principio) es a propósito.
+  const RX_LIN = /Pizarra tapada entera hasta [^.]*\.|Pizarra: ya puedes destaparla\./;
+  const visibles = (txt, f) => {
+    const av = String(txt || '').replace(REF, (m) => '·'.repeat(m.length)).replace(RX_URL, ''), l = RX_LIN.exec(av), n = new Map();
+    for (const m of av.matchAll(FRX)) if (isoFRX(m) > f && m.index + m[0].length <= 230 && !(l && m.index >= l.index && m.index < l.index + l[0].length)) n.set(m[0], (n.get(m[0]) || 0) + 1);
+    return n;
+  };
+  const noPierde = (antes, despues, f) => { const d = visibles(despues, f); return [...visibles(antes, f)].every(([k, v]) => (d.get(k) || 0) >= v); };
   const con = (t, av) => `${t}${av ? ` ${av}` : ''}`;
-  const cabe = (g, f, t) => { const antes = new Set(fuera(g.aviso, f)); return fuera(con(t, g.aviso), f).every((x) => antes.has(x)); };
+  const cabe = (g, f, t) => { const antes = new Set(fuera(g.aviso, f)); return fuera(con(t, g.aviso), f).every((x) => antes.has(x)) && noPierde(g.aviso, con(t, g.aviso), f); };
   // ronda c42 (ítem 39): la hora de las 16:15 (encapsGuia.ts) no la mira el check 26j (solo mira las guías de encapsManana.ts): manda el Calendar, que corta el
   //   aviso tal como lo pinta la app ese día real (textos de corrida_s1 y fechas reales: corridaTexto), y lo futuro se mide desde el día REAL. Con el texto de
   //   plan, la línea del mié 25-nov (pre-test 2/2) «empujaba» el «I-10 (cola larga) entra en el mini-sim del …», que en el Calendar ya iba detrás del corte (la
   //   app pone antes el aviso del adelanto, cuyos 19 y 20-nov ese día ya pasaron).
   const CT = cargarModuloTS(path.join('src', 'lib', 'corridaTexto.ts'));
   const cal = (av, f) => CT.guiaConFechasReales(CT.reemplazosCorrida({ plan: 'encaps', franja: '', titulo: '', pasos: [], recursos: [], hecho: '', aviso: av }, f)).aviso || '';
-  const cabeCal = (av, b, t) => { const antes = new Set(fuera(cal(av, b.f), b.real)); return fuera(cal(con(t, av), b.f), b.real).every((x) => antes.has(x)); };
+  const cabeCal = (av, b, t) => { const a = cal(av, b.f), d = cal(con(t, av), b.f), antes = new Set(fuera(a, b.real)); return fuera(d, b.real).every((x) => antes.has(x)) && noPierde(a, d, b.real); }; // ronda c44: + noPierde
   const RX_LINEA = /^(Pizarra tapada entera hasta [^.]*\.|Pizarra: ya puedes destaparla\.)/;
   for (const b of bloques) {
     const l = L.get(b.key) || null;

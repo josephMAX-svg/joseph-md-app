@@ -403,8 +403,12 @@ const reservaDe = (realISO) => (realISO < RESERVA_FECHAS.pretest ? RESERVA : rea
  * termine el mini-sim 3/5 del vie 4-dic (16:15-17:15).»
  * Remate de la c42 (revisiones): el pre-test 2026-II cuenta aunque aún no tenga JSON (PIZARRA.conPretest) · la franja de un runner del carril sábado o del
  * carril B sale del SQL (PIZARRA.carrilSQL) · faltaSQL pide en cada fila la línea de la regla común (una sola, la del último runner pendiente) y el destape
- * del pre-test 2026-II · un mini-sim de F1 programado sin runner no alarga la regla (solo los que tienen JSON): gen_encaps_manana.js avisa si hay
- * «ya puedes destaparla» antes de uno (PIZARRA.f1SinRunner).
+ * del pre-test 2026-II.
+ * Ronda c44 (ítem 41, lun 23-nov, chat ENCAPS · opción (a)): para la PIZARRA, un mini-sim de F1 PROGRAMADO (fila mini_sim del SQL de mantenimiento) que aún no
+ * tiene runner SÍ alarga la regla, igual que el pre-test 2026-II sin JSON (PIZARRA.conProgramados = conPretest + PIZARRA.f1SinRunner, con la franja de
+ * PIZARRA.horaDe): tapada sin ventana hasta que termine el último mini-sim de F1 (hoy el 5/5 del vie 18-dic de plan, 16:15-17:15) y un solo «ya puedes
+ * destaparla», tras él. Para las CIFRAS no aparta ninguna fila: sin ítems no hay nada que apartar (el filtro de cifras de gen_encaps_manana.js usa solo los
+ * runners con JSON); que un mini-sim de F1 generado más tarde no tome un ítem que una fila de CIFRAS_CRITICAS ya enseñó lo hace gen_encaps_minisim.js (FUGA).
  */
 const PIZARRA_TIPO = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
 const pzMin = (h) => { const [a, b] = String(h).split(':').map(Number); return a * 60 + b; };
@@ -485,7 +489,15 @@ const PIZARRA = {
     const real = FR.ordenRealDe(plan, F6, 'encaps'), h = PIZARRA.horaDe(plan, real, F6, FR);
     return [...runners, { f: '(pre-test 2026-II, aún sin runner)', plan, real, ini: h.ini, fin: h.fin, items: new Set(), tipo: 'pretest', parte: null, sinVentana: PIZARRA.sinVentanaDe(real, F6, FR) }];
   },
-  /** mini-sims de F1 programados (filas mini_sim del SQL de mantenimiento, día real antes de la intensiva) que aún no tienen runner → [{ plan, real, parte }] */
+  /** los runners de la pizarra = conPretest + los mini-sims de F1 programados que aún no tienen runner (PIZARRA.f1SinRunner; ronda c44, ítem 41): cuentan
+   *  como pendientes desde ya, con su número (n/N del SQL de mantenimiento) y su franja (PIZARRA.horaDe: la de su bloque movido o 16:15-17:15). Solo para la
+   *  pizarra: sin ítems, no apartan filas de cifras. Cuando se genere su JSON, el runner de BANCO_PROPIO ocupa su sitio (mismo plan, número y franja) */
+  conProgramados: (runners, F6, FR) => [...PIZARRA.conPretest(runners, F6, FR), ...PIZARRA.f1SinRunner(runners, F6, FR).map((y) => {
+    const h = PIZARRA.horaDe(y.plan, y.real, F6, FR);
+    return { f: `(mini-sim ${y.parte} de F1, aún sin runner)`, plan: y.plan, real: y.real, ini: h.ini, fin: h.fin, items: new Set(), tipo: 'mini_sim', parte: y.parte, sinVentana: PIZARRA.sinVentanaDe(y.real, F6, FR) };
+  })],
+  /** mini-sims de F1 programados (filas mini_sim del SQL de mantenimiento, día real antes de la intensiva) que aún no tienen runner → [{ plan, real, parte }]
+   *  (ronda c44: la pizarra los cuenta como pendientes, PIZARRA.conProgramados; ya no hay aviso por un «ya puedes destaparla» antes de uno: no puede haberlo) */
   f1SinRunner: (runners, F6, FR) => {
     const fs = require('fs'), path = require('path');
     const ms = fs.readFileSync(path.join(__dirname, '_encaps_mantenimiento_2027.sql'), 'utf8').split(/\r?\n/)
@@ -533,4 +545,46 @@ const PIZARRA = {
   },
 };
 
-module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1, RESERVA_FECHAS, RESERVA, RESERVA_2026_I, reservaDe, PIZARRA };
+/**
+ * v6.11 · ronda c44 (ítem 41, PROPUESTA del chat ENCAPS): la regla de FUGA a los tests ciegos por id (ítem 23.1) y la lista CONCEPTOS_LIGADOS (ítem 34) viven
+ * aquí porque las usan dos generadores: gen_encaps_manana.js (una fila de CIFRAS_CRITICAS citada por un runner ciego aún no hecho no sale en las cifras) y
+ * gen_encaps_minisim.js (un mini-sim de F1 que se genera ahora no toma un ítem que una fila de CIFRAS_CRITICAS §3 ya cita: esa fila pudo salir en las cifras
+ * antes de que el runner existiera; así el ítem sigue siendo ciego). Ítem real = «AAAA-XX-Qn» (2025-1A-Q35, 2024-2A-Q12…; también tras una coma o un «·»; el
+ * cero a la izquierda no cuenta); las filas del 2026-II («pregunta real Qn del 2026-II») no lo citan así y no cuentan.
+ */
+const RE_ITEM_REAL = /\b(\d{4}-[0-9A-Z]+)-Q0*(\d+)\b/g;
+const FUGA = {
+  RE_ITEM_REAL,
+  itemsRealesDe: (t) => [...String(t || '').matchAll(RE_ITEM_REAL)].map((m) => `${m[1]}-Q${m[2]}`),
+  /** fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente verificada» no los cite (lista MANUAL, fila a fila, la decide el chat
+   *  ENCAPS): cada ítem cuenta igual que uno de la fuente. #102 (método científico, enfoque sistemático) responde R-2024-2A-Q46 (mini-sim del vie 4-dic de plan).
+   *  La #103 no va aquí (decisión del chat ENCAPS). */
+  CONCEPTOS_LIGADOS: { 102: ['2024-2A-Q46'] },
+  /** filas de CIFRAS_CRITICAS_2027-I.md §3 → [{ n, cod, items }] (items = los ítems reales de su «Fuente verificada» + los de CONCEPTOS_LIGADOS); lanza un
+   *  Error si la tabla no se lee entera o si CONCEPTOS_LIGADOS no cuadra */
+  filasCifras: (texto) => {
+    const filas = [];
+    for (const l of String(texto).split(/\r?\n/)) {
+      const m = /^\| (\d+) \| ([^|]+)\|/.exec(l); if (!m) continue;
+      const c = l.split('|');
+      filas.push({ n: Number(m[1]), cod: m[2].replace(/[*★]/g, '').trim(), items: FUGA.itemsRealesDe(c.slice(5, c.length - 1).join('|')) });
+    }
+    if (filas.length < 100) throw new Error(`CIFRAS_CRITICAS_2027-I.md §3: solo ${filas.length} filas leídas`);
+    for (const [n, ids] of Object.entries(FUGA.CONCEPTOS_LIGADOS)) {
+      const r = filas.find((x) => x.n === Number(n));
+      if (!r) throw new Error(`CONCEPTOS_LIGADOS: la fila #${n} no está en CIFRAS_CRITICAS_2027-I.md §3`);
+      for (const id of ids) {
+        const it = FUGA.itemsRealesDe(id);
+        if (it.length !== 1) throw new Error(`CONCEPTOS_LIGADOS #${n}: «${id}» no es un ítem real (AAAA-XX-Qn)`);
+        if (!r.items.includes(it[0])) r.items.push(it[0]);
+      }
+    }
+    return filas;
+  },
+  /** ítems reales que cita el CSV del mazo (TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv: la FUENTE ÚNICA de la tabla, §4 de CIFRAS_CRITICAS) en sus
+   *  etiquetas «fuente::…» → Set (ronda c44, revisión: una línea añadida al CSV —un OLVIDO de esa tarde, §1.3— antes de regenerar el .md también cuenta para el
+   *  filtro del mini-sim; aquí el 2026-II sí sale como «2026-II-Qn»: el que llama lo excluye). Solo lectura */
+  idsCSV: (texto) => new Set(String(texto || '').split(/\r?\n/).filter((l) => l && !l.startsWith('#')).flatMap((l) => FUGA.itemsRealesDe((l.match(/fuente::\S+/g) || []).join(' ')))),
+};
+
+module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1, RESERVA_FECHAS, RESERVA, RESERVA_2026_I, reservaDe, PIZARRA, FUGA };

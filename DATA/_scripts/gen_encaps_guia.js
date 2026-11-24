@@ -913,6 +913,7 @@ let MANANA_DESFASADA = null; // ronda c40 (remate): encapsManana.ts generado con
 //   (ese día o en los 2 días reales siguientes); «Pizarra: ya puedes destaparla.» si es el primer bloque tras un runner y ya no queda ninguno. Los demás bloques
 //   del día salen de _encaps_manana_v607.json (mañana 07:15 y 18:00 · sábado en vivo · domingo); gen_encaps_manana.js lo comprueba con todos los bloques reales.
 //   Ronda c42 (ítem 39): en F1, sin ventana (PIZARRA.hasta) y con el número y la franja del runner (PIZARRA.tapa).
+//   Ronda c44 (ítem 41): + los mini-sims de F1 programados sin runner (PIZARRA.conProgramados): tapada hasta el último de F1 aunque aún no tenga JSON.
 {
   const FRV = require('./gen_fechas_v6');
   const JM = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps_manana_v607.json'), 'utf8'));
@@ -924,7 +925,7 @@ let MANANA_DESFASADA = null; // ronda c40 (remate): encapsManana.ts generado con
     ...FILAS.map((r) => { const real = realO(r.fecha), x = FRV.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === r.fecha); return { key: `16 ${r.fecha}`, real, ini: x ? x.ini : '16:15' }; }),
   ].filter((b) => CAT.PIZARRA.cubre(b.real, F6)); // F1 + transición + semana 1 de la intensiva hasta el pre-test (después manda el SQL de la intensiva)
   const RUN = CAT.PIZARRA.runners(BP, F6, FRV);
-  const L = CAT.PIZARRA.lineas(CAT.PIZARRA.conPretest(RUN, F6, FRV), bloques, corta); // remate c42: + el pre-test 2026-II aunque aún no tenga JSON
+  const L = CAT.PIZARRA.lineas(CAT.PIZARRA.conProgramados(RUN, F6, FRV), bloques, corta); // remate c42: + el pre-test 2026-II aunque aún no tenga JSON · ronda c44: + los mini-sims de F1 programados sin runner
   // ronda c40 (remate): las líneas de las mañanas y de las 18:00, el filtro de cifras y el «HOY NO» los pone gen_encaps_manana.js con los mismos runners
   //   (ENCAPS_MANANA_META.runnersCiegos): si encapsManana.ts se generó con otros (un runner ciego nuevo), se avisa al final y sale con código 1
   const mm = /"runnersCiegos": (\[[^\]]*\])/.exec(fs.readFileSync(path.join(ROOT, 'src', 'lib', 'encapsManana.ts'), 'utf8'));

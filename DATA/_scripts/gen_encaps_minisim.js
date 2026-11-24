@@ -18,7 +18,8 @@
  * Receta del mini-sim (_encaps_ciclo_v3.js RECETA_MINISIM): 8 II · 7 I · 5 V · 3 III · 2 IV = 25 · 50/50 viñeta-directa
  * (tolerancia ±2) · ≥10Q de los 8 críticos v3 · ≥5Q de fallos previos del registro (re-test de las mismas preguntas reales; v6.10i)
  * · 5-6Q de los 2 códigos de cola larga del viernes (fila mini_sim de _encaps_mantenimiento_2027.sql; si no está,
- * rota COLA_LARGA por índice de viernes).
+ * rota COLA_LARGA por índice de viernes). v6.11 (ronda c44): un mini-sim de F1 no toma ítems citados por una fila de CIFRAS_CRITICAS_2027-I.md §3
+ * (_meta.cifras_fuera; ver idsCitadosCifras).
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18                → BANCO_PROPIO/minisim_2026-09-18.json + .html (viernes)
@@ -427,6 +428,11 @@ function armarSet(fecha, pool, usados, cola, fallosReg, debiles) {
   // verificación
   const faltan = Object.entries(cuota).filter(([, v]) => v > 0);
   if (faltan.length) avisos.push('cuotas sin cubrir: ' + faltan.map(([a, v]) => `${a}:${v}`).join(' '));
+  // ronda c44 (revisión): también los críticos y la viñeta (antes solo la cola larga y los fallos previos): con el filtro de CIFRAS del mini-sim de F1 el 5/5
+  //   (CHECKPOINT DEL AÑO, cuyo GATE mide el ciego de los críticos) salía con 1 crítico sin que nada lo dijera. Solo afecta a las salidas nuevas
+  const nCRf = set.filter(esCritico).length, nVf = set.filter(esVineta).length, objV = Math.round(set.length * R.vineta_pct / 100);
+  if (nCRf < R.criticos_min) avisos.push(`críticos: ${nCRf}/${R.criticos_min} (receta ≥${R.criticos_min}Q de los 8 críticos v3)`);
+  if (Math.abs(nVf - objV) > 2) avisos.push(`viñeta: ${nVf}/${set.length} (receta ${R.vineta_pct} % ±2 = ${objV - 2}-${objV + 2})`);
   const reservadosOtro = set.filter((x) => x.reservado_para && x.reservado_para !== fecha).map((x) => x.id);
   if (reservadosOtro.length) avisos.push(`usa ítems reservados para otra fecha: ${reservadosOtro.join(', ')}`);
   // orden final: barajado con semilla = fecha (el orden real del examen no agrupa por área)
@@ -569,6 +575,28 @@ if(state.done){$('#intro').classList.add('hidden');${tras ? 'fin();' : 'corregir
 </script></body></html>`;
 }
 
+// v6.11 · ronda c44 (ítem 41, PROPUESTA del chat ENCAPS): un mini-sim de F1 (día REAL antes de la intensiva) no toma ningún ítem que una fila de
+//   CIFRAS_CRITICAS_2027-I.md §3 cite en su «Fuente verificada» o le ligue CONCEPTOS_LIGADOS: mientras un mini-sim de F1 está solo programado (sin JSON) no
+//   aparta filas de cifras (no tiene ítems) y esa fila pudo salir a las 18:00; descartado, el ítem sigue siendo ciego. Misma regla de ids que el filtro de
+//   cifras de gen_encaps_manana.js (encaps_guia_catalogo.FUGA); los ítems del 2026-II no cuentan (su uso antes del pre-test es el permitido). Los mini-sims ya
+//   armados no cambian (este filtro solo actúa al generar uno).
+const FUGA = require('./encaps_guia_catalogo').FUGA;
+const esMinisimF1 = (fecha) => realDeEncaps(fecha) < require('./gen_fechas_v6').cargarFechasV6().encaps.intensiva_desde;
+// ronda c44 (revisión): + los ids del CSV del mazo (la fuente única de la tabla, §4: una línea nueva del CSV cuenta antes de regenerar el .md; ahí el 2026-II se
+//   escribe «fuente::2026-II-Qn» y la exclusión del 2026-II sí actúa)
+function idsCitadosCifras() {
+  const filas = FUGA.filasCifras(fs.readFileSync(path.join(ENCAPS, 'CIFRAS_CRITICAS_2027-I.md'), 'utf8'));
+  const csv = FUGA.idsCSV(fs.readFileSync(path.join(ENCAPS, 'TRACKING_ERRORES', 'ANKI_COLA', 'ENCAPS_Cifras_2027-I.csv'), 'utf8'));
+  return { filas, ids: new Set([...filas.flatMap((r) => r.items), ...csv].filter((id) => !/^2026-II-/.test(id))) };
+}
+// ronda c44 (revisión): «0 ítems citados» no es «ciego»: una fila SIN ítem real (normas, «Qn del 2026-II») puede responder un ítem por su concepto y el filtro
+//   por id no la ve (lo cubre CONCEPTOS_LIGADOS, a mano). Al generar un mini-sim de F1, la consola lista, por cada ítem elegido, las filas sin ítem real de su
+//   mismo código: la lista que el chat ENCAPS cruza (CONCEPTOS_LIGADOS en encaps_guia_catalogo.FUGA) antes de publicar
+function cruceConcepto(items, filas) {
+  const cods = (c) => String(c || '').replace(/[*★]/g, '').split('+').map((x) => x.trim()).filter(Boolean);
+  return items.map((it) => ({ id: it.id, codigo: it.codigo, filas: filas.filter((r) => !r.items.length && cods(r.cod).some((c) => cods(it.codigo).includes(c))).map((r) => r.n) })).filter((x) => x.filas.length);
+}
+
 // ── modos ──
 function modoMinisim(fecha) {
   const filaM = filaSQL(fecha);
@@ -576,8 +604,17 @@ function modoMinisim(fecha) {
   if (dowDe(fecha) !== 5 && !repuesto) console.warn(`⚠ ${fecha} no es viernes (${WD[dowDe(fecha)]})`);
   const { fallos, debiles, pretestHecho } = leerRegistro();
   const { pool: pool0, rechazados } = cargarPool(pretestHecho);
-  const pool = poolBaseCero(pool0, fecha); // v6.10e: solo examen real desde el 18-nov
   const usados = usadosPrevios(`minisim_${fecha}`);
+  let pool = poolBaseCero(pool0, fecha); // v6.10e: solo examen real desde el 18-nov
+  let cifrasFuera = null, filasCif = null; const pool1 = pool; // ronda c44: mini-sim de F1 → fuera los ítems citados por una fila de CIFRAS_CRITICAS §3
+  if (esMinisimF1(fecha)) {
+    const { filas, ids: cit } = idsCitadosCifras(), fuera = pool.filter((it) => FUGA.itemsRealesDe(it.id).some((i) => cit.has(i)));
+    filasCif = filas;
+    const libres = fuera.filter((it) => !usados.has(it.id));
+    pool = pool.filter((it) => !fuera.includes(it));
+    cifrasFuera = { regla: 'ítems citados por una fila de CIFRAS_CRITICAS_2027-I.md §3 o por su CSV (ENCAPS_Cifras_2027-I.csv), o ligados por CONCEPTOS_LIGADOS: fuera del mini-sim de F1 (ronda c44)', candidatos_fuera: libres.length, ids: libres.map((x) => x.id).sort() };
+    console.log(`mini-sim de F1: ${libres.length} ítem(s) candidato(s) fuera por estar citados en CIFRAS_CRITICAS §3 (${fuera.length - libres.length} más ya usados) · quedan ${pool.filter((x) => !usados.has(x.id)).length} candidatos`);
+  }
   const cola = colaLargaDe(fecha);
   const { items, conteos, avisos } = armarSet(fecha, pool, usados, cola, fallos, debiles);
   const id = `MINISIM_${fecha}`;
@@ -586,7 +623,7 @@ function modoMinisim(fecha) {
     fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')}) · moldes 2024-2A→2026-1 · claves verificadas por ítem`,
     n: items.length, seg_por_q: RECETA_MINISIM.seg_por_q, umbral: RECETA_MINISIM.umbral_25, alerta: RECETA_MINISIM.alerta_25, mostrar_codigo: false,
     instrucciones: `25 preguntas mixtas (8 II · 7 I · 5 V · 3 III · 2 IV), 72 s por pregunta = 30 min. Cola larga de hoy: ${cola.codigos.join(' + ')}. Sin material, sin pausa; la corrección aparece solo al terminar.`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), receta: RECETA_MINISIM, cola_larga: cola, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada (ronda del pre-test encontrada en el registro)' : LN_VIGENTE, rechazados: rechazados.slice(0, 20), pool_disponible: pool.filter((x) => !usados.has(x.id)).length },
+    _meta: { generado: new Date().toISOString().slice(0, 10), receta: RECETA_MINISIM, cola_larga: cola, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada (ronda del pre-test encontrada en el registro)' : LN_VIGENTE, rechazados: rechazados.slice(0, 20), pool_disponible: pool.filter((x) => !usados.has(x.id)).length, ...(cifrasFuera ? { cifras_fuera: cifrasFuera } : {}) },
     items: items.map(({ _file, _motivo, ...it }) => ({ ...it, motivo_seleccion: _motivo })),
   };
   console.log(`MINI-SIM ${fecha} · ${items.length}Q · áreas ${JSON.stringify(conteos.por_area)} · viñeta ${conteos.vinetas}/directa ${conteos.directas} · críticos ${conteos.criticos} · fallos previos ${conteos.fallos_previos} · cola larga ${conteos.cola_larga} (${cola.codigos.join('+')}, ${cola.origen}) · clave oficial ${conteos.verificados_clave_oficial}/${items.length}`);
@@ -594,7 +631,16 @@ function modoMinisim(fecha) {
   if (conteos.moldes_no_verificables.length) console.log('moldes no verificables contra clave oficial:', conteos.moldes_no_verificables.join(', '));
   if (rechazados.length) console.log('rechazados:', rechazados.length, rechazados.slice(0, 5).map((r) => r.join(' ')).join(' · '));
   for (const a of avisos) console.warn('⚠', a);
-  if (items.length !== 25) { console.error('✗ el set no tiene 25 preguntas: no se escribe'); process.exit(1); }
+  if (filasCif) { // ronda c44 (revisión): cruce por concepto, antes de publicar (ver cruceConcepto)
+    const cc = cruceConcepto(items, filasCif);
+    if (cc.length) console.log(`cruce por concepto (CONCEPTOS_LIGADOS, a mano, antes de publicar): filas de CIFRAS_CRITICAS §3 sin ítem real del mismo código → ${cc.map((x) => `${x.id} (${x.codigo}): #${x.filas.join(', #')}`).join(' · ')}`);
+  }
+  if (items.length !== 25) {
+    // ronda c44 (revisión): si el filtro de CIFRAS está activo, el ✗ dice cuánto pone él (antes, solo «cuotas sin cubrir»)
+    const sin = cifrasFuera ? armarSet(fecha, pool1, usados, cola, fallos, debiles).items.length : null;
+    console.error(`✗ el set no tiene 25 preguntas: no se escribe${cifrasFuera ? ` (el filtro de CIFRAS de la ronda c44 deja fuera ${cifrasFuera.candidatos_fuera} candidato(s); sin él saldrían ${sin}Q: genera el mini-sim antes que los bancos y evals que gastan esos ítems, o decide con el chat ENCAPS)` : ''}`);
+    process.exit(1);
+  }
   if (!DRY) { escribir(`minisim_${fecha}`, doc); }
 }
 
