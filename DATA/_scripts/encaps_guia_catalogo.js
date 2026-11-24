@@ -559,7 +559,7 @@ const FUGA = {
   /** fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente verificada» no los cite (lista MANUAL, fila a fila, la decide el chat
    *  ENCAPS): cada ítem cuenta igual que uno de la fuente. #102 (método científico, enfoque sistemático) responde R-2024-2A-Q46 (mini-sim del vie 4-dic de plan).
    *  La #103 no va aquí (decisión del chat ENCAPS). */
-  CONCEPTOS_LIGADOS: { 102: ['2024-2A-Q46'] },
+  CONCEPTOS_LIGADOS: { 98: ['2025-2-Q28'], 102: ['2024-2A-Q46', '2025-1A-Q56'], 147: ['2025-1A-Q6', '2025-1A-Q28'], 179: ['2025-2-Q92'], 196: ['2025-1A-Q17'], 211: ['2025-2-Q28'] }, // c46: cruce por concepto del chat ENCAPS (mini-sims 4/5 y 5/5): se aparta la FILA hasta su runner; el ítem se queda en el runner
   /** filas de CIFRAS_CRITICAS_2027-I.md §3 → [{ n, cod, items }] (items = los ítems reales de su «Fuente verificada» + los de CONCEPTOS_LIGADOS); lanza un
    *  Error si la tabla no se lee entera o si CONCEPTOS_LIGADOS no cuadra */
   filasCifras: (texto) => {

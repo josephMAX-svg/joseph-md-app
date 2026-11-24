@@ -429,7 +429,7 @@ function armarSet(fecha, pool, usados, cola, fallosReg, debiles) {
   const faltan = Object.entries(cuota).filter(([, v]) => v > 0);
   if (faltan.length) avisos.push('cuotas sin cubrir: ' + faltan.map(([a, v]) => `${a}:${v}`).join(' '));
   // ronda c44 (revisión): también los críticos y la viñeta (antes solo la cola larga y los fallos previos): con el filtro de CIFRAS del mini-sim de F1 el 5/5
-  //   (CHECKPOINT DEL AÑO, cuyo GATE mide el ciego de los críticos) salía con 1 crítico sin que nada lo dijera. Solo afecta a las salidas nuevas
+  //   (CHECKPOINT DEL AÑO, cuyo GATE lee el % ciego ACUMULADO de los críticos del §8 de PLAN_PRIMER_PUESTO, no solo los críticos del 5/5) salía con 1 crítico sin que nada lo dijera. Solo afecta a las salidas nuevas
   const nCRf = set.filter(esCritico).length, nVf = set.filter(esVineta).length, objV = Math.round(set.length * R.vineta_pct / 100);
   if (nCRf < R.criticos_min) avisos.push(`críticos: ${nCRf}/${R.criticos_min} (receta ≥${R.criticos_min}Q de los 8 críticos v3)`);
   if (Math.abs(nVf - objV) > 2) avisos.push(`viñeta: ${nVf}/${set.length} (receta ${R.vineta_pct} % ±2 = ${objV - 2}-${objV + 2})`);
