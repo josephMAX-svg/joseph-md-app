@@ -797,7 +797,7 @@ for (let d = 1; d <= TOTAL; d++) {
     bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `${/viaje/i.test(((require('./gen_fechas_v6').cargarFechasV6().corrida_s1.notas || {})[fecha] || []).join(' ')) ? '✈ Día libre (viaje)' : '⏸ Sin sesión'} · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: `Sin SYNAPSE hoy (día sin sesión de _fechas_v6.json › corrida_s1${DOM_RECUPERA.has(RECUPERA_V609.dom) && (RECUPERA_V609.recuperaDom || RECUPERA_V609.pierde).includes(fecha) ? `; se recupera el dom ${Number(RECUPERA_V609.dom.slice(8, 10))}-${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(RECUPERA_V609.dom.slice(5, 7)) - 1]}` : ''}): la A-unit sigue en el próximo día de plan. Nada que marcar.`, real: true });
   } else if (SKIP_FIJOS.has(fecha)) {
     // v5.10-b: feriado libre (25-dic · 31-dic · 1-ene), como el domingo: sin A/B/C, no consume A-unit
-    bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `🎄 Feriado libre · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: 'Sin misión. Marca ✓ para conservar la racha; el Anki sigue (due × 20 s).', real: true });
+    bloques.push({ tag: 'R', min: 0, formato: 'repaso', material: `🎄 Feriado libre · ${fecha.slice(8, 10)}-${fecha.slice(5, 7)}`, leccion: 'Sin misión y nada que marcar: la racha se conserva sola; el Anki sigue (due × 20 s).', real: true }); // fila sin sesión: cuenta como hecha y no toca la racha (src/lib/synapseProgreso.ts)
   } else if (wd === 'Dom') {
     // v5.7: domingo = Feynman del proyecto de la semana (10', opcional). Sigue siendo día libre: sin A/B/C.
     bloques.push(bloqueDom(semana, fecha));

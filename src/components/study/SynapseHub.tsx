@@ -17,6 +17,7 @@ import { SYN_PLAN_META, SYN_DIAS, synDiaDe } from '../../lib/synapseDailyPlan';
 import { vibeShipped, vibeShippedVerificado } from '../../lib/vibecodingPlan';
 import { loadDone, saveDone, planHoyD } from '../../lib/studyProgress';
 import { synTodayISO } from './SynapseTodayPlan';
+import { synHoyReal, synContarHechas, synSesionesMarcadas } from '../../lib/synapseProgreso';
 import SynapseTodayPlan from './SynapseTodayPlan';
 import {
   CONSOLE, TelemetryStrip, PhaseGraph, ConsoleGrid,
@@ -43,9 +44,11 @@ function useSynTelemetry(done: Set<number>) {
   const hoyD = planHoyD(SYN_DIAS, iso);
   const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === hoyD) || SYN_DIAS[0];
   const total = SYN_PLAN_META.totalDias;
-  const pct = Math.round((done.size / total) * 100);
+  // las filas sin sesión (viaje, feriado, protegido) cuentan como hechas al llegar su día, como en «⚡ run» (synapseProgreso)
+  const hoyReal = synHoyReal();
+  const pct = Math.round((synContarHechas(SYN_DIAS, done, hoyReal) / total) * 100);
   const faseDias = SYN_DIAS.filter((x) => x.faseId === hoy.faseId);
-  const faseHechos = faseDias.filter((x) => done.has(x.d)).length;
+  const faseHechos = synContarHechas(faseDias, done, hoyReal);
   const fasePct = faseDias.length ? Math.round((faseHechos / faseDias.length) * 100) : 0;
   return { hoyD, hoy, total, pct, fasePct };
 }
@@ -294,7 +297,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
     { label: 'run', value: `D${t.hoyD}/${t.total}`, accent: true as const },
     { label: 'loss ↓ dominio', value: `${t.pct}%`, color: t.pct > 0 ? CONSOLE.passed : Colors.muted },
     { label: `checkpoint ${activa?.fase ?? 'F0'}`, value: `${t.fasePct}%`, accent: true as const },
-    { label: 'uptime', value: `${done.size}d`, color: Colors.onSurface },
+    { label: 'uptime', value: `${synSesionesMarcadas(done)}d`, color: Colors.onSurface }, // ✓ de sesiones (un ✓ antiguo en una fila sin sesión no suma)
     { label: `ship 04:15 (verify · ✓${vibeShipped(vibeDone)})`, value: `${shipVerif}/12`, color: shipVerif > 0 ? CONSOLE.passed : Colors.muted },
     { label: 'registry', value: `${SYNAPSE_KPIS.materialesVerificados}`, color: CONSOLE.milestone },
   ];

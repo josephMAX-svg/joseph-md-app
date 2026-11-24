@@ -212,8 +212,13 @@ const USMLE_DIAS = [...usmleTs.matchAll(/\{(?:t:\d+,)?d:(\d+),fecha:"(\d{4}-\d{2
 const usmleSemana = USMLE_DIAS.filter((x) => filaSemana(x.fecha, 'usmle')); // v6.10w: por día REAL
 
 const synTs = readTs('synapseDailyPlan.ts');
-const SYN_DIAS = [...synTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"([^"]+)"/g)].map((m) => ({ d: +m[1], fecha: m[2], wd: m[3] }));
-const synSemana = SYN_DIAS.filter((x) => filaSemana(x.fecha, 'synapse', 6)); // L-Sáb (dom = Feynman opcional, no cuenta) · v6.10w: por día REAL
+// sinSesion = fila sin nada que marcar (✈ ⏸ 🎄 🛡: solo bloques R de 0′; una fila por línea): la app no deja marcarla (src/lib/synapseProgreso.ts ›
+//   synFilaSinSesion) → no es misión de la semana
+const SYN_DIAS = [...synTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"([^"]+)"[^\n]*/g)].map((m) => {
+  const tags = [...m[0].matchAll(/\{tag:"(\w+)",min:(\d+)/g)];
+  return { d: +m[1], fecha: m[2], wd: m[3], sinSesion: tags.length > 0 && tags.every((t) => t[1] === 'R' && t[2] === '0') };
+});
+const synSemana = SYN_DIAS.filter((x) => !x.sinSesion && filaSemana(x.fecha, 'synapse', 6)); // L-Sáb (dom = Feynman opcional, no cuenta) · v6.10w: por día REAL · sin las filas sin sesión
 
 const vibeTs = readTs('vibecodingPlan.ts');
 const VIBE_DIAS = [...vibeTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]+",semana:(\d+)/g)].map((m) => ({ d: +m[1], fecha: m[2], semana: +m[3] }));

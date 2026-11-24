@@ -8,6 +8,7 @@ import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from
 import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL } from '../lib/synapseDailyPlan';
 import { synTodayISO } from '../components/study/SynapseTodayPlan';
 import { planHoyD, loadDone } from '../lib/studyProgress';
+import { synContarHechas } from '../lib/synapseProgreso';
 import { semaforoColor } from '../components/empresa/primitives';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -644,7 +645,7 @@ function SynapseRightPanel() {
   const faseActiva = SYNAPSE_FASES.find((f) => f.estado === 'activa');
   const iso = synTodayISO();
   const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === planHoyD(SYN_DIAS, iso));
-  const hechas = loadDone('synapse').length;
+  const hechas = synContarHechas(SYN_DIAS, new Set(loadDone('synapse'))); // las filas sin sesión cuentan solas al llegar su día, como en «⚡ run»
   return (
     <View>
       <Text style={desktopStyles.rightPanelTitle}>SYNAPSE · AI TRACK</Text>
@@ -672,7 +673,7 @@ function SynapseRightPanel() {
           </TouchableOpacity>
         ))}
         <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 4 }}>
-          {hechas}/{SYN_PLAN_META.totalDias} misiones ✓ · marca el día en SYNAPSE › ⚡ run
+          {hechas}/{SYN_PLAN_META.totalDias} misiones al día · marca el día en SYNAPSE › ⚡ run
         </Text>
       </View>
 

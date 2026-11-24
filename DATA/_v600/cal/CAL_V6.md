@@ -2833,3 +2833,26 @@ Orden de Joseph: «el 22 a partir de las 2 de la tarde se puede hacer». El dom 
       - las 2 ediciones de c36.
     - Constructores parcheados e instalados en `c12/` y `v610w_scratch/c13_c21/`, con copias `*.antes_c35.*`.
   - **c36 (a mano, 15:02).** El mar 24 a las 09:15 y a las 16:15 llevan al principio «⚠ HOY manda la hoja ENCAPS (GoodNotes)…», a pedido del chat ENCAPS: los post-tests se envían juntos a las 10:40-10:45 y la eval va sin «Terminar y corregir». Respaldo en `ronda_c36/`. Junto con el 18:00 quedan anotados en `a_mano.json › _texto_a_mano`: hasta que pase el día, se excluyen a mano de cualquier lote.
+- **v6.11 · rondas de textos posteriores (lun 23-nov, a pedido de los chats de dominio; todas APLICADAS salvo la c40, en curso):**
+  - **c36 (a mano, regla _texto_a_mano).** Eventos editados a mano en la víspera:
+    - mar 24: 04:15 vibecoding (pista del ID entera) · 05:00 configuración Anki (hoja USMLE v3) · 09:15 y 16:15 ENCAPS («⚠ HOY manda la hoja ENCAPS», hoja v7) · 18:00 ENCAPS (anexo v4 de las 40 cifras, filas sin las de tests ciegos, «Pizarra: HOY NO»);
+    - mié 25: 05:00 Anki y 07:15 D2 (hoja USMLE del D2);
+    - jue 26 y vie 27: 18:00 (#214 y #211).
+    Quedan en `c12/a_mano.json › _texto_a_mano`: toda ronda los excluye hasta que pase el día. Respaldos en `ronda_c36/`.
+  - **c37 (204db74): 124 updates.**
+    - ENCAPS: fuga de cifras a runners ciegos, eval sin soluciones en el día de pre-test, cuarentena en las 16:15 y en los domingos, plan B del dom 29.
+    - USMLE: 7 cambios, Qbankly, sin 1-TAP.
+    - Research: PRISMA-P págs. 5-6, AMSTAR-2, M2.
+  - **c38 (b0d4e59): 119 updates.**
+    - CONCEPTOS_LIGADOS {102}, pizarra «HOY NO».
+    - Business sin «(en F1 no va el viernes)» en viernes real.
+    - ✓ SYNAPSE.
+    - Títulos de los extras «· plan del …» (build_ops.js:628 canónico).
+  - **c39 (38199cd): 14 updates de Research** (M1 sin pistas, un solo plazo del caso jue 24-dic, terceros en `_privado/`). Después, `--set` de los overlays M1, C-6 y CR-1.
+  - **c40 (8932e74): 185 updates.**
+    - Pizarra tapada en el primer bloque ENCAPS hasta cada runner ciego (≤2 días).
+    - APEX de ENCAPS y MIR por dictado al chat.
+    - «✓ en SYNAPSE › ⚡ run» solo en la sesión del día.
+    - Constructor c13 parcheado, con copias `*.antes_c40.js`.
+  - **Verificación.** `ver.js --despues` tras cada ronda: 0 FAIL inexplicados. Los FAIL esperados son las excluidas `_texto_a_mano`, el «HOY NO» del lun 23 16:15 y el solape c12/c13 en 3-8 ene.
+  - **Fuera del volcado (≥10-mar-2027).** Las ops de SYNAPSE «cierre del plan», Research F3 y Derma d44 van en la próxima ronda de 2027.
