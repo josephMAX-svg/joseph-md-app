@@ -9,7 +9,8 @@ import {
   diaPrevio, ventana7d, proximoD,
 } from '../../lib/researchDailyPlan';
 import { DIAS_2027, DAILY_META_2027 } from '../../lib/researchDailyPlan2027';
-import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { agruparProgreso, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
@@ -355,18 +356,12 @@ export default function ResearchTodayPlan() {
   const todayDia = TODOS.find((x) => x.fecha === iso) || TODOS.find((x) => x.d === hoyD) || TODOS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('research')));
+  const [done, toggleDone] = useDone('research');
   const dia = TODOS.find((x) => x.d === sel) || TODOS[0];
   const esHoy = dia.fecha === iso;
   const enPausa = !!PAUSA && iso >= PAUSA.desde && iso <= PAUSA.hasta;
   const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Research
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('research', Array.from(n));
-    return n;
-  });
   const artefactoVivo = dia.ciclo === 1 ? DAILY_META.artefacto : DAILY_META_2027.artefacto;
 
   return (

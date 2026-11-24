@@ -13,7 +13,8 @@ import {
   dermaCicloDe, dermaDiaPorD, dermaVentana7Todos, dermaGplusDe,
 } from '../../lib/dermaCiclo2';
 import { VUELTAS, INTERVALOS, type Prioridad } from '../../lib/researchData';
-import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { DermaAtlas, SKIN_TONES, SkinTone, DERMA_NOTEBOOKLM } from '../../lib/dermaData';
 import { dermaCasoEstado, dermaPctCiego, dermaLedgerExportJSON, dermaBancoCursorDeUrl, dermaCuraPendiente, dermaCuraAplicaA, type DermaFuente } from '../../lib/dermaLedger';
 import { DERMA_CEREBRO } from '../../lib/dermaCerebro';
@@ -772,10 +773,10 @@ export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?:
   const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Derma (§A3)
   // Fallback al CICLO 2: cuando la fecha pasa del último átomo del ciclo 1 (d73), planHoyD cae en dermaCiclo2.ts.
-  const hoyD = planHoyD(DERMA_DIAS_TODOS, iso);
+  const hoyD = planHoyD(DERMA_DIAS_TODOS, iso, 'research-derma');
   const [sel, setSel] = useState<number>(hoyD);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('derma')));
+  const [done, toggleDone] = useDone('derma');
   const { entries } = useDermaLedger();
   const ciego = useMemo(() => dermaPctCiego(entries), [entries]);
   const activeTone = tone ?? SKIN_TONES[2];
@@ -786,12 +787,6 @@ export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?:
   const hechosC2 = done.size - hechosC1;
   useEffect(() => { if (jump) { setSel(jump.d); setView('hoy'); } }, [jump?.k]); // eslint-disable-line react-hooks/exhaustive-deps
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('derma', Array.from(n));
-    return n;
-  });
 
   return (
     <View>

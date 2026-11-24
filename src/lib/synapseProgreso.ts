@@ -10,7 +10,9 @@
  *     ni rompe ni suma;
  *   · synCuentaHecha / synContarHechas / synDoneEfectivo / synGruposSemana: semana, fase y total cuentan las sesiones marcadas ✓ y las filas sin
  *     sesión cuyo día real ya llegó (nada sale hecho antes de su día; un ✓ antiguo en una fila sin sesión no cuenta); el denominador no cambia;
- *   · synSesionesMarcadas: los ✓ guardados en filas con sesión (uptime).
+ *   · synSesionesMarcadas: los ✓ guardados en filas con sesión (uptime);
+ *   · synSinDiaPropio: fila que ningún día real pinta (su fecha sale «—»: ⏸ que abre una cadena, ✈/⏸ de la semana 1, 🎄 feriado de plan cuyo día real hace otra sesión);
+ *   · synRunsDesde / synFilaVecina: «◷ 7 runs» y ◄/► por DÍAS REALES (la fila que «⚡ run» pinta cada día), no por número de fila.
  * Solo LEE `done` (ids de fila de loadDone('synapse') / plan_checks): no cambia nada de lo guardado.
  * La revisión semanal (DATA/_scripts/gen_revision_semanal.js › synSemana) aplica el mismo criterio de fila sin sesión: la saca de sus misiones.
  */
@@ -21,7 +23,8 @@ import { planHoyD, agruparProgreso } from './studyProgress';
 import type { GrupoProgreso } from './studyProgress';
 
 const _isoLocal = (d: Date): string => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-const _ayer = (iso: string): string => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
+const _mover = (iso: string, n: number): string => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const _ayer = (iso: string): string => _mover(iso, -1);
 
 /** Día REAL de hoy (reloj local, AAAA-MM-DD). */
 export function synHoyReal(): string { return _isoLocal(new Date()); }
@@ -31,9 +34,12 @@ export function synFilaDeReal(real: string): DiaSynapse {
   const iso = fechaPlanDe(real, 'synapse');
   const exacta = synDiaDe(iso);
   if (exacta) return exacta;
-  const hd = planHoyD(SYN_DIAS, iso); // una sola vez (fuera del find)
+  const hd = planHoyD(SYN_DIAS, iso, 'synapse'); // una sola vez (fuera del find)
   return SYN_DIAS.find((x) => x.d === hd) || SYN_DIAS[0];
 }
+
+/** Fila sin día real propio: ningún día real la pinta en «⚡ run» (su día real hace otra fecha de plan). Su fecha se pinta «—»; su texto lo dice el generador. */
+export function synSinDiaPropio(x: DiaSynapse): boolean { return fechaPlanDe(fechaRealDe(x.fecha, 'synapse'), 'synapse') !== x.fecha; }
 
 /** Fila sin sesión ni guía (✈ · ⏸ · 🎄 · 🛡): solo bloques R de 0′. No hay nada que marcar: cuenta sola al llegar su día y no toca la racha. */
 export function synFilaSinSesion(x: DiaSynapse): boolean { return x.bloques.every((b) => b.tag === 'R' && b.min === 0); }
@@ -107,4 +113,32 @@ export function synRacha(done: Set<number>, hoyReal: string = synHoyReal()): num
     n++;
   }
   return n;
+}
+
+/** Un día real de «◷ 7 runs»: la fila que «⚡ run» pinta ese día; `propia` = es la fila de ESE día (no la de otro día que se adelanta). */
+export interface SynRun { real: string; x: DiaSynapse; propia: boolean }
+/** «◷ 7 runs»: `n` días reales seguidos (sin saltar ninguno) desde `desde` con la fila que «⚡ run» pinta cada uno. Los días iniciales que pintan la fila de
+ *  otro día (lun 23-nov sin sesión → la del mar 24) se omiten: la lista empieza en el primer día con fila propia (hoy, mar 24 → lun 30). */
+export function synRunsDesde(desde: string, n: number = 7): SynRun[] {
+  const { hasta } = _rangoReal();
+  let r = desde;
+  while (r <= hasta && fechaRealDe(synFilaDeReal(r).fecha, 'synapse') !== r) r = _mover(r, 1);
+  const out: SynRun[] = [];
+  for (; out.length < n && r <= hasta; r = _mover(r, 1)) {
+    const x = synFilaDeReal(r);
+    out.push({ real: r, x, propia: fechaRealDe(x.fecha, 'synapse') === r });
+  }
+  return out;
+}
+
+/** ◄/►: la fila del día real anterior (-1) o siguiente (+1) al de `x` que «⚡ run» pinta como suya (los días que pintan la fila de otro día se saltan); null si
+ *  no hay (antes de la 1.ª sesión real o tras la última). Desde una fila sin día propio, ► lleva primero a la sesión de su día real (D40 → D37 del vie 25-dic). */
+export function synFilaVecina(x: DiaSynapse, paso: 1 | -1): DiaSynapse | null {
+  const { desde, hasta } = _rangoReal();
+  const r0 = fechaRealDe(x.fecha, 'synapse');
+  for (let r = paso === 1 && synSinDiaPropio(x) ? r0 : _mover(r0, paso); r >= desde && r <= hasta; r = _mover(r, paso)) {
+    const y = synFilaDeReal(r);
+    if (y.d !== x.d && fechaRealDe(y.fecha, 'synapse') === r) return y;
+  }
+  return null;
 }

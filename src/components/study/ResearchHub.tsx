@@ -16,7 +16,7 @@ import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_IN
 /** v6.06 (31-oct-2026): d del átomo R0 en el plan vigente (M1 pasó a d1 → R0 = d2); antes «D1 del plan» escrito. */
 const R0_DIA = DIAS.find((x) => x.code === 'R0');
 import { pullEntregables, pushEntregable, aplicarCambio, EntregableRegistroSync, TABLA_ENTREGABLES } from '../../lib/researchEntregablesSync';
-import { loadDone, saveDone } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
@@ -601,7 +601,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
   const regRef = useRef<EntregablesRegistro>(reg);
   regRef.current = reg;
   const [sync, setSync] = useState<SyncEstado>({ estado: 'cargando', detalle: 'consultando Supabase' });
-  const [infra, setInfra] = useState<Set<number>>(() => new Set(loadDone('research-infra')));
+  const [infra, onToggleInfra] = useDone('research-infra');
   const kpis = calcResearchKpis(reg, infra.size);
   const onChange = (id: string, patch: Partial<EntregableRegistroSync>) => {
     const cur = aplicarCambio(regRef.current[id] as EntregableRegistroSync | undefined, patch, id);
@@ -625,12 +625,6 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
     });
     return () => { vivo = false; };
   }, []);
-  const onToggleInfra = (n: number) => setInfra((prev) => {
-    const s = new Set(prev);
-    if (s.has(n)) s.delete(n); else s.add(n);
-    saveDone('research-infra', Array.from(s));
-    return s;
-  });
   useEffect(() => { ensureResearchFonts(); }, []);
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent

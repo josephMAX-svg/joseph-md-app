@@ -23,7 +23,8 @@ import {
 } from '../../lib/mirPreguntasOficiales';
 import { MirPoolLista, poolConFallback } from './MirPoolEval';
 import { mirUsmleBridge } from '../../lib/mirUsmleBridge';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 import GuiaBloqueCard from '../GuiaBloqueCard';
@@ -934,14 +935,14 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
 export default function MirTodayPlan() {
   const iso = fechaPlanDe(todayISO(), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const sesion = mirSesionDe(iso);
-  const hoyD = planHoyD(MIR_DIAS, iso);
+  const hoyD = planHoyD(MIR_DIAS, iso, 'mir');
   const todayDia = mirDiaDe(iso) || MIR_DIAS.find((x) => x.d === hoyD) || MIR_DIAS[0];
   const enMant = !mirDiaDe(iso) && iso > MIR_DAILY_META.fin && MIR_MANT_DIAS.length > 0;
   const [modo, setModo] = useState<'plan' | 'mant'>(sesion?.tipo === 'mantenimiento' || enMant ? 'mant' : 'plan');
   const [sel, setSel] = useState<number>(todayDia.d);
-  const [selM, setSelM] = useState<number>(() => planHoyD(MIR_MANT_DIAS, iso));
+  const [selM, setSelM] = useState<number>(() => planHoyD(MIR_MANT_DIAS, iso, 'mir'));
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('mir')));
+  const [done, toggleDone] = useDone('mir');
   const [, setTick] = useState(0);
   useEffect(() => onTurnosChange(() => setTick((t) => t + 1)), []); // v6.00: el turno mueve la franja MIR en el SERUMS
   const protegidoHoy = motivoProtegido(iso);                       // v6.00: día protegido = sin sesión MIR (§A3)
@@ -958,12 +959,6 @@ export default function MirTodayPlan() {
   const diaM = MIR_MANT_DIAS.find((x) => x.d === selM) || MIR_MANT_DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('mir', Array.from(n));
-    return n;
-  });
 
   return (
     <View>

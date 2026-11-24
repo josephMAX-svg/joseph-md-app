@@ -4,9 +4,10 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeigh
 import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from './primitives';
 import { FadeUp } from './visuals';
-import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, biz7d, bizColor, bizModo } from '../../lib/businessStudyPlan';
+import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, filaDeReal, filaSinDiaPropio, filasDesdeReal, filaVecinaReal } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
@@ -144,21 +145,22 @@ function HorarioView({ dia }: { dia: DiaBiz }) {
   );
 }
 
-function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => void }) {
-  const win = biz7d(fromD);
+function SieteView({ desde, onPick }: { desde: string; onPick: (d: number) => void }) {
+  // por DÍAS REALES seguidos con la fila que pinta cada día (no por número de fila: con el alias, un descanso o feriado de plan cuyo día real hace otra sesión no sale)
+  const win = filasDesdeReal(BIZ_DIAS, desde, 7, 'business');
   return (
     <View>
       <Text style={st.secLbl}>📆 Próximos 7 días · toca un día para abrirlo</Text>
-      {win.map((x, i) => {
-        const c = bizColor(x.materia);
+      {win.map(({ real, x, propia }, i) => {
+        const c = propia ? bizColor(x.materia) : Colors.muted;
         return (
-          <FadeUp key={x.d} delay={i * 30}>
+          <FadeUp key={real} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: c }]}>
               <Text style={[st.d7day, { color: c }]}>D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'business'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={st.d7fecha}>{fmtFecha(real)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.lectura}</Text>
-                <Text style={st.d7sys}>{x.materia}{x.min ? ` · ${x.min} min · ${MODO_LABEL[bizModo(x)]}` : ''}</Text>
+                <Text style={st.d7sys}>{propia ? `${x.materia}${x.min ? ` · ${x.min} min · ${MODO_LABEL[bizModo(x)]}` : ''}` : `sin sesión propia: es la fila del ${fmtFecha(fechaRealDe(x.fecha, 'business'))}`}</Text>
               </View>
               <Text style={[st.d7go, { color: c }]}>→</Text>
             </TouchableOpacity>
@@ -239,31 +241,29 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 
 export default function PulsoTodayPlan() {
   const iso = fechaPlanDe(todayISO(), 'business'); // v6.02d: semana 1 corrida → fila de la fecha de plan
-  const hoyD = planHoyD(BIZ_DIAS, iso);
+  const hoyD = planHoyD(BIZ_DIAS, iso, 'business');
   const todayDia = bizDiaDe(iso) || BIZ_DIAS.find((x) => x.d === hoyD) || BIZ_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('business')));
+  const [done, toggleDone] = useDone('business');
   const dia = BIZ_DIAS.find((x) => x.d === sel) || BIZ_DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('business', Array.from(n));
-    return n;
-  });
+  // ◄/► por DÍAS REALES: la fila que pinta el día real anterior / siguiente (un descanso o feriado de plan sin día propio no se recorre)
+  const filaAnt = filaVecinaReal(BIZ_DIAS, dia, -1, 'business'), filaSig = filaVecinaReal(BIZ_DIAS, dia, 1, 'business');
+  const diaReal = fechaRealDe(dia.fecha, 'business');
+  const sinDia = filaSinDiaPropio(dia, 'business');
 
   return (
     <View>
       <View style={st.navRow}>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} disabled={!filaAnt} onPress={() => { if (filaAnt) setSel(filaAnt.d); }} style={[st.navArrow, !filaAnt && { opacity: 0.35 }]}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>Día {dia.d}/{BIZ_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-          {/* v6.02d: fecha real visible (semana corrida) */}
-          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'business'))} · {fechaRealDe(dia.fecha, 'business')}</Text>
+          {/* fecha real visible · «—» si ningún día real pinta esta fila (su día real hace otra sesión: se dice cuál) */}
+          <Text style={st.navFecha}>{sinDia ? `— · sin día propio: el ${fmtFecha(diaReal)} hace la D${filaDeReal(BIZ_DIAS, diaReal, 'business').d}` : `${fmtFecha(diaReal)} · ${diaReal}`}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(BIZ_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} disabled={!filaSig} onPress={() => { if (filaSig) setSel(filaSig.d); }} style={[st.navArrow, !filaSig && { opacity: 0.35 }]}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>
       {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
 
@@ -278,7 +278,7 @@ export default function PulsoTodayPlan() {
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
         {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} />
           : view === 'horario' ? <HorarioView dia={dia} />
-          : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
+          : view === '7d' ? <SieteView desde={diaReal} onPick={pickDay} />
           : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={toggleDone} />}
       </GlassPanel>
     </View>

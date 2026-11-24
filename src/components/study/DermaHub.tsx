@@ -19,7 +19,8 @@ import {
 } from '../../lib/dermaCiclo2';
 import { dermaPctCiego, dermaPctFalloPorModulo, DERMA_AREAS, DERMA_MODULO_POR_BLOQUE, type DermaStat } from '../../lib/dermaLedger';
 import { DERMA_CEREBRO, type DermaCerebroFicha } from '../../lib/dermaCerebro';
-import { loadDone, agruparProgreso, planHoyD } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import DermaTodayPlan from './DermaTodayPlan';
 import DermaWeaknessWidget from '../derma/DermaWeaknessWidget';
 import DermaCerebroCard from '../derma/DermaCerebroCard';
@@ -404,7 +405,7 @@ interface BloquePlanStat { bKey: DermaBloqueKey; bloque: string; total: number; 
 function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: (d: number) => void; onGoDebilidades: () => void }) {
   const { entries } = useDermaLedger();
   const hoy = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan (próximo hito / pasados)
-  const done = useMemo(() => new Set(loadDone('derma')), []);
+  const [done] = useDone('derma');
   const ciego = useMemo(() => dermaPctCiego(entries), [entries]);
   const porModulo = useMemo(() => {
     const st = dermaPctFalloPorModulo(entries);
@@ -738,7 +739,7 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
   const hoyLabel = protegidoHoy ? `DÍA PROTEGIDO · ${protegidoHoy}` : hoy === 'derma' ? (f4 ? "DERMA · hoy · 30' en tiempo muerto (posta)" : 'DERMA · hoy te toca') : hoy === 'research' ? 'RESEARCH · día alterno →' : (f4 ? 'Descanso · domingo' : 'Descanso · finde');
 
   // Día de HOY en la numeración continua (ciclo 1 → ciclo 2 cuando la fecha pasa del d73).
-  const hoyD = planHoyD(DERMA_DIAS_TODOS, isoHoy); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyD = planHoyD(DERMA_DIAS_TODOS, isoHoy, 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   // El BodyMap/MorphologyFilter filtran el ATLAS; tocar una lámina (o un hito/ficha del Cerebro) abre ESE día en "Caso de hoy".
   const goCase = (d: number) => { setJump({ d, k: Date.now() }); setSub('hoy'); };
   const pickSitio = (s: string | null) => { setFilters((f) => ({ ...f, sitio: s })); if (s) setSub('atlas'); };

@@ -15,7 +15,8 @@ import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVau
 const OBS = '#A78BFA'; // mismo morado ◆ que USMLE/MIR/ENCAPS
 import { SYN_PLAN_META, SYN_DIAS, synDiaDe } from '../../lib/synapseDailyPlan';
 import { vibeShipped, vibeShippedVerificado } from '../../lib/vibecodingPlan';
-import { loadDone, saveDone, planHoyD } from '../../lib/studyProgress';
+import { planHoyD } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { synTodayISO } from './SynapseTodayPlan';
 import { synHoyReal, synContarHechas, synSesionesMarcadas } from '../../lib/synapseProgreso';
 import SynapseTodayPlan from './SynapseTodayPlan';
@@ -41,7 +42,7 @@ type Sub = 'hoy' | 'agosto' | 'ruta' | 'biblioteca' | 'protocolo';
 // ── Telemetría del run (derivada de SYN_DIAS + progreso REAL, sin tocar el motor) ──
 function useSynTelemetry(done: Set<number>) {
   const iso = synTodayISO();
-  const hoyD = planHoyD(SYN_DIAS, iso);
+  const hoyD = planHoyD(SYN_DIAS, iso, 'synapse');
   const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === hoyD) || SYN_DIAS[0];
   const total = SYN_PLAN_META.totalDias;
   // las filas sin sesión (viaje, feriado, protegido) cuentan como hechas al llegar su día, como en «⚡ run» (synapseProgreso)
@@ -268,21 +269,9 @@ function MiniFaseView() {
 export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const [sub, setSub] = useState<Sub>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('synapse')));
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('synapse', Array.from(n));
-    return n;
-  });
+  const [done, toggleDone] = useDone('synapse');
   // v5.7: ✓ diario del VIBECODING 04:15 (PlanKey 'vibecoding') — vive aquí para que la telemetría "ship" sea en vivo
-  const [vibeDone, setVibeDone] = useState<Set<number>>(() => new Set(loadDone('vibecoding')));
-  const toggleVibe = (d: number) => setVibeDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('vibecoding', Array.from(n));
-    return n;
-  });
+  const [vibeDone, toggleVibe] = useDone('vibecoding');
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };

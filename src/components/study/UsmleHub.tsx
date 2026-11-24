@@ -13,7 +13,8 @@ import {
 import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1, etiquetaDiaUSMLE } from '../../lib/usmleStep1Daily';
 import { FECHAS_V6, reservaStep1, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { fechasRealesEnTexto } from '../../lib/corridaTexto';
-import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
+import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
   hitosPlan, HITOS_ONTRACK_FUENTE, HITOS_ONTRACK, gateHito, GateHito, BURNOUT_PROTOCOLO,
@@ -65,7 +66,7 @@ const TABS = [
 export default function UsmleHub() {
   const [sub, setSub] = useState('hoy');
   // Command-bar readiness metrics (derived, no data mutation).
-  const done = loadDone('usmle');
+  const [done] = useDone('usmle');
   const iso = todayISO();
   // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
   const pausa = enPausaStep1(iso);
@@ -74,7 +75,7 @@ export default function UsmleHub() {
   // v6.10r: UN solo contador de día = el de la navegación, la guía y el Home (etiquetaDiaUSMLE: «2/13» en F1 · «T5/218» en el tramo 2); antes la posición sobre 230 filas («1/230» junto a «Día 2/13»)
   const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);
   const diaValor = pausa ? 'PAUSA' : hoyRow ? etiquetaDiaUSMLE(hoyRow).replace(/^Día /, '') : undefined;
-  const glob = progresoGlobal(DIAS_TODOS, new Set(done));
+  const glob = progresoGlobal(DIAS_TODOS, done);
   // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.
   const [scores, setScores] = useState<UsmleScore[]>(() => loadScores());
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function UsmleHub() {
         subtitle="US knowledge-bank terminal · Pathology + Physiology = the exam"
         accent={JADE}
         dia={posHoy} total={glob.total} diaValor={diaValor} temarioPct={glob.pct}
-        racha={`${done.length} temas`}
+        racha={`${done.size} temas`}
         readinessPct={rd ? rd.pct : USMLE_READINESS.pct} readinessLabel={rd ? rd.label : USMLE_READINESS.status}
         extraStat={{ label: 'PATH', value: `${USMLE_KPIS.pathologyPct}%`, hint: 'del examen', accent: Colors.coral }}
         media7d={media && mediaVal != null ? (() => { const sem = semaforoPct(mediaVal, media.evalPct != null ? 'eval' : 'consol'); return { label: 'MEDIA 7D', value: `${mediaVal}%`, hint: `${media.evalPct != null ? 'eval timed' : 'consolidación'} · ${media.n} días · ${sem === 'verde' ? '≥ gate 80' : sem === 'ambar' ? `ámbar ≥${media.evalPct != null ? PISO_AMBAR.eval : PISO_AMBAR.consol}` : 'ROJO < piso'}`, accent: sem === 'verde' ? Colors.green : sem === 'ambar' ? Colors.gold : Colors.coral }; })() : null}

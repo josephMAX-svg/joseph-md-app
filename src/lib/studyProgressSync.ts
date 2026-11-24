@@ -12,7 +12,9 @@
  *   · `DATA/_scripts/gen_revision_semanal.js` lee `plan_checks` directamente (ya no depende del export del navegador).
  * Regla de fusión: remoto ∪ altas locales pendientes − bajas locales pendientes (lo desmarcado desde el último sync
  * se borra en remoto; lo marcado en otro dispositivo aparece aquí). Nunca lanza: si Supabase falla, queda local.
- * Sin localStorage (nativo) usa un store en memoria alimentado por el pull.
+ * Una baja solo borra lo que este dispositivo ya vio, y cada ✓ parte de lo guardado en ese momento (marcarDone / useDone), nunca de
+ * un estado montado antes del pull. El pull y el push de un mismo dispositivo no se cruzan (esperarA), `synced` se guarda por plan
+ * y un push fallido se reintenta solo. Sin localStorage (nativo) usa un store en memoria alimentado por el pull.
  */
 import { supabase } from './supabase';
 import type { PlanKey } from './studyProgress';
@@ -26,6 +28,8 @@ export const TABLA = 'plan_checks';
 /** Claves de plan válidas (= PlanKey de studyProgress.ts). Cualquier otra clave se ignora al importar. */
 export const PLAN_KEYS: readonly string[] = ['usmle', 'mir', 'research', 'derma', 'business', 'synapse', 'aurum', 'liviano', 'vibecoding', 'research-infra'];
 const PULL_MIN_MS = 5 * 60 * 1000;   // no volver a tirar de Supabase antes de 5' (los componentes llaman loadDone en cada montaje)
+const ESPERA_MAX_MS = 20 * 1000;     // tope de la espera entre pull y push: una petición colgada no deja al otro esperando sin fin
+const REINTENTO_MIN_MS = 30 * 1000;  // push fallido: reintento solo a los 30 s, 1′, 2′… hasta PULL_MIN_MS (un toque nuevo lo adelanta)
 
 export type Store = Record<string, number[]>;
 
@@ -92,13 +96,20 @@ export function onProgressSync(cb: (i: SyncInfo) => void): () => void { listener
 
 const diff = (a: number[], b: number[]): number[] => { const s = new Set(b); return a.filter((x) => !s.has(x)); };
 const union = (a: number[], b: number[]): number[] => limpiar([...a, ...b]);
+/** Espera (con tope) a que termine lo que hace `ocupado`: el pull y el push de ESTE dispositivo no se cruzan. Si se cruzaban, la foto del
+ *  remoto que tomó el SELECT antes del push, leída después, pisaba la caché (✓ recién marcado que desaparece, desmarcado que resucita). */
+async function esperarA(ocupado: () => boolean): Promise<void> {
+  const t0 = Date.now();
+  while (ocupado() && Date.now() - t0 < ESPERA_MAX_MS) await new Promise<void>((r) => setTimeout(r, 20));
+}
 
 // ── PUSH (lo llama saveDone; cola por plan, nunca lanza) ──
-const cola = new Map<string, number[]>();
+const cola = new Set<string>();   // planes por subir: el push lee lo guardado AL SALIR, no una foto que un pull pudo dejar vieja
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
 let pushing = false;
-async function pushPlan(plan: string, days: number[]): Promise<void> {
-  const synced = leerSynced();
+let reintentoMs = 0;
+async function pushPlan(plan: string): Promise<void> {
+  const days = leerStoreLS()[plan] || [], synced = leerSynced();
   const prev = synced[plan] || [];
   const adds = diff(days, prev), dels = diff(prev, days);
   if (!adds.length && !dels.length) return;
@@ -111,26 +122,34 @@ async function pushPlan(plan: string, days: number[]): Promise<void> {
     const { error } = await supabase.from(TABLA).delete().eq('plan_key', plan).in('dia', dels);
     if (error) throw new Error(error.message);
   }
-  const s2 = leerSynced(); s2[plan] = limpiar(days); escribirSynced(s2);
+  const s2 = leerSynced(); s2[plan] = diff(union(s2[plan] || [], adds), dels); escribirSynced(s2);   // solo lo subido: un pull que terminó antes ya dejó el resto
 }
 async function vaciarCola(): Promise<void> {
   if (pushing) return;
+  await esperarA(() => pullPromise !== null);   // un pull en vuelo termina antes (lo tocado mientras tanto lo vuelve a encolar él)
+  if (pushing) return;
   pushing = true;
+  let plan = '';
   try {
     setEstado('sync');
     while (cola.size) {
-      const [plan, days] = cola.entries().next().value as [string, number[]];
+      plan = cola.values().next().value as string;
       cola.delete(plan);
-      await pushPlan(plan, days);
+      await pushPlan(plan);
     }
+    reintentoMs = 0;
     setEstado('ok');
   } catch (e) {
-    setEstado('offline', e instanceof Error ? e.message : 'sin red');   // lo pendiente se recupera en el próximo pull (diff vs synced)
+    // sin red: el plan vuelve a la cola y se reintenta solo (30 s, 1′, 2′… hasta 5′), sin esperar a otro toque ni a otro montaje
+    if (plan) cola.add(plan);
+    reintentoMs = Math.min(reintentoMs ? reintentoMs * 2 : REINTENTO_MIN_MS, PULL_MIN_MS);
+    if (!pushTimer) pushTimer = setTimeout(() => { pushTimer = null; void vaciarCola(); }, reintentoMs);
+    setEstado('offline', e instanceof Error ? e.message : 'sin red');   // y el próximo pull también lo recupera (diff vs synced)
   } finally { pushing = false; }
 }
-/** Empuja el estado completo de un plan (upsert de altas, delete de bajas) sin bloquear la UI. */
-export function syncSaveDone(plan: PlanKey | string, days: number[]): void {
-  cola.set(plan, limpiar(days));
+/** Sube lo guardado de un plan (upsert de altas, delete de bajas frente al último sync) sin bloquear la UI. */
+export function syncSaveDone(plan: PlanKey | string): void {
+  cola.add(plan);
   if (pushTimer) clearTimeout(pushTimer);
   pushTimer = setTimeout(() => { pushTimer = null; void vaciarCola(); }, 400);   // agrupa toques rápidos
 }
@@ -144,6 +163,7 @@ export async function pullAll(force = false): Promise<boolean> {
   pullPromise = (async () => {
     try {
       setEstado('sync');
+      await esperarA(() => pushing);   // la foto del remoto se toma con el push de este dispositivo ya confirmado (ver esperarA)
       const { data, error } = await supabase.from(TABLA).select('plan_key,dia').limit(10000);
       if (error) throw new Error(error.message);
       const remote: Store = {};
@@ -153,7 +173,7 @@ export async function pullAll(force = false): Promise<boolean> {
       }
       const local = leerStoreLS(), synced = leerSynced();
       const planes = new Set<string>([...Object.keys(local), ...Object.keys(remote), ...Object.keys(synced)]);
-      const merged: Store = {};
+      const merged: Store = {}, sinc: Store = {};
       const now = new Date().toISOString(), device = deviceId();
       let pushOk = true;
       for (const plan of planes) {
@@ -171,10 +191,18 @@ export async function pullAll(force = false): Promise<boolean> {
             const { error: e2 } = await supabase.from(TABLA).delete().eq('plan_key', plan).in('dia', borrar);
             if (e2) throw new Error(e2.message);
           }
-        } catch (e) { pushOk = false; ultimoError = e instanceof Error ? e.message : 'push'; remote[plan] = R; }
+          sinc[plan] = M;
+        } catch (e) { pushOk = false; ultimoError = e instanceof Error ? e.message : 'push'; sinc[plan] = R; }
       }
-      escribirStoreLS(merged);
-      escribirSynced(pushOk ? merged : normalizar(remote));   // si el push falló, el diff se reintenta contra lo que SÍ tiene el remoto
+      // ✓ marcados / desmarcados en ESTE dispositivo mientras el pull esperaba a la red: se conservan y suben en el push siguiente
+      const ahora = leerStoreLS(), final: Store = { ...merged }, tocados: string[] = [];
+      for (const plan of new Set<string>([...Object.keys(local), ...Object.keys(ahora)])) {
+        const mas = diff(ahora[plan] || [], local[plan] || []), menos = diff(local[plan] || [], ahora[plan] || []);
+        if (mas.length || menos.length) { final[plan] = diff(union(final[plan] || [], mas), menos); tocados.push(plan); }
+      }
+      escribirStoreLS(final);
+      escribirSynced(sinc);   // por plan: lo que entró (M) o, si falló su escritura, lo que SÍ tiene el remoto (R); el diff se reintenta solo en ese plan
+      for (const plan of tocados) syncSaveDone(plan);
       if (!lsGet(MIGRATED_KEY)) lsSet(MIGRATED_KEY, now);
       ultimoPull = Date.now();
       setEstado(pushOk ? 'ok' : 'offline', pushOk ? null : ultimoError);
@@ -244,7 +272,7 @@ export function importProgresoJSON(texto: string): ResultadoImport {
     for (const [f, n] of Object.entries(modoIn)) if (/^\d{4}-\d{2}-\d{2}$/.test(f) && (n === 'VERDE' || n === 'AMBAR' || n === 'ROJO') && !cur[f]) cur[f] = n;
     lsSet(MODO_LOG_KEY, JSON.stringify(cur));
   }
-  for (const plan of planes) syncSaveDone(plan, local[plan]);
+  for (const plan of planes) syncSaveDone(plan);
   emitir();
   return { ok: true, planes: planes.length, nuevos, total: totalChecks(local) };
 }

@@ -5,12 +5,13 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel, monoText } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
-  SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque, syn7d,
+  SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque,
   SYN_FORMATO_ICON, SYN_FASES_BC, synFaseBCDe, // v6.10 · base cero: fase explícita del día (1-6)
 } from '../../lib/synapseDailyPlan';
-import { planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 // racha por día REAL y semana/fase/total con las filas sin sesión contadas como hechas al llegar su día (con el alias las filas no van en orden de días reales)
-import { synHoyReal, synFilaDeReal, synFilaSinSesion, synContarHechas, synDoneEfectivo, synGruposSemana, synRacha } from '../../lib/synapseProgreso';
+import { synHoyReal, synFilaDeReal, synFilaSinSesion, synContarHechas, synDoneEfectivo, synGruposSemana, synRacha, synSinDiaPropio, synRunsDesde, synFilaVecina } from '../../lib/synapseProgreso';
 import { FECHAS_V6, fechaPlanDe, fechaRealDe, enShipDe } from '../../lib/fechasV6'; // v6.10y: + FECHAS_V6 (alias propio del vibecoding, vibeFechaDe) y enShipDe (el paso que absorbe el SHIP del domingo)
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
@@ -305,25 +306,24 @@ function HoyView({ dia, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSyna
   );
 }
 
-function SieteView({ fromD, done, onPick }: { fromD: number; done: Set<number>; onPick: (d: number) => void }) {
-  const win = syn7d(fromD);
+function SieteView({ desde, done, onPick }: { desde: string; done: Set<number>; onPick: (d: number) => void }) {
+  // por DÍAS REALES seguidos (sin saltos) con la fila que «⚡ run» pinta cada día; las filas sin día real propio no salen (ningún día las pinta)
+  const win = synRunsDesde(desde);
   return (
     <View>
       <Text style={st.secLbl}>◷ próximos 7 runs · toca un día para abrirlo</Text>
-      {win.map((x, i) => {
+      {win.map(({ real, x, propia }, i) => {
         const a = x.bloques[0];
-        const sinSes = synFilaSinSesion(x); // nada que marcar: «–» gris, como en ◈ checkpoints
+        const sinSes = synFilaSinSesion(x) || !propia; // nada que marcar ese día (o pinta la fila de otro día): «–» gris, como en ◈ checkpoints
         const hecho = !sinSes && done.has(x.d);
         return (
-          <FadeUp key={x.d} delay={i * 30}>
+          <FadeUp key={real} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: sinSes ? Colors.muted : hecho ? Colors.green : INDIGO }]}>
               <Text style={[st.d7day, { color: sinSes ? Colors.muted : hecho ? Colors.green : INDIGO }]}>{sinSes ? '–' : hecho ? '✓' : ''} D{x.d}</Text>
-              {/* v6.02d: fecha real visible (semana corrida) · v6.11 fase 2: la fila «⏸ Sin sesión» que abre una cadena (su contenido lo hace la fila siguiente)
-                  no tiene día real propio → «—» (antes salía el día real de OTRA fila: dos «lun 7-dic» seguidos) */}
-              <Text style={st.d7fecha}>{/^⏸/.test(String(a.material)) && fechaPlanDe(fechaRealDe(x.fecha, 'synapse'), 'synapse') !== x.fecha ? '—' : fmtFecha(fechaRealDe(x.fecha, 'synapse'))}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(real)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{a.material}</Text>
-                <Text style={st.d7sys} numberOfLines={1}>{a.leccion}</Text>
+                <Text style={st.d7sys} numberOfLines={1}>{propia ? a.leccion : `sin sesión propia: es la fila del ${fmtFecha(fechaRealDe(x.fecha, 'synapse'))}`}</Text>
               </View>
               <Text style={[st.d7go, { color: INDIGO }]}>→</Text>
             </TouchableOpacity>
@@ -344,6 +344,7 @@ function ProgressBar({ pct, color }: { pct: number; color: string }) {
 
 function SemanaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaSynapse>; hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   const [open, setOpen] = useState(g.estado === 'en-curso');
+  const hoyReal = synHoyReal();
   const estadoTxt = g.estado === 'completado' ? '✓ completada' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : 'pendiente';
   const estadoColor = g.estado === 'completado' ? Colors.green : g.estado === 'en-curso' ? INDIGO : Colors.muted;
   return (
@@ -361,11 +362,12 @@ function SemanaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaS
           {g.dias.map((x) => {
             const sinSes = synFilaSinSesion(x); // nada que marcar: cuenta sola al llegar su día
             const hecho = !sinSes && done.has(x.d), now = x.d === hoyD;
+            const futura = !sinSes && !hecho && fechaRealDe(x.fecha, 'synapse') > hoyReal; // sesión de un día real que aún no llega: su ✓ va ese día (desmarcar sí se puede)
             const a = x.bloques[0];
             return (
               <View key={x.d} style={[st.diaRow, now && { backgroundColor: INDIGO + '12' }]}>
-                <TouchableOpacity activeOpacity={0.7} disabled={sinSes} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
-                  <Text style={[st.diaChk, { color: sinSes ? Colors.muted : hecho ? Colors.green : 'rgba(255,255,255,0.25)' }]}>{sinSes ? '–' : hecho ? '☑' : '☐'}</Text>
+                <TouchableOpacity activeOpacity={0.7} disabled={sinSes || futura} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
+                  <Text style={[st.diaChk, { color: sinSes ? Colors.muted : hecho ? Colors.green : futura ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.25)' }]}>{sinSes ? '–' : hecho ? '☑' : '☐'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.diaRowMain}>
                   <Text style={[st.diaRowD, { color: hecho ? Colors.green : now ? INDIGO : Colors.muted }]}>{now ? '▶' : ''} D{x.d}</Text>
@@ -395,7 +397,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs al día · F0 sem 1-8 (base cero: fases 1-4, se cursa entera) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · domingo PC = SHIP (flexible) · avance manual real: cuentan las sesiones con ✓ y, al llegar su día, las filas sin nada que marcar (–: viaje, feriado, protegido, día sin sesión); las sesiones a hora fija de las cadenas y recuperaciones van sin ✓</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos y lo lee la revisión semanal). ▶ = run de hoy. – = nada que marcar: cuenta sola al llegar su día. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */}, con las mismas 110 A-units; sin SYNAPSE en los feriados del SKIP ni en los días PROTEGIDOS del ENCAPS (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo y se sincroniza con Supabase, tabla plan_checks: lo ves en tus otros dispositivos y lo lee la revisión semanal). ▶ = run de hoy. – = nada que marcar: cuenta sola al llegar su día. ☐ tenue = sesión de un día que aún no llega: se marca ese día. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */}, con las mismas 110 A-units; sin SYNAPSE en los días PROTEGIDOS del ENCAPS ni en los feriados que conservan su día (un feriado de plan sin día propio, con fecha «—», no quita la sesión de ese día real: la hace otra fila) (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }
@@ -405,30 +407,31 @@ export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDonePro
   vibeDone?: Set<number>; onToggleVibe?: (d: number) => void; // v5.7: ✓ del vibecoding (PlanKey 'vibecoding'); si el hub no los pasa, estado local
 }) {
   const iso = synTodayISO();
-  const hoyD = planHoyD(SYN_DIAS, iso);
+  const hoyD = planHoyD(SYN_DIAS, iso, 'synapse');
   const todayDia = synFilaDeReal(synHoyReal()); // la misma fila que usa la racha (synapseProgreso)
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
-  const [vibeLocal, setVibeLocal] = useState<Set<number>>(() => new Set(loadDone('vibecoding')));
+  const [vibeLocal, marcarVibeLocal] = useDone('vibecoding');
   const vibeDone = vibeDoneProp ?? vibeLocal;
-  const onToggleVibe = onToggleVibeProp ?? ((d: number) => setVibeLocal((prev) => {
-    const n = new Set(prev); if (n.has(d)) n.delete(d); else n.add(d); saveDone('vibecoding', Array.from(n)); return n;
-  }));
+  const onToggleVibe = onToggleVibeProp ?? marcarVibeLocal;
   const dia = SYN_DIAS.find((x) => x.d === sel) || SYN_DIAS[0];
   // por .d (no por fecha): así el día por defecto figura como HOY aunque hoy caiga antes del inicio o en un hueco
   const esHoy = dia.d === todayDia.d;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
+  // ◄/► por DÍAS REALES: la fila que «⚡ run» pinta el día real anterior / siguiente (las filas sin día real propio no se recorren; se abren desde ◈ checkpoints)
+  const filaAnt = synFilaVecina(dia, -1), filaSig = synFilaVecina(dia, 1);
+  const diaReal = fechaRealDe(dia.fecha, 'synapse');
 
   return (
     <View>
       <View style={st.navRow}>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} disabled={!filaAnt} onPress={() => { if (filaAnt) setSel(filaAnt.d); }} style={[st.navArrow, !filaAnt && { opacity: 0.35 }]}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>run D{dia.d}/{SYN_PLAN_META.totalDias}{esHoy ? ' · LIVE' : ''}</Text>
-          {/* v6.02d: fecha real visible (semana corrida) */}
-          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'synapse'))} · {fechaRealDe(dia.fecha, 'synapse')}</Text>
+          {/* fecha real visible · «—» si ningún día real pinta esta fila (su día real hace otra; el texto de la fila dice cuál) */}
+          <Text style={st.navFecha}>{synSinDiaPropio(dia) ? '—' : `${fmtFecha(diaReal)} · ${diaReal}`}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(SYN_PLAN_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} disabled={!filaSig} onPress={() => { if (filaSig) setSel(filaSig.d); }} style={[st.navArrow, !filaSig && { opacity: 0.35 }]}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>
       {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver al run LIVE</Text></TouchableOpacity>}
 
@@ -442,7 +445,7 @@ export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDonePro
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
         {view === 'hoy' ? <HoyView dia={dia} done={done} onToggle={onToggle} vibeDone={vibeDone} onToggleVibe={onToggleVibe} />
-          : view === '7d' ? <SieteView fromD={dia.d} done={done} onPick={pickDay} />
+          : view === '7d' ? <SieteView desde={diaReal} done={done} onPick={pickDay} />
           : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={onToggle} />}
       </GlassPanel>
     </View>

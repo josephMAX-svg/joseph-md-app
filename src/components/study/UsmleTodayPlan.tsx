@@ -24,7 +24,8 @@ import { plantillaDelDia } from '../../lib/plantillasV6';
 import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
 import { mirBloques } from '../../lib/mirDailyPlan';
 import * as dermaPlan from '../../lib/dermaDailyPlan';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { usmleObsUrl } from '../../lib/obsidianMap';
 import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ankiLinks';
 import { guiaUsmleDe, GUIA_USMLE_META } from '../../lib/usmleGuia';
@@ -909,19 +910,13 @@ export default function UsmleTodayPlan() {
   const idxDe = (d: number) => Math.max(0, DIAS_TODOS.findIndex((x) => x.d === d));
   const [sel, setSel] = useState<number>(() => idxDe(todayDia.d)); // ÍNDICE en DIAS_TODOS (los d no son contiguos)
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('usmle')));
+  const [done, toggleDone] = useDone('usmle');
   const [, setTick] = useState(0);
   useEffect(() => onTurnosChange(() => setTick((t) => t + 1)), []); // el turno cambia la plantilla F4
   const dia = (DIAS_TODOS[sel] ?? DIAS_TODOS[0]) as DiaUSMLEPlan;
   const esHoy = !pausa && dia.d === todayDia.d && (dia.fecha === iso || dia === filaF4);
   const fechaVis = fechaRealDe(dia.fecha, 'usmle'); // v6.02d: fecha real visible (semana corrida)
   const pickDay = (d: number) => { setSel(idxDe(d)); setView('hoy'); };
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('usmle', Array.from(n));
-    return n;
-  });
 
   return (
     <View>

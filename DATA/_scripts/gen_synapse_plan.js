@@ -1065,15 +1065,20 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
     // remate v6.10w (revisión textos): + la hora entre paréntesis («del sáb 2-ene (21:00)»): con la fila movida a una sesión a hora fija, la hora vieja se va
     //   con la fecha (antes quedaba «del dom 3-ene 05:00 (21:00)»)
     const RXr = /\b(lun|mar|mié|jue|vie|sáb|dom) (\d{1,2})-(nov|dic|ene)( \d{2}:\d{2}| \(\d{2}:\d{2}\))?/g;
-    const remap = (t) => (typeof t !== 'string' ? t : t.replace(RXr, (m, dw, dd, mes, hh) => {
+    // c43: `real` = texto de una fila SIN SESIÓN (solo bloques R de 0′: ✈ · ⏸ · 🎄), que la app pinta tal cual (sin la traducción de fechas de corridaTexto): sus
+    //   fechas salen en día REAL (alias inverso de corrida_s1), también las que no son de una cadena. Antes el ✈ del lun 16 y del sáb 21 decía «se recupera el
+    //   mié 18-nov» (fecha de PLAN de la fila que hoy lleva el contenido del dom 22, que se hace el mar 24)
+    const remap = (t, real = false) => (typeof t !== 'string' ? t : t.replace(RXr, (m, dw, dd, mes, hh) => {
       const iso = `${mes === 'ene' ? 2027 : 2026}-${String(MESr.indexOf(mes) + 1).padStart(2, '0')}-${String(Number(dd)).padStart(2, '0')}`;
+      if (DOWr[new Date(iso + 'T12:00:00Z').getUTCDay()] !== dw) return m;
       const x = MAPA.get(iso);
-      if (!x || DOWr[new Date(iso + 'T12:00:00Z').getUTCDay()] !== dw) return m;
-      return `${fCr(x.a)}${x.h ? (hh ? ` ${x.h}` : ` ${x.h}`) : hh || ''}`;
+      if (!x && !(real && ALIAS_INV.has(iso))) return m;
+      const a = x ? x.a : iso;
+      return `${fCr(real ? (ALIAS_INV.get(a) || a) : a)}${x && x.h ? ` ${x.h}` : hh || ''}`;
     }));
-    const tocar = (b) => { for (const k of ['leccion']) if (b[k]) b[k] = remap(b[k]); if (b.guia) for (const k of ['que', 'como']) if (b.guia[k]) b.guia[k] = remap(b.guia[k]); };
+    const tocar = (b, real = false) => { for (const k of ['leccion']) if (b[k]) b[k] = remap(b[k], real); if (b.guia) for (const k of ['que', 'como']) if (b.guia[k]) b.guia[k] = remap(b.guia[k], real); };
     const hasta = '2027-01-03';
-    for (const x of dias) if (x.fecha <= hasta) for (const b of x.bloques) tocar(b);
+    for (const x of dias) if (x.fecha <= hasta) { const sinSes = x.bloques.every((b) => b.tag === 'R' && b.min === 0); for (const b of x.bloques) tocar(b, sinSes); }
     for (const r of REC_SES) for (const b of r.bloques) tocar(b);
     for (const c of [...COLA_F1, ...COLA_POST]) for (const k of Object.keys(c)) if (typeof c[k] === 'string') c[k] = remap(c[k]); else if (Array.isArray(c[k])) c[k].forEach((y) => y && typeof y === 'object' && tocar(y));
     // v6.11 (revisión c32): el «Retoma donde quedaste el …» de la cola (pieza.retoma, ISO de la fila de PLAN que leyó esa pieza por última vez) también pasa a la
@@ -1085,6 +1090,28 @@ let COLA_F1 = []; // v6.09b lote 1-ter: huecos reales de F1 con hora (sáb 26-di
   for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) for (const k of ['leccion']) if (typeof b[k] === 'string') b[k] = b[k].replace(/sigue al comodín del sáb 2-ene/, 'sigue a la sesión de las 05:00 de hoy');
   for (const r of REC_SES) if (!r.cadena) for (const b of r.bloques) if (b.guia) for (const k of ['que', 'como']) if (typeof b.guia[k] === 'string') b.guia[k] = b.guia[k].replace(/del comodín del sáb 2-ene|el comodín del sáb 2-ene/g, 'la sesión de las 05:00 de hoy');
   if (!CHECK) console.log(`v6.10w · cadenas: ${CADENAS_V610W.map((c) => `${c.id} (${c.filas.length} filas → ${c.rec.fecha} ${c.rec.ini})`).join(' · ')}`);
+}
+// c43 (ítem 40.2): un 🎄 feriado de PLAN cuyo día real hace la sesión de otra fecha de plan (alias de corrida_s1 › alias_frente.synapse) no tiene día propio: la app
+//   lo pinta «—» (synapseProgreso.synSinDiaPropio) y su texto dice qué sesión hace ese día real. Antes decía «Sin misión… la racha se conserva sola» con fecha, y
+//   el día real tenía sesión (riesgo de saltarla). Calculado con los gemelos node de fechaRealDe / fechaPlanDe; los feriados con día propio no cambian.
+{
+  const G6 = require('./gen_fechas_v6');
+  const F6 = G6.cargarFechasV6();
+  const MESh = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], DOWh = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+  const fCh = (iso) => `${DOWh[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${Number(iso.slice(8))}-${MESh[Number(iso.slice(5, 7)) - 1]}`;
+  const sinSes = (x) => x.bloques.every((b) => b.tag === 'R' && b.min === 0);
+  let n = 0;
+  for (const x of dias) {
+    if (!sinSes(x) || !/^🎄/.test(String(x.bloques[0].material))) continue;
+    const real = G6.fechaRealDe(x.fecha, F6, 'synapse');
+    const plan = G6.fechaPlanDe(real, F6, 'synapse');
+    if (plan === x.fecha) continue;
+    const y = dias.find((z) => z.fecha === plan);
+    if (!y || sinSes(y)) throw new Error(`c43 · 🎄 ${x.fecha}: su día real (${real}) no hace una sesión del SYNAPSE (fila de plan ${plan})`);
+    x.bloques = [{ tag: 'R', min: 0, formato: 'repaso', material: `🎄 Feriado de plan sin día propio (su día real hace la D${y.d})`, leccion: `Feriado de plan sin día propio: el ${fCh(real)} hace la sesión D${y.d}. Nada que marcar en esta fila.`, real: true }];
+    n++;
+  }
+  if (!CHECK && n) console.log(`c43 · ${n} feriado(s) de plan sin día propio`);
 }
 
 // ─── v6.10 · BASE CERO (mié 18-nov-2026 · orden de Joseph: «todos estamos partiendo de cero … estructura planes bien estructurados, verifica todo»):

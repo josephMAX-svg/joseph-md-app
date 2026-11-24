@@ -9,7 +9,8 @@ import {
   LIV_RUBRICA, LIV_META_RUBRICA, LIV_META_CIEGO_PCT, LivAnkiCard, LivCaso, LivDrill,
   livCasoDe, livDrillDe, livCardsDeDia, livPretest, livAnkiDeck,
 } from '../../lib/livianoCasos';
-import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
+import { planHoyD } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { reemplazosCorrida } from '../../lib/corridaTexto'; // v6.10g: la guía de un día de plan pintada en su día real («mañana», «ayer», corrida_s1.reemplazos), como el Home y el hub MIR
@@ -235,10 +236,10 @@ function AnkiBlock({ cards, modulo, color }: { cards: LivAnkiCard[]; modulo: str
 
 export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: () => void } = {}) {
   const iso = fechaPlanDe(todayISO(), 'liviano'); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
-  const hoyD = planHoyD(LIV_DIAS, iso);
+  const hoyD = planHoyD(LIV_DIAS, iso, 'liviano');
   const todayDia = livDiaDe(iso) || LIV_DIAS.find((x) => x.d === hoyD) || LIV_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('liviano')));
+  const [done, marcarHecho] = useDone('liviano');
   const [score, setScore] = useState<ScoreStore>(loadScore);
   const dia: DiaLiviano = LIV_DIAS.find((x) => x.d === sel) || LIV_DIAS[0];
   const esHoy = dia.d === todayDia.d;
@@ -246,13 +247,6 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
   const hecho = done.has(dia.d);
   const res = useMemo(() => resumenScore(score), [score]);
 
-  const marcarHecho = (d: number, valor?: boolean) => setDone((prev) => {
-    const n = new Set(prev);
-    const v = valor === undefined ? !n.has(d) : valor;
-    if (v) n.add(d); else n.delete(d);
-    saveDone('liviano', Array.from(n));
-    return n;
-  });
   const [espejo, setEspejo] = useState<'idle' | 'ok' | 'offline'>('idle');
   // Pull del espejo Supabase al montar (otro dispositivo): gana la entrada más reciente por fecha.
   useEffect(() => {

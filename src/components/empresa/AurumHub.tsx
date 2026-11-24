@@ -11,8 +11,10 @@ import {
 import { AURUM_PLAN_META, AURUM_PITCH_DIAS, AURUM_LIVIANO_DIAS } from '../../lib/aurumDailyPlan';
 import { fechaRealDe } from '../../lib/fechasV6';
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
-import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
+import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
+import { aurumRacha } from '../../lib/aurumProgreso';
 import AurumTodayPlan, { aurumTodayISO, aurumVentanaDe } from './AurumTodayPlan';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
@@ -407,13 +409,7 @@ function MiniFaseView() {
 export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () => void; variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const [sub, setSub] = useState<Sub>('hoy');
-  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('aurum')));
-  const toggleDone = (d: number) => setDone((prev) => {
-    const n = new Set(prev);
-    if (n.has(d)) n.delete(d); else n.add(d);
-    saveDone('aurum', Array.from(n));
-    return n;
-  });
+  const [done, toggleDone] = useDone('aurum');
 
   // v3 · rúbrica del PITCH (score por grabación, 'jmd-aurum-rubrica') — compartida con el motor HOY y la gráfica v1→v7
   const [rubrica, setRubrica] = useState<AurumRubricaStore>(() => loadAurumRubrica());
@@ -448,18 +444,15 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
   const semanasRegistradas = Object.keys(scoreboard).length;
 
   // KPIs REALES desde el progreso + el calendario
-  const hoyD = planHoyD(AURUM_DIAS, aurumTodayISO());
+  const hoyD = planHoyD(AURUM_DIAS, aurumTodayISO(), 'aurum');
   const glob = progresoGlobal(AURUM_DIAS, done);
   const diaHoy = AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
   const semanaActual = diaHoy.semana;
   const faseActual = AURUM_DIAS.filter((x) => x.faseId === diaHoy.faseId);
   const faseHechos = faseActual.filter((x) => done.has(x.d)).length;
   const fasePct = faseActual.length ? Math.round((faseHechos / faseActual.length) * 100) : 0;
-  // racha real: días ✓ consecutivos terminando en hoy (o ayer)
-  const racha = (() => {
-    let d = done.has(hoyD) ? hoyD : hoyD - 1; let n = 0;
-    while (d >= 1 && done.has(d)) { n++; d--; } return n;
-  })();
+  // racha real: días REALES seguidos con ✓ en su sesión, terminando en hoy (o ayer); los días sin sesión propia no la rompen (aurumProgreso)
+  const racha = aurumRacha(done);
 
   return (
     <View>

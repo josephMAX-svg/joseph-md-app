@@ -15,7 +15,8 @@ import { mirStatsPorAsignatura, mirCierreUmbral, MIR_AGREGADO_MIN_Q } from '../.
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
 import { MIR_DIAS } from '../../lib/mirDailyPlan';
-import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
+import { planHoyD, progresoGlobal } from '../../lib/studyProgress';
+import { useDone } from '../../lib/useDone';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import ReadinessBar from './ReadinessBar';
@@ -45,9 +46,9 @@ const TABS = [
 
 export default function MirHub() {
   const [sub, setSub] = useState('hoy');
-  const done = loadDone('mir');
-  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO(), 'mir')); // v6.02d: semana 1 corrida → fila de la fecha de plan
-  const glob = progresoGlobal(MIR_DIAS, new Set(done));
+  const [done] = useDone('mir');
+  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO(), 'mir'), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const glob = progresoGlobal(MIR_DIAS, done);
   const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
   const iso = todayISO();
   const dist = mirDistanciaOnTrack(iso); // 'a X pts del mínimo on-track del siguiente hito' (como el USMLE)
@@ -60,7 +61,7 @@ export default function MirHub() {
         subtitle="Consola española · rentabilidad = preguntas ÷ temario · medido por % ciego · meta Top 50"
         accent={AMBER}
         dia={hoyD} total={glob.total} temarioPct={glob.pct}
-        racha={`${done.length} temas`}
+        racha={`${done.size} temas`}
         readinessPct={readiness.pct} readinessLabel={readiness.estado}
         extraStat={{ label: 'TIER S', value: `${MIR_KPIS.asignaturasTierS}`, hint: 'ROI máx', accent: Colors.coral }}
         onTrack={dist

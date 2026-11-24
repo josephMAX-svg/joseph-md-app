@@ -11,6 +11,7 @@ import {
 } from '../../lib/aurumData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { aurumRacha, aurumHoyReal } from '../../lib/aurumProgreso'; // racha por día REAL (como synapseProgreso)
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
@@ -51,10 +52,6 @@ export function aurumTodayISO(): string {
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
-}
-function rachaReal(done: Set<number>, hoyD: number): number {
-  let d = done.has(hoyD) ? hoyD : hoyD - 1; let n = 0;
-  while (d >= 1 && done.has(d)) { n++; d--; } return n;
 }
 // Acento por tag de bloque (desde tokens)
 function tagAccent(tag: AurumBloque['tag']): string {
@@ -153,11 +150,13 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRub
   rubrica: AurumRubricaStore; onSaveRubrica: (s: AurumRubricaScore) => void;
 }) {
   const hecho = done.has(dia.d);
+  const diaReal = fechaRealDe(dia.fecha, 'aurum');
+  const futura = !hecho && diaReal > aurumHoyReal(); // sesión de un día real que aún no llega (lun 23-nov pinta la del mar 24): su ✓ va ese día
   const faseDias = AURUM_DIAS.filter((x) => x.faseId === dia.faseId);
   const fasePct = Math.round((faseDias.filter((x) => done.has(x.d)).length / faseDias.length) * 100);
   const semDias = AURUM_DIAS.filter((x) => x.semana === dia.semana);
   const semHechos = semDias.filter((x) => done.has(x.d)).length;
-  const racha = rachaReal(done, hoyD);
+  const racha = aurumRacha(done); // días REALES seguidos con ✓ en su sesión (con el alias las filas no van día a día)
   const obsUrl = aurumObsUrl(dia.obs);
   const coreBloques = dia.bloques.filter((b) => b.slot === 'core');
   const lecturaBloques = dia.bloques.filter((b) => b.slot === 'lectura');
@@ -197,13 +196,17 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRub
             <AurumProgressBar pct={fasePct} />
           </View>
 
-          <AurumButton
-            label={hecho ? '✓ Misión completada' : '○ Marcar misión como completada'}
-            onPress={() => onToggle(dia.d)}
-            accent={hecho ? C.success : C.gold}
-            full
-            style={{ marginTop: S.md }}
-          />
+          {futura ? (
+            <View style={st.futuraBox}><Text style={st.futuraTxt}>es la sesión del {fmtFecha(diaReal)}: el ✓ se marca ese día</Text></View>
+          ) : (
+            <AurumButton
+              label={hecho ? '✓ Misión completada' : '○ Marcar misión como completada'}
+              onPress={() => onToggle(dia.d)}
+              accent={hecho ? C.success : C.gold}
+              full
+              style={{ marginTop: S.md }}
+            />
+          )}
         </AurumPanel>
       </AurumRise>
 
@@ -292,6 +295,7 @@ function SemanaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaA
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const estadoTxt = g.estado === 'completado' ? '✓ completada' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : 'pendiente';
   const estadoColor = g.estado === 'completado' ? C.success : g.estado === 'en-curso' ? C.gold : C.textMute;
+  const hoyReal = aurumHoyReal();
   return (
     <AurumPanel style={[st.semCard, { borderColor: withAlpha(C.gold, g.estado === 'en-curso' ? 0.5 : 0.18) }]}>
       <TouchableOpacity activeOpacity={0.85} onPress={() => setOpen((o) => !o)} style={isWeb ? ({ cursor: 'pointer' } as any) : null}>
@@ -306,10 +310,11 @@ function SemanaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaA
         <View style={{ marginTop: S.sm }}>
           {g.dias.map((x) => {
             const hecho = done.has(x.d), now = x.d === hoyD;
+            const futura = !hecho && fechaRealDe(x.fecha, 'aurum') > hoyReal; // sesión de un día real que aún no llega: su ✓ va ese día (desmarcar sí se puede)
             return (
               <View key={x.d} style={[st.diaRow, now && { backgroundColor: withAlpha(C.gold, 0.08) }]}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
-                  <Text style={[st.diaChk, { color: hecho ? C.success : withAlpha('#FFFFFF', 0.25) }]}>{hecho ? '☑' : '☐'}</Text>
+                <TouchableOpacity activeOpacity={0.7} disabled={futura} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
+                  <Text style={[st.diaChk, { color: hecho ? C.success : withAlpha('#FFFFFF', futura ? 0.1 : 0.25) }]}>{hecho ? '☑' : '☐'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.85} onPress={() => onPick(x.d)} style={st.diaRowMain}>
                   <Text style={[st.diaRowD, { color: hecho ? C.success : now ? C.gold : C.textMute }]}>{now ? '▶' : ''} D{x.d}</Text>
@@ -339,7 +344,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} misiones · 7 fases · L-V · empieza en 0% (avance manual real)</Text>
       </AurumPanel>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca una misión como completada (se guarda en este dispositivo). ▶ = día de hoy. Regenerar el plan: node DATA/_scripts/gen_aurum_plan.js.</Text>
+      <Text style={st.note}>☑ marca una misión como completada (se guarda en este dispositivo). ▶ = día de hoy. ☐ tenue = sesión de un día que aún no llega: se marca ese día. Regenerar el plan: node DATA/_scripts/gen_aurum_plan.js.</Text>
     </View>
   );
 }
@@ -370,7 +375,7 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false, rubr
     const n = { ...prev, [aurumRubricaKey(s.pitch, s.variante)]: s }; saveAurumRubrica(n); return n;
   }));
   const iso = aurumTodayISO();
-  const hoyD = planHoyD(AURUM_DIAS, iso);
+  const hoyD = planHoyD(AURUM_DIAS, iso, 'aurum');
   const todayDia = aurumDiaDe(iso) || AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
@@ -434,6 +439,8 @@ const st = StyleSheet.create({
 
   // misión
   misionCard: { padding: S.lg, marginBottom: S.sm },
+  futuraBox: { marginTop: S.md, paddingVertical: 10, paddingHorizontal: S.md, borderRadius: R.md, borderWidth: 1, borderColor: C.border, alignItems: 'center' },
+  futuraTxt: { fontSize: T.size.micro, color: C.textMute, fontWeight: T.weight.bold, textAlign: 'center' },
   misionTop: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   timeBadge: { alignSelf: 'flex-start', marginTop: S.md, borderWidth: 1, borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.12), borderRadius: R.sm, paddingVertical: 5, paddingHorizontal: 11 },
   timeBadgeTxt: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 0.3 },
