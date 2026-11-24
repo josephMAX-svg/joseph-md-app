@@ -3,6 +3,8 @@
 CASE_REPORT_1/_privado/
 CARTA_1/_privado/
 TESIS_L0/_privado/
+# Cualquier otra carpeta _privado/ (respuestas de mentores en DATA/RESEARCH/_privado/, tabla de candidatos del case report #2): tampoco al repo
+_privado/
 # base anonimizada / exports de datos de la tesis: fuera del repo salvo decisión explícita (Zenodo/OSF con DOI)
 TESIS_L0/*.csv
 TESIS_L0/*.xlsx

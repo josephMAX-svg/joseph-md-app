@@ -70,9 +70,9 @@ const FASES_RESEARCH = [
   { n: 1, re: '^(M1|R0|R1)$', nombre: 'Fundamentos e infraestructura', que: 'qué es una revisión sistemática (SR-1 primero), identidad de autor, PICO y diseño de estudio leído desde los Métodos (Greenhalgh)', criterio: '3 PICO completos (P·I·C·O + tipo + diseño ideal) en 01_PICO.md y 1 abstract real clasificado por diseño, comprobado contra el propio abstract; infra ≥ 7/10' },
   { n: 2, re: '^(C-\\d+|M2|T-1|R9)$', nombre: 'Primer producto guiado: carta al editor', que: 'diana → letters modelo → borrador de 3-4 puntos → citas verificadas → formato de la revista → envío (Siau 2020), con ética de la tesis, mentor de inglés y AMSTAR-2 de las SR que solapan', criterio: 'carta ENVIADA con nº de manuscrito, dentro del límite de la revista y con 0 referencias sin DOI/PMID verificado' },
   { n: 3, re: '^(CR-\\d+|T-\\d+|X-7|X-8|M3)$', nombre: 'Case report (CARE) + tesis → research letter', que: 'caso y consentimiento de publicación, fotos, CARE 13/13, borrador y revisión; research letter de la tesis', criterio: 'case report con CARE 13/13 y consentimiento firmado + research letter enviada' },
-  { n: 4, re: '^(R2|R3|R6b?|R7|R8b?|R9b|R10|R11|X-[1-6]|X-9|K\\d)$', nombre: 'SR-1: protocolo y registro', que: 'pregunta y equipo de 2 revisores, protocolo a priori (PRISMA-P) y registro PROSPERO antes de ver resultados (Cochrane Handbook cap. 1)', criterio: 'protocolo con los 17 ítems de PRISMA-P y registro PROSPERO enviado' },
+  { n: 4, re: '^(R2|R3|R6b?|R7|R8b?|R9b|R10|R11|X-[1-6]|X-9|K\\d)$', nombre: 'SR-1: protocolo y registro', que: 'pregunta y equipo de 2 revisores, protocolo a priori (PRISMA-P) y registro PROSPERO antes de ver resultados (Cochrane Handbook cap. 1)', criterio: 'protocolo con todos los ítems de PRISMA-P y registro PROSPERO enviado' }, // c39: sin el nº de ítems (respuesta del pre-test ciego de M1 y de la eval de R0; lo da la checklist el día que se usa)
   { n: 5, re: '^R(1[2-9]|2\\d|3[0-3])\\b', nombre: 'SR-1: búsqueda → cribado → extracción → sesgo → metaanálisis', que: 'búsqueda reproducible, cribado y extracción por duplicado, riesgo de sesgo por estudio, forest plot y GRADE', criterio: 'cribado dual con kappa, extracción doble, RoB por estudio y diagrama PRISMA 2020' },
-  { n: 6, re: '.', nombre: 'Manuscritos, revisión por pares y segunda línea', que: 'manuscrito SR-1 (PRISMA 2020), rebuttal, bibliométrico y case report 2', criterio: 'manuscrito SR-1 con PRISMA 2020 27/27 enviado (fin del plan)' },
+  { n: 6, re: '.', nombre: 'Manuscritos, revisión por pares y segunda línea', que: 'manuscrito SR-1 (PRISMA 2020), rebuttal, bibliométrico y case report 2', criterio: 'manuscrito SR-1 con la checklist PRISMA 2020 completa, enviado (fin del plan)' },
 ];
 /** Aviso de fase (texto) de un átomo por su código. */
 function faseResearchAviso(code) {
@@ -94,6 +94,61 @@ const fLargo = (iso) => `${Number(iso.slice(8, 10))} de ${MES_NOMBRE[Number(iso.
  *  Navidad/Año Nuevo (24-dic → 1-ene; v6.10w: CR-1 de plan mié 23-dic = lun 28-dic real): en esas fechas no elige casos de su consulta. Fuera de esa
  *  ventana, el propio día real de CR-1. */
 const casoAntesDe = (iso) => { const y = Number(iso.slice(0, 4)), md = iso.slice(5); return md >= '12-24' ? `${y}-12-24` : md === '01-01' ? `${y - 1}-12-24` : iso; };
+/** remate c39: el plazo del caso que el WhatsApp de M1 (mié 25-nov-2026, 13:37) le da al asesor. Una vez dicho no cambia en silencio con un corrimiento:
+ *  gen_research_plan.js aborta si casoAntesDe(día real de CR-1) da otra fecha (decide el chat de plan: mantener el plazo dicho o avisar al asesor). */
+const PLAZO_CASO_COMUNICADO = '2026-12-24';
+/** c39 (revisión de 204db74, fechas F3/F5 + Q1-Q3 + fuentes F1/F3): MENTORES.md §3 «Mensaje 2» (Rising Scholars) GENERADO con las fechas REALES del plan:
+ *  research letter = borrador en T-5 y comentarios hasta la víspera de T-7 (GATE 2 de inglés) · case report = borrador en CR-5 y comentarios hasta la víspera de
+ *  CR-7 · la carta al editor, como respuesta a revisores tras su envío (C-6; lectura previa solo si hay mentor antes de C-3). Sin κ (es la concordancia del
+ *  piloto, no un resultado) y sin nombre propio (repo público: la firma la pone Joseph). gen_research_plan.js lo escribe entre «### Mensaje 2 —» y «### Mensaje 3 —». */
+const MES_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const fEn = (iso, conAnio = true) => `${Number(iso.slice(8, 10))} ${MES_EN[Number(iso.slice(5, 7)) - 1]}${conAnio ? ' ' + iso.slice(0, 4) : ''}`;
+function mensaje2MD({ fechaDe, fechaReal, addDays, planB }) {
+  const R = (c) => fechaReal(fechaDe(c));
+  const t5 = R('T-5'), t7 = R('T-7'), cr5 = R('CR-5'), cr7 = R('CR-7'), c3 = R('C-3'), c6 = R('C-6');
+  const rlBy = addDays(t7, -1), crBy = addDays(cr7, -1);
+  const ultimo = [crBy, addDays(c6, 84)].sort().pop(); // la respuesta a revisores de la carta: hasta ~12 semanas tras el envío
+  const ventana = t5.slice(0, 4) === ultimo.slice(0, 4) ? `${MES_EN[Number(t5.slice(5, 7)) - 1]} and ${MES_EN[Number(ultimo.slice(5, 7)) - 1]} ${ultimo.slice(0, 4)}` : `${MES_EN[Number(t5.slice(5, 7)) - 1]} ${t5.slice(0, 4)} and ${MES_EN[Number(ultimo.slice(5, 7)) - 1]} ${ultimo.slice(0, 4)}`;
+  if (!(t5 < rlBy && cr5 < crBy && c3 < c6)) throw new Error(`research_guia: ventanas del Mensaje 2 incoherentes (T-5 ${t5} → ${rlBy} · CR-5 ${cr5} → ${crBy} · C-3 ${c3} → C-6 ${c6})`);
+  const M = [
+    'Subject: Mentoring request — early-career physician from Peru, first English-language manuscripts (dermatology)',
+    '',
+    "Dear [mentor's name],",
+    '',
+    'I am an early-career physician from Huancayo, Peru (Universidad Nacional del Centro del Perú). I found your profile on Rising Scholars and noticed that you [one specific detail from their profile]. My medical thesis was a cross-sectional study of the association between acne severity and quality of life in 316 adolescent girls (Spearman rs = 0.64 between IGA grade and CADI score), and I am now rewriting it as a 500-600-word research letter for JAAD International or the International Journal of Dermatology.',
+    '',
+    'I would be grateful for focused feedback on the clarity and academic English of three short pieces:',
+    `(1) the research letter (draft ready ${fEn(t5)}; comments by ${fEn(rlBy, rlBy.slice(0, 4) !== t5.slice(0, 4))}, if possible);`,
+    `(2) a short CARE case report (draft ready ${fEn(cr5)}; comments by ${fEn(crBy, crBy.slice(0, 4) !== cr5.slice(0, 4))});`,
+    `(3) my point-by-point response to reviewers for a short letter to the editor that I plan to submit on ${fEn(c6)} (only if the journal requests revisions).`,
+    `If we connect before ${fEn(c3, false)}, a quick read of that letter before submission would also be very welcome.`,
+    '',
+    `In total, this would take about 3-4 hours between ${ventana}, by email or shared document. I will send clean, STROBE/CARE-checked drafts with verified references. Spanish is my first language; I write in English, but I would value an experienced reader's comments on clarity and style.`,
+    '',
+    'Thank you for considering this request.',
+    '',
+    'Best regards,',
+    '[your name]',
+  ];
+  const corta = `Short version for the profile («Areas you require help with»): feedback on the clarity and academic English of a research letter (${MES_EN[Number(t5.slice(5, 7)) - 1]} ${t5.slice(0, 4)}), a CARE case report (${MES_EN[Number(cr5.slice(5, 7)) - 1]} ${cr5.slice(0, 4)}) and a response to reviewers; about 3-4 hours in total.`;
+  return [
+    '### Mensaje 2 — Rising Scholars (ex-AuthorAID; en inglés; se envía a 2-3 mentores desde Find Researchers)',
+    '',
+    '*(Sección generada por `DATA/_scripts/gen_research_plan.js` con las fechas REALES del plan: se cambia allí, no aquí. Se rellenan los corchetes con el nombre del mentor y un dato real de su perfil.)*',
+    '',
+    ...M.map((l) => (l ? `> ${l}` : '>')),
+    '',
+    `> ${corta}`,
+    '',
+    'Cómo funciona (verificado el 23-nov-2026 en <https://risingscholars.net/mentoring/mentoring-support/>): no hay solicitud publicada ni mentor asignado. Te registras',
+    '(<https://risingscholars.net/en/accounts/register/>; la cuenta la creas tú) y rellenas el perfil: país Perú · institución FMH-UNCP · Research Keywords (acne,',
+    'quality of life, dermatology, cross-sectional) · Subjects: Medicine and Dentistry (lista cerrada) · ORCID iD (el de R0) · interés «finding a mentor» · ayuda:',
+    'preparing manuscripts / refining writing style / responding to reviewers · Highest qualification: Medical degree · idiomas ES/EN · los Terms los aceptas tú.',
+    'Después, en Find Researchers (<https://risingscholars.net/en/mentoring/search/>, con la sesión iniciada), envías este mensaje a 2-3 mentores por la mensajería',
+    `de la plataforma; la relación empieza si un mentor acepta. Si el ${fLargo(fechaReal(planB))} ningún mentor aceptó por escrito → plan B de inglés (editor profesional, RUTA §3.1).`,
+    '',
+  ].join('\n') + '\n';
+}
 /** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
 // v6.10g (revisión 18-nov): VERSION ya no se pinta en ningún texto (M2 decía «las fechas del plan vigente (v6.08)»); se quita la constante
 
@@ -155,7 +210,7 @@ const ART_CHECK = {
   'C-4': '¿refs_verified.json todo verified?',
   'C-5': '¿existe carta_final.docx?',
   'C-6': '¿carta-1 = enviado, con nº?',
-  'CR-1': '¿existe caso_candidatos.md?',
+  'CR-1': '¿caso elegido en _privado/caso_candidatos.md?', // remate c39: la tabla real va en _privado/ (la plantilla pública existe siempre: «¿existe?» no comprobaba nada)
   'CR-2': '¿existe consentimiento_firmado.pdf?',
   'T-3': '¿existe research_letter_v1.md?',
   'T-4': '¿existen tabla1.docx y figura1.tiff?',
@@ -339,8 +394,9 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
     recursos: [...recs.map((r) => ({ t: r.label, url: r.url })), ...(obs ? [{ t: '◆ Obsidian · carpeta del entregable', url: obs }] : [])],
     hecho: x.entregable,
     ...(recs.length > 1 ? { planB: \`Si «\${r0.label}» no abre o no basta: «\${recs[1].label}».\` } : {}),
-    // v6.10i (remate): el día del plan B de inglés, la comprobación del mentor va PRIMERO en el aviso (antes abría el «cómo» de la eval anclada)
-    aviso: [x.fecha === PLANB_INGLES ? 'Dentro de los 5′ de la eval anclada (≤ 2′): ¿mentor de Rising Scholars asignado (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila.' : '', faseResearchAviso(x.code), rdFinde(x.fecha) || rdFindePlan(x.fecha), ...chips].filter(Boolean).join(' · '),
+    // v6.10i (remate): el día del plan B de inglés, la comprobación del mentor va PRIMERO en el aviso (antes abría el «cómo» de la eval anclada) · remate c39:
+    //   igual un chip «HOY …» (acción con fecha de ese mismo día: el recordatorio de C-3, el plazo del caso): delante de la fase, dentro del corte del Calendar
+    aviso: [x.fecha === PLANB_INGLES ? 'Dentro de los 5′ de la eval anclada (≤ 2′): ¿algún mentor de Rising Scholars aceptó por escrito (MENTORES.md fila 2)? Si no → plan B (editor profesional, RUTA §3.1): decídelo y anótalo en esa fila.' : '', ...chips.filter((c) => /^HOY /.test(c)), faseResearchAviso(x.code), rdFinde(x.fecha) || rdFindePlan(x.fecha), ...chips.filter((c) => !/^HOY /.test(c))].filter(Boolean).join(' · '),
   };
 }
 /** v6.10 (17-nov-2026): átomo en un hábil EXTRA de fin de semana (_fechas_v6.json › corrida_s1.extra[fecha]['research-derma']: v6.10c sáb 2-ene 15:30-16:15, el T-3 · v6.10 dom 6-dic 05:00-05:45; el
@@ -364,7 +420,17 @@ function rdFinde(fecha: string): string {
 }
 `;
 
-function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO, PAUSA, fechaReal = (iso) => iso }) {
+function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO, PAUSA, fechaReal = (iso) => iso, fechaPlan = (iso) => iso, feriados = [] }) {
+  /** c39: fecha de PLAN cuyo día real es `real` (los textos guardan fechas de plan y la app las traduce); si ninguna lo es, aborta. */
+  const planDe = (real) => { const p = fechaPlan(real); if (fechaReal(p) !== real) throw new Error(`research_guia: el día real ${real} no es el de ninguna fecha de plan de research-derma: decide el texto antes de regenerar`); return p; };
+  // c39 (revisión de 204db74, fechas F8): lo que falte de etica.md §1 se pide como tarde 2 hábiles antes del día REAL de T-1 (mesa de partes), sin fines de
+  //   semana ni feriados de _fechas_v6.json (v6.11: vie 4-dic; el 8 y el 9-dic son feriados y el único hábil entre la reunión y T-1 es el lun 7-dic)
+  const T1R = fechaReal(fechaDe('T-1'));
+  const esHabil = (iso) => { const w = new Date(iso + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !feriados.includes(iso); };
+  let pedirT1 = T1R; for (let k = 0; k < 2;) { pedirT1 = addDays(pedirT1, -1); if (esHabil(pedirT1)) k++; }
+  const ferT1 = feriados.filter((d) => d > pedirT1 && d < T1R);
+  /** «el 8 y el 9 de diciembre» (sin día de la semana: ni la app ni el Calendar lo traducen como fecha de plan) */
+  const diasLargos = (ds) => ds.map((d, i) => (i < ds.length - 1 && ds[i + 1].slice(5, 7) === d.slice(5, 7) ? `el ${Number(d.slice(8))}` : `el ${fLargo(d)}`)).join(' y ');
   const R = (k) => { const r = rec(k); if (!r) throw new Error('research_guia: REC ' + k + ' no existe'); return { t: r.label, url: r.url }; };
   const f = (code) => fmt(fechaDe(code));
   const porCode = Object.fromEntries(TODOS.map((x) => [x.code, x]));
@@ -372,7 +438,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   // v6.03: ventana Crossref de C-1 = 60 días previos (v6.02: 2026-08-29 → 2026-10-28) · v6.10g (revisión 18-nov · c10): hasta el día REAL de la sesión
   //   (fechaReal = alias de corrida_s1, frente research-derma: C-1 de plan vie 27-nov se hace el lun 30-nov → 1-oct → 30-nov; antes 28-sep → 27-nov dejaba fuera
   //   los artículos del 28 al 30-nov); el texto, las dos URLs y la sección de candidatos.md salen de la misma fecha
-  const C1H = fechaReal(fechaDe('C-1')); const C1D = addDays(C1H, -60);
+  // c39 (revisión de 204db74, fechas F2): la ventana empieza 8 semanas (56 días) antes del día REAL del envío de la carta (C-6), la regla de candidatos.md
+  //   («≤ 8 semanas desde la publicación online» el día del SUBMIT): antes, 60 días antes de C-1, y lo publicado antes de esa fecha ya estaba fuera de su ventana
+  const C1H = fechaReal(fechaDe('C-1')); const C1D = addDays(fechaReal(fechaDe('C-6')), -56);
+  const C1N = Math.round((Date.parse(C1H) - Date.parse(C1D)) / 864e5);
+  if (C1N < 7) throw new Error(`research_guia: la ventana de C-1 (${C1D} → ${C1H}) tiene ${C1N} días: con el envío de C-6 tan lejos, decide la búsqueda antes de regenerar`);
   /** v6.06: eval anclada (5′) según el átomo ANTERIOR real — el orden de las semanas 1-2 puede cambiar con un corrimiento (v6.06: M1 · R0 · R1 · C-1 · M2). */
   let ciroYa = false;
   /** v6.06 (fix): las 2Q de auto-test de cada átomo paso a paso (fuente única: la eval anclada de 5′ y la «express» de 2′ de R0 las citan igual). */
@@ -388,7 +458,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     //   AMSTAR-2 + «¿respondió el asesor?» (antes: 2Q de ICMJE · CRediT)
     // v6.10l (auditoría c15, «dias-clave» BAJA): las 3 checklists por su nombre en el «qué» y DÓNDE comprobarlas dentro de los 110 del «cómo» (antes el
     //   Calendar cortaba en «Compruébalo en 30 s …» y no se veía contra qué ni dónde)
-    M1: { fuente: 'PRISMA-P, PRISMA 2020 y AMSTAR-2', check: '¿respondió el asesor?', puntos: 'qué es y cuántos ítems tiene cada una', resto: 'Corrige en rojo con las checklists oficiales; la respuesta del asesor va a MENTORES.md §2.' },
+    M1: { fuente: 'PRISMA-P, PRISMA 2020 y AMSTAR-2', check: '¿respondió el asesor?', puntos: 'qué es y cuántos ítems tiene cada una', resto: 'Corrige en rojo con las checklists oficiales. Si el asesor respondió: en MENTORES.md solo estado y fecha; lo que dijo, en DATA/RESEARCH/_privado/ (fuera del repo público).' },
     'C-1': { fuente: 'candidatos.md', check: '¿5 candidatos con DOI?', puntos: 'la regla de la ventana · por qué un dato verificable', resto: 'Corrige en rojo con candidatos.md.' },
   };
   /** v6.10j: la eval anclada paso a paso de un átomo con Q2: «qué» = recall + fuente + comprobación (≤ 150) · «cómo» = los 2 puntos a papel (≤ 110) + el resto (app). */
@@ -396,7 +466,8 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   const evalAnclada = (prev, x) => {
     if (!prev) return { min: 5, que: 'Arranque (1.ª sesión Research): abre MENTORES.md §3 «Mensaje 1 — Dr. Ciro» y TESIS_L0/etica.md §1', como: '⏸ El plazo interno del 31-oct-2026 (caso + consentimiento + senior author) venció sin día-Research (la semana lun 26 → vie 30-oct no se estudió): este mensaje va PRIMERO; no se inventa un plazo nuevo.' };
     // la pregunta de seguimiento de M1 va SOLO en la primera eval anclada tras M1 (si su átomo previo no es M1, que ya la trae en su tabla)
-    const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (regístralo en MENTORES.md §2)` : '';
+    // c39 (revisión de 204db74, privacidad P1): lo que conteste el asesor NO va al repo PÚBLICO: en MENTORES.md solo estado y fecha; el contenido, en DATA/RESEARCH/_privado/ (ignorado por git)
+    const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (MENTORES.md: solo estado y fecha)` : '';
     if (prev.code === 'M1' || ciroPend) ciroYa = true;
     // v6.10i: el recall con su fuente PRIMERO; la comprobación del artefacto (checklist, fichero) después · v6.10j: los dos enteros en los 150 del Calendar
     const T = Q2[prev.code] ? evalQ2(prev.code, Q2[prev.code], ciroPend) : { que: `Eval anclada de ${prev.code}: recall en blanco de 2 puntos clave, contrastado con su recurso 1 + ¿existe su artefacto?${ciroPend}`, como: `${EVAL_COMO} No se rehace hoy; lo que falló = 1 APEX.` };
@@ -418,7 +489,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       // remate v6.10l (revisión adversarial · visibilidad): dónde está CADA checklist, dentro de los 110 (antes «… con PRISMA-P (GoodNotes, pág. 5) y los recursos»)
       // v6.11 (chat Research, lun 23-nov): la Table 3 de PRISMA-P ocupa las págs. 5-6 del PDF de GoodNotes (ítems 16-17 en la 6); «las otras 2» para que la
       //   frase siga cerrando antes del 110 (cortar() del Calendar la partiría en «recursos de …»)
-      como: `A papel: ${Q2.M1.puntos}. PRISMA-P: GoodNotes págs. 5-6; las otras 2: recursos de hoy. Lo que falle va como deuda a la Mesa editorial; si el asesor respondió, regístralo en MENTORES.md §2 (si no, el seguimiento es a los 3-5 días del mensaje). La checklist: ${base.replace(/^abre /, '')}. ${cuentas}` }; }
+      como: `A papel: ${Q2.M1.puntos}. PRISMA-P: GoodNotes págs. 5-6; las otras 2: recursos de hoy. Lo que falle va como deuda a la Mesa editorial. Si el asesor respondió: en MENTORES.md solo estado y fecha; lo que dijo, en DATA/RESEARCH/_privado/ (fuera del repo público). Si no, el seguimiento es a los 3-5 días del mensaje. La checklist: ${base.replace(/^abre /, '')}. ${cuentas}` }; }
     return { min: 2, que: `Eval anclada express de ${prev.code} (${Q2[prev.code] ? `recall en blanco contrastado con ${Q2[prev.code].fuente}` : 'recall en blanco de las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
       como: `${Q2[prev.code] ? `A papel: ${Q2[prev.code].puntos}. ` : 'El recall a papel, 1 línea por punto y sin mirar; '}lo que falle va como deuda a la Mesa editorial. ${cuentas}` };
   };
@@ -429,9 +500,11 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       titulo: 'R0 · Infra académica: 7 cuentas hoy (ORCID, Scholar, CTI Vitae y 4 más)', // v6.10j: ≤ 75 (el resumen del Calendar); la lista entera va en el «Hecho»
       pasos: [
         arranqueR0(prev),
-        { min: 8, que: '1 · ORCID iD (identidad de autor: la exige Editorial Manager al autor de correspondencia y PROSPERO a todo el equipo)', como: 'orcid.org → Register: el nombre tal como firmarás los artículos, correo personal + institucional, visibilidad pública; verifica el correo y copia el iD (0000-…).', enlace: R('ORCID') },
-        { min: 5, que: '2 · Google Scholar · perfil público', como: 'Crea el perfil con el correo institucional y márcalo PÚBLICO; si aún no aparece ningún artículo tuyo, déjalo vacío (la tesis se añade cuando esté en el repositorio UNCP).', enlace: R('SCHOLAR') },
-        { min: 8, que: '3 · CTI Vitae / RENACYT (CONCYTEC)', como: 'Registro con tu documento de identidad y vincula el ORCID; la tesis solo suma para RENACYT si está registrada aquí.', enlace: R('CTI') },
+        // c39 (revisión de 204db74, fuentes F6-F8): ORCID lo exige PROSPERO a quien CREA el registro (a los coautores solo se les puede añadir) y en Editorial Manager
+        //   lo decide cada revista · RENACYT: la tesis propia no puntúa · Google Scholar: perfil con la cuenta personal + el correo institucional verificado
+        { min: 8, que: '1 · ORCID iD (identidad de autor: PROSPERO lo exige a quien crea el registro, tú; en Editorial Manager o ScholarOne, según la revista)', como: 'orcid.org → Register: el nombre tal como firmarás los artículos, correo personal + institucional, visibilidad pública; verifica el correo y copia el iD (0000-…). En PROSPERO, el ORCID de cada coautor es opcional y debe coincidir con su nombre y su correo de ORCID.', enlace: R('ORCID') },
+        { min: 5, que: '2 · Google Scholar · perfil público', como: 'Crea el perfil con tu cuenta de Google PERSONAL; en Editar, añade el correo institucional y verifícalo (enlace en el correo); márcalo PÚBLICO. Si aún no aparece ningún artículo tuyo, déjalo vacío (la tesis se añade cuando esté en el repositorio UNCP).', enlace: R('SCHOLAR') },
+        { min: 8, que: '3 · CTI Vitae / RENACYT (CONCYTEC)', como: 'Registro con tu documento de identidad y vincula el ORCID. Para RENACYT puntúan el título profesional registrado en SUNEDU y cada artículo indizado (Scopus / WoS / SciELO) que registres aquí; la tesis en sí no puntúa (vigencia del reglamento: A VERIFICAR).', enlace: R('CTI') },
         { min: 4, que: '7 · PROSPERO (CRD York) — registro del protocolo de SR-1 en R10', como: 'Crea la cuenta (con el ORCID ya hecho). No registres nada todavía.', enlace: R('PROS') },
         { min: 4, que: '8 · Rayyan — cribado dual en ciego de SR-1', como: 'Cuenta gratuita (≤3 revisiones). El revisor #2 también necesitará la suya (X-1).', enlace: R('RAY') },
         { min: 4, que: '9 · Zotero — biblioteca de PDFs por entregable', como: 'Cuenta + instala el conector del navegador. Hoy no se crea ninguna colección: cada una (carta-1 · tesis-L0 · case-report-1 · SR-1) nace el día de su primer PDF.', enlace: R('ZOT') }, // v6.10g: nada de carpetas vacías por adelantado (regla de Joseph, 17-nov)
@@ -476,16 +549,21 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         // v6.10e (revisión del 18-nov · dias-1920-5): cada punto del pre-test tiene su fuente HOY y un paso con minutos para corregirlo: (1) el PICO del SR/MA
         //   que lees a las 13:50 (el abstract; antes «la pregunta de SR-1», que no se fija hasta R6: no había contra qué corregirla) · (2) las checklists, en el
         //   último paso (PRISMA-P en GoodNotes; PRISMA 2020 y AMSTAR-2 en los recursos). La eval anclada de R0 lo repite de memoria días después.
-        { min: 5, que: 'Pre-test = RECALL EN BLANCO, a papel y con confianza (1-3): escribe (1) qué crees que compara un metaanálisis de hialuronidasa en las complicaciones vasculares por ácido hialurónico, en formato PICO · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems crees que tiene cada una', como: `Sin mirar nada, con tu confianza (1-3) en cada punto; lo corriges HOY con las fuentes reales, no con un chat: (1) con el abstract de las 13:50 · (2) en el último paso, con las checklists oficiales (PRISMA-P 2015 en GoodNotes; PRISMA 2020 y AMSTAR-2 en los recursos). Días después, la eval anclada de R0 (la sesión de infraestructura académica, ${f('R0')}) lo repite de memoria.` },
+        // c39 (revisión de 204db74, base cero F6 + fuentes F5): el «qué» lleva las DOS preguntas dentro de los 150 del Calendar (antes 294: la (2) quedaba fuera) y
+        //   el «cómo» abre con «GoodNotes cerrado» (la pág. 1 del PDF de PRISMA-P da el nº de ítems); el detalle de la (1), detrás
+        { min: 5, que: 'Pre-test en blanco, a papel (confianza 1-3): (1) PICO de un MA de hialuronidasa · (2) para qué sirven PRISMA-P, PRISMA 2020 y AMSTAR-2 y cuántos ítems', como: `Sin mirar nada: GoodNotes cerrado hasta el paso de PRISMA-P. (1) = qué crees que compara un metaanálisis de hialuronidasa en las complicaciones vasculares por ácido hialurónico, en formato PICO. Con tu confianza (1-3) en cada punto; lo corriges HOY con las fuentes reales, no con un chat: (1) con el abstract de las 13:50 · (2) en el último paso, con las checklists oficiales (PRISMA-P 2015 en GoodNotes; PRISMA 2020 y AMSTAR-2 en los recursos). Días después, la eval anclada de R0 (la sesión de infraestructura académica, ${f('R0')}) lo repite de memoria.` },
         // v6.11 (chat Research, lun 23-nov): «buenas tardes» (el mensaje se envía en la sesión de las 13:30)
         { min: 8, que: 'WhatsApp al asesor con las 3 coautorías (lo envías tú)', como: `Plan B: el mismo texto por correo o en persona. Texto: «Doctor, buenas tardes. Le escribo con tres propuestas concretas de coautoría; en las tres yo hago todo el trabajo de redacción, formato y envío: 1) publicar la tesis como research letter (ya tengo el esquema armado con los datos que analizamos), con usted como último autor; envío previsto: ${fLargo(fechaReal(fechaDe('T-8')))}. 2) una carta al editor sobre un artículo reciente de complicaciones de rellenos o láser en fototipos oscuros, con usted como coautor (unos 30 minutos de revisión); envío: ${fLargo(fechaReal(fechaDe('C-6')))}. 3) un reporte de caso de su consulta, con usted como senior author; necesitaríamos elegir el caso antes del ${fLargo(casoAntesDe(fechaReal(fechaDe('CR-1'))))}. ¿Tendría 20 minutos esta semana o la próxima, en persona o por llamada? Le llevo la propuesta en una hoja. Gracias.» (Si prefieres 2 coautorías, borra el punto 2.)`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
-        { min: 5, que: 'Lista tengo / falta de los 10 documentos de etica.md §1, ANTES de la reunión con el asesor', como: `Para T-1 (ética de la tesis, ${f('T-1')}): marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al asesor en la reunión.`, enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
+        { min: 5, que: 'Lista tengo / falta de los 10 documentos de etica.md §1, ANTES de la reunión con el asesor', como: `Para T-1 (ética de la tesis, ${f('T-1')}): marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al asesor en la reunión y se pide como tarde el ${fmt(planDe(pedirT1))} (2 hábiles antes de T-1${ferT1.length ? `, sin contar ${ferT1.length > 1 ? 'los feriados' : 'el feriado'} d${diasLargos(ferT1)}` : ''}).`, enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
         // v6.10p (auditoría c18 · barrido de pre-tests): «cómo agrupa el tiempo hasta la hialuronidasa» insinúa el comparador que pregunta el pre-test (1) →
         //   detrás del corte del Calendar («cómo» ≤ 110); delante, los datos neutros (mismos 6 puntos, otro orden)
         { min: 15, que: 'Abstract de PubMed 41249530 (solo el abstract): «Hyaluronidase Protocol in Management of Hyaluronic Acid Filler-Related Vascular Complications: A Systematic Review and Meta-Analysis» (Aesthetic Plast Surg 2026)', como: 'Extrae a papel: bases de datos · periodo de búsqueda · diseños incluidos · nº de estudios y de pacientes · ¿solo ácido hialurónico? · cómo agrupa el tiempo hasta la hialuronidasa. La clave es el propio abstract: relee y corrige en rojo (lo que el abstract no diga = «no consta», nunca inventado) y corrige también el PICO (1) del pre-test.', enlace: { t: 'PubMed 41249530', url: 'https://pubmed.ncbi.nlm.nih.gov/41249530/' } },
         // v6.11 (chat Research, lun 23-nov): la Table 3 ocupa las págs. 5-6 del PDF (ítems 16-17 en la 6); sin «2015» delante (ya va en el nombre del fichero) para
         //   que el «qué» siga en los 150 del Calendar con «… ya tiene SR-1» entero
-        { min: 5, que: 'PRISMA-P (GoodNotes › Documentos › RESEARCH › SR-1_complicaciones_rellenos › 01_PRISMA-P_2015_checklist, págs. 5-6): marca qué ítems ya tiene SR-1', como: 'Solo marcar (✓ / falta) sobre la lista; lo que falte es el trabajo del protocolo de las próximas sesiones.' },
+        // c39 (revisión de 204db74, base cero F2): «lo que falte es el trabajo del protocolo …» daba la función de PRISMA-P durante el pre-test (el Calendar y la
+        //   tarjeta enseñan los 7 pasos a la vez) → fuera del M1 (remate c39: al final del paso 7 la tarjeta de la app la seguía enseñando durante el pre-test,
+        //   porque GuiaBloqueCard abre los 7 pasos; la corrección del (2) no la necesita)
+        { min: 5, que: 'PRISMA-P (GoodNotes › Documentos › RESEARCH › SR-1_complicaciones_rellenos › 01_PRISMA-P_2015_checklist, págs. 5-6): marca qué ítems ya tiene SR-1', como: 'Solo marcar (✓ / falta) sobre la lista.' },
         { min: 5, que: 'Corrección del pre-test (2): para qué sirve cada checklist y cuántos ítems tiene (2′) + free recall (1′) + ≤2 APEX (2′)', como: 'Con las fuentes reales, en rojo sobre tu papel: PRISMA-P 2015 (GoodNotes, págs. 5-6) · PRISMA 2020 (su checklist en PDF, en los recursos) · AMSTAR-2 (Shea, BMJ 2017, texto completo en PMC: en los recursos). Después el free recall de la sesión y ≤2 APEX de lo que fallaste: el mazo APEX::RESEARCH::01_Protocolo_SR nace hoy, con estas tarjetas (nada de mazos ni carpetas vacíos por adelantado).', enlace: R('PRISMA') },
       ],
       hecho: 'Pre-test + WhatsApp enviado + lista de los 10 documentos + abstract extraído + PRISMA-P marcado + pre-test corregido con el abstract y las 3 checklists + ≤2 APEX.',
@@ -506,7 +584,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         { min: 5, que: 'Pre-test: qué hace a un artículo buen «diana» para una carta', como: 'A papel, sin mirar; lo corriges con candidatos.md en el paso de la tabla.' },
         // v6.10t (c19 #4/#17): + «(los últimos 60 días)» al final del «qué» (venía del título; lo visible en el Calendar no cambia) y, al final del «cómo», los «30-60 días» del objetivo del átomo (gen_research_plan.js),
         //   que la app pinta en la cabecera y en la fila del pre-test
-        { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN (los últimos 60 días)', como: 'Las 5 revistas: JAAD · JAAD Intl · IJD · JCD · Dermatol Surg. Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos (artículos 2026 de los últimos 30-60 días).', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
+        { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN (los últimos ' + C1N + ' días)', como: 'Las 5 revistas: JAAD · JAAD Intl · IJD · JCD · Dermatol Surg. Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos (artículos 2026 publicados online dentro de la ventana de la consulta).', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
         // v6.10t (auditoría c19 #25): «Por fila» (las 7 columnas, sin sus explicaciones) DELANTE, dentro de los 110 del Calendar (el «Hecho» las cita: antes el
         //   corte solo dejaba «Primero corrige en rojo tu pre-test …» y las columnas, que son datos de trabajo, se perdían); «corrige tu pre-test con candidatos.md»
         //   pasa al «qué» (≤ 150) y la regla, la explicación de «ventana» y «ángulo» (su respuesta) y lo demás, detrás del corte, sin perder nada
@@ -520,29 +598,34 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         { min: 5, que: 'Free recall + ≤3 APEX-método + guarda candidatos.md', como: 'Cada DOI nuevo se verifica con DATA/RESEARCH/agentic/citation_verifier.py antes de C-2 (' + f('C-2') + ').' },
       ],
       hecho: 'Pre-test corregido + CARTA_1/candidatos.md con 5 candidatos recientes (las 7 columnas del paso de la tabla) + correo a IJD enviado.', // v6.10p: sin «ventana · ángulo» (el Calendar lo enseñaba) · remate v6.10t: sin «de los últimos 60 días» (la ventana que pregunta el pre-test; va en el paso de Crossref y en el plan B)
-      planB: 'Si Crossref no responde: PubMed con filtro de fecha (últimos 60 días) y el nombre de cada revista; OpenAlex como tercera vía.',
+      planB: 'Si Crossref no responde: PubMed con filtro de fecha (los últimos ' + C1N + ' días, la misma ventana) y el nombre de cada revista; OpenAlex como tercera vía.',
       recursos: [{ t: 'Crossref · consulta A (rellenos)', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) }, { t: 'Crossref · consulta B (skin of color)', url: CROSSREF('skin of color Fitzpatrick laser cosmetic', C1D, C1H) }, R('PM'), R('OPENALEX'), R('JAADINT'), R('IJD')],
     }),
     M2: (x, prev) => ({
-      titulo: 'M2 · Rising Scholars: cuenta + solicitud de mentor 1-a-1 + plan B de inglés', // v6.10j: ≤ 75
+      // c39 (revisión de 204db74, fuentes F1-F3): en Rising Scholars no hay «solicitud publicada» ni «mentor asignado» (verificado el 23-nov-2026 en
+      //   risingscholars.net/mentoring/mentoring-support/): perfil → Find Researchers → mensaje directo a 2-3 mentores; la relación empieza si el mentor acepta.
+      //   Coursera ya no anuncia el modo auditoría: nunca la prueba gratuita ni tarjeta (Joseph no paga); si no hay opción gratis, Financial Aid
+      titulo: 'M2 · Rising Scholars: perfil + mensaje a 2-3 mentores + plan B de inglés', // v6.10j: ≤ 75
       pasos: [
         evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
-        { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · disciplina dermatología / salud pública · nivel early-career · idiomas ES/EN.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
+        { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · Research Keywords (acne, quality of life, dermatology, cross-sectional) · Subjects: Medicine and Dentistry (lista cerrada) · ORCID iD (el de R0) · interés: «finding a mentor» · áreas de ayuda: en el paso siguiente (la versión corta del «Mensaje 2») · Highest qualification: Medical degree · idiomas ES/EN · los Terms los aceptas tú.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
         // v6.10g (revisión 18-nov): sin «(v6.08)» (bitácora, y la versión vigente es otra): las fechas que cambiar las da el «cómo»
         // v6.10p (auditoría c18 · barrido de pre-tests): las 3 peticiones y sus meses SON la respuesta del pre-test del paso 2 y el Calendar las enseñaba (con
         //   fechas detrás del corte, cortarDest alarga el «cómo» hasta la última; no hay corte que las esconda) → pasan al «Terminado cuando» (hecho), que el
         //   Calendar corta a 180 sin alargar por fechas y la app pinta DESPUÉS de los pasos; aquí, «corrige tu pre-test» y dónde están los meses
-        { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente', como: 'Primero corrige en rojo tu pre-test con el «Mensaje 2»; luego pégalo con los meses del plan vigente (en la app, en «Terminado cuando») · la mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).', enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
-        { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))}» + 1 línea en §2`, como: `Si el ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))} no hay mentor asignado → plan B (editor profesional, RUTA §3.1).${M2.fechaPlanB && M2.fechaPlanB !== addDays(M2.fecha, 28) ? ` (4 semanas tras M2 = ${fmt(addDays(M2.fecha, 28))}, día sin sesión: la decisión va al siguiente día-Research.)` : ''}`, enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
-        { min: 5, que: 'Plan B del inglés del primer manuscrito: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
+        { min: 10, que: 'Find Researchers (con la sesión iniciada): envía el «Mensaje 2» de MENTORES.md a 2-3 mentores por la mensajería de la plataforma', como: 'Primero corrige en rojo tu pre-test con el «Mensaje 2» (sus fechas ya son las del plan vigente). Filtra por dermatología / epidemiología clínica; en cada mensaje rellena el nombre del mentor y un dato real de su perfil. La versión corta va también en tu perfil («Areas you require help with»).', enlace: { t: 'Find Researchers', url: 'https://risingscholars.net/en/mentoring/search/' } },
+        { min: 5, que: `MENTORES.md fila 2: fecha de los mensajes + «decisión del plan B de inglés: ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))}» + 1 línea en §2 (mentor 1/2/3, sin nombres)`, como: `Si el ${fmt(M2.fechaPlanB || addDays(M2.fecha, 28))} ningún mentor aceptó por escrito → plan B (editor profesional, RUTA §3.1).${M2.fechaPlanB && M2.fechaPlanB !== addDays(M2.fecha, 28) ? ` (4 semanas tras M2 = ${fmt(addDays(M2.fecha, 28))}, día sin sesión: la decisión va al siguiente día-Research.)` : ''} Los nombres de los mentores y lo que respondan, en DATA/RESEARCH/_privado/ (fuera del repo público).`, enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        { min: 5, que: 'Plan B del inglés del primer manuscrito: «Writing in the Sciences» (Coursera), solo con una opción sin pago', como: 'NO empieces la prueba gratuita ni metas tarjeta. Inscríbete solo si aparece una opción sin pago (Full Course, No Certificate o similar); si no la hay, solicita Financial Aid desde la misma página y anótalo en MENTORES.md fila 2. El curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mentor de escritura: qué pedir · cuánto tiempo · con qué fecha».' },
       ],
       // v6.10p: los meses de la solicitud, detrás de los 180 del Calendar (ver el paso de la solicitud); «+ inscripción …» es el paso 6 de hoy
       // v6.10t (auditoría c19 #25): el Calendar cortaba el «Hecho» en «… Meses que lleva la solicitud …» (colgando) → los meses van en UN paréntesis pegado al
       //   criterio, que el corte (cortar, 180, sin alargar por fechas) quita entero: el Calendar enseña el criterio completo y la app, los meses tras los pasos
-      hecho: `Cuenta en Rising Scholars + solicitud de mentor enviada + fila 2 de MENTORES.md con fecha y la fecha de decisión del plan B + inscripción en «Writing in the Sciences» (meses que lleva la solicitud, plan vigente: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6, ${f('CR-6')}).`,
-      planB: 'Si el registro falla o la sección Mentoring no responde: guarda el mensaje y escribe a la red por su formulario de contacto; la fecha de decisión del plan B no se mueve.',
+      // c39 (revisión de 204db74, fechas F3/F5 + Q1/Q2): las ventanas del Mensaje 2 — research letter de T-5 a T-7 (antes del GATE 2 de inglés de T-7), case
+      //   report de CR-5 a CR-7 y la carta al editor como respuesta a revisores tras su envío (C-6)
+      hecho: `Perfil en Rising Scholars + Mensaje 2 enviado a 2-3 mentores + fila 2 de MENTORES.md con fecha y la fecha de decisión del plan B + inscripción o solicitud de Financial Aid en «Writing in the Sciences» (meses del Mensaje 2, plan vigente: research letter ≈ ${f('T-5')} → ${f('T-7')} · case report ≈ ${f('CR-5')} → ${f('CR-7')} · carta al editor: respuesta a revisores tras su envío, ${f('C-6')}).`,
+      planB: 'Si el registro falla o Find Researchers no responde: guarda el mensaje y escribe a la red por su formulario de contacto; la fecha de decisión del plan B no se mueve.',
       recursos: [R('RISING'), { t: 'MENTORES.md §3 «Mensaje 2»', url: GH + 'DATA/RESEARCH/MENTORES.md' }, R('SCIWRITE'), R('PHRASE')],
     }),
   };
@@ -667,4 +750,4 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
   return { porD: out, minimo, conDetalle };
 }
 
-module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso, REC_DOC, CONTRASTE_DE, REC_CORTO, ART_CHECK, EVAL_COMO, TITULO_MAX };
+module.exports = { construirGuiasResearch, TS_BUILDER, FASES_RESEARCH, faseResearchAviso, REC_DOC, CONTRASTE_DE, REC_CORTO, ART_CHECK, EVAL_COMO, TITULO_MAX, casoAntesDe, fLargo, mensaje2MD, PLAZO_CASO_COMUNICADO }; // c39: + casoAntesDe y fLargo (un solo plazo del caso en los chips y en caso_candidatos.md §2) · remate: + PLAZO_CASO_COMUNICADO

@@ -4,10 +4,12 @@
 > rindió; SERUMS aparece en el ROADMAP recién en la fase MIR), así que el "caso propio (hospital/SERUMS)" que
 > asumía la RUTA §2 no existe. El case report de feb-mar 2027 (→ Dermatology Online Journal) solo ocurre si el
 > caso se identifica **antes del 31-oct-2026** (fecha límite para tener consentimiento + fotos + senior author
-> y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
-> partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
+> y redactar en nov-dic con el CARE). La tabla real se rellena en el átomo CR-1 en `_privado/caso_candidatos.md` (fuera del repo; aquí, solo
+> el estado de cada caso) y este fichero es el punto de partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ v6.10c (mar 17-nov-2026 · D1 del régimen mié 18-nov; 17:20: el día que sobra va entero al sáb 2-ene): el mar 17 (día-Research) no se estudió → M1
+> **✅ Vigente (fechas reales; esta línea la escribe `DATA/_scripts/gen_research_plan.js`):** M1 mié 25-nov-2026 (WhatsApp al asesor; punto 3 = el caso) · C-3 mié 16-dic-2026: recordatorio si no ha respondido · plazo del caso jue 24-dic-2026 (sin caso → fuente B, §2) · CR-1 lun 28-dic-2026 · CR-2 jue 31-dic-2026.
+>
+> **⏸ v6.10c (historial; mar 17-nov-2026 · D1 del régimen mié 18-nov; 17:20: el día que sobra va entero al sáb 2-ene): el mar 17 (día-Research) no se estudió → M1
 > pasa al JUE 19-NOV** (la 1.ª sesión Research, donde se pide el caso) y los átomos de F1 corren una ranura-Research hasta fin de año: T-1 lun 7-dic ·
 > seguimiento del caso mié 9-dic (R9) · **C-3 vie 11-dic** (disparador de la fuente B) · **CR-1 (caso elegido) mié 23-dic** · **CR-2 (consentimiento) mar
 > 29-dic** · T-3 sáb 2-ene; desde el T-4 (lun 4-ene) las fechas de abajo siguen vigentes (pausa jue 21-ene → mié 10-feb · CR-9 lun 1-mar). El plazo de 3
@@ -16,7 +18,7 @@
 > **⏸ v6.09 (lun 16-nov-2026 · D1 del régimen mar 17-nov; sáb 21 y dom 22-nov libres por viaje): Research NO cambia** — el lun 16 era día-Derma, así que
 > todas las fechas de abajo (M1 mar 17-nov · R9 lun 7-dic · C-3 mié 9-dic · CR-1 lun 21-dic · CR-2 mié 23-dic · CR-9 lun 1-mar) siguen vigentes.
 >
-> **✅ v6.08 (sáb 14-nov-2026 · D1 del régimen lun 16-nov; Research ciclo 1 mar 17-nov → lun 12-abr): el plazo interno del 31-oct sigue ⏸ VENCIDO** → **M1
+> **⏸ v6.08 (historial; sáb 14-nov-2026 · D1 del régimen lun 16-nov; Research ciclo 1 mar 17-nov → lun 12-abr): el plazo interno del 31-oct sigue ⏸ VENCIDO** → **M1
 > (petición al Dr. Ciro) = mar 17-nov, la 1.ª sesión Research** (pedir el caso en el propio M1) · seguimiento = lun 7-dic (d8, día de R9) · plazo de 3 semanas
 > desde M1 = **mié 9-dic** (= C-3, d9: disparador de la fuente B, §2) · **CR-1 (caso elegido) = lun 21-dic — 🔴 51 días DESPUÉS del 31-oct** · **CR-2
 > (consentimiento firmado) = mié 23-dic — 🔴 53 días DESPUÉS del 31-oct** · pausa de átomos jue 21-ene → mié 10-feb (v6.08: empieza el jue 21-ene, antes vie
@@ -59,13 +61,16 @@
 > Como el consentimiento depende de la próxima cita del paciente, si esa cita cae después del 31-oct se le pide al senior author
 > que lo obtenga él en consulta (chip de CR-2).
 
-## 1. Tabla de candidatos (vacía — rellenar una fila por caso propuesto)
+## 1. Tabla de candidatos → en `_privado/` (fuera del repo)
 
-| # | Diagnóstico / evento | Fuente (quién lo atiende) | Por qué es publicable (novedad documentada: base + fecha + nº casos previos) | Fotos disponibles (D0 / evolución / calidad) | Consentimiento de publicación (☐ pendiente ☐ firmado dd-mmm) | Senior author | Línea del programa (L4 complicación estética / L5 energía-fototipo / otra) | Revista objetivo | Estado (idea · en evaluación · aceptado · descartado) | Siguiente paso + fecha |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | | | | | ☐ | | | | idea | |
-| 2 | | | | | ☐ | | | | idea | |
-| 3 | | | | | ☐ | | | | idea | |
+> **El repo es PÚBLICO.** La tabla real —una fila por caso propuesto, con el evento clínico, quién lo atiende, la novedad documentada,
+> las fotos, el senior author, la revista y el siguiente paso— va en `CASE_REPORT_1/_privado/caso_candidatos.md`, que git ignora
+> (`DATA/RESEARCH/.gitignore`). Aquí solo el estado de cada caso, sin datos clínicos ni el nombre del médico tratante.
+
+| Caso | Estado (idea · en evaluación · aceptado · descartado) | Consentimiento de publicación |
+|---|---|---|
+| Caso A | idea | ☐ pendiente |
+| Caso B | idea | ☐ pendiente |
 
 **Regla de corte**: se elige el caso que tenga **las 4 cosas** a la vez: (a) fotos D0 y de evolución de calidad
 o posibilidad de tomarlas ahora (`protocolo_fotos.md`), (b) paciente localizable y dispuesto a firmar
@@ -99,12 +104,12 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
   Peruana de Dermatología — comprobar si es público antes de contar con él.
 - Regla: **un solo mensaje concreto** ("busco 1 caso de complicación de relleno con fotos para un case report
   CARE en Dermatology Online Journal; yo redacto, usted es senior author; tiempo suyo estimado: 2 h en 3 meses").
-- **Mensaje único listo (v6.10c: activar en C-3, vie 11-dic-2026, si el senior author local no dio caso; la fecha límite del mensaje = CR-1, mié 23-dic-2026, el día del caso elegido —las fechas las da src/lib/researchDailyPlan.ts—; WhatsApp o email, 6 líneas):** *(historial: v5.20 activar el mar 3-nov · plazo 31-oct ⏸ VENCIDO)*
+- **Mensaje único listo (se activa si en el plazo del caso —el mismo del punto 3 del WhatsApp de M1— el senior author local no dio caso; las fechas, en los chips de R9, C-3 y CR-1 de la app; la del mensaje la escribe `DATA/_scripts/gen_research_plan.js`; WhatsApp o email, 6 líneas):** *(historial: v5.20 activar el mar 3-nov · plazo 31-oct ⏸ VENCIDO)*
   > Dr./Dra. [nombre], buenos días. Soy Joseph Soto, médico egresado de la UNCP (Huancayo); me lo recomendó el Dr. Ciro Rodríguez.
   > Estoy preparando un reporte de caso con formato CARE para Dermatology Online Journal (MEDLINE) y busco **un solo caso de
   > complicación de relleno o de láser/RF con fotos de evolución** de su consulta. Yo hago el 100 % del trabajo: consentimiento de
   > publicación (plantilla bilingüe lista), fotos según protocolo, redacción, citas verificadas y envío; usted sería **senior author**
-  > y validaría la clínica. Su tiempo estimado: unas 2 horas en 3 meses. Necesitaría elegir el caso antes del **23 de diciembre**.
+  > y validaría la clínica. Su tiempo estimado: unas 2 horas en 3 meses. Necesitaría elegir el caso antes del **24 de diciembre**.
   > ¿Le interesa? Le envío el resumen del proceso en una página. Gracias.
 
 ### Fuente C (oportunista, no planificar sobre ella)
@@ -113,7 +118,7 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
   redirigen a A o B.
 
 ## 3. Flujo desde que aparece un candidato (encaja en la franja Research 13:30-14:15 interdiaria)
-1. **CR-1 (mar 17-nov-2026 · v5.20: 🔴 ya 17 días después del 31-oct — elegir el caso el vie 30-oct si se puede; v5.19 = v5.18: vie 13-nov; v5.17: mié 11-nov)** Rellenar la fila; búsqueda de novedad en PubMed/OpenAlex documentada (base, fecha, términos, n) → si
+1. **CR-1 (mar 17-nov-2026 · v5.20: 🔴 ya 17 días después del 31-oct — elegir el caso el vie 30-oct si se puede; v5.19 = v5.18: vie 13-nov; v5.17: mié 11-nov)** Rellenar la fila en `_privado/caso_candidatos.md` (aquí, solo «Caso A/B · estado · ☐ consentimiento»); búsqueda de novedad en PubMed/OpenAlex documentada (base, fecha, términos, n) → si
    hay >10 casos similares publicados, el ángulo debe ser otro (fototipo, contexto peruano, manejo con recursos
    limitados) o se descarta.
 2. **CR-2 (jue 19-nov-2026; v5.20: 19 días después del 31-oct — firmarlo el vie 30-oct si se puede; v5.19 = v5.18: mar 17-nov; v5.17: vie 13-nov)** Consentimiento de publicación firmado (ES) en la siguiente cita del paciente; escanear y guardar en
