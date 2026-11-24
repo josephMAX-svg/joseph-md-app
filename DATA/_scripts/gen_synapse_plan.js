@@ -241,7 +241,7 @@ try {
     .map((m) => ({ s: +m[1], ini: m[2], fin: m[3], ship: sabTras(m[3]), shipTs: m[4], pcSab: m[5] === undefined ? null : m[5] }));
 } catch { /* aún no generado: se cae al comportamiento por semana */ }
 // v6.10q · v6.10y (lun 23-nov-2026): los pasos (semana, k) de cada fecha de PLAN del vibecoding, para el SHIP que ABSORBE un paso de su proyecto
-//   (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = el paso 5/5 de S1, que va PRIMERO dentro del SHIP) → bloquePC
+//   (_fechas_v6.json › corrida_s1.alias_frente.vibecoding.en_ship: dom 29-nov = los pasos 4/5 y 5/5 de S1, en ese orden, PRIMERO dentro del SHIP) → bloquePC
 let VIBE_PASOS = [];
 try {
   VIBE_PASOS = [...fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8').matchAll(/\{d:\d+,fecha:"(20\d\d-\d\d-\d\d)",wd:"[^"]*",semana:(\d+),proyecto:"[^"]*",k:(\d+),tipo:"([^"]+)"/g)]
@@ -671,9 +671,11 @@ function bloquePC(semana, fecha) {
     ? `SHIP proyecto S${p.s} · ${p.nombre}${dl}`
     : `Avance del proyecto S${p.s} · ${p.nombre}${dl} — SHIP el ${vc.ship}`;
   // v6.10q · v6.10y: el SHIP que absorbe un paso de su proyecto (en_ship) lo dice delante (la guía del SHIP, rutinaGuia.guiaShipDe, lo detalla)
-  const enS = vs ? require('./gen_fechas_v6').enShipDe(f, require('./gen_fechas_v6').cargarFechasV6()) : null;
-  const dS = enS ? VIBE_PASOS.find((x) => x.fecha === enS && x.semana === p.s) : null;
-  const pre = dS ? `Primero el paso ${dS.k}/${VIBE_PASOS.filter((x) => x.semana === p.s).length} de S${p.s} (commit [S${p.s}] + verify ${p.s}); después, ` : '';
+  //   v6.11 (mar 24-nov): en_ship es una lista (dom 29-nov = los pasos 4 y 5 de S1, en ese orden): los nombra todos; el último es el del commit + verify
+  const enS = vs ? require('./gen_fechas_v6').enShipDe(f, require('./gen_fechas_v6').cargarFechasV6()) : [];
+  const dS = enS.map((e) => VIBE_PASOS.find((x) => x.fecha === e && x.semana === p.s)).filter(Boolean);
+  const nP = VIBE_PASOS.filter((x) => x.semana === p.s).length;
+  const pre = dS.length ? `Primero ${dS.length > 1 ? `los pasos ${dS.map((x) => `${x.k}/${nP}`).join(' y ')}` : `el paso ${dS[0].k}/${nP}`} de S${p.s} (${dS.length > 1 ? 'en ese orden; el último, ' : ''}commit [S${p.s}] + verify ${p.s}); después, ` : '';
   const leccion = `${pre}${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
   return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
 }
@@ -907,8 +909,13 @@ if (REC) {
   const pasa = aHHg(aMing(AUDIT_F0_V610.ini) + AUDIT_F0_V610.min), finA = aHHg(aMing(AUDIT_F0_V610.ini) + 15);
   if (!AUDIT_F0_V610.como.includes(`A las ${pasa} pasa a la A`)) throw new Error('v6.10 · tanda C: el texto de la auditoría no dice la hora real del paso a la A (' + pasa + ')');
   const A0 = dA.bloques[iA];
+  // c47 (mar 24-nov · chat SYNAPSE, ítem 44): como toda A de la Academy (rutinaGuia.pasoSyn), sigue su curso donde lo dejó la última A de ese curso, sin saltar lecciones (la
+  //   del día anterior —Intro + Why, 22′— no cabe en sus 15′), y el recall en blanco tiene sus minutos dentro de la A (RECALL_A = rutinaGuia.SYN_RECALL_A); la
+  //   regla va delante (corte de 110 del Calendar)
+  const RECALL_A = 3;
+  const paraA = aHHg(aMing(AUDIT_F0_V610.ini) + 15 - RECALL_A);
   dA.bloques[iA] = { ...A0, min: 15 - AUDIT_F0_V610.min, med: 15 - AUDIT_F0_V610.min,
-    guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}). Para a las ${finA} aunque la lección siga (la plataforma guarda el progreso); si la lección acaba antes, empieza la siguiente pendiente del curso y para a las ${finA}. Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes). Base cero: aunque en la auditoría la marques ✓, se cursa entera.`, url: A0.url, t: 'A ↗' } };
+    guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `Sigue donde paró tu última A del curso (no el «Continue» de la web); para a las ${paraA} y haz ${RECALL_A}′ de recall. En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}), en el orden del curso: aunque el título de hoy nombre otra lección, empiezas donde quedó la última A de este curso (la 1.ª A de un curso, desde su inicio), no donde te lleve el «Continue» de la plataforma (si importas el progreso de Skilljar, salta lecciones). Para a las ${paraA} aunque la lección siga y anota en el journal la lección y el minuto: la próxima A del curso sigue desde ahí, no salta a la lección de su título; si la lección acaba antes, empieza la siguiente del curso. De ${paraA} a ${finA}: recall en blanco en el journal (sin mirar, lo que recuerdes). Base cero: aunque en la auditoría la marques ✓, se cursa entera.`, url: A0.url, t: 'A ↗' } };
   dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que}: certificados de F0 en «Your learning» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
     guia: { que: AUDIT_F0_V610.que, como: AUDIT_F0_V610.como, url: U.academyClaude, t: 'Academy' } });
 }

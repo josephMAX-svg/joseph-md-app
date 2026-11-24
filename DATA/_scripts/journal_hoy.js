@@ -37,7 +37,10 @@ const _V6 = require('./gen_fechas_v6');
 // v6.10y (lun 23-nov-2026): + el alias PROPIO del vibecoding (corrida_s1.alias_frente: S1 corre una sesión, mar 24 = plan del mié 18 … vie 27 = plan del lun 23)
 //   y el domingo cuyo SHIP absorbe un paso (en_ship: dom 29-nov = el paso 5 de S1, que va primero dentro del SHIP) → su sección es la de ese paso
 const _F6 = _V6.cargarFechasV6();
-const FECHA = _V6.enShipDe(REAL, _F6, 'vibecoding') || _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
+// v6.11 (mar 24-nov-2026): el SHIP del domingo puede absorber VARIOS pasos (en_ship = lista, en orden: dom 29-nov = los pasos 4 y 5 de S1) → una sección
+//   por paso, en ese orden (FECHAS_SEC, abajo); FECHA = el primero (semana, cabecera y proyecto salen de él)
+const PASOS_SHIP = _V6.enShipDe(REAL, _F6, 'vibecoding');
+const FECHA = PASOS_SHIP[0] || _V6.fechaPlanDe(REAL, _F6, 'vibecoding');
 // v6.07d: la cabecera del journal dice los días REALES del proyecto y de su SHIP (con la semana corrida no son los de plan)
 const _REAL = (f) => _V6.fechaRealDe(f, _V6.cargarFechasV6(), 'vibecoding');
 // v6.10w (pendientes de la revisión): un día REAL sin sesión (corrida_s1.sin_sesion: del lun 16 al dom 22-nov) no tiene vibecoding: fechaPlanDe lo da
@@ -54,11 +57,22 @@ if (SIN_SESION_HOY) {
 }
 // v6.10y (revisión): con el alias PROPIO del vibecoding, el día real cuyo plan GLOBAL es una fecha que ese alias hace OTRO día (lun 23-nov: plan del mié 18, cuyo
 //   paso 1/5 va el mar 24) no tiene vibecoding → escribir hoy esa sección la creaba con el día equivocado («## Mié 18-nov (hecho el Lun 23-nov)») y el mar 24 la
-//   reutilizaba («sección de hoy ya existía»)
+//   reutilizaba («sección de hoy ya existía») · v6.11 (mar 24-nov): igual un día real SIN SESIÓN del vibecoding (alias_frente.vibecoding.sin_sesion: el mar 24, cuyo
+//   paso 1 va el mié 25): fechaPlanDe le da la fila del próximo día con sesión
 const _AF = _V6.aliasFrenteDe(_F6, 'vibecoding');
-if (_AF && !_V6.enShipDe(REAL, _F6, 'vibecoding') && Object.values(_AF.alias).includes(FECHA) && _REAL(FECHA) !== REAL) {
-  console.log(`SIN VIBECODING ${REAL}: el paso de este plan (${FECHA}) va el ${_REAL(FECHA)} (corrida_s1.alias_frente.vibecoding) · hoy no se escribe nada: node DATA/_scripts/journal_hoy.js --fecha ${_REAL(FECHA)}`);
-  process.exit(0);
+// mar 24-nov-2026 (revisión): con --abrir, si ese paso va en la MISMA semana (lun-dom) que hoy, se crea el fichero de la semana (cabecera con los criterios de
+//   aceptación + cierre) si falta y se abre, SIN sección de hoy (la del paso la añade su día real): así el journal de la semana existe desde hoy (el recall del
+//   SYNAPSE de hoy va ahí) y el día del paso sigue escribiendo su sección como siempre
+let SOLO_ABRIR = false;
+if (_AF && !PASOS_SHIP.length && Object.values(_AF.alias).includes(FECHA) && _REAL(FECHA) !== REAL) {
+  const _lun = (s) => { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+  if (has('--abrir') && _lun(_REAL(FECHA)) === _lun(REAL)) {
+    SOLO_ABRIR = true;
+    console.log(`SIN VIBECODING ${REAL}: el paso de este plan (${FECHA}) va el ${_REAL(FECHA)} · --abrir: se crea (si falta) y se abre el journal de la semana, sin sección de hoy`);
+  } else {
+    console.log(`SIN VIBECODING ${REAL}: el paso de este plan (${FECHA}) va el ${_REAL(FECHA)} (corrida_s1.alias_frente.vibecoding) · hoy no se escribe nada: node DATA/_scripts/journal_hoy.js --fecha ${_REAL(FECHA)}`);
+    process.exit(0);
+  }
 }
 
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -153,8 +167,7 @@ if (!fs.existsSync(file)) {
 
 // ─── sección del día ───
 let txt = fs.readFileSync(file, 'utf8');
-const titulo = `## ${fmt(FECHA)}${REAL !== FECHA ? ` (hecho el ${fmt(REAL)})` : ''}${diaHoy ? ` · D${diaHoy.d} · S${diaHoy.semana}` : ''}`;
-let anadido = false;
+const anadidas = []; // v6.11: secciones añadidas hoy (el SHIP que absorbe varios pasos añade una por paso)
 // c38 (lun 23-nov, chat vibecoding): domingo de SHIP o de PC opcional del taper SIN paso que absorber (todos salvo el dom 29-nov): el journal del SHIP es el
 //   «Cierre de semana» → no se añade la sección de un día de paso (antes «## Dom 06-dic» con objetivo · qué construí … encima del cierre); solo se abre el
 //   fichero de la semana (creado si faltaba; si le falta el cierre, se le añade al final)
@@ -167,13 +180,18 @@ if (SOLO_CIERRE && !txt.includes('## Cierre de semana')) {
 }
 // v6.10w: una sola sección por fecha de PLAN (aunque se escribiera otro día real: «## Mié 18-nov …» con o sin «(hecho el …)»)
 const _esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const yaPlan = new RegExp(`^## ${_esc(fmt(FECHA))}(?= |$)`, 'm').test(txt);
-if (!SOLO_CIERRE && yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FECHA)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
+// v6.11 (mar 24-nov): una sección por cada paso que absorbe el SHIP de hoy (en su orden; cada una se inserta antes del «Cierre de semana», así quedan en orden)
+const FECHAS_SEC = SOLO_ABRIR ? [] : PASOS_SHIP.length ? PASOS_SHIP : [FECHA]; // SOLO_ABRIR: hoy sin vibecoding, ninguna sección
+for (const FX of FECHAS_SEC) {
+const diaX = DIAS.find((x) => x.fecha === FX) || null;
+const titulo = `## ${fmt(FX)}${REAL !== FX ? ` (hecho el ${fmt(REAL)})` : ''}${diaX ? ` · D${diaX.d} · S${diaX.semana}` : ''}`;
+const yaPlan = new RegExp(`^## ${_esc(fmt(FX))}(?= |$)`, 'm').test(txt);
+if (!SOLO_CIERRE && yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FX)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
 if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
   const S = [];
   S.push(titulo);
   S.push('');
-  if (diaHoy) S.push(`- paso del día (${diaHoy.tipo}${diaHoy.min !== 45 ? ` · ${diaHoy.min}'` : ''}${diaHoy.deload ? ' · deload' : ''}): ${diaHoy.paso}`);
+  if (diaX) S.push(`- paso del día (${diaX.tipo}${diaX.min !== 45 ? ` · ${diaX.min}'` : ''}${diaX.deload ? ' · deload' : ''}): ${diaX.paso}`);
   S.push('- objetivo del día (5\'): ');
   S.push('- qué construí: ');
   S.push('- commit / URL: ');
@@ -186,12 +204,14 @@ if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
   const i = txt.indexOf('## Cierre de semana');
   txt = i >= 0 ? txt.slice(0, i) + S.join('\n') + '\n' + txt.slice(i) : txt.replace(/\s*$/, '\n\n') + S.join('\n') + '\n';
   fs.writeFileSync(file, txt, 'utf8');
-  anadido = true;
+  anadidas.push(fmt(FX));
+}
 }
 
 const rel = path.relative(JOURNAL, file).replace(/\\/g, '/');
-if (SOLO_CIERRE) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)}, ${PC_TXT}: hoy no se añade sección de día · escribe en «Cierre de semana»`);
-else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadido ? ' · +sección ' + fmt(FECHA) : ' · sección de hoy ya existía'}${diaHoy ? ` · D${diaHoy.d} S${diaHoy.semana} ${diaHoy.proyecto}` : ' · fuera del plan'}`);
+if (SOLO_ABRIR) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)} sin vibecoding: hoy no se añade sección (la del paso del ${fmt(FECHA)} la añade el ${fmt(_REAL(FECHA))})`);
+else if (SOLO_CIERRE) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)}, ${PC_TXT}: hoy no se añade sección de día · escribe en «Cierre de semana»`);
+else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadidas.length ? ' · +sección ' + anadidas.join(' + ') : ` · sección${FECHAS_SEC.length > 1 ? 'es' : ''} de hoy ya existía${FECHAS_SEC.length > 1 ? 'n' : ''}`}${diaHoy ? ` · ${FECHAS_SEC.map((fx) => DIAS.find((x) => x.fecha === fx)).filter(Boolean).map((x) => `D${x.d}`).join(' + ')} S${diaHoy.semana} ${diaHoy.proyecto}${PASOS_SHIP.length ? ' (dentro del SHIP)' : ''}` : ' · fuera del plan'}`);
 if (has('--print')) console.log('\n' + fs.readFileSync(file, 'utf8'));
 if (has('--abrir')) {
   try { cp.execSync(`code "${file}"`, { stdio: 'ignore', timeout: 15000, windowsHide: true }); console.log('abierto en VS Code'); }

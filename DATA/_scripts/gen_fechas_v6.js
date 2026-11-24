@@ -245,8 +245,10 @@ function comprobarCorridaS1(c, F) {
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
   // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos) · v6.10: + «extra»
   // v6.10y: + «alias_frente» (alias PROPIO de un frente; vuelve el mecanismo de la v6.10q)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  // v6.11 (mar 24-nov): + «config_anki» (la CONFIGURACIÓN del Anki USMLE que no se hizo y adónde va cada parte; la aplica gen_usmle_guia.js)
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente', 'config_anki'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
   if ('extra' in c) err.push(...comprobarExtra(c, F));
+  if ('config_anki' in c) err.push(...comprobarConfigAnki(c));
   if ('alias_frente' in c) err.push(...comprobarAliasFrente(c));
   if (!err.length && F) err.push(...comprobarPorFrente(F)); // v6.11 fase 2: cada fecha de plan, una vez por frente y en orden de día real
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
@@ -353,21 +355,51 @@ function comprobarExtra(c, F) {
 /**
  * v6.10q (jue 19-nov-2026) · v6.10y (lun 23-nov-2026, vuelve): `corrida_s1.alias_frente` = { frente: { decidido, motivo, alias, en_ship? } } → un alias
  * PROPIO de un frente que manda sobre el alias global en la consulta de ESE frente (fechaPlanDe / fechaRealDe con `frente`); los demás frentes siguen con el
- * global. `alias` = día real L-V (un día del alias global) → fecha de plan (hacia atrás) · `en_ship` = domingo → fecha de plan del paso que absorbe el SHIP de
- * ese domingo (va PRIMERO dentro de él; solo vibecoding). Ninguna fecha de plan se repite dentro del alias propio.
+ * global. `alias` = día real L-V (un día del alias global) → fecha de plan (hacia atrás) · `en_ship` = domingo → fecha de plan (o lista de fechas de plan, en
+ * orden) de los pasos que absorbe el SHIP de ese domingo (van PRIMERO dentro de él, en ese orden; solo vibecoding) · `sin_sesion` (opcional) = días reales L-V
+ * del alias global en que ESE frente no tiene sesión (su fecha de plan la hace otro día real del alias propio; los demás frentes siguen ese día). Ninguna fecha
+ * de plan se repite dentro del alias propio.
  */
+/**
+ * v6.11 (mar 24-nov-2026) · `corrida_s1.config_anki` (opcional) = { decidido, motivo, no_hecha, fsrs: { fecha, hora } }: la CONFIGURACIÓN del Anki USMLE (1.er día
+ * de F1) no se hizo el día REAL `no_hecha` (L-V del alias global). gen_usmle_guia.js pone el preset DELANTE en el Anki del D2 y «Anki Almost Broke Me…» entero +
+ * el manual FSRS en `fsrs` (un sábado o domingo posterior, a hora fija «HH:MM-HH:MM»); el 05:00 de `no_hecha` solo dice adónde fue cada parte.
+ */
+function comprobarConfigAnki(c) {
+  const err = [], x = c.config_anki, q = '«corrida_s1.config_anki»';
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return [`${q} debe ser un objeto { decidido, motivo, no_hecha, fsrs: { fecha, hora } }`];
+  for (const k of Object.keys(x)) if (!['decidido', 'motivo', 'no_hecha', 'fsrs'].includes(k)) err.push(`${q}: clave no prevista «${k}»`);
+  if (!esISO(x.decidido)) err.push(`${q}.decidido: fecha inválida`);
+  if (typeof x.motivo !== 'string' || !x.motivo) err.push(`${q}.motivo: texto`);
+  if (!esISO(x.no_hecha) || !((c.alias || {})[x.no_hecha])) err.push(`${q}.no_hecha: debe ser un día real del alias global (corrida_s1.alias)`);
+  const f = x.fsrs || {}, m = /^(\d\d):(\d\d)-(\d\d):(\d\d)$/.exec(f.hora || '');
+  if (!esISO(f.fecha) || !(f.fecha > x.no_hecha) || ![0, 6].includes(new Date(f.fecha + 'T12:00:00Z').getUTCDay())) err.push(`${q}.fsrs.fecha: un sábado o domingo posterior a no_hecha`);
+  if (!m || !(Number(m[1]) * 60 + Number(m[2]) < Number(m[3]) * 60 + Number(m[4]))) err.push(`${q}.fsrs.hora: «HH:MM-HH:MM» inválida`);
+  return err;
+}
+/** en_ship normalizado: la fecha de plan o la lista de fechas de plan de un domingo → lista (en su orden). */
+const enShipLista = (v) => (Array.isArray(v) ? v : v == null ? [] : [v]);
 function comprobarAliasFrente(c) {
   const err = [];
   const x = c.alias_frente;
-  if (!x || typeof x !== 'object' || Array.isArray(x)) return ['«corrida_s1.alias_frente» debe ser un objeto { frente: { decidido, motivo, alias, en_ship? } }'];
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return ['«corrida_s1.alias_frente» debe ser un objeto { frente: { decidido, motivo, alias, en_ship?, sin_sesion? } }'];
   const sin = new Set(c.sin_sesion || []);
   for (const [fr, a] of Object.entries(x)) {
     const q = `«corrida_s1.alias_frente.${fr}»`;
     if (!(fr in BLOQUES_POR_FRENTE)) err.push(`${q}: frente no está en BLOQUES_POR_FRENTE`);
     if (!a || typeof a !== 'object' || Array.isArray(a)) { err.push(`${q}: debe ser un objeto`); continue; }
-    for (const k of Object.keys(a)) if (!['decidido', 'motivo', 'alias', 'en_ship'].includes(k)) err.push(`${q}: clave no prevista «${k}»`);
+    for (const k of Object.keys(a)) if (!['decidido', 'motivo', 'alias', 'en_ship', 'sin_sesion'].includes(k)) err.push(`${q}: clave no prevista «${k}»`);
     if (!esISO(a.decidido) || typeof a.motivo !== 'string' || !a.motivo) err.push(`${q}: decidido (fecha) y motivo (texto)`);
     if (!a.alias || typeof a.alias !== 'object' || Array.isArray(a.alias)) { err.push(`${q}.alias: { día real: fecha de plan }`); continue; }
+    // v6.11 (mar 24-nov): días reales del alias global sin sesión de ESTE frente (el vibecoding del mar 24: el paso 1 de S1 va el mié 25)
+    if ('sin_sesion' in a) {
+      if (!Array.isArray(a.sin_sesion) || !a.sin_sesion.every(esISO)) err.push(`${q}.sin_sesion: lista de fechas`);
+      else for (const r of a.sin_sesion) {
+        if (wd(r) === 0 || wd(r) === 6) err.push(`${q}.sin_sesion ${r}: el día real debe ser L-V`);
+        if (!((c.alias || {})[r])) err.push(`${q}.sin_sesion ${r}: debe ser un día del alias global (corrida_s1.alias): plantillasV6 solo lo aplica ahí`);
+        if (a.alias[r]) err.push(`${q}.sin_sesion ${r}: también está en su alias`);
+      }
+    }
     const planes = new Set();
     for (const [r, de] of Object.entries(a.alias)) {
       if (!esISO(r) || !esISO(de) || !(de < r)) err.push(`${q}.alias ${r} → ${de}: fechas inválidas o no hacia atrás`);
@@ -381,12 +413,17 @@ function comprobarAliasFrente(c) {
     }
     if ('en_ship' in a) {
       if (fr !== 'vibecoding') err.push(`${q}.en_ship: solo el vibecoding tiene SHIP`);
-      if (!a.en_ship || typeof a.en_ship !== 'object' || Array.isArray(a.en_ship)) err.push(`${q}.en_ship: { domingo: fecha de plan }`);
-      else for (const [dom, de] of Object.entries(a.en_ship)) {
-        if (!esISO(dom) || wd(dom) !== 0 || !esISO(de) || !(de < dom)) err.push(`${q}.en_ship ${dom} → ${de}: el día real debe ser un domingo posterior a la fecha de plan`);
+      if (!a.en_ship || typeof a.en_ship !== 'object' || Array.isArray(a.en_ship)) err.push(`${q}.en_ship: { domingo: fecha de plan o [fechas de plan] }`);
+      else for (const [dom, v] of Object.entries(a.en_ship)) {
+        const ds = enShipLista(v);
+        if (!ds.length) err.push(`${q}.en_ship ${dom}: lista vacía`);
         if (sin.has(dom)) err.push(`${q}.en_ship ${dom}: es un día sin sesión`);
-        if (planes.has(de)) err.push(`${q}.en_ship: la fecha de plan ${de} ya está en el alias`);
-        planes.add(de);
+        ds.forEach((de, i) => {
+          if (!esISO(dom) || wd(dom) !== 0 || !esISO(de) || !(de < dom)) err.push(`${q}.en_ship ${dom} → ${de}: el día real debe ser un domingo posterior a la fecha de plan`);
+          if (i && !(de > ds[i - 1])) err.push(`${q}.en_ship ${dom}: las fechas de plan van en orden (${ds[i - 1]} → ${de})`);
+          if (planes.has(de)) err.push(`${q}.en_ship: la fecha de plan ${de} ya está en el alias`);
+          planes.add(de);
+        });
       }
     }
   }
@@ -427,8 +464,9 @@ function planesHechosDe(F, frente) {
   const c = F.corrida_s1 || {}, al = c.alias || {}, af = (c.alias_frente || {})[frente];
   const out = new Map();
   const put = (p, real, mueve) => { if (!out.has(p)) out.set(p, []); out.get(p).push({ real, mueve }); };
-  for (const [r, de] of Object.entries(al)) put((af && af.alias[r]) || de, r, true);
-  if (af) for (const [r, de] of Object.entries(af.en_ship || {})) put(de, r, true);
+  const sinF = new Set((af && af.sin_sesion) || []); // v6.11 (mar 24-nov): ese día real no hace ninguna fila de este frente
+  for (const [r, de] of Object.entries(al)) if (!sinF.has(r)) put((af && af.alias[r]) || de, r, true);
+  if (af) for (const [r, v] of Object.entries(af.en_ship || {})) for (const de of enShipLista(v)) put(de, r, true);
   for (const d of Object.keys(c.extra || {})) for (const x of extraListaDe(d, F)) if (x.frente === frente) put(x.plan, d, x.plan !== d);
   for (const [p, x] of Object.entries(FILAS_FUERA_CORRIDA[frente] || {})) put(p, x.real, true);
   return out;
@@ -455,7 +493,8 @@ function comprobarPorFrente(F) {
   for (const fr of FRENTES_CORRIDA) {
     const h = planesHechosDe(F, fr);
     for (const [p, xs] of h) if (xs.length > 1) err.push(`«corrida_s1» ${fr}: la fecha de plan ${p} se hace ${xs.length} veces (${xs.map((x) => x.real).join(', ')})`);
-    const mov = [...h].flatMap(([p, xs]) => xs.filter((x) => x.mueve).map((x) => ({ p, real: x.real }))).sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : 0));
+    // v6.11 (mar 24-nov): mismo día real (un SHIP que absorbe varios pasos) → por fecha de plan
+    const mov = [...h].flatMap(([p, xs]) => xs.filter((x) => x.mueve).map((x) => ({ p, real: x.real }))).sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : a.p < b.p ? -1 : a.p > b.p ? 1 : 0));
     for (let i = 1; i < mov.length; i++) if (!(mov[i].p > mov[i - 1].p)) err.push(`«corrida_s1» ${fr}: fuera de orden: el ${mov[i - 1].real} hace el plan del ${mov[i - 1].p} y el ${mov[i].real}, el del ${mov[i].p}`);
     const sd = planesSinDia(F, fr);
     if (sd.length) err.push(`«corrida_s1» ${fr}: fechas de plan sin día real: ${sd.join(', ')}`);
@@ -491,13 +530,21 @@ const PRINCIPAL_POR_FRENTE = {
 };
 /** v6.10q · v6.10y: alias PROPIO de un frente (corrida_s1.alias_frente[frente]) o null. */
 const aliasFrenteDe = (F, frente) => (frente && F.corrida_s1 && F.corrida_s1.alias_frente && F.corrida_s1.alias_frente[frente]) || null;
-/** v6.10q · v6.10y · gemelo node de enShipDe del .ts: fecha de PLAN del paso del `frente` que el SHIP del domingo `dom` absorbe (va primero dentro de él); null si ninguno. */
-const enShipDe = (dom, F = fechasPorDefecto(), frente = 'vibecoding') => { const a = aliasFrenteDe(F, frente); return (a && a.en_ship && a.en_ship[dom]) || null; };
+/** v6.10q · v6.10y · gemelo node de enShipDe del .ts: fechas de PLAN de los pasos del `frente` que el SHIP del domingo `dom` absorbe, en el orden en que van
+ *  (primero, dentro de él); [] si ninguno. v6.11 (mar 24-nov): lista (dom 29-nov = los pasos 4 y 5 de S1). */
+const enShipDe = (dom, F = fechasPorDefecto(), frente = 'vibecoding') => { const a = aliasFrenteDe(F, frente); return enShipLista(a && a.en_ship ? a.en_ship[dom] : null); };
 /** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
 const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
-  // v6.10y: el alias propio del frente manda sobre el global (vibecoding S1: mar 24 = plan del mié 18 … vie 27 = plan del lun 23)
+  // v6.10y: el alias propio del frente manda sobre el global (vibecoding S1: mié 25 = plan del mié 18 … vie 27 = plan del vie 20)
   const af = aliasFrenteDe(F, frente);
   if (af && af.alias[s]) return af.alias[s];
+  // v6.11 (mar 24-nov): día real sin sesión de ESE frente (alias_frente.sin_sesion) → la fila del próximo día real con sesión de ese frente (como un día sin
+  //   sesión global, v6.06e): el mar 24 del vibecoding = el plan del mié 18, que hace el mié 25
+  if (af && (af.sin_sesion || []).includes(s)) {
+    const c1 = F.corrida_s1, sinF = new Set(af.sin_sesion);
+    const sig = [...new Set([...Object.keys(af.alias), ...Object.keys(c1.alias), ...Object.keys(c1.reparto)])].filter((r) => r > s && !sinF.has(r)).sort()[0];
+    return sig ? fechaPlanDe(sig, F, frente) : s;
+  }
   // v6.10w: el día extra que hace la fila de otra fecha de plan de ese frente (sáb 2-ene → jue 31-dic · dom 3-ene → sáb 2-ene · lun 4-ene ENCAPS → sáb 2-ene)
   //   solo en fin de semana: el lun 4-ene (RE-SCAN) tiene su propia fila ENCAPS (dia 33) y el D32 del sáb 2-ene es un bloque más de ese día
   if (frente && [0, 6].includes(wd(s))) { const x = extraListaDe(s, F).find((y) => y.frente === frente); if (x && x.plan !== s) return x.plan; }
@@ -528,7 +575,7 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   const af = aliasFrenteDe(F, frente);
   if (af) {
     for (const [r, de] of Object.entries(af.alias)) if (de === plan) return r;
-    for (const [r, de] of Object.entries(af.en_ship || {})) if (de === plan) return r;
+    for (const [r, v] of Object.entries(af.en_ship || {})) if (enShipLista(v).includes(plan)) return r;
   }
   // v6.10w: con `frente`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) for (const r of Object.keys(c.extra || {}).sort()) { const x = extraListaDe(r, F).find((y) => y.frente === frente && y.plan === plan); if (x && r !== plan) return r; }
@@ -750,7 +797,8 @@ function emitirTS(F, d) {
         ? '; ningún plan cambia de fecha.' : ' (solo días sin sesión: los planes ya están re-fechados por el corrimiento).'),
     // v6.10q · v6.10y: + una línea por alias PROPIO de un frente (corrida_s1.alias_frente)
     ...Object.entries(F.corrida_s1.alias_frente || {}).map(([fr, a]) => ` * ${fy(a.decidido)} · alias propio de «${fr}» (manda sobre el global en su consulta): ` +
-      [...Object.entries(a.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`), ...Object.entries(a.en_ship || {}).map(([r, de]) => `${f(r)} = el plan del ${f(de)} dentro del SHIP`)].join(' · ') + '.'),
+      [...(a.sin_sesion || []).map((r) => `${f(r)} sin sesión`), ...Object.entries(a.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
+        ...Object.entries(a.en_ship || {}).map(([r, v]) => `${f(r)} = ${enShipLista(v).map((de) => `el plan del ${f(de)}`).join(' y ')} dentro del SHIP`)].join(' · ') + '.'),
     ` * Versión vigente del JSON: ${F.version}.`,
     ' * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y',
     ' * Turno viven aquí y homeBriefing los re-exporta).',
@@ -803,8 +851,12 @@ export interface FechasV6 {
      *  el día perdido (plantillasV6 lo pinta con bloqueCorrido; cada generador tiene su fila ese día) */
     extra?: Record<string, Record<string, string | { hora: string; plan?: string }>>;
     /** v6.10q · v6.10y: alias PROPIO de un frente que manda sobre el global en su consulta (fechaPlanDe / fechaRealDe con \`frente\`): alias = día real L-V →
-     *  plan · en_ship = domingo → fecha de plan del paso que su SHIP absorbe (primero) */
-    alias_frente?: Record<string, { decidido: string; motivo: string; alias: Record<string, string>; en_ship?: Record<string, string> }>;
+     *  plan · en_ship = domingo → fecha(s) de plan de los pasos que su SHIP absorbe (primero, en ese orden) · sin_sesion = días reales del alias global sin
+     *  sesión de ese frente */
+    alias_frente?: Record<string, { decidido: string; motivo: string; alias: Record<string, string>; en_ship?: Record<string, string | string[]>; sin_sesion?: string[] }>;
+    /** v6.11 (mar 24-nov): la CONFIGURACIÓN del Anki USMLE que no se hizo el día real \`no_hecha\`: el preset, delante en el Anki del D2; el vídeo FSRS + el manual,
+     *  en \`fsrs\` (fin de semana a hora fija). La aplica gen_usmle_guia.js (USMLE_FIJO) */
+    config_anki?: { decidido: string; motivo: string; no_hecha: string; fsrs: { fecha: string; hora: string } };
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -1079,6 +1131,12 @@ export function fechaPlanDe(iso: string, frente?: string): string {
   // v6.10y: el alias propio del frente manda sobre el global (corrida_s1.alias_frente)
   const af = frente ? FECHAS_V6.corrida_s1.alias_frente?.[frente] : undefined;
   if (af && af.alias[iso]) return af.alias[iso] as string;
+  // v6.11 (mar 24-nov): día real sin sesión de ESE frente (alias_frente.sin_sesion) → la fila del próximo día real con sesión de ese frente
+  if (af && (af.sin_sesion ?? []).includes(iso)) {
+    const s1 = FECHAS_V6.corrida_s1, sinF = new Set(af.sin_sesion);
+    const sig = [...new Set([...Object.keys(af.alias), ...Object.keys(s1.alias), ...Object.keys(s1.reparto)])].filter((r) => r > iso && !sinF.has(r)).sort()[0];
+    return sig ? fechaPlanDe(sig, frente) : iso;
+  }
   // v6.10w: el día extra que hace la fila de otra fecha de plan de ese frente (sáb 2-ene → jue 31-dic · dom 3-ene → sáb 2-ene · lun 4-ene ENCAPS → sáb 2-ene)
   //   solo en fin de semana: el lun 4-ene (RE-SCAN) tiene su propia fila ENCAPS (dia 33) y el D32 del sáb 2-ene es un bloque más de ese día
   if (frente && [0, 6].includes(new Date(iso + 'T12:00:00Z').getUTCDay())) { const x = extraCorridaDe(iso).find((y) => y.frente === frente); if (x && x.plan !== iso) return x.plan; }
@@ -1115,7 +1173,7 @@ export function fechaRealDe(plan: string, frente?: string): string {
   const af = frente ? c.alias_frente?.[frente] : undefined;
   if (af) {
     for (const [r, de] of Object.entries(af.alias)) if (de === plan) return r;
-    for (const [r, de] of Object.entries(af.en_ship ?? {})) if (de === plan) return r;
+    for (const [r, v] of Object.entries(af.en_ship ?? {})) if ((Array.isArray(v) ? v : [v]).includes(plan)) return r;
   }
   // v6.10w: con \`frente\`, la fecha de plan que un día extra hace de ese frente (corrida_s1.extra { hora, plan })
   if (frente) { const x = extraDePlan(plan, frente); if (x && x.real !== plan) return x.real; }
@@ -1148,9 +1206,11 @@ export function extraDePlan(plan: string, frente: string): { real: string; ini: 
   }
   return null;
 }
-/** v6.10q · v6.10y: fecha de PLAN del paso del \`frente\` que el SHIP del domingo \`dom\` absorbe y hace PRIMERO (corrida_s1.alias_frente[frente].en_ship); null si ninguno. */
-export function enShipDe(dom: string, frente: string = 'vibecoding'): string | null {
-  return FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom] ?? null;
+/** v6.10q · v6.10y: fechas de PLAN de los pasos del \`frente\` que el SHIP del domingo \`dom\` absorbe y hace PRIMERO, en ese orden (corrida_s1.alias_frente[frente].en_ship);
+ *  [] si ninguno. v6.11 (mar 24-nov): lista (dom 29-nov = los pasos 4 y 5 de S1, y después el SHIP). */
+export function enShipDe(dom: string, frente: string = 'vibecoding'): string[] {
+  const v = FECHAS_V6.corrida_s1.alias_frente?.[frente]?.en_ship?.[dom];
+  return v == null ? [] : Array.isArray(v) ? [...v] : [v];
 }
 /** v6.11 (lun 23-nov-2026) · fechas de PLAN que se quedan SIN DÍA REAL con el alias (gen_fechas_v6.planesSinDia, calculado al generar; v6.11 fase 2: por frente y unidos): ninguna (el plan del mié 30-dic tiene día en cada frente).
  *  corridaTexto las pinta «(día por fijar)» (no un día real que hace otro plan) y los repartos por día real las ordenan tras el último día del alias. */
@@ -1297,7 +1357,7 @@ module.exports = {
   // v6.02d: semana 1 corrida (alias en la consulta)
   comprobarCorridaS1, corridaS1De, fechaPlanDe, fechaRealDe, BLOQUES_POR_FRENTE,
   // v6.10y: alias propio de un frente (corrida_s1.alias_frente) · el paso que absorbe un SHIP del domingo
-  comprobarAliasFrente, aliasFrenteDe, enShipDe,
+  comprobarAliasFrente, aliasFrenteDe, enShipDe, enShipLista,
   // v6.10d: alias → los generadores no cuentan como perdido el día cuyo plan hace otro día real
   sinSesionPlan, corrimientoRefecha,
   // v6.11: planes que se quedan sin día real (el mié 30-dic) y su clave de orden

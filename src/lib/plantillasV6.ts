@@ -160,7 +160,7 @@ import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe, encapsRecuperasDe, ENCAPS_MANANA_FECHAS } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
-import { USMLE_FIJO_SAB } from './usmleGuia'; // v6.10y-b: bloque USMLE a hora fija de un sábado de F1 (sáb 28-nov 04:45: manual + vídeo FSRS de la configuración del lun 23)
+import { USMLE_FIJO } from './usmleGuia'; // bloque USMLE a hora fija de un sábado o domingo de F1 (vídeo FSRS + manual de una configuración que no se hizo: corrida_s1.config_anki)
 import { encapsSabadoDe, encapsF2De } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue) · v6.07 (fix): índice F2 (fila sembrada del día)
 import type { EncapsF2Dia } from './encapsGuia';
 import { franjaCorrSimDe, franjaCierreSemanalDe, ultimoHabilDeSemana } from './encapsFranjasF2'; // v6.07 (fix rev. e5fd4bd): corrección de los simulacros y cierre semanal de F2 = Horario = ítems (fuente única)
@@ -320,12 +320,18 @@ function ankiNombreF1(iso: string): string {
   //   sin vídeo ni repasos (no hay tarjetas todavía). Fechas de PLAN: conFechasReales las pasa a su día real
   //   (revisión: ≤ 110 caracteres, el título del Calendar se corta ahí y perdía la hora del sábado)
   // v6.11 (lun 23-nov): sin efecto la v6.10y-b: el lun 23 quedó sin sesión y la CONFIGURACIÓN (plan del mié 18) se hace ENTERA el mar 24 a las 05:00
+  // mar 24-nov-2026 (corrida_s1.config_anki): la CONFIGURACIÓN no se hizo su día real → este 05:00 dice adónde fue cada parte y el D2 lleva el preset delante
+  //   (fechas de PLAN: conFechasReales las pasa a su día real; la del fin de semana es la real)
+  const cfA = FECHAS_V6.corrida_s1.config_anki;
+  const finde = (x: { fecha: string; hora: string }) => `${fCorta(x.fecha)} ${x.hora.split('-')[0]}`;
+  if (iso === '2026-11-18' && cfA) return `ANKI · CONFIGURACIÓN no hecha: preset → jue 19-nov 05:00 · vídeo FSRS + manual → ${finde(cfA.fsrs)}`;
   if (iso === '2026-11-18') return 'ANKI · CONFIGURACIÓN: preset «APEX USMLE» en APEX::USMLE + vídeo FSRS 45′';
   // v6.10h (revisión 18-nov · c10): «sin tarjetas que repasar» y no «sin mazo»: la [TEST S1] del vibecoding (04:15) puede haber creado ya APEX::USMLE (suspendida)
   // v6.10u: el D2 (plan del jue 19 = lun 23 real) vuelve a ser «sin tarjetas que repasar → vídeos de método» (el resto del vídeo FSRS + «The ONLY Video…» hasta
   //   15:04 + free recall, 29′ tras el Sync); el preset ya lo puso la configuración (la v6.10r lo había traído aquí)
   // v6.10y-b: el D2 lleva DELANTE el preset de la configuración (Sync · preset · comprobación, 12′) y detrás «The ONLY Video…» de 0:00 a 15:04 (18′), como antes
   // v6.11: el D2 (plan del jue 19 = mié 25 real) vuelve a sus vídeos de método (el preset lo puso la configuración del mar 24)
+  if (iso === '2026-11-19' && cfA) return 'ANKI · PRESET «APEX USMLE» 10′ + vídeo de método 19′ · repasos ENCAPS 15′';
   if (iso === '2026-11-19') return 'ANKI · USMLE sin tarjetas que repasar → vídeos de método 29′ · repasos ENCAPS 15′';
   return esDiaStepF1(iso) ? 'ANKI · USMLE 30′ + repasos ENCAPS 15′' : 'ANKI · USMLE 20′ + ENCAPS::Cifras 10′ + repasos ENCAPS 15′ (Flashcards + APEX::ENCAPS)';
 }
@@ -755,6 +761,10 @@ function extrasDomingo(iso: string): BloqueV6[] {
   const pc = bloquePCDomingo(iso); if (pc) bs.push(pc);
   const g = guiaFeynmanDe(iso);
   if (g) bs.push(bloque('feynman', null, null, 'IA · FEYNMAN del proyecto (opcional, 10′)', 'vibecoding', 'vibecoding', undefined, g.totalMin, `flexible · ${fmtH(g.totalMin)}`));
+  // mar 24-nov-2026: + el bloque USMLE a hora fija del domingo (usmleGuia.USMLE_FIJO: dom 6-dic 10:10-10:52, «Anki Almost Broke Me…» entero + el manual FSRS de la
+  //   configuración que no se hizo el mar 24; corrida_s1.config_anki); su guía es la de esa franja (TodayMission › usmle-anki)
+  const fxU = fase === 'F1' ? USMLE_FIJO[iso] : undefined;
+  if (fxU) bs.push(bloque('anki-fsrs', fxU.ini, fxU.fin, fxU.nombre, 'usmle', 'usmle-anki', fxU.detalle));
   if (fase === 'F1') bs.push(bloque('anki-dom', '16:45', '17:00', /* v6.07b: dom baile 17:00-20:00 */ "USMLE · ANKI del domingo (opcional, ≤15')", 'usmle', 'usmle-anki', 'Opcional y no se registra: solo vencidas (el lunes 05:00 lo absorbe)'));
   return bs;
 }
@@ -1047,7 +1057,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         const nxS = notaExtraDe(iso);
         // v6.10y-b (lun 23-nov): + el bloque USMLE a hora fija del sábado (usmleGuia.USMLE_FIJO_SAB: sáb 28-nov 04:45-05:30, el manual FSRS y «Anki Almost Broke
         //   Me…» entero de la configuración que no se hizo el lun 23); su guía es la de esa franja (TodayMission › usmle-anki)
-        const fxU = USMLE_FIJO_SAB[iso];
+        const fxU = USMLE_FIJO[iso];
         // v6.10z (lun 23-nov): + el bloque ENCAPS a hora fija del sábado (encapsManana.encapsRecuperaDe: sáb 28-nov 07:15-07:42, el Theoesencial de INV p. 1-27
         //   que no cupo en la mañana 1/21 del lun 23, que empezó a las 09:00 —v6.10z-b—); su guía, guiaEncapsRecuperaDe (TodayMission › encaps-rec)
         // v6.10z-d (lun 23-nov ≈09:45, la mañana fue 10:00-12:00, solo teoría y post-tests): VARIOS el mismo sábado (encapsRecuperasDe: sáb 28-nov 05:30 · 08:10 ·
@@ -1269,7 +1279,12 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     // v6.11 fase 2 (lun 23-nov): un frente con alias propio cuya plantilla de su fecha de plan NO trae su bloque ese día (p. ej. un OUTPUT de Business que va
     //   entero al sábado) tampoco lleva el del plan global: si no, ese día haría una fila de plan que su frente ya hizo otro día
     const quitar = new Set<string>();
+    // v6.11 (mar 24-nov · vibecoding opción A): un día real SIN SESIÓN de un frente con alias propio (alias_frente[fr].sin_sesion: el mar 24, cuyo paso 1 de S1
+    //   va el mié 25) no lleva su bloque principal (fechaPlanDe le da la fila del próximo día con sesión, que es la del plan global de hoy)
+    const sinHoy: string[] = [];
     for (const fr of Object.keys(FECHAS_V6.corrida_s1.alias_frente ?? {})) {
+      const afr = FECHAS_V6.corrida_s1.alias_frente?.[fr];
+      if (afr?.sin_sesion?.includes(iso)) { for (const id of PRINCIPAL_POR_FRENTE[fr] ?? []) quitar.add(id); sinHoy.push(fr); continue; }
       const de = fechaPlanDe(iso, fr);
       if (de === c.de) continue;
       const ids = PRINCIPAL_POR_FRENTE[fr] ?? [];
@@ -1302,10 +1317,14 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
       const ns = todaLaTarde ? [...ids.filter((i) => !TARDE_P.includes(i)).map((i) => ETQ_P[i] ?? i), `los planes de la tarde (${yLista(tarde.map((t) => ETQ_P[t] ?? t))})`] : ids.map((i) => ETQ_P[i] ?? i);
       return `${yLista(ns)}, que ${ns.length > 1 ? 'hacen' : 'hace'} el plan del ${fCorta(de)}${todaLaTarde ? `; la mañana, las 16:15, las 18:00 y el Anki, el del ${fCorta(c.de)}` : ''}`;
     }).join('; ');
+    // v6.11 (mar 24-nov): el frente sin sesión hoy lo dice en la misma nota, con el día REAL en que se hace su fila (la del plan de hoy)
+    const ETQ_F: Record<string, string> = { vibecoding: 'el vibecoding de las 04:15', synapse: 'el SYNAPSE', business: 'Business', 'research-derma': 'Research ↔ Derma', aurum: 'AURUM', mir: 'MIR', liviano: 'LIVIANO' };
+    const sinTxt = sinHoy.map((fr) => `${ETQ_F[fr] ?? fr}, que hoy no tiene sesión (su sesión va el ${fCorta(fechaRealDe(fechaPlanDe(iso, fr), fr))})`).join('; ');
+    const salvoT = [salvo, sinTxt].filter(Boolean).join('; ');
     return {
       ...p, fecha: iso, corrida: 'alias', bloques: ordenar(bsA),
       titulo: `${p.titulo} · plan del ${fCorta(c.de)}`, // v6.07a: un martes con «mañana ENCAPS (lun · mié · vie)» tiene que decir de qué día es
-      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas${salvo ? `, salvo ${salvo}` : ''} (las fechas que citan las guías ya salen con su día real).`, NOTA_CORRIDA, ...p.notas],
+      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas${salvoT ? `, salvo ${salvoT}` : ''} (las fechas que citan las guías ya salen con su día real).`, NOTA_CORRIDA, ...p.notas],
     };
   }
   const bs: BloqueV6[] = [];

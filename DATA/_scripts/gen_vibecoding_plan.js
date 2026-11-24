@@ -232,7 +232,8 @@ const SIN_DIA_REAL_VIBE = (() => {
   const c = require('./gen_fechas_v6').cargarFechasV6().corrida_s1 || {};
   const af = (c.alias_frente || {}).vibecoding || {};
   const ef = { ...(c.alias || {}), ...(af.alias || {}) };
-  const vals = new Set([...Object.values(ef), ...Object.values(af.en_ship || {})]);
+  for (const r of af.sin_sesion || []) delete ef[r]; // v6.11 (mar 24-nov): el mar 24 real no hace ningún paso (sin sesión del vibecoding)
+  const vals = new Set([...Object.values(ef), ...Object.values(af.en_ship || {}).flat()]); // v6.11 (mar 24-nov): en_ship admite una lista
   return new Set(Object.keys(ef).filter((r) => !vals.has(r)));
 })();
 const CAP_EXTRA_VIBE = (() => {
