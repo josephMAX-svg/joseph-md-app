@@ -1558,6 +1558,61 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   for (const e of lErr) errores.push(e);
 }
 
+// ── ronda c40 (chat SYNAPSE) · v611-syn-hecho: el «hecho» de TODA guía del SYNAPSE (sesión guiaSynapseDe, recuperación / cadena guiaSynapseRecDe, cola de F1
+//   y cola post-Step 1 guiaSynapseColaDe)
+//   (a) dice dónde va el ✓ con las etiquetas REALES de la app: «✓ en <pestaña> › <subpestaña>» = tabBarLabel de Synapse (AppNavigator; el mismo en
+//       DesktopSidebar) › label de la subpestaña de SynapseHub donde se pinta SynapseTodayPlan (el botón ✓ del día); nada de «pestaña 🧠 SYNAPSE» ni «⚡ Hoy».
+//       El pie del panel derecho de escritorio (DesktopRightPanel, «marca el día en …») usa la misma ruta.
+//   (b) cabe en la línea «Hecho» del Calendar: la regla de corte.cortarHecho (DATA/_v600/cal/cal_bk/v609/c12/corte.js) = 180 caracteres, o 240 si es una
+//       lista de ≥ 3 criterios « + » fuera de paréntesis y comillas; si no, el volcado lo corta (sáb 26-dic 07:15: 201 → cortado en «… en el chat …»)
+{
+  const fs = require('fs');
+  const hErr = [];
+  const leer = (rel) => fs.readFileSync(path.join(__dirname, '..', '..', rel), 'utf8');
+  const nav = (/name="Synapse"[\s\S]{0,300}?tabBarLabel:\s*'([^']+)'/.exec(leer(path.join('src', 'navigation', 'AppNavigator.tsx'))) || [])[1];
+  const side = (/\{\s*key:\s*'Synapse',\s*label:\s*'([^']+)'/.exec(leer(path.join('src', 'layouts', 'DesktopSidebar.tsx'))) || [])[1];
+  const hub = leer(path.join('src', 'components', 'study', 'SynapseHub.tsx'));
+  const subKey = (/sub === '(\w+)' && <SynapseTodayPlan\b[^>]*\bonToggle=/.exec(hub) || [])[1];
+  const subLbl = subKey ? (new RegExp(String.raw`\{\s*key:\s*'${subKey}',\s*label:\s*'([^']+)'\s*\}`).exec(hub) || [])[1] : undefined;
+  if (!nav || !side || nav !== side) hErr.push(`(v611-syn-hecho) etiqueta de la pestaña SYNAPSE: AppNavigator «${nav}» · DesktopSidebar «${side}» (deben existir y coincidir)`);
+  if (!subLbl) hErr.push('(v611-syn-hecho) SynapseHub.tsx: no encuentro la subpestaña donde se pinta SynapseTodayPlan (el ✓ del día)');
+  const ruta = `✓ en ${nav} › ${subLbl}`;
+  const masN0 = (s) => { let p = 0, q = 0, n = 0; for (let i = 0; i < s.length; i++) { const ch = s[i]; if (ch === '(') p++; else if (ch === ')' && p) p--; else if (ch === '«') q++; else if (ch === '»' && q) q--; else if (!p && !q && s.startsWith(' + ', i)) n++; } return n; };
+  const limHecho = (h) => (masN0(h) >= 2 ? 240 : 180);
+  const gs = [];
+  for (let iso = INI; iso <= FIN; iso = addDias(iso, 1)) gs.push(['sesión', iso, RG.guiaSynapseDe(iso)]);
+  for (const r of S.SYN_REC_F1 || []) gs.push([r.cadena ? 'cadena' : 'recuperación', r.fecha, RG.guiaSynapseRecDe(r.fecha, r.ini)]);
+  for (const c of [...(S.SYN_COLA_F1 || []), ...(S.SYN_COLA_POST_STEP1 || [])]) gs.push(['cola', c.fecha, RG.guiaSynapseColaDe(c.fecha)]);
+  const n = { sesión: 0, cadena: 0, recuperación: 0, cola: 0 };
+  let maxL = 0;
+  // ronda c40 (remate): el ✓ de «⚡ run» marca la fila que la app pinta ESE día real (SynapseTodayPlan: synTodayISO = fechaPlanDe(hoy, 'synapse') →
+  //   synDiaDe o planHoyD de studyProgress, replicado aquí) y es un interruptor → (c) una sesión pide «✓ en … › ⚡ run» solo si esa fila es la suya; la
+  //   cadena (cola de la sesión de su día), la recuperación sin fila propia y las colas, ningún ✓; (d) ninguna fila se pide dos veces
+  const planHoyD = (iso) => { const e = S.SYN_DIAS.find((x) => x.fecha === iso); if (e) return e.d; const nx = S.SYN_DIAS.find((x) => FV.fechaRealDe(x.fecha) > iso); return nx ? nx.d : S.SYN_DIAS[S.SYN_DIAS.length - 1].d; };
+  const runD = (real) => { const p = FV.fechaPlanDe(real, 'synapse'); const t = S.synDiaDe(p); return t ? t.d : planHoyD(p); };
+  const pedidas = new Map();
+  for (const [tipo, iso, g] of gs) {
+    if (!g) continue;
+    n[tipo]++;
+    const h = String(g.hecho || '').replace(/\s{2,}/g, ' ').trim(), lim = limHecho(h);
+    const real = tipo === 'sesión' ? FV.fechaRealDe(iso, 'synapse') : iso;
+    const fila = tipo === 'sesión' ? (S.synDiaDe(iso) || {}).d : null; // cadena, recuperación y cola: sin fila propia (la cadena es la cola de la sesión de su día)
+    const quiere = fila == null ? null : ruta;
+    if (tipo === 'sesión' && fila != null && runD(real) !== fila) hErr.push(`${iso} SYNAPSE sesión ${g.franja} (v611-syn-hecho): su día real ${real} «⚡ run» pinta la fila D${runD(real)}, no la suya (D${fila}): el ✓ marcaría otra`);
+    if (quiere && subLbl && !h.includes(quiere)) hErr.push(`${iso} SYNAPSE ${tipo} ${g.franja} (v611-syn-hecho): el «hecho» no dice «${quiere}»: «${h.slice(0, 90)}»`);
+    if (!quiere && /✓/u.test(h)) hErr.push(`${iso} SYNAPSE ${tipo} ${g.franja} (v611-syn-hecho): sin fila propia en «⚡ run» (ese día pinta la D${runD(real)}) y el «hecho» pide un ✓: «${h.slice(0, 90)}»`);
+    if (fila != null) { if (pedidas.has(fila)) hErr.push(`${iso} SYNAPSE ${tipo} ${g.franja} (v611-syn-hecho): la fila D${fila} ya la pide ${pedidas.get(fila)} (el ✓ es un interruptor: dos pulsaciones la desmarcan)`); else pedidas.set(fila, `${tipo} ${real} ${g.franja}`); }
+    if (/pestaña 🧠|⚡ Hoy/u.test(h)) hErr.push(`${iso} SYNAPSE ${tipo} ${g.franja} (v611-syn-hecho): el «hecho» usa la ruta vieja del ✓: «${h.slice(0, 90)}»`);
+    if (h.length > lim) hErr.push(`${iso} SYNAPSE ${tipo} ${g.franja} (v611-syn-hecho): el «hecho» mide ${h.length} > ${lim} (línea «Hecho» del Calendar${lim === 240 ? ', lista de criterios' : ''}): el volcado lo corta`);
+    maxL = Math.max(maxL, h.length);
+  }
+  if (!n['sesión'] || !n.cola || !(n.cadena + n['recuperación'])) hErr.push(`(v611-syn-hecho) faltan guías del SYNAPSE que revisar: ${JSON.stringify(n)}`);
+  const pie = (/marca el día en ([^\n<{]+)/.exec(leer(path.join('src', 'layouts', 'DesktopRightPanel.tsx'))) || [])[1];
+  if (subLbl && (!pie || pie.trim() !== ruta.replace(/^✓ en /, ''))) hErr.push(`(v611-syn-hecho) DesktopRightPanel.tsx: «marca el día en ${pie ? pie.trim() : '?'}» ≠ «${ruta.replace(/^✓ en /, '')}»`);
+  console.log(`v6.11 · SYNAPSE «hecho»: ${n['sesión']} sesiones con «${ruta}» de su fila (${pedidas.size} filas, ninguna dos veces) · ${n.cadena} cadenas, ${n['recuperación']} recuperaciones y ${n.cola} colas sin ✓ (sin fila propia) · dentro del límite del Calendar (180 · 240 en lista; máx ${maxL})`);
+  for (const e of hErr) errores.push(e);
+}
+
 // ── salida ──
 if (INF) {
   const fmt = (g) => g.pasos.map((p) => `**${p.min}′** ${p.que.replace(/\|/g, '/')}`).join('<br>');

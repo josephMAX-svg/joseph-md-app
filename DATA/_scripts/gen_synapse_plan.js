@@ -606,10 +606,15 @@ function bloqueC(wd, semana, fecha) {
 // v5.7: el PC ya no es "setup / Problem Set CS50P" — es cerrar y publicar el proyecto de 04:15 de esa semana
 // (commit / URL viva / test verde según su criterio de aceptación en vibecoding_proyectos.json).
 // PC opcional de una semana del taper (S13-S20): 30' si es mantenimiento, 0' si es deload total. Un bloque por entrada del taper.
-function bloquePCTaper(tp) {
+// ronda c40 (chat SYNAPSE): un PC de deload total en un domingo SIN PC de mantenimiento (dom 28-mar) no nombra la rutina de L-V de su taper («journal 5' +
+//   audio»): ese día journal_hoy no escribe nada (misma regla que bloqueDom, pcMantenimientoDom). Con PC de mantenimiento (dom 21-mar) el rótulo no cambia.
+function bloquePCTaper(tp, fecha) {
+  const sinJournal = !!fecha && tp.tipo === 'deload' && !pcMantenimientoDom(tp, fecha);
+  const nombre = sinJournal ? tp.nombre.replace(/:\s*journal\b.*$/iu, '') : tp.nombre;
+  if (sinJournal && /journal/i.test(nombre)) throw new Error(`PC de S${tp.s} (${fecha}): el rótulo nombra el journal y ese domingo journal_hoy no escribe: «${nombre}»`);
   return {
     tag: 'PC', min: tp.tipo === 'mantenimiento' ? 30 : 0, formato: 'pc',
-    material: `PC opcional · taper S${tp.s} · ${tp.nombre}`,
+    material: `PC opcional · taper S${tp.s} · ${nombre}`,
     leccion: `${tp.ship} Sensores: ${(tp.sensores || []).join(' · ') || 'ninguno (deload total)'}. Sin proyecto nuevo.`,
     url: assertUrl(ccDoc(13).url), real: true,
   };
@@ -646,7 +651,9 @@ const PC_DESPLAZADOS = (() => {
   }
   return m;
 })();
-const pcDesplazadosDe = (fecha) => (PC_DESPLAZADOS.get(fecha) || []).map(bloquePCTaper);
+// ronda c40: ¿ese domingo trae un PC de mantenimiento (30′: el de su taper o uno desplazado, dom 21-mar)? = hay journal (retro / cierre de semana con journal_hoy)
+const pcMantenimientoDom = (tp, fecha) => [tp, ...(PC_DESPLAZADOS.get(fecha) || [])].some((t) => t.tipo === 'mantenimiento');
+const pcDesplazadosDe = (fecha) => (PC_DESPLAZADOS.get(fecha) || []).map((tp) => bloquePCTaper(tp, fecha));
 function bloquePC(semana, fecha) {
   // v5.7: el sábado cierra el proyecto cuyo SHIP cae ESE día (fechas de vibecodingPlan.ts). Si ese sábado
   // no cierra ninguno, el PC es avance del proyecto en curso y se dice cuándo es su SHIP real.
@@ -656,7 +663,7 @@ function bloquePC(semana, fecha) {
   const n = (vs || vc || {}).s || semana;
   // v5.10-b · S13+ = taper del vibecoding: el PC del sábado es OPCIONAL (30'): sensores verdes + retro (sem 13-16) o nada (17-19)
   const tp = TAPER.find((x) => x.s === n);
-  if (tp) return bloquePCTaper(tp);
+  if (tp) return bloquePCTaper(tp, f);
   const p = VIBE.find((x) => x.s === n) || VIBE.find((x) => x.s === semana);
   if (!p) throw new Error('sin proyecto vibecoding para la semana ' + semana);
   const dl = p.deload ? ' (semana DELOAD: alcance mínimo)' : '';
@@ -684,7 +691,7 @@ function bloqueDom(semana, fecha) {
   if (tp) {
     // ronda c38 (revisión del ítem 33): la retro con journal_hoy solo el domingo que tiene PC de mantenimiento (30′: el de su taper o uno desplazado, dom 21-mar);
     //   un domingo solo de deload total (PC de 0′, dom 28-mar) no tiene bloque de vibecoding y journal_hoy no escribe nada ese día
-    const conPC = [tp, ...(PC_DESPLAZADOS.get(fecha) || [])].some((t) => t.tipo === 'mantenimiento');
+    const conPC = pcMantenimientoDom(tp, fecha);
     return {
       tag: 'R', min: 5, formato: 'repaso',
       material: `Domingo libre · taper S${tp.s}`,

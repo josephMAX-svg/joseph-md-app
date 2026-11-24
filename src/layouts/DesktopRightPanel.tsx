@@ -652,7 +652,7 @@ function SynapseRightPanel() {
       {/* Misión de HOY (motor día-a-día) */}
       <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 3, borderLeftColor: INDIGO }, Elevation.md]}>
         <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
-          ⚡ MISIÓN DE HOY · DÍA {hoy?.d ?? '—'}/{SYN_PLAN_META.totalDias} · SEM {hoy?.semana ?? '—'}/12
+          ⚡ MISIÓN DE HOY · DÍA {hoy?.d ?? '—'}/{SYN_PLAN_META.totalDias} · SEM {hoy?.semana ?? '—'}/{SYN_PLAN_META.semanas}
         </Text>
         {(hoy?.bloques ?? []).map((b, i) => (
           <TouchableOpacity
@@ -672,7 +672,7 @@ function SynapseRightPanel() {
           </TouchableOpacity>
         ))}
         <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 4 }}>
-          {hechas}/{SYN_PLAN_META.totalDias} misiones ✓ · marca el día en la pestaña ⚡ Hoy
+          {hechas}/{SYN_PLAN_META.totalDias} misiones ✓ · marca el día en SYNAPSE › ⚡ run
         </Text>
       </View>
 

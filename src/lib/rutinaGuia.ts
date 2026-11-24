@@ -818,9 +818,18 @@ function synCurDe(iso: string, tag: string): SynCur | undefined {
 }
 /** v6.10 · tanda C (17-nov-2026 · DECIDIDO CON JOSEPH en el chat SYNAPSE, para CUALQUIER día SYNAPSE): nada fijo en Anki, Obsidian ni GoodNotes; lo que
  *  salga se decide al terminar, en el chat SYNAPSE y con su OK (regla «mazos y notas se crean el día que aprendes algo que va ahí»). Va en el «hecho» de
- *  toda sesión A/B/C, de recuperación y de la cola (≤ 180 caracteres con el criterio: el volcado del Calendar corta la línea «Hecho» en 180). */
+ *  toda sesión A/B/C, de recuperación y de la cola. Cada «hecho» del SYNAPSE cabe en la línea «Hecho» del Calendar (corte.cortarHecho: 180 caracteres, o
+ *  240 si es una lista de ≥ 3 criterios « + »); lo controla check_rutina_guia.js (v611-syn-hecho). */
 const SYN_REGLA_NOTAS = 'Anki · Obsidian · GoodNotes: hoy nada fijo; lo que salga se decide al terminar, en el chat SYNAPSE y con tu OK.';
-const SYN_HECHO = `A, B y C con su parada anotada + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`;
+/** ronda c40 (chat SYNAPSE): dónde se marca el ✓ — la pestaña se ve «SYNAPSE» (icono SVG, sin 🧠) y el ✓ está en su subpestaña «⚡ run»
+ *  (SynapseHub.tsx › TABS, key 'hoy'). Lo usan todos los «hecho» del SYNAPSE; check_rutina_guia.js lo compara con las etiquetas reales de la app. */
+const SYN_CHECK = '✓ en SYNAPSE › ⚡ run';
+/** ronda c40 (remate): el botón de «⚡ run» marca la fila que la app pinta ese día (la del plan de hoy) y es un interruptor (pulsarlo dos veces lo desmarca)
+ *  → el ✓ solo en la sesión de su día (A/B/C de las 21:00 o su hora); la sesión de una CADENA (su fila ya la marcó la sesión de su día), la recuperación del
+ *  dom 3-ene (su fila fue «sin sesión») y las colas no tienen fila propia → sin ✓ (la parada o el minuto quedan en el journal). check_rutina_guia.js
+ *  (v611-syn-hecho) lo comprueba con la fila que pinta la app y que ninguna fila se pida dos veces. */
+const synHechoDe = (check: string | null): string => `A, B y C con su parada anotada${check ? ` + ${check}` : ''}. ${SYN_REGLA_NOTAS}`;
+const SYN_HECHO = synHechoDe(SYN_CHECK);
 function pasoSyn(b: SynBloque, iso: string, origen?: string): GuiaPaso {
   // v6.10w: la curaduría se busca con la fila ORIGINAL del contenido (cadenas); la sesión a hora fija de una cadena pasa su fila de origen
   const cur = synCurDe(origen ?? CAD_ORIG.get(iso) ?? iso, b.tag);
@@ -1013,7 +1022,8 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
     if (!abcC.length) return null;
     const otraRec = SYN_REC_F1.find((x) => x.fecha === iso && x !== r);
     return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · la sesión del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, abcC.map((b) => pasoSyn(b, r.fecha, r.plan)),
-      abcC.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })), SYN_HECHO,
+      abcC.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })),
+      synHechoDe(null), // ronda c40 (remate): sin ✓ — la fila de su día de plan ya la marca la sesión de las 21:00 de ese día (la cadena es su cola)
       // v6.11 (revisión c32): sin el porqué de la cadena (bitácora) y sin «las fechas de siempre» (el dom 29-nov el alias sigue hasta el vie 1-ene)
       { aviso: `Hoy, a hora fija (${r.ini}-${r.fin}, antes de la rutina de las 05:45): la sesión del SYNAPSE que toca en orden (la que no tuvo sitio en su día). ${otraRec ? `Aparte, a las ${otraRec.ini}, la otra sesión de hoy. ` : ''}Desde mañana, el SYNAPSE vuelve a su hora.`,
         planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC de hoy (SHIP del vibecoding, flexible).` });
@@ -1031,7 +1041,7 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
   const cuandoTxt = aMin(r.ini) < aMin('05:45') ? 'Antes de la rutina de la mañana (05:45-07:15).' : `Hoy va a las ${r.ini}, tras las sesiones de la mañana; nada de estudio desde las 17:00.`;
   const pc = vibePCDomingo(addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso))).length ? addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso)) : null;
   return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · recuperación del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, pasos, recursos,
-    SYN_HECHO,
+    synHechoDe(null), // ronda c40 (remate): sin fila propia (la de su día de plan fue «sin sesión»): sin ✓
     // v6.10c (cadena del carril del martes, decisión de Joseph del 17-nov 17:20): la sesión va el dom 3-ene 05:00 con las piezas del ÚLTIMO martes de F1
     //   (semana > 2; antes, sáb 28-nov 07:15 con las de la sem 2) → el aviso dice de qué martes son y cuándo es (antes de la rutina, el domingo)
     { aviso: r.semana > 2
@@ -1120,7 +1130,9 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
   const franja = `${c.ini}–${c.fin}`;
   if (post < 0) {
     return bloque(franja, 'synapse', 'SYNAPSE · audio que no cupo en los comodines del sábado (cola de F1)', pasos, recursos,
-      `tramo escuchado entero, con el minuto anotado en el journal + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`,
+      // ronda c40 (remate): sin ✓ — la cola no tiene fila en «⚡ run» (ese día pinta la sesión de las 21:00, que lleva el suyo: pulsarlo dos veces lo desmarca);
+      //   ≤ 180 (la línea «Hecho» del Calendar; antes 201 con «, con el minuto…», cortado)
+      `tramo escuchado entero + el minuto anotado en el journal. ${SYN_REGLA_NOTAS}`,
       { aviso: `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30). Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
         planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
           const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
@@ -1130,7 +1142,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
   }
   const n = SYN_COLA_POST_STEP1.length;
   return bloque(franja, 'synapse', `SYNAPSE · cola post-Step 1 (día ${post + 1}/${n}) — lo que no cupo en su día (nov-2026 → ene-2027)`, pasos, recursos,
-    `cada pieza con su parada anotada + ✓ en la pestaña 🧠 SYNAPSE. ${SYN_REGLA_NOTAS}`,
+    `cada pieza con su parada anotada en el journal. ${SYN_REGLA_NOTAS}`, // ronda c40 (remate): sin ✓ (el plan acabó el 1-abr: «⚡ run» pinta su último día)
     { aviso: `Nada nuevo: lo que no cupo en las sesiones del SYNAPSE de F1 (18-nov-2026 → 3-ene-2027), en orden y con su tramo exacto. ${c.ini}-${c.fin}: en F5 el bloque A del Step 1 (04:05) ya no existe y a esa hora no hay turno del SERUMS.${post === n - 1 ? ' Último día de la cola: con esto el SYNAPSE de F1 queda completo.' : ''}`,
       // v6.09b lote 1-quater FX1 (revisión V2): «en el tiempo muerto de la guardia» no era un destino (sin franja) → la cola SE CORRE un día por cada día de guardia,
       //   como la semana corrida (cada día conserva sus 30′ y su orden), y el último pasa al siguiente día libre tras su fin, a la misma hora (sin turno a las 04:15 en F5)

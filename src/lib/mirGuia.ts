@@ -194,7 +194,10 @@ const ANKI_DOS_MAZOS = (): Pick<GuiaPaso, 'que' | 'como'> => ({
 });
 /** v6.10 · base cero: el criterio de tarjeta es el de la FASE del día (fase 1-2: solo fallos; los detalles discriminativos de nivel 3-4/5 son de la fase 3). */
 const criterioApex = (f: MirFase | undefined): string => f?.apex ?? 'Criterio Ravi: solo fallos de hoy (pre-test · quiz · eval) y detalles discriminativos de nivel 3-4/5; nunca el manual ni lo que acertaste con seguridad · formato pregunta → respuesta breve (el dato o la regla, sin adornos) · si el dato ya está en el mazo de Ravi, no lo dupliques: reactiva o marca esa tarjeta';
-const ENVIO_APEX = (deck: string): string => `envío: ⚡ APEX 1-TAP (Ctrl+Shift+A) → n8n → tarjeta en ${deck} + nota en 03_MIR/…/APEX_creados cuando el redeploy del parser esté verificado; hasta entonces, directamente en Anki (README §5, regla v3b)`;
+// ronda c40 (chat MIR, lun 23-nov): las tarjetas las crea el chat MIR al dictado; el 1-TAP / Ctrl+Shift+A, solo cuando el chat MIR haya verificado la ruta MIR del
+//   parser redesplegado con una tarjeta de prueba (README §5, regla v3b). «díctaselas al chat MIR» va también en el «qué» del paso (el Calendar corta el «cómo» a 110)
+const ENVIO_APEX = (deck: string): string => `envío: díctaselas al chat MIR, que las crea en ${deck} tras comprobar que no existen (y la comparación, en 03_MIR/…/APEX_creados); ni ⚡ APEX 1-TAP ni Ctrl+Shift+A hasta que el chat MIR verifique una tarjeta MIR de prueba con el parser ya redesplegado (README §5, regla v3b)`;
+const DICTADO_QUE = ' · díctaselas al chat MIR';
 
 /**
  * Mete el método RaviMedTest en la guía de un día del plan (D1-D76) sin cambiar la franja ni los 60′: reescribe los pasos Anki y APEX, exprime el
@@ -240,7 +243,7 @@ export function metodoRavi(g: GuiaBloque, dia: DiaMIR): GuiaBloque {
     if (x.t === 'apex') p = {
       ...p, min: apexMin,
       // v6.10 · tanda C: la reactivación del subtema también en el «qué» (el volcado del Calendar corta el «cómo» en 110 caracteres)
-      que: `${sinHora(p.que).replace(/≤\d+ APEX/, `≤${nApex} APEX`)}${yaReactiva ? '' : rv && rv.n === 0 ? ` · «${M.mazoBase}»: 0 tarjetas de este subtema` : ` + reactivar en «${M.mazoBase}» ${rv ? `las ${rv.n} tarjetas` : 'las tarjetas'} de este subtema`}`,
+      que: `${sinHora(p.que).replace(/≤\d+ APEX/, `≤${nApex} APEX`)}${DICTADO_QUE}${yaReactiva ? '' : rv && rv.n === 0 ? ` · «${M.mazoBase}»: 0 tarjetas de este subtema` : ` + reactivar en «${M.mazoBase}» ${rv ? `las ${rv.n} tarjetas` : 'las tarjetas'} de este subtema`}`,
       como: `${criterioApex(fase)} · ${p.como.replace(/ · creados directamente en Anki\.?$/, '').replace(/\.$/, '')} · ${ENVIO_APEX(deck)}${reactivaTxt}.`,
     };
     out.push({ p, a: x.a, b: x.b });
@@ -381,7 +384,7 @@ function guiaCorreccion(dia: DiaMIR, ini: string): GuiaBloque {
     pasos: conHoras([
       { min: 25, que: 'FALLADAS del mini-MIR · corrección Whole-Page exprimiendo cada pregunta', como: 'Por cada fallo: abre su capítulo ProMIR, lee el apartado entero, escribe la regla que lo habría resuelto Y por qué es falsa cada opción incorrecta (el distractor de hoy es la pregunta de mañana) · brecha knowledge / transfer / proceso · 🇪🇸 delta si aplica · los fallos de forma (enunciado mal leído, respuesta mal pasada) dan una regla de examen, no una tarjeta.', enlace: { t: 'ProMIR', url: PROMIR } },
       { min: 10, que: 'EN BLANCO y ACERTADAS CON DUDA', como: 'Cada blanco: ¿había 2 opciones descartables? Si sí, era arriesgable → cuéntalo en «blancos acertables» (la táctica −1/3 lo convierte en consejo por asignatura). Cada acierto dudoso: ¿lógica o suerte? Un acierto por suerte se corrige como un fallo (Ravi exprime también las preguntas que acierta).' },
-      { min: 10, que: '≤8 APEX + flechas relacionales', como: `Tarjetas SOLO de fallos tontos y de detalles discriminativos de nivel 3-4/5, formato pregunta → respuesta breve, al subdeck ${M.mazoPersonal}::<asignatura> (⚡ APEX 1-TAP · Ctrl+Shift+A; directo en Anki mientras el redeploy de n8n no esté verificado, README §5) · las conexiones entre asignaturas que descubras van como flecha «concepto → concepto» a la nota madre de las dos asignaturas (sección «${M.seccionNota}»), no a Anki.` },
+      { min: 10, que: '≤8 APEX (díctaselas al chat MIR) + flechas relacionales', como: `Tarjetas SOLO de fallos tontos y de detalles discriminativos de nivel 3-4/5, formato pregunta → respuesta breve, al subdeck ${M.mazoPersonal}::<asignatura> (dictadas al chat MIR; Ctrl+Shift+A solo si el chat MIR ya verificó la ruta MIR del parser, README §5) · las conexiones entre asignaturas que descubras van como flecha «concepto → concepto» a la nota madre de las dos asignaturas (sección «${M.seccionNota}»), no a Anki.` },
       { min: 15, que: 'Tabla de neto por asignatura (= baseline honesto) + los 3 errores de Ravi', como: 'Asignaturas <55 % → anclas D-7 del banqueo (mantenimiento desde el día siguiente). Contrasta la tabla con los 3 errores que Ravi reconoce de su propia preparación: 1.ª vuelta floja (¿qué asignatura cerró con pocas preguntas?), estudio pasivo (¿qué días leíste sin testear?), repasar solo lo cómodo (¿tu peor asignatura es la que menos Anki y test tuvo?) → 1 línea de ajuste por error en el log.' },
     ], ini),
     recursos: [{ t: 'ProMIR', url: PROMIR }, ...vid('percentil100')],

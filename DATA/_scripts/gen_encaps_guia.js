@@ -906,6 +906,30 @@ function construirGuia(fila, sab = null) {
   return { g, ses };
 }
 for (const fila of FILAS) { const { g, ses } = construirGuia(fila); GUIA[fila.fecha] = g; SES[fila.fecha] = ses; }
+let MANANA_DESFASADA = null; // ronda c40 (remate): encapsManana.ts generado con otros runners ciegos que los de BANCO_PROPIO
+// v6.11 · ronda c40 (ítem 36a, chat ENCAPS · PIZARRA FÍSICA = fuga): la hora de las 16:15 que es el PRIMER bloque ENCAPS de su día real (ese día no hay mañana
+//   ENCAPS) lleva al principio de su aviso la línea de la pizarra (encaps_guia_catalogo.PIZARRA): «Pizarra tapada entera hasta …» con un runner ciego pendiente
+//   (ese día o en los 2 días reales siguientes); «Pizarra: ya puedes destaparla.» si es el primer bloque tras un runner y ya no queda ninguno. Los demás bloques
+//   del día salen de _encaps_manana_v607.json (mañana 07:15 y 18:00 · sábado en vivo · domingo); gen_encaps_manana.js lo comprueba con todos los bloques reales.
+{
+  const FRV = require('./gen_fechas_v6');
+  const JM = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA', 'ENCAPS', '_encaps_manana_v607.json'), 'utf8'));
+  const realO = (f) => FRV.ordenRealDe(f, F6, 'encaps');
+  const bloques = [
+    ...JM.mananas.flatMap((m) => [{ key: `am ${m.fecha}`, real: realO(m.fecha), ini: '07:15' }, { key: `18 ${m.fecha}`, real: realO(m.fecha), ini: '18:00' }]),
+    ...JM.sabados.filter((s) => s.vivo && !s.sin_sesion).map((s) => ({ key: `sab ${s.fecha}`, real: s.fecha, ini: '14:45' })),
+    ...JM.domingos.filter((d) => d.modo !== 'sin_sesion').map((d) => ({ key: `dom ${d.fecha}`, real: d.fecha, ini: '07:15' })),
+    ...FILAS.map((r) => { const real = realO(r.fecha), x = FRV.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === r.fecha); return { key: `16 ${r.fecha}`, real, ini: x ? x.ini : '16:15' }; }),
+  ].filter((b) => CAT.PIZARRA.cubre(b.real, F6)); // F1 + transición + semana 1 de la intensiva hasta el pre-test (después manda el SQL de la intensiva)
+  const RUN = CAT.PIZARRA.runners(BP, F6, FRV);
+  const L = CAT.PIZARRA.lineas(RUN, bloques, corta);
+  // ronda c40 (remate): las líneas de las mañanas y de las 18:00, el filtro de cifras y el «HOY NO» los pone gen_encaps_manana.js con los mismos runners
+  //   (ENCAPS_MANANA_META.runnersCiegos): si encapsManana.ts se generó con otros (un runner ciego nuevo), se avisa al final y sale con código 1
+  const mm = /"runnersCiegos": (\[[^\]]*\])/.exec(fs.readFileSync(path.join(ROOT, 'src', 'lib', 'encapsManana.ts'), 'utf8'));
+  const ya = mm ? JSON.stringify(JSON.parse(mm[1]).sort()) : null, ahora = JSON.stringify(RUN.map((x) => x.f).sort());
+  if (ya !== ahora) MANANA_DESFASADA = `src/lib/encapsManana.ts se generó con otros runners ciegos (${ya || 'sin lista'} → ${ahora}): corre ahora node DATA/_scripts/gen_encaps_manana.js (pizarra de las mañanas y de las 18:00, filtro de cifras, «HOY NO»)`;
+  for (const fila of FILAS) { const l = L.get(`16 ${fila.fecha}`), g = GUIA[fila.fecha]; if (l) g.aviso = `${l.texto}${g.aviso ? ` ${g.aviso}` : ''}`; }
+}
 
 // ── v6.06 (fix) · GUÍA DEL CARRIL SÁBADO (09:30–10:30): las 5 sesiones F1 que pasaron al carril SÁBADO de la intensiva (sáb 9, 16, 23, 30-ene
 //    y 6-feb = fila mant. 44, 45, 46, 47 y 40 de la F1 v6.05) habían perdido su guía «qué · cuánto · cómo» (en la v6.05 tenían su GuiaBloque de
@@ -1138,6 +1162,7 @@ if (CHECK) {
 }
 if (avisos.length) console.warn([...new Set(avisos)].map((a) => '⚠ ' + a).join('\n'));
 if (!vaultMontado) console.warn('⚠ vault de Obsidian no montado: no se comprobó que las notas existan');
+if (MANANA_DESFASADA) { console.error(`✗ ${MANANA_DESFASADA}`); process.exitCode = 1; }
 
 if (INFORME) {
   const L = ['| Fecha | D | Tipo | Qué (principal) | Eval 16:15 | Runner(s) | Material del Drive / fichas | Obsidian | Proyecto Claude |', '|---|---|---|---|---|---|---|---|---|'];

@@ -719,7 +719,7 @@ const FUENTES = J._meta.banqueo_fuentes.replace(/^por orden:\s*/, '').replace(/\
 // v6.10z-e (chat ENCAPS): la cuarentena va PRIMERO y justo detrás de «Sin mirar nada.» (el corte del Calendar la dejaba fuera en los banqueos de 50Q)
 // v6.11 (pendiente 21.2): la frase vive en encaps_guia_catalogo.js (la misma la dicen los pasos de las 16:15 con preguntas de QX / DR LOPEZ / Theomed);
 //   sus fechas = el pre-test 2026-II de _fechas_v6.json y el dress_rehearsal del SQL de la intensiva (si se mueven, aborta en vez de citar un día falso)
-const { RESERVA, RESERVA_FECHAS, reservaDe } = require('./encaps_guia_catalogo');
+const { RESERVA, RESERVA_FECHAS, reservaDe, PIZARRA } = require('./encaps_guia_catalogo'); // ronda c40: + PIZARRA (regla de la pizarra, común con gen_encaps_guia.js)
 if (F6.encaps.pretest !== RESERVA_FECHAS.pretest || !RESERVA.includes(corta(RESERVA_FECHAS.pretest)) || !RESERVA.includes(corta(RESERVA_FECHAS.ensayo))) aborta(`RESERVA (encaps_guia_catalogo.js): pre-test ${RESERVA_FECHAS.pretest} / ensayo ${RESERVA_FECHAS.ensayo} ≠ _fechas_v6.json (${F6.encaps.pretest}) o la frase no los cita`);
 // v6.10z-d (lun 23-nov, chat ENCAPS): % CIEGO = correctas Y seguras ÷ total (como FASE_INTENSIVA_2027-I.md: «correctas seguras / total»), y se calcula en la
 //   CORRECCIÓN, con la clave (antes «el % CIEGO = seguras ÷ total», que contaba una segura FALLADA como ciega). La definición, en frase propia: el corte del
@@ -1433,7 +1433,8 @@ const CIF = (() => {
 })();
 const RUNNERS_CIEGOS = (() => {
   const BP = path.join(ROOT, 'DATA', 'ENCAPS', 'BANCO_PROPIO'), FR = require('./gen_fechas_v6');
-  const INI_ENCAPS_F1 = '16:15', FIN_ENCAPS_F1 = '17:15'; // la hora ENCAPS de F1 (16:15-17:15, gen_encaps_guia.js FRANJA): ahí van los pre-tests y los mini-sims
+  // ronda c40 (remate): la hora del runner = PIZARRA.horaDe (bloque movido de corrida_s1 · en la intensiva, la de su SIM en el SQL: el pre-test 2026-II
+  //   es 07:15-09:15, no 16:15-17:15 · si no, la hora ENCAPS de F1, 16:15-17:15, donde van los pre-tests y los mini-sims de F1)
   const out = [];
   for (const f of fs.readdirSync(BP).filter((x) => /\.json$/.test(x) && !x.startsWith('_')).sort()) {
     let j = null;
@@ -1445,8 +1446,9 @@ const RUNNERS_CIEGOS = (() => {
     if (!j || !['pretest', 'mini_sim', 'simulacro'].includes(j.tipoRonda) || (j._meta && j._meta.sustituido_por)) continue;
     if (!/^\d{4}-\d\d-\d\d$/.test(j.fecha || '') || !Array.isArray(j.items)) aborta(`BANCO_PROPIO/${f}: runner ciego (${j.tipoRonda}) sin fecha o sin items`);
     const real = FR.ordenRealDe(j.fecha, F6, 'encaps');
-    const x = FR.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === j.fecha);
-    out.push({ f, plan: j.fecha, real, ini: x ? x.ini : INI_ENCAPS_F1, fin: x ? x.fin : FIN_ENCAPS_F1, items: new Set(j.items.flatMap((it) => itemsRealesDe(it.id))),
+    const x = PIZARRA.horaDe(j.fecha, real, F6, FR);
+    if (x.fuente === 'sin_fuente') AVISOS.push(`BANCO_PROPIO/${f}: runner ciego de la intensiva (día real ${real}) sin SIM en su fila del SQL: su hora se supone ${x.ini}-${x.fin} (filtro de cifras y pizarra)`);
+    out.push({ f, plan: j.fecha, real, ini: x.ini, fin: x.fin, items: new Set(j.items.flatMap((it) => itemsRealesDe(it.id))),
       tipo: j.tipoRonda, parte: j._meta && j._meta.parte && j._meta.de ? `${j._meta.parte}/${j._meta.de}` : null }); // tipo y parte: para nombrarlo (pizarra, ítem 28)
   }
   return out;
@@ -1553,10 +1555,9 @@ const filaCiegaEn = (n, dia, ini) => (CIF_CIEGAS.get(n) || []).some((x) => !(x.r
 //   traducía dos veces, «mini-sim del mié 2-dic»). Si ese mismo día real hubo un runner ciego ANTES del paso (el pre-test de las 16:15), «desde ya» llega
 //   tarde: el paso dice desde la hora del primer bloque ENCAPS de la mañana y ese bloque lo avisa (aviso de la mañana).
 {
-  const TIPO_TXT = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
-  const nombreR = (x) => `${TIPO_TXT[x.tipo] || x.tipo}${x.parte ? ` ${x.parte}` : ''}`;
-  const tapaHasta = (dia, ini) => RUNNERS_CIEGOS.filter((x) => (x.real === dia && aMin(x.fin) > aMin(ini)) || (x.real > dia && x.real <= addDias(dia, 2)))
-    .sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : aMin(a.fin) - aMin(b.fin))).pop() || null;
+  // ronda c40: el nombre del runner y el criterio (mismo día o 2 días reales) viven en encaps_guia_catalogo.PIZARRA (los usa también la línea del primer bloque)
+  const nombreR = PIZARRA.nombre;
+  const tapaHasta = (dia, ini) => PIZARRA.hasta(RUNNERS_CIEGOS, dia, ini);
   const RE_COND = /si fueron las normales, estos (\d+)′ son la pizarra del mes de siempre \([^)]*\)/;
   for (const [f, g] of Object.entries(GT)) {
     const ini = G.partesFranja(g.franja).ini, x = tapaHasta(realDe(f), ini); if (!x) continue;
@@ -2420,6 +2421,77 @@ for (const [f, g] of [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [
   }
 }
 
+// v6.11 · ronda c40 (ítem 36a, lun 23-nov, chat ENCAPS · PIZARRA FÍSICA = fuga): la pizarra del mes está a la vista TODO el día. El PRIMER bloque ENCAPS de
+//   cada día real (F1 y la transición) con un runner ciego pendiente —ese día antes de que termine o en los 2 días reales siguientes— lleva «Pizarra tapada entera
+//   hasta el <runner> del <fecha de plan> <hora>.» y el primer bloque ENCAPS después de un runner, sin otro pendiente, «Pizarra: ya puedes destaparla.»
+//   (encaps_guia_catalogo.PIZARRA). Va al PRINCIPIO del aviso de la primera guía del bloque en la que no empuja ninguna fecha de destino más allá del carácter
+//   230 (check 26j: el Calendar corta el aviso a 240); en la mañana, la del ARRANQUE o la de la TEORÍA (las dos van en el primer evento del Calendar, el de las
+//   07:15). Si no cabe en ninguna: la de tapar ABORTA (es la que evita la fuga); la de destapar va al final del aviso (la app la enseña entera) y se avisa.
+//   La hora de las 16:15 (encapsGuia.ts) la pone gen_encaps_guia.js con la misma regla: aquí se comprueba con todos los bloques reales del día.
+{
+  const FRV = require('./gen_fechas_v6');
+  const EGI = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'));
+  const realO = (f) => FRV.ordenRealDe(f, F6, 'encaps');
+  const bloques = [];
+  const mete = (key, f, gs, ini, real = realO(f)) => { gs = gs.filter(Boolean); if (gs.length && PIZARRA.cubre(real, F6)) bloques.push({ key, f, real, ini: ini || G.partesFranja(gs[0].franja).ini, gs }); };
+  for (const [f, gs] of Object.entries(GM)) mete(`am ${f}`, f, gs.slice(0, 2)); // ARRANQUE + TEORÍA
+  for (const [f, g] of Object.entries(GT)) mete(`18 ${f}`, f, [g]);
+  for (const [f, g] of Object.entries(GSP)) mete(`sab ${f}`, f, [g]);
+  for (const [f, g] of Object.entries(GSV)) mete(`vivo ${f}`, f, [g]);
+  for (const [f, g] of Object.entries(GD)) mete(`dom ${f}`, f, [g]);
+  for (const [f, g] of Object.entries(GR)) mete(`rec ${f}`, f, [g]);
+  for (const [f, gs] of Object.entries(GR_SAB)) gs.forEach((g, i) => mete(`rec ${f} ${i}`, f, [g]));
+  for (const f of EGI.GUIA_ENCAPS_FECHAS) { const r = realO(f), x = FRV.extraListaDe(r, F6).find((y) => y.frente === 'encaps' && y.plan === f); mete(`16 ${f}`, f, [EGI.guiaEncapsDe(f)], x ? x.ini : '16:15', r); }
+  const L = PIZARRA.lineas(RUNNERS_CIEGOS, bloques, corta);
+  // ronda c40 (remate): la regla cubre F1, la transición y la semana 1 de la intensiva hasta el pre-test 2026-II (PIZARRA.cubre; las mañanas 19-21 del
+  //   mar 5 al jue 7-ene tienen guía local). Un runner ciego más tarde (los mini-sims del carril sábado de F2) no tiene guía local donde avisar: se dice aquí
+  for (const r of RUNNERS_CIEGOS) if (!PIZARRA.cubre(r.real, F6)) AVISOS.push(`pizarra: ${r.f} (día real ${r.real} ${r.ini}) cae fuera de la regla de la pizarra (F1, transición y semana 1 hasta el pre-test del ${corta(F6.encaps.pretest)}): sus bloques previos no tienen guía local; avisa a mano`);
+  const orden = [...bloques].sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : aMin(a.ini) - aMin(b.ini)));
+  // fechas de destino del aviso más allá del carácter 230 que no estén ya en los 230 primeros (= check_rutina_guia 26j, con sus referencias y URLs)
+  const FRX = /(?<![\p{L}\d])(?:(?:lun|mar|mié|jue|vie|sáb|dom)\.? )?(\d{1,2})-(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:-(\d{4}))?(?![\p{L}\d])/gu;
+  const REF = /\((?:pre-test ciego|ensayo general) del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}\)|de ninguna carrera antes del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}|la usa el GATE del CHECKPOINT del (?:lun|mar|mié|jue|vie|sáb|dom) \d{1,2}-\p{L}{3}/gu;
+  const fuera = (aviso, f) => {
+    const av = String(aviso || '').replace(REF, (m) => '·'.repeat(m.length)), ini = av.slice(0, 230);
+    return [...av.replace(/(https?|file|obsidian|vscode):\/\/[^\s)»\]]+/g, '').matchAll(FRX)].filter((m) => {
+      const mes = MES.indexOf(m[2]) + 1, y = m[3] ? Number(m[3]) : mes >= 7 ? 2026 : 2027;
+      return `${y}-${String(mes).padStart(2, '0')}-${String(Number(m[1])).padStart(2, '0')}` > f && m.index + m[0].length > 230 && !ini.includes(m[0]);
+    }).map((m) => m[0]);
+  };
+  const con = (t, av) => `${t}${av ? ` ${av}` : ''}`;
+  const cabe = (g, f, t) => { const antes = new Set(fuera(g.aviso, f)); return fuera(con(t, g.aviso), f).every((x) => antes.has(x)); };
+  const RX_LINEA = /^(Pizarra tapada entera hasta [^.]*\.|Pizarra: ya puedes destaparla\.)/;
+  for (const b of bloques) {
+    const l = L.get(b.key) || null;
+    if (b.key.startsWith('16 ')) { // la hora de las 16:15: la pone gen_encaps_guia.js
+      const m = RX_LINEA.exec(b.gs[0].aviso || ''), tiene = m ? m[1] : null;
+      if (tiene !== (l ? l.texto : null)) aborta(`encapsGuia.ts ${b.f} (16:15, día real ${b.real}): la línea de la pizarra es «${tiene || '—'}» y la regla con todos los bloques del día pide «${l ? l.texto : '—'}» (regenera con gen_encaps_guia.js; si sigue, sus bloques del día no son los de aquí)`);
+      // ronda c40 (remate): gen_encaps_guia.js la antepone sin mirar el corte del Calendar → aquí, el mismo control que en las mañanas (check 26j)
+      if (tiene && !cabe({ aviso: b.gs[0].aviso.slice(tiene.length).trim() }, b.f, tiene)) {
+        if (l.tipo === 'tapa') aborta(`encapsGuia.ts ${b.f} (16:15, día real ${b.real}): «${tiene}» al principio del aviso empuja una fecha de destino más allá del corte del Calendar (check 26j)`);
+        AVISOS.push(`pizarra ${b.f} (16:15, día real ${b.real}): «${tiene}» empuja una fecha de destino más allá del corte del Calendar`);
+      }
+      continue;
+    }
+    if (!l) continue;
+    const g = b.gs.find((y) => cabe(y, b.f, l.texto));
+    if (g) g.aviso = con(l.texto, g.aviso);
+    else if (l.tipo === 'tapa') aborta(`${b.f} (día real ${b.real}, ${b.ini}): «${l.texto}» no cabe al principio del aviso de ninguna guía del primer bloque ENCAPS sin empujar una fecha de destino más allá del corte del Calendar (check 26j)`);
+    else {
+      // ronda c40 (remate): «ya puedes destaparla» no cabe al principio → el primer bloque ENCAPS SIGUIENTE (no las 16:15, que las pone gen_encaps_guia.js)
+      //   donde quepa, mientras no haya otro runner pendiente (un bloque con su propia línea corta la búsqueda); si no hay ninguno, al final del aviso
+      let dest = null;
+      for (const y of orden.slice(orden.indexOf(b) + 1)) {
+        if (L.has(y.key)) break;
+        if (y.key.startsWith('16 ')) continue;
+        const z = y.gs.find((w) => cabe(w, y.f, l.texto)); if (z) { dest = { y, z }; break; }
+      }
+      if (dest) { dest.z.aviso = con(l.texto, dest.z.aviso); continue; }
+      b.gs[0].aviso = `${b.gs[0].aviso ? `${b.gs[0].aviso} ` : ''}${l.texto}`;
+      AVISOS.push(`pizarra ${b.f} (día real ${b.real}, ${b.ini}): «${l.texto}» va al final del aviso (al principio empujaría una fecha de destino más allá del corte del Calendar): la app la enseña, el Calendar la corta`);
+    }
+  }
+}
+
 // ── validación de todas las guías ─────────────────────────────────────────────────────────────────────────────
 const TODAS = [...Object.entries(GM).flatMap(([f, gs]) => gs.map((g) => [f, g])), ...Object.entries(GT), ...Object.entries(GA), ...Object.entries(GSP), ...Object.entries(GSV), ...Object.entries(GD), ...Object.entries(GR), ...Object.entries(GR_SAB).flatMap(([f, gs]) => gs.map((g) => [f, g]))]; // v6.10z-d: + los bloques fijos del sábado
 const ERR = [];
@@ -2441,6 +2513,8 @@ for (const dia of J.mananas) {
 const M = Object.fromEntries(J.mananas.map((d) => [d.fecha, { fecha: d.fecha, n: d.n, de: NM, fase: d.fase, teoria: d.teoria, banqueo: d.banqueo, norma: d.norma, extra: d.extra, resumen: RESUMEN[d.fecha], pendiente18: (MD[d.fecha] && MD[d.fecha].tarde.map((u) => u.postTest || u.que)) || [], ...(EXTRA.has(d.fecha) ? { diaExtra: EXTRA.get(d.fecha) } : {}), ...(DOM_PLAN.has(d.fecha) ? { domingoPlan: DOM_PLAN.get(d.fecha) } : {}), ...(DOM_PLAN_H.has(d.fecha) ? { domingoPlanHoras: { manana: DOM_PLAN_H.get(d.fecha).manana, que: QUE_TRAMOS[d.fecha], tarde: DOM_PLAN_H.get(d.fecha).tarde, compromiso: DOM_PLAN_H.get(d.fecha).compromiso } } : {}) }]));
 const META = {
   version: J._meta.version, decidido: J._meta.decidido, fechas: F6.version, fuente: J._meta.fuente, mananas: NM,
+  // ronda c40 (remate): los runners ciegos con los que se generó (filtro de cifras, «HOY NO» y líneas de la pizarra): gen_encaps_guia.js avisa si cambian
+  runnersCiegos: RUNNERS_CIEGOS.map((x) => x.f).sort(),
   primera: J.mananas[0].fecha, ultima: J.mananas[NM - 1].fecha, ultimaF1: J.mananas.filter((d) => !EXTRA.has(d.fecha)).at(-1).fecha, extra: [...EXTRA.keys()], domingosPlan: [...DOM_PLAN.keys()], protocolo: J._meta.protocolo_manana, campus: CAMPUS,
   reglas: `vídeo ÷ 1,75 (÷ 2 si la mañana dice «2×») × ${String(PAUSA).replace('.', ',')} (pausas) · texto primero = PPT ${PPT_MIN}′ + Theoesencial de la sesión a ${THEO_P}′/p + norma a ${PDF_P}′/p con lo que sobre (minutos de partida: vídeo ÷ ${VEL_TEXTO}; nunca < (PPT + Theoesencial) ÷ 1,15) · revisión normativa = vídeo ÷ ${VEL_TEXTO} + PDF a ${PDF_P}′/p · tramo 17:00-17:30 de una clase vista en vivo = ${TRAMO_MIN}′ (${pct100(VIVO_FRAC)} a ${vel(VIVO_VEL)}) · cifras de las 18:00 = 40 filas a 15 s · banqueo grabado activo ÷ ${String(VEL_ACTIVO).replace('.', ',')} × ${String(PAUSA).replace('.', ',')} · Theoesencial = páginas × ${THEO_P}′ · PPT de clase en vivo = ${PPT_MIN}′ · normas / hoja de reglas = su duración · clase en diferido = ${pct100(VIVO_FRAC)} de la clase a ${vel(VIVO_VEL)} (si la mañana no da, lo que falta en audio, explícito) · corrección = ${String(CORR_Q).replace('.', ',')}′ por pregunta · lo que no cabe en 07:30-09:15 → 18:00 del mismo día (v6.09b)`,
 };

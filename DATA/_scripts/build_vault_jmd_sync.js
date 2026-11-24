@@ -181,7 +181,7 @@ actualizado: ${HOY}
 > ${META.tesis}
 >
 > **Plan día-a-día en la app:** ${planMeta[3]} días (${planMeta[1]} → ${planMeta[2]}) · 30 min/día en
-> espacios muertos · dom 14/21-jun LIBRES · pestaña **⚡ Hoy** en Joseph MD → SYNAPSE.
+> espacios muertos · dom 14/21-jun LIBRES · el ✓ del día en Joseph MD → SYNAPSE › **⚡ run**.
 
 \`\`\`mermaid
 %%{init: {'theme':'base','themeVariables':{'background':'transparent','primaryColor':'#101A2C','primaryTextColor':'#E8DCC0','primaryBorderColor':'#818CF8','lineColor':'#8F9097','fontSize':'13px'}}}%%

@@ -347,8 +347,8 @@ const TECNICA_SIM = {
   COMPARA: 'La nota se compara SOLO con tus mini-sims anteriores (misma receta), nunca con notas de QX, Theomed u otro instrumento; una bajada aislada no dice nada: manda la regla de dos mini-sims seguidos.',
   /** Qué genera tarjeta (Ravi: pocas tarjetas, solo fallos «tontos» y detalles discriminativos; nunca la norma entera). */
   TARJETAS: 'Tarjeta solo de fallos «tontos» y de detalles discriminativos, en formato pregunta → respuesta breve (nunca un párrafo de la norma): OLVIDO de cifra/plazo → ENCAPS::Cifras (ANKI_COLA/ENCAPS_Cifras_2027-I.csv) · CONCEPTO/CCSN → el porqué a la nota Obsidian del código · fallos de proceso → regla de examen, sin tarjeta.',
-  /** Envío de los APEX (flujo vigente). */
-  ENVIO: 'Envío: ⚡ APEX 1-TAP (Ctrl+Shift+A) → n8n → Anki APEX::ENCAPS (subdeck del código) + nota del código en el vault; si el redeploy de n8n aún no está verificado, directo en Anki.',
+  /** Envío de los APEX (flujo vigente: APEX directo en el chat ENCAPS desde el 16-nov; ronda c40: sin botón ni atajo). */
+  ENVIO: 'Me las dictas en el chat ENCAPS y yo las creo en Anki (APEX::ENCAPS::…) y en Obsidian; Anki abierto en el PC.',
 };
 
 /**
@@ -385,4 +385,72 @@ const RESERVA = 'Cuarentena: nada del 2026-II de ninguna carrera antes del vie 8
 const RESERVA_2026_I = 'Reservado: el ENCAPS 2026-I (ensayo general del jue 11-mar).';
 const reservaDe = (realISO) => (realISO < RESERVA_FECHAS.pretest ? RESERVA : realISO < RESERVA_FECHAS.ensayo ? RESERVA_2026_I : '');
 
-module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1, RESERVA_FECHAS, RESERVA, RESERVA_2026_I, reservaDe };
+/**
+ * v6.11 · ronda c40 (ítem 36a, lun 23-nov, chat ENCAPS · PIZARRA FÍSICA = fuga): la pizarra del mes (cifras exactas: plazos, dosis, metas) está a la vista TODO
+ * el día, no solo en su paso de las 18:00. Regla común de gen_encaps_guia.js (la hora de las 16:15) y gen_encaps_manana.js (mañanas, 18:00, sábado, domingo,
+ * recuperaciones; comprueba también las 16:15 con todos los bloques del día):
+ *   · el PRIMER bloque ENCAPS de cada día real con un runner ciego (pre-test · mini-sim · simulacro no sustituido de BANCO_PROPIO) que aún no terminó cuando
+ *     empieza ese bloque —ese mismo día o en los 2 días reales siguientes— lleva PIZARRA.tapa(el último de esos runners) (el mismo criterio que el paso
+ *     «Pizarra: HOY NO» de las 18:00, ítem 28: PIZARRA.hasta);
+ *   · el primer bloque ENCAPS después de un runner, si ya no queda ninguno pendiente, lleva PIZARRA.DESTAPA.
+ * El runner se nombra por su FECHA DE PLAN y su hora, como todas las fechas de las guías (la app y el Calendar la pintan con su día real).
+ */
+const PIZARRA_TIPO = { pretest: 'pre-test', mini_sim: 'mini-sim', simulacro: 'simulacro' };
+const pzMin = (h) => { const [a, b] = String(h).split(':').map(Number); return a * 60 + b; };
+const pzMas = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const PIZARRA = {
+  DESTAPA: 'Pizarra: ya puedes destaparla.',
+  nombre: (x) => `${PIZARRA_TIPO[x.tipo] || x.tipo}${x.parte ? ` ${x.parte}` : ''}`,
+  tapa: (x, corta) => `Pizarra tapada entera hasta el ${PIZARRA.nombre(x)} del ${corta(x.plan)} ${x.ini}.`,
+  /** runners = [{ plan, real, ini, fin, tipo, parte }] → el último que aún no terminó a las `ini` del día real `dia` o que cae en los 2 días reales siguientes */
+  hasta: (runners, dia, ini) => runners.filter((x) => (x.real === dia && pzMin(x.fin) > pzMin(ini)) || (x.real > dia && x.real <= pzMas(dia, 2)))
+    .sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : pzMin(a.fin) - pzMin(b.fin))).pop() || null,
+  /** bloques = [{ key, real, ini }] (TODOS los bloques ENCAPS de los días que se miran) → Map key → { tipo: 'tapa' | 'destapa', texto } */
+  lineas: (runners, bloques, corta) => {
+    const bs = [...bloques].sort((a, b) => (a.real < b.real ? -1 : a.real > b.real ? 1 : pzMin(a.ini) - pzMin(b.ini)));
+    const out = new Map();
+    bs.forEach((b, i) => { const x = i && bs[i - 1].real === b.real ? null : PIZARRA.hasta(runners, b.real, b.ini); if (x) out.set(b.key, { tipo: 'tapa', texto: PIZARRA.tapa(x, corta) }); });
+    for (const r of runners) {
+      const b = bs.find((y) => y.real > r.real || (y.real === r.real && pzMin(y.ini) >= pzMin(r.fin)));
+      if (b && !out.has(b.key) && !PIZARRA.hasta(runners, b.real, b.ini)) out.set(b.key, { tipo: 'destapa', texto: PIZARRA.DESTAPA });
+    }
+    return out;
+  },
+  /** días reales que cubre la regla: F1, la transición y la semana 1 de la intensiva hasta el pre-test 2026-II incluido (las mañanas 19-21 del mar 5 al
+   *  jue 7-ene tienen guía local); después mandan los bloques del SQL de la intensiva, que no tienen guía local donde poner la línea */
+  cubre: (real, F6) => real < F6.encaps.intensiva_desde || real <= F6.encaps.pretest,
+  /** hora de un runner de la intensiva (pre-test 2026-II · SIM 100Q): la de su SIM en la fila del SQL (extra.sim.hora + n × seg_por_q) · null si no hay */
+  simSQL: (fecha) => {
+    const fs = require('fs'), path = require('path');
+    const l = fs.readFileSync(path.join(__dirname, '_encaps_intensivo_2027.sql'), 'utf8').split(/\r?\n/).find((x) => x.startsWith("('ENCAPS',") && x.includes(`,'${fecha}',`));
+    const m = l && /"sim":(\{[^{}]*\})/.exec(l); if (!m) return null;
+    const s = JSON.parse(m[1]); if (!/^\d\d:\d\d$/.test(s.hora || '') || !(s.n > 0) || !(s.seg_por_q > 0)) return null;
+    const fin = pzMin(s.hora) + Math.ceil((s.n * s.seg_por_q) / 60);
+    return { ini: s.hora, fin: `${String(Math.floor(fin / 60)).padStart(2, '0')}:${String(fin % 60).padStart(2, '0')}` };
+  },
+  /** hora real de un runner ciego: la de su bloque movido (corrida_s1.extra) · en la intensiva, la de su SIM en el SQL (el pre-test 2026-II = 07:15-09:15) ·
+   *  si no, la hora ENCAPS de F1 (16:15-17:15). fuente 'sin_fuente' = runner de la intensiva sin SIM en el SQL (el que llama avisa: la hora es un supuesto) */
+  horaDe: (plan, real, F6, FR) => {
+    const x = FR.extraListaDe(real, F6).find((y) => y.frente === 'encaps' && y.plan === plan);
+    if (x) return { ini: x.ini, fin: x.fin, fuente: 'extra' };
+    const s = real >= F6.encaps.intensiva_desde ? PIZARRA.simSQL(plan) : null;
+    return s ? { ...s, fuente: 'sql' } : { ini: '16:15', fin: '17:15', fuente: real >= F6.encaps.intensiva_desde ? 'sin_fuente' : 'f1' };
+  },
+  /** los runners ciegos de BANCO_PROPIO, como RUNNERS_CIEGOS de gen_encaps_manana.js (día real y hora con el alias de ENCAPS: FR = gen_fechas_v6) */
+  runners: (dir, F6, FR) => {
+    const fs = require('fs'), path = require('path'), out = [];
+    for (const f of fs.readdirSync(dir).filter((x) => /\.json$/.test(x) && !x.startsWith('_')).sort()) {
+      let j = null;
+      try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) {
+        if (/^(pretest|mini_?sim|sim)/i.test(f)) throw new Error(`PIZARRA.runners: BANCO_PROPIO/${f} es un runner ciego con JSON ilegible (${e.message}): sin él, la pizarra no se taparía antes de su test`);
+        continue;
+      }
+      if (!j || !['pretest', 'mini_sim', 'simulacro'].includes(j.tipoRonda) || (j._meta && j._meta.sustituido_por) || !/^\d{4}-\d\d-\d\d$/.test(j.fecha || '')) continue;
+      const real = FR.ordenRealDe(j.fecha, F6, 'encaps'), h = PIZARRA.horaDe(j.fecha, real, F6, FR);
+      out.push({ f, plan: j.fecha, real, ini: h.ini, fin: h.fin, tipo: j.tipoRonda, parte: j._meta && j._meta.parte && j._meta.de ? `${j._meta.parte}/${j._meta.de}` : null });
+    }
+    return out;
+  },
+};
+
+module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, PREVISTO_ORIGEN, TECNICA_SIM, RECETA_F1, RESERVA_FECHAS, RESERVA, RESERVA_2026_I, reservaDe, PIZARRA };
