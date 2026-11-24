@@ -122,7 +122,7 @@ import {
   VIBE_FASES_BC, vibeFaseBCDe, // v6.10 · base cero: fases PRIMM del vibecoding
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
-import { SYN_DIAS, SYN_PLAN_META, synDiaDe, synColaDe, SYN_COLA_POST_STEP1, synRecDe, SYN_REC_F1, SYN_FASES_BC, synFaseBCDe, SYN_CADENAS } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real · v6.10: + la sesión de recuperación (sáb 28-nov 07:15)
+import { SYN_DIAS, SYN_PLAN_META, synDiaDe, synColaDe, SYN_COLA_POST_STEP1, synRecDe, SYN_REC_F1, SYN_FASES_BC, synFaseBCDe, SYN_CADENAS, SYN_SESION_EN } from './synapseDailyPlan'; // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real · v6.10: + la sesión de recuperación (sáb 28-nov 07:15)
 import type { SynBloque } from './synapseDailyPlan';
 import { AURUM_DIAS, aurumDiaDe, aurumObsUrl } from './aurumDailyPlan';
 import type { DiaAurum, AurumBloque } from './aurumDailyPlan';
@@ -245,6 +245,16 @@ const ordenMiniSimF1 = (f: string): string => {
 /** v6.11 (lun 23-nov-2026): sábado que CIERRA el OUTPUT de Business con fecha de plan `plan` = el sábado siguiente a su día REAL (alias de corrida_s1: el
  *  OUTPUT del mar 24 de plan se hace el lun 30 → su cierre, el sáb 5-dic; sin alias = el sábado de su semana, como siempre). */
 const sabCierreDe = (plan: string): string => { const r = fechaRealDe(plan, 'business'); return addDias(r, 6 - dow(r)); };
+/** v6.11 (mar 24-nov-2026, orden de Joseph «hoy solo ENCAPS»): OUTPUT de Business que va ENTERO (40′: escribir 25′ + fila del tracker de su semana 10′ + releer y
+ *  cerrar) en un DOMINGO a hora fija (corrida_s1.extra { hora, plan } de ≥ 40′: dom 29-nov 14:00-14:40 = el OUTPUT S1, plan del mar 24): el sábado de su semana no
+ *  tiene hueco para el OUTPUT y su cierre, y el del sábado siguiente (sáb 5-dic) tampoco → no se cierra en ningún sábado. null si no es el caso. */
+const bizOutputEnteroDomingo = (plan: string): { ini: string; fin: string; real: string } | null => {
+  const r = bizDiaDe(plan);
+  if (!r || bizModo(r) !== 'OUTPUT') return null;
+  const fx = extraDePlan(plan, 'business');
+  return fx && dow(fx.real) === 0 && aMin(fx.fin) - aMin(fx.ini) >= 40 ? fx : null;
+};
+export { bizOutputEnteroDomingo as bizOutputEnteroDomingoDe };
 /** v6.11: sábado de F1 SIN cierre propio de Business: sin sesión (viaje) o con Business a hora fija que hace una fila de plan (corrida_s1.extra: sáb 2-ene). Sus
  *  OUTPUT se cierran con los del sábado siguiente con cierre. Texto del porqué (para el cierre que los recibe). */
 // v6.11 fase 2: solo un sábado de la TRANSICIÓN con Business a hora fija (sáb 2-ene); el de F1 (sáb 28-nov: el OUTPUT S1 1/2 a las 07:15) cierra ese mismo día
@@ -1009,7 +1019,7 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     ? (previos.length > 1
       // v6.11 fase 2 (chat SYNAPSE): los días sin sesión son los REALES (del lun 16 al lun 23-nov; sin día de la semana: no es una fecha de plan que traducir) y
       //   la auditoría F0 abre la 2.ª sesión, con su día
-      ? `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)}: ${(() => { const r0 = fechaRealDe(s.fecha, 'synapse'), ss = FECHAS_V6.corrida_s1.sin_sesion.filter((x) => x >= SYN_PLAN_META.inicio && x < r0).sort(); const a = ss[0], z = ss[ss.length - 1]; return a && z && z > previos[previos.length - 1]!.fecha ? `del ${Number(a.slice(8))} al ${Number(z.slice(8))}-${MES_C[Number(z.slice(5, 7)) - 1]} no hubo sesión` : `${previos.map((x) => fCorta(x.fecha)).join(' y ')} fueron sin sesión`; })()}${auditSigB && recPrev && auditSig ? ` (el carril del martes corre una semana) y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre la 2.ª sesión, el ${fCorta(auditSig.fecha)} (${auditSigB.min}′)` : auditHoy ? `${recPrev ? (recPrev.semana > 2 ? ` (el carril del martes corre una semana: sus piezas, el ${fCorta(addDias(recPrev.plan, 7))})` : ` (sus piezas del martes van el ${fCorta(recPrev.fecha)} a las ${recPrev.ini})`) : ''} y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre esta sesión (${auditHoy.min}′; la A queda en ${15 - auditHoy.min}′)` : recPrev ? ` y la auditoría F0 del ${fCorta(recPrev.plan)} va el ${fCorta(recPrev.fecha)} a las ${recPrev.ini}` : ''}; así la numeración de 2027 no cambia.${auditHoy ? ' Skilljar cierra a principios de diciembre: guarda antes los PDF de tus certificados viejos.' : ''}`
+      ? `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)}: ${(() => { const r0 = fechaRealDe(s.fecha, 'synapse'), ss = [...FECHAS_V6.corrida_s1.sin_sesion, ...(FECHAS_V6.corrida_s1.alias_frente?.synapse?.sin_sesion ?? [])].filter((x) => x >= SYN_PLAN_META.inicio && x < r0).sort(); /* remate r24: + el mar 24 sin SYNAPSE (alias_frente.synapse.sin_sesion) */ const a = ss[0], z = ss[ss.length - 1]; return a && z && z > previos[previos.length - 1]!.fecha ? `del ${Number(a.slice(8))} al ${Number(z.slice(8))}-${MES_C[Number(z.slice(5, 7)) - 1]} no hubo sesión` : `${previos.map((x) => fCorta(x.fecha)).join(' y ')} fueron sin sesión`; })()}${auditSigB && recPrev && auditSig ? ` (el carril del martes corre una semana) y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre la 2.ª sesión, el ${fCorta(auditSig.fecha)} (${auditSigB.min}′)` : auditHoy ? `${recPrev ? (recPrev.semana > 2 ? ` (el carril del martes corre una semana: sus piezas, el ${fCorta(addDias(recPrev.plan, 7))})` : ` (sus piezas del martes van el ${fCorta(recPrev.fecha)} a las ${recPrev.ini})`) : ''} y la auditoría F0 pendiente del ${fCorta(previos[previos.length - 1]!.fecha)} abre esta sesión (${auditHoy.min}′; la A queda en ${15 - auditHoy.min}′)` : recPrev ? ` y la auditoría F0 del ${fCorta(recPrev.plan)} va el ${fCorta(recPrev.fecha)} a las ${recPrev.ini}` : ''}; así la numeración de 2027 no cambia.${auditHoy ? ' Skilljar cierra a principios de diciembre: guarda antes los PDF de tus certificados viejos.' : ''}`
       : `Primera sesión. Sale como día ${s.d} porque el día 1 era el ${fCorta(SYN_PLAN_META.inicio)} (sin sesión, v6.09); así la numeración de 2027 no cambia.`) : '';
   return bloque(franja, 'synapse', `SYNAPSE S${s.semana} · ${s.fase.split('·')[0].trim()} — A pantalla · B audio · C lectura`, pasos, recursos,
     SYN_HECHO,
@@ -1027,6 +1037,15 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
  *  15′ medidos del vídeo que el comodín del sáb 2-ene dejó a medias, «Interpretability…» min 15:00-37:30 a 1,5×) · v6.10: sáb 28-nov 07:15-07:45 = la sesión del mar 17 (sin sesión) — tanda C: su A = 15′ de la siguiente lección de F0 sin ✓ (la auditoría abrió el mié 18) + la primera
  *  lección de F0 sin ✓) y las piezas B/C del carril del martes de la sem 2 (Dwarkesh × Dario 10:00-25:00 a 1,5× · Willison ≈530 palabras); cada paso
  *  trae su tramo medido (b.guia). Bloque «syn-rec» de plantillasV6 (lo pinta NÚCLEO); la sesión de las 21:00 de ese día es la suya (guiaSynapseDe). */
+/** v6.11 (mar 24-nov-2026, remate r24): nombre de la sesión de una CADENA del SYNAPSE (bloque, guía y nota del día): fila de fin de semana → «la sesión del sáb 28-nov»;
+ *  fila de L-V (la cadena «semana 1» acaba en la sesión del sáb 28-nov 04:15 con la fila del vie 20, y el vie 27 ya se nombra «plan del vie 20-nov») → «plan del <la
+ *  fecha de plan que el alias propio del SYNAPSE deja sin día hábil y cuya sesión va hoy>» (SYN_SESION_EN: lun 23-nov → sáb 28-nov), como los demás frentes de esa
+ *  mañana; corridaTexto no traduce «plan del …». */
+export function synCadenaNombreDe(r: { fecha: string; plan: string }): string {
+  if (!(dow(r.plan) >= 1 && dow(r.plan) <= 5)) return `la sesión del ${fCorta(r.plan)}`;
+  const slot = Object.keys(SYN_SESION_EN).find((k) => SYN_SESION_EN[k] === r.fecha && k > r.plan && dow(k) >= 1 && dow(k) <= 5);
+  return `plan del ${fCorta(slot ?? r.plan)}`;
+}
 export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque | null {
   const r = synRecDe(iso, ini) ?? (ini ? undefined : synRecDe(iso));
   if (!r) return null;
@@ -1036,12 +1055,16 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
     const abcC = r.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
     if (!abcC.length) return null;
     const otraRec = SYN_REC_F1.find((x) => x.fecha === iso && x !== r);
-    return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · la sesión del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, abcC.map((b) => pasoSyn(b, r.fecha, r.plan)),
+    // v6.11 (mar 24-nov): la sesión de una fila de L-V (la cadena «semana 1» acaba en la del sáb 28-nov 04:15, con la fila del vie 20) se nombra «plan del …» (la
+    //   app no traduce esa fecha: con el alias global, «la sesión del vie 20-nov» se leía «del jue 26-nov»)
+    //   · remate r24: «plan del lun 23-nov» (synCadenaNombreDe: el plan sin día hábil cuya sesión va hoy; el vie 27 ya es «plan del vie 20-nov»)
+    return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · ${synCadenaNombreDe(r)} — A pantalla · B audio · C lectura`, abcC.map((b) => pasoSyn(b, r.fecha, r.plan)),
       abcC.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })),
       synHechoDe(null), // ronda c40 (remate): sin ✓ — la fila de su día de plan ya la marca la sesión de las 21:00 de ese día (la cadena es su cola)
       // v6.11 (revisión c32): sin el porqué de la cadena (bitácora) y sin «las fechas de siempre» (el dom 29-nov el alias sigue hasta el vie 1-ene)
-      { aviso: `Hoy, a hora fija (${r.ini}-${r.fin}, antes de la rutina de las 05:45): la sesión del SYNAPSE que toca en orden (la que no tuvo sitio en su día). ${otraRec ? `Aparte, a las ${otraRec.ini}, la otra sesión de hoy. ` : ''}Desde mañana, el SYNAPSE vuelve a su hora.`,
-        planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC de hoy (SHIP del vibecoding, flexible).` });
+      // v6.11 (mar 24-nov): un SÁBADO (sáb 28-nov 04:15) nombra la sesión del sábado (21:00) y la de mañana a hora fija, y el SYNAPSE vuelve a su hora el lunes
+      { aviso: `Hoy, a hora fija (${r.ini}-${r.fin}, antes de la rutina de las 05:45): la sesión del SYNAPSE que toca en orden (la que no tuvo sitio en su día). ${otraRec ? `Aparte, a las ${otraRec.ini}, la otra sesión de hoy. ` : dow(iso) === 6 ? (() => { const man = SYN_REC_F1.filter((x) => x.fecha === addDias(iso, 1)); return `Aparte, a las ${synFranjaDe(iso).franja.split('–')[0]}, la del sábado${man.length ? `, y mañana a las ${man[0]!.ini}, la siguiente` : ''}. `; })() : ''}Desde ${dow(iso) === 6 ? 'el lunes' : 'mañana'}, el SYNAPSE vuelve a su hora.`,
+        planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC ${dow(iso) === 6 ? 'de mañana' : 'de hoy'} (SHIP del vibecoding, flexible).` }); // remate r24: el sábado no tiene SHIP (sáb 28-nov 04:15)
   }
   const abc = r.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   if (!abc.length) return null;
@@ -1551,7 +1574,7 @@ function aurumAMin(x: DiaAurum): number {
   return seg && !x.min30 && !/^Los \d+′ que sobran:/.test(cur ? cur.nota : '') ? minDe(seg) : Math.max(A.min, seg ? minDe(seg) : 0);
 }
 interface AurumF1Dia { d: number; fecha: string; aMin: number; lin: number; fuera: number; sab: string | null; adelantado: boolean; tracyA?: [number, number]; tracyL?: [number, number] }
-interface AurumLSab { sab: string; ini: string; fin: string; min: number; items: Array<{ x: DiaAurum; min: number }>; tracy: { min: number; seg: [number, number]; dias: number[]; adelantados: number[]; deSig?: { min: number; sab: string } } | null }
+interface AurumLSab { sab: string; dia?: string /* v6.11 (mar 24-nov): día REAL en que se hace, si no es el sábado (dom 29-nov) */; ini: string; fin: string; min: number; items: Array<{ x: DiaAurum; min: number }>; tracy: { min: number; seg: [number, number]; dias: number[]; adelantados: number[]; deSig?: { min: number; sab: string } } | null }
 let AURUM_F1_CACHE: { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab> } | null = null;
 /** Reparto de F1 (memo): por sesión, minutos de A y de L que caben en los 60′ (misma cuenta que guiaAurumDe) y lo que no cabe → sábado 04:15 de su
  *  semana; el hilo de Tracy (A de D16/D29/D31 + L de D16-D32 + sábados) con sus tramos. El último sábado con Tracy (26-dic) lleva lo que falte para
@@ -1569,6 +1592,11 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   //   ADELANTADO al último sábado de F1 con L (sáb 26-dic, hilo de Tracy), como ya pasaba con el 28-31-dic
   // v6.11 fase 2: solo el sábado de la TRANSICIÓN (sáb 2-ene); los de F1 con un día extra (sáb 28-nov: AURUM D5 a las 04:30 · sáb 5-dic) conservan su L de 04:15
   for (let s = siguienteDow(addDias((xs[0] as DiaAurum).fecha, -1), 6); s <= (xs[xs.length - 1] as DiaAurum).fecha; s = addDias(s, 7)) if (!sabadoLibre(s) && !SKIP_V6.has(s) && !motivoProtegido(s) && !(extraCorridaDe(s).length && faseV6(s) === 'TRANSICION')) listaSab.push(s);
+  // v6.11 (mar 24-nov-2026, orden «hoy solo ENCAPS»): un sábado de F1 con AURUM a hora fija (corrida_s1.extra: sáb 28-nov 04:45-05:45, el D4) lleva su «L de la
+  //   semana» DETRÁS de esa sesión, con lo que no cupo esa semana y en esa misma sesión: ese sábado, si cabe antes de la rutina de las 05:45; si no, detrás de la
+  //   sesión de AURUM a hora fija del domingo siguiente (dom 29-nov 14:40-15:40 → 15:40). Antes iba a las 04:15 y lo de la sesión del sábado, al sábado siguiente,
+  //   que ya está lleno (sáb 5-dic 04:15-05:00, R↔D a las 05:00)
+  const exAurSab = (s: string): { ini: string; fin: string } | null => { const e = extraCorridaDe(s).find((y) => y.frente === 'aurum'); return e && faseV6(s) !== 'TRANSICION' ? e : null; };
   for (const s of listaSab) sabs.set(s, { sab: s, ini: INI_SAB, fin: INI_SAB, min: 0, items: [], tracy: null });
   for (const x of xs) {
     const L = x.bloques.find((b) => b.tag === 'L');
@@ -1583,7 +1611,8 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
     const lin = !L ? 0 : tr ? (libre >= 3 ? libre : 0) : (libre >= 5 ? Math.min(lPlan, libre) : 0);
     const fuera = Math.max(0, lPlan - lin);
     // v6.10d (18-nov-2026): el sábado SIGUIENTE AL DÍA REAL (con el alias, la sesión del vie 4-dic se hace el lun 7: lo que no cabe va al sáb 12, no al 5)
-    let sab = listaSab.find((s) => s > fechaRealDe(x.fecha, 'aurum')) ?? null;
+    // v6.11 (mar 24-nov): la sesión que se hace a hora fija un sábado con su L detrás (exAurSab) deja lo que no cabe en la L de ese MISMO sábado
+    let sab = listaSab.find((s) => s > fechaRealDe(x.fecha, 'aurum') || (s === fechaRealDe(x.fecha, 'aurum') && !!exAurSab(s))) ?? null;
     let adelantado = false;
     if (!sab && tr && fuera > 0) { sab = listaSab[listaSab.length - 1] ?? null; adelantado = true; }
     dias.set(x.fecha, { d: x.d, fecha: x.fecha, aMin, lin, fuera, sab: fuera > 0 ? sab : null, adelantado });
@@ -1623,23 +1652,32 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   for (const S of sabs.values()) {
     if (S.tracy && S.tracy.min <= 0) S.tracy = null;
     S.min = S.items.reduce((a, it) => a + it.min, 0) + (S.tracy ? S.tracy.min : 0);
+    // v6.11 (mar 24-nov): detrás de la sesión de AURUM a hora fija del sábado (o del domingo siguiente, si el sábado ya no tiene sitio antes de las 05:45)
+    const eS = exAurSab(S.sab), eD = eS ? exAurSab(addDias(S.sab, 1)) : null;
+    if (eS && (aMin(eS.fin) + S.min <= aMin('05:45') || !eD)) S.ini = eS.fin;
+    else if (eS && eD) { S.dia = addDias(S.sab, 1); S.ini = eD.fin; }
     S.fin = aHHMM(aMin(S.ini) + S.min);
   }
   return (AURUM_F1_CACHE = { dias, sabs });
 }
 /** v6.09b (lote 1-bis S2): bloque del SÁBADO de F1 con la lectura L de AURUM que no cupo a las 14:15 de su semana (04:15, antes de la rutina 05:45).
  *  null si ese sábado no tiene nada pendiente. Lo pinta plantillasV6 (bloque 'aurum-l') y lo guía guiaAurumSabadoDe. */
-export function aurumLSabadoDe(iso: string): { ini: string; fin: string; min: number } | null {
-  const S = aurumF1().sabs.get(iso);
-  return S && S.min > 0 ? { ini: S.ini, fin: S.fin, min: S.min } : null;
+export function aurumLSabadoDe(iso: string): { ini: string; fin: string; min: number; cupo: string } | null {
+  const S = aurumLDe(iso);
+  return S && S.min > 0 ? { ini: S.ini, fin: S.fin, min: S.min, cupo: aurumLCupoDe(S) } : null;
 }
+/** remate r24 (mar 24-nov): «a las 14:15» solo si todo lo de esa L viene de sesiones de las 14:15; si alguna fue a hora fija un fin de semana (dom 29-nov: el D4 del
+ *  sáb 28 04:45 · sáb 5-dic: el D5 del dom 29 14:40), «en su sesión». */
+const aurumLCupoDe = (S: AurumLSab): string => (S.items.every((it) => !extraDePlan(it.x.fecha, 'aurum')) ? 'a las 14:15' : 'en su sesión');
 /** Destino legible de lo que no cabe hoy («sáb 28-nov 04:15-05:05»). */
 function aurumDestinoDe(r: AurumF1Dia | undefined): string {
   const S = r?.sab ? aurumF1().sabs.get(r.sab) : undefined;
-  return S ? `${fCorta(S.sab)} ${S.ini}-${S.fin} (AURUM · L de la semana)` : 'el próximo sábado 04:15 (AURUM · L de la semana)';
+  return S ? `${fCorta(S.dia ?? S.sab)} ${S.ini}-${S.fin} (AURUM · L de la semana)` : 'el próximo sábado 04:15 (AURUM · L de la semana)';
 }
+/** v6.11 (mar 24-nov): la «L de la semana» que se hace el día REAL `iso` (su sábado o, si no tenía sitio, el domingo siguiente: dom 29-nov). */
+const aurumLDe = (iso: string): AurumLSab | undefined => [...aurumF1().sabs.values()].find((x) => (x.dia ?? x.sab) === iso);
 export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
-  const S = aurumF1().sabs.get(iso);
+  const S = aurumLDe(iso);
   if (!S || S.min <= 0) return null;
   const pasos: GuiaPaso[] = [];
   const recursos: GuiaRecurso[] = [];
@@ -1678,9 +1716,9 @@ export function guiaAurumSabadoDe(iso: string): GuiaBloque | null {
       { t: '▶ tramo', url: yt(TRACY.id, T.seg[0]) }));
     recursos.push(R(TRACY.t, yt(TRACY.id), { min: T.min }));
   }
-  return bloque(`${S.ini}–${S.fin}`, 'aurum', `AURUM · L de la semana (${S.min}′: lo que no cupo a las 14:15)`, pasos, recursos,
+  return bloque(`${S.ini}–${S.fin}`, 'aurum', `AURUM · L de la semana (${S.min}′: lo que no cupo ${aurumLCupoDe(S)})`, pasos, recursos,
     'cada tramo leído o escuchado, con su marca (página o minuto) en la nota ◆ del día',
-    { aviso: `Sábado ${S.ini}, antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo en las 14:15 de esta semana${sabadoLibre(addDias(iso, -7)) && [...aurumF1().dias.values()].some((r) => { const x = fechaRealDe(r.fecha, 'aurum'); return x > addDias(iso, -13) && x < addDias(iso, -7); }) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
+    { aviso: S.dia && S.dia !== S.sab ? `Domingo ${S.ini}, al terminar la sesión de AURUM de hoy y antes del baile (17:00): la lectura L de AURUM que no cupo en las 14:15 de esta semana ni en la sesión del sábado (el sábado ya no tenía sitio antes de la rutina de las 05:45). Ya no queda nada como «lectura de huecos» sin fecha.` : `Sábado ${S.ini}, ${S.ini !== '04:15' ? 'al terminar la sesión de AURUM de hoy y ' : ''}antes de la rutina (05:45-07:15) y del gimnasio (08:30): la lectura L de AURUM que no cupo ${aurumLCupoDe(S) === 'a las 14:15' ? 'en las 14:15 de esta semana' : 'en su sesión'}${S.ini !== '04:15' ? ' ni en la sesión de hoy' : ''}${sabadoLibre(addDias(iso, -7)) && [...aurumF1().dias.values()].some((r) => { const x = fechaRealDe(r.fecha, 'aurum'); return x > addDias(iso, -13) && x < addDias(iso, -7); }) ? ` y de la anterior (el ${fCorta(addDias(iso, -7))} no hubo sesión: viaje)` : ''}. Ya no queda nada como «lectura de huecos» sin fecha.` });
 }
 /** v6.05 (fix 24-oct-2026): AURUM en F4 (SERUMS) = 30′ en el TIEMPO MUERTO del turno, justo DESPUÉS de los 30′ de R↔D (DJ-4), y no a la franja
  *  nominal 14:15–14:45 de F2/F3 (en el turno M chocaba con el almuerzo 13:40-14:30 y con el bloque B del Step 1 14:30-16:00). `rd` = bloque R↔D
@@ -1852,7 +1890,7 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     //   escribe la hora que, tras moverGuia, se lee como la real (horaTrasMover); con la hora real fuera de la franja (dom 6-dic 07:15), igual que antes
     const horaTrasMover = (h: string): string => { const d = aMin(fxA!.ini) - aMin('14:15'), w = aMin(h) - d; return w >= aMin('14:15') && w <= aMin('15:15') ? aHHMM(w) : h; };
     if (fxA) avisos.unshift(extraOtroDia(iso, fxA) && faseV6(fxA.real) !== 'TRANSICION'
-      ? `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden${aurumLSabadoDe(fxA.real) ? ', al terminar la L de la semana' : ''}; desde el lunes, una por día. Mismo reparto que entre semana.` // v6.11 fase 2
+      ? `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden${(() => { const lS = aurumLSabadoDe(fxA.real); return lS ? (aMin(lS.ini) >= aMin(fxA.fin) ? ', antes de la L de la semana' : ', al terminar la L de la semana') : ''; })()}; desde el lunes, una por día. Mismo reparto que entre semana.` // v6.11 fase 2 · v6.11 (mar 24-nov): la L del sáb 28-nov va detrás
       : extraOtroDia(iso, fxA)
       ? `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden (su día de plan ya tiene otra lección de AURUM: nada se compacta). Mismo reparto que entre semana.`
       : `Hoy ${DIA_LARGO[dow(fxA.real)]}, a hora fija (${horaTrasMover(fxA.ini)}-${horaTrasMover(fxA.fin)}): la lección que toca en orden (el mar 17-nov fue sin sesión y cada lección de F1 corrió un día; desde el D${a.d + 1}, las fechas de siempre). Misma hora y mismo reparto que entre semana.`);
@@ -2314,7 +2352,8 @@ function bizOutputsDeSemana(sabado: string): Array<{ r: DiaBiz; entero: boolean 
   const prev = addDias(sabado, -7);
   if (sabSinCierreDe(prev)) out.push(...bizOutputsDeSemana(prev)); // v6.11: + el sábado con Business a hora fija (sáb 2-ene), sin cierre propio
   // v6.11 (lun 23-nov-2026): los OUTPUT cuyo día REAL cae en la semana de este sábado (sabCierreDe; sin alias = los de su semana de plan, como siempre)
-  for (const r of BIZ_DIAS.filter((x) => bizModo(x) === 'OUTPUT' && x.fecha >= addDias(sabado, -40) && x.fecha < sabado && sabCierreDe(x.fecha) === sabado)
+  // v6.11 (mar 24-nov): salvo el OUTPUT que va ENTERO un domingo a hora fija (bizOutputEnteroDomingo: el OUTPUT S1, dom 29-nov 14:00): no tiene cierre de sábado
+  for (const r of BIZ_DIAS.filter((x) => bizModo(x) === 'OUTPUT' && x.fecha >= addDias(sabado, -40) && x.fecha < sabado && sabCierreDe(x.fecha) === sabado && !bizOutputEnteroDomingo(x.fecha))
     .sort((a, b) => (fechaRealDe(a.fecha, 'business') < fechaRealDe(b.fecha, 'business') ? -1 : 1))) out.push({ r, entero: outputEnteroAlSabado(r.fecha) }); // v6.06: + SIM 100Q 11:00 de F2 · v6.07 (fix): solo en viernes
   return out;
 }
@@ -2413,6 +2452,9 @@ export function bizFranjaDe(iso: string, hIso: string = iso): { ini: string; fin
     if (w >= 1 && w <= 5) { const c = bizCierreDe(addDias(iso, 6 - w)); if (c && c.fecha === iso) return { ini: c.ini, fin: c.fin, cierre: true }; }
     return null;
   }
+  // v6.11 (mar 24-nov): el OUTPUT que va ENTERO un domingo a hora fija (dom 29-nov 14:00-14:40) = 40′ en la franja L-V de plan (13:00-13:40): plantillasV6 ›
+  //   bloqueCorrido la lleva a su hora real
+  if (bizModo(r) === 'OUTPUT' && bizOutputEnteroDomingo(iso)) return { ini: '13:00', fin: '13:40' };
   const h = hitoDe(hIso);
   if (h?.nbme) return bizModo(r) === 'OUTPUT' ? null : { ini: '12:30', fin: '12:55' };
   // v6.06 (31-oct-2026): el SIM 100Q de las 11:00 de F2 (SIM_F2_11) empuja el SYNAPSE a 13:00-13:30 → un OUTPUT ese viernes va ENTERO al
@@ -2469,7 +2511,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     const nArr = (c ? c.outs : []).filter((o) => arrastrado(o.r)).length; // v6.09
     const nSolo = c ? c.soloTracker.length : 0; // v6.09
     const aviso = nSolo && c && !c.outs.length
-      ? `Hoy, solo la fila del tracker de la semana del ${c.soloTracker.map((x) => fCorta(lunesDeIso(addDias(x, -5)))).join(' y ')} (el ${c.soloTracker.map(fCorta).join(', ')} no hubo sesión: viaje): ${10 * nSolo}′ = ${f.ini}-${f.fin}. El OUTPUT de esta semana de lecturas va el ${(() => { const o = BIZ_DIAS.find((x) => bizModo(x) === 'OUTPUT' && fechaRealDe(x.fecha, 'business') > iso); return o ? `${fCorta(o.fecha)} y su cierre, el ${fCorta(sabCierreDe(o.fecha))}` : 'día que diga el plan'; })()}.`
+      ? `Hoy, solo la fila del tracker de la semana del ${c.soloTracker.map((x) => fCorta(lunesDeIso(addDias(x, -5)))).join(' y ')} (el ${c.soloTracker.map(fCorta).join(', ')} no hubo sesión: viaje): ${10 * nSolo}′ = ${f.ini}-${f.fin}. El OUTPUT de esta semana de lecturas va el ${(() => { const o = BIZ_DIAS.find((x) => bizModo(x) === 'OUTPUT' && fechaRealDe(x.fecha, 'business') > iso); return o ? (bizOutputEnteroDomingo(o.fecha) ? `${fCorta(o.fecha)} a las ${bizOutputEnteroDomingo(o.fecha)!.ini}, entero (con su fila del tracker y su cierre)` : `${fCorta(o.fecha)} y su cierre, el ${fCorta(sabCierreDe(o.fecha))}`) : 'día que diga el plan'; })()}.`
       : nSolo && c
       ? `Hoy van DOS filas del tracker: la de la semana del ${c.soloTracker.map((x) => fCorta(lunesDeIso(addDias(x, -5)))).join(' y ')} (el ${c.soloTracker.map(fCorta).join(', ')} no hubo sesión: viaje) y la del ${c.outs.map((o) => `${o.r.lectura.split(':')[0].split(' · ')[0]} (D${o.r.d} ${o.r.wd.toLowerCase()} ${Number(o.r.fecha.slice(8))})`).join(' · ') || 'OUTPUT de esta semana'} + el cierre de su página: ${10 * nSolo + c.outs.reduce((a, o) => a + (o.entero ? 40 : 15), 0)}′ = ${f.ini}-${f.fin}${aMin(f.ini) < aMin(revisionIniDe(iso)) ? `, antes del gimnasio (08:30) y de la revisión de las ${revisionIniDe(iso)}` : ''}.`
       : nArr && c
@@ -2504,8 +2546,11 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
   // v6.10: domingo de recuperación a hora fija (dom 29-nov 05:00-05:25) — la hora real va escrita (fuera de la franja L-V que moverGuia desplaza)
   // v6.10c: también el sábado (sáb 2-ene 21:30-21:55, la última lectura de F1, tras el SYNAPSE de las 21:00)
   const fx = franjaExtraDe(iso, 'business'); // v6.10w: por fecha de plan
+  // v6.11 (mar 24-nov): el OUTPUT que va ENTERO un domingo a hora fija (dom 29-nov 14:00-14:40: el OUTPUT S1; el mar 24 no tuvo Business y su frente corrió un día)
+  const entD = modo === 'OUTPUT' ? bizOutputEnteroDomingo(iso) : null;
+  if (entD) avisos.push(`Hoy domingo, a hora fija (${entD.ini}-${entD.fin}): el OUTPUT ENTERO (40′: escribir + la fila del tracker de su semana + cerrar); el sábado no tuvo hueco para el OUTPUT y su cierre. Desde el lunes, una sesión por día.`);
   // v6.11 fase 2: el OUTPUT del sábado de F1 que recupera (sáb 28-nov 07:15: OUTPUT S1 1/2) va justo antes de su cierre del mismo sábado
-  if (fx && extraOtroDia(iso, fx) && faseV6(fx.real) !== 'TRANSICION') { const cX = bizCierreDe(fx.real); avisos.push(modo === 'OUTPUT' ? `Va a hora fija (${fx.ini}-${fx.fin})${cX && cX.fecha === fx.real ? `, justo antes de su cierre de las ${cX.ini}` : ''}; desde el lunes, una sesión por día.` : `Hoy ${DIA_LARGO[dow(fx.real)]}, a hora fija (${fx.ini}-${fx.fin}): la lectura que toca en orden; desde el lunes, una sesión por día.`); }
+  else if (fx && extraOtroDia(iso, fx) && faseV6(fx.real) !== 'TRANSICION') { const cX = bizCierreDe(fx.real); avisos.push(modo === 'OUTPUT' ? `Va a hora fija (${fx.ini}-${fx.fin})${cX && cX.fecha === fx.real ? `, justo antes de su cierre de las ${cX.ini}` : ''}; desde el lunes, una sesión por día.` : `Hoy ${DIA_LARGO[dow(fx.real)]}, a hora fija (${fx.ini}-${fx.fin}): la lectura que toca en orden; desde el lunes, una sesión por día.`); }
   else if (fx && extraOtroDia(iso, fx)) avisos.push(`Hoy ${DIA_LARGO[dow(fx.real)]}, a hora fija (${fx.ini}-${fx.fin}${dow(fx.real) === 6 && fx.ini >= '21:00' ? ', al terminar el SYNAPSE de las 21:00' : ''}): la lectura que toca en orden (su día de plan ya tiene otra lectura de Business: nada se compacta).`);
   else if (fx) avisos.push(dow(fx.real) === 6
     ? `Hoy sábado, a hora fija (${fx.ini}-${fx.fin}, al terminar el SYNAPSE de las 21:00): la lectura que toca en orden (el mar 17-nov fue sin sesión y cada lectura de F1 corrió un día hasta fin de año: hoy, la última de F1; desde el lunes, las fechas de siempre).`
@@ -2534,6 +2579,19 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     }
   }
   if (h?.nbme && nbmeReal) avisos.push(AV_NBME);
+  // v6.11 (mar 24-nov): OUTPUT ENTERO un domingo a hora fija (bizOutputEnteroDomingo; dom 29-nov 14:00-14:40) = escribir + tracker de su semana + cerrar, sin cierre de sábado
+  //   (sin fechas en los textos: la app traduce las fechas de plan de Business a su día real)
+  if (modo === 'OUTPUT' && entD) {
+    const nomE = nomLecturaDe(r.lectura) === r.lectura.split(':')[0] ? r.lectura.split(':')[0] : (/^OUTPUT (?:S\d+|extra)/.exec(r.lectura)?.[0] ?? nomLecturaDe(r.lectura));
+    const pasos = [
+      P(1, `${/^OUTPUT/.test(r.lectura) ? nomLecturaDe(r.lectura) : `OUTPUT · ${nomLecturaDe(r.lectura)}`} (entero)`, 'Lee el entregable y la acción. Hoy va entero: escribir, la fila del tracker y cerrar.'),
+      P(25, `Escribir: ${r.lectura}`, `Página nueva en Obsidian › 02_EMPRESA FINANZAS › 01_PULSO. ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00). Terminado > perfecto.`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
+      P(10, `TRACKER semanal (1 fila) del ${nomE}: sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · score ≥ 85 % · lecturas L 4/4 · output 1`, 'Con la semana que acaba hoy (los mismos datos que la revisión semanal de ayer).', { t: '◆ 01_PULSO', url: PULSO_OBS }),
+      P(4, `Releer la página del ${nomE} y cerrarla`, 'Corrige 1 cosa; ✓ en Empresa › Business › HOY.'),
+    ];
+    return bloque(franja, 'business', `BUSINESS D${r.d} · ${nomLecturaDe(r.lectura)} (entero)`, pasos, recursos, 'página del OUTPUT escrita y cerrada + fila del tracker semanal',
+      { aviso: [...avisos, bizBaseCeroDe(r) ?? ''].filter(Boolean).join(' ') });
+  }
   if (modo === 'OUTPUT') {
     const pasos = [
       P(1, `${/^OUTPUT/.test(r.lectura) ? nomLecturaDe(r.lectura) : `OUTPUT · ${nomLecturaDe(r.lectura)}`}`, 'Lee el entregable y la acción.'),

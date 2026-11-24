@@ -7,7 +7,7 @@
 > y redactar en nov-dic con el CARE). La tabla real se rellena en el átomo CR-1 en `_privado/caso_candidatos.md` (fuera del repo; aquí, solo
 > el estado de cada caso) y este fichero es el punto de partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ Vigente (fechas reales; esta línea la escribe `DATA/_scripts/gen_research_plan.js`):** M1 mié 25-nov-2026 (WhatsApp al asesor; punto 3 = el caso) · C-3 mié 16-dic-2026: recordatorio si no ha respondido · plazo del caso jue 24-dic-2026 (sin caso → fuente B, §2) · CR-1 lun 28-dic-2026 · CR-2 jue 31-dic-2026.
+> **✅ Vigente (fechas reales; esta línea la escribe `DATA/_scripts/gen_research_plan.js`):** M1 jue 26-nov-2026 (WhatsApp al asesor; punto 3 = el caso) · C-3 mié 16-dic-2026: recordatorio si no ha respondido · plazo del caso jue 24-dic-2026 (sin caso → fuente B, §2) · CR-1 lun 28-dic-2026 · CR-2 jue 31-dic-2026.
 >
 > **⏸ v6.10c (historial; mar 17-nov-2026 · D1 del régimen mié 18-nov; 17:20: el día que sobra va entero al sáb 2-ene): el mar 17 (día-Research) no se estudió → M1
 > pasa al JUE 19-NOV** (la 1.ª sesión Research, donde se pide el caso) y los átomos de F1 corren una ranura-Research hasta fin de año: T-1 lun 7-dic ·

@@ -859,8 +859,13 @@ const ALIAS_INV = (() => {
 // v6.11 (lun 23-nov-2026 · «a partir del día 24 iniciamos todo»): el lun 23 también fue sin sesión y el alias global corre un hábil → la fila del mar 24 de plan
 //   se hace el lun 30 (después del dom 29) y sale de la cadena de la semana 1: mar 24 (fila del mié 18) → … → vie 27 (fila del lun 23) → sáb 28 21:00 → dom 29
 //   05:00-05:30; la fila del mar 24 vuelve a llevar su propio contenido el lun 30.
+// v6.11 (mar 24-nov-2026, orden de Joseph de las 10:00 «hoy solo ENCAPS»): el mar 24 tampoco tuvo SYNAPSE (alias_frente.synapse.sin_sesion) y su alias propio corre
+//   un día (mié 25 = fila del mié 18 … vie 27 = fila del vie 20): la semana 1 acaba en una sesión a hora fija el sáb 28 04:15-04:45 (antes del AURUM de las 04:45)
+//   y la fila del lun 23, sin día real, abre la cadena «mar 24» (gen_fechas_v6.FILAS_FUERA_CORRIDA): su contenido, el sáb 28 a las 21:00, y el de la fila del sáb 28,
+//   el dom 29 05:00-05:30, como ya estaba. El sáb 28 hace dos sesiones (04:15 y 21:00), en orden de plan.
 const CADENAS_V610W = [
-  { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
+  { id: 'semana 1', motivo: 'el dom 22-nov fue sin sesión', filas: ['2026-11-22', '2026-11-18', '2026-11-19', '2026-11-20'], rec: { fecha: '2026-11-28', ini: '04:15', fin: '04:45' } },
+  { id: 'mar 24', motivo: 'el mar 24-nov fue sin SYNAPSE', filas: ['2026-11-23', '2026-11-28'], rec: { fecha: '2026-11-29', ini: '05:00', fin: '05:30' } },
   // v6.11 fase 2: semana 2 — el SYNAPSE recupera el hábil que perdió con el lun 23: la fila del mar 1-dic (sin día real: el alias propio del SYNAPSE es el de la
   //   v6.10w desde el lun 7-dic) la hace el sáb 5-dic a las 21:00 y la del sáb 5, el dom 6-dic 05:00-05:30 (como la cadena del dom 29). El SYNAPSE no hace dos
   //   sesiones el mismo día.
@@ -876,7 +881,10 @@ const CADENAS_V610W = [
   for (const p of Object.keys(FF)) if (!ab.some((c) => c.filas[0] === p)) throw new Error(`v6.11 · FILAS_FUERA_CORRIDA.synapse ${p}: no abre ninguna cadena`);
 }
 // día REAL de cada fila de una cadena (para el orden de las A-units): la fila k la hace el día real de la fila k+1 (la última, la sesión a hora fija)
-const REAL_CADENA = new Map(CADENAS_V610W.flatMap((c) => c.filas.map((f, k) => [f, (k + 1 < c.filas.length ? (ALIAS_INV.get(c.filas[k + 1]) || c.filas[k + 1]) : c.rec.fecha) + (k + 1 < c.filas.length ? '' : 'T' + c.rec.ini)])));
+// v6.11 (mar 24-nov): una fila de SÁBADO sin alias (su sesión es la de las 21:00) lleva su hora («T21:00»), para ordenarse detrás de una sesión a hora fija de ese
+//   mismo sábado (sáb 28-nov 04:15, la última de la cadena «semana 1»)
+const horaSab = (f) => (!ALIAS_INV.has(f) && new Date(f + 'T12:00:00Z').getUTCDay() === 6 ? 'T21:00' : '');
+const REAL_CADENA = new Map(CADENAS_V610W.flatMap((c) => c.filas.map((f, k) => [f, (k + 1 < c.filas.length ? (ALIAS_INV.get(c.filas[k + 1]) || c.filas[k + 1]) + horaSab(c.filas[k + 1]) : c.rec.fecha) + (k + 1 < c.filas.length ? '' : 'T' + c.rec.ini)])));
 // v6.11: una fila cuyo plan se quedó SIN DÍA real (gen_fechas_v6.planesSinDia: el mié 30-dic) va, para el orden, tras el último día del alias (sin hueco en la
 //   progresión de los días que sí tienen día real; su A-unit es la siguiente y la coloca otra ronda)
 const SIN_DIA_SYN = new Set(require('./gen_fechas_v6').planesSinDia());

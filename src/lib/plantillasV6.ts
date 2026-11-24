@@ -156,7 +156,7 @@ import { LIV_META, livDiaDe } from './livianoStudyPlan';
 import { SYN_PLAN_META, synColaDe, SYN_COLA_POST_STEP1, synRecsDe } from './synapseDailyPlan'; // v6.10w: + synRecsDe (dom 3-ene: dos sesiones a hora fija) // v6.09b lote 1-ter: + la cola del SYNAPSE de F1 con franja real
 import { VIBE_META, vibePCDomingo, vibeDiaDe } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
-import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
+import { bizFranjaDe, bizOutputEnteroDomingoDe, synCadenaNombreDe, guiaShipDe, guiaFeynmanDe, guiaSynapseDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4, revisionIniDe, SIM_QUINCENA_F2, REPASO_QUINCENA_F2, COLA_F2, bizAvisoOutputEnteroDe, aurumLSabadoDe, guiaRevisionDe, revisionSabadoDe, revisionFicheroDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4 · v6.07: SYNAPSE del sábado y revisión 14:00 · v6.07 (fix): quincena final del ENCAPS · v6.07 (fix 3): franja de la corrección del SIM 11:00
 import { encapsMananaDe, theomedSabadoDe, encapsDomingoDe, encapsRecuperaDe, encapsRecuperasDe, ENCAPS_MANANA_FECHAS } from './encapsManana'; // v6.07: mañana ENCAPS (lun · mié · vie) + clase EN VIVO del sábado + ENCAPS opcional del domingo
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
 import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
@@ -398,6 +398,12 @@ function bloqueSynCola(iso: string): BloqueV6[] {
   const post = SYN_COLA_POST_STEP1.some((x) => x.fecha === iso);
   return [bloque('syn-cola', c.ini, c.fin, post ? `SYNAPSE · cola post-Step 1 (${c.min}′: lo que no cupo en su día, nov-2026 → ene-2027)` : `SYNAPSE · audio que no cupo en los comodines del sábado (${c.min}′)`, 'synapse', 'synapse')];
 }
+/** v6.11 (mar 24-nov-2026): una sesión de una CADENA del SYNAPSE se nombra por su fila: «la sesión del sáb 28-nov»; una fila de L-V (la cadena «semana 1» acaba en
+ *  la sesión del sáb 28-nov 04:15 con la fila del vie 20), «plan del vie 20-nov» (corridaTexto no traduce «plan del …»; con el alias global, «la sesión del vie 20-nov» se
+ *  leía «del jue 26-nov»). */
+//   · remate r24: «plan del lun 23-nov», el plan que el alias propio del SYNAPSE deja sin día hábil y cuya sesión va ese día (rutinaGuia.synCadenaNombreDe); «plan del vie 20-nov»
+//   repetía el nombre del vie 27
+const sesionCadenaTxt = (r: { fecha: string; plan: string }): string => synCadenaNombreDe(r);
 /** v6.10 (17-nov-2026): hora L-V de cada frente en F1 (la de su guía; Business la da rutinaGuia.bizFranjaDe) para el desfase de corrida_s1.extra. */
 const EXTRA_INI_LV: Record<string, string> = { vibecoding: '04:15', 'research-derma': '13:30', aurum: '14:15', mir: '15:15', encaps: '16:15', liviano: '17:15' };
 /** v6.10 (17-nov-2026): BLOQUES QUE UN FIN DE SEMANA RECUPERA A HORA FIJA (_fechas_v6.json › corrida_s1.extra: sáb 28-nov vibecoding 05:00 + SYNAPSE 07:15 ·
@@ -423,13 +429,13 @@ function bloquesExtraDe(iso: string): BloqueV6[] {
         // v6.10w: TODAS las sesiones a hora fija de ese día (synapseDailyPlan.SYN_REC_F1): dom 29-nov 05:00 = la del sáb 28 (la semana 1 corrió una sesión) ·
         //   dom 3-ene 05:00 = la del sáb 2-ene + 11:30 la recuperación del mar 17; sin sesiones en el plan, la franja de corrida_s1.extra
         const rs = synRecsDe(iso);
-        const nomRec = (r: { cadena?: string; plan: string }): string => r.cadena ? `SYNAPSE · 30' (A pantalla · B audio · C lectura) · la sesión del ${fCorta(r.plan)}` : `SYNAPSE · 30' de recuperación (A pantalla · B audio · C lectura)${recPerd}`;
+        const nomRec = (r: { cadena?: string; fecha: string; plan: string }): string => r.cadena ? `SYNAPSE · 30' (A pantalla · B audio · C lectura) · ${sesionCadenaTxt(r)}` : `SYNAPSE · 30' de recuperación (A pantalla · B audio · C lectura)${recPerd}`;
         if (rs.length) rs.forEach((r, i) => out.push(bloque(i === 0 ? 'syn-rec' : 'syn-rec2', r.ini, r.fin, nomRec(r), 'synapse', 'synapse')));
         else out.push(bloque('syn-rec', x.ini, x.fin, `SYNAPSE · 30' de recuperación (A pantalla · B audio · C lectura)${recPerd}`, 'synapse', 'synapse'));
         continue;
       }
       case 'vibecoding': b = bloque('vibe', iniLV, finLV(), `IA · VIBECODING con Claude Code (1 proyecto real/semana)${p !== iso ? rec : vibeDiaDe(p)?.paso.startsWith('[') ? ' · semana deload repartida' : rec}`, 'vibecoding', 'vibecoding'); break;
-      case 'business': iniLV = bizFranjaDe(p)?.ini ?? '13:00'; b = bloque('biz', iniLV, finLV(), `BUSINESS · Estudio Pulso (1 tramo del libro + acción)${rec}`, 'business', 'business'); break;
+      case 'business': iniLV = bizFranjaDe(p)?.ini ?? '13:00'; b = bloque('biz', iniLV, finLV(), `BUSINESS · ${bizOutputEnteroDomingoDe(p) ? 'OUTPUT entero (escribir + tracker + cerrar)' /* v6.11 (mar 24-nov): dom 29-nov 14:00, el OUTPUT S1 */ : 'Estudio Pulso (1 tramo del libro + acción)'}${rec}`, 'business', 'business'); break;
       case 'research-derma': { const r = bloqueRD(p, iniLV, min); b = { ...r, nombre: `${r.nombre}${rec}` }; break; }
       case 'aurum': b = bloque('aurum', iniLV, finLV(), `AURUM · closer de ventas (${min}')${rec}`, 'aurum', 'aurum'); break;
       case 'mir': b = bloque('mir', iniLV, finLV(), `${mirNombreF1(p)}${rec}`, 'mir', 'mir'); break;
@@ -451,7 +457,7 @@ function notaExtraDe(iso: string): string | null {
   //   o con la semana 1 corrida (dom 29-nov 05:00 = el SYNAPSE del sáb 28), la nota dice qué hace cada bloque y por qué, sin «recupera el mar 17»
   if (xs.some((x) => x.plan !== iso) || synRecsDe(iso).some((r) => r.cadena)) {
     const lista = xs.flatMap((x) => (x.frente === 'synapse' && synRecsDe(iso).length
-      ? synRecsDe(iso).map((r) => `${r.ini}-${r.fin} SYNAPSE (${r.cadena ? `la sesión del ${fCorta(r.plan)}` : `recupera el ${fCorta(r.plan)}`})`)
+      ? synRecsDe(iso).map((r) => `${r.ini}-${r.fin} SYNAPSE (${r.cadena ? sesionCadenaTxt(r) : `recupera el ${fCorta(r.plan)}`})`)
       : [`${x.ini}-${x.fin} ${ETQ_EXTRA[x.frente] ?? x.frente}${x.plan !== iso ? ` (plan del ${fCorta(x.plan)})` : ''}`]))
       // v6.11 fase 2 (remate, revisión «textos» BAJA): el sábado de una cadena del SYNAPSE (sáb 28-nov · sáb 5-dic) su sesión de siempre lleva la que toca en orden y la
       //   suya va mañana a hora fija: se dice aquí (antes el sábado no lo nombraba y el domingo decía «la sesión del sáb …», que se leía como la de anoche)
@@ -965,7 +971,9 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         : `ENCAPS · MAÑANA ${amD.n}/${amD.de} · DOMINGO DE PLAN (teoría Theomed → post-test → banqueo → corrección → tarjetas)`, 'encaps', 'encaps', i === 0 ? amD.domingoPlan : undefined)),
       hD ? bloque('encaps-pm', hD.tarde[0], hD.tarde[1], 'ENCAPS · cifras, normas y flashcards (hora fija: al terminar la mañana)', 'encaps', 'encaps')
         : bloque('encaps-pm', null, null, 'ENCAPS · cifras, normas y flashcards (flexible: a las 17:00 está el baile)', 'encaps', 'encaps', undefined, 45, 'flexible · 45′'),
-    ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...bloquesExtraDe(iso) /* v6.10 */, ...extrasDomingo(iso)];
+    ] : []), ...(recD ? [bloque('encaps-rec', recD.ini, recD.fin, recD.nombre, 'encaps', 'encaps', recD.tema)] : []), ...bloquesExtraDe(iso) /* v6.10 */, ...extrasDomingo(iso),
+      // v6.11 (mar 24-nov): la «L de la semana» de AURUM que el sábado no tuvo sitio para hacer, detrás de su sesión a hora fija del domingo (dom 29-nov 15:40)
+      ...(() => { const l = aurumLSabadoDe(iso); return l ? [bloque('aurum-l', l.ini, l.fin, `AURUM · L de la semana (${l.min}′: lo que no cupo ${l.cupo})`, 'aurum', 'aurum')] : []; })()];
     const notasD = ["Anki ≤15' opcional (no se registra)."];
     const trTxt = trD.map(([a, z]) => `${a}-${z}`).join(' y ');
     // v6.09 (fix 2): la nota del domingo de plan va PRIMERA (empieza a las 04:15 como entre semana), antes de la de los bloques flexibles
@@ -1064,7 +1072,7 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
         //   14:30 las tres tandas de 10Q del banqueo + 07:15 el Theoesencial) → un bloque «encaps-rec» por hora; TodayMission busca la guía de cada uno por su hora (guiaEncapsRecuperaDe(iso, ini))
         const recsS = encapsRecuperasDe(iso);
         return out('F1-sáb', viv?.vivo ? `Sábado · THEOMED EN VIVO 15:00 (${viv.vivo}) + revisión 14:00` : 'Sábado · revisión semanal 14:00 (hoy sin clase en vivo)',
-          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo a las 14:15)`, 'aurum', 'aurum')] : []),
+          [SABADO_REVISION(iso), ...extrasSabado(iso, true), ...bloquesTheomedSabado(iso), ...(auL ? [bloque('aurum-l', auL.ini, auL.fin, `AURUM · L de la semana (${auL.min}′: lo que no cupo ${auL.cupo})`, 'aurum', 'aurum')] : []),
             ...(fxU ? [bloque('anki-fsrs', fxU.ini, fxU.fin, fxU.nombre, 'usmle', 'usmle-anki', fxU.detalle)] : []),
             ...recsS.map((r) => bloque('encaps-rec', r.ini, r.fin, r.nombre, 'encaps', 'encaps', r.tema)), ...bloquesExtraDe(iso)],
           nxS ? { notas: [nxS] } : {});
@@ -1319,7 +1327,11 @@ function plantillaDelDiaCorrida(iso: string, turno?: Turno): PlantillaDia {
     }).join('; ');
     // v6.11 (mar 24-nov): el frente sin sesión hoy lo dice en la misma nota, con el día REAL en que se hace su fila (la del plan de hoy)
     const ETQ_F: Record<string, string> = { vibecoding: 'el vibecoding de las 04:15', synapse: 'el SYNAPSE', business: 'Business', 'research-derma': 'Research ↔ Derma', aurum: 'AURUM', mir: 'MIR', liviano: 'LIVIANO' };
-    const sinTxt = sinHoy.map((fr) => `${ETQ_F[fr] ?? fr}, que hoy no tiene sesión (su sesión va el ${fCorta(fechaRealDe(fechaPlanDe(iso, fr), fr))})`).join('; ');
+    // v6.11 (mar 24-nov · orden «hoy solo ENCAPS»): los frentes sin sesión que la hacen el mismo día van juntos, en el orden del día (04:15 · 12:30 · 13:00 · 13:30 · 14:15)
+    const ORDEN_F = ['vibecoding', 'synapse', 'business', 'research-derma', 'aurum', 'mir', 'liviano'];
+    const sinG = new Map<string, string[]>();
+    for (const fr of [...sinHoy].sort((a, b) => ORDEN_F.indexOf(a) - ORDEN_F.indexOf(b))) { const d = fCorta(fechaRealDe(fechaPlanDe(iso, fr), fr)); sinG.set(d, [...(sinG.get(d) ?? []), ETQ_F[fr] ?? fr]); }
+    const sinTxt = [...sinG].map(([d, ns]) => `${yLista(ns)}, que hoy no ${ns.length > 1 ? 'tienen sesión (sus sesiones van' : 'tiene sesión (su sesión va'} el ${d})`).join('; ');
     const salvoT = [salvo, sinTxt].filter(Boolean).join('; ');
     return {
       ...p, fecha: iso, corrida: 'alias', bloques: ordenar(bsA),

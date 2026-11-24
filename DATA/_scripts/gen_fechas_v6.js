@@ -453,8 +453,10 @@ const FRENTES_CORRIDA = ['encaps', 'synapse', 'vibecoding', 'business', 'researc
  *  CADENAS_V610W: la 1.ª fila de una cadena no tiene día real y su contenido lo hace la fila siguiente) y la semana deload S7 del vibecoding (gen_vibecoding_plan.js
  *  la reparte por capacidad desde el sáb 2-ene). { frente: { fecha de plan: { real (el día en que empieza), como } } }; gen_synapse_plan.js comprueba que sus
  *  cadenas son estas. */
+// v6.11 (mar 24-nov-2026, orden de Joseph «hoy solo ENCAPS»): + la fila del lun 23-nov del SYNAPSE (el mar 24 no tuvo SYNAPSE y su alias propio corre un día:
+//   mié 25 = mié 18 … vie 27 = vie 20) = cadena «mar 24»: su contenido lo hace la sesión del sáb 28-nov 21:00 (y la del sáb 28, el dom 29 05:00; gen_synapse_plan.js)
 const FILAS_FUERA_CORRIDA = {
-  synapse: { '2026-12-01': { real: '2026-12-05', como: 'sáb 5-dic 21:00 (cadena «semana 2»; la del sáb 5, el dom 6 05:00)' }, '2026-12-31': { real: '2027-01-02', como: 'sáb 2-ene 21:00 (cadena «transición»; la del sáb 2, el dom 3 05:00)' } },
+  synapse: { '2026-11-23': { real: '2026-11-28', como: 'sáb 28-nov 21:00 (cadena «mar 24»: el mar 24 fue sin SYNAPSE; la del sáb 28, el dom 29 05:00)' }, '2026-12-01': { real: '2026-12-05', como: 'sáb 5-dic 21:00 (cadena «semana 2»; la del sáb 5, el dom 6 05:00)' }, '2026-12-31': { real: '2027-01-02', como: 'sáb 2-ene 21:00 (cadena «transición»; la del sáb 2, el dom 3 05:00)' } },
   vibecoding: { '2026-12-31': { real: '2027-01-02', como: 'semana deload S7 repartida por capacidad desde el sáb 2-ene (gen_vibecoding_plan.js)' } },
 };
 /** v6.11 fase 2 · fechas de PLAN que hace cada día real para un `frente`: Map(fecha de plan → [{ real, mueve }]) con el alias global (o el alias_frente de ese
