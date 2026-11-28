@@ -118,6 +118,10 @@
 // v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL, sin recuperación por partes): el hábil extra pasa al SÁB 2-ENE 04:15-04:30
 //   (corrida_s1.extra['2027-01-02'].vibecoding): S1 mié 18 → mar 24-nov · S2 mié 25-nov → mar 1-dic · … · S6 mié 23 → mié 30-dic · S7 jue 31-dic → mié
 //   6-ene con su k2 (deload 15′) el sáb 2-ene → desde el lun 4-ene (S7 k3) todo idéntico; los SHIP de los domingos no se mueven (29-nov … 3-ene).
+// v7.00 (sáb 28-nov-2026 · REORGANIZACIÓN FINAL, orden de Joseph: «del mar 24 al dom 29 no estudié; todo arranca el lun 30-nov»): START = lun 30-nov con
+//   _fechas_v6.json › corrida_s1 VACÍA (sin alias, alias_frente, en_ship ni hábiles extra) → los 95 pasos corren +8 hábiles: S1 lun 30-nov → vie 4-dic (semana
+//   ISO 2026-W49) con SHIP el dom 6-dic … S12 mié 17 → mar 23-feb (SHIP dom 28-feb) · taper S13 mié 24-feb → S20 lun 19-abr-2027. S14 cierra el mar 9-mar y su
+//   domingo es el ENCAPS (PROTEGIDO) → pcSab '' = SIN PC (antes solo pasaba con S20). Uso: node DATA/_scripts/gen_vibecoding_plan.js 2026-11-30   ·   --check
 const fs = require('fs');
 const path = require('path');
 
@@ -126,7 +130,7 @@ const ROOT = path.join(__dirname, '..', '..');
 //   sin escribir (exit 1 si alguno no está al día; mismo contrato que gen_aurum_plan.js --check). Antes «--check» se leía como START y abortaba.
 const ARGS = process.argv.slice(2);
 const CHECK = ARGS.includes('--check');
-const START = ARGS.find((a) => !a.startsWith('--')) || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el lun 4-ene igual que la v6.09; v6.10: sáb 28-nov) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = ARGS.find((a) => !a.startsWith('--')) || '2026-11-30'; // v7.00 (28-nov-2026 · reorganización final: del mar 24 al dom 29-nov no se estudió; TODO arranca el lun 30-nov; corrida_s1 vacía): S1 lun 30-nov → vie 4-dic (W49), SHIP dom 6-dic · taper hasta el lun 19-abr-2027 · v6.10c: '2026-11-18' // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el lun 4-ene igual que la v6.09; v6.10: sáb 28-nov) · v6.09: 2026-11-17 (16-nov-2026: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
 // v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
@@ -322,6 +326,20 @@ semanas.forEach((w, i) => {
 // v6.03 (20-oct-2026): un PC NO se desplaza a un día PROTEGIDO de _fechas_v6.json (S20 → sáb 13-mar = D-1 del ENCAPS): pcSab = ship. Hoy solo
 // afecta a S20, que (como S19) cae después del SYNAPSE y no tiene PC («PC = no»): gen_synapse_plan.js no desplaza los SHIP > FIN_PLAN.
 const PROTEGIDOS = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
+// v7.00 (corrector, 28-nov-2026): toda revisión citada en el catálogo (DATA/USMLE/REVISIONES/S<NN>_<sábado>.md) tiene el NN de gen_revision_semanal.js
+//   (S1 = semana del D1 de _fechas_v6.json › f1.inicio) y es la ÚLTIMA revisión anterior al día del paso que la cita (o la víspera del SHIP); antes el
+//   sensor del mié 3-mar citaba S13_2027-02-13 (numeración de la v6.08: S1 = semana del lun 16-nov)
+{
+  const F6r = require('./gen_fechas_v6').cargarFechasV6();
+  const lunesD1 = (() => { const d = new Date(F6r.f1.inicio + 'T12:00:00Z'); const w = d.getUTCDay(); d.setUTCDate(d.getUTCDate() + (w === 0 ? -6 : 1 - w)); return d.toISOString().slice(0, 10); })();
+  const nnDe = (sab) => Math.floor((new Date(sab + 'T12:00:00Z') - new Date(lunesD1 + 'T12:00:00Z')) / 86400000 / 7) + 1;
+  const txt = JSON.stringify(require(path.join(__dirname, '..', 'SYNAPSE', 'vibecoding_proyectos.json')));
+  for (const m of txt.matchAll(/REVISIONES\/S(\d{2})_(\d{4}-\d{2}-\d{2})\.md/g)) {
+    const nn = Number(m[1]), sab = m[2];
+    if (new Date(sab + 'T12:00:00Z').getUTCDay() !== 6) throw new Error(`v7.00 · revisión citada ${m[0]}: ${sab} no es sábado`);
+    if (nn !== nnDe(sab)) throw new Error(`v7.00 · revisión citada ${m[0]}: con S1 = semana del ${lunesD1} es la S${String(nnDe(sab)).padStart(2, '0')}`);
+  }
+}
 semanas.forEach((w) => { if (PROTEGIDOS.has(w.ship)) throw new Error(`S${w.s}: su SHIP (${w.ship}) cae en un día PROTEGIDO de _fechas_v6.json — resolverlo en el catálogo`); });
 semanas.forEach((w) => { if (SIN_SESION_VIBE.includes(w.ship)) throw new Error(`S${w.s}: su SHIP (${w.ship}) cae en un día SIN SESIÓN de corrida_s1 (v6.09)`); });
 taperSemanas.forEach((w, i) => {
@@ -656,7 +674,7 @@ md.push('');
 md.push('| S | Proyecto | Rotación | L-V | SHIP (dom PC) | Deload |');
 md.push('|---|---|---|---|---|---|');
 for (const p of P) { const w = semanas.find((x) => x.s === p.s); md.push(`| S${p.s} | ${p.nombre} | ${p.rotacion} | ${fmt(w.ini)} → ${fmt(w.fin)} | ${fmt(w.ship)} | ${p.deload ? '**sí (50%)**' : '—'} |`); }
-for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' ? fmt(w.pcSab) + ' (opcional 30\')' + (w.pcCon ? ` — cierra la misma semana que S${w.pcCon} (SHIP ${fmt(w.shipNominal)}): su PC propio va ${w.pcSab === addDays(w.shipNominal, 7) ? 'el domingo siguiente' : 'el ' + fmt(w.pcSab) + ', el primer domingo no protegido (v6.08)'}` : '') : 'opcional / no'} | **sí (${t.tipo})** |`); }
+for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' && !w.pcSab ? 'sin PC (su domingo es PROTEGIDO; v7.00)' : t.tipo === 'mantenimiento' ? fmt(w.pcSab) + ' (opcional 30\')' + (w.pcCon ? ` — cierra la misma semana que S${w.pcCon} (SHIP ${fmt(w.shipNominal)}): su PC propio va ${w.pcSab === addDays(w.shipNominal, 7) ? 'el domingo siguiente' : 'el ' + fmt(w.pcSab) + ', el primer domingo no protegido (v6.08)'}` : '') : 'opcional / no'} | **sí (${t.tipo})** |`); }
 md.push('');
 for (const p of P) {
   const w = semanas.find((x) => x.s === p.s);

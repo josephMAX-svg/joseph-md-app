@@ -52,7 +52,7 @@ const FLAG_GREEN = '#5FB98C';           // verde bandera armonizado (core/pathol
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return DIAS[0].fecha; }
+  catch { return DIAS_TODOS[0]!.fecha; } // v7.00: DIAS (F1) puede estar vacío (Step 1 en pausa desde el D1)
 }
 
 const TABS = [
@@ -71,7 +71,8 @@ export default function UsmleHub() {
   const iso = useHoyReal(); // c45 (A): repinta al cambiar el día real (medianoche, focus, visibilitychange)
   // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
   const pausa = enPausaStep1(iso);
-  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  // v7.00: en la pausa, la última fila de F1 o, sin filas de Step en F1, la próxima fila del plan (T1, el reinicio)
+  const hoyD = pausa ? (DIAS[DIAS.length - 1] ?? DIAS_TODOS[0])!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const posHoy = Math.max(1, DIAS_TODOS.findIndex((x) => x.d === hoyD) + 1);
   // v6.10r: UN solo contador de día = el de la navegación, la guía y el Home (etiquetaDiaUSMLE: «2/13» en F1 · «T5/218» en el tramo 2); antes la posición sobre 230 filas («1/230» junto a «Día 2/13»)
   const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);

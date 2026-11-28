@@ -23,6 +23,7 @@ import {
   carrilBDe, minisimAbsorbidoDe, examDateDe, examenProvisionalDe, examenRendidoDe, intensivaMetaDe, // v6.00: carril B 16:15 + examen PROVISIONAL / rendido
   pseudoCarrilB, esMiniSimRepuesto, CARRIL_B_REPOSICION_LABEL, CARRIL_B_REPOSICION_REGLA, // v6.01: mini-sim F1 repuesto en el carril B + regla de reposición desambiguada
   carrilSabadoDe, // v6.06: carril SÁBADO 09:30 de la intensiva (pendientes F1 que no caben en el carril B lun-jue)
+  carrilFinDeHoy, // v7.00: el carril del fin de semana de HOY (el del domingo si hoy es su domingo; si no, el del sábado)
   esClaveSabado,  // v6.06 (fix): sus ítems (D{dia}:s_*) van en su propio grupo y con su propio contador (no cuentan en el total del viernes)
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
@@ -419,7 +420,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const absorbido = minisimAbsorbidoDe(today);
   // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → su receta desde la pseudo-fila
   const recetaCB = carrilB?.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(today)) : null;
-  const carrilSab = carrilSabadoDe(today); // v6.06: carril SÁBADO 09:30-10:30 (pendiente F1 del sábado siguiente, en la fila de este viernes)
+  const carrilSab = carrilFinDeHoy(today); // v7.00: + carril DOMINGO // v6.06: carril SÁBADO 09:30-10:30 (pendiente F1 del sábado siguiente, en la fila de este viernes)
   // v6.06 (fix): su guía «qué · cuánto · cómo» (solo si la fila viva cuadra con la generada) · ¿hoy (Lima) es ese sábado? (entonces cuenta en el total)
   const guiaSab = carrilSab && sabadoEncapsCuadra(carrilSab.fecha, today.dia, carrilSab.cb.codigo) ? guiaEncapsSabadoDe(carrilSab.fecha) : null;
   const sabEsHoy = !!carrilSab && carrilSab.fecha === new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
@@ -833,7 +834,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       const semana = simDays.filter(x => x.tipo === 'mini_sim' && x.dia <= d.dia).length;
       return [{
         d, simN: rec?.simN ?? d.dia,
-        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}${esMiniSimRepuesto(d) ? ((d.extra as any)?.carril_sabado ? ' · REPOSICIÓN F1 (carril SÁBADO 09:30)' : ' · REPOSICIÓN F1 (carril B 16:15)') : ''}`, // v6.01: mini-sim F1 repuesto · v6.06: o en el carril SÁBADO
+        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}${esMiniSimRepuesto(d) ? ((d.extra as any)?.carril_sabado ? ' · REPOSICIÓN F1 (carril SÁBADO)' : (d.extra as any)?.carril_domingo ? ' · REPOSICIÓN F1 (carril DOMINGO)' : ' · REPOSICIÓN F1 (carril B 16:15)') : ''}`, // v6.01: mini-sim F1 repuesto · v6.06: o en el carril SÁBADO
         duracion: rec ? `${rec.segPorQ}s/Q · II ${rec.receta.II} I ${rec.receta.I} V ${rec.receta.V} III ${rec.receta.III} IV ${rec.receta.IV}` : '72s/Q',
         url: undefined as string | undefined, escala: 25 as 20 | 25 | 100,
       }];
@@ -1318,19 +1319,19 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   const prefill = (tp: TipoRonda) => {
     const se = today ? subEjeDe(today) : null;
     const sePrev = prevDay ? subEjeDe(prevDay) : null;
-    if (tp === 'mini_sim') { const cbm = carrilBDe(today) ?? (today?.tipo !== 'mini_sim' ? carrilSabadoDe(today)?.cb ?? null : null); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${subtemaCiego(cbm.subtema)}` : subtemaCiego(today?.subtema) || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
+    if (tp === 'mini_sim') { const cbm = carrilBDe(today) ?? (today?.tipo !== 'mini_sim' ? carrilFinDeHoy(today)?.cb ?? null : null); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${subtemaCiego(cbm.subtema)}` : subtemaCiego(today?.subtema) || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
     else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? subtemaCiego(evalHoy.label.replace(/^🎯 /, '')) : 'eval anclada'); }
     else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
     // v6.00: cierre del CARRIL B 16:15 (fila MANTENIMIENTO 61-92 de v5.20 embebida) → id APP_CARRIL_B_<fecha>_<codigo>
     // v6.06: o el carril SÁBADO (fila del viernes host, sin carril B)
-    else if (tp === 'carril_b') { const cb = carrilBDe(today) ?? carrilSabadoDe(today)?.cb ?? null; setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? subtemaCiego(cb.subEjeLabel || cb.subtema) : 'carril B'); }
+    else if (tp === 'carril_b') { const cb = carrilBDe(today) ?? carrilFinDeHoy(today)?.cb ?? null; setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? subtemaCiego(cb.subEjeLabel || cb.subtema) : 'carril B'); }
     else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(subtemaCiego(se?.label || today?.subtema)); }
     setNota('');
   };
   const cambiarTipo = (tp: TipoRonda) => { setTipo(tp); prefill(tp); };
   useEffect(() => {
     // v6.06: el SÁBADO del carril SÁBADO (la vista abre la fila del viernes host) el cierre por defecto es el del sábado: carril_b o mini_sim
-    const sabHoy = carrilSabadoDe(today);
+    const sabHoy = carrilFinDeHoy(today); // v7.00: + carril DOMINGO
     const hoyLimaSab = new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
     const tp: TipoRonda = sabHoy && sabHoy.fecha === hoyLimaSab ? (sabHoy.cb.tipo === 'mini_sim' ? 'mini_sim' : 'carril_b') : tipoRondaDe(today);   // v5.14: mini_sim · pretest · simulacro (sim100/dress) · repaso · banco_dia
     setTipo(tp); prefill(tp); setSeg(''); setDud(''); setT(''); setFallos(fallosVacios()); setEstado(null); setUltimo(null);
@@ -1340,7 +1341,7 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   if (!today) return null;
   // v6.06: cierre del CARRIL SÁBADO (fila del viernes host, sin carril B): fecha = el SÁBADO y, en el mini-sim, sim_n = 1000 + dia del viernes
   // (si no, la nota /25 se espejaría en study_sim_scores con sim_n = dia y pisaría la del SIM 100Q del viernes)
-  const sabCierre = (tipo === 'carril_b' || tipo === 'mini_sim') && !carrilBDe(today) && today.tipo !== 'mini_sim' ? carrilSabadoDe(today) : null;
+  const sabCierre = (tipo === 'carril_b' || tipo === 'mini_sim') && !carrilBDe(today) && today.tipo !== 'mini_sim' ? carrilFinDeHoy(today) : null; // v7.00: + carril DOMINGO
   const fechaISO = sabCierre ? sabCierre.fecha : String(today.fecha).slice(0, 10);
   const nN = toInt(n), segN = toInt(seg), dudN = toInt(dud);
   const plano = Object.fromEntries(SUBTIPOS_PLANO.map(s => [s, toInt(fallos[s])])) as Record<SubtipoFallo, number>;

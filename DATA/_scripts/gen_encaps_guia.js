@@ -207,16 +207,21 @@ for (const l of (fs.existsSync(SQL_INT) ? fs.readFileSync(SQL_INT, 'utf8') : '')
       ...(['repaso_final', 'senales'].includes(r.tipo) ? { subtema: r.subtema } : {}), // v6.07 (fix 3): + el día de SEÑALES (bloque «RE-SCAN DE SEÑALES»)
     };
   }
-  const cs = r.extra && r.extra.carril_sabado; if (!cs) continue;
-  const p = cs.pendiente_f1 || {}; const ex = p.extra || {};
-  const hostEsperado = new Date(cs.fecha + 'T12:00:00Z'); hostEsperado.setUTCDate(hostEsperado.getUTCDate() - 1);
-  if (new Date(cs.fecha + 'T12:00:00Z').getUTCDay() !== 6 || hostEsperado.toISOString().slice(0, 10) !== r.fecha || !cs.host || cs.host.dia !== r.dia || cs.host.fecha !== r.fecha) aborta(`carril SÁBADO: ${cs.fecha} no es el sábado siguiente a su fila host ${r.fecha} (dia ${r.dia})`);
-  if ((F6.protegidos || []).some((x) => x.fecha === cs.fecha) || (F6.skip || []).includes(cs.fecha)) aborta(`carril SÁBADO: ${cs.fecha} es protegido o SKIP`);
-  if (p.tipo === 'banqueo1h' ? !p.codigo : p.tipo === 'mini_sim' ? (!Array.isArray(ex.cola_larga) || cs.sim_n !== 1000 + r.dia) : true) aborta(`carril SÁBADO ${cs.fecha}: pendiente F1 sin código / receta / sim_n`);
-  SABADOS[cs.fecha] = { fecha: cs.fecha, host: { dia: r.dia, fecha: r.fecha }, ini: cs.ini, fin: cs.fin, tipo: p.tipo, codigo: p.codigo || null, subEje: ex.sub_eje || null,
-    subtema: p.subtema, secundarios: (p.temas_secundarios || []).filter((x) => x.rol === 'cola_larga').map((x) => x.codigo), colaLarga: ex.cola_larga || [],
-    simN: cs.sim_n ?? null, corrimiento: p.corrimiento, diaMant: p.dia_mant, fechaOriginal: p.fecha_original, origen: String(p.origen || '').replace('mantenimiento_', 'F1 ') };
-  SAB_CTX[cs.fecha] = { p, hostTipo: r.tipo, host: r };
+  // v7.00 (28-nov-2026): + el CARRIL DOMINGO (extra.carril_domingo: el domingo siguiente al viernes host, sim_n 2000 + dia, claves o_*), con la misma guía
+  for (const [k, w, desf, base] of [['carril_sabado', 6, 1, 1000], ['carril_domingo', 0, 2, 2000]]) {
+    const cs = r.extra && r.extra[k]; if (!cs) continue;
+    const nom = k === 'carril_domingo' ? 'DOMINGO' : 'SÁBADO';
+    const p = cs.pendiente_f1 || {}; const ex = p.extra || {};
+    const hostEsperado = new Date(cs.fecha + 'T12:00:00Z'); hostEsperado.setUTCDate(hostEsperado.getUTCDate() - desf);
+    if (new Date(cs.fecha + 'T12:00:00Z').getUTCDay() !== w || hostEsperado.toISOString().slice(0, 10) !== r.fecha || !cs.host || cs.host.dia !== r.dia || cs.host.fecha !== r.fecha) aborta(`carril ${nom}: ${cs.fecha} no es el ${nom.toLowerCase()} siguiente a su fila host ${r.fecha} (dia ${r.dia})`);
+    if ((F6.protegidos || []).some((x) => x.fecha === cs.fecha) || (F6.skip || []).includes(cs.fecha)) aborta(`carril ${nom}: ${cs.fecha} es protegido o SKIP`);
+    if (p.tipo === 'banqueo1h' ? !p.codigo : p.tipo === 'mini_sim' ? (!Array.isArray(ex.cola_larga) || cs.sim_n !== base + r.dia) : true) aborta(`carril ${nom} ${cs.fecha}: pendiente F1 sin código / receta / sim_n`);
+    if (SABADOS[cs.fecha]) aborta(`carril ${nom} ${cs.fecha}: fecha repetida`);
+    SABADOS[cs.fecha] = { fecha: cs.fecha, carril: k === 'carril_domingo' ? 'dom' : 'sab', host: { dia: r.dia, fecha: r.fecha }, ini: cs.ini, fin: cs.fin, tipo: p.tipo, codigo: p.codigo || null, subEje: ex.sub_eje || null,
+      subtema: p.subtema, secundarios: (p.temas_secundarios || []).filter((x) => x.rol === 'cola_larga').map((x) => x.codigo), colaLarga: ex.cola_larga || [],
+      simN: cs.sim_n ?? null, corrimiento: p.corrimiento, diaMant: p.dia_mant, fechaOriginal: p.fecha_original, origen: String(p.origen || '').replace('mantenimiento_', 'F1 ') };
+    SAB_CTX[cs.fecha] = { p, hostTipo: r.tipo, host: r };
+  }
 }
 
 // ── fichas MINSA por código (encapsFuentes.ts) ────────────────────────────────────────────────────────────────
@@ -390,6 +395,7 @@ function rondasPreviasDe(r, fila, cod, msExc = null) {
     .sort((a, b) => a[2].localeCompare(b[2]) || a[1].localeCompare(b[1]));
   for (const m of fs0) {
     let j; try { j = JSON.parse(fs.readFileSync(path.join(BP, m[0]), 'utf8')); } catch (e) { aborta(`rondasPreviasDe: ${m[0]} no es JSON`); }
+    if (j._meta && j._meta.sustituido_por) continue; // v7.00: una salida SUSTITUIDA (re-fechada a otra sesión: no se resolvió) no es una ronda anterior
     const its = (Array.isArray(j.items) ? j.items : []).filter((x) => String(x.codigo) === cod);
     if (!its.length) continue;
     for (const x of its) if (ids.has(x.id)) rep.add(x.id);
@@ -612,7 +618,7 @@ function construirGuia(fila, sab = null) {
         { min: rcM ? rcM.correccion : 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: rcM ? `${rcM.correccion}′ para las 25Q (≈0,8′ por pregunta: los aciertos «seguros» solo se leen; el tiempo va a fallos y dudosas). ${CAT.TECNICA_SIM.CORRECCION}` : CAT.TECNICA_SIM.CORRECCION },
         // remate v6.10l (revisión adversarial · visibilidad): la nota (CIERRE DE SESIÓN, con su sim_n) y la ronda (--registrar, con las 25 preguntas) en el «qué»,
         //   delante del corte del Calendar; antes solo «nota /25» y la ronda quedaba oculta
-        sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN}) por CIERRE DE SESIÓN + ronda por --registrar`, como: `ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el sábado la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del sábado y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes; guarda también n · seguras · dudosas · fallos por subtipo · t medio). Ronda con sus 25 preguntas: en el PC, «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (las guarda en TRACKING_ERRORES). Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
+        sab ? { min: 5, que: `Registro: nota /25 (sim_n ${sab.simN}) por CIERRE DE SESIÓN + ronda por --registrar`, como: `ENCAPS → Plan → CIERRE DE SESIÓN tipo mini_sim (el ${sab.diaTxt || 'sábado'} la vista abre la fila del ${corta(sab.host.fecha)}, D${sab.host.dia}; el cierre sale con la fecha del ${sab.diaTxt || 'sábado'} y la nota va a study_sim_scores con sim_n = ${sab.simN}: no pisa el ${sab.hostTxt} del viernes; guarda también n · seguras · dudosas · fallos por subtipo · t medio). Ronda con sus 25 preguntas: en el PC, «Descargar .json» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar "<ruta del JSON>" --append (las guarda en TRACKING_ERRORES). Sin cierre semanal ni override: es una reposición dentro de la intensiva. ${CAT.TECNICA_SIM.COMPARA}` }
           // v6.10j (auditoría c14, dias-clave #2): el «Hecho» exige el cierre semanal y el Calendar corta el «cómo» a 110 → su comando va PRIMERO (con «Al final»:
           //   se corre tras registrar la nota y la ronda); la regla de los runners de la semana siguiente va en el «Ojo», con las mismas palabras que los
           //   bancos (reglaRunnersLlegada). Antes el «cómo» abría con «Runners del jue 26-nov al vie 27-nov: los genera la revisión del dom 22-nov…» (un parche de
@@ -847,7 +853,7 @@ function construirGuia(fila, sab = null) {
             // v6.10j (auditoría c14, dias-clave #1): la semana del domingo de LLEGADA (dom 22-nov) dice la regla única (reglaRunnersLlegada), con su «NO --semana»
             const llS = llegadaDe(pendSem);
             // remate v6.10w (revisión cobertura): la revisión que los genera es la del SÁBADO real anterior al primero (sáb 28-nov para los del lun 30 y mar 1), no «la del domingo»
-            const revRun = (() => { let r = addD(realDe(pendSem[0]), -1); while (new Date(r + 'T12:00:00Z').getUTCDay() !== 6) r = addD(r, -1); return r; })();
+            const revRun = !pendSem.length ? null : (() => { let r = addD(realDe(pendSem[0]), -1); while (new Date(r + 'T12:00:00Z').getUTCDay() !== 6) r = addD(r, -1); return r; })();
             if (pendSem.length) av.unshift(llS ? reglaRunnersLlegada(pendSem, llS, fila.fecha) || null : `Runners del ${corta(pendSem[0])}${pendSem.length > 1 ? ` al ${corta(pendSem.at(-1))}` : ''}: si la revisión del ${corta(revRun)} no los generó, antes del ${corta(pendSem[0])}: ${cmdRunnersDias(pendSem)} (o pídeselo a Claude).`);
           }
           const pendArm = bancosSinRunner(cmdSemana, addD(cmdSemana, 4));
@@ -959,7 +965,8 @@ for (const [fecha, s] of Object.entries(SABADOS)) {
   const { p, hostTipo } = SAB_CTX[fecha];
   const lunesSem = (() => { const d = new Date(fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 5); return d.toISOString().slice(0, 10); })();
   const hostTxt = HOST_TXT[hostTipo] || hostTipo;
-  const sab = {
+  const esDom = s.carril === 'dom', NOMC = esDom ? 'DOMINGO' : 'SÁBADO', CLV = esDom ? 'o_*' : 's_*', AYER = esDom ? `el viernes (${corta(s.host.fecha)})` : 'ayer'; // v7.00: + carril DOMINGO
+  const sab = { diaTxt: esDom ? 'domingo' : 'sábado',
     franja: `${s.ini}–${s.fin}`, simN: s.simN, host: s.host, hostTxt, lunesSem,
     // v6.10h (revisión del 18-nov · sin bitácora en los textos que lee Joseph): sin «mant. N de la F1 v6.0X» ni «(v6.0X)»: es una sesión de F1 que no cupo
     etq: `🔁 REPOSICIÓN F1`,
@@ -969,12 +976,12 @@ for (const [fecha, s] of Object.entries(SABADOS)) {
     //   del viernes: examen oficial → en su runner; simulacro de plataforma (QX · Theomed · DR LOPEZ) → en esa plataforma (encapsPlan.fuenteRetestSim).
     //   Antes «5Q REALES de tus fallos previos del registro (examen oficial con clave …)» aunque el SIM fuera de QX o Theomed. Sin runner propio: el re-test
     //   es de las preguntas del simulacro (gen_encaps_minisim.js --semana ya no arma eval_<sábado>).
-    evalSin: `RE-TEST de 5 preguntas que fallaste ayer en el ${hostTxt} (${corta(s.host.fecha)}): las mismas, sin la clave${fuenteRetestSim(SAB_CTX[fecha].host)}`,
-    evalPB: ` Eval: re-test de 5 de las preguntas que fallaste ayer en el ${hostTxt}${fuenteRetestSim(SAB_CTX[fecha].host)}; si fallaste menos de 5, recall en blanco de la regla de cada fallo, contrastado con la norma.`,
-    filaCierre: 'El sábado ENCAPS → Plan → HOY abre esa fila y el cierre sale con la fecha del sábado', // v6.10m: antes tipoCierre («Carril B 16:15» + la fila del viernes host, que ahora va en REGISTRO_RUNNER, delante del --pull)
+    evalSin: `RE-TEST de 5 preguntas que fallaste ${esDom ? 'el viernes' : 'ayer'} en el ${hostTxt} (${corta(s.host.fecha)}): las mismas, sin la clave${fuenteRetestSim(SAB_CTX[fecha].host)}`,
+    evalPB: ` Eval: re-test de 5 de las preguntas que fallaste ${AYER} en el ${hostTxt}${fuenteRetestSim(SAB_CTX[fecha].host)}; si fallaste menos de 5, recall en blanco de la regla de cada fallo, contrastado con la norma.`,
+    filaCierre: `El ${esDom ? 'domingo' : 'sábado'} ENCAPS → Plan → HOY abre esa fila y el cierre sale con la fecha del ${esDom ? 'domingo' : 'sábado'}`, // v6.10m: antes tipoCierre («Carril B 16:15» + la fila del viernes host, que ahora va en REGISTRO_RUNNER, delante del --pull)
     // v6.10l (auditoría c15 · vetadas-cortes #24): nota más corta (la cabecera del Calendar ya dice que es reposición de F1 y qué fila abre): con la cadena de
     //   runners entera en el «Ojo», el cuerpo del evento pasaba de su máximo y el Calendar recortaba el registro de la sesión
-    nota: `REPOSICIÓN F1 · CARRIL SÁBADO ${s.ini}-${s.fin}: ítems en ENCAPS → Plan, fila del ${corta(s.host.fecha)} (D${s.host.dia}, claves s_*)`,
+    nota: `REPOSICIÓN F1 · CARRIL ${NOMC} ${s.ini}-${s.fin}: ítems en ENCAPS → Plan, fila del ${corta(s.host.fecha)} (D${s.host.dia}, claves ${CLV})`,
   };
   const fila = { dia: s.host.dia, fecha, tipo: p.tipo, codigo: p.codigo || null, subtema: p.subtema, temas_secundarios: p.temas_secundarios || [], extra: p.extra || {} };
   const { g, ses } = construirGuia(fila, sab);
@@ -985,7 +992,7 @@ for (const [fecha, s] of Object.entries(SABADOS)) {
 for (const [fecha, s] of Object.entries(SABADOS)) {
   const g = GUIA_SAB[fecha], ses = SES_SAB[fecha];
   if (!g || !ses) aborta(`carril SÁBADO ${fecha}: sin guía «qué · cuánto · cómo»`);
-  if (g.franja !== `${s.ini}–${s.fin}` || !g.titulo.startsWith('🔁 REPOSICIÓN F1') || !String(g.aviso || '').includes(`REPOSICIÓN F1 · CARRIL SÁBADO ${s.ini}-${s.fin}`)) aborta(`carril SÁBADO ${fecha}: franja «${g.franja}» / rótulo / nota de reposición`);
+  if (g.franja !== `${s.ini}–${s.fin}` || !g.titulo.startsWith('🔁 REPOSICIÓN F1') || !String(g.aviso || '').includes(`REPOSICIÓN F1 · CARRIL ${s.carril === 'dom' ? 'DOMINGO' : 'SÁBADO'} ${s.ini}-${s.fin}`)) aborta(`carril SÁBADO ${fecha}: franja «${g.franja}» / rótulo / nota de reposición`);
   if (ses.dia !== s.host.dia || ses.tipo !== (s.tipo === 'mini_sim' ? 'minisim' : 'banco') || (s.tipo === 'mini_sim' ? !g.titulo.includes(`sim_n ${s.simN}`) : ses.codigo !== s.codigo)) aborta(`carril SÁBADO ${fecha}: sesión ≠ pendiente (dia ${ses.dia}/${s.host.dia} · tipo ${ses.tipo}/${s.tipo} · código ${ses.codigo}/${s.codigo})`);
   if (GUIA[fecha]) aborta(`carril SÁBADO ${fecha}: choca con una sesión de F1`);
 }
@@ -997,9 +1004,11 @@ if (Object.keys(SABADOS).length) {
   for (const [fecha, s] of Object.entries(SABADOS)) {
     const day = SAB_CTX[fecha].host;
     const items = EP.itemsForDay(day, {}, null, null);
-    const nSab = items.filter((it) => EP.esClaveSabado(it.key)).length;
+    // v7.00: + el carril DOMINGO (claves o_*): las del carril de ESTE día cuentan solo ese día; el viernes host no cuenta ninguna de las dos
+    const esCl = s.carril === 'dom' ? EP.esClaveDomingo : EP.esClaveSabado, otra = s.carril === 'dom' ? EP.esClaveSabado : EP.esClaveDomingo;
+    const nSab = items.filter((it) => esCl(it.key)).length, nOtra = items.filter((it) => otra(it.key)).length;
     const tVie = EP.itemsDelTotal(day, items, s.host.fecha), tSab = EP.itemsDelTotal(day, items, fecha);
-    if (!nSab || tVie.some((it) => EP.esClaveSabado(it.key)) || tVie.length !== items.length - nSab || tSab.length !== items.length) aborta(`app · carril SÁBADO ${fecha}: total del viernes host D${s.host.dia} ${tVie.length}/${items.length} (s_* ${nSab}) · el sábado ${tSab.length}/${items.length}`);
+    if (!nSab || tVie.some((it) => esCl(it.key) || otra(it.key)) || tVie.length !== items.length - nSab - nOtra || tSab.length !== items.length - nOtra) aborta(`app · carril SÁBADO ${fecha}: total del viernes host D${s.host.dia} ${tVie.length}/${items.length} (s_* ${nSab}) · el sábado ${tSab.length}/${items.length}`);
   }
   const src = fs.readFileSync(path.join(ROOT, 'src', 'lib', 'encapsPlan.ts'), 'utf8');
   if (!/itemsDelTotal\(today, todayItems, hoyISO\)/.test(src) || !/const totalToday = itemsTotal\.length;/.test(src)) aborta('app · encapsPlan.useEncapsPlan: totalToday / doneToday no salen de itemsDelTotal (las tareas del sábado volverían al total del viernes)');
@@ -1088,7 +1097,8 @@ const G = dec(RAW) as Record<string, GuiaBloque>;
  * fila viva (encapsPlan.carrilSabadoDe).
  */
 export interface EncapsSabadoF2 {
-  fecha: string; host: { dia: number; fecha: string }; ini: string; fin: string; tipo: 'banqueo1h' | 'mini_sim'; codigo: string | null; subEje: string | null;
+  /** v7.00: carril del fin de semana: sab (extra.carril_sabado, claves s_*) o dom (extra.carril_domingo, claves o_*); la clave del mapa es su fecha */
+  fecha: string; carril: 'sab' | 'dom'; host: { dia: number; fecha: string }; ini: string; fin: string; tipo: 'banqueo1h' | 'mini_sim'; codigo: string | null; subEje: string | null;
   subtema: string; secundarios: string[]; colaLarga: string[]; simN: number | null; corrimiento: string; diaMant: number; fechaOriginal: string; origen: string;
 }
 const SAB: Record<string, EncapsSabadoF2> = ${JSON.stringify(SABADOS)};

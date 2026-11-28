@@ -115,7 +115,9 @@
     "el": "2026-11-17",
     "motivo": "corrimiento v6.10 (D1 = 2026-11-18, «todo inicia mañana, el 18 es el primer día; corre nomás un día»; el mar 17-nov tampoco se estudió y la ENCAPS 16:15 lo recupera el dom 29-nov a las 07:15): la sesión «banqueo 4» (lun-jue nº 4 de la F1) pasa del lunes 2026-11-23 (D5) al martes 2026-11-24 (D5; los viernes de mini-sim no se mueven: vie 20 = D3, vie 27 = D8); ítems intactos, sin regenerar (sesión anterior = 2026-11-23, fila dia 4 V-2)"
    }
-  ]
+  ],
+  "sustituido_por": "eval_2026-12-03",
+  "sustituido_motivo": "v7.00 (28-nov): la sesión pasa al 2026-12-03, con los mismos ítems"
  },
  "items": [
   {

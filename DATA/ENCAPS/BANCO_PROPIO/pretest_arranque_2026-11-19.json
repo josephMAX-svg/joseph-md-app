@@ -216,7 +216,9 @@
     "el": "2026-11-17",
     "motivo": "corrimiento v6.10 (D1 = 2026-11-18, «todo inicia mañana, el 18 es el primer día; corre nomás un día»; el mar 17-nov tampoco se estudió y la ENCAPS 16:15 lo recupera el dom 29-nov a las 07:15): la sesión «banqueo 2» (lun-jue nº 2 de la F1) pasa del miércoles 2026-11-18 (D2) al jueves 2026-11-19 (D2; los viernes de mini-sim no se mueven: vie 20 = D3, vie 27 = D8); ítems intactos, sin regenerar. Sigue sustituyendo el contenido del banco del D2 (banco_2026-11-19, I-3), tras el UWSA1 de esa mañana"
    }
-  ]
+  ],
+  "sustituido_por": "pretest_arranque_2026-12-01",
+  "sustituido_motivo": "v7.00 (28-nov): la sesión pasa al 2026-12-01, con los mismos ítems"
  },
  "items": [
   {

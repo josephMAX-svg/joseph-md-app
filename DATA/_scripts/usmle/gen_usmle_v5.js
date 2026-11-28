@@ -1,4 +1,12 @@
-// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.10b: D2-D13 = jue 19-nov → mar 29-dic-2026
+// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts.
+// v7.00 (sáb 28-nov-2026 · DISEÑO D2-D3, orden de Joseph «todo arranca el lun 30-nov; ENCAPS primero»): el Step 1 queda en PAUSA desde el D1 de F1
+//   (_fechas_v6.json step1.pausa_desde = f1.inicio → 0 mañanas de Step en F1: DIAS = []). Las 12 mañanas de F1 (D2-D13 de la v6.12) y todo su temario
+//   van al tramo 2, que PARTE DE CERO (gen_tramo2 --partir-de-cero: sin REENTRADA en T1, NBME 29 y 30 en la cola → NBME en orden 25 → 30 y el
+//   NBME 25 = LÍNEA BASE) y sin las filas de F1 que van en otro sitio (--excluir-f1, gen_tramo2.EXCLUIR_F1_V700): D1 = UWSA1 → el hueco del UWSA3
+//   opcional (T82, mar 29-jun-2027, como en la v6.10b) · D2-D4 (Fundamentos + Inmunología) = el MANTENIMIENTO de dic-2026 → feb-2027 (sesiones USMLE
+//   mar · jue 18:00-18:45 de F1 y sáb 04:15-05:45 de la intensiva; guía en gen_usmle_guia.js). Examen lun 6-dic → LUN 20-DIC-2027 (plan B lun 27-dic;
+//   step1.cambios v7.00): con el 6-dic, déficit; con el 20-dic, colchón 6 filas ≈ 16 h. T1 = v5.20 D5 (mar 16-mar-2027).
+// v6.10b: D2-D13 = jue 19-nov → mar 29-dic-2026
 //   (solo martes y jueves; el UWSA1 = D1 sale de F1 → tramo 2, T82) + tramo 2 desde el mar 16-mar-2027 · examen lun 6-dic-2027 (DJ-1 v6.07; PROVISIONAL).
 // v6.10b (mar 17-nov-2026, 17:05 · DECISIÓN 4 de Joseph, DATA/USMLE/PALMERTON_NIVEL0_ARRANQUE.md §8.2 A1-A6): «el jue 19 = NIVEL 0 (no UWSA1); el UWSA1
 //   va al tramo 2 cuando haya ≥3 sistemas en nivel 3, como prueba de resistencia (la primera línea base es el NBME 25 del jue 10-dic); las demás mañanas
@@ -166,7 +174,7 @@
 const fs = require('fs');
 const path = require('path');
 const V6 = require('../gen_fechas_v6');
-const { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, DAY_AFTER_FILAS, SEMANA_PLAN, ORIGEN_F1_TEMARIO: ORIGEN_F1_TEMARIO_T2 } = require('./gen_tramo2');
+const { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, DAY_AFTER_FILAS, SEMANA_PLAN, ORIGEN_F1_TEMARIO: ORIGEN_F1_TEMARIO_T2, EXCLUIR_F1_V700, MANT_F1_V700 } = require('./gen_tramo2');
 const ARGV = process.argv.slice(2);
 const SECO = ARGV.includes('--seco'); // explorar: no escribe usmle_dias_v5.txt / usmle_dias_v6.json / tramo2_vigente.json
 const aborta = (msg, code = 1) => { console.error('✗ ' + msg + ' — ABORTO, no se escribe nada'); process.exit(code); };
@@ -181,8 +189,12 @@ if (F.length !== V6.derivar(FV6).diasStepF1 || (FV6.step1.f1_dias_semana.length 
 // v6.10b (decisión 4 de Joseph, 17-nov): el UWSA1 (v5.20 D1) sale de F1 → toma el hueco del hito `forma` del tramo 2 (el UWSA3 opcional, T82) y su
 //   Day-After (la fila siguiente). Su ranura de F1 (la 1.ª) se queda sin fecha: NSLOT = mañanas de F1 + 1 y OFF = 1 (d de la fila = ranura).
 const UWSA1_AL_TRAMO2 = { forma: 'UWSA3' };
-const NSLOT = F.length + (UWSA1_AL_TRAMO2 ? 1 : 0), OFF = NSLOT - F.length;
-console.log('// total dias F1 del Step:', F.length, '(' + F[0] + ' → ' + F[F.length - 1] + ' · ' + V6.diasSemanaTxt(FV6.step1.f1_dias_semana) + ' · F1 de la fase: ' + FV6.f1.dias + ' hábiles)');
+// v7.00: F1 sin mañanas de Step (pausa desde el D1) → ninguna ranura: el UWSA1 y D2-D4 salen de la cola con --excluir-f1 (gen_tramo2.EXCLUIR_F1_V700)
+const DE_CERO = F.length === 0;
+const EXCL_F1 = DE_CERO ? EXCLUIR_F1_V700 : [];
+const NSLOT = DE_CERO ? 0 : F.length + (UWSA1_AL_TRAMO2 ? 1 : 0), OFF = NSLOT - F.length;
+console.log('// total dias F1 del Step:', F.length, F.length ? '(' + F[0] + ' → ' + F[F.length - 1] + ' · ' + V6.diasSemanaTxt(FV6.step1.f1_dias_semana) + ' · F1 de la fase: ' + FV6.f1.dias + ' hábiles)'
+  : `(v7.00: Step 1 en pausa desde el ${FV6.step1.pausa_desde}; mantenimiento D${MANT_F1_V700.join('-D')} · F1 de la fase: ${FV6.f1.dias} hábiles)`);
 
 // helpers de material
 const AM = 'AMBOSS + First Aid', PA = 'Pathoma (Sattar) + First Aid', SM = 'Sketchy Micro + First Aid',
@@ -383,7 +395,7 @@ if (OFF && COL_F1.enF1[0] !== 1) aborta(`v6.10b: la ranura 1 de F1 no es el UWSA
 const EN_F1 = COL_F1.enF1;                  // D# v5.20 (o 'C1'/'C2') de cada d de F1, en orden de d
 const F1_FILAS_TEMARIO = COL_F1.f1Filas;    // v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50 · v6.05: 47 · v6.06: 42
 const COLCHON_CONSUMIDO = COL_F1.consumido; // v6.01/v6.02: C1, C2
-const DESPLAZADAS_F1 = COL_F1.desplazadas;  // v6.01: [79] · v6.02: [52, 53, 54, 56, 57, 79] · v6.03: [50, 51, 52, 53, 54, 56, 57, 79] · v6.05: [47-54, 56, 57, 79] · v6.06: [42-54, 56, 57, 79] (D# v5.20)
+const DESPLAZADAS_F1 = COL_F1.desplazadas.filter((d) => !EXCL_F1.includes(d)); // v7.00: sin las excluidas de la cola (UWSA1 + mantenimiento) · v6.01: [79] · v6.02: [52, 53, 54, 56, 57, 79] · v6.03: [50, 51, 52, 53, 54, 56, 57, 79] · v6.05: [47-54, 56, 57, 79] · v6.06: [42-54, 56, 57, 79] (D# v5.20)
 // v6.07: un hito de F1 solo sale de F1 si no cabe con su Day-After completo (COL_F1.hitosFuera; antes: nunca)
 for (const o of DESPLAZADAS_F1) if (/🎯/.test(SEQ_V520[o].sub) && !COL_F1.hitosFuera.includes(o)) aborta(`F1 de ${NSLOT} ranuras deja fuera el hito D${o} v5.20, que cabía con su Day-After`);
 if (COL_F1.hitosFuera.length) console.log(`// v6.07 · hitos de F1 que NO caben con su Day-After completo → tramo 2 (con su Day-After detrás): ${COL_F1.hitosFuera.map((o) => SEQ_V520[o].sub.split(' (')[0].replace('🎯 ', '') + ' (v5.20 D' + o + ')').join(' · ')}`);
@@ -417,7 +429,7 @@ const dias = F.map((fecha, i) => {
   return { d: i + 1 + OFF, fecha, ...(typeof o === 'number' ? { ...SEQ_V520[o], sub: SUB_F1(SEQ_V520[o].sub) } : COLCHON_F1(o === 'C1' ? 1 : 2)) };
 });
 const noIdF1 = EN_F1.map((o, i) => [i + 1, o]).filter(([d, o]) => typeof o === 'number' && o !== d).map(([d, o]) => `D${d} = v5.20 D${o}`);
-console.log(`// F1: ${F.length} mañanas (${NSLOT} ranuras${OFF ? '; la 1.ª, el UWSA1, sale de F1 → tramo 2' : ''}) · temario D1-D${F1_FILAS_TEMARIO}${noIdF1.length ? ' (' + noIdF1.join(' · ') + ')' : ''}${EN_F1.some((o) => typeof o === 'string') ? ' · colchón ' + EN_F1.filter((o) => typeof o === 'string').join('/') : ''}`
+console.log(`// F1: ${F.length} mañanas (${NSLOT} ranuras${OFF ? '; la 1.ª, el UWSA1, sale de F1 → tramo 2' : ''}${DE_CERO ? `; v7.00: fuera de la cola ${EXCL_F1.map((d) => 'D' + d).join(', ')} (UWSA1 → hueco del UWSA3 · D${MANT_F1_V700.join('-D')} en el mantenimiento)` : ''}) · temario D1-D${F1_FILAS_TEMARIO}${noIdF1.length ? ' (' + noIdF1.join(' · ') + ')' : ''}${EN_F1.some((o) => typeof o === 'string') ? ' · colchón ' + EN_F1.filter((o) => typeof o === 'string').join('/') : ''}`
   + (COLCHON_CONSUMIDO.length ? ` · CONSUMIDOS ${COLCHON_CONSUMIDO.join('/')}` : '') + (DESPLAZADAS_F1.length ? ` · DESPLAZADAS al tramo 2: ${DESPLAZADAS_F1.map((d) => 'v5.20 D' + d).join(', ')}` : ''));
 
 // ── Palmerton v3 (5-sep-2026): 5 niveles UWorld por día → nivelUW (1-5) + qDia (Q uWorld objetivo del día) ──
@@ -516,7 +528,8 @@ console.log('// hitos F1:', dias.filter((x) => /🎯/.test(x.sub)).map((x) => `D
     if (nv.length) { if (o === x.d && x.fecha === v.fecha) dif.push(`D${x.d}.${nv.join('/')} con la misma fecha que la v5.20`); else cambiaNivel.push(`D${x.d}${o !== x.d ? '(v5.20 D' + o + ')' : ''} N${v.nivelUW}·${v.qDia}→N${x.nivelUW}·${x.qDia}`); }
   });
   if (dif.length) aborta('F1 ≠ v5.20: ' + dif.join(', '));
-  console.log(`// ✓ F1 D${1 + OFF}-D${dias.length + OFF}: contenido = v5.20 de su origen (solo cambia la hora de los NBME 25-28) · fechas = hábiles de F1 (${F[0]} → ${F[F.length - 1]})`
+  if (DE_CERO) console.log('// ✓ F1 sin mañanas de Step (v7.00): nada que comparar con la v5.20 en F1');
+  else console.log(`// ✓ F1 D${1 + OFF}-D${dias.length + OFF}: contenido = v5.20 de su origen (solo cambia la hora de los NBME 25-28) · fechas = hábiles de F1 (${F[0]} → ${F[F.length - 1]})`
     + (noIdF1.length ? ' · ' + noIdF1.join(' · ') : '') + (EN_F1.some((o) => typeof o === 'string') ? ' · ' + EN_F1.filter((o) => typeof o === 'string').join('/') + ' colchón' : ''));
   console.log(`// nivelUW/qDia recalculados por el día de la semana (${cambiaNivel.length} filas ≠ v5.20): ${cambiaNivel.join(' · ') || '—'}`);
 }
@@ -529,6 +542,10 @@ try { OPT2 = opcionesTramo2(ARGV, FV6); } catch (e) { aborta('opciones del tramo
 //   F1 = slot 1-f1Filas; en la v6.01 se añadía la posición 58, que gen_tramo2 ignoraba). Las desplazadas van en escenario.desplazadasF1.
 if (ARGV.includes('--f1-filas') && OPT2.f1Filas !== F1_FILAS_TEMARIO) aborta(`--f1-filas ${OPT2.f1Filas} ≠ filas de temario que caben en F1 (${F1_FILAS_TEMARIO}): en producción lo decide _fechas_v6.json`);
 OPT2.f1Filas = F1_FILAS_TEMARIO;
+// v7.00: las filas de F1 fuera de la cola y el arranque desde cero los decide _fechas_v6.json (0 mañanas de Step en F1), no la línea de comandos
+if ((ARGV.includes('--excluir-f1') && JSON.stringify(OPT2.excluirF1) !== JSON.stringify(EXCL_F1)) || (ARGV.includes('--partir-de-cero') && !DE_CERO)) aborta(`--excluir-f1 / --partir-de-cero ≠ _fechas_v6.json (v7.00: ${DE_CERO ? '--excluir-f1 ' + EXCL_F1.join(',') + ' --partir-de-cero' : 'sin ellos'})`);
+OPT2.excluirF1 = EXCL_F1;
+OPT2.partirDeCero = DE_CERO;
 OPT2.pendientesF1 = [...new Set(OPT2.pendientesF1)].sort((a, b) => a - b);
 if (!OPT2.escenarioJSON && !SECO) aborta(`ENCAPS/EXAMEN/SERUMS (${OPT2.encaps} · ${OPT2.examen} · ${OPT2.serums}) ≠ _fechas_v6.json: en producción mandan las fechas del JSON (edítalo con su disparador de §I y corre gen_fechas_v6.js); para explorar, --seco`);
 if (OPT2.permitirDeficit && !SECO) aborta('--permitir-deficit solo existe para explorar (--seco): un déficit nunca se publica (R1)');
@@ -549,7 +566,10 @@ if (UWSA1_AL_TRAMO2) {
   if (!/UWSA1/.test(v.sub) || !hora) aborta('v6.10b: v5.20 D1 no es el UWSA1 o el hito del tramo 2 no tiene hora');
   const nomPrevio = h.nombre;
   CAMPOS_CONTENIDO.forEach((k) => { h[k] = v[k]; });
-  Object.assign(h, { dOrig: 1, sub: `🎯 UWSA1 — PRUEBA DE RESISTENCIA (${hora})${resto} · DE F1 → TRAMO 2 (decisión de Joseph del 17-nov: no es la línea base —esa es el NBME 25 del D8, jue 10-dic—; va con ≥3 sistemas en nivel 3, en el hueco que tenía el ${nomPrevio.replace(/ \((opcional)\)$/, ' $1')}) · su Day-After va en la fila siguiente`, subV520: v.sub, forma: 1, nombre: 'UWSA1 (prueba de resistencia)' });
+  // v7.00: la línea base es el NBME 25 del tramo 2 (antes «del D8, jue 10-dic» de F1): se nombra con su fila T
+  const n25 = [...dias, ...T2.out].find((x) => /🎯 NBME 25/.test(x.sub));
+  const n25Txt = n25 ? `${n25.t ? 'T' + n25.t : 'D' + n25.d}, ${V6.f(n25.fecha)}` : 'el NBME 25';
+  Object.assign(h, { dOrig: 1, sub: `🎯 UWSA1 — PRUEBA DE RESISTENCIA (${hora})${resto} · DE F1 → TRAMO 2 (decisión de Joseph del 17-nov: no es la línea base —esa es el NBME 25 del ${n25Txt}—; va con ≥3 sistemas en nivel 3, en el hueco que tenía el ${nomPrevio.replace(/ \((opcional)\)$/, ' $1')}) · su Day-After va en la fila siguiente`, subV520: v.sub, forma: 1, nombre: 'UWSA1 (prueba de resistencia)' });
   da.sub = da.sub.replace(`DAY-AFTER del ${nomPrevio}`, `DAY-AFTER del ${h.nombre}`);
   UWSA1_T2 = { t: h.t, fecha: h.fecha, ventana: h.ventana, hueco: nomPrevio };
   console.log(`// v6.10b · UWSA1 (v5.20 D1) → T${h.t} ${h.fecha} (ventana ${h.ventana ? h.ventana.join('→') : '—'}; era el ${nomPrevio}) + su Day-After T${da.t} ${da.fecha}`);
@@ -592,6 +612,8 @@ const ESCENARIO = {
   f1Filas: OPT2.f1Filas, desplazadasF1: DESPLAZADAS_F1, colchonF1Consumido: COLCHON_CONSUMIDO, origenF1: EN_F1,
   // v6.10b: el UWSA1 (ranura 1 de F1, sin fecha) va al tramo 2 en el hueco del UWSA3 opcional (decisión 4 de Joseph, 17-nov)
   ...(UWSA1_T2 ? { uwsa1Tramo2: UWSA1_T2 } : {}),
+  // v7.00: filas de F1 fuera de la cola (UWSA1 + mantenimiento), las del mantenimiento y el arranque desde cero (gen_tramo2 --excluir-f1 / --partir-de-cero)
+  ...(DE_CERO ? { excluirF1: EXCL_F1, mantF1: MANT_F1_V700, partirDeCero: true } : {}),
 };
 if (SECO) {
   console.log('// --seco: no se escribe usmle_dias_v5.txt / usmle_dias_v6.json / tramo2_vigente.json');

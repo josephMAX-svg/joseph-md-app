@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "v6.10",
-    "decidido": "2026-11-17",
+    "version": "v7.00",
+    "decidido": "2026-11-28",
     "fuente": "DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md §4-§7 (inventario: DATA/ENCAPS/INVESTIGACION_2027-1/THEOMED_Y_DRIVE.md)",
     "protocolo_manana": [
       {
@@ -83,51 +83,11 @@
     },
     "dias_extra": [
       {
-        "fecha": "2027-01-05",
-        "motivo": "Mañana 19/21 de F1 (la del plan del mié 30-dic, que con la corrida no tiene día propio): el SIMULACRO DE CIERRE 100Q / 2 h (DR LOPEZ simulacro 1) + corrección, en lugar del calentamiento I-3 de la intensiva (I-3 conserva sus 6 slots de barrido). Sus 18:00, las de esa mañana (flashcards de los errores del simulacro, cifras y pizarra)."
-      },
-      {
-        "fecha": "2027-01-06",
-        "motivo": "Mañana 20/21 de F1 (la del plan del jue 31-dic, que con la corrida no tiene día propio): GES 6/6 y CI 4/8 (las dos clases que no cupieron en F1, 45′ de tramos útiles c/u) + 15 p del Theoesencial de CI + banqueo 40Q, en lugar del calentamiento V-2 de la intensiva, que pasa entero al dom 10-ene a hora fija (V-2 conserva además sus slots de barrido). Sus 18:00, las de siempre (cifras, normas y flashcards).",
-        "calentamiento_domingo": {
-          "inicio": "07:15",
-          "almuerzo": ["12:00", "12:30"],
-          "motivo": "Que no se omita nada: el calentamiento de la intensiva que esta mañana sustituye (V-2) va ENTERO, con sus minutos (repaso D-1/D-7/D-21 60′ · pre-test 10Q 45′ · deep prime 120′ · consolidación 30Q 60′ · registro 15′ · eval 20Q 45′), al primer domingo de F2 sin ENCAPS de F1 ni otro calentamiento (dom 10-ene), a hora fija desde las 07:15 (tras la rutina de 05:45-07:15) con el almuerzo de 12:00 a 12:30 y nada después de las 17:00. Sus repasos D-1 / D-7 / D-21 lo citan desde ese domingo (gen_encaps_intensivo_2027.js: el domingo cuenta como la sesión anterior al hábil siguiente)."
-        }
-      },
-      {
-        "fecha": "2027-01-07",
-        "motivo": "Mañana 21/21 de F1, la que no cupo en diciembre: va hoy en lugar del calentamiento II-3 de la intensiva, que pasa entero al dom 17-ene a hora fija (II-3 conserva además sus slots de barrido; el dom 10 ya lleva el V-2). Hoja de reglas del trimestre (1 h 24) + 10Q al final de la teoría, con su corrección, + banqueo de 50Q cronometradas a las 09:45 (60Q en total).",
-        "calentamiento_domingo": {
-          "inicio": "07:15",
-          "almuerzo": ["12:00", "12:30"],
-          "motivo": "Que no se omita nada: el calentamiento de la intensiva que esta mañana sustituye (II-3) va ENTERO, con sus minutos (repaso D-1/D-7/D-21 60′ · pre-test 10Q 45′ · deep prime 120′ · consolidación 30Q 60′ · registro 15′ · eval 20Q 45′), al primer domingo de F2 sin ENCAPS de F1 ni otro calentamiento (dom 17-ene), a hora fija desde las 07:15 (tras la rutina de 05:45-07:15) con el almuerzo de 12:00 a 12:30 y nada después de las 17:00. Sus repasos D-1 / D-7 / D-21 lo citan desde ese domingo (gen_encaps_intensivo_2027.js: el domingo cuenta como la sesión anterior al hábil siguiente)."
-        }
+        "fecha": "2026-12-31",
+        "motivo": "COLCHÓN 2/2 de F1 (el jue 31-dic es el hábil de la transición): simulacro Theomed 13/11 (curso 105) + corrección, o la mañana de F1 que se haya perdido (entonces el simulacro va al dom 3-ene)."
       }
     ],
-    "domingos_plan": [
-      {
-        "fecha": "2026-12-27",
-        "motivo": "Domingo de plan: la mañana 16/21 ya no cabía entre semana. Obligatoria y a hora fija, en dos tramos que respetan la rutina de la mañana (05:45-07:15, no se toca): 05:00-05:45 (arranque + teoría, 1.ª parte) y 07:15-11:15 (el resto); cifras, normas y flashcards 11:15-12:00, antes del compromiso personal de las 12:00 (sin margen: si algo se alarga, se recorta lo último de las cifras).",
-        "manana": [
-          [
-            "05:00",
-            "05:45"
-          ],
-          [
-            "07:15",
-            "11:15"
-          ]
-        ],
-        "tarde": [
-          "11:15",
-          "12:00"
-        ],
-        "compromiso": "12:00",
-        "nota_fix": "v6.09 (fix revisión 16-nov, joseph 3): antes 07:15-12:00 (sin margen antes del compromiso de las 12:00) y cifras flexibles (solo cabían después del baile). El domingo conserva su SHIP y su Anki (16:45); el simulacro opcional antiguo 30/10 pasa como alternativa al dom 3-ene. v6.09 (fix 2, 16-nov noche): la mañana 06:00-10:45 + cifras 10:45-11:30 pisaba la rutina de la mañana (caminata, ducha y desayuno, 05:45-07:15) → empieza a las 04:15 como entre semana: dos tramos 04:15-05:45 y 07:15-10:30 + cifras 10:30-11:15.",
-        "nota_v610w": "v6.10w (dom 22-nov): empieza a las 05:00 (antes 04:15): el sábado 26 acaba a las 22:00 y el domingo respeta las 7 h de sueño; mismos 285′ (05:00-05:45 + 07:15-11:15) y las cifras de 11:15 a 12:00, antes del compromiso de las 12:00."
-      }
-    ],
+    "domingos_plan": [],
     "lote1bis": "v6.09b lote 1-bis (mar 17-nov · revisión del lote 1, hallazgos 2, 3, 6 y 9): las 18:00 no pierden pasos en silencio (mananas[].destinos_18 + destinos automáticos de la pizarra y las flashcards); lo que falta hasta el 60 % de las clases en diferido (mananas[].teoria[].resto_en) y el tramo 17:00-17:30 de las clases del sábado de F1 van como primeros pasos NO opcionales del ENCAPS de un domingo con fecha (domingos[].antes · antes_hasta); el dom 3-ene corrige las 100; el plan B del dom 22 cuadra en los 45′ del vie 27-nov (PPT 9′ + 36′; los 9′ que faltan, el dom 29-nov).",
     "lote1ter": "v6.09b lote 1-ter (mar 17-nov · revisión R del lote 1-bis, hallazgos 2, 3, 5, 6 y 11 + pendiente a1-18): las flashcards nuevas que no caben a las 18:00 van con sus minutos (≈50 s por tarjeta) a un domingo con ENCAPS (mananas[].destinos_18.flash), primer paso NO opcional; la pizarra del mes que no cabe no se hace (es repaso sin material propio) y el día que su pizarra lleva material movido lo dice; el tramo 17:00-17:30 de las clases del sábado va al domingo +7 (la grabación tarda 1-3 días), con su plan B (clase entera) en minutos y hora; la CI 3/8 del sáb 19-dic tiene un solo plan (teoria[].si_en_vivo); los post-tests de 15′ = hasta 12 preguntas; las normas de la semana se acotan a páginas a 2′/p (teoria[].lectura) y lo no leído va al DEEP PRIME de su sub-eje en la intensiva cuando existe.",
     "reglas_tiempo": {
@@ -169,52 +129,218 @@
         }
       ]
     },
-    "diferidos": [
-      {
-        "fecha": "2027-01-04",
-        "franja": [
-          "10:45",
-          "11:45"
-        ],
-        "item": {
-          "item": "SP 6/11 (lun 28-dic, grabación)",
-          "area": "SP",
-          "duracion": "2 h 30",
-          "modo": "vivo_diferido"
+    "diferidos": [],
+    "no_cupo": [],
+    "nota_v700": "v7.00 (sáb 28-nov-2026, orden de Joseph: «todo arranca el lun 30-nov», reorganización final; opción A de la lectura ENCAPS con el campus EN VIVO del 28-nov): las 21 mañanas de F1 van de lunes a viernes del lun 30-nov al mié 30-dic, con permutas para que ninguna grabación se use antes de publicarse y para que las mañanas con algo pendiente a las 18:00 caigan en lun · mié · vie (las 18:00 de mar · jue son la sesión USMLE de mantenimiento: sus cifras y su norma, al terminar la mañana, 12:00-12:20; sus flashcards, al Anki del día siguiente). Dos COLCHONES (jue 24 y jue 31-dic): mientras no se gasten, cada uno es un SIMULACRO THEOMED de 100Q (curso 105, uno de los seis sin intentar) + su corrección; si se perdió una mañana, ese día la recupera y el simulacro pasa al domingo siguiente. Los banqueos 4/19, 5/19 y 6/19 no tienen grabación en el campus: su paso lleva una alternativa real con los mismos minutos. Lo de la semana perdida: ET 2/3 + 3 PPT el dom 6-dic 07:15-08:30; GES 3/6 el dom 20-dic; SP 6/11 el dom 3-ene. F2: las clases de los lunes y viernes en diferido, los domingos 07:15-09:15 desde el dom 10-ene (_meta.diferidos_dom_f2).",
+    "diferidos_dom_f2": {
+      "franja": [
+        "07:15",
+        "09:15"
+      ],
+      "post_test_min": 15,
+      "motivo": "v7.00: las clases EN VIVO de Theomed de los lunes (19:30-22:00) y los viernes (20:00-22:30) chocan con la regla de 0 pantallas desde las 20:30 → en F2 van en GRABACIÓN el domingo siguiente, 07:15-09:15 a hora fija (tras la rutina de la mañana): 45′ de tramos útiles a 2× (60 % de la clase) + su post-test (15′ = hasta 12Q) cada una. Los sábados de F2 la clase sigue EN VIVO (15:00).",
+      "domingos": [
+        {
+          "fecha": "2027-01-10",
+          "clases": [
+            {
+              "clase": "SP 7/11",
+              "de": "2027-01-04",
+              "titulo": "Salud Pública 7/11",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "CI 5/8",
+              "de": "2027-01-08",
+              "titulo": "Cuidado Integral 5/8",
+              "area": "CI",
+              "duracion": "2 h 30"
+            }
+          ]
         },
-        "post_test_min": 15,
-        "motivo": "SP 6/11 (clase en vivo del lun 28-dic) en diferido: ninguna 18:00 de diciembre tiene hueco para ella → va hoy en la holgura del RE-SCAN, a hora fija (45′ de tramos útiles a 2× y su post-test, 15′), después del ENCAPS de las 09:45.",
-        "nota_v610x": "v6.10x (remate, 22-nov): + su post-test con minutos propios (15′ = hasta 12Q, 11:30-11:45); antes «si no cabe → banqueo del mar 5-ene 09:45», que no ganaba tiempo."
-      }
-    ],
-    "no_cupo": []
+        {
+          "fecha": "2027-01-17",
+          "clases": [
+            {
+              "clase": "SP 8/11",
+              "de": "2027-01-11",
+              "titulo": "Salud Pública 8/11",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "CI 7/8",
+              "de": "2027-01-15",
+              "titulo": "Cuidado Integral 7/8",
+              "area": "CI",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-01-24",
+          "clases": [
+            {
+              "clase": "CI 8/8",
+              "de": "2027-01-18",
+              "titulo": "Cuidado Integral 8/8",
+              "area": "CI",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "SP 9/11",
+              "de": "2027-01-22",
+              "titulo": "Salud Pública 9/11",
+              "area": "SP",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-01-31",
+          "clases": [
+            {
+              "clase": "SP 10/11",
+              "de": "2027-01-25",
+              "titulo": "Salud Pública 10/11",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "SP 11/11",
+              "de": "2027-01-29",
+              "titulo": "Salud Pública 11/11 (la última)",
+              "area": "SP",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-02-07",
+          "clases": [
+            {
+              "clase": "Repaso CI 2/4",
+              "de": "2027-02-01",
+              "titulo": "Repaso Cuidado Integral 2/4",
+              "area": "CI",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "Repaso SP 1/4",
+              "de": "2027-02-05",
+              "titulo": "Repaso Salud Pública 1/4",
+              "area": "SP",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-02-14",
+          "clases": [
+            {
+              "clase": "Repaso SP 2/4",
+              "de": "2027-02-08",
+              "titulo": "Repaso Salud Pública 2/4",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "Repaso GES 1/3",
+              "de": "2027-02-12",
+              "titulo": "Repaso Gestión 1/3",
+              "area": "GES",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-02-21",
+          "clases": [
+            {
+              "clase": "Repaso SP 3/4",
+              "de": "2027-02-15",
+              "titulo": "Repaso Salud Pública 3/4",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "Repaso CI 3/4",
+              "de": "2027-02-19",
+              "titulo": "Repaso Cuidado Integral 3/4",
+              "area": "CI",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-02-28",
+          "clases": [
+            {
+              "clase": "Repaso SP 4/4",
+              "de": "2027-02-22",
+              "titulo": "Repaso Salud Pública 4/4",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "Repaso GES 3/3",
+              "de": "2027-02-26",
+              "titulo": "Repaso Gestión 3/3",
+              "area": "GES",
+              "duracion": "2 h 30"
+            }
+          ]
+        },
+        {
+          "fecha": "2027-03-07",
+          "clases": [
+            {
+              "clase": "Repaso final SP",
+              "de": "2027-03-01",
+              "titulo": "Repaso final de Salud Pública (banqueo comentado)",
+              "area": "SP",
+              "duracion": "2 h 30"
+            },
+            {
+              "clase": "Estrategias ENCAPS",
+              "de": "2027-03-05",
+              "titulo": "Estrategias ENCAPS",
+              "area": null,
+              "duracion": "2 h 30"
+            }
+          ]
+        }
+      ],
+      "fuera": "Lun 8-mar (Repaso final GES/INV/ET) y vie 12-mar (Repaso final de todos los bloques): después del último domingo antes del examen; no llevan bloque (la cola del examen ya es repaso)."
+    }
   },
   "mananas": [
-    {"fecha":"2026-11-18","n":1,"fase":"recuperacion","teoria":[{"item":"INV S1-S3 (asíncronas)","area":"INV","duracion":"2 h 10","modo":"video","velocidad":"2×","codigos":["IV-1+IV-2","IV-4","III-3"]},{"item":"Theoesencial INV","area":"INV","duracion":"27 p","modo":"theoesencial","paginas":27,"de":"p. 1-27 de 48 (temas de INV S1-S3)","resto":"p. 28-48, 21 p","resto_a":"vie 20-nov (teoría 07:30)"}],"banqueo":{"area":"INV","n":30},"norma":null,"extra":"INV 2/4 (lun 16, en vivo) en diferido: PPT → dom 29-nov 07:15 (recuperación del viaje; la INV 1/4 del lun 9, igual) · grabación → vie 11-dic (30′ de tramos útiles) + dom 20-dic (los 15′ que faltan hasta el 60 %). Primero 15′ de orientación en el campus. INV S1-S3 a 2× para que quepa el Theoesencial. 16:15 = PRE-TEST DE ARRANQUE 1/2 (la 2/2, mañana jue 19)."},
-    {"fecha":"2026-11-20","n":2,"fase":"recuperacion","teoria":[{"item":"GES S1-S2","area":"GES","duracion":"50′","modo":"video","velocidad":"2×","codigos":["V-2"]},{"item":"GES S3-S4","area":"GES","duracion":"1 h 27","modo":"texto","codigos":["V-1","V-2","V-3","V-7+V-10"]},{"item":"Theoesencial GES","area":"GES","duracion":"11 p","modo":"theoesencial","paginas":11,"de":"las ≈11 p de los temas de GES S1-S2 (las sesiones en vídeo; S3-S4 lo leen en su texto primero)"},{"item":"Theoesencial INV","area":"INV","duracion":"21 p","modo":"theoesencial","paginas":21,"de":"p. 28-48 de 48 (lo que no cupo el mié 18)"}],"banqueo":{"area":"GES","n":35},"norma":"Guía de planeamiento institucional (CEPLAN): definiciones y ciclo","extra":"En diferido: Banqueo 5/19 (hoy 19:00) → mié 2-dic (mañana 7/21, activo) · GES 2/6 (hoy 20:00): sin PPT en el campus, solo la grabación → vie 18-dic (30′) + dom 3-ene (15′, hasta el 60 %); la GES 1/6 del vie 13, igual. 16:15 = MINI-SIM 1/5 (el 1.º de F1)."},
-    {"fecha":"2026-11-23","n":3,"fase":"recuperacion","teoria":[{"item":"GES S5-S7","area":"GES","duracion":"2 h 02","modo":"texto","codigos":["V-6","I-11+I-12","V-7+V-10"]},{"item":"Banqueo 1/19 grabado (SESIONES ADICIONALES)","area":"mixto","duracion":"28′","video":"27:37","modo":"activo"},{"item":"Revisión normativa 1: Modelo de Cuidado Integral (MCI) + PDF 11 p","area":"CI","duracion":"35′","modo":"texto","codigos":["II-5"]}],"banqueo":{"area":"GES + MCI","n":30},"norma":"MCI (definiciones)","extra":"SP 2/11 (hoy 19:30, en vivo) en diferido: PPT → dom 29-nov (1.er paso) · grabación → mié 23-dic (60 %, 45′; sin la CI 3/8 en vivo, 15′ + 30′ → dom 3-ene). La ET 2/3 del sáb 21 (viaje), el dom 29-nov 07:15. La teoría SP S1-S8 va así, toda en diciembre: SP S1-S3 el vie 4, SP S5-S7 el lun 7 (la SP S8, a las 18:00 de ese día) y SP S4 el dom 13, en su ENCAPS del domingo."},
-    {"fecha":"2026-11-25","n":4,"fase":"recuperacion","teoria":[{"item":"Banqueo 4/19 (vie 13, grabado)","area":"mixto","duracion":"1 h","modo":"activo"},{"item":"CI S1 (APS · MCI)","area":"CI","duracion":"1 h 19","modo":"video","velocidad":"2×","codigos":["I-10","II-5","I-8","V-3"]},{"item":"CI S2","area":"CI","duracion":"1 h 14","modo":"texto","codigos":["II-2","II-10","II-12"]}],"banqueo":{"area":"CI","n":30},"norma":null,"destinos_18":{"flash":"2026-11-29"},"extra":"CI S1 a 2×: con el banqueo grabado a 1,25× la teoría llena los 105′; CI S2 va a las 18:00 y las ≈17 p del Theoesencial de CI S1, el dom 6-dic (13 p) y el mié 6-ene (4 p). A las 18:00 va primero la CI S2: lo que no cabe allí lleva su fecha en esa guía."},
-    {"fecha":"2026-11-27","n":5,"fase":"recuperacion","teoria":[{"item":"CI S3","area":"CI","duracion":"1 h 12","modo":"texto","codigos":["II-11","II-12","II-13","II-6","II-9"]},{"item":"CI S4 (denso)","area":"CI","duracion":"1 h 25","modo":"video","velocidad":"2×","codigos":["II-8","II-9","II-13","II-7","III-5"]},{"item":"CI S5","area":"CI","duracion":"51′","modo":"texto","codigos":["II-3","II-6"]},{"item":"Theoesencial CI","area":"CI","duracion":"6 p","modo":"theoesencial","paginas":6,"de":"6 de las ≈17 p de los temas de CI S4 (la sesión en vídeo)","resto":"las 11 p que quedan de CI S4","resto_a":"mié 6-ene (teoría 07:30)"},{"item":"CI 2/8 (sáb 14, si no la viste en vivo)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido","alternativa":"Si el dom 29 fue con el plan B (la grabación de la ET 2/3 aún no estaba publicada y la CI 2/8 ya se vio ese día), hoy en su lugar la ET 2/3 del sáb 21, en los mismos 45′: su PPT (9′) + 36′ de tramos útiles a 2× (48 % de la clase). Los 9′ que faltan hasta el 60 %, el dom 6-dic, antes del primer paso de su ENCAPS (lo dice su aviso)."}],"banqueo":{"area":"CI","n":30},"norma":"NT de vacunas 2026 (esquema, intervalos, cadena de frío, ESAVI)","destinos_18":{"cifras":"2026-12-06","norma":"2026-12-14","flash":"2026-12-06"},"extra":"En diferido: Banqueo 6/19 e INV 3/4 (hoy 19:00 y 20:00) → mié 9-dic (mañana 10/21). Hoy 16:00 Theomed abre simulacro → dom 29-nov. A las 18:00, la CI 2/8 (si no la viste en vivo el sáb 14; o la ET 2/3, si el dom 29 fue con el plan B) llena los 45′: cifras, norma y flashcards llevan su fecha en esa guía; si la viste en vivo y el dom 29 no fue con el plan B, son las 18:00 normales. CI S4 a 2×: el texto primero de la CI S5 pide PPT + ≈17 p de Theoesencial (24′)."},
-    {"fecha":"2026-11-30","n":6,"fase":"recuperacion","teoria":[{"item":"CI S6","area":"CI","duracion":"1 h 09","modo":"video","velocidad":"2×","codigos":["II-11","II-3","II-1"]},{"item":"CI S7","area":"CI","duracion":"1 h 21","modo":"texto","codigos":["II-1","II-4","II-8"]},{"item":"CI S8","area":"CI","duracion":"1 h 42","modo":"texto","codigos":["I-4","II-10","II-13"]}],"banqueo":{"area":"CI","n":30},"norma":"NTS de anemia (suplementación por grupo, cifras) + GPC de dengue (clasificación, signos de alarma)","extra":"Theoesencial de CI S6 y S1 (30 p) → dom 6-dic (NO opcional en su ENCAPS del domingo). INV 4/4 (hoy 19:30, en vivo), en diferido → vie 11-dic (mañana 11/21). CI S6 a 2× para que la CI S8 quepa por la mañana con su post-test (así las 18:00 de hoy van enteras)."},
-    {"fecha":"2026-12-02","n":7,"fase":"recuperacion","teoria":[{"item":"Banqueo 5/19 (vie 20, grabado)","area":"mixto","duracion":"1 h","modo":"activo"},{"item":"ET S1-S3","area":"ET","duracion":"2 h 09","modo":"texto","velocidad":"2× donde haga falta","codigos":["III-1","III-2","III-8","III-5","III-6+III-10"]}],"banqueo":{"area":"ET","n":30},"norma":"Adecuación de servicios con pertinencia cultural (definiciones)","extra":null},
-    {"fecha":"2026-12-04","n":8,"fase":"recuperacion","teoria":[{"item":"SP S1-S3","area":"SP","duracion":"2 h 15","modo":"video","velocidad":"2×","codigos":["I-2","II-8","I-3","I-4","IV-6+IV-7"]},{"item":"Theoesencial SP","area":"SP","duracion":"24 p","modo":"theoesencial","paginas":24,"de":"p. 1-24 de 127 (temas de SP S1-S3)","resto":"p. 25-127, 103 p","resto_a":"DEEP PRIME 09:00 de I-3/I-4, lun 11-ene → mar 16-feb (≈12 p por sesión, dentro de su DEEP PRIME)"}],"banqueo":{"area":"SP","n":30},"norma":"Directiva de notificación (046) y vigilancia: definiciones de caso","extra":"SP S4 (vigilancia, I-3; no cabe en los 105′) → dom 13-dic, primeros pasos de su ENCAPS, a 1,75× y con su post-test. En diferido: Banqueo 7/19 y SP 3/11 (hoy 19:00 y 20:00) → mié 16-dic (mañana 13/21). La teoría de hoy: S1-S3 a 2× + el Theoesencial (así las 18:00 de hoy van enteras)."},
-    {"fecha":"2026-12-07","n":9,"fase":"recuperacion","teoria":[{"item":"SP S5-S8","area":"SP","duracion":"3 h 07","modo":"video","velocidad":"2×","codigos":["I-1","I-5+I-6","I-11+I-12","II-9"]},{"item":"SP 1/11 (lun 2-nov, grabación)","area":"SP","duracion":"2 h 14","modo":"vivo_diferido","min":27,"resto_en":"2026-12-20"}],"banqueo":{"area":"SP","n":30},"norma":null,"destinos_18":{"cifras":"2026-12-09","flash":"2026-12-13"},"extra":"SP 1/11 en vivo (sin hueco hasta hoy): 27′ de tramos útiles + 13′ → dom 20-dic (hasta el 60 %). GES 5/6 (hoy 19:30, en vivo), en diferido → vie 18-dic (mañana 14/21). Con esto queda al día el atraso de Theomed: SP S5-S7 a 2× por la mañana y la S8 a las 18:00 (lo que no cabe allí lleva su fecha en esa guía). Feriado nacional mañana y el miércoles: el plan sigue."},
-    {"fecha":"2026-12-09","n":10,"fase":"ciclo","teoria":[{"item":"Banqueo 6/19 (vie 27)","area":"mixto","duracion":"1 h","modo":"activo"},{"item":"INV 3/4 (vie 27, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"INV + mixto","n":40},"norma":null,"extra":null},
-    {"fecha":"2026-12-11","n":11,"fase":"ciclo","teoria":[{"item":"INV 4/4 (lun 30, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"INV 1/4 (lun 9-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20"},{"item":"INV 2/4 (lun 16-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20"}],"banqueo":{"area":"SP (I-3) + INV","n":40},"norma":"RENACE: definiciones, notificación inmediata y semanal, plazos","extra":"INV 1/4 e INV 2/4 (sin hueco hasta hoy): 30′ c/u + 15′ c/u → dom 20-dic (hasta el 60 %). En diferido: Banqueo 8/19 y SP 4/11 (hoy 19:00 y 20:00) → dom 27-dic (mañana 16/21). Hoy 16:00 Theomed abre simulacro → dom 13-dic (ranking). La teoría de INV termina aquí (la clase en diferido = 60 % a 2×; los minutos que libera la INV 4/4 van a esas grabaciones)."},
-    {"fecha":"2026-12-14","n":12,"fase":"ciclo","teoria":[{"item":"CI 1/8 (sáb 7-nov, grabación)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2027-01-03"},{"item":"Normas de la semana (CI): inmunizaciones, libreta CRED, anemia","area":"CI","duracion":"1 h 15","modo":"texto","lectura":[{"norma":"inmunizaciones","corto":"vacunas","dp":"II-3","fecha":"2027-01-13"},{"norma":"anemia","corto":"anemia","dp":"II-4","fecha":"2027-01-21"},{"norma":"libreta CRED","corto":"CRED","dp":"II-4","fecha":"2027-02-24"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"CI 1/8 en vivo (sáb 7-nov, sin hueco hasta hoy): 30′ antes de las normas + 15′ → dom 3-ene (hasta el 60 %). SP 5/11 (hoy 19:30, en vivo), en diferido → mié 23-dic (mañana 17/21). 50Q en bloque cronometrado (60′) en vez de 30-40 sueltas; las normas bajan de 1 h 45 a 1 h 15."},
-    {"fecha":"2026-12-16","n":13,"fase":"ciclo","teoria":[{"item":"Banqueo 7/19 (vie 4)","area":"mixto","duracion":"1 h","modo":"activo"},{"item":"SP 3/11 (vie 4, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"SP","n":40},"norma":null,"extra":null},
-    {"fecha":"2026-12-18","n":14,"fase":"ciclo","teoria":[{"item":"GES 5/6 (lun 7, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"GES 1/6 (vie 13-nov, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2027-01-03"},{"item":"GES 2/6 (vie 20-nov, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2027-01-03"}],"banqueo":{"area":"GES","n":40},"norma":"Categorías de EESS, referencia y contrarreferencia, calidad y auditoría (definiciones)","extra":"En diferido: Banqueo 9/19 (hoy en vivo) → dom 3-ene (ENCAPS de las 12:30) · GES 6/6 → mié 6-ene. GES 1/6 y GES 2/6 (sin hueco hasta hoy): 30′ c/u + 15′ c/u → dom 3-ene. CHECKPOINT DEL AÑO a las 16:15 (mini-sim). GATE: si el simulacro Theomed del 13-dic < 16,5 o el ciego de los críticos < 70 %, en lo que queda de diciembre una mañana de Step por semana pasa a ENCAPS (la primera de cada semana; las demás, igual)."},
-    {"fecha":"2026-12-21","n":15,"fase":"ciclo","teoria":[{"item":"ET 1/3 (vie 6-nov, grabación)","area":"ET","duracion":"2 h 18","modo":"vivo_diferido","min":30,"resto_en":"2027-01-03"},{"item":"Normas de la semana (ET e INV): interculturalidad, consentimiento, ética de la investigación","area":"ET","duracion":"1 h 15","modo":"texto","lectura":[{"norma":"consentimiento informado","corto":"consentimiento"},{"norma":"ética de la investigación","corto":"ética de la investigación"},{"norma":"interculturalidad","corto":"interculturalidad","dp":"III-5","fecha":"2027-01-20"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"ET 1/3 en vivo (vie 6-nov, sin hueco hasta hoy): 30′ antes de las normas + 11′ → dom 3-ene (hasta el 60 %). CI 4/8 (hoy 19:30, en vivo), en diferido → mié 6-ene (mañana 20/21). Las normas bajan de 1 h 45 a 1 h 15."},
-    {"fecha":"2026-12-23","n":17,"fase":"ciclo","teoria":[{"item":"SP 5/11 (lun 14, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"CI 3/8 (sáb 19-dic)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido","si_en_vivo":{"sab":"2026-12-19","adelanta":"SP 2/11","min":30}},{"item":"SP 2/11 (lun 23-nov, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido","min":15,"resto_en":"2027-01-03"}],"banqueo":{"area":"SP","n":40},"norma":"ASIS y sala situacional; indicadores (definiciones y fórmulas)","extra":"→ dom 3-ene, sin la CI 3/8 en vivo: 30′ de la SP 2/11 (antes de su 1.er paso). CI 3/8 (sáb 19-dic) vista en vivo, lo esperado: solo su tramo 17:00-17:30 (9′) y la SP 2/11 llega hoy a su 60 % (45′); sin verla: CI 3/8 entera 08:15-09:00 y SP 2/11 solo 09:00-09:15. Va después de la mañana del domingo 27 (la 16/21: Banqueo 8/19 y SP 4/11), en el orden de las clases."},
-    {"fecha":"2026-12-27","n":16,"fase":"ciclo","teoria":[{"item":"Banqueo 8/19 (vie 11)","area":"mixto","duracion":"1 h","modo":"activo"},{"item":"SP 4/11 (vie 11, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"SP","n":40},"norma":null,"extra":"Domingo de plan: esta mañana ya no cabía entre semana; empieza a las 05:00 (el sábado acaba a las 22:00: 7 h de sueño) y la rutina de 05:45-07:15 no se toca (05:00-05:45 arranque + teoría 1.ª parte · 07:15-11:15 el resto); cifras, normas y flashcards de 11:15 a 12:00, antes del compromiso personal de las 12:00. Va antes que la mañana del lunes (la 17/21), en el orden de las clases (el Banqueo 8/19 y la SP 4/11, en vivo el vie 11-dic, antes que la SP 5/11, en vivo el lun 14-dic)."},
-    {"fecha":"2026-12-28","n":18,"fase":"ciclo","teoria":[{"item":"Revisión normativa N°2: Prevención y control de las ITS + PDF","area":"CI","duracion":"31′","modo":"texto"},{"item":"Normas de la semana (CI): TBC, ITS/VIH, ECNT (DM 2024, HTA)","area":"CI","duracion":"1 h 35","modo":"texto","lectura":[{"norma":"TBC","corto":"TBC"},{"norma":"ECNT (DM 2024, HTA)","corto":"ECNT"},{"norma":"ITS/VIH (lo que no cubre la revisión N°2 de esta mañana)","corto":"ITS/VIH"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"Hoy 19:30 en vivo SP 6/11, en diferido → lun 4-ene a las 10:45 (holgura del RE-SCAN).","nota_v608":"v6.08 (fix revisión 14-nov, dia10): la revisión normativa N°2 de Theomed (ITS, curso 116, vídeo 30:39 + PDF, publicada el 11-nov) va aquí, en texto primero (10′), y las normas de la semana bajan de 1 h 45 a 1 h 35: la parte de ITS/VIH ya la cubre la revisión. Antes no estaba en ninguna guía.","nota_lote1bis":"v6.09b lote 1-bis (17-nov): las 10Q del mar 5-ene que el lote 1 había traído a las 18:00 de hoy (tarde_extra) vuelven al propio 5-ene, al final de su teoría: estas 18:00 van enteras (30 nuevas, cifras y pizarra)."},
-    {"fecha":"2027-01-05","n":19,"fase":"cierre","teoria":[],"banqueo":{"area":"SIMULACRO DE CIERRE DE AÑO 100Q / 2 h (DR LOPEZ simulacro 1) + corrección","n":100,"cronometrado":true},"norma":null,"extra":"Mañana 19/21 de F1, la del plan del mié 30-dic: el SIMULACRO DE CIERRE va hoy, entero, en lugar del calentamiento I-3 de la intensiva (I-3 conserva sus slots de barrido). Sus cifras, normas y flashcards, hoy a las 18:00. El resto del día sigue la intensiva (carril B a las 16:15)."},
-    {"fecha":"2027-01-06","n":20,"fase":"ciclo","teoria":[{"item":"GES 6/6 (vie 18-dic, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"CI 4/8 (lun 21-dic, grabación)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"Theoesencial CI","area":"CI","duracion":"15 p","modo":"theoesencial","paginas":15,"de":"las 4 p que quedan de CI S1 + las 11 p que quedan de CI S4"}],"banqueo":{"area":"GES + CI","n":40},"norma":null,"extra":"El Banqueo 9/19 fue el dom 3-ene (en su ENCAPS de las 12:30) y la SP 6/11 en diferido, el lun 4-ene a las 10:45. Mañana de F1 que no tiene día propio en diciembre (la del plan del jue 31-dic): van aquí GES 6/6 y CI 4/8 (las dos clases que no cupieron en F1, 45′ de tramos útiles c/u) y las 15 p del Theoesencial de CI que faltaban, en lugar del calentamiento V-2 de la intensiva (que va entero al dom 10-ene, a hora fija). La teoría de GES termina aquí (ET terminó el 12-dic). El resto del día sigue la intensiva (carril B a las 16:15)."},
-    {"fecha":"2027-01-07","n":21,"fase":"ciclo","teoria":[{"item":"Hoja de reglas del trimestre (relectura activa de TODAS las reglas de error: tapar la regla, decirla, comprobar; primero las ★ y las de los 8 críticos)","area":"mixto","duracion":"1 h 24","modo":"texto"},{"item":"mezcla del vector · los 8 críticos (las 10 que no caben en el banqueo de las 09:45)","area":"mixto","duracion":"21′","modo":"preguntas","n":10,"motivo":"Son las 10Q que no caben en el banqueo cronometrado de las 09:45 (50Q): hoy suman 60Q. Fuentes: las del banqueo de las 09:45 (DR LOPEZ post-tests y Qx banqueo F2 de varias áreas)."}],"banqueo":{"area":"mezcla del vector · los 8 críticos","n":50,"cronometrado":true,"franja":["09:45","10:57"]},"norma":null,"extra":"Mañana ENCAPS de F1 que no cupo en diciembre, en lugar del calentamiento II-3 de la intensiva (que va entero al dom 17-ene, a hora fija): hoja de reglas del trimestre + 10Q al final de la teoría, con su corrección, + 50Q cronometradas a las 09:45 (60Q en total). El resto del día sigue la intensiva (carril B a las 16:15)."}
+    {"fecha":"2026-11-30","n":1,"fase":"recuperacion","teoria":[{"item":"INV S1-S3 (asíncronas)","area":"INV","duracion":"2 h 10","modo":"video","velocidad":"2×","codigos":["IV-1+IV-2","IV-4","III-3"]},{"item":"Theoesencial INV","area":"INV","duracion":"27 p","modo":"theoesencial","paginas":27,"de":"p. 1-27 de 48 (temas de INV S1-S3)","resto":"p. 28-48, 21 p","resto_a":"mar 1-dic (teoría 07:30)"}],"banqueo":{"area":"INV","n":30},"norma":null,"extra":"INV 1/4 e INV 2/4 (lun 9 y 16-nov) en diferido: PPT → dom 6-dic 07:15 · grabación → mar 15-dic (30′ c/u) + dom 20-dic (15′ c/u). INV 4/4 (hoy 19:30) → mar 15-dic. 16:15 = PRE-TEST 1/2. Primer día: 15′ de orientación y la INV S1-S3 a 2×."},
+    {"fecha":"2026-12-01","n":2,"fase":"recuperacion","teoria":[{"item":"GES S1-S2","area":"GES","duracion":"50′","modo":"video","velocidad":"2×","codigos":["V-2"]},{"item":"GES S3-S4","area":"GES","duracion":"1 h 27","modo":"texto","codigos":["V-1","V-2","V-3","V-7+V-10"]},{"item":"Theoesencial GES","area":"GES","duracion":"11 p","modo":"theoesencial","paginas":11,"de":"las ≈11 p de los temas de GES S1-S2 (las sesiones en vídeo; S3-S4 lo leen en su texto primero)"},{"item":"Theoesencial INV","area":"INV","duracion":"21 p","modo":"theoesencial","paginas":21,"de":"p. 28-48 de 48 (lo que no cupo el lun 30-nov)"}],"banqueo":{"area":"GES","n":35},"norma":"Guía de planeamiento institucional (CEPLAN): definiciones y ciclo","extra":"GES 1/6 y GES 2/6 (vie 13 y 20-nov, solo grabación) → jue 17-dic (30′ c/u) + dom 20-dic (15′ c/u). 16:15 = PRE-TEST 2/2. 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-02","n":3,"fase":"recuperacion","teoria":[{"item":"Banqueo 4/19 (vie 13-nov, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."},{"item":"CI S1 (APS · MCI)","area":"CI","duracion":"1 h 19","modo":"video","velocidad":"2×","codigos":["I-10","II-5","I-8","V-3"]},{"item":"CI S2","area":"CI","duracion":"1 h 14","modo":"texto","codigos":["II-2","II-10","II-12"]}],"banqueo":{"area":"CI","n":30},"norma":null,"destinos_18":{"flash":"2026-12-06"},"extra":"CI S2 → 18:00 de hoy. Theoesencial de CI S1 → dom 13-dic (13 p) y lun 28-dic (4 p). Banqueo 4/19 (vie 13-nov): sin grabación en el campus el 28-nov; si sigue sin estar, su alternativa (mismos minutos)."},
+    {"fecha":"2026-12-03","n":4,"fase":"recuperacion","teoria":[{"item":"GES S5-S7","area":"GES","duracion":"2 h 02","modo":"texto","codigos":["V-6","I-11+I-12","V-7+V-10"]},{"item":"Banqueo 1/19 grabado (SESIONES ADICIONALES)","area":"mixto","duracion":"28′","video":"27:37","modo":"activo"},{"item":"Revisión normativa 1: Modelo de Cuidado Integral (MCI) + PDF 11 p","area":"CI","duracion":"35′","modo":"texto","codigos":["II-5"]}],"banqueo":{"area":"GES + MCI","n":30},"norma":"MCI (definiciones)","extra":"PPT de la SP 2/11 (lun 23-nov) → dom 6-dic; su grabación → mié 23-dic. SP S1-S3 → mié 9-dic · SP S4 → dom 13-dic · SP S5-S8 → vie 11-dic. 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-04","n":5,"fase":"recuperacion","teoria":[{"item":"CI S3","area":"CI","duracion":"1 h 12","modo":"texto","codigos":["II-11","II-12","II-13","II-6","II-9"]},{"item":"CI S4 (denso)","area":"CI","duracion":"1 h 25","modo":"video","velocidad":"2×","codigos":["II-8","II-9","II-13","II-7","III-5"]},{"item":"CI S5","area":"CI","duracion":"51′","modo":"texto","codigos":["II-3","II-6"]},{"item":"Theoesencial CI","area":"CI","duracion":"6 p","modo":"theoesencial","paginas":6,"de":"6 de las ≈17 p de los temas de CI S4 (la sesión en vídeo)","resto":"las 11 p que quedan de CI S4","resto_a":"lun 28-dic (teoría 07:30)"},{"item":"CI 2/8 (sáb 14-nov, grabación)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"CI","n":30},"norma":"NT de vacunas 2026 (esquema, intervalos, cadena de frío, ESAVI)","destinos_18":{"cifras":"2026-12-06","norma":"2026-12-14","flash":"2026-12-06"},"extra":"A las 18:00, la CI 2/8 (sáb 14-nov) en diferido: sus cifras, su norma y sus flashcards llevan fecha en esa guía. Banqueo 7/19 y SP 3/11 (hoy 19:00 y 20:00) → mié 16-dic. CI S4 a 2×: el texto primero de la CI S5 pide 24′."},
+    {"fecha":"2026-12-07","n":6,"fase":"recuperacion","teoria":[{"item":"CI S6","area":"CI","duracion":"1 h 09","modo":"video","velocidad":"2×","codigos":["II-11","II-3","II-1"]},{"item":"CI S7","area":"CI","duracion":"1 h 21","modo":"texto","codigos":["II-1","II-4","II-8"]},{"item":"CI S8","area":"CI","duracion":"1 h 42","modo":"texto","codigos":["I-4","II-10","II-13"]}],"banqueo":{"area":"CI","n":30},"norma":"NTS de anemia (suplementación por grupo, cifras) + GPC de dengue (clasificación, signos de alarma)","extra":"Theoesencial de CI S6 y S1 (30 p) → dom 13-dic. GES 5/6 (hoy 19:30) → jue 17-dic. CI S6 a 2× para que la CI S8 quepa con su post-test. Mar 8 y mié 9: feriados, el plan sigue."},
+    {"fecha":"2026-12-08","n":7,"fase":"recuperacion","teoria":[{"item":"Banqueo 5/19 (vie 20-nov, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."},{"item":"ET S1-S3","area":"ET","duracion":"2 h 09","modo":"texto","velocidad":"2× donde haga falta","codigos":["III-1","III-2","III-8","III-5","III-6+III-10"]}],"banqueo":{"area":"ET","n":30},"norma":"Adecuación de servicios con pertinencia cultural (definiciones)","extra":"Feriado: el plan sigue. Banqueo 5/19 (vie 20-nov): sin grabación en el campus el 28-nov; si sigue sin estar, su alternativa (mismos minutos). 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-09","n":8,"fase":"recuperacion","teoria":[{"item":"SP S1-S3","area":"SP","duracion":"2 h 15","modo":"video","velocidad":"2×","codigos":["I-2","II-8","I-3","I-4","IV-6+IV-7"]},{"item":"Theoesencial SP","area":"SP","duracion":"24 p","modo":"theoesencial","paginas":24,"de":"p. 1-24 de 127 (temas de SP S1-S3)","resto":"p. 25-127, 103 p","resto_a":"DEEP PRIME 09:00 de I-3/I-4, lun 11-ene → mar 16-feb (≈12 p por sesión, dentro de su DEEP PRIME)"}],"banqueo":{"area":"SP","n":30},"norma":"Directiva de notificación (046) y vigilancia: definiciones de caso","extra":"Feriado: el plan sigue. SP S4 (vigilancia, I-3) no cabe → dom 13-dic, con su post-test. SP S1-S3 a 2× + el Theoesencial: así las 18:00 de hoy van enteras."},
+    {"fecha":"2026-12-10","n":9,"fase":"ciclo","teoria":[{"item":"ET 1/3 (vie 6-nov, grabación)","area":"ET","duracion":"2 h 18","modo":"vivo_diferido","min":30,"resto_en":"2026-12-13"},{"item":"Normas de la semana (ET e INV): interculturalidad, consentimiento, ética de la investigación","area":"ET","duracion":"1 h 15","modo":"texto","lectura":[{"norma":"consentimiento informado","corto":"consentimiento"},{"norma":"ética de la investigación","corto":"ética de la investigación"},{"norma":"interculturalidad","corto":"interculturalidad","dp":"III-5","fecha":"2027-01-20"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"ET 1/3 (vie 6-nov): 30′ hoy + 11′ → dom 13-dic; va antes de la ET 3/3 en vivo del sáb 12-dic. 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana. Las normas bajan a 1 h 15."},
+    {"fecha":"2026-12-11","n":10,"fase":"recuperacion","teoria":[{"item":"SP S5-S8","area":"SP","duracion":"3 h 07","modo":"video","velocidad":"2×","codigos":["I-1","I-5+I-6","I-11+I-12","II-9"]},{"item":"SP 1/11 (lun 2-nov, grabación)","area":"SP","duracion":"2 h 14","modo":"vivo_diferido","min":27,"resto_en":"2026-12-20"}],"banqueo":{"area":"SP","n":30},"norma":null,"destinos_18":{"cifras":"2026-12-16","flash":"2026-12-13"},"extra":"SP S8 → 18:00 de hoy. SP 1/11 (lun 2-nov): 27′ hoy + 13′ → dom 20-dic. Banqueo 8/19 y SP 4/11 (hoy 19:00 y 20:00) → lun 21-dic. Si Theomed abre hoy (16:00) el simulacro quincenal, va el dom 13-dic, con ranking."},
+    {"fecha":"2026-12-14","n":11,"fase":"ciclo","teoria":[{"item":"Banqueo 6/19 (vie 27-nov, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."},{"item":"INV 3/4 (vie 27-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"INV + mixto","n":40},"norma":null,"extra":"SP 5/11 (hoy 19:30) → mié 23-dic. Banqueo 6/19 (vie 27-nov): sin grabación el 28-nov; si sigue sin estar, su alternativa. INV 3/4 (vie 27-nov): sin publicar el 28-nov; si hoy no está, el plan B de la teoría."},
+    {"fecha":"2026-12-15","n":12,"fase":"ciclo","teoria":[{"item":"INV 4/4 (lun 30-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"INV 1/4 (lun 9-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20"},{"item":"INV 2/4 (lun 16-nov, grabación)","area":"INV","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20"}],"banqueo":{"area":"SP (I-3) + INV","n":40},"norma":"RENACE: definiciones, notificación inmediata y semanal, plazos","extra":"INV 1/4 e INV 2/4 (lun 9 y 16-nov): 30′ c/u hoy + 15′ c/u → dom 20-dic. La teoría de INV termina aquí. 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-16","n":13,"fase":"ciclo","teoria":[{"item":"Banqueo 7/19 (vie 4-dic, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."},{"item":"SP 3/11 (vie 4-dic, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"SP","n":40},"norma":null,"extra":"Banqueo 7/19 (vie 4-dic): si Theomed no publica su grabación, su alternativa (en su paso, mismos minutos)."},
+    {"fecha":"2026-12-17","n":14,"fase":"ciclo","teoria":[{"item":"GES 5/6 (lun 7-dic, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"GES 1/6 (vie 13-nov, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20","solo_grabacion":true},{"item":"GES 2/6 (vie 20-nov, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2026-12-20","solo_grabacion":true,"ppt":"curso 116 › BANQUEOS GENERALES - VIERNES › «Banqueo (20/11/26)» (recurso 34079, PDF «SESIÓN 2 20.11.26 - SINCRÓNICA GESTIÓN»)"}],"banqueo":{"area":"GES","n":40},"norma":"Categorías de EESS, referencia y contrarreferencia, calidad y auditoría (definiciones)","extra":"GES 1/6 y GES 2/6: 30′ c/u hoy + 15′ c/u → dom 20-dic. GES 3/6 (sáb 28-nov) no cabe → dom 20-dic. GES 6/6 (vie 18-dic) → lun 28-dic. 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-18","n":15,"fase":"ciclo","teoria":[{"item":"CI 1/8 (sáb 7-nov, grabación)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido","min":30,"resto_en":"2027-01-03"},{"item":"Normas de la semana (CI): inmunizaciones, libreta CRED, anemia","area":"CI","duracion":"1 h 15","modo":"texto","lectura":[{"norma":"inmunizaciones","corto":"vacunas","dp":"II-3","fecha":"2027-01-13"},{"norma":"anemia","corto":"anemia","dp":"II-4","fecha":"2027-01-21"},{"norma":"libreta CRED","corto":"CRED","dp":"II-4","fecha":"2027-02-24"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"16:15 = CHECKPOINT DEL AÑO (mini-sim 3/3). CI 1/8 (sáb 7-nov): 30′ hoy + 15′ → dom 3-ene. Banqueo 9/19 (hoy 19:00) → dom 3-ene · GES 6/6 (hoy 20:00) → lun 28-dic. GATE: con < 16,5 o < 70 % de ciego en los críticos, lo marca la revisión del sábado."},
+    {"fecha":"2026-12-21","n":16,"fase":"ciclo","teoria":[{"item":"Banqueo 8/19 (vie 11-dic, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."},{"item":"SP 4/11 (vie 11-dic, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"}],"banqueo":{"area":"SP","n":40},"norma":null,"extra":"CI 4/8 (hoy 19:30) → lun 28-dic. Banqueo 8/19 (vie 11-dic): si Theomed no publica su grabación, su alternativa (en su paso, mismos minutos)."},
+    {"fecha":"2026-12-22","n":17,"fase":"ciclo","teoria":[{"item":"Revisión normativa N°2: Prevención y control de las ITS + PDF","area":"CI","duracion":"31′","modo":"texto"},{"item":"Normas de la semana (CI): TBC, ITS/VIH, ECNT (DM 2024, HTA)","area":"CI","duracion":"1 h 35","modo":"texto","lectura":[{"norma":"TBC","corto":"TBC"},{"norma":"ECNT (DM 2024, HTA)","corto":"ECNT"},{"norma":"ITS/VIH (lo que no cubre la revisión N°2 de esta mañana)","corto":"ITS/VIH"}]}],"banqueo":{"area":"mezcla del vector","n":50,"cronometrado":true},"norma":"verificación","extra":"18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana. La revisión normativa N°2 (ITS) va en texto primero: las normas de la semana bajan a 1 h 35."},
+    {"fecha":"2026-12-23","n":18,"fase":"ciclo","teoria":[{"item":"SP 5/11 (lun 14-dic, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"CI 3/8 (sáb 19-dic)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido","si_en_vivo":{"sab":"2026-12-19","adelanta":"SP 2/11","min":30}},{"item":"SP 2/11 (lun 23-nov, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido","min":15,"resto_en":"2026-12-27"}],"banqueo":{"area":"SP","n":40},"norma":"ASIS y sala situacional; indicadores (definiciones y fórmulas)","extra":"CI 3/8 (sáb 19-dic) vista en vivo, lo esperado: su tramo 17:00-17:30 (9′) y la SP 2/11 llega a su 60 % (45′); sin verla: CI 3/8 entera 08:15-09:00 y SP 2/11 solo 09:00-09:15 (los 30′ que faltan → dom 27-dic)."},
+    {"fecha":"2026-12-24","colchon":1,"fase":"colchon","teoria":[],"banqueo":{"area":"SIMULACRO THEOMED 27/11 (curso 105) 100Q / 2 h + corrección","n":100,"cronometrado":true},"simulacro":{"label":"SIMULACRO MEDICINA 27/11","quiz":31913,"alternativa":"SIMULACRO MEDICINA 18/09"},"norma":null,"extra":"COLCHÓN 1/2: SIMULACRO THEOMED 27/11, primer intento a 72 s/Q. Si perdiste una mañana ENCAPS, hoy haces la primera que falte (con su guía) y el simulacro pasa al dom 27-dic."},
+    {"fecha":"2026-12-28","n":19,"fase":"ciclo","teoria":[{"item":"GES 6/6 (vie 18-dic, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"CI 4/8 (lun 21-dic, grabación)","area":"CI","duracion":"2 h 30","modo":"vivo_diferido"},{"item":"Theoesencial CI","area":"CI","duracion":"15 p","modo":"theoesencial","paginas":15,"de":"las 4 p que quedan de CI S1 + las 11 p que quedan de CI S4"}],"banqueo":{"area":"GES + CI","n":40},"norma":null,"extra":"SP 6/11 (hoy 19:30) → dom 3-ene, primeros pasos de su ENCAPS. La teoría de GES termina aquí (ET terminó el sáb 12-dic) y van las 15 p del Theoesencial de CI que faltaban."},
+    {"fecha":"2026-12-29","n":20,"fase":"ciclo","teoria":[{"item":"Hoja de reglas del trimestre (relectura activa de TODAS las reglas de error: tapar la regla, decirla, comprobar; primero las ★ y las de los 8 críticos)","area":"mixto","duracion":"1 h 24","modo":"texto"},{"item":"mezcla del vector · los 8 críticos (las 10 que no caben en el banqueo de las 09:45)","area":"mixto","duracion":"21′","modo":"preguntas","n":10,"motivo":"Son las 10Q que no caben en el banqueo cronometrado de las 09:45 (50Q): hoy suman 60Q. Fuentes: las del banqueo de las 09:45 (DR LOPEZ post-tests y Qx banqueo F2 de varias áreas)."}],"banqueo":{"area":"mezcla del vector · los 8 críticos","n":50,"cronometrado":true,"franja":["09:45","10:57"]},"norma":null,"extra":"Hoja de reglas + 10Q al final de la teoría + 50Q cronometradas a las 09:45 (60Q en total). 18:00 = USMLE: cifras y norma 12:00-12:20; flashcards, al Anki de mañana."},
+    {"fecha":"2026-12-30","n":21,"fase":"cierre","teoria":[],"banqueo":{"area":"SIMULACRO DE CIERRE DE AÑO 100Q / 2 h (DR LOPEZ simulacro 1) + corrección","n":100,"cronometrado":true},"norma":null,"extra":"Mañana 21/21: el SIMULACRO DE CIERRE DEL AÑO (DR LOPEZ simulacro 1), entero. Sus cifras y las flashcards de sus errores, hoy a las 18:00."},
+    {"fecha":"2026-12-31","colchon":2,"fase":"colchon","teoria":[],"banqueo":{"area":"SIMULACRO THEOMED 13/11 (curso 105) 100Q / 2 h + corrección","n":100,"cronometrado":true},"simulacro":{"label":"SIMULACRO MEDICINA 13/11","quiz":31477,"alternativa":"SIMULACRO MEDICINA 02/10"},"norma":null,"extra":"COLCHÓN 2/2 (el hábil de la transición): SIMULACRO THEOMED 13/11, primer intento a 72 s/Q. Si perdiste una mañana ENCAPS, hoy haces la primera que falte (con su guía) y el simulacro pasa al dom 3-ene."}
   ],
   "sabados": [
-    {"fecha":"2026-11-21","vivo":"Ética e Interculturalidad 2/3","sin_sesion":true,"diferido":"viaje (sáb 21 libre, corrida_s1.sin_sesion): la ET 2/3 va en diferido: su PPT y su grabación (45′ de tramos útiles a 2×), el dom 29-nov a las 07:15, en el bloque FIJO de recuperación del viaje. Si a esa hora la grabación aún no está publicada (Theomed la cuelga 1-3 días después), plan B: ese día la CI 2/8, y la ET 2/3 el vie 27-nov a las 18:00 (su PPT 9′ + 36′ de tramos útiles). Los 9′ que faltan hasta el 60 %, el dom 6-dic"},
-    {"fecha":"2026-11-28","vivo":"Gestión 3/6"},
     {"fecha":"2026-12-05","vivo":"Gestión 4/6"},
     {"fecha":"2026-12-12","vivo":"Ética e Interculturalidad 3/3"},
     {"fecha":"2026-12-19","vivo":"Cuidado Integral 3/8"},
@@ -231,12 +357,10 @@
     {"fecha":"2027-03-06","vivo":"Repaso final Cuidado Integral (banqueo comentado)","area":"CI"}
   ],
   "domingos": [
-    {"fecha":"2026-11-22","simulacro":null,"ranking":false,"modo":"sin_sesion","nota_v609":"v6.09 (16-nov): dom 22 libre (viaje, corrida_s1.sin_sesion). Su simulacro opcional (Theomed del vie 13-nov, sin ranking) pasa al dom 3-ene.","nota_v608":"v6.08 (14-nov): el simulacro del vie 13-nov, sin ranking, en lugar del antiguo del 18/09 (el dom 15 ya no es de plan)","nota_v610w":"v6.10w (dom 22-nov · «todo inicia el 23»): sin sesión, ya no es domingo de llegada. Su recuperación del viaje (grabación ET 2/3 + 5 PPT) va al dom 29-nov 07:15-08:45 (su franja hasta el 17-nov); la revisión S01, con la S02, el sáb 28 14:00; su SYNAPSE, el lun 23 (la semana 1 corre una sesión).","simulacro_pendiente":"Theomed del vie 13-nov (sin ranking)","nota_v610x":"v6.10x (dom 22-nov · «que no se omita nada»): su simulacro opcional (el del vie 13-nov, sin ranking), que esperaba en el dom 3-ene, va como OPCIONAL al primer domingo de F2 con hueco (regla de simulacro_pendiente en gen_encaps_manana.js)."},
-    {"fecha":"2026-11-29","simulacro":"Theomed del vie 27-nov","ranking":true,"franja_ejemplo":["08:45","12:30"],"compromiso":"12:30","ppt":{"min":10,"clases":[{"clase":"SP 2/11","de":"2026-11-23"}],"motivo":"v6.09 (mar 17-nov): la recuperación fija del viaje va este domingo 07:15-08:45 (v6.10w; del 17 al 22-nov estuvo en el dom 22). El PPT de SP 2/11 (clase en vivo del lun 23, posterior a ese domingo) va hoy como PRIMER PASO del ENCAPS del domingo: no opcional, 10′ (v6.09b: PPT = 10′; alarga el bloque: el simulacro y su corrección de 80′ van detrás). Su grabación, 15′ de tramos útiles el dom 27-dic (los 30′ que faltan, el dom 3-ene). v6.09b lote 1-bis: + las cifras del vie 27-nov (10′), también primer paso NO opcional (v6.10d: con el alias, las 18:00 del vie 27 se hacen el lun 30, después de este domingo → esas cifras van al dom 6-dic y el bloque de ejemplo acaba a las 11:40). v6.09b lote 1-ter: el tramo 17:00-17:30 de la GES 3/6 del sáb 28 pasa al dom 6-dic (domingo +7: la grabación tarda 1-3 días) y en su lugar van las 18 flashcards nuevas del mié 25-nov (15′): el bloque de ejemplo sigue de 07:15 a 11:50 (a las 12:30, compromiso personal). Desde la v6.09b el SYNAPSE de recuperación va el dom 22 y el SHIP S1 de hoy vuelve a 2 h."},"nota_v609":"v6.09 (fix revisión 16-nov, joseph 4 · fix 2, 16-nov noche): hasta el 17-nov este domingo llevaba la recuperación fija del viaje 07:15-08:45 (antes 06:30-08:00) y el simulacro de ejemplo 08:45-12:15 (3 h 30).","recupera":{"franja":["07:15","08:27"],"motivo":"v6.10w (dom 22-nov · «todo inicia el 23»): el dom 22 no tuvo sesión → la recuperación FIJA del viaje vuelve a su franja de antes del 17-nov: dom 29 desde las 07:15 (grabación de la ET 2/3 del sáb 21 a 2× en sus tramos útiles + PPT de ET 2/3, INV 1/4 e INV 2/4, 9′ c/u = 72′; v6.10x: la GES 1/6 y la GES 2/6 no tienen PPT en el campus —solo grabación, que ya va en sus mañanas y el dom 3-ene—, así que salen de aquí), con su plan B (si la grabación aún no está: la CI 2/8 ese día y la ET 2/3 a las 18:00 del vie 27-nov de plan). Después, el ENCAPS del domingo (PPT de SP 2/11, no opcional, y el simulacro con RANKING, opcional).","grabacion":{"clase":"ET 2/3","de":"2026-11-21","duracion":"2 h 30"},"ppt_min":9,"ppt":[{"clase":"ET 2/3","de":"2026-11-21"},{"clase":"INV 1/4","de":"2026-11-09"},{"clase":"INV 2/4","de":"2026-11-16"}],"plan_b":{"grabacion":{"clase":"CI 2/8","de":"2026-11-14","duracion":"2 h 30"},"pasa":{"clase":"ET 2/3","fecha":"2026-11-27","hora":"18:00"}}}},
-    {"fecha":"2026-12-06","simulacro":null,"ranking":false,"modo":"banqueos","franja":["14:45","16:45"],"banqueos":[{"n":"N°08","dur":"53:22"},{"n":"N°09","dur":"41:22"}],"nota_v607d":"v6.07d (11-nov): banqueos grabados nuevos de Theomed (curso 116, publicados hasta el 11-nov); sin simulacro (antes: antiguo 02/10 o 16/10)","nota_v610d":"v6.10d (18-nov): la SP S4 (vigilancia) del vie 4-dic pasa al dom 13-dic: con el alias, la mañana del vie 4 se hace el lun 7, después de este domingo."},
-    {"fecha":"2026-12-13","simulacro":"Theomed del vie 11-dic","ranking":true,"modo":"simulacro_2h","franja":["14:45","16:45"],"antes_hasta":"12:15","antes_pausa":"Margen y compromisos personales (12:30-14:00 y 14:15-14:45)","antes":[{"item":"Theoesencial CI","area":"CI","duracion":"30 p","modo":"theoesencial","paginas":30,"de":"las ≈17 p de los temas de CI S6 + 13 de las ≈17 p de CI S1","resto":"las 4 p que quedan de CI S1","resto_a":"mié 6-ene (teoría 07:30)","origen":"2026-11-30","motivo":"No cupo el lun 30-nov: esa mañana lleva la CI S6 a 2× y la CI S8, para que sus 18:00 vayan enteras. Esa mañana se hace después del dom 6-dic: por eso va a este domingo, el siguiente con ENCAPS, delante de la SP S4.","nota_v612":"v6.12 (mar 24-nov): antes en el dom 6-dic; con el alias de la v6.12 la mañana del lun 30-nov de plan se hace el lun 7-dic, después de ese domingo."},{"item":"SP S4 (vigilancia)","area":"SP","duracion":"47′","modo":"video","codigos":["I-3"],"origen":"2026-12-04","motivo":"No cupo el vie 4-dic (SP S1-S3 a 2× + el Theoesencial de SP llenan los 105′) y ya no va a sus 18:00, que van enteras; las SP S5-S8 siguen el lun 7-dic. Esa mañana se hace después del dom 6: por eso va a este domingo, el siguiente con ENCAPS."}],"correccion_en":"2026-12-20","proyectado":true,"uso_nota":"el GATE del CHECKPOINT del vie 18-dic, que decides ese día al cerrarlo","nota_v607d":"v6.07d (11-nov): solo el simulacro (2 h); la corrección y el registro, el dom 20-dic"},
-    {"fecha":"2026-12-20","simulacro":null,"ranking":false,"modo":"banqueos_correccion","franja":["12:15","16:20"],"pausa":["14:15","14:45"],"banqueos":[{"n":"N°10","dur":"53:17"},{"n":"N°11","dur":"42:28"}],"correccion_de":"2026-12-13","nota_v607d":"v6.07d (11-nov): banqueos grabados N°10 y N°11 + corrección del simulacro con ranking del dom 13-dic; sin simulacro nuevo (antes: antiguo 16/10)"},
-    {"fecha":"2026-12-27","simulacro":null,"ranking":false,"modo":"manana","nota_v609":"v6.09 (16-nov): domingo de plan con la mañana ENCAPS 16/21 (v6.10w; antes la 17/21) (_meta.domingos_plan; fix 2: 04:15-05:45 y 07:15-10:30 + cifras 10:30-11:15, sin tocar la rutina de 05:45-07:15). El simulacro opcional antiguo 30/10 que iba aquí pasa como alternativa al dom 3-ene.","simulacro_v608":"Theomed antiguo 30/10","simulacro_pendiente":"Theomed antiguo 30/10","nota_v610x":"v6.10x (dom 22-nov · «que no se omita nada»): su simulacro opcional (el antiguo 30/10), que esperaba en el dom 3-ene, va como OPCIONAL al siguiente domingo de F2 con hueco (regla de simulacro_pendiente en gen_encaps_manana.js)."},
-    {"fecha":"2027-01-03","simulacro":null,"ranking":false,"nota_v609":"v6.09 (16-nov): recibe el simulacro opcional del dom 22 (viaje) y, como alternativa (fix revisión, datos 9), el antiguo 30/10 del dom 27-dic; sigue siendo opcional: uno de esos, el DR LOPEZ simulacro 2 o descanso.","simulacro_v608":"DR LOPEZ simulacro 2 (o descanso antes de la intensiva)","previo":{"de":"2027-01-06","motivo":"v6.09b (17-nov · auditoría a1-1): el Banqueo 9/19 (vie 18-dic, grabado) ya no cabe en la mañana 20/21 (la del jue 31-dic, que ahora va el mié 6-ene) (necesitaba 162′ en 105′) → va hoy como PRIMER PASO del ENCAPS del domingo: NO opcional (como el PPT de SP 2/11 el dom 29). A 1,25× con pausa = 58′. v6.09b lote 1-bis: con él, lo que falta de la ET 1/3 (11′) (y la SP 2/11 30′: desde el lote 1-quater, solo si no viste la CI 3/8 en vivo, en el plan B); el simulacro sigue opcional detrás, con su corrección ENTERA (80′; antes 67′ y 22 preguntas a la revisión del sáb 9-ene, que no tenía hueco).","items":[{"item":"Banqueo 9/19 (vie 18-dic, grabado)","area":"mixto","duracion":"1 h","modo":"activo"}]},"nota_lote1ter":"v6.09b lote 1-ter (17-nov · revisión R, hallazgos 2 y 11): + las 30 flashcards nuevas (y las vencidas) del jue 31-dic, 25′ NO opcionales (antes, «primeras de la cola» de la 18:00 del mar 5-ene, que ya hacía sus 30 nuevas): los primeros pasos van de 07:15 a 09:19 y, con el simulacro opcional detrás, el ejemplo termina a las 13:19. No hay compromiso declarado este domingo (el SHIP de ejemplo empieza a las 14:45). Si viste la CI 3/8 en vivo el sáb 19-dic, los 30′ de la SP 2/11 ya van el dom 27-dic y el ejemplo termina a las 12:49.","nota_lote1quater":"v6.09b lote 1-quater (17-nov · revisión R2, hallazgo N7): el caso POR DEFECTO es que la CI 3/8 se vio en vivo (el plan la tiene en vivo el sáb 19-dic 15:00-17:00) → los 30′ de la SP 2/11 van el dom 27-dic y aquí no son un paso: los primeros pasos NO opcionales bajan a 94′ (ET 1/3 11′ + Banqueo 9/19 58′ + 30 flashcards 25′; de ejemplo 07:15-08:49) y, con el simulacro opcional detrás, el ejemplo termina a las 12:49 (5 h 34′). Si no la viste en vivo, el plan B lo dice: antes de nada, los 30′ de la SP 2/11 (hasta las 13:19).","nota_v610d":"v6.10d (18-nov): + lo que falta hasta el 60 % de la GES 1/6 y la GES 2/6 (15′ c/u, NO opcional): con el alias, la mañana del vie 18-dic se hace el lun 21, después del dom 20, y el dom 27 es domingo de plan → este es el domingo siguiente con ENCAPS. El ejemplo se alarga 30′ (07:15-13:24) para que la corrección del simulacro siga ENTERA (80′).","modo":"previos","inicio":"12:30","nota_v610w":"v6.10w (dom 22-nov): domingo a hora fija sin simulacro opcional (antes, de ejemplo 07:15-13:24 con el simulacro detrás): a las 05:00 y de 07:15 a 12:00 van las sesiones de los planes secundarios del sáb 2-ene y la Derma del jue 31-dic; el ENCAPS NO opcional (GES 1/6 y GES 2/6 hasta el 60 %, ET 1/3 hasta el 60 % y el Banqueo 9/19) de 12:30 a 14:09 y el SHIP S6 después. Las 30 flashcards del jue 31-dic ya no vienen aquí: la mañana 20/21 va el mié 6-ene con sus 18:00.","simulacro_pendiente":"DR LOPEZ simulacro 2","nota_v610x":"v6.10x (dom 22-nov · «que no se omita nada»): los simulacros opcionales que esperaban aquí (el del vie 13-nov sin ranking, el antiguo 30/10 y el DR LOPEZ simulacro 2) ya no son alternativas de un solo hueco: cada uno va como OPCIONAL, en orden, al primer domingo de F2 con hueco (regla de simulacro_pendiente en gen_encaps_manana.js)."}
+    {"fecha":"2026-12-06","simulacro":null,"ranking":false,"modo":"banqueos","franja":["14:45","16:45"],"banqueos":[{"n":"N°08","dur":"53:22"},{"n":"N°09","dur":"41:22"}],"nota_v607d":"v6.07d (11-nov): banqueos grabados nuevos de Theomed (curso 116, publicados hasta el 11-nov); sin simulacro (antes: antiguo 02/10 o 16/10)","recupera":{"franja":["07:15","08:30"],"motivo":"v7.00 (28-nov): lo de la semana del viaje y de los días sin sesión que no tiene otra mañana: la grabación de la ET 2/3 (sáb 21-nov, ya publicada entera) a 2× en sus tramos útiles + los PPT de ET 2/3, INV 1/4 e INV 2/4 (10′ c/u) = 75′, a hora fija tras la rutina de la mañana. Las grabaciones de la INV 1/4 y la INV 2/4 van el mar 15-dic (y lo que falta hasta el 60 %, el dom 20-dic).","grabacion":{"clase":"ET 2/3","de":"2026-11-21","duracion":"2 h 30"},"ppt_min":10,"ppt":[{"clase":"ET 2/3","de":"2026-11-21"},{"clase":"INV 1/4","de":"2026-11-09"},{"clase":"INV 2/4","de":"2026-11-16"}]},"antes_hasta":"12:15","antes_pausa":"Margen y compromisos personales (12:30-14:00 y 14:15-14:45)","ppt":{"min":10,"clases":[{"clase":"SP 2/11","de":"2026-11-23"}],"motivo":"v7.00: el PPT de la SP 2/11 (clase en vivo del lun 23-nov, día sin sesión) va como PRIMER PASO del ENCAPS de este domingo (no opcional, 10′); su grabación, el mié 23-dic (y lo que falta hasta el 60 %, el dom 27-dic)."}},
+    {"fecha":"2026-12-13","simulacro":"Theomed del vie 11-dic","ranking":true,"modo":"simulacro_2h","franja":["14:45","16:45"],"antes_hasta":"12:15","antes_pausa":"Margen y compromisos personales (12:30-14:00 y 14:15-14:45)","antes":[{"item":"Theoesencial CI","area":"CI","duracion":"30 p","modo":"theoesencial","paginas":30,"de":"las ≈17 p de los temas de CI S6 + 13 de las ≈17 p de CI S1","resto":"las 4 p que quedan de CI S1","resto_a":"lun 28-dic (teoría 07:30)","origen":"2026-12-07","motivo":"No cupo el lun 7-dic: esa mañana lleva la CI S6 a 2× y la CI S8, para que sus 18:00 vayan enteras. Va a este domingo, el siguiente con ENCAPS, delante de la SP S4."},{"item":"SP S4 (vigilancia)","area":"SP","duracion":"47′","modo":"video","codigos":["I-3"],"origen":"2026-12-09","motivo":"No cupo el mié 9-dic (SP S1-S3 a 2× + el Theoesencial de SP llenan los 105′); las SP S5-S8 van el vie 11-dic. Va a este domingo, el siguiente con ENCAPS."}],"correccion_en":"2026-12-20","proyectado":true,"uso_nota":"el GATE del CHECKPOINT del vie 18-dic, que decides ese día al cerrarlo","nota_v607d":"v6.07d (11-nov): solo el simulacro (2 h); la corrección y el registro, el dom 20-dic"},
+    {"fecha":"2026-12-20","simulacro":null,"ranking":false,"modo":"banqueos_correccion","franja":["12:15","16:20"],"pausa":["14:15","14:45"],"banqueos":[{"n":"N°10","dur":"53:17"},{"n":"N°11","dur":"42:28"}],"correccion_de":"2026-12-13","nota_v607d":"v6.07d (11-nov): banqueos grabados N°10 y N°11 + corrección del simulacro con ranking del dom 13-dic; sin simulacro nuevo (antes: antiguo 16/10)","antes":[{"item":"GES 3/6 (sáb 28-nov, grabación)","area":"GES","duracion":"2 h 30","modo":"vivo_diferido","origen":"2026-12-17","motivo":"La GES 3/6 se dio en vivo el sáb 28-nov (día sin sesión) y no cabe en la mañana del jue 17-dic (GES 5/6 + lo que va de GES 1/6 y GES 2/6 llenan los 105′): va aquí, en sus tramos útiles, con su post-test."}]},
+    {"fecha":"2026-12-27","simulacro":"Theomed antiguo 30/10 (curso 105)","ranking":false,"franja_ejemplo":["07:15","11:15"],"compromiso":"12:00","nota_v700":"v7.00 (28-nov): domingo normal (en la v6.12 era domingo de plan). ENCAPS opcional: un simulacro antiguo de Theomed sin intentar (30/10); antes del compromiso personal de las 12:00. Si el colchón 1 (jue 24) se usó para recuperar una mañana, hoy va su simulacro (27/11) en lugar de este."},
+    {"fecha":"2027-01-03","simulacro":"Theomed antiguo 16/10 (curso 105)","ranking":false,"franja_ejemplo":["07:15","13:28"],"previo":{"de":"2026-12-28","motivo":"v7.00: el Banqueo 9/19 (vie 18-dic, en vivo a las 19:00) no cabe en la mañana del lun 28-dic (GES 6/6 + CI 4/8 + Theoesencial de CI) → va hoy como PRIMER PASO del ENCAPS del domingo: NO opcional. A 1,25× con pausa = 58′.","items":[{"item":"Banqueo 9/19 (vie 18-dic, grabado)","area":"mixto","duracion":"1 h","modo":"activo","alternativa":"Si en el campus (curso 116 › banqueos generales · viernes) sigue sin grabación —el 28-nov no estaban las del 13, 20 y 27-nov—: en estos mismos minutos, 28Q REALES del post-test de DR LOPEZ del área o del Qx banqueo F2 (Drive u/4 › SERUMS 2026 II), en activo: responde y marca la confianza antes de mirar la clave; después, su explicación."}]},"antes":[{"item":"SP 6/11 (lun 28-dic, grabación)","area":"SP","duracion":"2 h 30","modo":"vivo_diferido","origen":"2026-12-28","motivo":"La SP 6/11 se da en vivo el lun 28-dic a las 19:30 (desde las 20:30, 0 pantallas) y ninguna mañana de F1 posterior tiene hueco (mar 29: hoja de reglas · mié 30: simulacro de cierre · jue 31: colchón): va aquí, en sus tramos útiles, con su post-test."}],"nota_v700":"v7.00 (28-nov): domingo normal (en la v6.12 era a hora fija con los planes del sáb 2-ene). Primero lo NO opcional (Banqueo 9/19, SP 6/11 y lo que falta de la CI 1/8); después, un simulacro antiguo de Theomed sin intentar (16/10), opcional. Si el colchón 2 (jue 31) se usó para recuperar una mañana, hoy va su simulacro (13/11) en lugar de este."}
   ]
 }

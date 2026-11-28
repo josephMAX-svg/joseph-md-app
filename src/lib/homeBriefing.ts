@@ -12,7 +12,7 @@
  * NO editar cronogramas: esto es contenido/encuadre, no reprogramación.
  */
 import { DAILY_META, hitosDelPlan, esFilaT2 } from './usmleStep1Daily';
-import { FECHAS_V6, STEP1_SEMANAS, semanaStep1 as semanaStep1V6, faseV6, fechaPlanDe } from './fechasV6';
+import { FECHAS_V6, STEP1_SEMANAS, semanaStep1 as semanaStep1V6, faseV6, fechaPlanDe, enPausaStep1 } from './fechasV6'; // v7.00: + enPausaStep1 (modo mínimo con el Step en pausa desde el D1)
 import type { SemanaStep1 } from './fechasV6';
 import { HITOS_ONTRACK, hitoOnTrackDe, minimoTexto } from './usmleScores';
 
@@ -142,6 +142,10 @@ export function componerBriefing(inp: BriefingInput): string {
 // v6.10b (17-nov-2026): D1 de la fase = mié 18-nov (Joseph: «el 18 es el primer día; corre nomás un día»). Decisión 4 de Joseph (17-nov 17:05): el
 //   jue 19 es NIVEL 0 (D2) y el UWSA1 sale de F1 → tramo 2 (T82 mar 29-jun-2027); D2-D13 en sus fechas v6.09 (NBME 25 = D8 jue 10-dic, D13 mar 29-dic)
 //   → STEP1_SEMANAS = 45 y DELOAD_SEMANAS igual que en la v6.09 (lun 14-dic post-NBME 25 · lun 28-dic última semana de F1).
+// v7.00 (28-nov-2026, reorganización final: todo arranca el lun 30-nov): D1 de la fase = lun 30-nov y el Step 1 SIN mañanas en F1 (_fechas_v6.json
+//   step1.pausa_desde = el D1; la mañana de lunes a viernes es ENCAPS) → Step 1 en PAUSA (mantenimiento: Anki 05:00 + la sesión USMLE de step1.mantenimiento)
+//   desde el D1 hasta el reinicio; las semanas del Step en F1 son 0 (fechasV6.SEMANAS_STEP_F1), así que el chip dice «PAUSA · ENCAPS» hasta la semana del
+//   reinicio, que es la S1 (STEP1_SEMANAS derivado en fechasV6). Sin NBME ni mañanas de Step en F1 → DELOAD_SEMANAS vacío.
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -172,10 +176,9 @@ export function hitosStep1(): HitoStep1[] {
  *  (v6.07: los mismos lunes con el NBME 25 = D10 y el último Step = D15.)
  *  (v6.06: lun 7-dic —NBME 26 = D25 vie 4-dic— y lun 28-dic —NBME 28 = D42 mié 30-dic, última sesión de F1 antes de la pausa.)
  *  (v6.05: lun 30-nov —NBME 26 vie 27-nov— y lun 28-dic —NBME 28 = D47— · v6.03: los mismos lunes —NBME 26 mar 24-nov, NBME 28 = D50— · v6.02: lun 23-nov —NBME 26 vie 20-nov— y lun 28-dic · v6.01: lun 16-nov y lun 28-dic · v6.00: los mismos lunes con los NBME en martes.) */
-export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-12-14', motivo: 'post-NBME 25 (jue 10-dic)' },
-  { lunes: '2026-12-28', motivo: 'última semana de F1 (mar 29-dic, último Step antes de la pausa)' },
-];
+// v7.00 (28-nov-2026): vacío — F1 no tiene NBME ni mañanas de Step (step1.pausa_desde = el D1), así que no hay semana post-NBME ni «último Step antes de la pausa»
+//   (v6.08-v6.12: lun 14-dic post-NBME 25 del jue 10-dic · lun 28-dic, última semana de F1)
+export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [];
 
 /** Semana del Step 1 para una fecha (lunes→domingo; determinista, sin reloj) = fechasV6.semanaStep1 con los hitos y deloads del plan. */
 export function semanaStep1(iso: string): SemanaStep1 {
@@ -250,10 +253,13 @@ export const MINIMO_DJ4 = "30' (mínimo DJ-4)";
  * MIR = Anki + 25Q (1 h, DJ-4) · ENCAPS en F2 (intensiva) = loop mínimo (pre-test 10Q + 30Q + eval 20Q); fuera de F2, 10Q ciegas.
  * ROJO (enfermedad): secundarios omitidos; el bloque PRINCIPAL de la fase conserva su mínimo — F1/F3/F4 = Step 1 (Anki + pre-test 10Q);
  * F2 = ENCAPS (Anki cifras + pre-test 10Q del sub-eje) y el Step 1 en mantenimiento queda en Anki vencido ≤15'. `iso` (opcional) decide la fase.
+ * v7.00 (28-nov-2026): con el Step 1 en PAUSA desde el D1 (fechasV6.enPausaStep1: F1 y la transición) el principal de F1 es el ENCAPS, como en F2: en ROJO el ENCAPS
+ * conserva su mínimo (Anki ENCAPS + 10Q ciegas) y el Step 1 queda en el Anki vencido ≤10′ (la sesión USMLE de mantenimiento se omite).
  */
 export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string): string | null {
   if (nivel === 'VERDE') return null;
   const f2 = !!iso && faseV6(iso) === 'F2';
+  const pausaF1 = !f2 && !!iso && enPausaStep1(iso); // v7.00: F1 / transición con el Step en pausa
   const AMBAR: Record<Frente, string | null> = {
     'usmle-anki': null, 'usmle-principal': null, 'usmle-eval': null,                        // USMLE intacto
     vibecoding: MINIMO_DJ4, synapse: MINIMO_DJ4, 'research-derma': MINIMO_DJ4, aurum: MINIMO_DJ4, liviano: MINIMO_DJ4,
@@ -271,6 +277,15 @@ export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string):
     mir: 'Omitido hoy.', liviano: 'Omitido hoy.', business: 'Omitido hoy.',
     revision: "10': abre el fichero, marca el nivel de la semana y 1 corrección (el resto, mañana).",
     encaps: 'Solo Anki cifras + pre-test 10Q del sub-eje (08:15). El resto del bloque = dormir/recuperar.',
+  } : pausaF1 ? {
+    // v7.00 · F1 y la transición con el Step 1 en PAUSA: el principal es el ENCAPS (mañana L-V); el Step 1, en el Anki vencido
+    'usmle-anki': "Anki vencido ≤10′ (Step 1 en mantenimiento).",
+    'usmle-principal': 'Omitida hoy (Step 1 en mantenimiento).',
+    'usmle-eval': 'Omitida hoy.',
+    vibecoding: 'Omitido hoy.', synapse: 'Omitido hoy.', 'research-derma': 'Omitido hoy.', aurum: 'Omitido hoy.',
+    mir: 'Omitido hoy.', liviano: 'Omitido hoy.', business: 'Omitido hoy.',
+    revision: "10': abre el fichero, marca el nivel de la semana y 1 corrección (el resto, mañana).",
+    encaps: "Solo el Anki ENCAPS + 10Q ciegas (20') con registro. El resto del bloque = dormir/recuperar.",
   } : {
     'usmle-anki': 'Anki AM completo (innegociable).',
     'usmle-principal': 'Solo el pre-test 10Q (08:15) + Anki restante. El resto del bloque = dormir/recuperar.',

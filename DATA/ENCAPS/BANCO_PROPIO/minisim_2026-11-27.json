@@ -173,7 +173,9 @@
     "campos incompletos"
    ]
   ],
-  "pool_disponible": 169
+  "pool_disponible": 169,
+  "sustituido_por": "minisim_2026-12-11",
+  "sustituido_motivo": "v7.00 (28-nov): la sesión pasa al 2026-12-11, con los mismos ítems"
  },
  "items": [
   {

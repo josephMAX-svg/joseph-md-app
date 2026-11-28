@@ -1,7 +1,7 @@
 {
  "_meta": {
   "descripcion": "PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta, se comprime ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:'reposicion', regla, pendiente_f1: <esta fila, idéntica>}) y, cuando esos días lun-jue se acaban (v6.06), en el CARRIL SÁBADO 09:30-10:30 de la intensiva (extra.carril_sabado de la fila del viernes host; reposicion.carril 'SÁB 09:30-10:30', reposicion.dia = el del viernes host), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.",
-  "actualizado": "2026-11-14",
+  "actualizado": "2026-11-28",
   "corrimientos": [
    {
     "version": "v6.01",
@@ -128,6 +128,24 @@
     "pendientes_banqueo": 4,
     "pendientes_minisim": 1,
     "minisims_absorbidos": 0
+   },
+   {
+    "version": "v7.00",
+    "fecha": "2026-11-28",
+    "d1_previo": "2026-11-19",
+    "d1": "2026-11-30",
+    "f1_hasta": "2026-12-31",
+    "fuente": "git show 8afd470:DATA/_scripts/_encaps_mantenimiento_2027.sql (filas MANTENIMIENTO anteriores a la intensiva, 2027-01-04)",
+    "filas_previas": 32,
+    "banqueo_previas": 27,
+    "minisims_previos": 5,
+    "filas_nuevas": 23,
+    "banqueo_nuevas": 20,
+    "minisims_nuevos": 3,
+    "pendientes": 9,
+    "pendientes_banqueo": 7,
+    "pendientes_minisim": 2,
+    "minisims_absorbidos": 0
    }
   ]
  },
@@ -159,9 +177,9 @@
     "sub_ejes_total": 2,
     "secundario": "III-9"
    },
-   "destino": "REPUESTO dia 65 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 56 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 65,
+    "dia": 56,
     "fecha": "2027-02-17",
     "carril": "B 16:15"
    }
@@ -193,9 +211,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-9"
    },
-   "destino": "REPUESTO dia 66 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 57 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 66,
+    "dia": 57,
     "fecha": "2027-02-18",
     "carril": "B 16:15"
    }
@@ -248,9 +266,9 @@
      "II-10"
     ]
    },
-   "destino": "REPUESTO dia 68 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 59 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
    "reposicion": {
-    "dia": 68,
+    "dia": 59,
     "fecha": "2027-02-22",
     "carril": "B 16:15"
    }
@@ -282,9 +300,9 @@
     "sub_ejes_total": 2,
     "secundario": "I-11+I-12"
    },
-   "destino": "REPUESTO dia 69 (mar 23-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 60 (mar 23-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 69,
+    "dia": 60,
     "fecha": "2027-02-23",
     "carril": "B 16:15"
    }
@@ -316,9 +334,9 @@
     "sub_ejes_total": 2,
     "secundario": "V-1"
    },
-   "destino": "REPUESTO dia 70 (mié 24-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 61 (mié 24-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 70,
+    "dia": 61,
     "fecha": "2027-02-24",
     "carril": "B 16:15"
    }
@@ -357,9 +375,9 @@
     "sub_ejes_total": 3,
     "secundario": "V-3"
    },
-   "destino": "REPUESTO dia 71 (jue 25-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 62 (jue 25-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 71,
+    "dia": 62,
     "fecha": "2027-02-25",
     "carril": "B 16:15"
    }
@@ -398,9 +416,9 @@
     "sub_ejes_total": 3,
     "secundario": "III-1"
    },
-   "destino": "REPUESTO dia 73 (lun 1-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 64 (lun 1-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 73,
+    "dia": 64,
     "fecha": "2027-03-01",
     "carril": "B 16:15"
    }
@@ -454,9 +472,9 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.01 (fila 50, 2026-12-18); en la F1 v6.02 el checkpoint es la fila 45 (2026-12-18, cola larga I-1 + II-2) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO dia 74 (mar 2-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 65 (mar 2-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
    "reposicion": {
-    "dia": 74,
+    "dia": 65,
     "fecha": "2027-03-02",
     "carril": "B 16:15"
    }
@@ -488,9 +506,9 @@
     "sub_ejes_total": 8,
     "secundario": "I-OCC"
    },
-   "destino": "REPUESTO dia 75 (mié 3-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 66 (mié 3-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 75,
+    "dia": 66,
     "fecha": "2027-03-03",
     "carril": "B 16:15"
    }
@@ -522,9 +540,9 @@
     "sub_ejes_total": 3,
     "secundario": "III-3"
    },
-   "destino": "REPUESTO dia 76 (jue 4-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 67 (jue 4-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 76,
+    "dia": 67,
     "fecha": "2027-03-04",
     "carril": "B 16:15"
    }
@@ -556,9 +574,9 @@
     "sub_ejes_total": 3,
     "secundario": "I-5+I-6"
    },
-   "destino": "REPUESTO dia 78 (lun 8-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 69 (lun 8-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 78,
+    "dia": 69,
     "fecha": "2027-03-08",
     "carril": "B 16:15"
    }
@@ -590,9 +608,9 @@
     "sub_ejes_total": 2,
     "secundario": "II-EMG"
    },
-   "destino": "REPUESTO dia 79 (mar 9-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 70 (mar 9-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 79,
+    "dia": 70,
     "fecha": "2027-03-09",
     "carril": "B 16:15"
    }
@@ -646,9 +664,9 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.03 (fila 43, 2026-12-18); en la F1 v6.05 el checkpoint es la fila 40 (2026-12-18, cola larga II-9 + II-7) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO dia 80 (mié 10-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 71 (mié 10-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
    "reposicion": {
-    "dia": 80,
+    "dia": 71,
     "fecha": "2027-03-10",
     "carril": "B 16:15"
    }
@@ -680,9 +698,9 @@
     "sub_ejes_total": 3,
     "secundario": "I-10"
    },
-   "destino": "REPUESTO dia 37 (vie 8-ene-2027) · CARRIL VIERNES 16:15, tras el PRE-TEST 2026-II de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D37:b_*)",
+   "destino": "REPUESTO dia 28 (vie 8-ene-2027) · CARRIL VIERNES 16:15, tras el PRE-TEST 2026-II de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D28:b_*)",
    "reposicion": {
-    "dia": 37,
+    "dia": 28,
     "fecha": "2027-01-08",
     "carril": "VIE 16:15"
    }
@@ -714,9 +732,9 @@
     "sub_ejes_total": 2,
     "secundario": "V-6"
    },
-   "destino": "REPUESTO sáb 9-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 37 (vie 8-ene, extra.carril_sabado.pendiente_f1; claves D37:s_*)",
+   "destino": "REPUESTO sáb 9-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 28 (vie 8-ene, extra.carril_sabado.pendiente_f1; claves D28:s_*)",
    "reposicion": {
-    "dia": 37,
+    "dia": 28,
     "fecha": "2027-01-09",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-01-08"
@@ -749,9 +767,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-6"
    },
-   "destino": "REPUESTO dia 42 (vie 15-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D42:b_*)",
+   "destino": "REPUESTO dia 33 (vie 15-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D33:b_*)",
    "reposicion": {
-    "dia": 42,
+    "dia": 33,
     "fecha": "2027-01-15",
     "carril": "VIE 16:15"
    }
@@ -790,9 +808,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-10"
    },
-   "destino": "REPUESTO sáb 16-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 42 (vie 15-ene, extra.carril_sabado.pendiente_f1; claves D42:s_*)",
+   "destino": "REPUESTO sáb 16-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 33 (vie 15-ene, extra.carril_sabado.pendiente_f1; claves D33:s_*)",
    "reposicion": {
-    "dia": 42,
+    "dia": 33,
     "fecha": "2027-01-16",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-01-15"
@@ -847,9 +865,9 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.05 (fila 40, 2026-12-18); en la F1 v6.06 el checkpoint es la fila 35 (2026-12-18, cola larga III-1 + III-9) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO sáb 23-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 47 (vie 22-ene, extra.carril_sabado.pendiente_f1; claves D47:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1047",
+   "destino": "REPUESTO sáb 23-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 38 (vie 22-ene, extra.carril_sabado.pendiente_f1; claves D38:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1038",
    "reposicion": {
-    "dia": 47,
+    "dia": 38,
     "fecha": "2027-01-23",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-01-22"
@@ -882,9 +900,9 @@
     "sub_ejes_total": 2,
     "secundario": "II-9"
    },
-   "destino": "REPUESTO dia 47 (vie 22-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D47:b_*)",
+   "destino": "REPUESTO dia 38 (vie 22-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D38:b_*)",
    "reposicion": {
-    "dia": 47,
+    "dia": 38,
     "fecha": "2027-01-22",
     "carril": "VIE 16:15"
    }
@@ -916,9 +934,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-7"
    },
-   "destino": "REPUESTO dia 52 (vie 29-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D52:b_*)",
+   "destino": "REPUESTO dia 43 (vie 29-ene-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D43:b_*)",
    "reposicion": {
-    "dia": 52,
+    "dia": 43,
     "fecha": "2027-01-29",
     "carril": "VIE 16:15"
    }
@@ -950,9 +968,9 @@
     "sub_ejes_total": 8,
     "secundario": "I-1"
    },
-   "destino": "REPUESTO sáb 30-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 52 (vie 29-ene, extra.carril_sabado.pendiente_f1; claves D52:s_*)",
+   "destino": "REPUESTO sáb 30-ene-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 43 (vie 29-ene, extra.carril_sabado.pendiente_f1; claves D43:s_*)",
    "reposicion": {
-    "dia": 52,
+    "dia": 43,
     "fecha": "2027-01-30",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-01-29"
@@ -985,9 +1003,9 @@
     "sub_ejes_total": 3,
     "secundario": "II-2"
    },
-   "destino": "REPUESTO dia 57 (vie 5-feb-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D57:b_*)",
+   "destino": "REPUESTO dia 48 (vie 5-feb-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D48:b_*)",
    "reposicion": {
-    "dia": 57,
+    "dia": 48,
     "fecha": "2027-02-05",
     "carril": "VIE 16:15"
    }
@@ -1041,9 +1059,9 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.06 (fila 35, 2026-12-18); en la F1 v6.07 el checkpoint es la fila 30 (2026-12-18, cola larga V-1 + V-3) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO sáb 6-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 57 (vie 5-feb, extra.carril_sabado.pendiente_f1; claves D57:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1057",
+   "destino": "REPUESTO sáb 6-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 48 (vie 5-feb, extra.carril_sabado.pendiente_f1; claves D48:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1048",
    "reposicion": {
-    "dia": 57,
+    "dia": 48,
     "fecha": "2027-02-06",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-02-05"
@@ -1076,9 +1094,9 @@
     "sub_ejes_total": 2,
     "secundario": "V-1"
    },
-   "destino": "REPUESTO dia 62 (vie 12-feb-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D62:b_*)",
+   "destino": "REPUESTO dia 53 (vie 12-feb-2027) · CARRIL VIERNES 16:15, tras el SIM 100Q de las 07:15 y su corrección de 09:30-12:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D53:b_*)",
    "reposicion": {
-    "dia": 62,
+    "dia": 53,
     "fecha": "2027-02-12",
     "carril": "VIE 16:15"
    }
@@ -1110,9 +1128,9 @@
     "sub_ejes_total": 2,
     "secundario": "V-3"
    },
-   "destino": "REPUESTO sáb 13-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 62 (vie 12-feb, extra.carril_sabado.pendiente_f1; claves D62:s_*)",
+   "destino": "REPUESTO sáb 13-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 53 (vie 12-feb, extra.carril_sabado.pendiente_f1; claves D53:s_*)",
    "reposicion": {
-    "dia": 62,
+    "dia": 53,
     "fecha": "2027-02-13",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-02-12"
@@ -1152,9 +1170,9 @@
     "sub_ejes_total": 3,
     "secundario": "III-1"
    },
-   "destino": "REPUESTO sáb 20-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 67 (vie 19-feb, extra.carril_sabado.pendiente_f1; claves D67:s_*)",
+   "destino": "REPUESTO sáb 20-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 58 (vie 19-feb, extra.carril_sabado.pendiente_f1; claves D58:s_*)",
    "reposicion": {
-    "dia": 67,
+    "dia": 58,
     "fecha": "2027-02-20",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-02-19"
@@ -1194,9 +1212,9 @@
     "sub_ejes_total": 3,
     "secundario": "III-9"
    },
-   "destino": "REPUESTO dia 77 (vie 5-mar-2027) · CARRIL VIERNES 16:15 de la quincena final, tras el SIM 100Q de las 11:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D77:b_*)",
+   "destino": "REPUESTO dia 68 (vie 5-mar-2027) · CARRIL VIERNES 16:15 de la quincena final, tras el SIM 100Q de las 11:00 (los 13 días de reposición lun-jue del carril B ya están ocupados; re-flujo por fecha con los sábados) · extra.carril_b.pendiente_f1 de esa fila (claves D68:b_*)",
    "reposicion": {
-    "dia": 77,
+    "dia": 68,
     "fecha": "2027-03-05",
     "carril": "VIE 16:15"
    }
@@ -1250,12 +1268,377 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.07 (fila 30, 2026-12-18); en la F1 v6.08 el checkpoint es la fila 25 (2026-12-18, cola larga III-3 + I-11+I-12) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO sáb 27-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 72 (vie 26-feb, extra.carril_sabado.pendiente_f1; claves D72:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1072",
+   "destino": "REPUESTO sáb 27-feb-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 63 (vie 26-feb, extra.carril_sabado.pendiente_f1; claves D63:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1063",
    "reposicion": {
-    "dia": 72,
+    "dia": 63,
     "fecha": "2027-02-27",
     "carril": "SÁB 14:00-15:00",
     "host": "2027-02-26"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 26,
+   "fecha_original": "2026-12-23",
+   "tipo": "banqueo1h",
+   "codigo": "II-5",
+   "subtema": "APS/adolescente (MCI) · Modelo de Cuidado Integral por curso de vida: objetivo, indicadores, paquetes de atención",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-6",
+     "subtema": "TB: definiciones de caso y derechos laborales (licencia con goce)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 2,
+    "de": 5,
+    "sub_eje": "mci_curso_vida",
+    "sub_eje_label": "Modelo de Cuidado Integral por curso de vida: objetivo, indicadores, paquetes de atención",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "II-6"
+   },
+   "destino": "REPUESTO dom 10-ene-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 28 (vie 8-ene, extra.carril_domingo.pendiente_f1; claves D28:o_*)",
+   "reposicion": {
+    "dia": 28,
+    "fecha": "2027-01-10",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-01-08"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 27,
+   "fecha_original": "2026-12-24",
+   "tipo": "banqueo1h",
+   "codigo": "I-4",
+   "subtema": "Transmisibles/brotes · Rabia: clasificación de la exposición y profilaxis post-exposición",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-10",
+     "subtema": "Cáncer: tamizaje de mama (mamografía por edad, rol del I-2) y signos de alarma de cáncer infantil",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 2,
+    "de": 5,
+    "sub_eje": "rabia",
+    "sub_eje_label": "Rabia: clasificación de la exposición y profilaxis post-exposición",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 4,
+    "secundario": "II-10"
+   },
+   "destino": "REPUESTO dom 17-ene-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 33 (vie 15-ene, extra.carril_domingo.pendiente_f1; claves D33:o_*)",
+   "reposicion": {
+    "dia": 33,
+    "fecha": "2027-01-17",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-01-15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 28,
+   "fecha_original": "2026-12-28",
+   "tipo": "banqueo1h",
+   "codigo": "IV-1",
+   "subtema": "Investigación (IV-1+IV-2) · Tipos de estudio: descriptivo vs analítico, observacional vs experimental, cohorte / casos-controles / transversal",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "IV-2",
+     "subtema": "Conceptos básicos de investigación",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "I-5+I-6",
+     "subtema": "Determinantes, demografía/fuentes de datos (hechos vitales), transición epidemiológica, bioestadística mínima",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 2,
+    "de": 5,
+    "sub_eje": "tipos_estudio",
+    "sub_eje_label": "Tipos de estudio: descriptivo vs analítico, observacional vs experimental, cohorte / casos-controles / transversal",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 4,
+    "secundario": "I-5+I-6"
+   },
+   "destino": "REPUESTO dom 24-ene-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 38 (vie 22-ene, extra.carril_domingo.pendiente_f1; claves D38:o_*)",
+   "reposicion": {
+    "dia": 38,
+    "fecha": "2027-01-24",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-01-22"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 29,
+   "fecha_original": "2026-12-29",
+   "tipo": "banqueo1h",
+   "codigo": "II-4",
+   "subtema": "Anemia/CRED · Anemia: diagnóstico (puntos de corte de Hb y ajuste por altitud) y tratamiento",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 2,
+    "de": 5,
+    "sub_eje": "anemia_dx_tto",
+    "sub_eje_label": "Anemia: diagnóstico (puntos de corte de Hb y ajuste por altitud) y tratamiento",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 3,
+    "secundario": "II-EMG"
+   },
+   "destino": "REPUESTO dom 31-ene-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 43 (vie 29-ene, extra.carril_domingo.pendiente_f1; claves D43:o_*)",
+   "reposicion": {
+    "dia": 43,
+    "fecha": "2027-01-31",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-01-29"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 30,
+   "fecha_original": "2026-12-30",
+   "tipo": "banqueo1h",
+   "codigo": "II-1",
+   "subtema": "Gestante · Parto, puerperio y lactancia materna (ojo: la gestante ahora cae vía vacunas/ITS)",
+   "prioridad": "ALTA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-OCC",
+     "subtema": "Salud ocupacional: riesgo profesional (vínculo laboral), factores físico / biológico / ergonómico / psicosocial",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 2,
+    "de": 5,
+    "sub_eje": "parto_lactancia",
+    "sub_eje_label": "Parto, puerperio y lactancia materna (ojo: la gestante ahora cae vía vacunas/ITS)",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "I-OCC"
+   },
+   "destino": "REPUESTO dom 7-feb-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 48 (vie 5-feb, extra.carril_domingo.pendiente_f1; claves D48:o_*)",
+   "reposicion": {
+    "dia": 48,
+    "fecha": "2027-02-07",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-02-05"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 31,
+   "fecha_original": "2026-12-31",
+   "tipo": "banqueo1h",
+   "codigo": "I-3",
+   "subtema": "Vigilancia epidemiológica · Causalidad: causa necesaria/suficiente/componente, criterios de Bradford Hill, riesgo (RR/OR/RA)",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "III-3",
+     "subtema": "Consentimiento: retiro voluntario (contenido del formato) y negativa/rechazo en emergencia → ministerio público",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 10,
+    "sub_eje": "causalidad_hill",
+    "sub_eje_label": "Causalidad: causa necesaria/suficiente/componente, criterios de Bradford Hill, riesgo (RR/OR/RA)",
+    "sub_eje_n": 4,
+    "sub_ejes_total": 8,
+    "secundario": "III-3"
+   },
+   "destino": "REPUESTO dom 14-feb-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 53 (vie 12-feb, extra.carril_domingo.pendiente_f1; claves D53:o_*)",
+   "reposicion": {
+    "dia": 53,
+    "fecha": "2027-02-14",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-02-12"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 32,
+   "fecha_original": "2027-01-02",
+   "tipo": "banqueo1h",
+   "codigo": "V-2",
+   "subtema": "Gestión/planeamiento · Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-11+I-12",
+     "subtema": "Plan local de salud (autoridad local), alianzas estratégicas e intersectorialidad",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 10,
+    "sub_eje": "planeamiento",
+    "sub_eje_label": "Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "I-11+I-12"
+   },
+   "destino": "REPUESTO dom 21-feb-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 58 (vie 19-feb, extra.carril_domingo.pendiente_f1; claves D58:o_*)",
+   "reposicion": {
+    "dia": 58,
+    "fecha": "2027-02-21",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-02-19"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 18,
+   "fecha_original": "2026-12-11",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: II-EMG + I-OCC",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "I-OCC",
+     "subtema": "Salud ocupacional: riesgo profesional (vínculo laboral), factores físico / biológico / ergonómico / psicosocial",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 18,
+    "semana": "2026-12-07",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "II-EMG",
+     "I-OCC"
+    ]
+   },
+   "destino": "REPUESTO dom 28-feb-2027 09:30-10:30 · CARRIL DOMINGO de la intensiva (v7.00: los 13 días de reposición lun-jue del carril B, los sábados y los viernes del desborde ya están ocupados) · fila host dia 63 (vie 26-feb, extra.carril_domingo.pendiente_f1; claves D63:o_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 2063",
+   "reposicion": {
+    "dia": 63,
+    "fecha": "2027-02-28",
+    "carril": "DOM 09:30-10:30",
+    "host": "2027-02-26"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.10d",
+   "corrimiento": "v7.00",
+   "dia_mant": 23,
+   "fecha_original": "2026-12-18",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: III-3 + I-11+I-12",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "III-3",
+     "subtema": "Consentimiento: retiro voluntario (contenido del formato) y negativa/rechazo en emergencia → ministerio público",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "I-11+I-12",
+     "subtema": "Plan local de salud (autoridad local), alianzas estratégicas e intersectorialidad",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 23,
+    "semana": "2026-12-14",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "III-3",
+     "I-11+I-12"
+    ]
+   },
+   "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.10d (fila 23, 2026-12-18); en la F1 v7.00 el checkpoint es la fila 15 (2026-12-18, cola larga II-10 + I-5+I-6) · receta, cola larga, sim_n y semana de esta copia intactas",
+   "destino": "REPUESTO sáb 6-mar-2027 14:00-15:00 · CARRIL SÁBADO de la intensiva (los 13 días de reposición lun-jue del carril B ya están ocupados) · fila host dia 68 (vie 5-mar, extra.carril_sabado.pendiente_f1; claves D68:s_*) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra · sim_n 1068",
+   "reposicion": {
+    "dia": 68,
+    "fecha": "2027-03-06",
+    "carril": "SÁB 14:00-15:00",
+    "host": "2027-03-05"
    }
   }
  ]

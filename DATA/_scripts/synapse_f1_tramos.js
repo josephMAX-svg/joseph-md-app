@@ -52,26 +52,35 @@
 const fs = require('fs');
 const path = require('path');
 
-const DESDE = '2026-11-18', HASTA = '2027-01-03', COLA_DESDE = '2027-12-13', COLA_MIN = 30;
+// v7.00 (sáb 28-nov-2026 · REORGANIZACIÓN FINAL: TODO arranca el lun 30-nov; gen_synapse_plan.js con START = lun 30-nov): el troceado cubre las MISMAS 7 semanas
+//   de material que en la v6.09-v6.12 (sem 1-7 del SYNAPSE: lun 30-nov → dom 17-ene; antes mié 18-nov → dom 3-ene), así cada serie (Dario, Demis, Sholto, canal
+//   Anthropic, Willison, Pro Git, Python…) se mide igual y lo que no cabe va donde iba: el B «termina los tramos pendientes» de la sem 8 (vie 22-ene, EXTRA_2027;
+//   antes vie 8-ene), el tramo 4/4 de Sholto de la sem 8 (mar 19-ene; antes mar 5-ene) y la COLA POST-STEP 1 desde el 1.er hábil tras el examen del Step 1
+//   (_fechas_v6.json › step1.examen: lun 20-dic-2027 PROVISIONAL → el LUNES SIGUIENTE, lun 27-dic-2027, el mismo margen de una semana que antes —lun 13-dic con el
+//   examen del 6-dic—: corrector v7.00, el día siguiente al examen es el regreso a la posta y no lleva cola). Sin capas de corrida_s1.
+const F6T = JSON.parse(fs.readFileSync(path.join(__dirname, '_fechas_v6.json'), 'utf8'));
+const DESDE = '2026-11-30', HASTA = '2027-01-17', COLA_DESDE = (() => { const d = new Date(F6T.step1.examen + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })(), COLA_MIN = 30;
 /** v6.09b lote 1-ter: hora del bloque de la cola post-Step 1 (F5, L-V). */
 const COLA_INI = '04:15';
 /** v6.09b lote 1-ter: huecos REALES de F1 (con hora) para lo que no cabe en los comodines del sábado (hallazgo 1 de R: el final del deep dive). */
 // v6.12 (mar 24-nov-2026): un hueco que cae en un SÁBADO HÁBIL (_fechas_v6.json › corrida_s1.sabado_habil: día de estudio completo, con el Anki a las 05:00 y la
 //   mañana ENCAPS 07:15-12:00) va a las 04:15, libre ese día (el sábado no hay vibecoding); mismo material y minutos
 const SAB_HABIL = new Set((JSON.parse(fs.readFileSync(path.join(__dirname, '_fechas_v6.json'), 'utf8')).corrida_s1 || {}).sabado_habil || []);
-const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:15', id: 'deepDivePE' }].map((x) => (SAB_HABIL.has(x.fecha) ? { ...x, ini: '04:15' } : x));
+// v7.00: con el SYNAPSE del sábado de F1 a las 07:15 (rutinaGuia.synFranjaDe: desde las 20:30, 0 pantallas) el hueco va a las 07:45 (antes del gimnasio de las 08:30)
+const F1_EXTRA = [{ fecha: '2026-12-26', ini: '07:45', id: 'deepDivePE' }].map((x) => (SAB_HABIL.has(x.fecha) ? { ...x, ini: '04:15' } : x));
 /** v6.09b lote 1-quater (QS · hallazgo a de R2): fechas de 2027 cuyo bloque este módulo SÍ reescribe (y solo esas): el vie 8-ene «termina los tramos
  *  pendientes» recibe dos restos de F1 y su paso B dice cuáles. gen_synapse_plan.js aborta si llega cualquier otra fecha fuera de F1. */
-const EXTRA_2027 = ['2027-01-08'];
+const EXTRA_2027 = ['2027-01-22']; // v7.00: vie 22-ene (sem 8) · v6.09b-v6.12: vie 8-ene
 const VEL = 1.5, PPM = 100, OBJ = 500, MIN_W = 425, MAX_W = 575;
 const RAT = [0.85, 1.15];
 /** corte del volcado del Calendar (lib_txt.js: «qué» 150 · «cómo» 110) con margen: una fecha de destino nunca después de estos caracteres */
 const CORTE_QUE = 140, CORTE_COMO = 100;
 // curaduría del lote 1 que sigue mandando (rutinaGuia SYN_SERIES): el episodio de Greg Brockman (No Priors) del dom 22 al lun 30-nov
-const RESERVADO_B = new Set(['2026-11-22', '2026-11-23', '2026-11-28', '2026-11-30']);
+// v7.00: el de Greg Brockman = lun 30-nov (0:00-10:00) · comodín del sáb 5-dic · lun 7 y lun 14-dic (rutinaGuia.SYN_SERIES; antes dom 22, lun 23, sáb 28 y lun 30-nov)
+const RESERVADO_B = new Set(['2026-11-30', '2026-12-05', '2026-12-07', '2026-12-14']);
 // v6.10: PIEZAS FIJAS DEL PRIMER MARTES DE F1 (antes HECHO_17, «ya hecho el mar 17-nov, en curso»): Dwarkesh × Dario 0:00-10:00 a 1,0× · «Prompt injection
 //   attacks against GPT-3» las primeras ≈500 palabras → el mar 24-nov (la 1.ª sesión del carril del martes desde que el mar 17 quedó sin sesión)
-const PRIMER_MARTES = { fecha: '2026-11-24', dario: 600, velDario: 1, pi1: 500 };
+const PRIMER_MARTES = { fecha: '2026-12-01', dario: 600, velDario: 1, pi1: 500 }; // v7.00: mar 1-dic (la 1.ª sesión del carril del martes) · v6.10-v6.12: mar 24-nov
 // v6.10 · tanda C (17-nov-2026 · CORRECCIÓN DE HECHO del chat SYNAPSE, leída en las páginas): CORTES LIMPIOS — un tramo de lectura nunca termina DENTRO
 //   de una lista o de un blockquote. [sección (índice de medidas_f1.json), párrafo inicial, párrafo final] (párrafos 1-based, como loc()); `txt` = cómo
 //   lo nombra el localizador cuando el corte cae al final del grupo. py1 §1: el párrafo 8 («…for several reasons:») abre la lista de 3 puntos (p. 9-11):
@@ -154,7 +163,7 @@ function crear(MED, ctx) {
   const addDest = (k, fecha, det, hora) => { if (!destinos.has(k)) destinos.set(k, []); destinos.get(k).push({ fecha, hora: hora || null, det }); };
   const AUD = MED.audio;
   /** hora de la sesión de destino que conviene escribir (las de hora no habitual): comodín del sábado 21:00 · el resto, la franja de su día */
-  const horaSes = (f) => (dowOf(f) === 6 ? '21:00' : null);
+  const horaSes = (f) => (dowOf(f) === 6 ? '07:15' : null); // v7.00: el A/B/C del sábado de F1 va a las 07:15 (desde las 20:30, 0 pantallas) · v6.07b-v6.12: '21:00'
   /** v6.11 (revisión c32): ¿la pieza de la cola ya existe en el DÍA REAL de la sesión `fecha`? (ctx.realDe: fecha de plan → día real, con las cadenas). El recorrido
    *  va en orden de PLAN y los sábados nativos no corren con el alias: con un hábil más de alias, el resto que deja la sesión del mar 1-dic de plan (lun 7-dic
    *  real) lo leía el comodín del sáb 5-dic, dos días ANTES. Una pieza cuyo origen se hace después del día real de la sesión espera al siguiente comodín. */
@@ -330,7 +339,7 @@ function crear(MED, ctx) {
       : comp
         ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}).${compTxt} Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
       : sab && asig !== b.min
-        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 21:30 (antes del Anki; nada después de las 22:00). Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
+        ? `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)}). Sábado: hoy el A tiene ${asig}′ y el C ${b.min + 5 - asig}′, así el bloque sigue terminando a las 07:45 (antes del gimnasio de las 08:30). Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`
         : `En el PC, ${velTxt(v.v)}× con subtítulos en inglés: el tramo entero son ${fmt1(v.min)}′ de reloj (${ts(seg)} ÷ ${velTxt(v.v)})${cabeTxt(`, caben en los ${asig}′`)}. Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).${auditTxt}`;
     const que = `${b.material} › ${b.leccion} → ${rango} (${ts(seg)} de vídeo) a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′`;
     out(dia.fecha, 'A', { leccion: `${b.leccion} → ${ts(seg)} de vídeo a ${velTxt(v.v)}×${v.pausa ? ' con pausas' : ''} = ${minTxt}′ (medido el 17-nov)`, dur: `${ts(seg)} (a ${velTxt(v.v)}× = ${minTxt}′)`, guia: { que, como, url: b.url, t: 'A ↗' }, med: v.min, ...(asig !== b.min ? { min: asig } : {}) });

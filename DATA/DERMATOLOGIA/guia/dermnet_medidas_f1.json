@@ -7,7 +7,8 @@
   "alcance": "el de la guía anterior al lote 1-bis: TODAS las imágenes de la página del átomo + clínica + diagnóstico diferencial (si la página no lo tiene, su sustituto: las complicaciones o, si tampoco las tiene, el diagnóstico); se conserva lo que añadió el lote 1-bis (qué es; causa y tratamiento del acné).",
   "fuera": "lo que no está en el alcance (epidemiología, causas, tratamiento, pronóstico…) no forma parte del átomo: el atlas es imagen + clínica + diferencial. Lo que es del átomo y no cabe lleva fecha («aOtroDia») y sus minutos en el paso de destino.",
   "uso": "src/lib/dermaGuia.ts › paso «DermNet · atlas del átomo» del PLAN B de las sesiones de F1 (≤ 3-ene-2027), por fecha; el resto de la franja, al paso de práctica REAL (v6.10e: casos DermNet Quizzes / ProMIR del mapa DERMA_QUIZ_F1; variable de ajuste, 0′ si el atlas llena la franja)",
-  "alcance2027": "sin medir en la guía (otro lote)"
+  "alcance2027": "sin medir en la guía (otro lote)",
+  "v700": "v7.00 (28-nov-2026): las sesiones se re-fechan POR d con el remap de Derma del lun 30-nov (d6 mié 2-dic → lun 14-dic … d17 jue 31-dic → vie 15-ene); medidas y textos idénticos."
  },
  "paginas": {
   "dermoscopy": {
@@ -672,7 +673,7 @@
   }
  },
  "sesiones": {
-  "2026-12-02": {
+  "2026-12-14": {
    "atlas": "dermoscopy",
    "min": 6,
    "lee": [
@@ -687,7 +688,7 @@
    ],
    "motivo": "la página no tiene «clinical features» ni diferencial: su equivalente son los patrones dermatoscópicos; se lee entera (también «Dermatoscopes»: con qué se mira)"
   },
-  "2026-12-04": {
+  "2026-12-16": {
    "atlas": "psoriasis",
    "min": 9,
    "lee": [
@@ -701,7 +702,7 @@
     }
    ],
    "aOtroDia": {
-    "fecha": "2026-12-10",
+    "fecha": "2026-12-22",
     "pag": "psoriasis",
     "texto": [
      "How is psoriasis classified?",
@@ -711,7 +712,7 @@
    },
    "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no queda hueco para el paso de casos reales"
   },
-  "2026-12-08": {
+  "2026-12-18": {
    "atlas": "atopic-dermatitis",
    "min": 16,
    "lee": [
@@ -731,7 +732,7 @@
    ],
    "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no queda hueco para el paso de casos reales"
   },
-  "2026-12-10": {
+  "2026-12-22": {
    "atlas": "acne",
    "min": 9,
    "lee": [
@@ -747,7 +748,7 @@
     },
     {
      "pag": "psoriasis",
-     "de": "2026-12-04",
+     "de": "2026-12-16",
      "texto": [
       "How is psoriasis classified?",
       "How do clinical features vary in differing types of skin?",
@@ -757,7 +758,7 @@
    ],
    "motivo": "acné sin «differential diagnosis» ni complicaciones: entra «What tests…» (con sus 3 imágenes); el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento"
   },
-  "2026-12-14": {
+  "2026-12-24": {
    "atlas": "pemphigus-vulgaris",
    "min": 9,
    "lee": [
@@ -773,7 +774,7 @@
    ],
    "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (inmunofluorescencia, biopsia) es lo que separa pénfigo de penfigoide"
   },
-  "2026-12-16": {
+  "2026-12-28": {
    "atlas": "urticaria-an-overview",
    "min": 7,
    "lee": [
@@ -788,7 +789,7 @@
     }
    ]
   },
-  "2026-12-18": {
+  "2026-12-30": {
    "atlas": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
    "min": 8,
    "lee": [
@@ -809,7 +810,7 @@
    ],
    "motivo": "«What causes SJS/TEN?» entra: los fármacos culpables son el átomo («farmacodermias graves, no errar»)"
   },
-  "2026-12-22": {
+  "2027-01-05": {
    "atlas": "cutaneous-lupus-erythematosus",
    "min": 13,
    "lee": [
@@ -825,7 +826,7 @@
    ],
    "motivo": "sin «differential diagnosis»"
   },
-  "2026-12-24": {
+  "2027-01-07": {
    "atlas": "cellulitis",
    "min": 5,
    "lee": [
@@ -842,7 +843,7 @@
    ],
    "motivo": "«How is the diagnosis … made?» entra: el átomo pide «cuándo NO es celulitis»"
   },
-  "2026-12-28": {
+  "2027-01-11": {
    "atlas": "syphilis",
    "min": 13,
    "lee": [
@@ -856,7 +857,7 @@
     }
    ]
   },
-  "2026-12-30": {
+  "2027-01-13": {
    "atlas": "herpes-simplex",
    "min": 12,
    "lee": [
@@ -873,7 +874,7 @@
    ],
    "motivo": "sin «differential diagnosis»: complicaciones (eccema herpético, queratitis), diagnóstico y causa (HSV-1 / HSV-2) son lo que el átomo pide"
   },
-  "2026-12-31": {
+  "2027-01-15": {
    "atlas": "fungal-skin-infections",
    "min": 14,
    "lee": [

@@ -26,8 +26,8 @@ export const DERMA_GUIA_DATOS_META = {
   5
  ],
  "velocidad": {
-  "s1Hasta": "2026-12-01",
-  "s23Hasta": "2026-12-29",
+  "s1Hasta": "2026-12-10",
+  "s23Hasta": "2027-01-11",
   "regla": "hasta s1Hasta 1,0× (×1,2 pausas) · hasta s23Hasta 1,25× (×1,15) · después 1,5× (×1,15) — la misma regla que el Step 1 (E1)"
  },
  "pictorial": {
@@ -50,7 +50,7 @@ export const BB_DERM: Record<number, { nombre: string; s: number; ruta: string }
 /** uWorld Step 1 · Test Composer · Systems de Dermatology (nº reales de preguntas). */
 export const UW_DERM: Record<number, { nombre: string; q: number }> = {"1027":{"nombre":"Dermatology (Disorders of epidermal appendages)","q":11},"1028":{"nombre":"Dermatology (Inflammatory dermatoses and bullous diseases)","q":28},"1029":{"nombre":"Dermatology (Miscellaneous)","q":4},"1030":{"nombre":"Dermatology (Normal structure and function of skin)","q":6},"1031":{"nombre":"Dermatology (Skin and soft tissue infections)","q":18},"1032":{"nombre":"Dermatology (Skin tumors and tumor-like lesions)","q":32}};
 /** Cambios de velocidad de vídeo (fechas de D5 y D15 del Step 1). */
-export const DERMA_VELOCIDAD = {"s1Hasta":"2026-12-01","s23Hasta":"2026-12-29"};
+export const DERMA_VELOCIDAD = {"s1Hasta":"2026-12-10","s23Hasta":"2027-01-11"};
 
 /** ProMIR Dermatología cap. 1: test del d3 (preguntas MIR citadas en el capítulo, más recientes primero; E2). */
 export const DERMA_TEST_PROMIR_D3 = {"nQ":8,"citadas":11,"preguntas":[{"id":"2024-051","url":"https://promir.medicapanamericana.com/pregunta/MIR/2024-051","seccion":"4.3. Terapéutica física"},{"id":"2023-057","url":"https://promir.medicapanamericana.com/pregunta/MIR/2023-057","seccion":"4.3. Terapéutica física"},{"id":"2022-061","url":"https://promir.medicapanamericana.com/pregunta/MIR/2022-061","seccion":"4.3. Terapéutica física"},{"id":"2020-004","url":"https://promir.medicapanamericana.com/pregunta/MIR/2020-004","seccion":"3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas"},{"id":"2017-041","url":"https://promir.medicapanamericana.com/pregunta/MIR/2017-041","seccion":"4.2. Terapéutica oral"},{"id":"2011-225","url":"https://promir.medicapanamericana.com/pregunta/MIR/2011-225","seccion":"1.2. Dermis"},{"id":"2010-019","url":"https://promir.medicapanamericana.com/pregunta/MIR/2010-019","seccion":"2.2. Lesiones secundarias"},{"id":"2009-016","url":"https://promir.medicapanamericana.com/pregunta/MIR/2009-016","seccion":"2.1. Lesiones primarias"},{"id":"2008-144","url":"https://promir.medicapanamericana.com/pregunta/MIR/2008-144","seccion":"4.2. Terapéutica oral"},{"id":"2005-144","url":"https://promir.medicapanamericana.com/pregunta/MIR/2005-144","seccion":"4.2. Terapéutica oral"},{"id":"2003-142","url":"https://promir.medicapanamericana.com/pregunta/MIR/2003-142","seccion":"2.1. Lesiones primarias"}]};
@@ -74,7 +74,7 @@ export const DERMNET_DERMOSCOPY = "https://dermnetnz.org/topics/dermoscopy";
  *  no cabe hoy, con su fecha (la sesión destino lo lee con «de»). Lo usa el paso «DermNet · atlas del átomo» del plan B de F1 (dermaGuia.ts, ≤ LOTE1_HASTA). */
 export interface DermnetLectura { pag: string; url: string; texto: string[]; soloImagenes?: string[]; palabras: number; imagenes: number; de?: string }
 export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLectura[]; palabras: number; imagenes: number; necesario: number; min: number; fuera: { palabras: number; temas: string[] }; aOtroDia?: { fecha: string; pag: string; texto: string[]; palabras: number; imagenes: number; necesario: number }; motivo?: string }> = {
- "2026-12-02": {
+ "2026-12-14": {
   "atlas": "dermoscopy",
   "lecturas": [
    {
@@ -99,7 +99,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "la página no tiene «clinical features» ni diferencial: su equivalente son los patrones dermatoscópicos; se lee entera (también «Dermatoscopes»: con qué se mira)"
  },
- "2026-12-04": {
+ "2026-12-16": {
   "atlas": "psoriasis",
   "lecturas": [
    {
@@ -128,7 +128,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
    ]
   },
   "aOtroDia": {
-   "fecha": "2026-12-10",
+   "fecha": "2026-12-22",
    "pag": "psoriasis",
    "texto": [
     "How is psoriasis classified?",
@@ -141,7 +141,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "la página no tiene «differential diagnosis» ni complicaciones (su sustituto, el diagnóstico, va con la clasificación y la piel de color al jue 10-dic); la franja deja 9′ (uWorld 12′ + B&B «Skin Disorders I» 19′): hoy no queda hueco para el paso de casos reales"
  },
- "2026-12-08": {
+ "2026-12-18": {
   "atlas": "atopic-dermatitis",
   "lecturas": [
    {
@@ -177,7 +177,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "con la variación en piel de color y las complicaciones visibles; hoy no queda hueco para el paso de casos reales"
  },
- "2026-12-10": {
+ "2026-12-22": {
   "atlas": "acne",
   "lecturas": [
    {
@@ -203,7 +203,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
     ],
     "palabras": 358,
     "imagenes": 3,
-    "de": "2026-12-04"
+    "de": "2026-12-16"
    }
   ],
   "palabras": 751,
@@ -219,7 +219,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "acné sin «differential diagnosis» ni complicaciones: entra «What tests…» (con sus 3 imágenes); el átomo es «mecanismo → tratamiento»: causa + clínica + tratamiento"
  },
- "2026-12-14": {
+ "2026-12-24": {
   "atlas": "pemphigus-vulgaris",
   "lecturas": [
    {
@@ -250,7 +250,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "sin «differential diagnosis»: «How is … diagnosed?» (inmunofluorescencia, biopsia) es lo que separa pénfigo de penfigoide"
  },
- "2026-12-16": {
+ "2026-12-28": {
   "atlas": "urticaria-an-overview",
   "lecturas": [
    {
@@ -281,7 +281,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
    ]
   }
  },
- "2026-12-18": {
+ "2026-12-30": {
   "atlas": "stevens-johnson-syndrome-toxic-epidermal-necrolysis",
   "lecturas": [
    {
@@ -318,7 +318,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "«What causes SJS/TEN?» entra: los fármacos culpables son el átomo («farmacodermias graves, no errar»)"
  },
- "2026-12-22": {
+ "2027-01-05": {
   "atlas": "cutaneous-lupus-erythematosus",
   "lecturas": [
    {
@@ -350,7 +350,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "sin «differential diagnosis»"
  },
- "2026-12-24": {
+ "2027-01-07": {
   "atlas": "cellulitis",
   "lecturas": [
    {
@@ -381,7 +381,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "«How is the diagnosis … made?» entra: el átomo pide «cuándo NO es celulitis»"
  },
- "2026-12-28": {
+ "2027-01-11": {
   "atlas": "syphilis",
   "lecturas": [
    {
@@ -411,7 +411,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
    ]
   }
  },
- "2026-12-30": {
+ "2027-01-13": {
   "atlas": "herpes-simplex",
   "lecturas": [
    {
@@ -442,7 +442,7 @@ export const DERMNET_MEDIDO: Record<string, { atlas: string; lecturas: DermnetLe
   },
   "motivo": "sin «differential diagnosis»: complicaciones (eccema herpético, queratitis), diagnóstico y causa (HSV-1 / HSV-2) son lo que el átomo pide"
  },
- "2026-12-31": {
+ "2027-01-15": {
   "atlas": "fungal-skin-infections",
   "lecturas": [
    {
@@ -661,7 +661,7 @@ export const DERMA_LECTURA_REAL: Record<string, { t: string; url: string; seccio
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  "1": {
   "d": 1,
-  "fecha": "2026-11-18",
+  "fecha": "2026-11-30",
   "casoIds": [
    192,
    43
@@ -836,7 +836,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "2": {
   "d": 2,
-  "fecha": "2026-11-20",
+  "fecha": "2026-12-02",
   "casoIds": [
    112,
    166
@@ -1045,7 +1045,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "3": {
   "d": 3,
-  "fecha": "2026-11-24",
+  "fecha": "2026-12-04",
   "casoIds": [
    25,
    165
@@ -1223,7 +1223,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "4": {
   "d": 4,
-  "fecha": "2026-11-26",
+  "fecha": "2026-12-08",
   "casoIds": [
    21,
    194
@@ -1418,7 +1418,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "5": {
   "d": 5,
-  "fecha": "2026-11-30",
+  "fecha": "2026-12-10",
   "casoIds": [
    36,
    84

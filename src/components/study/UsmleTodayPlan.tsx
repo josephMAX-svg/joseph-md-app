@@ -17,8 +17,10 @@ import {
 } from '../../lib/usmleScores';
 
 /** v6.06: sistemas que F1 estudia de verdad (filas de contenido, sin Assessment) — el «STEP 1 VIVO» de F2 mezcla solo esos (antes el texto decía «9 sistemas + bioestadística»). */
-const SISTEMAS_F1: string[] = [...new Set(DIAS.filter((d) => d.system !== 'Assessment').map((d) => d.system))];
-import { FECHAS_V6, faseV6, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { FECHAS_V6, faseV6, fechaPlanDe, fechaRealDe, USMLE_MANT_SESIONES } from '../../lib/fechasV6';
+// v7.00 (D3): texto del MANTENIMIENTO de la pausa (Anki 05:00-05:10 + sesiones USMLE de step1.mantenimiento) y del reinicio (partiendo de cero)
+const MANT_F1 = USMLE_MANT_SESIONES.filter((x) => x.tramo === 'f1'), MANT_F2 = USMLE_MANT_SESIONES.filter((x) => x.tramo === 'f2');
+const NBME25_T2 = DIAS_T2.find((x) => x.tipo === 'hito' && /NBME 25/.test(x.sub));
 import { infoTurno, ordenSemanaDe, onTurnosChange, filaT2DelDia, dowCorto, guardarTurno, desmarcarTurno, TURNOS_V6, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
@@ -949,8 +951,8 @@ export default function UsmleTodayPlan() {
       {pausa && (
         <View style={[st.anchor, { borderLeftColor: Colors.gold, marginBottom: Spacing.sm }]}>
           <Text style={[st.anchorLbl, { color: Colors.gold }]}>⏸ Step 1 en PAUSA · {fmtFecha(DAILY_META.pausa.desde)} → {fmtFecha(DAILY_META.pausa.hasta)} · {DAILY_META.pausa.motivo}</Text>
-          <Text style={st.anchorSub}>{faseV6(iso) === 'F2' ? `Mantenimiento: Anki USMLE 05:15-05:45 L-V (0 tarjetas nuevas, FSRS 85 %) + sábado 07:45-09:15 «STEP 1 VIVO»: 20Q timed MEZCLADAS de los ${SISTEMAS_F1.length} sistemas vistos en F1 (${SISTEMAS_F1.join(' · ')}; 10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión. Sin NBME/UWSA.` : 'Sin sesión (Anki opcional). Desde el lun 4-ene: Anki 30\' L-V + sábado 20Q mezcladas.'}</Text>
-          <Text style={st.anchorSub}>Reinicio: {fmtFecha(FECHAS_V6.step1.reinicio)} (T1 · REENTRADA) · NBME 29 al día siguiente · FSRS vuelve a 90 % el día del reinicio. Abajo puedes navegar el plan; ninguna fila es «hoy» durante la pausa.</Text>
+          <Text style={st.anchorSub}>{`Mantenimiento (${faseV6(iso)}): Anki USMLE 05:00-05:10 L-V solo si hay vencidas o nuevas (Good / Again, FSRS 90 %) + sesión USMLE en Mehlman (Tutor, sin reloj; uWorld reservado para el reinicio), 1 subtema por semana: ${MANT_F1.length ? `mar · jue 18:00-18:45 del ${fmtFecha(MANT_F1[0]!.fecha)} al ${fmtFecha(MANT_F1[MANT_F1.length - 1]!.fecha)}` : ''}${MANT_F2.length ? ` · sáb 04:15-05:45 del ${fmtFecha(MANT_F2[0]!.fecha)} al ${fmtFecha(MANT_F2[MANT_F2.length - 1]!.fecha)}` : ''}. Sin NBME/UWSA.`}</Text>
+          <Text style={st.anchorSub}>Reinicio: {fmtFecha(FECHAS_V6.step1.reinicio)} (T1, partiendo de cero) · línea base = NBME 25{NBME25_T2 ? ` (T${NBME25_T2.t}, ${fmtFecha(NBME25_T2.fecha)})` : ''} · FSRS a 90 % todo el tiempo. Abajo puedes navegar el plan; ninguna fila es «hoy» durante la pausa.</Text>
         </View>
       )}
 

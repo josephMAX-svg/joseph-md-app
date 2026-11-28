@@ -12,7 +12,7 @@ import { DIAS_2027, DAILY_META_2027 } from '../../lib/researchDailyPlan2027';
 import { agruparProgreso, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import { useDone } from '../../lib/useDone';
 import { useHoyReal, useSelDeHoy } from '../../lib/useHoyReal'; // c45: la pestaña abierta de un día para otro vuelve a hoy
-import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
+import { diaEstudioTipo, PRIORIDAD_COLOR, RESEARCH_SUSPENSO, researchSuspendidoEn } from '../../lib/researchData'; // v7.00: + RESEARCH EN SUSPENSO
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
@@ -364,6 +364,12 @@ export default function ResearchTodayPlan() {
 
   return (
     <View>
+      {/* v7.00 (28-nov-2026): RESEARCH EN SUSPENSO — el plan de abajo es el anterior (no se re-fecha) y sus días-Research quedan como hueco libre */}
+      {RESEARCH_SUSPENSO && researchSuspendidoEn(iso) && (
+        <View style={[st.artefactoBar, { borderLeftColor: Colors.amber }]}>
+          <Text style={[st.artefactoTxt, { color: Colors.amber }]}>⏸ RESEARCH EN SUSPENSO desde el {RESEARCH_SUSPENSO.desde}: {RESEARCH_SUSPENSO.motivo}. Los átomos y fechas de abajo son del plan anterior (solo consulta): hoy no hay tarea de Research.</Text>
+        </View>
+      )}
       {/* Banner interdiario Research/Derma + artefacto vivo */}
       <View style={st.interRow}>
         <View style={[st.interBtn, tipoHoy === 'research' && !enPausa ? st.interOn : st.interOff]}>

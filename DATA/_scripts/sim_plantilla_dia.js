@@ -82,6 +82,9 @@ function guiasDe(b, p, iso) {
         return gA && !ocupa ? [...gs, gA] : gs;
       }
       if (b.id === 'reentrada') return U.guiaUsmleEnRango(iso, b.ini || '16:15', b.fin || '17:15'); // F3 · 16:15 (como TodayMission)
+      // v7.00 (corrector): mantenimiento del Step (mar·jue 18:00 en F1 · sáb 04:15 en F2) → su franja REAL, como TodayMission (antes de la rama
+      // usmle-principal, que el sábado consultaba 07:00→05:45 y daba [] sin error); sin guía = SIN contenido
+      if (b.id === 'usmle-mant') { const gs = U.guiaUsmleEnRango(iso, b.ini || '18:00', b.fin || '18:45'); return gs.length ? gs : null; }
       // v6.10b: sin mañanas de Step en sábado (step1.f1_extra retirado) → la guía del bloque USMLE principal, desde las 07:00 (como antes de la v6.10)
       if (b.frente === 'usmle-principal') return U.guiaUsmleEnRango(iso, '07:00', b.fin || '12:00');
       return U.guiaUsmleEnRango(iso, b.ini || '18:00', b.fin || '18:45');
@@ -178,8 +181,11 @@ function controlAnkiEncaps(iso, p) {
   if (!g) return [];
   const q = G.partesFranja(g.franja) || {};
   const step = F6.faseV6(iso) === 'F1' && F6.esDiaStepF1(iso);
-  const ini = step ? '05:30' : '05:20';
-  return q.ini === ini && q.fin === '05:45' ? [] : [`Anki 05:00: los repasos ENCAPS van ${g.franja} y tocan ${ini}–05:45 (${step ? 'mar · jue, día de Step' : 'lun · mié · vie o día de plan de la transición'})`];
+  // v7.00 (D3, 28-nov-2026): con el Step 1 en PAUSA (step1.pausa_desde → reinicio: F1 sin mañanas de Step) la parte USMLE es 05:00-05:10 (≤ 10′; el D1, el preset
+  //   «APEX USMLE») y los repasos ENCAPS van 05:10-05:45; con mañana de Step, el reparto de la v6.09b (05:30 los días de Step · 05:20 los demás)
+  const pausa = F6.enPausaStep1(iso);
+  const ini = pausa ? '05:10' : step ? '05:30' : '05:20';
+  return q.ini === ini && q.fin === '05:45' ? [] : [`Anki 05:00: los repasos ENCAPS van ${g.franja} y tocan ${ini}–05:45 (${pausa ? 'Step 1 en PAUSA: USMLE 05:00-05:10' : step ? 'mar · jue, día de Step' : 'lun · mié · vie o día de plan de la transición'})`];
 }
 // v6.10 (17-nov-2026): (f) un día de corrida_s1.extra lleva, por cada frente, un bloque en su franja (hora real), dentro de las ventanas fijas del fin de
 //   semana (F6 no exporta las ventanas: se repiten aquí, las de _fechas_v6.json › VENTANAS_FINDE de gen_fechas_v6.js) y sin solaparse con otro bloque con hora

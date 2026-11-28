@@ -35,6 +35,12 @@
 //                                    · `2027-03-14 2027-12-06 --f1-filas 13 --semana-plan 2` = v6.08 (tramo2_14mar_2027-12-06_v608.json, regenerado el
 //                                    14-nov con la ventana L-S del NBME 28 desplazado a F4: lun 7 → sáb 12-jun; fix est2): D1 lun
 //                                    16-nov, Step 1 mar · jue (13 slots, mar 17-nov → mar 29-dic).
+//        [--excluir-f1 d1,d2,…]      v7.00: filas v5.20 de F1 que NO entran en la cola (1 = UWSA1, al hueco del UWSA3 · 2-4 = D2-D4, mantenimiento dic-feb);
+//                                    sus sistemas (no hito) tienen alta '' en la rotación de la 16:15
+//        [--partir-de-cero]          v7.00: sin REENTRADA en T1 ni NBME 29 anclado en T2; los NBME 29 (D65) y 30 (D72) en la cola en su sitio v5.20
+//                                    (delante de D66 y D73) con su Day-After → orden 25 → 30 y el NBME 25 = LÍNEA BASE; el NBME 30 de la tabla no se ancla
+//                                    · `2027-03-14 2027-12-20 2027-05-03 --f1-filas 0 --semana-plan 2 --excluir-f1 1,2,3,4 --partir-de-cero` = v7.00
+//                                    (tramo2_14mar_2027-12-20_v700.json): Step 1 en pausa desde el D1 de F1, examen lun 20-dic-2027 (plan B 27-dic).
 // v6.08 (14-nov-2026): re-fecha real D1 de todo = lun 16-nov (F1 32 hábiles; Step 1 mar · jue = 13 slots). La SEMANA DE PLAN de la regla del
 //   Day-After completo deja de ser 5 fijo: = mañanas de Step por semana (--semana-plan; por defecto step1.f1_dias_semana.length del JSON). Con
 //   13 slots y semana de 2: UWSA1 slot 1 · NBME 25 (D10) adelantado una semana de plan al slot 8 (su Day-After, slots 9-12, termina dentro de F1;
@@ -123,7 +129,8 @@ const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 13; // v
 const SEMANA = opt('--semana-plan') != null ? Number(opt('--semana-plan'))
   : JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', '_fechas_v6.json'), 'utf8').replace(/^\uFEFF/, '')).step1.f1_dias_semana.length;
 if (!(Number.isInteger(SEMANA) && SEMANA >= 1 && SEMANA <= 5)) throw new Error('--semana-plan inválido (1-5): ' + opt('--semana-plan'));
-if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (1-58): ' + opt('--f1-filas'));
+// v7.00 (28-nov-2026): --f1-filas 0 = F1 sin mañanas de Step (Step 1 en pausa desde el D1): todo el temario de F1 va al tramo 2
+if (!(Number.isInteger(F1FILAS) && F1FILAS >= 0 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (0-58): ' + opt('--f1-filas'));
 // v6.02: colocación con hitos anclados (slot de cada D# del temario en F1; 0 = desplazada)
 const esHitoV520 = (d) => /^🎯/.test(byD[d].sub);
 const HITOS_F1 = ORIGEN_F1_TEMARIO.filter(esHitoV520);
@@ -153,7 +160,17 @@ const CABEN = F1FILAS - M_HITOS;
 { let j = 0; for (let s = 0; s < F1FILAS; s++) if (SLOT_F1[s] === undefined) SLOT_F1[s] = NO_HITO[j++]; }
 // las ÚLTIMAS filas de temario no-hito (v6.06: 42-54, 56, 57, 79 · v6.05: 47-54, 56, 57, 79 · v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 ·
 //   v6.01: 79 · v6.00: —) · v6.07: + los hitos que no caben, en orden v5.20 (16-24, 25, 26-39, 40, 41-54, 55, 56, 57, 79)
-const DESPL = ORIGEN_F1_TEMARIO.filter((d) => HITOS_FUERA.includes(d) || NO_HITO.slice(CABEN).includes(d));
+const DESPL_TODAS = ORIGEN_F1_TEMARIO.filter((d) => HITOS_FUERA.includes(d) || NO_HITO.slice(CABEN).includes(d));
+// v7.00 (28-nov-2026): --excluir-f1 d1,d2,… = filas de F1 que NO van a la cola (v7.00: 1 = UWSA1, al hueco del UWSA3 · 2-4 = Fundamentos + Inmuno,
+//   hechas en el mantenimiento dic-feb); sus sistemas (filas no hito) tienen alta '' en la rotación de la 16:15
+const EXCLUIDAS = (opt('--excluir-f1') || '').split(',').filter(Boolean).map(Number);
+for (const d of EXCLUIDAS) if (!DESPL_TODAS.includes(d)) throw new Error(`excluirF1: v5.20 D${d} no es una fila de F1 desplazada al tramo 2 (con ${F1FILAS} slots en F1)`);
+const DESPL = DESPL_TODAS.filter((d) => !EXCLUIDAS.includes(d));
+// v7.00: --partir-de-cero = sin REENTRADA en T1 ni NBME 29 anclado en T2; los NBME 29 (D65) y 30 (D72) van en la cola en su sitio v5.20 (orden 25 → 30)
+const DE_CERO = has('--partir-de-cero');
+const NBME_EN_COLA = DE_CERO ? [65, 72] : [];
+const MOTIVO = DE_CERO ? 'Step 1 en pausa en F1' : 'no cupo en F1 antes de la pausa ENCAPS';
+const MOTIVO_H = DE_CERO ? 'Step 1 en pausa en F1' : 'no cupo en F1 con su Day-After antes de la pausa ENCAPS';
 const NOMBRE_HITO = (d) => (/UWSA\d|NBME \d+|FREE 120/i.exec(byD[d].sub) || ['hito'])[0];
 const ULT_NBME = (() => { const h = SLOT_F1.filter((d) => esHitoV520(d) && /NBME/.test(byD[d].sub)).pop(); return h ? NOMBRE_HITO(h) : 'el último NBME'; })();
 // v6.02 (17-oct): ¿hitos anclados fuera de su D#? (v6.02 sí: NBME 28 en el slot 52) → etiqueta «era v5.20 D#»; si no, la de v6.00/v6.01
@@ -165,6 +182,24 @@ const primerMartesTras = (s) => { let x = add(s, 1); while (wd(x) !== 2) x = add
 const R = primerMartesTras(ENCAPS);         // DJ-2: martes siguiente al ENCAPS (el lunes libre); vale para examen en sáb o dom
 // ── hitos 2027 por examen (ventana L-S + preferente) · [nombre, forma(dOrig|'UWSA3'), vIni, vFin, preferente] ──
 const HITOS = {
+  '2027-12-20': [ // v7.00 (28-nov-2026): examen lun 20-dic-2027 = la del 6-dic + 2 semanas (NBME 30 y UWSA3 fijos; GO/NO-GO lun 1-nov)
+    ['NBME 30', 72, '2027-05-24', '2027-05-29', '2027-05-24'],
+    ['UWSA3 (opcional)', 'UWSA3', '2027-06-28', '2027-07-03', '2027-06-29'],
+    ['NBME 31', 82, '2027-10-18', '2027-10-23', '2027-10-18'],
+    ['NBME 32', 83, '2027-10-25', '2027-10-30', '2027-10-25'],
+    ['UWSA2', 77, '2027-11-01', '2027-11-06', '2027-11-02'],
+    ['NBME 33', 85, '2027-11-22', '2027-11-27', '2027-11-22'], // v7.00 (fix): E-28, solo (patrón v6.04); el ensayo de 7 bloques no cabe en un lunes con turno
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-08'], // v7.00 (fix): feriado mié 8-dic (E-12, sin turno)
+  ],
+  '2027-12-27': [ // v7.00: plan B lun 27-dic-2027 = la del 6-dic + 3 semanas (GO/NO-GO lun 8-nov)
+    ['NBME 30', 72, '2027-05-24', '2027-05-29', '2027-05-24'],
+    ['UWSA3 (opcional)', 'UWSA3', '2027-06-28', '2027-07-03', '2027-06-29'],
+    ['NBME 31', 82, '2027-10-25', '2027-10-30', '2027-10-25'],
+    ['NBME 32', 83, '2027-11-01', '2027-11-06', '2027-11-01'],
+    ['UWSA2', 77, '2027-11-08', '2027-11-13', '2027-11-09'],
+    ['NBME 33', 85, '2027-11-29', '2027-12-04', '2027-11-29'], // v7.00 (fix): E-28, solo (patrón v6.04)
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-09'], // v7.00 (fix): feriado jue 9-dic (E-18, sin turno)
+  ],
   '2027-12-06': [ // v6.07 (8-nov-2026): examen lun 6-dic-2027 · NBME 30 y UWSA3 fijos; NBME 31/32 y UWSA2 + 6 semanas (patrón v6.04); ensayo de 7 bloques en el feriado lun 1-nov y Free 120 a E-14 (patrón 27-sep)
     ['NBME 30',72,'2027-05-24','2027-05-29','2027-05-24'],
     ['UWSA3 (opcional)','UWSA3','2027-06-28','2027-07-03','2027-06-29'],
@@ -203,6 +238,11 @@ const HITOS = {
 };
 // Colas de hitos tras un NO-GO (§B5): solo formularios NO usados; NBME 31/32 ya rendidos no se repiten.
 const HITOS_NOGO = {
+  '2027-12-20>2027-12-27': [ // v7.00: NO-GO del lun 1-nov (base 20-dic) → plan B 27-dic (NBME 31 y 32 ya rendidos)
+    ['UWSA2', 77, '2027-11-08', '2027-11-13', '2027-11-09'],
+    ['NBME 33', 85, '2027-11-29', '2027-12-04', '2027-11-29'],
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-09'],
+  ],
   '2027-08-31>2027-09-27': [ // NO-GO del mar 13-jul (adelanto) → base 27-sep
     ['UWSA3 (cola NO-GO)', 'UWSA3', '2027-07-26', '2027-07-31', '2027-07-28'],
     ['UWSA2', 77, '2027-08-02', '2027-08-07', '2027-08-06'],
@@ -260,7 +300,14 @@ for (const d of DESPL) {
   FWD_ALL.push(mk({ tipo: 'hito', dOrig: d, forma: d, nombre: NOMBRE_HITO(d), ventana: null, uid: 'H' + d, desdeF1 }));
   FWD_ALL.push(mk({ tipo: 'day_after', de: NOMBRE_HITO(d), uid: 'DA' + d, desdeF1, dHito: d }));
 }
-CONT.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d })));
+// v7.00 (--partir-de-cero): cada NBME de la cola entra delante de la 1.ª fila de CONT con D# mayor (D65 antes de D66 · D72 antes de D73)
+const metidoEnCola = new Set();
+const meterNbme = (h) => { metidoEnCola.add(h); FWD_ALL.push(mk({ tipo: 'hito', dOrig: h, forma: h, nombre: NOMBRE_HITO(h), ventana: null, uid: 'H' + h })); FWD_ALL.push(mk({ tipo: 'day_after', de: NOMBRE_HITO(h), uid: 'DA' + h, dHito: h })); };
+for (const d of CONT) {
+  for (const h of NBME_EN_COLA) if (h < d && !metidoEnCola.has(h)) meterNbme(h);
+  FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d }));
+}
+for (const h of NBME_EN_COLA) if (!metidoEnCola.has(h)) meterNbme(h);
 REFUERZO.forEach((r, i) => FWD_ALL.push(mk({ tipo: 'refuerzo', ref: i, uid: 'REF' + i, ...r })));
 REACT.forEach(([sys, k, n]) => FWD_ALL.push(mk({ tipo: 'reactivacion', sistema: sys, k, n, uid: `RX-${sys}-${k}` })));
 RANDOM.forEach((x) => BWD_ALL.push(mk({ tipo: 'uw_random', dOrig: typeof x === 'number' ? x : null, nuevo: typeof x === 'string' ? x : null, uid: 'UR' + x })));
@@ -291,10 +338,10 @@ for (const d of [...PEND_F1].reverse()) {
 const filas = new Map(); // fecha → fila
 const ancla = (s, o) => { if (!futuro(s)) return; if (filas.has(s)) throw new Error('choque de anclas ' + s + ' ' + JSON.stringify(o)); filas.set(s, o); };
 const sig = (s) => PLAN.find((x) => x > s);
-ancla(R, { tipo: 'reentrada' });
-ancla(F3[1], { tipo: 'hito', dOrig: 65, forma: 65, nombre: 'NBME 29', ventana: null });
+if (!DE_CERO) { ancla(R, { tipo: 'reentrada' }); ancla(F3[1], { tipo: 'hito', dOrig: 65, forma: 65, nombre: 'NBME 29', ventana: null }); } // v7.00: --partir-de-cero, sin ellas
 for (const [nombre, forma, vIni, vFin, pref] of TABLA) {
   if (pref < R) throw new Error('hito antes del reinicio: ' + nombre);
+  if (NBME_EN_COLA.includes(forma)) continue; // v7.00: el NBME 30 va en la cola
   if (!futuro(pref) || formasUsadas.has(String(forma))) continue;
   ancla(pref, { tipo: 'hito', dOrig: typeof forma === 'number' ? forma : null, forma, nombre, ventana: [vIni, vFin] });
   ancla(sig(pref), { tipo: 'day_after', de: nombre });
@@ -379,6 +426,7 @@ if (ROT_FIJA) sistemaRot.forEach((x) => { ALTA_ROT[x] = ''; });
 else {
   const pend = new Set(PEND_F1.filter((d) => d <= F1FILAS));
   SLOT_F1.forEach((dv, i) => { if (!esHitoV520(dv) && !pend.has(i + 1) && sistemaRot.includes(byD[dv].system)) ALTA_ROT[byD[dv].system] = ''; });
+  for (const dv of EXCLUIDAS) if (!esHitoV520(dv) && sistemaRot.includes(byD[dv].system)) ALTA_ROT[byD[dv].system] = ''; // v7.00: mantenimiento
   const altaTras = (sis, fecha) => { if (!sistemaRot.includes(sis) || ALTA_ROT[sis] === '') return; if (!(sis in ALTA_ROT) || fecha > ALTA_ROT[sis]) ALTA_ROT[sis] = fecha; };
   for (const x of frozen) if (x.tipo === 'contenido' && ('dF1' in x || DESPL.includes(x.dOrig))) altaTras(x.system, x.fecha);
   for (const s of PLAN) { const o = filas.get(s); if (o.tipo === 'contenido' && (o.dF1 || o.desdeF1)) altaTras(byD[o.dF1 ? SLOT_F1[o.dF1 - 1] : o.dOrig].system, s); }
@@ -416,9 +464,11 @@ for (const s of PLAN) {
       const ventana = o.ventana || (F4row && !has('--hito-f4-sin-ventana') ? [lunesDe(s), add(lunesDe(s), 5)] : null);
       const extra = (/\+ 3 bloques/.test(o.nombre) ? ' · + 3 bloques random = ENSAYO 7 bloques' : /\+ 4 bloques/.test(o.nombre) ? ' · + 4 bloques random = ENSAYO 7 bloques' : '')
         + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (ventana ? ` · ventana ${f(ventana[0])}→${f(ventana[1])}` : '') : '')
-        + (o.dOrig === 65 ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
+        + (o.dOrig === 65 && !DE_CERO ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
+        + (DE_CERO && o.dOrig === 10 ? ' · LÍNEA BASE (el 1.er NBME del plan; los NBME van en orden 25 → 30)' : '')
         + (NOTA_V6[o.dOrig] ? ' · ' + NOTA_V6[o.dOrig] : '')
-        + (o.desdeF1 ? ` · DE F1 → TRAMO 2 (no cupo en F1 con su Day-After antes de la pausa ENCAPS; ${ETQ_DESPL(o)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : ''); // v6.07
+        + (o.desdeF1 ? ` · DE F1 → TRAMO 2 (${MOTIVO_H}; ${ETQ_DESPL(o)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '') // v6.07
+        + (o.uid && NBME_EN_COLA.includes(o.dOrig) ? ` · en su orden v5.20 (NBME 25 → 30) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido: 18:00 de hoy + las 4 filas siguientes'}` : ''); // v7.00
       if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = v.sub.replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
       else Object.assign(fila, DEF.hitoUWSA3, { sub: `🎯 ${o.nombre} (${hora})` + extra });
       Object.assign(fila, { forma: o.forma, nombre: o.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana });
@@ -430,7 +480,7 @@ for (const s of PLAN) {
       const pos = (o.desdeF1 ? DESPL : CONT).filter((x) => byD[x].system === v.system).indexOf(o.dOrig) + 1;
       const viernes = wd(s) === 5;
       let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
-      const preF1 = o.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; ${ETQ_DESPL(o)}) · ` : '';
+      const preF1 = o.desdeF1 ? `DE F1 → TRAMO 2 (${MOTIVO}; ${ETQ_DESPL(o)}) · ` : '';
       if (o.parte) { // F4: contenido partido
         const [k4, n4] = o.parte.split('/').map(Number);
         if (n4 === 4) { // v6.05 · inducción (¼ de unidad por fila): partes 1-2 = la mitad «PARTE 1» (pre-test + deep prime), 3-4 = la «PARTE 2» (consolidación)

@@ -114,6 +114,9 @@
 //   AURUM_BASE_CERO: etapa + criterio observable de paso de fase sobre los ítems de la rúbrica del PITCH) y en DATA/AURUM/METODO_BASE_CERO.md. AURUM no tiene
 //   preguntas de evaluación (solo role-plays y rúbrica): nada que sustituir. Este generador gana `--check` (compara sin escribir).
 // Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD   ·   comprobar: node DATA/_scripts/gen_aurum_plan.js --check
+// v7.00 (sáb 28-nov-2026 · REORGANIZACIÓN FINAL, orden de Joseph: «del mar 24 al dom 29 no estudié; todo arranca el lun 30-nov»): START = lun 30-nov y
+//    _fechas_v6.json › corrida_s1 VACÍA (sin alias ni hábiles extra) → las 130 lecciones corren en L-V desde el D1 (PITCH v1 vie 18-dic … v7 lun 7-jun-2027);
+//    nada se recorta ni se comprime. Uso: node DATA/_scripts/gen_aurum_plan.js 2026-11-30   ·   --check
 const fs = require('fs');
 const path = require('path');
 
@@ -135,7 +138,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const CHECK = process.argv.includes('--check'); // v6.10e (18-nov-2026): `--check` = genera en memoria y compara con src/lib/aurumDailyPlan.ts sin escribir (como gen_liviano_plan)
-const START_ISO = process.argv.slice(2).find((x) => !x.startsWith('--')) || '2026-11-18'; // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el D33 lun 4-ene igual que la v6.09; v6.10: dom 6-dic) · v6.09: 2026-11-17 · default = D1 v6.09 (mar 17-nov: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const START_ISO = process.argv.slice(2).find((x) => !x.startsWith('--')) || '2026-11-30'; // v7.00 (28-nov-2026 · orden de Joseph: del mar 24 al dom 29-nov no estudió, TODO arranca el lun 30-nov; corrida_s1 vacía, sin hábiles extra): D1 lun 30-nov → D130 lun 7-jun-2027, nada se recorta · v6.10c: 2026-11-18 // v6.10c (17-nov-2026: el mar 17 tampoco se estudió; hábil extra el sáb 2-ene → desde el D33 lun 4-ene igual que la v6.09; v6.10: dom 6-dic) · v6.09: 2026-11-17 · default = D1 v6.09 (mar 17-nov: el lun 16 no se estudió; el jue 31-dic deja de ser SKIP → desde el lun 4-ene igual que la v6.08) · v6.08: 2026-11-16 (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 // v6.00 (6-oct-2026): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js aborta si no cuadra con sus derivaciones).
 // SKIP v6 = 25-dic · 31-dic · 1-ene · jue 25 / vie 26-mar-2027 · PROTEGIDOS v6 = vie 12-mar · sáb 13 · dom 14-mar · lun 15-mar · sáb 25-sep ·

@@ -366,6 +366,16 @@ function filasRunner() {
       if (ps.tipo === 'mini_sim') map.set(cs.fecha, { ...baseS, tipo: 'mini_sim', codigo: null, subtema: ps.subtema, secundarios: ps.temas_secundarios || [], extra: ps.extra || {}, carril_b: cbS });
       else map.set(cs.fecha, { ...baseS, tipo: 'banqueo1h', codigo: ps.codigo, subtema: ps.subtema, secundarios: ps.temas_secundarios || [], extra: ps.extra || {}, carril_b: cbS });
     }
+    // v7.00 (corrector, 28-nov-2026): CARRIL DOMINGO (09:30-10:30, dom 10-ene → dom 28-feb) — el pendiente F1 viaja en extra.carril_domingo del viernes host, como el del
+    //   sábado: fila propia del DOMINGO (dia = el del viernes host; claves de la app D{dia}:o_*) → --semana <lunes> arma banco_/minisim_<domingo>. Antes no se leía:
+    //   banco_2027-01-10 … y el mini-sim del dom 28-feb quedaban «POR GENERAR» para siempre (y el mini-sim caía en la rotación de respaldo de la cola larga)
+    const cdm = r.extra.carril_domingo || null; const pdm = cdm && cdm.pendiente_f1 ? cdm.pendiente_f1 : null;
+    if (pdm && cdm.fecha && !map.has(cdm.fecha)) {
+      const baseD = { dia: r.dia, fecha: cdm.fecha, weekday: 'Dom', origen: `_encaps_intensivo_2027.sql (carril DOMINGO ${cdm.franja || ''} · fila host ${r.fecha})`, domingo: { franja: cdm.franja || null, host: r.fecha, sim_n: cdm.sim_n ?? null } };
+      const cbD = { origen: pdm.origen, dia_mant: pdm.dia_mant, pendiente_f1: pdm.corrimiento, carril: `DOM ${cdm.franja || ''}`.trim() };
+      if (pdm.tipo === 'mini_sim') map.set(cdm.fecha, { ...baseD, tipo: 'mini_sim', codigo: null, subtema: pdm.subtema, secundarios: pdm.temas_secundarios || [], extra: pdm.extra || {}, carril_b: cbD });
+      else map.set(cdm.fecha, { ...baseD, tipo: 'banqueo1h', codigo: pdm.codigo, subtema: pdm.subtema, secundarios: pdm.temas_secundarios || [], extra: pdm.extra || {}, carril_b: cbD });
+    }
   }
   return (_filasRunner = map);
 }
@@ -378,7 +388,7 @@ function rangoSQL() {
 }
 function colaLargaDe(fecha) {
   const fila = filaSQL(fecha);
-  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: fila.carril_b ? `_encaps_intensivo_2027.sql (${fila.sabado ? 'carril SÁBADO' : 'carril B'} · pendiente F1, fila mant. ${fila.carril_b.dia_mant})` : '_encaps_mantenimiento_2027.sql' }; // v6.06: + carril SÁBADO
+  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: fila.carril_b ? `_encaps_intensivo_2027.sql (${fila.sabado ? 'carril SÁBADO' : fila.domingo ? 'carril DOMINGO' : 'carril B'} · pendiente F1, fila mant. ${fila.carril_b.dia_mant})` : '_encaps_mantenimiento_2027.sql' }; // v6.06: + carril SÁBADO
   // fallback: rota COLA_LARGA por índice de viernes desde el D1 del régimen
   const d1 = new Date((rangoSQL().d1 || fecha) + 'T12:00:00Z'), d = new Date(fecha + 'T12:00:00Z');
   const k = Math.max(0, Math.floor((d - d1) / (7 * 864e5)));
@@ -581,7 +591,9 @@ if(state.done){$('#intro').classList.add('hidden');${tras ? 'fin();' : 'corregir
 //   cifras de gen_encaps_manana.js (encaps_guia_catalogo.FUGA); los ítems del 2026-II no cuentan (su uso antes del pre-test es el permitido). Los mini-sims ya
 //   armados no cambian (este filtro solo actúa al generar uno).
 const FUGA = require('./encaps_guia_catalogo').FUGA;
-const esMinisimF1 = (fecha) => realDeEncaps(fecha) < require('./gen_fechas_v6').cargarFechasV6().encaps.intensiva_desde;
+// v7.00 (corrector, 28-nov-2026): + los mini-sims PENDIENTES de F1 que la v7.00 pasó a la intensiva (carril SÁBADO/DOMINGO: los antiguos 4/5 y 5/5 → dom 28-feb y
+//   sáb 6-mar): sus filas de cifras ya salen en F1 (3, 7, 16 y 17-dic, dom 6-dic) y el cruce por concepto del chat ENCAPS (c46, CONCEPTOS_LIGADOS) los protegía a ellos
+const esMinisimF1 = (fecha) => realDeEncaps(fecha) < require('./gen_fechas_v6').cargarFechasV6().encaps.intensiva_desde || (() => { const f = filaSQL(fecha); return !!(f && f.tipo === 'mini_sim' && f.carril_b && f.carril_b.pendiente_f1); })();
 // ronda c44 (revisión): + los ids del CSV del mazo (la fuente única de la tabla, §4: una línea nueva del CSV cuenta antes de regenerar el .md; ahí el 2026-II se
 //   escribe «fuente::2026-II-Qn» y la exclusión del 2026-II sí actúa)
 function idsCitadosCifras() {
@@ -619,7 +631,7 @@ function modoMinisim(fecha) {
   const { items, conteos, avisos } = armarSet(fecha, pool, usados, cola, fallos, debiles);
   const id = `MINISIM_${fecha}`;
   const doc = {
-    id, titulo: repuesto ? `Mini-simulacro ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · REPOSICIÓN F1 (${filaM.sabado ? `carril SÁBADO ${filaM.sabado.franja || ''}`.trim() : 'carril B 16:15'} · fila mant. ${filaM.carril_b.dia_mant} de la F1 ${String(filaM.carril_b.origen || '').replace('mantenimiento_', '')})` : `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
+    id, titulo: repuesto ? `Mini-simulacro ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · REPOSICIÓN F1 (${filaM.sabado ? `carril SÁBADO ${filaM.sabado.franja || ''}`.trim() : filaM.domingo ? `carril DOMINGO ${filaM.domingo.franja || ''}`.trim() : 'carril B 16:15'} · fila mant. ${filaM.carril_b.dia_mant} de la F1 ${String(filaM.carril_b.origen || '').replace('mantenimiento_', '')})` : `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
     fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')}) · moldes 2024-2A→2026-1 · claves verificadas por ítem`,
     n: items.length, seg_por_q: RECETA_MINISIM.seg_por_q, umbral: RECETA_MINISIM.umbral_25, alerta: RECETA_MINISIM.alerta_25, mostrar_codigo: false,
     instrucciones: `25 preguntas mixtas (8 II · 7 I · 5 V · 3 III · 2 IV), 72 s por pregunta = 30 min. Cola larga de hoy: ${cola.codigos.join(' + ')}. Sin material, sin pausa; la corrección aparece solo al terminar.`,
@@ -826,7 +838,7 @@ function modoSemana(lunes) {
   // se regenera → --semana es determinista (misma salida exista o no una corrida anterior) y no encadena exclusiones espurias
   const pendientes = new Set();
   // v6.06: + el SÁBADO (i = 5) solo si trae fila del carril SÁBADO (pendiente F1 de la intensiva); un sábado sin ella no se lista
-  const diasSemana = [0, 1, 2, 3, 4, ...(filaSQL(addDays(lunes, 5)) ? [5] : [])];
+  const diasSemana = [0, 1, 2, 3, 4, ...(filaSQL(addDays(lunes, 5)) ? [5] : []), ...(filaSQL(addDays(lunes, 6)) ? [6] : [])]; // v7.00 (corrector): + el DOMINGO (i = 6, carril DOMINGO)
   for (const i of diasSemana) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0 && i < 5) pendientes.add(`eval_${f}.json`); } }
   for (const i of diasSemana) {
     const f = addDays(lunes, i); const fila = filaSQL(f);
@@ -835,7 +847,7 @@ function modoSemana(lunes) {
       // v6.10i: el SÁBADO (carril SÁBADO, tras el SIM / pre-test del viernes) no lleva runner de eval: su eval es el re-test de 5 preguntas que falló en
       //   ese simulacro, en su runner o en su plataforma (= ENCAPS → Plan D{dia}:s_eval y la guía del sábado); un eval_<sábado> anclado al banco del
       //   CARRIL VIERNES decía otra cosa
-      if (i === 5) console.log(`— ${f}: sin eval_ (sábado: re-test de los fallos del simulacro del viernes, sin runner propio)`);
+      if (i >= 5) console.log(`— ${f}: sin eval_ (${i === 5 ? 'sábado' : 'domingo'}: re-test de los fallos del simulacro del viernes, sin runner propio)`);
       else if (i > 0) { try { modoEval(f, pendientes); } catch (e) { console.warn('⚠ eval', f, e.message); } pendientes.delete(`eval_${f}.json`); }
       const pa = pretestArranqueDe(f);
       if (pa) console.log(`— ${f}: banco sustituido por ${pa} (pre-test de arranque): no se regenera`);

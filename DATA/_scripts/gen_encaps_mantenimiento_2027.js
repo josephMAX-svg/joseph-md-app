@@ -409,7 +409,9 @@ const claveInst = (r) => `${r.codigo}|${r.extra.sub_eje || '-'}|${r.extra.instan
 const claveSim = (r) => (r.extra.cola_larga || []).join('+');
 let pendientes = null;
 if (PENDIENTES_DE) {
-  const viejas = leerFilasSQL(PENDIENTES_DE).filter((r) => r.modo === 'MANTENIMIENTO' && r.fecha <= HASTA);
+  // v7.00 (28-nov-2026): las filas viejas que cuentan son las del MANTENIMIENTO anteriores a la intensiva, no las ≤ HASTA: la F1 v6.10c-v6.12 tenía su dia 32 el
+  //   sáb 2-ene (corrida_s1.extra), después del HASTA nuevo (jue 31-dic), y con «≤ HASTA» esa sesión (V-2) se perdía en silencio en vez de pasar a pendiente
+  const viejas = leerFilasSQL(PENDIENTES_DE).filter((r) => r.modo === 'MANTENIMIENTO' && r.fecha < F6.encaps.intensiva_desde);
   const resta = (a, b, k) => { const cnt = {}; for (const r of b) cnt[k(r)] = (cnt[k(r)] || 0) + 1; const falt = []; for (const r of a) { if (cnt[k(r)]) cnt[k(r)]--; else falt.push(r); } return falt; };
   const vB = viejas.filter((r) => r.tipo === 'banqueo1h'), nB = filasObj.filter((r) => r.tipo === 'banqueo1h');
   const vS = viejas.filter((r) => r.tipo === 'mini_sim'), nS = filasObj.filter((r) => r.tipo === 'mini_sim');
@@ -457,7 +459,7 @@ if (PENDIENTES_DE) {
   if (absOtros.length) throw new Error(`_pendientes_f1.json: ${absOtros.length} mini-sim(s) «absorbidos» de otros corrimientos: prohibido (regla 10-oct: un mini-sim F1 se REPONE) → pásalos a filas con tipo 'mini_sim'`);
   const corrs = ((pj._meta && pj._meta.corrimientos) || []).filter((c) => c.version !== corr);
   corrs.push({ version: corr, fecha: CORR ? CORR.fecha : hoyLima(), d1_previo: CORR ? CORR.d1_previo : null, d1: D1, f1_hasta: HASTA,
-    fuente: `${fuenteLabel(PENDIENTES_DE)} (filas MANTENIMIENTO con fecha ≤ ${HASTA})`, filas_previas: viejas.length, banqueo_previas: vB.length, minisims_previos: vS.length,
+    fuente: `${fuenteLabel(PENDIENTES_DE)} (filas MANTENIMIENTO anteriores a la intensiva, ${F6.encaps.intensiva_desde})`, filas_previas: viejas.length, banqueo_previas: vB.length, minisims_previos: vS.length,
     filas_nuevas: filasObj.length, banqueo_nuevas: nB.length, minisims_nuevos: nS.length, pendientes: filasP.length + simsP.length,
     pendientes_banqueo: filasP.length, pendientes_minisim: simsP.length, minisims_absorbidos: 0 });
   pj = {

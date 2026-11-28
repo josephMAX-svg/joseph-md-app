@@ -100,6 +100,9 @@
  * gen_vibecoding_plan.js 2026-11-17) y Business con START = 2026-11-16 (fila DESCANSO) — no pasar 2026-11-17 a ninguno de los dos o la numeración de 2027
  * corre. En F1, el OUTPUT de Business y el CASO de LIVIANO nunca van antes de su última lectura / lección: si el viernes llega corto, va el lunes
  * (gen_business_plan.py y gen_liviano_plan.js; el bloque 7b de aquí delega en gen_liviano_plan.js, así que la regla se conserva).
+ * v7.00 (28-nov-2026 · REORGANIZACIÓN FINAL: todo arranca el lun 30-nov; corrida_s1 vacía): `remap_inicio.js 2026-11-30 --bloques derma` (el lun 30-nov es
+ * día-DERMA: Derma c1 lun 30-nov → vie 18-jun-2027, c2 lun 21-jun → vie 27-ago); researchData.ts › TIPO_RD_FORZADO vacío; Research EN SUSPENSO
+ * (researchData.RESEARCH_SUSPENSO: no se re-fecha, gen_research_plan.js no escribe); MIR · Business · LIVIANO con sus generadores (START 2026-11-30).
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).
@@ -155,7 +158,10 @@ function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=
 //    lee _fechas_v6.json). Aquí solo queda una ASERCIÓN de SOLO LECTURA: el primer día del plan (DIAS[0].fecha) debe ser START.
 {const f='src/lib/usmleStep1Daily.ts';let src='';try{src=fs.readFileSync(path.join(ROOT,f),'utf8');}catch{}
  const m=src.match(/export const DIAS\b[^=\n]*=\s*\[[\s\S]*?fecha:\s*["'](20\d\d-\d\d-\d\d)["']/);
- if(!m)console.warn('⚠ USMLE: no encuentro DIAS[0].fecha en '+f+' (aserción de solo lectura omitida)');
+ // v7.00 (28-nov-2026): sin mañanas de Step en F1 (_fechas_v6.json step1.pausa_desde ≤ START: la pausa empieza el D1) no hay D1 del Step que comprobar aquí
+ const PAUSA0=(()=>{try{return JSON.parse(fs.readFileSync(path.join(ROOT,'DATA/_scripts/_fechas_v6.json'),'utf8')).step1.pausa_desde||null;}catch{return null;}})();
+ if(PAUSA0&&PAUSA0<=START)console.log('USMLE (solo lectura) · sin mañanas de Step en F1 (step1.pausa_desde '+PAUSA0+' ≤ START '+START+'): nada que comprobar · el USMLE NO se re-fecha aquí desde la v6.00');
+ else if(!m)console.warn('⚠ USMLE: no encuentro DIAS[0].fecha en '+f+' (aserción de solo lectura omitida)');
  else if(m[1]!==(()=>{/* v6.07: el Step de F1 va solo los días step1.f1_dias_semana (mar · jue) → su D1 = 1.er día ≥ START con día de Step */const FJ=JSON.parse(fs.readFileSync(path.join(ROOT,'DATA/_scripts/_fechas_v6.json'),'utf8'));const ds=FJ.step1&&FJ.step1.f1_dias_semana;if(!ds||!ds.length)return START;let d=new Date(START+'T12:00:00Z');for(let i=0;i<7&&!ds.includes(d.getUTCDay());i++)d=new Date(d.getTime()+864e5);return d.toISOString().slice(0,10);})()){const msg='USMLE: DIAS[0].fecha = '+m[1]+' ≠ START '+START+' → el USMLE se regenera con gen_usmle_v5.js (v6: remap ya no lo re-fecha)';
   if(USMLE_APARTE)console.warn('⚠ '+msg+' · v6.01 --usmle-aparte: el lote USMLE corre en paralelo → re-correr remap sin la opción al cerrarlo');else throw new Error(msg);}
  else console.log('USMLE (solo lectura) ✓ DIAS[0].fecha = '+m[1]+' (START '+START+') · el USMLE NO se re-fecha aquí desde la v6.00');}

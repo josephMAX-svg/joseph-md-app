@@ -135,7 +135,7 @@ import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from
 import { guiaUsmleDe } from './usmleGuia'; // remate v6.10j: la eval 10Q del DAY-AFTER 6/6 en la métrica 1 de la revisión
 import { theomedSabadoDe, guiaEncapsDomingoDe, encapsRecuperaDe, encapsMananaDe, encapsDomingoDe } from './encapsManana'; // v6.08 (rev. dia5/dia7): clase en vivo del sábado (aviso del SYNAPSE) · franja de ejemplo del ENCAPS del domingo (ejemplo del SHIP)
 import { guiaEncapsDe, encapsSabadoDe, sesionEncapsDe, encapsF2De, ENCAPS_F2_FECHAS } from './encapsGuia'; // v6.10: + sesionEncapsDe (runners ENCAPS por generar de la semana 2, en la revisión S01) // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde · v6.07 (fix): el cierre Business del sábado F2 va tras el CARRIL SÁBADO ENCAPS (09:30-10:30, hora del SQL)
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, fechaPlanDe, motivoProtegido, corridaS1De, extraCorridaDe, extraDePlan, enShipDe, ordenRealDe, esSabadoHabil } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10y: + enShipDe (el paso 5/5 de S1 va PRIMERO en el SHIP del dom 29) y fechaPlanDe (día de la configuración del Anki, en el paso 2 de S1)
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, ultimoHabilAntes, fechaRealDe, fechaPlanDe, motivoProtegido, corridaS1De, extraCorridaDe, extraDePlan, enShipDe, ordenRealDe, esSabadoHabil, usmleMantDe, USMLE_MANT_SESIONES } from './fechasV6'; // v6.10: + extraCorridaDe (bloques de fin de semana que recuperan el mar 17) · v6.10y: + enShipDe (el paso 5/5 de S1 va PRIMERO en el SHIP del dom 29) y fechaPlanDe (día de la configuración del Anki, en el paso 2 de S1)
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -189,16 +189,20 @@ const SIM100_F2: string[] = ENCAPS_F2_FECHAS.filter((f) => encapsF2De(f)?.tipo =
  *  pinta con su día real) — F1: pre-tests de arranque y mini-sims /25 de las 16:15, el SIMULACRO DE CIERRE DE AÑO (mañana fase «cierre») y los simulacros del
  *  domingo (con o sin RANKING; los opcionales, «si lo hiciste») · F2: el PRE-TEST 100Q, los SIM 100Q #n, el DRESS REHEARSAL, los mini-sims /25 del carril B
  *  (reposición F1) y del carril del sábado · el EXAMEN. `proxima` = mini-sims de la semana de plan que se hacen DESPUÉS de la revisión (alias). */
-export function encapsRevDe(sab: string): { items: string[]; proxima: string[]; fechas: string[] } {
+export function encapsRevDe(sab: string): { items: string[]; proxima: string[]; proximaFecha: string | null; fechas: string[] } {
   const [a, b] = ventanaRevision(sab);
   const ev: [string, string][] = [], proxima: string[] = [];
+  let proximaFecha: string | null = null; // v7.00 (corrector): la próxima revisión, si no es la del sábado siguiente (sáb 13-mar PROTEGIDO → la del 20-mar)
   const enV = (real: string): boolean => real >= a && real < b;
   const pre: { p: string; parte: number; de: number; n: number }[] = [];
   for (let p = addDias(a, -10); p < addDias(b, 4); p = addDias(p, 1)) { // F1: fechas de PLAN (el alias las lleva a su día real)
     const real = fechaRealDe(p), s = sesionEncapsDe(p), m = encapsMananaDe(p);
     if (!enV(real)) { if (s?.tipo === 'minisim' && p < sab && p > addDias(sab, -7) && real >= b) proxima.push(`el mini-sim del ${fCorta(p)}`); continue; }
     if (s?.tipo === 'pretest' && s.pretest) pre.push({ p, parte: s.pretest.parte, de: s.pretest.de, n: s.pretest.n });
-    if (s?.tipo === 'minisim') ev.push([real, `mini-sim /25 del ${fCorta(p)} (${ordenMiniSimF1(p)}${s.dia === 23 ? ', CHECKPOINT' : ''})`]);
+    // v7.00 (corrector): el CHECKPOINT es el mini-sim que la guía titula así (3/3, vie 18-dic), no el dia 23 de la numeración vieja
+    if (s?.tipo === 'minisim') ev.push([real, `mini-sim /25 del ${fCorta(p)} (${ordenMiniSimF1(p)}${/CHECKPOINT/.test(guiaEncapsDe(p)?.titulo ?? '') ? ', CHECKPOINT' : ''})`]);
+    // v7.00 (corrector): el COLCHÓN de F1 (jue 24 y jue 31-dic) = simulacro Theomed de 100Q mientras no recupere una mañana perdida
+    if (m?.fase === 'colchon') ev.push([real, `SIMULACRO THEOMED 100Q del ${fCorta(p)} (colchón ${m.colchon ?? '?'}/${m.colchones ?? 2}${m.simulacro ? `, ${m.simulacro.label.replace(/^SIMULACRO MEDICINA /, 'Theomed ')}` : ''}; si ese día recuperó una mañana, el del domingo siguiente; nota = aciertos × 0,2)`]);
     if (m?.fase === 'cierre') { const src = /\(([^()]+)\)/.exec(m.banqueo.area)?.[1]; ev.push([real, `SIMULACRO DE CIERRE DE AÑO 100Q del ${fCorta(p)} (${src ? `${src}, ` : ''}nota = aciertos × 0,2)`]); }
   }
   if (pre.length) ev.push([fechaRealDe(pre[0]!.p), `pre-test de arranque ${pre.map((x) => `${x.parte}/${x.de}`).join(' y ')} (${pre[0]!.n}Q${pre.length > 1 ? ' c/u' : ''}) del ${pre.map((x) => fCorta(x.p)).join(' y ')}`]);
@@ -211,16 +215,20 @@ export function encapsRevDe(sab: string): { items: string[]; proxima: string[]; 
     const prov = FECHAS_V6.encaps.provisional ? ', fecha provisional' : '';
     if (f2?.tipo === 'dress_rehearsal') ev.push([x, `DRESS REHEARSAL 100Q del ${fCorta(x)} (/100${prov})`]);
     if (f2?.carrilB?.pendiente === 'mini_sim') ev.push([x, `mini-sim /25 del ${fCorta(x)} (carril B, reposición F1)`]);
-    if (sb?.tipo === 'mini_sim') ev.push([x, `mini-sim /25 del ${fCorta(x)} (carril del sábado)`]);
+    if (sb?.tipo === 'mini_sim') ev.push([x, `mini-sim /25 del ${fCorta(x)} (carril del ${sb.carril === 'dom' ? 'domingo' : 'sábado'})`]); // v7.00 (corrector): + el carril DOMINGO
     if (x === FECHAS_V6.encaps.examen) ev.push([x, `EXAMEN ENCAPS del ${fCorta(x)} (${prov ? 'fecha provisional: la de la convocatoria; ' : ''}nota y puesto cuando salgan)`]);
   }
+  // v7.00 (corrector): el mini-sim del carril del SÁBADO de la propia revisión (14:00, después de las 07:15) se mide en la revisión siguiente (la del sáb 6-mar,
+  //   en la del sáb 20-mar: el sáb 13-mar está PROTEGIDO) → se dice, como los de la semana de plan
+  { const sbH = encapsSabadoDe(sab); if (sbH?.tipo === 'mini_sim' && sbH.carril === 'sab') { let nx = addDias(sab, 7); for (let i = 0; i < 4 && !huboRevisionEl(nx); i++) nx = addDias(nx, 7); proxima.push('el mini-sim /25 de hoy, carril del sábado'); if (nx !== addDias(sab, 7)) proximaFecha = nx; } }
   ev.sort((u, v) => (u[0] < v[0] ? -1 : u[0] > v[0] ? 1 : 0));
   // fechas REALES de cada cosa medida (los pre-tests de arranque, una a una): check_rutina_guia comprueba que cada una entra en UNA sola revisión
-  return { items: ev.map((e) => e[1]), proxima, fechas: [...ev.filter((e) => !/^pre-test de arranque/.test(e[1])).map((e) => e[0]), ...pre.map((x) => fechaRealDe(x.p))].sort() };
+  return { items: ev.map((e) => e[1]), proxima, proximaFecha, fechas: [...ev.filter((e) => !/^pre-test de arranque/.test(e[1])).map((e) => e[0]), ...pre.map((x) => fechaRealDe(x.p))].sort() };
 }
 /** v6.10j: lo que la métrica 1 USMLE mide en la ventana de la revisión, según el plan de esa semana (no la plantilla genérica del tramo 2): F1 en nivel 0-1
  *  (bloques de 5Q en Tutor + gate de 10 consecutivas; sin pre-test /10 ni eval) · F2 con el Step 1 en PAUSA (el STEP 1 VIVO de ese sábado, 04:15) · F3+
- *  (pre-test /10 · consolidación · eval) · el hito (NBME / UWSA) que cae en la ventana, delante. */
+ *  (pre-test /10 · consolidación · eval) · el hito (NBME / UWSA) que cae en la ventana, delante.
+ *  v7.00: con el Step en PAUSA desde el D1, las sesiones USMLE de mantenimiento de la ventana (fechasV6.USMLE_MANT_SESIONES: mar · jue de F1 y la transición · sáb de F2). */
 function usmleRevDe(sab: string): string {
   const [a, b] = ventanaRevision(sab);
   const enV = (f: string): boolean => fechaRealDe(f) >= a && fechaRealDe(f) < b;
@@ -232,7 +240,9 @@ function usmleRevDe(sab: string): string {
     const da = USMLE_DIAS.filter((x) => enV(x.fecha) && guiaUsmleDe(x.fecha).some((g) => /^DAY-AFTER .*6\/6.*eval 10Q/.test(g.titulo))).map((x) => fCorta(x.fecha));
     out.push(`% de lo hecho en Tutor (preguntas a fondo o bloques de 5Q · validación · revalidación) y el gate de 10 consecutivas (nivel 0-1: sin pre-test /10 ni eval cronometrada)${da.length ? ` + eval 10Q Tutor del Day-After del ${da.join(' y ')} (% de las 10 nuevas)` : ''}`);
   }
-  if (faseV6(sab) === 'F2') out.push('STEP 1 VIVO de hoy (20Q timed mezcladas, %: el Step 1 está en pausa)');
+  // v7.00: la sesión USMLE de mantenimiento del sábado (usmleMantDe; antes el STEP 1 VIVO de F2) y las de mar · jue de la semana (F1 y la transición)
+  { const ms = USMLE_MANT_SESIONES.filter((x) => x.fecha >= a && x.fecha < b);
+    if (ms.length) out.push(`USMLE mantenimiento: ${ms.map((x) => `${fCorta(x.fecha)} ${x.ini}`).join(' · ')} (% de las preguntas Mehlman en Tutor, solo tendencia: el Step 1 está en pausa)`); }
   if (USMLE_DIAS_T2.some((x) => !esHito(x) && enV(x.fecha))) out.push('pre-test /10, consolidación % y eval');
   return out.join(' + ') || 'sin sesión de Step 1 esta semana (pausa: solo Anki)';
 }
@@ -980,10 +990,13 @@ export function synFranjaDe(iso: string, min = 30, hIso: string = iso): { franja
   if (dow(iso) === 6 && esSabadoHabil(iso)) return { franja: franjaDesde('21:00', min), aviso: `Sábado hábil (hoy sin gimnasio ni baile): A/B/C a las 21:00, como cada sábado${faseV6(iso) === 'F1' ? '; después, el Anki de las 21:30' : ''}.${pcDomingoTxt(iso)}` };
   if (dow(iso) === 6) return sabadoTheomed(iso)
     // v6.07b (mar 10-nov): sábado real de Joseph = gimnasio 08:30-14:00 · 14:00 revisión · 15:00-17:00 en vivo · baile 17:00-20:00 → A/B/C a las 21:00, al volver
-    ? { franja: franjaDesde('21:00', min), aviso: `Sábado: A/B/C a las 21:00, al volver del baile (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00)${faseV6(iso) === 'F1' || ((FECHAS_V6.step1 as { f1_extra?: string[] }).f1_extra ?? []).includes(iso) /* v6.10: el sáb 2-ene (D13 del Step) también lleva el Anki de las 21:30 · tanda C: decisión 4 (el Step ya no usa el sáb 2-ene) quita step1.f1_extra → sin él, solo F1 (como la v6.09) */ ? '; después, el Anki de las 21:30' : ''}.${pcDomingoTxt(iso)}` }
+    // v7.00 (sáb 28-nov-2026 · regla de Joseph: desde las 20:30, 0 pantallas; el A es en pantalla): el A/B/C del sábado de F1 y de la transición pasa de las
+    //   21:00 a las 07:15-07:45 (tras la rutina de 05:45-07:15 y antes del gimnasio de las 08:30; ventana de estudio del sábado 04:15-08:25). En F2 los sábados
+    //   no tienen SYNAPSE (gen_synapse_plan.js: no quedan 30′ libres antes de las 20:30) y en F3 sigue a las 15:00 (synSabadoResto). Antes: 21:00, al volver del baile.
+    ? { franja: franjaDesde('07:15', min), aviso: `Sábado: A/B/C a las 07:15, tras la rutina de la mañana (gimnasio 08:30-14:00 · 14:00 revisión${vivoTxt} · baile 17:00-20:00; desde las 20:30, 0 pantallas).${pcDomingoTxt(iso)}` }
     // v6.08 (14-nov-2026): F2 (ene-mar) — 15:00-17:00 es la clase EN VIVO de Theomed (repasos) y 14:00-15:00 el carril SÁBADO ENCAPS → A/B/C a las 21:00
     : faseV6(iso) === 'F2'
-      ? { franja: franjaDesde('21:00', min), aviso: `Sábado de la intensiva: A/B/C a las 21:00, al volver del baile (04:15 STEP 1 VIVO · 07:15 revisión · gimnasio 08:30-14:00${tardeSabadoF2Txt(iso, !!vivoTxt)}${vivoTxt} · baile 17:00-20:00).${pcDomingoTxt(iso)}` }
+      ? { franja: franjaDesde('21:00', min), aviso: `Sábado de la intensiva: A/B/C a las 21:00, al volver del baile (${usmleMantDe(iso) ? '04:15 USMLE mantenimiento · ' : '' /* v7.00: la sesión USMLE de mantenimiento (antes el STEP 1 VIVO), hasta el sáb 27-feb */}07:15 revisión · gimnasio 08:30-14:00${tardeSabadoF2Txt(iso, !!vivoTxt)}${vivoTxt} · baile 17:00-20:00).${pcDomingoTxt(iso)}` }
       : synSabadoResto(iso, min);
   const h = hitoDe(hIso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
@@ -1032,7 +1045,7 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     //   quedaba en «· Usar …» / «· gate: …») y la 1.ª parte de un gate con 2 fechas. Tras la línea de fase, el sábado va con lo esencial delante (A/B/C a
     //   las 21:00, el Anki de las 21:30), luego el horario del día («Hoy: gimnasio …»; antes, entre paréntesis en medio: el corte lo dejaba abierto) y
     //   al final el recordatorio del domingo («El SHIP del vibecoding es el domingo.»: el corte lo dejaba sin verbo)
-    { aviso: ((fa) => (/GATE de la fase|parte del GATE/.test(fa) || (fa && w === 6 && textosQSDe(iso)) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las 21:00, al volver del baile) \(([^()]+)\)([^.]*\.)(.*)$/u, '$1$3 Hoy: $2.$4'), s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
+    { aviso: ((fa) => (/GATE de la fase|parte del GATE/.test(fa) || (fa && w === 6 && textosQSDe(iso)) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las (?:21:00, al volver del baile|07:15, tras la rutina de la mañana)) \(([^()]+)\)([^.]*\.)(.*)$/u, '$1$3 Hoy: $2.$4') /* v7.00: + la variante de las 07:15 */, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
       planB: synPlanBDe(iso) });
 }
 /** v6.10 (17-nov-2026): SESIÓN DE RECUPERACIÓN del SYNAPSE a hora fija (synapseDailyPlan.SYN_REC_F1, gen_synapse_plan.js › REC_V610 = _fechas_v6.json ›
@@ -1174,7 +1187,7 @@ export function guiaSynapseColaDe(iso: string): GuiaBloque | null {
       // ronda c40 (remate): sin ✓ — la cola no tiene fila en «⚡ run» (ese día pinta la sesión de las 21:00, que lleva el suyo: pulsarlo dos veces lo desmarca);
       //   ≤ 180 (la línea «Hecho» del Calendar; antes 201 con «, con el minuto…», cortado)
       `tramo escuchado entero + el minuto anotado en el journal. ${SYN_REGLA_NOTAS}`,
-      { aviso: `${esSabadoHabil(iso) /* v6.12: sábado hábil → 04:15, antes del Anki de las 05:00 */ ? `Sábado hábil ${c.ini}-${c.fin}: antes del Anki de las 05:00 (hoy sin gimnasio ni baile)` : `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30)`}. Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines de las 21:00.`,
+      { aviso: `${esSabadoHabil(iso) /* v6.12: sábado hábil → 04:15, antes del Anki de las 05:00 */ ? `Sábado hábil ${c.ini}-${c.fin}: antes del Anki de las 05:00 (hoy sin gimnasio ni baile)` : `Sábado ${c.ini}-${c.fin}: tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30)`}. Nada nuevo: es el final de una pieza de F1 que no cabe en los comodines del sábado.`, // v7.00: los comodines del sábado van a las 07:15 (antes, a las 21:00)
         planB: (() => { // el hueco de la tarde del sábado (14:00-17:00) tras la revisión y el cierre de Business, si ese sábado no hay clase en vivo
           const bz = bizCierreDe(iso), tras = bz && bz.fecha === iso ? bz.fin : '14:30';
           // (synapse_f1_tramos.F1_EXTRA solo usa sábados SIN clase en vivo: sáb 26-dic)
@@ -1220,7 +1233,11 @@ export function shipEjemploIni(iso: string): string {
   if (!(aMin(m[1] as string) < b && aMin(m[2] as string) > a)) return tarde;
   // v6.10 (17-nov-2026): un domingo con bloques FIJOS de recuperación (corrida_s1.extra: dom 6-dic Research 05:00 · AURUM 07:15 · LIVIANO 08:15-09:00) →
   //   el ejemplo de mañana empieza al terminar el último (Feynman 10′ + SHIP 2 h: 09:00 · 09:10-11:10), sin pisarlos; sin ellos, 07:25 como siempre
-  const finX = extraCorridaDe(iso).reduce((x, y) => Math.max(x, aMin(y.fin)), 0);
+  // v7.00 (28-nov-2026): + el bloque ENCAPS FIJO de la mañana (encapsManana.encapsRecuperaDe: dom 6-dic 07:15-08:30, la recuperación de los días sin sesión): el
+  //   ejemplo empieza al terminarlo (Feynman 10′ + SHIP: 08:30 · 08:40-10:40)
+  const recM = encapsRecuperaDe(iso);
+  const finR = recM && aMin(recM.fin) <= aMin('12:00') ? aMin(recM.fin) : 0;
+  const finX = Math.max(extraCorridaDe(iso).reduce((x, y) => Math.max(x, aMin(y.fin)), 0), finR);
   return finX && finX + SHIP_EJ.feynmanMin > aMin(SHIP_EJ.manana) ? aHHMM(finX + SHIP_EJ.feynmanMin) : SHIP_EJ.manana;
 }
 /** v6.09b lote 1-quater FX1 (revisión V2 · planes B a franja llena): día de F1 al que el plan B del SHIP del domingo `dom` («sin PC el domingo») manda el verify
@@ -1390,7 +1407,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
       //   el D1 en mié 18; el lun 30 es el cierre de S2), como shipPBDestDe; el dom 3-ene (S6 cierra el mar 29-dic, lun 4 no es ship-prep) sigue igual
       if (iso <= FECHAS_V6.transicion.hasta && (p.fin <= addDias(iso, -6) || (p.fin <= addDias(iso, -5) && vibeDiaDe(addDias(iso, 1))?.tipo === 'ship-prep' && vibeDiaDe(addDias(iso, 1))?.semana !== p.s))) {
         const sig = vibeProyectoDe(p.s + 1);
-        avisoF1 = `SHIP S${p.s} hoy, tras su cierre del ${fCorta(p.fin)} (doc + commit + preparar SHIP): en F1 ${dow(p.fin) === 1 ? 'cada proyecto cierra en lunes (todo corrió un hábil en la v6.09)' : `S${p.s} cierra en ${['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][dow(p.fin)]} (el D1 fue el ${fCorta(VIBE_META.inicio)})`} y su SHIP va el domingo siguiente${sig ? `, con S${sig.s} ya en curso` : ''}. Hoy solo se cierra S${p.s}.`; // FX1: sin «(cierra el …)», que caía en la pos. ≈320 del aviso (el Calendar lo corta a 240)
+        avisoF1 = `SHIP S${p.s} hoy, tras su cierre del ${fCorta(p.fin)} (doc + commit + preparar SHIP): en F1 ${dow(p.fin) === 1 ? `S${p.s} cierra en lunes (${motivoCierreLunes(p.fin)})` : `S${p.s} cierra en ${['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'][dow(p.fin)]} (el D1 fue el ${fCorta(VIBE_META.inicio)})`} y su SHIP va el domingo siguiente${sig ? `, con S${sig.s} ya en curso` : ''}. Hoy solo se cierra S${p.s}.`; // FX1: sin «(cierra el …)», que caía en la pos. ≈320 del aviso (el Calendar lo corta a 240)
         // v6.10w (remate · revisión textos): las sesiones de vibecoding en orden REAL tras el domingo (con la corrida, el lun 30-nov hace el plan del mié 25: antes
         //   el plan B mandaba el verify al «lun 30-nov» de PLAN, que se hace el jue 3-dic, ya en la 4.ª sesión del proyecto siguiente)
         const rV = (x: string): string => fechaRealDe(x, 'vibecoding');
@@ -1627,6 +1644,11 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   }
   // hilo de Tracy: total del libro a 1,25× − lo que va en las 14:15 − los sábados anteriores = el último sábado con Tracy
   const TOT = Math.ceil(TRACY.s / 60 / TRACY.vel);
+  // v7.00 (28-nov-2026 · D1 AURUM lun 30-nov): 12 de las 22 L de Tracy (D24-D35) caen ya en F2 (min30: L opcional, «donde lo dejaste») → el hilo de F1 cubre
+  //   solo la parte del libro que planean sus L de F1 (Σ minutos de L de Tracy hasta la transición), no el libro entero (con el libro entero, el sáb 26-dic
+  //   recibía 308′). Si ninguna L de Tracy cae después de F1 (v6.00-v6.12), TOT_F1 = TOT y todo sale igual que antes.
+  const trTras = AURUM_DIAS.some((x) => x.fecha > FECHAS_V6.transicion.hasta && esTracy(x.bloques.find((b) => b.tag === 'L')));
+  const TOT_F1 = trTras ? Math.min(TOT, xs.reduce((a, x) => { const L = x.bloques.find((b) => b.tag === 'L'); return a + (esTracy(L) && L ? L.min : 0); }, 0)) : TOT;
   const ev: Array<{ fecha: string; orden: number; min: number; set: (t: [number, number]) => void }> = [];
   let enFranja = 0;
   for (const x of xs) {
@@ -1636,7 +1658,7 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   }
   const conT = listaSab.filter((s) => (sabs.get(s) as AurumLSab).tracy);
   const ultT = conT[conT.length - 1];
-  if (ultT) (sabs.get(ultT) as AurumLSab).tracy!.min = Math.max(0, TOT - enFranja - conT.slice(0, -1).reduce((a, s) => a + (sabs.get(s) as AurumLSab).tracy!.min, 0));
+  if (ultT) (sabs.get(ultT) as AurumLSab).tracy!.min = Math.max(0, TOT_F1 - enFranja - conT.slice(0, -1).reduce((a, s) => a + (sabs.get(s) as AurumLSab).tracy!.min, 0)); // v7.00: TOT_F1 (antes TOT)
   // v6.11 (lun 23-nov-2026): con el alias un hábil más, el último sábado con Tracy (sáb 26-dic) recibía 103′ y pasaba de la rutina de las 05:45 → lo que no cabe
   //   en su ventana (04:15-05:45) va al sábado ANTERIOR con Tracy (y así hacia atrás): el hilo es el mismo y en el mismo orden; solo cambia dónde corta cada tramo
   // v6.12 (mar 24-nov-2026): un SÁBADO HÁBIL (corrida_s1.sabado_habil: sáb 26-dic, día de estudio completo sin gimnasio ni baile) tiene el Anki a las 05:00 → su L va
@@ -1656,7 +1678,7 @@ function aurumF1(): { dias: Map<string, AurumF1Dia>; sabs: Map<string, AurumLSab
   const rfT = (f: string): string => ordenRealDe(f, 'aurum');
   ev.sort((a, b) => (rfT(a.fecha) < rfT(b.fecha) ? -1 : rfT(a.fecha) > rfT(b.fecha) ? 1 : a.orden - b.orden));
   let cur = 0;
-  ev.forEach((e, i) => { const fin = i === ev.length - 1 ? TRACY.s : Math.min(TRACY.s, cur + e.min * 60 * TRACY.vel); e.set([cur, fin]); cur = fin; });
+  ev.forEach((e, i) => { const fin = i === ev.length - 1 && !trTras ? TRACY.s : Math.min(TRACY.s, cur + e.min * 60 * TRACY.vel); e.set([cur, fin]); cur = fin; }); // v7.00: con L de Tracy en F2, el último tramo de F1 no «termina el libro»
   for (const S of sabs.values()) {
     if (S.tracy && S.tracy.min <= 0) S.tracy = null;
     S.min = S.items.reduce((a, it) => a + it.min, 0) + (S.tracy ? S.tracy.min : 0);
@@ -1962,7 +1984,7 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     const sem = AURUM_DIAS.filter((x) => x.semana === a.semana);
     const ult = sem[sem.length - 1], pri = sem[0];
     // v6.09b lote 1-quater FX1 (revisión V2): en F1 el «cierre de la semana en lunes» va DETRÁS del destino de la L (antes delante: «→ sáb 28-nov» quedaba en la pos. 236-330)
-    if (ult && pri && ult.d === a.d && pri.fecha < lunesDeIso(iso)) avisos[iso <= FECHAS_V6.transicion.hasta ? 'push' : 'unshift'](`Cierre de la semana ${a.semana} del plan en LUNES: sus ${sem.length} sesiones van del ${fCorta(pri.fecha)} (D${pri.d}) a hoy (D${a.d}) porque en la v6.09 todo F1 corrió un hábil; «la semana» del drill = esas ${sem.length} sesiones, no la de calendario.`);
+    if (ult && pri && ult.d === a.d && pri.fecha < lunesDeIso(iso)) avisos[iso <= FECHAS_V6.transicion.hasta ? 'push' : 'unshift'](`Cierre de la semana ${a.semana} del plan en LUNES: sus ${sem.length} sesiones van del ${fCorta(pri.fecha)} (D${pri.d}) a hoy (D${a.d}) ${motivoCierreLunes(iso)}; «la semana» del drill = esas ${sem.length} sesiones, no la de calendario.`);
   }
   // v6.10 (17-nov-2026): en F1, si el destino de la L («L: N′ no caben en la hora → sáb …») queda más allá del carácter 230 del aviso (el Calendar lo corta
   //   en 240: jue 19 UWSA1 · dom 6-dic · mar 15-dic NBME 25), sube justo detrás del aviso del hito (o al principio); si ya cabe, el orden no cambia
@@ -2098,7 +2120,7 @@ const LIV_SIN_LECTURA = /Palmerton: 10 tarjetas|Repaso del eje|Biblioteca de met
 export function livFuenteLeidaDe(l: DiaLiviano): string | null {
   if (livLectDe(l)) return 'Schwartz 2017 (PMC5546881)';
   if (l.casoId != null || LIV_SIN_LECTURA.test(l.tema)) return null;
-  const f1 = l.fecha <= FECHAS_V6.transicion.hasta ? livLectF1De(l) : undefined;
+  const f1 = livLectF1De(l); // v7.00 (corrector): por fila de contenido (c17-c27 caen ya en enero), no por fecha
   const corta = (u: string): string => (u.includes('dailymed') ? `ficha FDA de ${u.includes('ee06186f') ? 'WEGOVY' : 'ZEPBOUND'} (DailyMed)` : u.includes('pubmed') ? `PubMed ${u.replace(/\D/g, '')}` : (/PMC\d+/.exec(u) ?? [u])[0] as string);
   if (f1) return [...new Set(f1.map((x) => corta(x[2])))].join(' + ');
   const libres = livFuentesDe(l.fuente).recursos.filter((r) => !/Obesity Algorithm/.test(r.t));
@@ -2148,8 +2170,10 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
     // v6.09b (lote 1-bis S2, a2-10): en F1 (≤ 3-ene) el módulo GLP-1 lee una FUENTE LIBRE MEDIDA (LIV_LECT_F1; antes «sección del tema, sin medir» con
     //   12′ fijos) y lo que sobra tras las tarjetas (2′ por tarjeta + 3′ la propia) va a una 2.ª PASADA de la lectura de ≤ sus minutos, no a «importar
     //   tarjetas» (antes 4-18′ para 2-4 tarjetas: 18′ el 1-dic). Desde el 4-ene, igual que antes (lo mide otro lote: pendientes).
-    const enF1 = iso <= FECHAS_V6.transicion.hasta;
-    const lectF1 = enF1 && !lect ? livLectF1De(l) : undefined;
+    // v7.00 (corrector, 28-nov-2026): con el D1 del lun 30-nov las lecciones GLP-1 c21-c27 caen en enero; su lectura MEDIDA (y la 2.ª pasada de F1 que la
+    //   acompaña) va por FILA de contenido (LIV_LECT_F1), no por fecha: antes volvían a «LECTURA (sin medir)» con el aviso del Obesity Algorithm de pago
+    const lectF1 = !lect ? livLectF1De(l) : undefined;
+    const enF1 = iso <= FECHAS_V6.transicion.hasta || !!lectF1;
     if (lectF1) { const i = avisos.findIndex((a) => /Obesity Algorithm 2026 de la OMA es DE PAGO/.test(a)); if (i >= 0) avisos[i] = 'El Obesity Algorithm 2026 de la OMA es de pago: la lectura de hoy usa en su lugar una fuente libre y medida (resumen de PubMed, ficha técnica de la FDA o artículo de PMC).'; }
     const palF1 = lectF1 ? lectF1.reduce((a, x) => a + x[1], 0) : 0;
     let lmin = 0;
@@ -2290,6 +2314,7 @@ const ytF1 = (id: string, t: string, a: number, b: number): BizPiezaF1 => ({ t, 
 //   y los minutos no cambian. v6.10c (decisión de Joseph del 17-nov 17:20, corrimiento literal): cada lectura corre un hábil hasta fin de año (8#4 lun 30-nov ·
 //   9#1 mié 2 → 9#4 lun 7-dic · 12#3 lun 21-dic · 14#1 lun 28 · 14#2 mar 29-dic · 14#3 SÁB 2-ENE 21:30) → clip del apetito → lun 30-nov 13:00 · Panda tramo 2
 //   «ayer» · Barrett tramo 2 «el vie 18-dic» · Hallowell tramo 2 «ayer» y tramo 3 «el mar 29-dic». Piezas y minutos, sin cambio.
+// v7.00 (corrector, 28-nov-2026): las fechas de esas notas ya no se escriben a mano: {{rel:n#k}} / {{fecha:n#k}} = la fecha real de la lectura citada (bizNotaF1).
 const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: number; tema?: string }> = { // min: minutos del paso fijados (v6.09b lote 1-ter; si no, ⌈material⌉)
   // v6.09b lote 1-quater (QS · hallazgo b de R2, 17-nov): el EXTRACTO del audiolibro de Penguin (82:00, 4r5zlZxpTkY) deja de ser material del plan: no
   //   publica capítulos ni transcripción, así que no se podía comprobar que su min 0-20 cubriera el tema del 24-nov (circadiano, adenosina y cafeína) y su
@@ -2299,17 +2324,17 @@ const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: n
   //   «para qué dormimos» entero (memoria, inmunidad, corazón) es la TED del jue 26-nov, que ya está en el plan. 25-nov = episodio 01 (788 s) + clip de
   //   FoundMyFitness (294 s) + «Hacking your memory — with sleep» de Sleeping with Science, TED (283 s: qué consolida el sueño y cuándo, que es la tarjeta de
   //   la acción) = 22,8′ → paso 21′ (1,08) + acción 3′. Ningún tema de esos días queda sin pieza y el extracto ya no es lo único que cubre ninguno.
-  '8#1': { tema: 'ritmo circadiano, adenosina y cafeína (el «para qué dormimos» va en su TED: la fecha, al principio del «cómo»)', piezas: [ytF1('G1HTPzc_6QM', 'Sleep Diplomat (Matt Walker) · «Episode 02: Sleep Pressure» (8:45)', 0, 525), ytF1('BdqLGk_Pl0E', 'Sleep Diplomat (Matt Walker) · «#03: Circadian Rhythms» (11:09)', 0, 669)], nota: '«Para qué dormimos» entero (memoria, inmunidad, corazón) → TED del vie 27-nov, ya en el plan. Hoy, contados por el propio Walker, los 2 procesos que deciden cuándo duermes: la presión de sueño —la adenosina, cómo la cafeína la silencia y por qué dormir entero la limpia— (episodio 02 de su podcast) y el ritmo circadiano —el reloj de 24 h y la bajada de la tarde— (episodio 03). El extracto del audiolibro de Penguin ya no es material del plan: no publica capítulos ni transcripción y no se puede comprobar qué cubre; el libro va con piezas medidas del propio Walker.' },
+  '8#1': { tema: 'ritmo circadiano, adenosina y cafeína (el «para qué dormimos» va en su TED: la fecha, al principio del «cómo»)', piezas: [ytF1('G1HTPzc_6QM', 'Sleep Diplomat (Matt Walker) · «Episode 02: Sleep Pressure» (8:45)', 0, 525), ytF1('BdqLGk_Pl0E', 'Sleep Diplomat (Matt Walker) · «#03: Circadian Rhythms» (11:09)', 0, 669)], nota: '«Para qué dormimos» entero (memoria, inmunidad, corazón) → TED del {{fecha:8#3}}, ya en el plan. Hoy, contados por el propio Walker, los 2 procesos que deciden cuándo duermes: la presión de sueño —la adenosina, cómo la cafeína la silencia y por qué dormir entero la limpia— (episodio 02 de su podcast) y el ritmo circadiano —el reloj de 24 h y la bajada de la tarde— (episodio 03). El extracto del audiolibro de Penguin ya no es material del plan: no publica capítulos ni transcripción y no se puede comprobar qué cubre; el libro va con piezas medidas del propio Walker.' },
   // v6.09b lote 1-ter (S3 · revisión R, hallazgo 7): 25-nov — el extracto de Penguin no publica marcas de capítulo y su transcripción no es pública
   //   (timedtext / get_transcript piden sesión o token, 17-nov): no se puede comprobar que sus min 20-40 lleguen al cap. 3 (NREM/REM). El tema de hoy va
   //   con piezas MEDIDAS que lo cubren según su descripción publicada (lengthSeconds 788 y 294, curl 17-nov): el episodio 01 del podcast del propio Walker
   //   (NREM en 4 fases, REM, ciclos de 90 min, husos) + el clip de FoundMyFitness sobre qué aporta el sueño profundo y el REM = 18,0′ → paso 18′ + acción 6′.
   //   26-nov: solo la TED (19,3′ → 20′) y la acción vuelve a 4′; el clip del apetito (1:53) pasa al 27-nov: 1,9′ + 18,4′ = 20,3′ en 20′ (min fijo).
   '8#2': { piezas: [ytF1('y9F47gANUEw', 'Sleep Diplomat (Matt Walker) · «Episode 01: What is Sleep? (What’s going to happen when you fall asleep tonight)» (13:08)', 0, 788), ytF1('x3a0O8F6ZuQ', 'FoundMyFitness Clips · «REM sleep vs. deep sleep and their importance for cardiovascular and emotional health | Matt Walker» (4:54)', 0, 294), ytF1('6TyIY6u31gk', 'TED · «Hacking your memory — with sleep | Sleeping with Science» (4:43)', 0, 283)], min: 21, nota: 'La arquitectura del sueño y lo que hace cada fase, contadas por el propio Walker: las 2 clases de sueño (NREM en 4 fases y REM), el ciclo de 90 minutos y los husos (episodio 01 de su podcast) · qué aporta el sueño profundo y el REM al corazón y a las emociones (clip de FoundMyFitness) · cómo guarda la memoria el sueño antes y después de aprender (Sleeping with Science, TED): es la tarjeta de la acción.' },
-  '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158)], nota: 'El clip del apetito (1:53, grelina/leptina) → lun 30-nov 13:00, al empezar su sesión (hoy no cabe con la acción de 4′). La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker: es también el «para qué dormimos» que el mié 25-nov deja para hoy.' },
+  '8#3': { piezas: [ytF1('5MuIMqhT8DM', 'TED · «Sleep Is Your Superpower | Matt Walker» (19:18)', 0, 1158)], nota: 'El clip del apetito (1:53, grelina/leptina) → {{rel:8#4}} 13:00, al empezar su sesión (hoy no cabe con la acción de 4′). La privación de sueño (memoria, testosterona, inmunidad, riesgo cardiovascular) contada por el propio Walker: es también el «para qué dormimos» que la sesión del {{fecha:8#1}} deja para hoy.' },
   '8#4': { piezas: [ytF1('r6pItuOoGxc', 'TED · «How sleep affects what — and how much — you eat» (1:53)', 0, 113), ytF1('lRp5AC9W_F8', 'Penguin Books UK · «How To Improve Your Sleep | Matthew Walker» (8:24)', 0, 504), ytF1('nJHzLUZXiDQ', 'Penguin Books UK · «Is Alcohol A Good Sleep Aid?» (1:18)', 0, 78), ytF1('MZLo5N3vco8', 'Penguin Books UK · «Is Melatonin A Good Sleep Aid?» (2:09)', 0, 129), ytF1('_lSNEjA-Drk', 'London Real · «What you need to know about sleeping pills — Matthew Walker» (6:32)', 0, 392)], min: 20, nota: 'Primero el clip del apetito de la serie Sleeping with Science (grelina/leptina), que en la sesión anterior no cupo junto a la TED: completa la nota sueño↔peso de esa sesión. Después, los consejos de higiene del sueño, el alcohol, la melatonina y las pastillas, en boca del propio Walker (4 vídeos cortos, en este orden).' },
   '9#1': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 0, 1103)], nota: 'La charla de Panda (Salk, 2018) en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
-  '9#2': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 1103, 2206)], nota: 'Tramo 2/3 de la charla de Panda: sigue donde paraste ayer (min 18:23).' },
+  '9#2': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 1103, 2206)], nota: 'Tramo 2/3 de la charla de Panda: sigue donde paraste {{rel:9#1}} (min 18:23).' },
   '9#3': { piezas: [ytF1('LJ9Ae_j_kjI', 'Salk Institute · «Satchin Panda – Circadian Theory of Health» (55:08)', 2206, 3308)], nota: 'Tramo 3/3 de la charla de Panda: hasta el final.' },
   '9#4': { piezas: [
     { t: 'LIVIANO ACADEMIA › Módulo 3 «Nutrición» (lo que dice la Academia del ayuno intermitente: 24 RCT, 0,26 kg NS)', url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/BUSINESS/LIVIANO_ACADEMIA.md', palabras: 170, ppm: 150, donde: '≈170 palabras' },
@@ -2323,12 +2348,12 @@ const BIZ_TRAMO_F1: Record<string, { piezas: BizPiezaF1[]; nota: string; min?: n
   '11#2': { piezas: [ytF1('647AxVPpIGU', 'Politics and Prose · «Johann Hari, “Lost Connections” (w/ Andrew Sullivan)» (1:08:11)', 0, 1200)], nota: 'La presentación del libro por el propio Hari, con Andrew Sullivan: sus primeros 20 minutos (sin marcas de capítulo). Escucha con la pregunta de la acción: dónde exagera.' },
   '12#1': { piezas: [ytF1('0gks6ceq4eQ', 'TED · «You aren’t at the mercy of your emotions — your brain creates them | Lisa Feldman Barrett» (18:29)', 0, 1109)], nota: 'La charla TED de la propia Barrett, entera.' },
   '12#2': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 0, 1200)], nota: 'La conferencia del libro, por la propia Barrett: tramo 1 (min 0:00-20:00), sin marcas de capítulo.' },
-  '12#3': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 1200, 2400)], nota: 'Tramo 2 de la conferencia: sigue donde paraste el vie 18-dic (min 20:00). Del 40:00 al final (preguntas del público) no es tarea.' },
+  '12#3': { piezas: [ytF1('KliAI9umFyY', 'University of Waikato · «How Emotions Are Made: The Secret Life of the Brain — Dr Lisa Feldman Barrett» (1:13:54)', 1200, 2400)], nota: 'Tramo 2 de la conferencia: sigue donde paraste {{rel:12#2}} (min 20:00). Del 40:00 al final (preguntas del público) no es tarea.' },
   '13#1': { piezas: [ytF1('r7_R7EXTYNA', 'Parents League of New York · «ADHD 2.0: A Conversation with Author Ned Hallowell» (1:04:38)', 0, 1200)], nota: 'Conversación con el propio Hallowell sobre ADHD 2.0: tramo 1 (min 0:00-20:00), sin marcas de capítulo.' },
-  '13#2': { piezas: [ytF1('r7_R7EXTYNA', 'Parents League of New York · «ADHD 2.0: A Conversation with Author Ned Hallowell» (1:04:38)', 1200, 2400)], nota: 'Tramo 2: sigue donde paraste ayer (min 20:00). Del 40:00 al final no es tarea.' },
+  '13#2': { piezas: [ytF1('r7_R7EXTYNA', 'Parents League of New York · «ADHD 2.0: A Conversation with Author Ned Hallowell» (1:04:38)', 1200, 2400)], nota: 'Tramo 2: sigue donde paraste {{rel:13#1}} (min 20:00). Del 40:00 al final no es tarea.' },
   '14#1': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 0, 1174)], nota: 'La charla del propio Hallowell en 3 tramos iguales, en orden (sin marcas de capítulo): hoy el 1/3.' },
-  '14#2': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 1174, 2347)], nota: 'Tramo 2/3: sigue donde paraste ayer (min 19:34).' },
-  '14#3': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 2347, 3520)], nota: 'Tramo 3/3: sigue donde paraste el mar 29-dic (min 39:07) hasta el final.' },
+  '14#2': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 1174, 2347)], nota: 'Tramo 2/3: sigue donde paraste {{rel:14#1}} (min 19:34).' },
+  '14#3': { piezas: [ytF1('zxd-_xRB00I', 'GPS Parent Series · «Driven to Distraction: ADHD — Shift from Deficits to Strengths with Dr. Ed Hallowell» (58:40)', 2347, 3520)], nota: 'Tramo 3/3: sigue donde paraste {{rel:14#2}} (min 39:07) hasta el final.' },
   '15#1': { piezas: [ytF1('k7-hoohObr4', 'ADDitude · «Managing Executive Function & Working Memory Challenges in Adults with ADHD (with Peg Dawson, Ed.D.)» (1:00:44)', 300, 1380)], nota: 'La propia Dawson (adultos): capítulos «what are executive skills?» → «how to build habits» (min 5:00-23:00; los 5 primeros minutos son la presentación del webinar).' },
   '15#2': { piezas: [ytF1('k7-hoohObr4', 'ADDitude · «Managing Executive Function & Working Memory Challenges in Adults with ADHD (with Peg Dawson, Ed.D.)» (1:00:44)', 1380, 2640)], nota: 'Capítulos «66 days: two case studies» → «what environment is best for people with ADHD?» (min 23:00-44:00). Del 44:00 al final (preguntas) no es tarea.' },
 };
@@ -2346,10 +2371,29 @@ function bizBaseCeroDe(r: DiaBiz): string | null {
   if (prev && bizModo(prev) !== 'OUTPUT') return null;
   return `BASE CERO · empieza el bloque del OUTPUT S${k} (${r.materia}): Business es un ciclo que se repite —escuchar al propio autor → nota de 3 líneas o 1 tarjeta de mecanismo → OUTPUT de 1 página—; ${k === 1 ? 'hoy es el primero: no hace falta saber nada del tema' : 'mismo ciclo que el bloque anterior'}.`;
 }
+// v7.00 (corrector, 28-nov-2026): la pieza medida va por CLAVE (libroN#k), no por fecha: con el D1 del lun 30-nov las lecturas 13#1-15#2 caen en enero y
+//   el corte `r.fecha > transicion.hasta` las devolvía a «20′ desde donde quedaste» / búsqueda (lo que el lote v6.09b había eliminado). Las notas que citan
+//   otra lectura del libro lo hacen con {{rel:n#k}} («ayer» · «mañana (jue 10-dic)» · «el lun 7-dic») o {{fecha:n#k}} («mié 9-dic»), con la fecha REAL de esa fila.
+function bizFechaDeClave(clave: string): string | undefined {
+  const [n, k] = clave.split('#').map(Number);
+  return BIZ_DIAS.filter((x) => x.libroN === n && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).sort((a, b) => a.d - b.d)[(k ?? 0) - 1]?.fecha;
+}
+const bizNotaF1 = (nota: string, iso: string): string => nota.replace(/\{\{(rel|fecha):(\d+#\d+)\}\}/g, (_m: string, modo: string, clave: string) => {
+  const f = bizFechaDeClave(clave);
+  if (!f) return modo === 'rel' ? 'en su sesión' : 'su sesión';
+  if (modo === 'fecha') return fCorta(f);
+  return f === addDias(iso, -1) ? 'ayer' : f === addDias(iso, 1) ? `mañana (${fCorta(f)})` : `el ${fCorta(f)}`;
+});
+/** v7.00 (corrector): por qué una semana de F1 cierra en LUNES: el día SIN sesión (SKIP) de la semana anterior al `lunes` (vie 25-dic). */
+const motivoCierreLunes = (lunes: string): string => {
+  const sk = [0, 1, 2, 3, 4].map((k) => addDias(lunes, k - 7)).filter((x) => SKIP_V6.has(x));
+  return sk.length ? `por el feriado del ${sk.map((x) => fCorta(x)).join(' y ')}` : 'porque su semana perdió un día hábil';
+};
 function bizTramoF1De(r: DiaBiz) {
-  if (r.libroN == null || r.fecha > FECHAS_V6.transicion.hasta) return undefined;
+  if (r.libroN == null) return undefined;
   const k = BIZ_DIAS.filter((x) => x.libroN === r.libroN && x.d <= r.d && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).length;
-  return BIZ_TRAMO_F1[`${r.libroN}#${k}`];
+  const t = BIZ_TRAMO_F1[`${r.libroN}#${k}`];
+  return t ? { ...t, nota: bizNotaF1(t.nota, r.fecha) } : undefined;
 }
 const minPiezaF1 = (p: BizPiezaF1): number => (p.seg ? (p.seg[1] - p.seg[0]) / 60 : (p.palabras ?? 0) / (p.ppm ?? 100));
 /** Enlaces del plan Business comprobados el 18-oct-2026 que NO sirven (caídos / no reproducibles / subidas de 2 min) y su sustituto
@@ -2768,7 +2812,7 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const encR = encapsRevDe(sab), encActivo = ventanaRevision(sab)[1] <= FECHAS_V6.encaps.examen;
   const rot = [...(encActivo ? ['4 ENCAPS'] : []), '1 USMLE', '2 uWorld', '5 MIR', '8 sueño', ...(!encActivo && encR.items.length ? ['4 ENCAPS'] : [])];
   const detRev: Record<string, string> = {
-    '4 ENCAPS': `4 ENCAPS: ${encR.items.join(' + ') || 'sin mini-sim ni SIM esta semana'}${encR.proxima.length ? ` (${encR.proxima.join(' y ')}: en la próxima)` : ''}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota), banqueo de las mañanas (n y % ciego), errores nuevos y repetidos (misma regla)' : ''}`,
+    '4 ENCAPS': `4 ENCAPS: ${encR.items.join(' + ') || 'sin mini-sim ni SIM esta semana'}${encR.proxima.length ? ` (${encR.proxima.join(' y ')}: en la próxima${encR.proximaFecha ? `, la del ${fCorta(encR.proximaFecha)}` : ''})` : ''}${sabadoTheomed(sab) ? ' + post-tests de Theomed (nota), banqueo de las mañanas (n y % ciego), errores nuevos y repetidos (misma regla)' : ''}`,
     '1 USMLE': `1 USMLE: ${usmleRevDe(sab)}`,
     '2 uWorld': `2 uWorld: % vs mínimo del próximo hito${primera ? ' (aún sin hito, sin juicio: la línea base es el NBME 25; el UWSA1 va en el tramo 2)' : ''}`,
     '5 MIR': '5 MIR: eval D-1',
@@ -2784,7 +2828,9 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
     P(3, juntas.length ? `GENERAR y abrir ${ficheros.join(' y ')} (el ${juntas.map(fCorta).join(', ')} no hubo sesión: van juntas)` : `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: ${cmdJ}\`node DATA/_scripts/gen_revision_semanal.js ${sab}${forzar(sab)}\` → crea DATA/USMLE/REVISIONES/${ficheros.join(' y ')} y actualiza _semanas.json${cmdPrev}.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),
     P(8, juntas.length ? `RELLENAR a mano las métricas «sin dato» de las ${ficheros.length} semanas (primero ${ficheros[0]?.replace('.md', '')}, la más corta)` : 'RELLENAR a mano las métricas «sin dato»', rellenar),
     P(5, 'CHECKLIST G + burnout §6', 'Marca G1-G10 y las 5 casillas de burnout. UNA alarma = corrección esta semana; 2+ = semana ÁMBAR.'),
-    P(6, juntas.length ? `DECIDIR (4 líneas, solo en ${fichero.replace('.md', '')}: la semana que entra)` : 'DECIDIR (4 líneas en el fichero)', 'Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.'),
+    // v7.00 (corrector, 28-nov-2026): la revisión que mide el CHECKPOINT (mini-sim 3/3 del vie 18-dic) lleva el GATE: su «1 corrección concreta» = los 3 códigos peores
+    //   (PLAN §8; los colchones del 24 y 31-dic siguen siendo simulacro o recuperan una mañana perdida: una sola regla)
+    P(6, juntas.length ? `DECIDIR (4 líneas, solo en ${fichero.replace('.md', '')}: la semana que entra)` : 'DECIDIR (4 líneas en el fichero)', `Nivel de la semana que entra (VERDE / ÁMBAR / DELOAD) · 1 corrección concreta (qué, cuándo, cómo se mide el sábado que viene) · 1 cosa que se deja · Anki sáb/dom = vencidas × 20 s.${encR.items.some((x) => /CHECKPOINT/.test(x)) ? ' GATE del CHECKPOINT: con < 16,5 en el simulacro Theomed del dom 13-dic o < 70 % de ciego en los 8 críticos, la «1 corrección concreta» son los 3 códigos peores (los colchones del 24 y 31-dic no cambian).' : ''}`),
     P(5, 'PREPARAR la semana siguiente', prep),
     P(3, 'GUARDAR + ✓', 'Guarda el .md (sin commit: lo hace el flujo de siempre).'),
   ], [...juntas.map((s) => R(revisionFicheroDe(s), vsc(`${REPO}/DATA/USMLE/REVISIONES/${revisionFicheroDe(s)}`))), R(fichero, vsc(ruta)), R('Método: DATA/REVISION_SEMANAL.md (GitHub)', GH + 'DATA/REVISION_SEMANAL.md')],

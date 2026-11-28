@@ -117,7 +117,8 @@ const bbMin = (id: number, fecha: string): number => { const v = BB_DERM[id]; co
 
 // ── v6.09 · lote 1 (17-nov-2026, auditoría tiempo ↔ material a2-8 · a2-16) — SOLO F1 + jue 31-dic (≤ LOTE1_HASTA); 2027 sigue igual (otro lote) ──
 /** Último día al que se aplican las reglas del lote 1 (F1 y la transición). */
-const LOTE1_HASTA = '2027-01-03';
+// v7.00 (28-nov-2026): = el día de la sesión d17 de Derma (el lote 1 son las sesiones medidas d1-d17; tras el remap del lun 30-nov, vie 15-ene) · v6.09-v6.12: '2027-01-03'
+const LOTE1_HASTA = '2027-01-15';
 /** a2-16: el paso B&B «1,5× (si no, 1,25×)» lleva los minutos de la velocidad de RESERVA (1,25×) para que cuadre también si el free recall no deja subir.
  *  Solo F1 (≤ LOTE1_HASTA): en 2027 el paso conserva los minutos de 1,5× (y con ellos la cadena de casos DermNet del plan) y el TEXTO da los minutos a 1,25×
  *  y de dónde salen (bbMin125). */
@@ -136,7 +137,7 @@ const tutorTxt = (n: number): string => `Tutor = 90 s de pregunta + 0,85′ de e
  *  que suelta el paso de 12′ va al proyecto Claude con k = round(min/5) viñetas en 0,85-1,15) y el TOTAL de F1 por System es el mismo que con 4Q por sesión
  *  (Inflammatory 24 = 5 + 5 + 5 + 3 + 3 + 3 con el d1 curado · Skin and soft tissue infections 15 = 4 + 5 + 3 + 3 con el d2 curado), así que 2027 recibe el
  *  mismo stock y no cambia. El 4 y el 8-dic no tienen proyecto Claude (el atlas DermNet medido llena la franja): 5Q en los 12′. */
-const UW_TUTOR_F1: Record<string, number> = { '2026-12-04': 5, '2026-12-08': 5, '2026-12-14': 3, '2026-12-16': 3, '2026-12-22': 3, '2026-12-24': 5, '2026-12-30': 3, '2026-12-31': 3 };
+const UW_TUTOR_F1: Record<string, number> = { '2026-12-16': 5, '2026-12-18': 5, '2026-12-24': 3, '2026-12-28': 3, '2027-01-05': 3, '2027-01-07': 5, '2027-01-13': 3, '2027-01-15': 3 }; // v7.00: mismas sesiones (por d) con las fechas del remap de Derma (antes 4, 8, 14, 16, 22, 24, 30 y 31-dic)
 /** Nº de Unused que pide la regla en una sesión de 45′ (4 fuera de F1). */
 const uwPideRegla = (fecha: string): number => (fecha <= LOTE1_HASTA ? UW_TUTOR_F1[fecha] ?? 4 : 4);
 /** a2-8: 2.ª pasada de un B&B ya visto en una sesión anterior = 2× sin pausas + recall de 60 s. */

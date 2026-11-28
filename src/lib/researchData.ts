@@ -61,7 +61,21 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
  *  día-RESEARCH a hora fija pasa al SÁB 2-ENE 15:30-16:15 (corrida_s1.extra['2027-01-02']['research-derma']): los átomos corren una ranura-Research del
  *  jue 19-nov al mar 29-dic (M1 jue 19 … T-1 lun 7-dic … C-6 lun 21-dic … CR-2 mar 29-dic) y el T-3, el último de F1, va ese sábado; desde el T-4 (lun
  *  4-ene) todo igual. Derma no cambia. */
-export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = { '2026-12-31': 'derma', '2027-01-02': 'research' };
+/** v7.00 (sáb 28-nov-2026 · REORGANIZACIÓN FINAL: todo arranca el lun 30-nov y _fechas_v6.json › corrida_s1 queda vacía): SIN excepciones de paridad — el jue
+ *  31-dic vuelve a ser día-Research por paridad (antes forzado a Derma: recuperaba la sesión del lun 16-nov) y el sáb 2-ene, descanso (antes día-Research a hora
+ *  fija). Historial: v6.09 { '2026-12-31': 'derma' } · v6.10c + { '2027-01-02': 'research' }. FUENTE ÚNICA (la leen por regex gen_research_plan.js ·
+ *  gen_derma_ciclo2.js · remap_inicio.js): no cambies el formato de la línea. */
+export const TIPO_RD_FORZADO: Record<string, 'research' | 'derma'> = {};
+/** v7.00 (28-nov-2026): RESEARCH EN SUSPENSO. El plan Research (researchDailyPlan*.ts) parte de una premisa vieja y se rediseña con Joseph antes de retomarlo
+ *  (decisión del 24-nov, confirmada en la reorganización del 28-nov): NO se regenera ni se re-fecha. Desde `desde`, sus días de paridad Research quedan como
+ *  «Research en suspenso · hueco libre» (plantillasV6.bloqueRD; sin átomo ni tarea inventada) y gen_research_plan.js no escribe nada sin --forzar-suspendido.
+ *  Derma sigue en sus días de paridad. Para retomarlo: poner esto a null y regenerar con el plan nuevo. */
+export const RESEARCH_SUSPENSO: { desde: string; motivo: string } | null = {
+  desde: '2026-11-30',
+  motivo: 'el plan Research se rediseña con Joseph antes de retomarlo (parte de una premisa vieja); sus días de 13:30 quedan libres',
+};
+/** v7.00: ¿Research en suspenso ese día? (fecha ISO) */
+export const researchSuspendidoEn = (iso: string): boolean => !!RESEARCH_SUSPENSO && iso >= RESEARCH_SUSPENSO.desde;
 const _isoLocal = (x: Date): string => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb

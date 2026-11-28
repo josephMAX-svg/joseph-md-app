@@ -119,7 +119,9 @@
     ],
     "motivo": "v6.10i (regla de Joseph del 18-nov: toda pregunta es REAL): el re-test es de las mismas preguntas reales; ids, orden, claves y selección intactos"
    }
-  ]
+  ],
+  "sustituido_por": "banco_2026-12-03",
+  "sustituido_motivo": "v7.00 (28-nov): la sesión pasa al 2026-12-03, con los mismos ítems"
  },
  "items": [
   {

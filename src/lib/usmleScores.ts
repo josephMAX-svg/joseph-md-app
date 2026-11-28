@@ -17,6 +17,9 @@
  *    del hito + plantilla por sistema (#27), fixes de tarjeta por tipo de error (#18), checklist §11.5 pre-marcado (#30), día parcial
  *    (§12.6-10) y plan B "worst case" (#26). Los campos nuevos viajan a Supabase en la columna JSONB `extra` (si no existe,
  *    el upsert reintenta sin ella: nunca rompe la UI; DDL pendiente en DATA/_scripts/_migrations).
+ *  · v7.00 (28-nov-2026 · DISEÑO D3): Step 1 en PAUSA desde el D1 de F1 (F1 sin filas) → el NBME 25 (línea base), el NBME 28 y el UWSA1 salen de
+ *    sus filas del tramo 2 (NBME25_TXT / NBME28_TXT / UWSA1_TXT) · NBME 29 sin «línea base tras la pausa» · plan B lun 27-dic en los tramos del
+ *    NBME 28, el NBME 33 y el GO/NO-GO · GONOGO_HORAS del 20-dic (umbral 290) y del 27-dic (292), y la nota del GO/NO-GO lee su umbral.
  *  · v6.00 (6-oct-2026 · V6_ESPEC §B5 · §B4.5 · §F): los 2 tramos (DIAS → DIAS_TODOS en hitosPlan, subtemasValidados, plantillaPorSistema
  *    y checklist115: si no, proximoHito / gateHito / readiness / distanciaOnTrack no ven NBME 29-33, UWSA3, Free 120 ni el GO/NO-GO) ·
  *    HITOS_ONTRACK v6 (NBME 25 sin mínimo · 26/27 relativos a NBME 25 con `minRel` · NBME 28 por tramos 58/50 = checkpoint de fecha ·
@@ -298,6 +301,21 @@ export function mediaMovil7d(scores: UsmleScore[], hasta: string): Media7d | nul
 /** Serie diaria (para mini-gráficos): últimos `n` registros con datos. */
 export function serieReciente(scores: UsmleScore[], n = 14): UsmleScore[] { return scores.filter(tieneDatos).slice(-n); }
 
+// ── v6.00 (6-oct-2026 · V6_ESPEC §B4.5): GO/NO-GO por HORAS (además del criterio NBME de §B5) ──
+/** Umbral de horas reales acumuladas desde el reinicio (usmle_daily_scores.extra.horas) por fecha de examen, y checkpoints de ritmo. */
+export interface UmbralGoNoGo { examen: string; gonogo: string; quedanPiso: number; umbral: number; checkpoints: { fecha: string; requerido: number }[] }
+export const GONOGO_HORAS: UmbralGoNoGo[] = [
+  { examen: '2027-08-31', gonogo: '2027-07-13', quedanPiso: 109, umbral: 290, checkpoints: [{ fecha: '2027-05-31', requerido: 192 }, { fecha: '2027-06-30', requerido: 264 }] },
+  { examen: '2027-09-27', gonogo: '2027-08-09', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 127 }, { fecha: '2027-06-30', requerido: 199 }, { fecha: '2027-07-31', requerido: 276 }] },
+  { examen: '2027-10-25', gonogo: '2027-09-06', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 62 }, { fecha: '2027-06-30', requerido: 134 }, { fecha: '2027-07-31', requerido: 211 }] },
+  // v6.07 (8-nov-2026): examen lun 6-dic-2027 · mismo modelo (399 h, PISO de E-49 al D-1 = 106 h → umbral 294) · checkpoints = 399 − PISO desde el checkpoint (v600/espec/b_gate.js)
+  { examen: '2027-12-06', gonogo: '2027-10-18', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-06-30', requerido: 37 }, { fecha: '2027-07-31', requerido: 114 }, { fecha: '2027-08-31', requerido: 187 }, { fecha: '2027-09-30', requerido: 255 }] },
+  // v7.00 (28-nov-2026): examen lun 20-dic-2027 (plan B lun 27-dic) · mismo modelo (399 h; PISO de E-49 al D-1: 109,5 h → umbral 290 · plan B 107,5 h → 292) ·
+  //   checkpoints = 399 − PISO desde el checkpoint, solo los anteriores al GO/NO-GO y > 0 (DATA/_v600/espec/b_gate.js con E = 20-dic / 27-dic)
+  { examen: '2027-12-20', gonogo: '2027-11-01', quedanPiso: 110, umbral: 290, checkpoints: [{ fecha: '2027-06-30', requerido: 2 }, { fecha: '2027-07-31', requerido: 79 }, { fecha: '2027-08-31', requerido: 151 }, { fecha: '2027-09-30', requerido: 219 }, { fecha: '2027-10-31', requerido: 290 }] },
+  { examen: '2027-12-27', gonogo: '2027-11-08', quedanPiso: 108, umbral: 292, checkpoints: [{ fecha: '2027-07-31', requerido: 63 }, { fecha: '2027-08-31', requerido: 135 }, { fecha: '2027-09-30', requerido: 204 }, { fecha: '2027-10-31', requerido: 274 }] },
+];
+
 // ── Hitos y mínimos on-track ──
 export const HITOS_ONTRACK_FUENTE = 'V6_ESPEC §B5 (v6.00, 6-oct-2026: mínimos F1 relativos a la línea base real del NBME 25 · NBME 28 = checkpoint de fecha · tramo 2 relativo al NBME 28 y GO/NO-GO por horas + NBME 31/32) sobre DATA/USMLE/PALMERTON_POR_MATERIA.md · Parte V-A (65% ≈ 95% de pase, 70% ≈ 99%)';
 /** #12: tramo de LECTURA de un hito sin mínimo (no es gate): [desde, hasta] inclusivos en %. */
@@ -329,6 +347,13 @@ const NBME28_F1 = F1_FILAS.find((x) => /NBME 28/.test(x.sub));
 //   → su fila real; el protocolo Jay va del D1 al día de Step anterior al NBME 25
 const NBME25_F1 = F1_FILAS.find((x) => /NBME 25/.test(x.sub));
 const D_NBME25 = NBME25_F1 ? NBME25_F1.d : 10;
+// v7.00 (28-nov-2026): Step 1 en PAUSA desde el D1 → F1 sin filas: el NBME 25 (LÍNEA BASE) y el resto de los hitos viven en el tramo 2 → su fila real
+const F1_SIN_STEP = !F1_FILAS.length;
+const NBME25_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && x.tipo === 'hito' && /NBME 25/.test(x.sub));
+const NBME25_TXT = NBME25_F1 ? `D${D_NBME25}, ${fF1(D_NBME25)}` : NBME25_T2 && esFilaT2(NBME25_T2) ? `T${NBME25_T2.t} ${fCorta(NBME25_T2.fecha)}, tramo 2` : 'tramo 2';
+/** v7.00: plan B posterior al examen dentro de la elegibilidad (20-dic → 27-dic) · null = no queda fecha posterior (DJ-1 v6.04) */
+const PLANB_V6 = FECHAS_V6.step1.planB > FECHAS_V6.step1.examen ? fCorta(FECHAS_V6.step1.planB) : null;
+const UMBRAL_V6 = (GONOGO_HORAS.find((x) => x.examen === FECHAS_V6.step1.examen) ?? (GONOGO_HORAS[1] as UmbralGoNoGo)).umbral;
 // v6.07: el NBME 28 puede ir en el tramo 2 (no cabe en F1 con su Day-After) → su fila real «T<n> <fecha>»
 const NBME28_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /NBME 28/.test(x.sub));
 /** v6.07: último NBME que queda en F1 = línea base antes de la pausa (v6.00-v6.06: NBME 28 · v6.07: NBME 25). */
@@ -339,18 +364,21 @@ const UWSA1_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /UWSA1/.test(x.sub));
 const UWSA1_TXT = UWSA1_T2 && esFilaT2(UWSA1_T2) ? `T${UWSA1_T2.t} ${fCorta(UWSA1_T2.fecha)}` : 'tramo 2';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
   // v6.10b (decisión 4 de Joseph, 17-nov): prueba de resistencia del tramo 2 (su fila real), formativa — ya no es la baseline del D1 ni se lee por tramos
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `prueba de resistencia del tramo 2 (${UWSA1_TXT}, con ≥3 sistemas en nivel 3): formativa, sin mínimo; el UWSA sobreestima 10-15 puntos (§9.1). Ya no es la baseline del D1 (v6.10b): la línea base es el NBME 25 (D${D_NBME25}, ${fF1(D_NBME25)})` },
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `prueba de resistencia del tramo 2 (${UWSA1_TXT}, con ≥3 sistemas en nivel 3): formativa, sin mínimo; el UWSA sobreestima 10-15 puntos (§9.1). Ya no es la baseline del D1 (v6.10b): la línea base es el NBME 25 (${NBME25_TXT})` },
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
-  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: NBME28_F1 ? `CHECKPOINT DE FECHA (${NBME28_TXT} = última sesión de F1, §B5): se lee por tramos` : `CHECKPOINT DE FECHA (${NBME28_TXT}: no cupo en F1 con su Day-After, v6.07): se lee por tramos`, tramos: [
+  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: NBME28_F1 ? `CHECKPOINT DE FECHA (${NBME28_TXT} = última sesión de F1, §B5): se lee por tramos` : F1_SIN_STEP ? `CHECKPOINT DE FECHA (${NBME28_TXT}; v7.00: Step 1 en pausa en F1): se lee por tramos` : `CHECKPOINT DE FECHA (${NBME28_TXT}: no cupo en F1 con su Day-After, v6.07): se lee por tramos`, tramos: [
     // v6.04: la base YA es el último mes de la elegibilidad (v6.00-v6.03: <50 % movía la base del 27-sep al plan B 25-oct)
-    { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN`, accion: `La base ya es el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} (DJ-1 v6.04, último mes de la elegibilidad): no hay fecha posterior dentro de la ventana → decidirlo con Joseph al registrar el NBME 28 (extensión de la elegibilidad nov-dic-ene, la única permitida, §B5); el temario no se toca.` },
+    // v7.00: con plan B posterior (lun 27-dic, dentro de la elegibilidad oct-dic) el tramo bajo lleva al plan B en vez de a la extensión
+    PLANB_V6
+      ? { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN → plan B ${PLANB_V6}`, accion: `Con < 50 % el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} no tiene margen: plan B ${PLANB_V6}-${FECHAS_V6.step1.planB.slice(0, 4)} (último lunes de la elegibilidad; DJ-1 v7.00) → decidirlo con Joseph al registrar el NBME 28; el temario no se toca.` }
+      : { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN`, accion: `La base ya es el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} (DJ-1 v6.04, último mes de la elegibilidad): no hay fecha posterior dentro de la ventana → decidirlo con Joseph al registrar el NBME 28 (extensión de la elegibilidad nov-dic-ene, la única permitida, §B5); el temario no se toca.` },
     { desde: 50, hasta: 57, label: `50-57 % · ${EXAMEN_V6} con GATE ESTRICTO`, accion: `Base ${EXAMEN_V6} con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.` },
     { desde: 58, label: `≥58 % · EN RUTA ${EXAMEN_V6}`, accion: `Base ${EXAMEN_V6} en ruta: seguir el plan; reservar el ${EXAMEN_V6} (DJ-1) al salir la convocatoria.` },
   ] },
   // v6.07: la referencia es el último NBME de F1 (NBME_PAUSA): v6.00-v6.06 = NBME 28 · v6.07 = NBME 25
-  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: NBME_PAUSA, delta: -5 }, alertaCaida: { ref: NBME_PAUSA, delta: 8, accion: `CAÍDA > 8 puntos frente al ${NBME_PAUSA} tras la pausa → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)` }, nota: `NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ ${NBME_PAUSA} − 5` },
+  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: NBME_PAUSA, delta: -5 }, alertaCaida: { ref: NBME_PAUSA, delta: 8, accion: `CAÍDA > 8 puntos frente al ${NBME_PAUSA}${F1_SIN_STEP ? '' : ' tras la pausa'} → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)` }, nota: F1_SIN_STEP ? `≥ ${NBME_PAUSA} − 5 (v7.00: partiendo de cero no hay «línea base tras la pausa»; la línea base es el NBME 25, ${NBME25_TXT})` : `NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ ${NBME_PAUSA} − 5` },
   { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: null, minRel: { ref: NBME_PAUSA, delta: 0 }, nota: `≥ ${NBME_PAUSA} · ritmo medido ≥ 18 h/sem (§B4.5) · con NBME 28 en 50-57 % el GO/NO-GO exige NBME 30 ≥ NBME 28 + 5` },
   { clave: 'UWSA3', match: /UWSA3|Self-Assessment 3/i, min: null, nota: 'formativa (opcional, sin mínimo)' },
   { clave: 'NBME 31', match: /NBME (CBS Form )?31\b/i, min: 65, nota: 'GO/NO-GO: NBME 31 y 32 ≥ 68 % con uno ≥ 70 % + horas (§B4.5)' },
@@ -358,9 +386,9 @@ export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'UWSA2', match: /UWSA2|Self-Assessment 2/i, min: null, nota: '"low risk" (señal secundaria) · el UWSA sobreestima: la fecha la deciden los NBME y las horas' },
   // v6.04: con el examen 25-oct el ensayo de 7 bloques es el Free 120 + 4 bloques (vie 8-oct, feriado) y el NBME 33 va solo (lun 27-sep, E-28);
   //   v6.00-v6.03 (examen 27-sep): NBME 33 + 3 bloques (lun 30-ago) y < 65 % → 25-oct pagando recargo.
-  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: `E-28 (base ${EXAMEN_V6}) · < 65 % → mover la fecha pagando recargo (DJ-1 v6.04: ya no hay fecha posterior dentro de la elegibilidad → extensión, §B5)` },
+  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: `E-28 (base ${EXAMEN_V6}) · < 65 % → mover la fecha pagando recargo (${PLANB_V6 ? `plan B ${PLANB_V6}, el último lunes de la elegibilidad; después, extensión` : 'DJ-1 v6.04: ya no hay fecha posterior dentro de la elegibilidad → extensión'}, §B5)` },
   { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria, no cifra Palmerton · v6.04: es el ensayo de 7 bloques (Free 120 + 4 bloques) · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)' },
-  { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: `DECISIÓN (E-49, ${GONOGO_V6}): horas reales ≥ umbral (B4.5: 294 h al ${EXAMEN_V6}) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = mover la fecha (gratis antes del E-46; con la DJ-1 v6.04 no queda fecha posterior dentro de la elegibilidad → extensión, §B5)` },
+  { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: `DECISIÓN (E-49, ${GONOGO_V6}): horas reales ≥ umbral (B4.5: ${UMBRAL_V6} h al ${EXAMEN_V6}) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = mover la fecha (gratis antes del E-46; ${PLANB_V6 ? `plan B ${PLANB_V6}` : 'con la DJ-1 v6.04 no queda fecha posterior dentro de la elegibilidad → extensión'}, §B5)` },
 ];
 /** Ficha on-track de un hito por su `uw` (o nombre). */
 export function hitoOnTrackDe(uw: string): HitoOnTrack | undefined { return HITOS_ONTRACK.find((t) => t.match.test(uw)); }
@@ -624,16 +652,7 @@ export function checklist115(scores: UsmleScore[], hasta: string): AlarmaCheckli
   ];
 }
 
-// ── v6.00 (6-oct-2026 · V6_ESPEC §B4.5): GO/NO-GO por HORAS (además del criterio NBME de §B5) ──
-/** Umbral de horas reales acumuladas desde el reinicio (usmle_daily_scores.extra.horas) por fecha de examen, y checkpoints de ritmo. */
-export interface UmbralGoNoGo { examen: string; gonogo: string; quedanPiso: number; umbral: number; checkpoints: { fecha: string; requerido: number }[] }
-export const GONOGO_HORAS: UmbralGoNoGo[] = [
-  { examen: '2027-08-31', gonogo: '2027-07-13', quedanPiso: 109, umbral: 290, checkpoints: [{ fecha: '2027-05-31', requerido: 192 }, { fecha: '2027-06-30', requerido: 264 }] },
-  { examen: '2027-09-27', gonogo: '2027-08-09', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 127 }, { fecha: '2027-06-30', requerido: 199 }, { fecha: '2027-07-31', requerido: 276 }] },
-  { examen: '2027-10-25', gonogo: '2027-09-06', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 62 }, { fecha: '2027-06-30', requerido: 134 }, { fecha: '2027-07-31', requerido: 211 }] },
-  // v6.07 (8-nov-2026): examen lun 6-dic-2027 · mismo modelo (399 h, PISO de E-49 al D-1 = 106 h → umbral 294) · checkpoints = 399 − PISO desde el checkpoint (v600/espec/b_gate.js)
-  { examen: '2027-12-06', gonogo: '2027-10-18', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-06-30', requerido: 37 }, { fecha: '2027-07-31', requerido: 114 }, { fecha: '2027-08-31', requerido: 187 }, { fecha: '2027-09-30', requerido: 255 }] },
-];
+// (v7.00: GONOGO_HORAS y UmbralGoNoGo viven arriba, antes de HITOS_ONTRACK: la nota del GO/NO-GO lee su umbral)
 /** Horas netas de Step 1 registradas (extra.horas) en [desde, hasta] (por defecto desde el reinicio del tramo 2). */
 export function horasDesde(scores: UsmleScore[], desde: string = FECHAS_V6.step1.reinicio, hasta?: string): number {
   return Math.round(scores.filter((s) => s.fecha >= desde && (!hasta || s.fecha <= hasta) && s.horas != null).reduce((a, s) => a + (s.horas as number), 0) * 100) / 100;

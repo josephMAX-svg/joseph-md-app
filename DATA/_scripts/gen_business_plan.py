@@ -2,7 +2,7 @@
 # gen_business_plan.py — genera src/lib/businessStudyPlan.ts (plan "Estudio Pulso").
 #
 #   v3 L (5-sep-2026, Palmerton cero puntos ciegos · vacío 6):
-#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-11-16 = D1 v6.08 —v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
+#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-11-30 = D1 v7.00, lun 30-nov → lun 5-abr-2027, 84 trabajo + 43 descansos · antes 2026-11-16 = D1 v6.08 —v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
 #                                                                    v5.20 = v6.00 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027 ·
 #                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
@@ -400,4 +400,4 @@ CHECK = '--check' in sys.argv[1:]
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()
-    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-16'))  # v6.09: default = lun 16-nov, SIN SESIÓN (fila DESCANSO: la numeración D y 2027 siguen iguales a la v6.08; 1.ª lectura mar 17) · v6.08: D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)
+    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-30'))  # v7.00 (28-nov-2026): default = lun 30-nov (reorganización final: todo arranca el D1; corrida_s1 vacía → sin filas SIN SESIÓN ni días extra) → 127 filas lun 30-nov → lun 5-abr-2027 · v6.09: default = lun 16-nov, SIN SESIÓN (fila DESCANSO: la numeración D y 2027 siguen iguales a la v6.08; 1.ª lectura mar 17) · v6.08: D1 lun 16-nov (v6.07: 2026-11-09 · v6.06: 2026-11-02 · v6.05: 2026-10-26 · antes 2026-09-07, v5.6)

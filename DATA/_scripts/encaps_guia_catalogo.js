@@ -312,13 +312,17 @@ const AVISO_CODIGO = {
 // v6.10l (auditoría c15 · dias-clave #4): el texto visible sin fecha ni procedencia («(previsto: simulación del 18-nov)» se leía como un simulacro el 18-nov,
 //   día sin sesión): «(composición prevista)». La simulación sigue siendo la del 18-nov (arriba).
 const PREVISTO_ORIGEN = 'composición prevista';
+// v7.00 (28-nov-2026, rebase nativo: D1 = lun 30-nov): las MISMAS 6 sesiones re-fechadas POR SESIÓN (rígido por slots: mismos códigos, sub-ejes y
+//   secundarios; las cifras del banco son las de la simulación del 18-nov). Semana 1 armada: pre-test lun 30 y mar 1-dic, eval + banco mié 2 (V-2; su eval es
+//   la de I-3, sesión del mar 1) y jue 3 (III-5; eval V-2), mini-sim vie 4. Cambian las EVAL de dos lunes: el lun 7 (II-5) y el lun 14 (II-1) van al día
+//   siguiente de un mini-sim (5Q de fallos previos del registro) y el mié 9 (IV-1) lleva la del código de ayer (I-4).
 const PREVISTO_SEMANA2 = {
-  '2026-11-25': { codigo: 'II-5', secundario: 'II-10', principal: 16, secundario_n: 2, comp: [0, 8, 8], eval_retest: 'banco', nota: 'principal: 0Q de II-5 sin usar en el pool → 8 de II-5 en RE-TEST (las mismas preguntas reales, sin la clave) + 8 libres de la cola larga del área II · secundario II-10: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer III-5: 5Q en RE-TEST (las del banco del mar 24)' },
-  '2026-11-26': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, comp: [4, 7, 5], eval_retest: 'banco', nota: 'principal: 4Q de I-4 sin usar + 7 de I-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 5 libres de la cola larga del área I · tras este banco quedan 0Q libres de I-4', eval: 'código de ayer II-5: 5Q en RE-TEST (las del banco del mié 25)' },
-  '2026-11-30': { codigo: 'IV-1', secundario: 'II-EMG', principal: 16, secundario_n: 2, comp: [10, 6, 0], nota: 'principal: 10Q de IV-1+IV-2 sin usar + 6 en RE-TEST (las mismas preguntas reales, sin la clave) · secundario II-EMG: solo 2Q en el pool (receta 4-5) · la eval de esta sesión (la del día siguiente al mini-sim: 5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-30 después de --semana 2026-11-30', eval: 'día siguiente al mini-sim: 5Q REALES de fallos previos del registro (depende de las rondas registradas)' },
-  '2026-12-01': { codigo: 'II-4', secundario: 'I-OCC', principal: 16, secundario_n: 2, comp: [0, 6, 10], eval_retest: 'banco', nota: 'principal: 0Q de II-4 sin usar en el pool → 6 de II-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 10 libres de la cola larga del área II · secundario I-OCC: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer IV-1: 5Q en RE-TEST (las del banco del lun 30)' },
-  '2026-12-02': { codigo: 'II-1', secundario: 'III-3', principal: 16, secundario_n: 2, comp: [1, 9, 6], eval_retest: 'banco', nota: 'principal: 1Q de II-1 sin usar + 9 de II-1 en RE-TEST (las mismas preguntas reales, sin la clave) + 6 libres de la cola larga del área II · secundario III-3: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer II-4: 5Q en RE-TEST (las del banco del mar 1-dic)' },
-  '2026-12-03': { codigo: 'I-3', secundario: 'I-11+I-12', principal: 16, secundario_n: 5, comp: [3, 13, 0], eval_retest: 'banco', nota: 'principal: 3Q de I-3 sin usar + 13 de I-3 en RE-TEST (las mismas preguntas reales, sin la clave)', eval: 'código de ayer II-1: 5Q en RE-TEST (las del banco del mié 2-dic)' },
+  '2026-12-07': { codigo: 'II-5', secundario: 'II-10', principal: 16, secundario_n: 2, comp: [0, 8, 8], nota: 'principal: 0Q de II-5 sin usar en el pool → 8 de II-5 en RE-TEST (las mismas preguntas reales, sin la clave) + 8 libres de la cola larga del área II · secundario II-10: solo 2Q en el pool (receta 4-5)', eval: 'día siguiente al mini-sim: 5Q REALES de fallos previos del registro (depende de las rondas registradas)' },
+  '2026-12-08': { codigo: 'I-4', secundario: 'I-5+I-6', principal: 16, secundario_n: 4, comp: [4, 7, 5], eval_retest: 'banco', nota: 'principal: 4Q de I-4 sin usar + 7 de I-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 5 libres de la cola larga del área I · tras este banco quedan 0Q libres de I-4', eval: 'código de ayer II-5: 5Q en RE-TEST (las del banco del lun 7-dic)' },
+  '2026-12-09': { codigo: 'IV-1', secundario: 'II-EMG', principal: 16, secundario_n: 2, comp: [10, 6, 0], nota: 'principal: 10Q de IV-1+IV-2 sin usar + 6 en RE-TEST (las mismas preguntas reales, sin la clave) · secundario II-EMG: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer I-4: 5Q (las del banco del mar 8-dic, en RE-TEST si no quedan libres)' },
+  '2026-12-10': { codigo: 'II-4', secundario: 'I-OCC', principal: 16, secundario_n: 2, comp: [0, 6, 10], eval_retest: 'banco', nota: 'principal: 0Q de II-4 sin usar en el pool → 6 de II-4 en RE-TEST (las mismas preguntas reales, sin la clave) + 10 libres de la cola larga del área II · secundario I-OCC: solo 2Q en el pool (receta 4-5)', eval: 'código de ayer IV-1: 5Q en RE-TEST (las del banco del mié 9-dic)' },
+  '2026-12-14': { codigo: 'II-1', secundario: 'III-3', principal: 16, secundario_n: 2, comp: [1, 9, 6], nota: 'principal: 1Q de II-1 sin usar + 9 de II-1 en RE-TEST (las mismas preguntas reales, sin la clave) + 6 libres de la cola larga del área II · secundario III-3: solo 2Q en el pool (receta 4-5)', eval: 'día siguiente al mini-sim: 5Q REALES de fallos previos del registro (depende de las rondas registradas)' },
+  '2026-12-15': { codigo: 'I-3', secundario: 'I-11+I-12', principal: 16, secundario_n: 5, comp: [3, 13, 0], eval_retest: 'banco', nota: 'principal: 3Q de I-3 sin usar + 13 de I-3 en RE-TEST (las mismas preguntas reales, sin la clave)', eval: 'código de ayer II-1: 5Q en RE-TEST (las del banco del lun 14-dic)' },
 };
 
 /**
@@ -460,13 +464,14 @@ const PIZARRA = {
     return { ini: s.hora, fin: `${String(Math.floor(fin / 60)).padStart(2, '0')}:${String(fin % 60).padStart(2, '0')}` };
   },
   /** franja de un runner de la intensiva sin SIM en su fila: la del CARRIL SÁBADO (extra.carril_sabado.ini/fin de la fila del viernes host, fecha = el sábado:
-   *  14:00-15:00) · la del CARRIL B de su fila (extra.carril_b: a las 16:15, 16:15-17:15) · null si no hay */
+   *  14:00-15:00) o del CARRIL DOMINGO (v7.00, corrector: extra.carril_domingo, fecha = el domingo: 09:30-10:30) · la del CARRIL B de su fila (extra.carril_b: a las
+   *  16:15, 16:15-17:15) · null si no hay */
   carrilSQL: (fecha) => {
     const fs = require('fs'), path = require('path');
     const ls = fs.readFileSync(path.join(__dirname, '_encaps_intensivo_2027.sql'), 'utf8').split(/\r?\n/).filter((x) => x.startsWith("('ENCAPS',"));
-    for (const l of ls) {
-      const i = l.indexOf('"carril_sabado":{'); if (i < 0) continue;
-      const cs = l.slice(i, l.indexOf('{', i + 17) > 0 ? l.indexOf('{', i + 17) : undefined), g = (k) => (new RegExp(`"${k}":"([^"]*)"`).exec(cs) || [])[1];
+    for (const l of ls) for (const cl of ['"carril_sabado":{', '"carril_domingo":{']) {
+      const i = l.indexOf(cl); if (i < 0) continue;
+      const cs = l.slice(i, l.indexOf('{', i + cl.length) > 0 ? l.indexOf('{', i + cl.length) : undefined), g = (k) => (new RegExp(`"${k}":"([^"]*)"`).exec(cs) || [])[1];
       if (g('fecha') === fecha && /^\d\d:\d\d$/.test(g('ini') || '') && /^\d\d:\d\d$/.test(g('fin') || '')) return { ini: g('ini'), fin: g('fin') };
     }
     const l = ls.find((x) => x.includes(`,'${fecha}',`));
@@ -557,8 +562,10 @@ const FUGA = {
   RE_ITEM_REAL,
   itemsRealesDe: (t) => [...String(t || '').matchAll(RE_ITEM_REAL)].map((m) => `${m[1]}-Q${m[2]}`),
   /** fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente verificada» no los cite (lista MANUAL, fila a fila, la decide el chat
-   *  ENCAPS): cada ítem cuenta igual que uno de la fuente. #102 (método científico, enfoque sistemático) responde R-2024-2A-Q46 (mini-sim del vie 4-dic de plan).
-   *  La #103 no va aquí (decisión del chat ENCAPS). */
+   *  ENCAPS): cada ítem cuenta igual que uno de la fuente. #102 (método científico, enfoque sistemático) responde R-2024-2A-Q46 (v7.00: en el mini-sim 3/3 del vie 18-dic).
+   *  La #103 no va aquí (decisión del chat ENCAPS). v7.00 (corrector): los mini-sims 4/5 y 5/5 que protegía el cruce c46 pasan a la intensiva (dom 28-feb y
+   *  sáb 6-mar, pendientes F1) y sus filas ya salen en las cifras de F1 → al generarlos, gen_encaps_minisim aplica también a ellos el filtro de CIFRAS (esMinisimF1):
+   *  los ítems ligados quedan fuera de esos runners y siguen ciegos. */
   CONCEPTOS_LIGADOS: { 98: ['2025-2-Q28'], 102: ['2024-2A-Q46', '2025-1A-Q56'], 147: ['2025-1A-Q6', '2025-1A-Q28'], 179: ['2025-2-Q92'], 196: ['2025-1A-Q17'], 211: ['2025-2-Q28'] }, // c46: cruce por concepto del chat ENCAPS (mini-sims 4/5 y 5/5): se aparta la FILA hasta su runner; el ítem se queda en el runner
   /** filas de CIFRAS_CRITICAS_2027-I.md §3 → [{ n, cod, items }] (items = los ítems reales de su «Fuente verificada» + los de CONCEPTOS_LIGADOS); lanza un
    *  Error si la tabla no se lee entera o si CONCEPTOS_LIGADOS no cuadra */

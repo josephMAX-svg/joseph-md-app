@@ -106,7 +106,9 @@ const D1 = F6.f1.inicio; // v6.09: mar 17-nov-2026 → la semana del D1 sigue si
 const D1ts = (usmleTs.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1];
 // v6.08: el Step de F1 va solo los días step1.f1_dias_semana (v6.07+: mar · jue) → su inicio = 1.er día ≥ f1.inicio con día de Step (v6.08: mar 17-nov;
 //   antes se comparaba con f1.inicio y avisaba «regenerar el plan USMLE» en falso desde la v6.07). Misma regla que la aserción de remap_inicio.js.
-const D1_STEP = (() => { const ds = (F6.step1 && F6.step1.f1_dias_semana) || []; if (!ds.length) return D1; let d = D1; for (let i = 0; i < 7 && !ds.includes(new Date(d + 'T12:00:00Z').getUTCDay()); i++) { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); d = x.toISOString().slice(0, 10); } return d; })();
+// v7.00 (28-nov-2026): = la 1.ª mañana de Step de F1 (gen_fechas_v6.diasStepF1De, que ya respeta step1.pausa_desde) o, sin mañanas de Step en F1 (v7.00: la pausa
+//   empieza el D1), el reinicio del Step (step1.reinicio)
+const D1_STEP = V6.diasStepF1De(F6)[0] || F6.step1.reinicio;
 if (D1ts && D1ts !== D1_STEP) console.error(`⚠ usmleStep1Daily.ts (inicio ${D1ts}) ≠ 1.er día de Step desde f1.inicio de _fechas_v6.json (${D1_STEP}; f1.inicio ${D1}): regenerar el plan USMLE`);
 // v5.17 (30-sep): S1 = semana L-V del D1 aunque el D1 no sea lunes, igual que fechasV6.semanaStep1. v6.01: D1 = lun 12-oct → S1 = lun 12 → vie 16-oct
 // (revisión del sáb 17-oct) · S12 = lun 28 → mié 30-dic (último día de F1) · v6.00 = v5.20: D1 = mié 7-oct → S1 = lun 5 → vie 9-oct.
@@ -191,9 +193,10 @@ if (SIN_SESION.has(SABADO) && !REV_CORRIDA && !has('--forzar')) {
 // NBME 28 lun 21-dic · v5.18: 9-nov / 21-dic (NBME vie 6-nov / vie 18-dic) · v5.17: mié 4-nov / mié 16-dic · v5.16: 2-nov / 14-dic.
 const homeTs = readTs('homeBriefing.ts');
 const DELOAD_SEMANAS = (() => {
-  const blk = (homeTs.match(/DELOAD_SEMANAS[^=]*=\s*\[([\s\S]*?)\];/) || [])[1] || '';
+  const mB = homeTs.match(/DELOAD_SEMANAS[^=]*=\s*\[([\s\S]*?)\];/), blk = (mB || [])[1] || '';
   const xs = [...blk.matchAll(/lunes:\s*'(\d{4}-\d{2}-\d{2})',\s*motivo:\s*'([^']*)'/g)].map((m) => ({ lunes: m[1], motivo: m[2] }));
-  return xs.length ? xs : [{ lunes: '2026-12-07', motivo: 'post-NBME 26 (vie 4-dic)' }, { lunes: '2026-12-28', motivo: 'semana del NBME 28 (mié 30-dic)' }];
+  // v7.00: una lista VACÍA en homeBriefing (sin deloads) vale tal cual; el respaldo de abajo, solo si no se encuentra la constante
+  return xs.length || mB ? xs : [{ lunes: '2026-12-07', motivo: 'post-NBME 26 (vie 4-dic)' }, { lunes: '2026-12-28', motivo: 'semana del NBME 28 (mié 30-dic)' }];
 })();
 const SEM = V6.semanaStep1(SABADO, { deloads: DELOAD_SEMANAS }, F6);
 const TOTAL_SEM = SEM.total; // = STEP1_SEMANAS (v6.06: 41 = 9 de F1 + 32 del tramo 2 · v6.05: 42 = 10 de F1 + 32 del tramo 2 · v6.04: 43 · v6.03 = v6.02: 39 = 11 de F1 + 28 del tramo 2 · v6.01: 40 = 12 + 28) · v5.20: 20 fijo

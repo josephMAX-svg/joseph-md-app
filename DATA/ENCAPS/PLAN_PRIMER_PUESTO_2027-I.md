@@ -1,6 +1,11 @@
-# ENCAPS 2027-I · Plan para el PRIMER PUESTO (v6.07 · arranque lun 9-nov-2026)
+# ENCAPS 2027-I · Plan para el PRIMER PUESTO (v7.00 · arranque lun 30-nov-2026)
 
-> Orden de Joseph (dom 8-nov-2026): «la mitad (o más: 60-80 %) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer
+> **v7.00 (sáb 28-nov-2026), la reorganización final.** Del mar 24 al dom 29-nov no hubo estudio y todo arranca el **lun 30-nov**. Orden de Joseph:
+> el objetivo absoluto es el primer puesto del ENCAPS (examen **dom 14-mar-2027**); antes del examen, más ENCAPS: **las mañanas de lunes a viernes son
+> ENCAPS** y el Step 1 se pausa (mantenimiento) hasta el mar 16-mar-2027. Cambian §2-§3 (reparto y semana tipo), §5.2-§5.3 (las 21 mañanas y los 2
+> colchones), §7-§9 (simulacros, gates y enero-marzo) y §10; la meta (§1), el protocolo de la mañana (§4), la regla por material (§5.1) y las fuentes
+> de preguntas (§6) siguen. Datos del campus Theomed en vivo del 28-nov (publicadas, fechas de las clases y simulacros sin intentar).
+> Orden original (v6.07, dom 8-nov-2026): «la mitad (o más: 60-80 %) del tiempo del Step 1 hasta fin de año pasa al ENCAPS; meta primer
 > puesto, más de 17,5 (o 18-19); empezamos mañana 9; sábados 14:00-17:00 libres para el en vivo de Theomed; domingos 4 h opcionales y
 > flexibles; en enero, la base del ENCAPS; el Step 1 puede correrse, pero no más allá de 2027».
 > Fuentes de este plan (todas en `DATA/ENCAPS/INVESTIGACION_2027-1/`): `THEOMED_Y_DRIVE.md` (campus y Drive, inventario exacto),
@@ -24,7 +29,7 @@
 | Primer puesto nacional en Medicina | 2025-I **17,2** · 2026-I **17,8** · 2026-II **19,0** | FECHA_Y_REGLAS §0 |
 | Primer puesto en los simulacros de Theomed 2027-I | 17,2 → 18,6 → 19,0 → **19,4** | THEOMED_Y_DRIVE §1.10 |
 | **Meta operativa** | **≥ 95 aciertos (19,0)** el día del examen · piso: 88 aciertos (17,6) | — |
-| Punto de partida | 40 % ciego (solo I-3, julio) · pre-test de arranque sin rendir · atraso de Theomed ≈ 30 h de vídeo | MATERIAL_LOCAL §d · THEOMED §3.2 |
+| Punto de partida | 40 % ciego (solo I-3, julio) · pre-test de arranque sin rendir (lun 30-nov y mar 1-dic) · atraso de Theomed ≈ 30 h de vídeo (va dentro de las 21 mañanas, §5.2) | MATERIAL_LOCAL §d · THEOMED §3.2 |
 
 **Fechas**
 - **Referencia: dom 14-mar-2027** (la más temprana plausible; Theomed la marca en su campus). Probable: 21-mar → 18-abr.
@@ -39,59 +44,50 @@ Formato esperado: 45-70 % viñeta y vuelve el recall de cifras, plazos y definic
 
 ---
 
-## 2. Reparto del tiempo hasta el 30-dic: ≈ 2/3 ENCAPS
+## 2. Reparto del tiempo hasta el 31-dic: ENCAPS primero (v7.00)
 
-**Decisión:** el bloque de la mañana (07:15-12:00, 4 h 45 min) pasa a ser **ENCAPS 3 días por semana (lun · mié · vie)** y **Step 1 2 días
-(mar · jue)**. El Anki del Step (05:00) sigue todos los días. ENCAPS conserva su hora de las 16:15 y gana la de las 18:00 los días ENCAPS.
+**Decisión (sáb 28-nov-2026, reorganización final):** del mar 24 al dom 29-nov no hubo estudio y todo arranca el **lun 30-nov**. El objetivo absoluto es el
+primer puesto del ENCAPS (examen **dom 14-mar-2027**): **las 5 mañanas de lunes a viernes (07:15-12:00) son ENCAPS** y el **Step 1 se pausa hasta el
+mar 16-mar-2027** (reinicio). Mientras tanto el Step queda en **mantenimiento**: el Anki USMLE de las 05:00 (≤ 10′, solo vencidas o nuevas) y una
+sesión de 45′ los **mar · jue a las 18:00** en diciembre (desde el 4-ene, el **sábado 04:15-05:45**, hasta el sáb 27-feb).
 
-| Por semana (lun 9-nov → mié 30-dic) | ENCAPS | Step 1 |
+| Por semana (lun 30-nov → jue 31-dic) | ENCAPS | Step 1 (mantenimiento) |
 |---|---|---|
-| Mañanas 07:15-12:00 | 3 × 285′ | 2 × 285′ |
-| 16:15-17:15 | 5 × 60′ | — |
-| 18:00-18:45 | 3 × 45′ (cifras, normas, flashcards) | 2 × 45′ (evaluación Step) |
-| 05:00-05:45 | 15′ de repasos ENCAPS dentro del Anki | 30′ |
-| Sábado 15:00-17:00 | en vivo de Theomed | — |
-| Domingo (opcional, flexible) | 4 h (simulacro + corrección o recuperación) | — |
-| **Total** | **≈ 25,5 h obligatorias + 4 h opcionales** | **≈ 13,5 h** |
-| **Proporción** | **65 % (69 % con el domingo)** | 35 % (31 %) |
+| Mañanas 07:15-12:00 | 5 × 285′ | — |
+| 12:00-12:20 (mar · jue) | 2 × 20′: cifras y norma de la mañana (sus 18:00 son USMLE) | — |
+| 16:15-17:15 | 5 × 60′ (banco del día · vie = mini-sim) | — |
+| 18:00-18:45 | 3 × 45′ (lun · mié · vie: cifras, normas y flashcards) | 2 × 45′ (mar · jue: Mehlman en Tutor, 1 subtema por semana) |
+| 05:00-05:45 | 5 × 35′ (05:10-05:45: ENCAPS::Cifras + APEX::ENCAPS) | 5 × ≤ 10′ (05:00-05:10) |
+| Sábado 15:00-17:00 | la clase en vivo de Theomed (si hay) | — |
+| Domingo | recuperación, banqueos grabados o simulacro (§5.3 · §7) | — |
+| **Total** | **≈ 34-36 h obligatorias** (+ el domingo) | **≈ 2,3 h** |
 
-**Por qué 2/3 y no 80 %:** el volumen que necesita el primer puesto cabe (≈ 2 800 preguntas hasta el 3-ene + toda la teoría de Theomed al día +
-normas) y el Step 1 no se va más allá de 2027. Con 1 sola mañana de Step (≈ 77 % ENCAPS) el Step 1 se iría a 2028. **Gate del vie 18-dic**
-(abajo, §8): si el ENCAPS va por detrás, se pasa a 4 mañanas ENCAPS.
+Frente a la v6.07 (≈ 25,5 h de ENCAPS y 13,5 h de Step por semana), diciembre queda en ≈ 94 % ENCAPS. Lo que no se pierde de las 18:00 de mar · jue:
+sus **cifras y su norma** van al terminar la mañana (12:00-12:20) y sus **flashcards**, al Anki ENCAPS del día siguiente (05:10).
 
-**Consecuencias en el Step 1 (regenerado el dom 8-nov; `DATA/_scripts/_fechas_v6.json` → `step1.cambios` v6.07):**
-- **El examen pasa del lun 25-oct al LUN 6-DIC-2027.** Con 15 mañanas de Step en F1 (antes 42), el 25-oct dejaba **11 unidades sin sitio** (nada se
-  recorta: regla R1). La primera fecha sin déficit era el lun 22-nov, con solo 2 filas de colchón (≈ 5 h). El **6-dic** deja **14 filas de colchón
-  (≈ 37 h)** y además **3 lunes de margen dentro de 2027** (13, 20 y 27-dic) por si algo se tuerce. Antes del 25-oct el colchón era de 32 filas (≈ 84 h).
-- **F1 (15 filas):** D1 = UWSA1 **mar 10-nov** (08:50-13:00) · D10 = NBME 25 **jue 10-dic** (07:00-12:30) · Day-After D11-D14 · D15 mar 29-dic.
-- **Tramo 2:** T1 mar 16-mar (reentrada) · T2 NBME 29 mié 17-mar (se compara con el NBME 25) · las filas de F1 que no cupieron desde el T3 jue 18-mar ·
-  NBME 26 vie 2-abr · NBME 27 vie 23-abr · NBME 28 jue 3-jun (T60) · gates del núcleo lun 22-mar y mié 21-abr.
-- **Hitos 2027:** NBME 30 lun 24-may y UWSA3 mar 29-jun (sin cambio) · NBME 31 lun 4-oct · NBME 32 lun 11-oct · **GO/NO-GO lun 18-oct** (≥ 294 h
-  reales desde el reinicio + NBME 31 y 32 ≥ 68 %, uno ≥ 70 %) · UWSA2 mar 19-oct · **NBME 33 + 3 bloques (ensayo de 7 bloques) lun 1-nov**
-  (feriado: sin turno) · Free 120 lun 22-nov · ritual sáb 4-dic · viaje dom 5-dic · **examen lun 6-dic**.
-- **Elegibilidad:** todavía no te inscribiste, así que basta con elegir la ventana **oct-nov-dic 2027** al inscribirte (antes se pensaba en ago-oct).
-- **Secundarios:** arrancan el lun 9-nov (+1 semana) y conservan sus horas. El banqueo MIR llega hasta el vie 3-dic-2027 sin sesiones repuestas
-  después del examen (225 sesiones, antes 203).
+**Consecuencias en el Step 1:** el examen ya no cabe el lun 6-dic-2027 (sin mañanas de Step en F1 todo el temario de F1 pasa al tramo 2): la fecha
+nueva, los hitos y el mantenimiento los fija el lote USMLE (`_fechas_v6.json` → `step1.cambios` v7.00; propuesta del chat USMLE en el scratchpad de la v7).
 
 ---
 
-## 3. Semana tipo (lun 9-nov → mié 30-dic)
+## 3. Semana tipo (lun 30-nov → jue 31-dic)
 
-| Hora | Lun · Mié · Vie (día ENCAPS) | Mar · Jue (día Step) |
+| Hora | Lun · Mié · Vie | Mar · Jue |
 |---|---|---|
 | 04:15-05:00 | vibecoding | vibecoding |
-| 05:00-05:45 | Anki: USMLE 30′ + **repasos ENCAPS 15′** | ídem |
-| 07:15-12:00 | **🇵🇪 ENCAPS · MAÑANA** (protocolo §4) | 🇺🇸 Step 1 (fila del día; UWSA1 mar 10 08:50-13:00) |
-| 12:00-12:30 | almuerzo | almuerzo |
-| 12:30-16:15 | SYNAPSE · Business · R↔D · AURUM · MIR (sin cambio) | ídem |
-| 16:15-17:15 | **🇵🇪 ENCAPS · banqueo por código** (fila F1; vie = mini-sim 25Q) | ídem |
+| 05:00-05:45 | Anki: USMLE ≤ 10′ (05:00-05:10) + **ENCAPS 35′** (05:10-05:45) | ídem |
+| 07:15-12:00 | **🇵🇪 ENCAPS · MAÑANA** (protocolo §4) | **🇵🇪 ENCAPS · MAÑANA** (protocolo §4) |
+| 12:00-12:20 | almuerzo | **🇵🇪 cifras y norma de la mañana** · después, almuerzo |
+| 12:30-16:15 | SYNAPSE · Business · R↔D · AURUM · MIR | ídem |
+| 16:15-17:15 | **🇵🇪 ENCAPS · banco por código** (vie = mini-sim 25Q) | ídem |
 | 17:15-18:00 | LIVIANO | LIVIANO |
-| 18:00-18:45 | **🇵🇪 ENCAPS · cifras, normas y flashcards** | 🇺🇸 evaluación Step |
-| **Sábado** | 14:00 revisión semanal · 14:30 cierre Business · 14:45 preparar la clase (PPT) · **15:00-17:00 Theomed EN VIVO** (el último tramo, 17:00-17:30, en la grabación) · 19:00 Anki | |
-| **Domingo** | **ENCAPS opcional 4 h, a la hora que puedas**: simulacro 100Q (2 h) + corrección (2 h), o recuperación · SHIP del vibecoding (2 h, flexible) · Feynman 10′ · Anki ≤ 15′ | |
+| 18:00-18:45 | **🇵🇪 ENCAPS · cifras, normas y flashcards** | 🇺🇸 USMLE · mantenimiento (45′) |
+| **Sábado** | 14:00 revisión semanal · 14:45 preparar la clase (PPT) · **15:00-17:00 Theomed EN VIVO** (el tramo 17:00-17:30, en la grabación) | |
+| **Domingo** | ENCAPS de domingo (§5.3; en F2, §9) · SHIP del vibecoding (flexible) · Feynman 10′ | |
 
-Las clases en vivo de Theomed de **lunes 19:30-22:00 y viernes 19:00-22:30** chocan con tu hora de dormir (21:00): se ven en diferido en la
-mañana ENCAPS siguiente (§4-§5). Los Kahoots (lun-jue 9:00 y 19:00) son opcionales: en tiempos muertos.
+**Desde las 20:30, 0 pantallas.** Por eso las clases en vivo de Theomed de los **lunes (19:30-22:00) y viernes (20:00-22:30)** no se siguen en
+directo: en diciembre van en **grabación dentro del ciclo de mañanas** (§5.3, con su post-test ciego justo después) y en enero-febrero, el
+**domingo siguiente 07:15-09:15** (§9). La del **sábado 15:00** sí va EN VIVO. Los Kahoots (lun-jue 19:00) son opcionales.
 
 ---
 
@@ -110,6 +106,10 @@ mañana ENCAPS siguiente (§4-§5). Los Kahoots (lun-jue 9:00 y 19:00) son opcio
 **Regla de oro:** en las horas buenas nada es pasivo. El vídeo es un medio, no la meta: se mira para poder RESPONDER, y lo que no sirve para
 responder preguntas se salta.
 
+**Mar · jue (v7.00):** sus 18:00 son la sesión USMLE de mantenimiento; por eso, al terminar la mañana (12:00-12:20), las **cifras y la norma** del
+día (lo que en lun · mié · vie va a las 18:00), y sus **flashcards**, al Anki ENCAPS del día siguiente (05:10). Los **colchones** (§5.2) son un simulacro
+de 100Q (07:30-09:30) + su corrección (09:45-11:40) + tarjetas.
+
 ---
 
 ## 5. Cómo se estudia cada cosa (vídeo, texto o pregunta) y el mapa de recuperación de Theomed
@@ -125,7 +125,7 @@ responder preguntas se salta.
 | **Normas técnicas** (100 PDF en el campus) | **lectura de verificación**, no lineal: primeras páginas (definiciones), tablas, flujogramas, plazos y cifras; se abre la norma cuando un error la pide | de las definiciones sale gran parte de las preguntas normativas (testimonio del 1.º de Junín / 5.º nacional 2025) |
 | Manuales (856 p) | consulta puntual | — |
 | Theoesenciales (372 p) y glosarios (105 p) | lectura activa del tema del día → tarjetas | resúmenes puntuales de repaso |
-| Flashcards (1 184, por temario; 84 temas) | Anki `ENCAPS::Flashcards`, 30 nuevas por día ENCAPS + repasos diarios | ya están en el orden del temario oficial |
+| Flashcards (1 184, por temario; 84 temas) | Anki `APEX::ENCAPS` (v7.00: no hay mazo «ENCAPS::Flashcards»; las cifras, en `ENCAPS::Cifras`), 05:10-05:45 + las nuevas de cada mañana | ya están en el orden del temario oficial |
 | Kahoots | opcional, tiempos muertos | baja densidad |
 
 **Vigencia de las normas (hubo cambios):** ante dos fuentes que no coinciden, **manda la norma más reciente del campus Theomed 2027-I / MINSA**
@@ -133,37 +133,68 @@ responder preguntas se salta.
 FESP 2026-2030, plan dengue 2026). El material de academias 2026-II (Drive) puede estar desfasado: se usa para PREGUNTAS, no como autoridad.
 El primer domingo de cada mes: revisión de señales (`SENALES_2027-I.md`: normas nuevas, convocatoria, boletines).
 
-### 5.2 Recuperación del atraso (≈ 30 h de vídeo) → completa el **vie 27-nov**
+### 5.2 Las 21 mañanas de F1 y los 2 colchones (lun 30-nov → jue 31-dic)
 
-Orden: primero lo que la clase en vivo de esa semana da por sabido, y dentro de eso, el peso en el examen.
+Cada mañana va en su fecha real, con permutas para que **ninguna grabación se use antes de publicarse** (campus, 28-nov: todas las asíncronas SP 8/8,
+CI 8/8, GES 7/7, INV 3/3 y ET 3/3 están publicadas; la INV 3/4 del vie 27-nov aún no) y para que **las mañanas con algo pendiente a las 18:00 caigan
+en lun · mié · vie** (las 18:00 de mar · jue son USMLE). Fuente: `DATA/ENCAPS/_encaps_manana_v607.json` (v7.00) → `src/lib/encapsManana.ts`.
 
-| Mañana | Sesiones (duración) | Modo | Códigos que cubre |
-|---|---|---|---|
-| **lun 9-nov** | INV S1-S3 (2 h 10) | vídeo 1,75× (conceptual) | IV-1+IV-2 ★ · IV-4 · III-3 |
-| **mié 11-nov** | GES S1-S4 (2 h 37) | S1-S2 vídeo 2× (planeamiento ★) · S3-S4 texto | V-2 ★ · V-1 · V-3 · V-7+V-10 |
-| **vie 13-nov** | GES S5-S7 (2 h 02) · banqueo 1/19 grabado (28′, activo) · revisión normativa MCI (35′) | texto + activo | V-6 · I-11+I-12 · V-7 · II-5 ★ (MCI) |
-| **lun 16-nov** | CI S1-S2 (2 h 33) · banqueo 4/19 (vie 13, activo) | S1 vídeo 1,75× (APS/MCI) · S2 texto | I-10 · II-5 ★ · II-2 · II-10 · II-12 |
-| **mié 18-nov** | CI S3-S5 (3 h 28) | S3 texto · S4 vídeo 1,75× (denso) · S5 texto + NT vacunas 2026 | II-3 ★ · II-8 · II-9 · II-13 · III-5 |
-| **vie 20-nov** | CI S6-S8 (4 h 13) | S6 vídeo 1,75× · S7 texto + NTS anemia · S8 texto + GPC dengue | II-1 · II-11 · II-4 ★ · I-4 ★ |
-| **lun 23-nov** | ET S1-S3 (2 h 09) · banqueo 5/19 (activo) | texto + 2× | III-1 · III-2 · III-8 · III-5 ★ · III-6 |
-| **mié 25-nov** | SP S1-S4 (3 h 01) | vídeo 1,75× (conceptual; S4 = vigilancia ★) | I-2 · II-8 · I-3 ★ · I-4 · IV-6+IV-7 |
-| **vie 27-nov** | SP S5-S8 (3 h 07) · SP 1/11 en vivo (2 h 14, a 2× lo que el PPT no cubre) | vídeo 1,75× | I-1 · I-5+I-6 · I-11+I-12 · II-9 |
-
-La clase CI 1/8 (sáb 7-nov) y las clases en vivo de las semanas 1-3 (INV 1-2, GES 1-2, SP 2) van en AUDIO en tiempos muertos y su PPT el
-domingo; sus **banqueos** (vie) sí van en la mañana del lunes, activos. Los 32 post-tests: cada uno al terminar su sesión, primer intento ciego.
-
-### 5.3 Desde el lun 30-nov: ciclo semanal (teoría al día + normas + volumen)
-
-| Mañana | Teoría | Banqueo |
+| Fecha | Mañana | Contenido |
 |---|---|---|
-| **Lunes** | banqueo del viernes (activo, 1 h) + clase del viernes (grabación, tramos útiles) | 40Q del área de la clase |
-| **Miércoles** | clase del lunes (grabación, tramos útiles) + norma del tema | 40Q del área + 10Q de cifras |
-| **Viernes** | normas técnicas de la semana (verificación) | **50Q en bloque cronometrado** (mezcla del vector) |
+| lun 30-nov | 1/21 | INV S1-S3 (2×) + Theoesencial INV p. 1-27 · banqueo INV 30Q |
+| mar 1-dic | 2/21 | GES S1-S4 + Theoesenciales (GES 11 p, INV p. 28-48) + norma CEPLAN · banqueo GES 35Q |
+| mié 2-dic | 3/21 | Banqueo 4/19 (grabado) + CI S1 (2×) · CI S2 a las 18:00 · banqueo CI 30Q |
+| jue 3-dic | 4/21 | GES S5-S7 + Banqueo 1/19 grabado + revisión normativa MCI · banqueo GES + MCI 30Q |
+| vie 4-dic | 5/21 | CI S3-S5 + Theoesencial CI · NT de vacunas 2026 · CI 2/8 (sáb 14-nov) a las 18:00 |
+| lun 7-dic | 6/21 | CI S6-S8 · NTS anemia + GPC dengue · banqueo CI 30Q |
+| mar 8-dic (feriado) | 7/21 | Banqueo 5/19 (grabado) + ET S1-S3 · banqueo ET 30Q |
+| mié 9-dic (feriado) | 8/21 | SP S1-S3 (2×) + Theoesencial SP p. 1-24 · Directiva 046 · banqueo SP 30Q |
+| jue 10-dic | 9/21 | ET 1/3 (vie 6-nov) + normas ET/INV · 50Q cronometradas (antes de la ET 3/3 del sáb 12) |
+| vie 11-dic | 10/21 | SP S5-S8 (S8 a las 18:00) + SP 1/11 (lun 2-nov) · banqueo SP 30Q |
+| lun 14-dic | 11/21 | Banqueo 6/19 (grabado) + INV 3/4 (vie 27-nov) · banqueo INV + mixto 40Q |
+| mar 15-dic | 12/21 | INV 4/4 (lun 30-nov) + INV 1/4 + INV 2/4 · RENACE · banqueo SP (I-3) + INV 40Q |
+| mié 16-dic | 13/21 | Banqueo 7/19 (vie 4-dic) + SP 3/11 (vie 4-dic) · banqueo SP 40Q |
+| jue 17-dic | 14/21 | GES 5/6 (lun 7-dic) + GES 1/6 + GES 2/6 · categorías de EESS, calidad y auditoría · banqueo GES 40Q |
+| vie 18-dic | 15/21 | CI 1/8 (sáb 7-nov) + normas CI (vacunas, anemia, CRED) · 50Q cronometradas · **CHECKPOINT 16:15** |
+| lun 21-dic | 16/21 | Banqueo 8/19 (vie 11-dic) + SP 4/11 (vie 11-dic) · banqueo SP 40Q |
+| mar 22-dic | 17/21 | Revisión normativa N°2 (ITS) + normas CI (TBC, ECNT, ITS/VIH) · 50Q cronometradas |
+| mié 23-dic | 18/21 | SP 5/11 (lun 14-dic) + CI 3/8 (sáb 19-dic: su tramo 17:00-17:30) + SP 2/11 (lun 23-nov) · ASIS · banqueo SP 40Q |
+| **jue 24-dic** | **COLCHÓN 1/2** | SIMULACRO THEOMED 27/11 (curso 105) 100Q / 2 h + corrección |
+| vie 25-dic | — | Navidad (SKIP) |
+| lun 28-dic | 19/21 | GES 6/6 (vie 18-dic) + CI 4/8 (lun 21-dic) + Theoesencial CI 15 p · banqueo GES + CI 40Q |
+| mar 29-dic | 20/21 | Hoja de reglas del trimestre + 10Q · 50Q cronometradas de los 8 críticos (60Q en total) |
+| mié 30-dic | 21/21 | **SIMULACRO DE CIERRE DEL AÑO** 100Q / 2 h (DR LOPEZ simulacro 1) + corrección |
+| **jue 31-dic** | **COLCHÓN 2/2** | SIMULACRO THEOMED 13/11 (curso 105) 100Q / 2 h + corrección |
 
-Clases que van entrando (calendario oficial del campus): INV 3-4/4 (27-nov y 30-nov) · SP 3/11 (4-dic) · GES 5/6 (7-dic) · SP 4/11 (11-dic) ·
-SP 5/11 (14-dic) · GES 6/6 (18-dic) · CI 4/8 (21-dic) · SP 6/11 (28-dic); sábados en vivo: CI 2/8 (14-nov) · ET 2/3 (21-nov) · GES 3/6 (28-nov) ·
-GES 4/6 (5-dic) · ET 3/3 (12-dic) · CI 3/8 (19-dic). La teoría de INV termina el 30-nov, ET el 12-dic, GES el 18-dic, CI el 18-ene y SP el 29-ene.
-**Mié 30-dic:** la mañana entera es un **simulacro de cierre de año** 100Q / 2 h + corrección.
+**Colchones.** Mientras no se gastan, cada uno es un **simulacro Theomed de 100Q en modo examen** (curso 105: hay seis sin intentar, 18-sep, 02-oct,
+16-oct, 30-oct, 13-nov y 27-nov) + su corrección; si el suyo no abre, su alternativa es otro sin intentar (colchón 1: 18/09 · colchón 2: 02/10), no el del
+domingo siguiente. **Si se pierde una mañana**, el colchón siguiente la recupera entera (con su guía) y su simulacro pasa
+al domingo siguiente (dom 27-dic o dom 3-ene), en lugar del simulacro opcional de ese domingo.
+
+**Banqueos grabados.** Los banqueos 4/19, 5/19 y 6/19 (vie 13, 20 y 27-nov) **no tienen grabación en el campus** (28-nov): su paso de la mañana lleva una
+alternativa con los mismos minutos (28 preguntas REALES del post-test de DR LOPEZ del área o del Qx banqueo F2, en activo). Igual para los 7/19, 8/19 y
+9/19 si Theomed no los cuelga.
+
+**Lo de la semana perdida (24-29-nov), recolocado:** la grabación de la ET 2/3 (sáb 21-nov) + los PPT de ET 2/3, INV 1/4 e INV 2/4 → **dom 6-dic
+07:15-08:30** (fijo); el PPT de la SP 2/11 → dom 6-dic, primer paso de su ENCAPS; la **GES 3/6** (sáb 28-nov) → **dom 20-dic** (45′ + post-test); la
+**SP 6/11** (lun 28-dic) → **dom 3-ene** (45′ + post-test). El simulacro Theomed del vie 27-nov va en el colchón 1 (sin ranking).
+
+### 5.3 Diciembre: clases en vivo en grabación y domingos
+
+Las clases de los **lunes y viernes** se ven en grabación en una mañana posterior (2-14 días después al principio, 2-7 días desde mediados de diciembre)
+con la regla fija (**60 % de la clase a 2×** en sus tramos útiles + su post-test ciego); lo que una mañana no puede llevar hasta el 60 % va con fecha a un
+domingo (primeros pasos NO opcionales de su ENCAPS). Calendario del campus (28-nov): INV 4/4 lun 30-nov · Banqueo 7/19 + SP 3/11 vie 4-dic · GES 5/6
+lun 7 · Banqueo 8/19 + SP 4/11 vie 11 · SP 5/11 lun 14 · Banqueo 9/19 + GES 6/6 vie 18 · CI 4/8 lun 21 · SP 6/11 lun 28-dic; en vivo los sábados GES 4/6
+(5-dic) · ET 3/3 (12-dic) · CI 3/8 (19-dic); sin clases el sáb 26-dic y el sáb 2-ene. La teoría de INV termina el mar 15-dic, ET el sáb 12-dic, GES el
+lun 28-dic, CI el lun 18-ene y SP el vie 29-ene.
+
+| Domingo | ENCAPS |
+|---|---|
+| dom 6-dic | **07:15-08:30 recuperación fija** (ET 2/3 + 3 PPT) · NO opcionales antes de las 12:15 (PPT SP 2/11, flashcards y cifras de mié 2 y vie 4) · banqueos grabados N°08 y N°09 14:45-16:45 |
+| dom 13-dic | NO opcionales (tramo + post-test de la GES 4/6, Theoesencial CI 30 p, SP S4, lo que falta de la ET 1/3) · **simulacro Theomed del vie 11-dic** con ranking 14:45-16:45 (fecha proyectada: confírmala en el campus) |
+| dom 20-dic | NO opcionales (tramo + post-test de la ET 3/3, GES 3/6, lo que falta de SP 1/11, INV 1/4, INV 2/4, GES 1/6 y GES 2/6) · banqueos N°10 y N°11 + corrección del simulacro del 13 |
+| dom 27-dic | simulacro Theomed antiguo 30/10 (opcional), antes del compromiso de las 12:00 |
+| dom 3-ene | NO opcionales (Banqueo 9/19, SP 6/11, lo que falta de la CI 1/8) · simulacro Theomed antiguo 16/10 (opcional) |
 
 ---
 
@@ -175,7 +206,7 @@ GES 4/6 (5-dic) · ET 3/3 (12-dic) · CI 3/8 (19-dic). La teoría de INV termina
 | 1 | ENCAPS **2026-I** con clave (Qx, Drive) | 100 | se reserva para el **ensayo general del jue 11-mar** (verificar la clave por consenso) |
 | 1 | ENCAPS **2026-II** real | 100 | **reservado**: pre-test ciego del **vie 8-ene-2027** |
 | 2 | **Post-tests de Theomed** (30 asíncronos + los de cada clase en vivo) | ≈ 50 sets | al terminar cada sesión, primer intento ciego |
-| 2 | **Simulacros de Theomed** (quincenales, vie 16:00; el ranking cuenta el primer intento en 89 h → el **domingo**) | 1 cada 15 días + 4 antiguos | domingos opcionales (§7) |
+| 2 | **Simulacros de Theomed** (quincenales, vie 16:00; el ranking cuenta el primer intento en 89 h → el **domingo**) | 1 cada 15 días + 6 antiguos sin intentar | 2 en los colchones de jueves (27/11 y 13/11), 2 en domingos opcionales (30/10 y 16/10) y 2 de alternativa de los colchones si su simulacro no abre (18/09 y 02/10) (§7) |
 | 3 | DR LOPEZ: 40 post-tests y 14 simulacros con clave · Banqueo inteligente (≈ 518 resueltas en vídeo) | ≈ 2 400 | banqueo temático de la mañana y domingos |
 | 3 | Qx: 27 sets de banqueo con clave + EVA + 4 simulacros · Villamedic: 8 simulacros comentados | ≈ 1 500 | ídem |
 | — | Banco propio del repo (434; 249 disponibles) | — | runners de las 16:15 |
@@ -186,24 +217,21 @@ El material de academias **no se copia al repo ni a la app** (el repo es públic
 
 ## 7. Simulacros (lo que separa al primer puesto)
 
-| Domingo (opcional, flexible) | Simulacro 100Q · 2 h + corrección 2 h |
+| Cuándo | Simulacro 100Q · 2 h + corrección |
 |---|---|
-| dom 15-nov | **Theomed** (el del vie 13-nov si se publica; si no, el antiguo 18/09) → primera medición contra el grupo |
-| dom 22-nov | Theomed antiguo 18/09 o 02/10 |
-| dom 29-nov | **Theomed del vie 27-nov** (ranking) |
-| dom 6-dic | Theomed antiguo 02/10 o 16/10 |
-| dom 13-dic | **Theomed del vie 11-dic** (ranking) |
-| dom 20-dic | Theomed antiguo 16/10 |
-| dom 27-dic | Theomed antiguo 30/10 |
-| dom 3-ene | DR LOPEZ simulacro 1 (o descanso antes de la intensiva) |
-| **mié 30-dic** (mañana) | simulacro de cierre de año (DR LOPEZ) |
+| dom 13-dic | **Theomed del vie 11-dic** (ranking; si no se publica, uno antiguo sin intentar) |
+| **jue 24-dic** (colchón 1) | **Theomed 27/11** (curso 105) |
+| dom 27-dic (opcional) | Theomed antiguo 30/10 |
+| **mié 30-dic** (mañana 21/21) | **simulacro de cierre del año** (DR LOPEZ simulacro 1) |
+| **jue 31-dic** (colchón 2) | **Theomed 13/11** (curso 105) |
+| dom 3-ene (opcional) | Theomed antiguo 16/10 |
+| **vie 8-ene** | **PRE-TEST 2026-II** (100Q reales, ciego) |
+| vie 15-ene → vie 5-mar | 10 SIM 100Q de la intensiva (§9) · **jue 11-mar ensayo general (2026-I)** |
 
-Condiciones de examen (de los primeros puestos): 2 h sin parar, sin reloj a la vista (no hay reloj en el aula), primero las preguntas básicas e
-intermedias y después las atípicas; marca las dudosas y vuelve al final; **no dejes ninguna en blanco** (no restan); 72 s por pregunta con 10-15′ de
-reserva. **Corrección:** por cada error, regla de 1 línea + verificación en la norma. **Desde el vie 19-feb, los SIM 100Q a las 11:00** (la hora real
-del examen: vie 19 y 26-feb, lun 1, mié 3 y vie 5-mar, y el ensayo general del jue 11-mar), en papel y con hoja de respuestas cuando se pueda; los de
-los vie 5 y 12-feb siguen a las 07:15 salvo que decidas pasarlos a las 11:00 (decisión (g) del bloque v6.07 de `DATA/PENDIENTES_JOSEPH.md`).
-Meta: **≥ 12 simulacros completos** antes del examen (8 en domingos hasta el 3-ene + 8 SIM 100Q de la intensiva + los de las 2 últimas semanas). En la intensiva, las 2 últimas semanas (1-12 mar) son de simulacros y repaso.
+Condiciones de examen (de los primeros puestos): 2 h sin parar, sin reloj a la vista, primero las preguntas básicas e intermedias y después las
+atípicas; marca las dudosas y vuelve al final; **ninguna en blanco** (no restan); 72 s por pregunta con 10-15′ de reserva. **Corrección:** por cada
+error, regla de 1 línea + verificación en la norma; primero las «seguras» falladas. **Desde el vie 19-feb, los SIM 100Q a las 11:00** (la hora del
+examen). Meta: **≥ 15 simulacros completos** antes del examen.
 
 ### 7.1 Banqueo en 4 pasadas (lo hizo el 1.er puesto nacional 2026-I)
 1. **1.ª pasada: a ciegas y a 72 s** — es la única que MIDE el nivel (junto con los simulacros nuevos).
@@ -212,27 +240,30 @@ Meta: **≥ 12 simulacros completos** antes del examen (8 en domingos hasta el 3
 4. **4.ª pasada: solo los errores** (la última semana de febrero).
 Siempre se revisa por qué es correcta cada respuesta, no solo la marcada.
 
-### 7.2 Memoria visible
-Pizarra o pared con las cifras y definiciones del mes (plazos de notificación, esquema de vacunas, dosis de hierro, metas de indicadores):
-5 minutos al levantarte y 5 antes de dormir. Lo que se aprende en la pizarra pasa a tarjeta.
+### 7.2 Memoria visible (pizarra)
+Pizarra o pared con las cifras y definiciones del mes (plazos de notificación, esquema de vacunas, dosis de hierro, metas de indicadores). Tiene temas
+de los tests ciegos: en F1 va **tapada desde el lun 30-nov hasta que termine el mini-sim 3/3 del vie 18-dic (16:15-17:15)**, el CHECKPOINT; en F2,
+tapada en la ventana de 2 días de cada test ciego (como estaba). Lo que se aprende en la pizarra pasa a tarjeta.
 
 ### 7.3 Cuarentena
-Ningún examen 2026-II de **ninguna carrera** antes del vie 8-ene (comparten preguntas comunes con Medicina). Los exámenes oficiales de otras
-carreras de procesos anteriores sí sirven desde enero (comparten bloques).
+Ningún examen 2026-II de **ninguna carrera** antes del vie 8-ene (comparten preguntas con Medicina); nada marcado como 2026-I real antes del ensayo
+general del jue 11-mar. Los exámenes oficiales de otras carreras de procesos anteriores sí sirven desde enero.
 
 ---
 
 ## 8. Medición y gates
 
-| Indicador | nov | dic | ene | feb (listo 28-feb) |
-|---|---|---|---|---|
-| Mini-sim del viernes (25Q) | ≥ 18 | ≥ 20 | ≥ 22 | ≥ 23 |
-| Simulacro Theomed (nota) | ≥ 15 | ≥ 16,5 | ≥ 18 | **≥ 19** |
-| % ciego en los 8 críticos | ≥ 60 % | ≥ 75 % | ≥ 85 % | ≥ 90 % |
-| Errores repetidos (misma regla) | < 20 % | < 15 % | < 10 % | < 5 % |
+| Indicador | dic | ene | feb (listo 28-feb) |
+|---|---|---|---|
+| Mini-sim del viernes (25Q) | ≥ 20 | ≥ 22 | ≥ 23 |
+| Simulacro Theomed (nota) | ≥ 16,5 | ≥ 18 | **≥ 19** |
+| % ciego en los 8 críticos | ≥ 75 % | ≥ 85 % | ≥ 90 % |
+| Errores repetidos (misma regla) | < 15 % | < 10 % | < 5 % |
 
-- **Gate del vie 18-dic** (checkpoint del año, mini-sim de las 16:15): si el simulacro Theomed del 13-dic < 16,5 o el ciego de los críticos < 70 %,
-  las 2 últimas semanas de diciembre pasan a 4 mañanas ENCAPS (el Step baja a 1).
+- **Pre-tests de arranque (lun 30-nov y mar 1-dic, 16:15):** la línea base ciega de los 8 críticos.
+- **CHECKPOINT DEL AÑO (vie 18-dic, mini-sim 3/3 de las 16:15)** + simulacro Theomed del dom 13-dic: si < 16,5 o < 70 % de ciego en los críticos,
+  la revisión del sáb 19-dic lo marca y su «1 corrección concreta» (paso DECIDIR) son los 3 códigos peores; los colchones (24 y 31-dic) siguen siendo
+  simulacro o recuperan una mañana perdida (§5.2: una sola regla). Ya no hay mañanas de Step que convertir: todas las mañanas de diciembre son ENCAPS.
 - **Pre-test 2026-II del vie 8-ene** (100Q reales, ciego): fija el orden del barrido de la intensiva (`gen_encaps_intensivo_2027.js --pretest`).
 - La revisión semanal del sábado 14:00 registra: post-tests, banqueo (n y % ciego), mini-sim, simulacro, errores nuevos y repetidos.
 
@@ -240,40 +271,54 @@ carreras de procesos anteriores sí sirven desde enero (comparten bloques).
 
 ## 9. Enero → marzo (la base del ENCAPS)
 
-La intensiva sigue sembrada (lun 4-ene → vie 12-mar; ENCAPS es el bloque principal; Step 1 en mantenimiento). Cambios v6.07:
-- **contenido cerrado el vie 26-feb** («listo» el dom 28-feb). El barrido del núcleo baja de 32 a 28 sesiones: los códigos más repetidos pierden
-  una pasada (I-3 7→6 · V-2 5→4 · II-3 4→3 · I-4 4→3) y ninguno se queda sin sesión. SIM 100Q a las 11:00 los vie 19 y 26-feb (los de los vie 5 y
-  12-feb, a las 07:15 salvo la decisión (g) de `DATA/PENDIENTES_JOSEPH.md`);
-- **Viernes de la intensiva:**
-  - La corrección del SIM de las 07:15 y la del pre-test del vie 8-ene van de 09:30 a 12:00: 1 h 30 de corrección y 1 h de los 2 códigos peores.
-  - De 18:00 a 18:45, **CIERRE SEMANAL**: `--pull`, luego `gen_encaps_semana.js --semana`, y override de la semana siguiente. Va del vie 8-ene al vie 26-feb; el vie 5-mar es de 18:45 a 19:00, al terminar la corrección del SIM.
-  - Los SIM de las 11:00 se corrigen a las 16:15, o a las 18:00 (45′) los días con carril B.
-- **1-12 mar = simulacros y repaso:** SIM 100Q a las 11:00 el lun 1 (banco propio), mié 3 (academia con clave) y vie 5-mar (Theomed); repaso el
-  mar 2 y jue 4; lun 8 pasada profunda; mar 9 y mié 10 repaso final; **jue 11 ensayo general (2026-I)**; vie 12 medio día;
-- las clases en vivo de Theomed de enero (CI 5-8, SP 7-11) y los repasos de febrero entran en las mañanas de la intensiva con el mismo protocolo;
-- las 5 sesiones de la rotación F1 que no caben antes del 30-dic, con fecha: II-8 **sáb 13-feb** 09:30-10:30 · II-3 **sáb 20-feb** 09:30-10:30 ·
-  I-3 **sáb 27-feb** 09:30-10:30 · V-2 **vie 5-mar** 16:15 (tras el SIM de la mañana) · mini-sim III-1 + III-9 **sáb 6-mar** 09:30-10:30. El carril
-  del sábado no se mueve: el cierre de Business del sábado va después de él (o antes, 09:15-09:30, si es el cierre corto de 15′); el OUTPUT entero de
-  los viernes de SIM 11:00 va el sábado 10:30-11:10 (sáb 20 y 27-feb, 6-mar).
-  **Ya no queda ningún sábado libre antes del examen:** si se pierde otra semana, hace falta una regla nueva.
-- **Supabase re-sembrado (dom 8-nov):** 37 sesiones de F1 (lun 9-nov → mié 30-dic) + 50 de la intensiva (lun 4-ene → vie 12-mar; pre-test 2026-II
-  vie 8-ene = dia 42). Respaldo previo: `study_schedule_bk_v607_20261108` (+ `_int_` y `study_metrics_bk_v607_20261108`).
+La intensiva va del **lun 4-ene al vie 12-mar** con las **mismas fechas** de siempre, renumerada a los **días 24-73** (la F1 tiene 23 filas: lun 30-nov →
+jue 31-dic). ENCAPS es el bloque principal; el Step 1 sigue en mantenimiento (sesión USMLE el **sábado 04:15-05:45** hasta el sáb 27-feb; desde el
+1-mar, solo el Anki).
+- **Semana 1, la original:** lun 4 re-scan de señales · mar 5 calentamiento I-3 · mié 6 V-2 · jue 7 II-3 · **vie 8 PRE-TEST 2026-II (día 28)**.
+  Ya no hay mañanas de F1 en enero ni calentamientos movidos a los domingos.
+- **Núcleo (lun 11-ene → vie 26-feb):** 28 sesiones de barrido (I-3 6 · V-2 4 · IV-1+IV-2 4 · I-4 3 · II-3 3 · III-5 3 · II-4 3 · II-5 2) + 7 SIM 100Q de
+  viernes (los del 19 y 26-feb, a las 11:00). Contenido cerrado el vie 26-feb («listo» el dom 28-feb).
+- **Viernes de la intensiva** (sin cambio): la corrección del SIM de las 07:15 y la del pre-test del vie 8-ene van de 09:30 a 12:00 (1 h 30 de
+  corrección y 1 h de los 2 códigos peores); de 18:00 a 18:45, **CIERRE SEMANAL** (`--pull`, `gen_encaps_semana.js --semana` y override de la semana
+  siguiente) del vie 8-ene al vie 26-feb (el vie 5-mar, de 18:45 a 19:00); los SIM de las 11:00 se corrigen a las 16:15, o a las 18:00 (45′) los días
+  con carril B.
+- **1-12 mar = simulacros y repaso:** SIM 100Q a las 11:00 el lun 1 (Qx), mié 3 (DR LOPEZ) y vie 5-mar (Theomed); repaso el mar 2 y jue 4; lun 8 pasada profunda; mar 9 y mié 10
+  repaso final; **jue 11 ensayo general (2026-I, día 72)**; vie 12 medio día.
+- **Domingos de F2, clases en diferido (07:15-09:15, fijo):** las clases en vivo del lunes y del viernes de cada semana, en grabación (45′ a 2× + su
+  post-test cada una): dom 10-ene SP 7/11 + CI 5/8 · dom 17 SP 8/11 + CI 7/8 · dom 24 CI 8/8 + SP 9/11 · dom 31 SP 10/11 + SP 11/11 · dom 7-feb
+  Repaso CI 2/4 + Repaso SP 1/4 · dom 14 Repaso SP 2/4 + Repaso GES 1/3 · dom 21 Repaso SP 3/4 + Repaso CI 3/4 · dom 28 Repaso SP 4/4 + Repaso GES 3/3
+  · dom 7-mar Repaso final SP + Estrategias ENCAPS. Las del lun 8 y el vie 12-mar quedan fuera (la cola ya es repaso). Los sábados, la clase en vivo
+  de las 15:00, como estaba.
+- **Banqueos en vivo de Theomed 10/19 → 19/19 (vie 19:00-20:00, del vie 8-ene al vie 12-mar):** NO tienen bloque en el plan (decisión v7.00): el volumen
+  de preguntas de la intensiva ya lo da el banqueo propio (loop 07:15-12:00, carril B 16:15 y EVAL 18:00) y el viernes cierra a las 18:45. Son
+  OPCIONALES en vivo (terminan antes de las 20:30, la hora de 0 pantallas); si los haces, cuentan como banqueo del día (n y % ciego al registro) y su
+  grabación no se recupera en otro día.
+- **La rotación de las 16:15 que no cupo en diciembre (9 sesiones, ninguna se pierde):** con la F1 de 23 días caben 20 bancos y 3 mini-sims; las otras
+  7 + 2 son pendientes F1 de la intensiva (`DATA/ENCAPS/_pendientes_f1.json`, corrimiento v7.00). Los pendientes de corrimientos anteriores conservan
+  sus fechas (13 lun-jue del carril B, 8 sábados 14:00-15:00 y 7 viernes 16:15); ocho de los nueve nuevos van al **CARRIL DOMINGO 09:30-10:30** (tras
+  las clases en diferido): II-5 dom 10-ene · I-4 dom 17 · IV-1 dom 24 · II-4 dom 31 · II-1 dom 7-feb · I-3 dom 14 · V-2 dom 21 · mini-sim II-EMG + I-OCC dom
+  28-feb; el noveno (mini-sim III-3 + I-11+I-12), el **sáb 6-mar 14:00-15:00** (el último sábado con hueco).
+- **Supabase:** el SQL único (backup + DELETE/INSERT de las 73 filas ENCAPS + study_metrics) lo aplica el orquestador; sin él, la app sigue leyendo la
+  v6.12. Respaldo previo: `study_schedule_bk_v700_20261128` (+ `_v700_int_`, `study_schedule_bk_v7_encaps_20261128` y `study_metrics_bk_v7_encaps_20261128`).
 
 ---
 
 ## 10. Lo que necesito de ti
 
-1. **Importar las flashcards** (DR LOPEZ, 1 184, Drive u/4 › DR LOPEZ › Flashcards.xlsx) al mazo `ENCAPS::Flashcards`: descargarlo es decisión tuya.
-2. Rendir el **pre-test de arranque** (lun 9 y mar 10, 16:15): es la línea base de los 8 críticos.
-3. Los simulacros de Theomed de ranking se rinden el **domingo siguiente** (cuenta el primer intento dentro de 89 h desde el viernes 16:00).
-4. Decisiones abiertas: reducir los secundarios (≈ 5 h/día) si quieres aún más ENCAPS; sábados de 2027 (STEP 1 VIVO y carril ENCAPS) a decidir antes del 4-ene;
-   hora de los SIM de los vie 5 y 12-feb (hoy 07:15; desde el vie 19-feb ya van a las 11:00: decisión (g)). Además, en el mismo bloque de
-   `DATA/PENDIENTES_JOSEPH.md`:
-   - (l) solapes con tus rutinas: ALISTARSE los martes, desayuno del NBME 25 y almuerzo de los SIM de las 11:00;
-   - (m) ANKI de los fines de semana de 2027;
-   - (n) Calendar de F3 y F4, que se crea con la convocatoria;
-   - (o) qué hacer si la convocatoria es el 21-mar.
-5. **Step 1:** el examen pasa al **lun 6-dic-2027**; al inscribirte, elige la ventana **oct-nov-dic 2027**. El ensayo de 7 bloques es el feriado
-   lun 1-nov-2027: si la posta pone turno ese día, pide el día libre.
-6. **Stock ENCAPS:** el banco de III-5 se agota después del jue 12-nov; V-2 e I-3 repiten preguntas en marzo. Antes del lun 16-nov hay que generar
-   los runners de esa semana (`gen_encaps_minisim.js --semana 2026-11-16` y `--eval 2026-11-16`). Lo hago yo en la revisión del sáb 14.
+1. **Flashcards de DR LOPEZ** (1 184, Drive u/4 › DR LOPEZ › Flashcards.xlsx): si las importas (decisión tuya), van al mazo `APEX::ENCAPS`
+   (v7.00: ya no hay «ENCAPS::Flashcards»; las cifras siguen en `ENCAPS::Cifras`). Sin importarlas, la app manda esos minutos a `ENCAPS::Cifras`.
+2. Rendir los **pre-tests de arranque** (lun 30-nov y mar 1-dic, 16:15): son la línea base ciega de los 8 críticos.
+3. Los simulacros de Theomed con ranking se rinden el **domingo siguiente** (cuenta el primer intento dentro de 89 h desde el viernes 16:00):
+   el del vie 11-dic, el dom 13-dic (la fecha es proyectada: confírmala en el campus). Los de los colchones (27/11 y 13/11) ya no tienen ranking.
+4. **Pizarra tapada** desde el lun 30-nov hasta el final del mini-sim 3/3 del vie 18-dic (16:15-17:15); en F2, la ventana de 2 días de cada test ciego.
+5. Decisiones abiertas (en `DATA/PENDIENTES_JOSEPH.md`): hora de los SIM de los vie 5 y 12-feb (hoy 07:15; desde el vie 19-feb, a las 11:00:
+   decisión (g)); (l) solapes con tus rutinas (ALISTARSE los martes, almuerzo de los SIM de las 11:00); (m) ANKI de los fines de semana de 2027;
+   (n) Calendar de F3 y F4, que se crea con la convocatoria; (o) qué hacer si la convocatoria es el 21-mar.
+6. **Step 1:** en pausa (mantenimiento) del lun 30-nov al dom 14-mar; reinicio el mar 16-mar-2027. La fecha nueva del examen (el lun 6-dic-2027 ya no
+   cabe; provisional lun 20-dic-2027, plan B lun 27-dic-2027) la fija el lote USMLE en `_fechas_v6.json`; al inscribirte, elige la ventana
+   oct-nov-dic 2027.
+7. **Stock ENCAPS (v7.00):** ya están generados los runners de las dos primeras semanas (pre-tests lun 30-nov y mar 1-dic, bancos y evals del mar 1
+   al jue 3-dic, mini-sims vie 4, 11 y 18-dic; `DATA/ENCAPS/BANCO_PROPIO/README.md`). Los de la semana del lun 7-dic se generan en la revisión del
+   sáb 5-dic (`gen_encaps_minisim.js --semana 2026-12-07`, sobre `PREVISTO_SEMANA2`) y después `gen_encaps_manana.js` → `sync_encaps_bp_web.js` →
+   `gen_encaps_guia.js`.
+   Lo hago yo en la revisión del sábado.

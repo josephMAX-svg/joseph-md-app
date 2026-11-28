@@ -48,6 +48,20 @@
  *   { frente: 'HH:MM-HH:MM' } } — el día que cada plan recupera, a hora fija, el día perdido (v6.10: sáb 28-nov, dom 29-nov y dom 6-dic · v6.10c, decisión de Joseph del 17-nov 17:20: sáb 2-ene, la última sesión de F1 de cada frente, + dom 3-ene 05:00 el SYNAPSE de recuperación);
  *   validación: sábado o domingo, sin SKIP, protegidos ni sin_sesion; frente de BLOQUES_POR_FRENTE; franja dentro de las ventanas fijas del
  *   fin de semana (sáb 04:15-05:45 · 07:15-08:25 · 14:00-17:00 · 21:00-22:00; dom 05:00-05:45 · 07:15-17:00) y sin solapes en el día.
+ * v7.00 (sáb 28-nov-2026 · reorganización final, orden de Joseph: «reestructura, corre días, modifica fechas; ya tenemos toda la data»; objetivo absoluto,
+ *   el 1.er puesto del ENCAPS): REBASE NATIVO. D1 de todo = lun 30-nov (f1.inicio; F1 22 hábiles → mié 30-dic); corrida_s1 VACÍA (solo los días sin sesión,
+ *   hasta el dom 29-nov: sin alias, reparto, extra, alias_frente, sabado_habil, reemplazos ni notas; los mecanismos genéricos siguen, inertes) y
+ *   FILAS_FUERA_CORRIDA vacío; corrimiento nuevo jue 19-nov → lun 30-nov (el mié 18 ya lo cuenta el v6.10d: sin doble conteo). Dos CAMPOS NUEVOS en step1:
+ *   · `pausa_desde` = primer día de la PAUSA del Step 1 (sin mañanas de Step; mantenimiento) — v7.00: lun 30-nov (= f1.inicio → F1 sin mañanas de Step:
+ *     diasStepF1 = 0, esDiaStepF1 = false, esDiaPlan(·, 'usmle') = false y enPausaStep1 = true desde el D1 hasta el reinicio; las semanas del Step en F1
+ *     = 0, así que la del reinicio es la S1). Validación: f1.inicio ≤ pausa_desde ≤ transicion.desde (= el día siguiente a f1.fin, que es lo de la v6.12).
+ *     `f1_dias_semana` solo cuenta antes de pausa_desde (v7.00: ningún día).
+ *   · `mantenimiento` = sesiones USMLE de mantenimiento durante la pausa: { f1: { dias_semana, hora }, f2: { dias_semana, hora, hasta } } — f1 = hábiles
+ *     (L-V sin SKIP ni protegidos) de pausa_desde → transicion.hasta en esos días (v7.00: mar · jue 18:00-18:45, 10 sesiones: mar 1-dic → jue 31-dic) · f2 =
+ *     días de encaps.intensiva_desde → f2.hasta en esos días, sin SKIP ni protegidos (v7.00: sábados 04:15-05:45, la franja del antiguo «STEP 1 VIVO»: 8
+ *     sesiones, sáb 9-ene → sáb 27-feb; desde el 1-mar, solo Anki). usmleMantDe(iso) / USMLE_MANT_SESIONES (con su nº de sesión) = el HOOK de la guía del
+ *     agente USMLE (bloque «usmle-mant» de plantillasV6). Validación: listas 1-6 en orden sin repetir, franja HH:MM-HH:MM, f2.hasta dentro de la intensiva y
+ *     una franja de sábado dentro de las ventanas fijas del sábado.
  */
 const fs = require('fs');
 const path = require('path');
@@ -70,6 +84,14 @@ const f = (s) => (s ? DN[wd(s)] + ' ' + (+s.slice(8)) + '-' + MN[+s.slice(5, 7) 
 const fy = (s) => (s ? f(s) + '-' + s.slice(0, 4) : '—');
 const esISO = (s) => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(D(s).getTime()) && isoDe(D(s)) === s;
 const comoSet = (x) => (x instanceof Set ? x : new Set(x || []));
+/** v7.00 · lista de fechas en texto con las rachas de ≥ 3 días seguidos resumidas («lun 19-oct → dom 29-nov · mar 1-dic»). */
+const rachasTxt = (xs) => {
+  const s = [...xs].sort(), out = [];
+  for (let i = 0; i < s.length;) { let j = i; while (j + 1 < s.length && add(s[j], 1) === s[j + 1]) j++; out.push(j - i >= 2 ? `${f(s[i])} → ${f(s[j])}` : s.slice(i, j + 1).map(f).join(' · ')); i = j + 1; }
+  return out.join(' · ');
+};
+/** v7.00 · fecha de la reestructuración anual v6.00 (DJ-1…DJ-5): desde la v7.00 el «decidido» del JSON es el de la versión vigente. */
+const V600_DECIDIDO = '2026-10-06';
 const MAX_PASOS = 400; // guarda anti-bucle (fecha inválida)
 
 // ── días hábiles / días de plan ──
@@ -124,6 +146,11 @@ function protegidosDe({ encaps, encapsProvisional, examen, serumsInicio, skip, a
 }
 /**
  * DJ-1 — tabla literal de la fecha a RESERVAR por fecha del ENCAPS (§B4.4).
+ * v7.00 (sáb 28-nov-2026) · DJ-1 v7.00: examen LUN 20-DIC-2027 con el ENCAPS del dom 14-mar (fijo) · plan B LUN 27-DIC-2027 para un ENCAPS posterior,
+ * un NO-GO del lun 1-nov o si el sáb 27-feb-2027 D2-D4 (Fundamentos + Inmunología) no están cerrados en el mantenimiento. Orden de Joseph (28-nov):
+ * las mañanas de F1 son todas ENCAPS y el Step 1 se pausa hasta el mar 16-mar → las 12 mañanas de Step de F1 pasan al tramo 2 y el 6-dic ya no cabe
+ * (gen_tramo2: con el 6-dic, déficit; con el 20-dic y D2-D4 hechos en el mantenimiento, colchón 6 filas ≈ 16 h; con el 27-dic, 12 filas ≈ 32 h, o
+ * 6 filas ≈ 16 h si D2-D4 vuelven a la cola). La elegibilidad (aún sin inscribir) sigue siendo oct-nov-dic 2027.
  * v6.07 (dom 8-nov-2026) · DJ-1 v6.07: examen LUN 6-DIC-2027 (orden de Joseph: «la mitad o más del Step pasa al ENCAPS … el Step 1 puede
  * correrse, pero no más allá de 2027»; con el Step solo mar · jue en F1 el 25-oct deja un déficit de 11 u → 6-dic = colchón 14 filas ≈ 37 h y
  * 3 lunes de margen dentro de 2027). La elegibilidad se elige al inscribirse (oct-nov-dic 2027).
@@ -133,7 +160,8 @@ function protegidosDe({ encaps, encapsProvisional, examen, serumsInicio, skip, a
  * gratuita → extensión de la elegibilidad, §B5). Las semanas extra van al COLCHÓN del tramo 2.
  */
 const DJ1 = [
-  { encapsHasta: null, examen: '2027-12-06' }, // v6.07: cualquier ENCAPS → lun 6-dic-2027 (base = adelanto = plan B; v6.04-v6.06: lun 25-oct)
+  { encapsHasta: '2027-03-14', examen: '2027-12-20' }, // v7.00: ENCAPS dom 14-mar → lun 20-dic-2027 (base = adelanto)
+  { encapsHasta: null, examen: '2027-12-27' },         // v7.00: ENCAPS posterior → lun 27-dic-2027 (plan B; v6.07-v6.12: lun 6-dic en todos)
 ];
 /** DJ-1 de Joseph del 6-oct-2026 (v6.00-v6.03), SUSTITUIDA por DJ-1 v6.04 · solo histórico y fechas de prueba de compararTS. */
 const DJ1_V600 = [
@@ -150,7 +178,8 @@ const dj1Texto = (tabla) => (tabla.length === 1 ? `todos los escenarios ENCAPS �
 /** Nº de semanas del Step 1: semanas de F1 (semanasF1De = lunes del f1.inicio → lunes del f1.fin, DERIVADO: v6.01 = 12 · v6.00 = 13)
  *  + semanas(lunes del reinicio → lunes del examen) (§F; tabla A5: base 41 en v6.00 · 40 en v6.01). */
 const semanasF1De = (f1Inicio, f1Fin) => 1 + diff(lunesDe(f1Inicio), lunesDe(f1Fin)) / 7;
-const step1SemanasDe = (reinicio, examen, f1Inicio, f1Fin) => semanasF1De(f1Inicio, f1Fin) + diff(lunesDe(reinicio), lunesDe(examen)) / 7;
+// v7.00: el 3.er argumento es el nº de semanas del Step DENTRO de F1 (semanasStepF1De: las de F1 si la pausa empieza tras f1.fin · v7.00: 0)
+const step1SemanasDe = (reinicio, examen, semStepF1) => semStepF1 + diff(lunesDe(reinicio), lunesDe(examen)) / 7;
 
 // ── regla de CÁLCULO de la reserva (§B4.4; port de v600/espec/b_horas.js r2 + déficit de gen_tramo2_ref.js) — solo con --calculo ──
 const H_PISO = 110 / 60 + 25 / 60 + (90 / 60) * 0.25; // F4 todo turno M: A 04:05-05:55 + Anki 25' + bloque B al 25 % = 2,625 h
@@ -173,8 +202,13 @@ function deficitTramo2(encaps, E, ctx) {
   const { execFileSync } = require('child_process');
   const args = [REF_TRAMO2, encaps, E, ctx.serumsInicio, '--permitir-deficit'];
   // v6.08 (fix): los slots reales del Step en F1 y su semana de plan (sin ellos, la referencia usaba sus valores por defecto)
-  if (ctx.f1Filas) args.push('--f1-filas', String(ctx.f1Filas));
+  // v7.00: también 0 (F1 sin mañanas de Step: step1.pausa_desde = el D1); antes un 0 caía en el valor por defecto de la referencia (13). gen_tramo2_ref.js
+  //   tiene que aceptar --f1-filas 0 (hoy exige 1-58 y --calculo aborta: lo adapta el lote USMLE con la fecha nueva del examen)
+  if (ctx.f1Filas != null) args.push('--f1-filas', String(ctx.f1Filas));
   if (ctx.semanaPlan) args.push('--semana-plan', String(ctx.semanaPlan));
+  // v7.00 (D3): con 0 mañanas de Step en F1 el tramo 2 parte de cero: UWSA1 al hueco del UWSA3 y D2-D4 hechos en el mantenimiento (fuera de la cola),
+  //   sin REENTRADA en T1 y con los NBME 29-30 en la cola (gen_tramo2.EXCLUIR_F1_V700, la misma lista que usa gen_usmle_v5.js)
+  if (ctx.f1Filas === 0) args.push('--excluir-f1', require('./usmle/gen_tramo2').EXCLUIR_F1_V700.join(','), '--partir-de-cero');
   if (ctx.adjudicacion.length) args.push('--proteg', ctx.adjudicacion.map((p) => p.fecha).join(','));
   const o = execFileSync(process.execPath, args, { cwd: path.dirname(REF_TRAMO2) }).toString();
   const m = o.match(/déficit cola-adelante (\d+) u · déficit cola-atrás (\d+) u/);
@@ -198,12 +232,12 @@ const CLAVES = {
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
-  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios', 'f1_dias_semana'], // v6.04: + cambios (bitácora del examen) · v6.07: + f1_dias_semana · v6.10b: sin f1_extra (retirado)
+  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios', 'f1_dias_semana', 'pausa_desde', 'mantenimiento'], // v6.04: + cambios (bitácora del examen) · v6.07: + f1_dias_semana · v6.10b: sin f1_extra (retirado) · v7.00: + pausa_desde, mantenimiento
   serums: ['inicio', 'supuesto', 'dias_plan', 'domingo', 'adaptacion_hasta'],
 };
 const FECHAS_SUELTAS = ['decidido', 'f1.inicio', 'f1.fin', 'transicion.desde', 'transicion.hasta', 'encaps.examen', 'encaps.intensiva_desde', 'encaps.pretest',
   'encaps.nucleo_hasta', 'encaps.convocatoria_tope', 'step1.reinicio', 'step1.examen', 'step1.adelanto', 'step1.planB', 'step1.gonogo', 'step1.viaje_d1',
-  'step1.ritual', 'serums.inicio', 'serums.adaptacion_hasta'];
+  'step1.ritual', 'step1.pausa_desde', 'serums.inicio', 'serums.adaptacion_hasta'];
 const get = (o, p) => p.split('.').reduce((x, k) => (x == null ? x : x[k]), o);
 /** Forma del JSON: las claves de CLAVES (ni una más: el interfaz FechasV6 del .ts es exacto) y fechas AAAA-MM-DD válidas. */
 function comprobarForma(F) {
@@ -230,7 +264,31 @@ function comprobarForma(F) {
   // v6.07 (8-nov-2026): días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie), sin repetir y en orden
   const ds = F.step1.f1_dias_semana;
   if (!Array.isArray(ds) || !ds.length || !ds.every((x, i) => Number.isInteger(x) && x >= 1 && x <= 5 && (i === 0 || x > ds[i - 1]))) err.push('«step1.f1_dias_semana» debe ser una lista no vacía de días 1-5 (1 = lun … 5 = vie), sin repetir y en orden');
+  // v7.00 (28-nov-2026): primer día de la PAUSA del Step 1 (sin mañanas de Step) — entre el D1 (F1 sin mañanas de Step) y el día siguiente a f1.fin (la regla de la v6.12)
+  if (!(F.step1.pausa_desde >= F.f1.inicio && F.step1.pausa_desde <= add(F.f1.fin, 1))) err.push(`«step1.pausa_desde» (${F.step1.pausa_desde}) debe ir de f1.inicio (${F.f1.inicio}) al día siguiente a f1.fin (${add(F.f1.fin, 1)})`);
+  err.push(...comprobarMantenimiento(F));
   err.push(...comprobarCorridaS1(F.corrida_s1, F));
+  return err;
+}
+/** v7.00 · `step1.mantenimiento` = { f1: { dias_semana, hora }, f2: { dias_semana, hora, hasta } }: sesiones USMLE de mantenimiento durante la pausa del Step 1. */
+function comprobarMantenimiento(F) {
+  const err = [], m = F.step1.mantenimiento, q = '«step1.mantenimiento»';
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return [`${q} debe ser un objeto { f1: { dias_semana, hora }, f2: { dias_semana, hora, hasta } }`];
+  for (const k of Object.keys(m)) if (!['f1', 'f2'].includes(k)) err.push(`${q}: clave no prevista «${k}» (solo f1 y f2)`);
+  for (const k of ['f1', 'f2']) {
+    const t = m[k], qq = `${q}.${k}`;
+    if (!t || typeof t !== 'object' || Array.isArray(t)) { err.push(`${qq} debe ser un objeto`); continue; }
+    const ks = k === 'f1' ? ['dias_semana', 'hora'] : ['dias_semana', 'hora', 'hasta'];
+    for (const kk of ks) if (!(kk in t)) err.push(`falta «step1.mantenimiento.${k}.${kk}»`);
+    for (const kk of Object.keys(t)) if (!ks.includes(kk)) err.push(`${qq}: clave no prevista «${kk}»`);
+    const ds2 = t.dias_semana;
+    if (!Array.isArray(ds2) || !ds2.length || !ds2.every((x, i) => Number.isInteger(x) && x >= 1 && x <= 6 && (i === 0 || x > ds2[i - 1]))) err.push(`${qq}.dias_semana: lista no vacía de días 1-6 (1 = lun … 6 = sáb), sin repetir y en orden`);
+    const mm = typeof t.hora === 'string' ? /^(\d{2}:\d{2})-(\d{2}:\d{2})$/.exec(t.hora) : null;
+    if (!mm || !(hm(mm[1]) < hm(mm[2]))) { err.push(`${qq}.hora «${t.hora}» inválida (HH:MM-HH:MM)`); continue; }
+    // un sábado de mantenimiento va dentro de las ventanas fijas del sábado (gimnasio 08:30-14:00, baile 17:00-20:00, rutina 05:45-07:15)
+    if (Array.isArray(ds2) && ds2.includes(6) && !VENTANAS_FINDE[6].some(([i, f2]) => hm(mm[1]) >= hm(i) && hm(mm[2]) <= hm(f2))) err.push(`${qq}.hora ${t.hora}: fuera de las ventanas fijas del sábado (${VENTANAS_FINDE[6].map((y) => y.join('-')).join(' · ')})`);
+  }
+  if (m.f2 && !(esISO(m.f2.hasta) && m.f2.hasta >= F.encaps.intensiva_desde && m.f2.hasta < F.encaps.examen)) err.push(`${q}.f2.hasta (${m.f2 && m.f2.hasta}): una fecha de la intensiva (${F.encaps.intensiva_desde} → antes del ${F.encaps.examen})`);
   return err;
 }
 /**
@@ -245,8 +303,8 @@ function comprobarCorridaS1(c, F) {
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
   // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos) · v6.10: + «extra»
   // v6.10y: + «alias_frente» (alias PROPIO de un frente; vuelve el mecanismo de la v6.10q)
-  // v6.11 (mar 24-nov): + «config_anki» (la CONFIGURACIÓN del Anki USMLE que no se hizo y adónde va cada parte; la aplica gen_usmle_guia.js)
-  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente', 'config_anki', 'sabado_habil'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  // v6.11 (mar 24-nov): + «config_anki» (la CONFIGURACIÓN del Anki USMLE que no se hizo y adónde va cada parte; la aplica gen_usmle_guia.js) · v7.00: retirada
+  for (const k of Object.keys(c)) if (![...ks, 'resumen', 'reemplazos', 'notas', 'extra', 'alias_frente', 'sabado_habil'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
   // v6.12 (mar 24-nov, orden de Joseph «comenzamos a partir de mañana… solo corre un día… rellena un día libre»): + «sabado_habil» = sábados que pasan a ser
   //   un DÍA DE ESTUDIO COMPLETO (sin gimnasio ni baile, decisión de Joseph): sus extras pueden ir de 04:15 a 20:30 (VENTANA_SABADO_HABIL)
   if ('sabado_habil' in c) {
@@ -261,7 +319,6 @@ function comprobarCorridaS1(c, F) {
     }
   }
   if ('extra' in c) err.push(...comprobarExtra(c, F));
-  if ('config_anki' in c) err.push(...comprobarConfigAnki(c));
   if ('alias_frente' in c) err.push(...comprobarAliasFrente(c));
   if (!err.length && F) err.push(...comprobarPorFrente(F)); // v6.11 fase 2: cada fecha de plan, una vez por frente y en orden de día real
   if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
@@ -376,23 +433,8 @@ function comprobarExtra(c, F) {
  * del alias global en que ESE frente no tiene sesión (su fecha de plan la hace otro día real del alias propio; los demás frentes siguen ese día). Ninguna fecha
  * de plan se repite dentro del alias propio.
  */
-/**
- * v6.11 (mar 24-nov-2026) · `corrida_s1.config_anki` (opcional) = { decidido, motivo, no_hecha, fsrs: { fecha, hora } }: la CONFIGURACIÓN del Anki USMLE (1.er día
- * de F1) no se hizo el día REAL `no_hecha` (L-V del alias global). gen_usmle_guia.js pone el preset DELANTE en el Anki del D2 y «Anki Almost Broke Me…» entero +
- * el manual FSRS en `fsrs` (un sábado o domingo posterior, a hora fija «HH:MM-HH:MM»); el 05:00 de `no_hecha` solo dice adónde fue cada parte.
- */
-function comprobarConfigAnki(c) {
-  const err = [], x = c.config_anki, q = '«corrida_s1.config_anki»';
-  if (!x || typeof x !== 'object' || Array.isArray(x)) return [`${q} debe ser un objeto { decidido, motivo, no_hecha, fsrs: { fecha, hora } }`];
-  for (const k of Object.keys(x)) if (!['decidido', 'motivo', 'no_hecha', 'fsrs'].includes(k)) err.push(`${q}: clave no prevista «${k}»`);
-  if (!esISO(x.decidido)) err.push(`${q}.decidido: fecha inválida`);
-  if (typeof x.motivo !== 'string' || !x.motivo) err.push(`${q}.motivo: texto`);
-  if (!esISO(x.no_hecha) || !((c.alias || {})[x.no_hecha])) err.push(`${q}.no_hecha: debe ser un día real del alias global (corrida_s1.alias)`);
-  const f = x.fsrs || {}, m = /^(\d\d):(\d\d)-(\d\d):(\d\d)$/.exec(f.hora || '');
-  if (!esISO(f.fecha) || !(f.fecha > x.no_hecha) || ![0, 6].includes(new Date(f.fecha + 'T12:00:00Z').getUTCDay())) err.push(`${q}.fsrs.fecha: un sábado o domingo posterior a no_hecha`);
-  if (!m || !(Number(m[1]) * 60 + Number(m[2]) < Number(m[3]) * 60 + Number(m[4]))) err.push(`${q}.fsrs.hora: «HH:MM-HH:MM» inválida`);
-  return err;
-}
+// v7.00 (28-nov-2026): sin `corrida_s1.config_anki` (v6.11: la configuración del Anki USMLE que no se hizo su día real y adónde iba cada parte; con el rebase
+//   nativo la configuración es el preset «APEX USMLE» del lun 30-nov 05:00, en su día; la clave ya no se admite).
 /** en_ship normalizado: la fecha de plan o la lista de fechas de plan de un domingo → lista (en su orden). */
 const enShipLista = (v) => (Array.isArray(v) ? v : v == null ? [] : [v]);
 function comprobarAliasFrente(c) {
@@ -471,10 +513,9 @@ const FRENTES_CORRIDA = ['encaps', 'synapse', 'vibecoding', 'business', 'researc
  *  cadenas son estas. */
 // v6.11 (mar 24-nov-2026, orden de Joseph «hoy solo ENCAPS»): + la fila del lun 23-nov del SYNAPSE (el mar 24 no tuvo SYNAPSE y su alias propio corre un día:
 //   mié 25 = mié 18 … vie 27 = vie 20) = cadena «mar 24»: su contenido lo hace la sesión del sáb 28-nov 21:00 (y la del sáb 28, el dom 29 05:00; gen_synapse_plan.js)
-const FILAS_FUERA_CORRIDA = {
-  synapse: { '2026-11-23': { real: '2026-11-28', como: 'sáb 28-nov 21:00 (cadena «mar 24»: el mar 24 fue sin SYNAPSE; la del sáb 28, el dom 29 05:00)' }, '2026-12-01': { real: '2026-12-05', como: 'sáb 5-dic 21:00 (cadena «semana 2»; la del sáb 5, el dom 6 05:00)' }, '2026-12-31': { real: '2027-01-02', como: 'sáb 2-ene 21:00 (cadena «transición»; la del sáb 2, el dom 3 05:00)' } },
-  vibecoding: { '2026-12-31': { real: '2027-01-02', como: 'semana deload S7 repartida por capacidad desde el sáb 2-ene (gen_vibecoding_plan.js)' } },
-};
+// v7.00 (28-nov-2026, rebase nativo): VACÍO — sin alias ni días extra no hay cadenas del SYNAPSE ni semana deload del vibecoding repartida fuera de su día
+//   (las de la v6.11: synapse 23-nov · 1-dic · 31-dic y vibecoding 31-dic). El mecanismo sigue (gen_synapse_plan.js comprueba que sus cadenas son estas).
+const FILAS_FUERA_CORRIDA = {};
 /** v6.11 fase 2 · fechas de PLAN que hace cada día real para un `frente`: Map(fecha de plan → [{ real, mueve }]) con el alias global (o el alias_frente de ese
  *  día real), el SHIP que absorbe un paso (en_ship), los días extra de ese frente y FILAS_FUERA_CORRIDA. `mueve` = la fila va a un día que no es el suyo (las
  *  entradas de texto de corrida_s1.extra hacen la fila de su propio fin de semana). */
@@ -542,7 +583,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
 }
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom', 'usmle-mant'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'syn-rec', 'syn-rec2', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). Mismo literal que el .ts. */
@@ -625,10 +666,34 @@ const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
   if (ids) for (const [r, x] of Object.entries(c.reparto)) if (x.partes.some((p) => p.de === plan)) return r;
   return plan;
 };
-/** v6.07 · días de Step 1 de F1 = hábiles de F1 cuyo día de la semana está en step1.f1_dias_semana (v6.07: mar · jue → 15; L-V = f1.dias). */
-const diasStepF1De = (F) => habLV(F.f1.inicio, F.f1.fin, new Set(F.skip)).filter((s) => F.step1.f1_dias_semana.includes(wd(s)));
-/** v6.10 · última mañana de Step 1 de F1 (la pausa empieza al día siguiente) · v6.10b: = f1.fin (sin mañanas de Step en la transición: f1_extra retirado). */
-const ultimoStepF1De = (F) => F.f1.fin;
+/** v6.07 · días de Step 1 de F1 = hábiles de F1 cuyo día de la semana está en step1.f1_dias_semana (v6.07: mar · jue → 15; L-V = f1.dias).
+ *  v7.00: solo los anteriores a step1.pausa_desde (v7.00: ninguno, la pausa empieza el D1 → 0 filas de Step en F1). */
+const diasStepF1De = (F) => habLV(F.f1.inicio, F.f1.fin, new Set(F.skip)).filter((s) => s < F.step1.pausa_desde && F.step1.f1_dias_semana.includes(wd(s)));
+/** v6.10 · última mañana de Step 1 de F1 (la pausa empieza al día siguiente) · v6.10b: = f1.fin (sin mañanas de Step en la transición: f1_extra retirado).
+ *  v7.00: = el día anterior a step1.pausa_desde (con la pausa el día siguiente a f1.fin, = f1.fin como antes; v7.00: dom 29-nov, la víspera del D1). */
+const ultimoStepF1De = (F) => add(F.step1.pausa_desde, -1);
+/** v7.00 · semanas del Step 1 DENTRO de F1 (antes de la pausa): las de F1 si la pausa empieza tras f1.fin (v6.00-v6.12) · 0 si empieza el D1 (v7.00: la
+ *  semana del reinicio es la S1) · si empieza a mitad de F1, del lunes del D1 al lunes del último día anterior a la pausa. */
+const semanasStepF1De = (F) => (F.step1.pausa_desde <= F.f1.inicio ? 0 : semanasF1De(F.f1.inicio, F.step1.pausa_desde > F.f1.fin ? F.f1.fin : add(F.step1.pausa_desde, -1)));
+/** v7.00 · sesión USMLE de MANTENIMIENTO de un día (step1.mantenimiento) o null: tramo 'f1' = hábiles (L-V sin SKIP ni protegidos) de pausa_desde →
+ *  transicion.hasta en f1.dias_semana · tramo 'f2' = días de encaps.intensiva_desde → f2.hasta en f2.dias_semana, sin SKIP ni protegidos. */
+function usmleMantBase(s, F) {
+  const m = F.step1.mantenimiento, skip = new Set(F.skip), w = wd(s);
+  if (F.protegidos.some((p) => p.fecha === s) || skip.has(s)) return null;
+  if (s >= F.step1.pausa_desde && s <= F.transicion.hasta && w >= 1 && w <= 5 && m.f1.dias_semana.includes(w)) { const [a, b] = m.f1.hora.split('-'); return { tramo: 'f1', ini: a, fin: b }; }
+  if (s >= F.encaps.intensiva_desde && s <= m.f2.hasta && m.f2.dias_semana.includes(w)) { const [a, b] = m.f2.hora.split('-'); return { tramo: 'f2', ini: a, fin: b }; }
+  return null;
+}
+/** v7.00 · todas las sesiones de mantenimiento, en orden, con su nº (n = 1… en el conjunto; nTramo = 1… dentro de su tramo): el HOOK de la guía USMLE. */
+function sesionesUsmleMant(F = fechasPorDefecto()) {
+  const out = [], cuenta = { f1: 0, f2: 0 };
+  for (const s of rango(F.step1.pausa_desde, F.encaps.examen)) { const x = usmleMantBase(s, F); if (x) out.push({ fecha: s, ...x, n: out.length + 1, nTramo: ++cuenta[x.tramo] }); }
+  return out;
+}
+/** v7.00 · gemelo node de usmleMantDe del .ts: la sesión de mantenimiento de `s` (con su nº) o null. */
+const usmleMantDe = (s, F = fechasPorDefecto()) => sesionesUsmleMant(F).find((x) => x.fecha === s) || null;
+/** v7.00 · ¿tiene el Step 1 mañana de plan en F1 este día? (gemelo node de esDiaStepF1 del .ts; fuera de F1, siempre true) */
+const esDiaStepF1 = (s, F = fechasPorDefecto()) => s < F.f1.inicio || s > F.f1.fin || (s < F.step1.pausa_desde && F.step1.f1_dias_semana.includes(wd(s)));
 /** v6.07 · texto corto de step1.f1_dias_semana («mar · jue»; «L-V» si son los 5). */
 const diasSemanaTxt = (ds) => (ds.length === 5 ? 'L-V' : ds.map((w) => DN[w]).join(' · '));
 /** Contexto de derivación a partir del JSON. */
@@ -670,11 +735,13 @@ function derivar(F, opts = {}) {
     reinicio, lunesLibre: lunesLibreDe(c.encaps), d1HabilEncaps, f3Fin, adaptacionHasta: adaptacionHastaDe(c.serumsInicio),
     ritual, ultimoDiaEstudio, viajeD1: viajeD1De(c.examen), gonogo: gonogoDe(c.examen), convocatoriaTope: convocatoriaTopeDe(c.encaps),
     protegidos, reserva, calculo, reservaActual: reserva[c.encaps],
-    semanasF1: semanasF1De(F.f1.inicio, F.f1.fin), step1Semanas: step1SemanasDe(reinicio, c.examen, F.f1.inicio, F.f1.fin),
+    semanasF1: semanasF1De(F.f1.inicio, F.f1.fin), step1Semanas: step1SemanasDe(reinicio, c.examen, semanasStepF1De(F)),
+    semanasStepF1: semanasStepF1De(F), // v7.00: semanas del Step dentro de F1 (antes de la pausa; v7.00: 0)
     diasF1: diasF1.length, diasF2: diasF2.length, diasF3: diasF3.length, diasF4: diasF4.length,
     ultimoDiaF1: diasF1[diasF1.length - 1], ultimoDiaF3: diasF3[diasF3.length - 1],
-    diasStepF1: diasStepF1De(F).length, // v6.07: filas del tramo 1 del Step (mañanas de step1.f1_dias_semana)
-    ultimoStepF1: ultimoStepF1De(F), // v6.10: última mañana de Step de F1 (la pausa empieza al día siguiente)
+    diasStepF1: diasStepF1De(F).length, // v6.07: filas del tramo 1 del Step (mañanas de step1.f1_dias_semana) · v7.00: solo antes de step1.pausa_desde (0)
+    ultimoStepF1: ultimoStepF1De(F), // v6.10: última mañana de Step de F1 (la pausa empieza al día siguiente) · v7.00: el día anterior a step1.pausa_desde
+    sesionesMant: sesionesUsmleMant(F).length, // v7.00: sesiones USMLE de mantenimiento (step1.mantenimiento)
   };
 }
 /** Compara cada valor GUARDADO con su derivado. Devuelve la lista de diferencias (vacía = todo cuadra). */
@@ -723,16 +790,23 @@ const fechasPorDefecto = () => _F || (_F = cargarFechasV6());
 // ── fases (tabla A1 resuelta) y predicados por fecha (mismas reglas que src/lib/fechasV6.ts) ──
 function fasesV6(F = fechasPorDefecto(), d = derivar(F)) {
   const enc = F.encaps.examen, provEnc = F.encaps.provisional, provSer = F.serums.supuesto, provS1 = F.step1.provisional;
+  const mF1 = F.step1.mantenimiento.f1, mF2 = F.step1.mantenimiento.f2; // v7.00
   return [
     // v6.07: con step1.f1_dias_semana distinto de L-V el Step 1 solo tiene las mañanas de esos días (D1-D<diasStepF1>); con L-V, el texto de siempre
-    { id: 'F1', nombre: F.step1.f1_dias_semana.length === 5 ? 'Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)'
+    // v7.00: sin mañanas de Step en F1 (step1.pausa_desde = el D1) → F1 es de ENCAPS de lunes a viernes y el Step 1, en mantenimiento (antes «F1 · STEP 1 TRAMO 1 (D1-D0, )»)
+    d.diasStepF1 === 0
+      ? { id: 'F1', nombre: `ENCAPS: mañana L-V 07:15-12:00 + 16:15 + 18:00 · Step 1 en PAUSA desde el D1 (mantenimiento: Anki 05:00 + sesión USMLE los ${diasSemanaTxt(mF1.dias_semana)} ${mF1.hora}; reinicio ${f(d.reinicio)})`,
+        etiqueta: 'F1 · MAÑANAS ENCAPS L-V (Step 1 en mantenimiento)',
+        desde: F.f1.inicio, hasta: F.f1.fin, ultimoDiaPlan: d.ultimoDiaF1, diasPlan: d.diasF1, diasSemana: 'L-V', provisional: false }
+      : { id: 'F1', nombre: F.step1.f1_dias_semana.length === 5 ? 'Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)'
       : `Step 1 tramo 1 los ${diasSemanaTxt(F.step1.f1_dias_semana)} (07:15-12:00 + 18:00; Anki 05:00 todos los días) + ENCAPS las demás mañanas y la 16:15`,
     etiqueta: F.step1.f1_dias_semana.length === 5 ? `F1 · STEP 1 TRAMO 1 (D1-D${d.diasF1})` : `F1 · STEP 1 TRAMO 1 (D1-D${d.diasStepF1}, ${diasSemanaTxt(F.step1.f1_dias_semana)})`,
       desde: F.f1.inicio, hasta: F.f1.fin, ultimoDiaPlan: d.ultimoDiaF1, diasPlan: d.diasF1, diasSemana: 'L-V', provisional: false },
     // v6.09 (16-nov-2026): un L-V de la transición que NO es SKIP (jue 31-dic-2026) es día de plan sin Step 1 (recupera el lun 16-nov) → nombre y diasPlan lo cuentan
     { id: 'TRANSICION', nombre: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).length ? `Transición: ${habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).map((s) => f(s)).join(' · ')} día de plan sin Step 1; el resto sin sesión (Anki opcional)` : 'Transición sin sesión (Anki opcional)', etiqueta: 'TRANSICIÓN',
       desde: add(F.f1.fin, 1), hasta: add(F.encaps.intensiva_desde, -1), ultimoDiaPlan: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).slice(-1)[0] ?? null, diasPlan: habLV(add(F.f1.fin, 1), add(F.encaps.intensiva_desde, -1), new Set(F.skip)).length, diasSemana: null, provisional: false },
-    { id: 'F2', nombre: "ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki 30' L-V + sáb 07:45 20Q)", etiqueta: `F2 · ENCAPS INTENSIVA (examen ${f(enc)}${provEnc ? ' PROVISIONAL' : ''})`,
+    // v7.00: el mantenimiento del Step sale de step1.mantenimiento (antes «Anki 30' L-V + sáb 07:45 20Q», el STEP 1 VIVO)
+    { id: 'F2', nombre: `ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki ≤10′ L-V + sesión USMLE ${diasSemanaTxt(mF2.dias_semana)} ${mF2.hora} hasta el ${f(mF2.hasta)})`, etiqueta: `F2 · ENCAPS INTENSIVA (examen ${f(enc)}${provEnc ? ' PROVISIONAL' : ''})`,
       desde: F.encaps.intensiva_desde, hasta: enc, ultimoDiaPlan: d.d1HabilEncaps, diasPlan: d.diasF2, diasSemana: 'L-V', provisional: provEnc },
     { id: 'LIBRE_POST_ENCAPS', nombre: 'Lunes libre post-ENCAPS (protegido, DJ-2)', etiqueta: 'LIBRE post-ENCAPS',
       desde: add(enc, 1), hasta: add(d.reinicio, -1), ultimoDiaPlan: null, diasPlan: 0, diasSemana: null, provisional: provEnc },
@@ -762,7 +836,8 @@ function faseV6(s, F = fechasPorDefecto()) {
   return 'F5';
 }
 const esProtegido = (s, F = fechasPorDefecto()) => F.protegidos.some((p) => p.fecha === s);
-const enPausaStep1 = (s, F = fechasPorDefecto()) => s > F.f1.fin && s < F.step1.reinicio;
+// v7.00: desde step1.pausa_desde (v7.00: lun 30-nov, el D1; hasta la v6.12, el día siguiente a f1.fin) hasta la víspera del reinicio
+const enPausaStep1 = (s, F = fechasPorDefecto()) => s >= F.step1.pausa_desde && s < F.step1.reinicio;
 /**
  * ¿Es `s` día de plan? Sin `plan`: L-V (L-S desde serums.inicio), desde el D1, sin SKIP ni protegidos.
  * Con `plan`: 'usmle' añade el ritual (fila T final) y quita la PAUSA (31-dic → lunes libre) y lo posterior al ritual;
@@ -786,14 +861,17 @@ function esDiaPlan(s, plan, F = fechasPorDefecto()) {
  * v6.00: S1-S13 = lun 5-oct → lun 28-dic) · semanas de la pausa (lun 4-ene → semana del ENCAPS) → pausa:true (n se queda en sF1:
  * 12 en v6.01, 13 en v6.00) · desde la semana del reinicio sF1 + k (k = 1…) · semana del examen → examen:true
  * (n = total + 1). Días anteriores al D1 → n = 0 (pre-D1). `extras` = hitos/deloads del plan (homeBriefing) para `hito`/`deload`.
+ * v7.00: sF1 = semanasStepF1De (las semanas de F1 ANTES de step1.pausa_desde; v7.00: 0) → desde el D1 hasta la semana anterior al reinicio, pausa:true con
+ * n = 0, y la semana del reinicio es la S1. Con la pausa el día siguiente a f1.fin (v6.00-v6.12), lo de siempre.
  */
 function semanaStep1(s, extras = {}, F = fechasPorDefecto()) {
-  const total = step1SemanasDe(F.step1.reinicio, F.step1.examen, F.f1.inicio, F.f1.fin);
-  const sF1 = semanasF1De(F.f1.inicio, F.f1.fin);
+  const sF1 = semanasStepF1De(F);
+  const total = step1SemanasDe(F.step1.reinicio, F.step1.examen, sF1);
   const lunes = lunesDe(s), lunRein = lunesDe(F.step1.reinicio);
+  const lunFinStep = sF1 > 0 ? lunesDe(F.step1.pausa_desde > F.f1.fin ? F.f1.fin : add(F.step1.pausa_desde, -1)) : null;
   let n, pausa = false;
   if (s < F.f1.inicio) n = 0;
-  else if (lunes <= lunesDe(F.f1.fin)) n = 1 + diff(lunesDe(F.f1.inicio), lunes) / 7;
+  else if (lunFinStep && lunes <= lunFinStep) n = 1 + diff(lunesDe(F.f1.inicio), lunes) / 7;
   else if (lunes < lunRein) { n = sF1; pausa = true; }
   else n = sF1 + 1 + diff(lunRein, lunes) / 7;
   const examen = lunes === lunesDe(F.step1.examen);
@@ -816,7 +894,8 @@ function emitirTS(F, d) {
     ' *',
     // v6.01 (10-oct-2026): antes `${F.version} (decidido …): reestructuración anual` → con el JSON en v6.01 salía «v6.01 (decidido mar 6-oct)»,
     // una bitácora v6.00 con la etiqueta v6.01. Ahora: v6.00 literal + una línea por corrimiento de `corrimientos` (sus propios literales).
-    ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
+    // v7.00: la fecha de la v6.00 es literal (V600_DECIDIDO); «decidido» del JSON = el de la versión vigente (v7.00: sáb 28-nov-2026)
+    ` * v6.00 (decidido ${fy(V600_DECIDIDO)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
     // v6.04: + una línea por cambio de la fecha del examen Step 1 (step1.cambios; el motivo completo está en el JSON) · v6.05: todo por fecha
     ...[
       // v6.10d (fix revisión 18-nov): un corrimiento que solo añade un ALIAS (sus perdidos los hace otro día real; corrimientoRefecha lo salta) no es «rígido»
@@ -825,8 +904,9 @@ function emitirTS(F, d) {
         : ` * ${c.version} (${fy(c.fecha)}): SIN re-fecha — alias de corrida_s1 (el plan del ${c.perdidos.map(f).join(' · ')} lo hace el ${f(c.d1)} y cada hábil hasta el ${f(Object.keys(F.corrida_s1.alias).sort().at(-1))} hace el del anterior; las filas conservan su fecha de plan).`]),
       ...(F.step1.cambios || []).map((c) => [c.fecha, ` * ${c.version} (${fy(c.fecha)}): examen Step 1 ${fy(c.examen_previo)} → ${fy(c.examen)} (decisión de Joseph; step1.cambios).`]),
     ].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]),
-    ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — ` +
-      [`sin sesión ${F.corrida_s1.sin_sesion.map(f).join(' · ')}`,
+    // v7.00: sin alias ni reparto, la capa solo marca los días sin sesión (no hay «semana corrida en la consulta»)
+    ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): ${Object.keys(F.corrida_s1.alias).length || Object.keys(F.corrida_s1.reparto).length ? 'semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe)' : 'corrida_s1 sin alias ni reparto (corridaS1De / fechaPlanDe dan la propia fecha)'} — ` +
+      [`sin sesión ${rachasTxt(F.corrida_s1.sin_sesion)}`, // v7.00: rachas resumidas (42 días seguidos)
         ...Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
         ...Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = parte del ${f(x.de)}`)].join(' · ') +
       (Object.keys(F.corrida_s1.alias).length || Object.keys(F.corrida_s1.reparto).length
@@ -835,7 +915,9 @@ function emitirTS(F, d) {
     ...Object.entries(F.corrida_s1.alias_frente || {}).map(([fr, a]) => ` * ${fy(a.decidido)} · alias propio de «${fr}» (manda sobre el global en su consulta): ` +
       [...(a.sin_sesion || []).map((r) => `${f(r)} sin sesión`), ...Object.entries(a.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
         ...Object.entries(a.en_ship || {}).map(([r, v]) => `${f(r)} = ${enShipLista(v).map((de) => `el plan del ${f(de)}`).join(' y ')} dentro del SHIP`)].join(' · ') + '.'),
-    ` * Versión vigente del JSON: ${F.version}.`,
+    ` * Versión vigente del JSON: ${F.version} (decidida el ${fy(F.decidido)}).`,
+    // v7.00: sin mañanas de Step en F1 (step1.pausa_desde) y sesiones USMLE de mantenimiento (step1.mantenimiento)
+    ` * Step 1 en PAUSA desde el ${fy(F.step1.pausa_desde)} (step1.pausa_desde; ${d.diasStepF1} mañanas de Step en F1) hasta el reinicio · mantenimiento: ${d.sesionesMant} sesiones USMLE (${diasSemanaTxt(F.step1.mantenimiento.f1.dias_semana)} ${F.step1.mantenimiento.f1.hora} de F1 y la transición · ${diasSemanaTxt(F.step1.mantenimiento.f2.dias_semana)} ${F.step1.mantenimiento.f2.hora} de la intensiva hasta el ${f(F.step1.mantenimiento.f2.hasta)}).`,
     ' * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y',
     ' * Turno viven aquí y homeBriefing los re-exporta).',
     ' *',
@@ -862,8 +944,13 @@ export interface FechasV6 {
     viaje_d1: string; ritual: string; provisional: boolean; reserva_por_encaps: Record<string, string>;
     /** v6.04: bitácora de cambios de la fecha del examen (el último = examen vigente) */
     cambios: { fecha: string; version: string; examen_previo: string; examen: string; motivo: string }[];
-    /** v6.07: días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie; v6.07: [2, 4] = mar · jue) */
+    /** v6.07: días de la semana con mañana de Step 1 en F1 (1 = lun … 5 = vie; v6.07: [2, 4] = mar · jue) · v7.00: solo cuenta antes de pausa_desde */
     f1_dias_semana: number[];
+    /** v7.00: primer día de la PAUSA del Step 1 (sin mañanas de Step; mantenimiento) — v7.00: el D1 (F1 sin mañanas de Step); hasta la v6.12, el día siguiente a f1.fin */
+    pausa_desde: string;
+    /** v7.00: sesiones USMLE de MANTENIMIENTO durante la pausa (usmleMantDe / USMLE_MANT_SESIONES): f1 = hábiles de pausa_desde → transicion.hasta en esos días ·
+     *  f2 = días de la intensiva (encaps.intensiva_desde → hasta) en esos días; 1 = lun … 6 = sáb */
+    mantenimiento: { f1: { dias_semana: number[]; hora: string }; f2: { dias_semana: number[]; hora: string; hasta: string } };
   };
   serums: { inicio: string; supuesto: boolean; dias_plan: string; domingo: string; adaptacion_hasta: string };
   skip: string[];
@@ -890,9 +977,6 @@ export interface FechasV6 {
      *  plan · en_ship = domingo → fecha(s) de plan de los pasos que su SHIP absorbe (primero, en ese orden) · sin_sesion = días reales del alias global sin
      *  sesión de ese frente */
     alias_frente?: Record<string, { decidido: string; motivo: string; alias: Record<string, string>; en_ship?: Record<string, string | string[]>; sin_sesion?: string[] }>;
-    /** v6.11 (mar 24-nov): la CONFIGURACIÓN del Anki USMLE que no se hizo el día real \`no_hecha\`: el preset, delante en el Anki del D2; el vídeo FSRS + el manual,
-     *  en \`fsrs\` (fin de semana a hora fija). La aplica gen_usmle_guia.js (USMLE_FIJO) */
-    config_anki?: { decidido: string; motivo: string; no_hecha: string; fsrs: { fecha: string; hora: string } };
     /** v6.12 (mar 24-nov): sábados que pasan a ser un día de estudio completo (sin gimnasio ni baile): sus extras, de 04:15 a 20:30 */
     sabado_habil?: string[];
   };
@@ -921,12 +1005,16 @@ export const DERIVADOS_V6 = {
   /** fecha a RESERVAR (FSMB/Prometric) con el ENCAPS vigente — DJ-1 */
   reserva: ${L(d.reservaActual)},
   semanasF1: ${d.semanasF1},
+  /** v7.00: semanas del Step 1 DENTRO de F1 (antes de step1.pausa_desde; v7.00: 0 → la semana del reinicio es la S1) */
+  semanasStepF1: ${d.semanasStepF1},
   step1Semanas: ${d.step1Semanas},
   diasF1: ${d.diasF1}, diasF2: ${d.diasF2}, diasF3: ${d.diasF3}, diasF4: ${d.diasF4},
   /** v6.07: filas del tramo 1 del Step 1 = hábiles de F1 en step1.f1_dias_semana (${diasSemanaTxt(F.step1.f1_dias_semana)}) */
   diasStepF1: ${d.diasStepF1},
-  /** v6.10: última mañana de Step 1 de F1 (= f1.fin desde la v6.10b); la pausa del Step empieza al día siguiente */
+  /** v6.10: última mañana de Step 1 de F1 (= f1.fin desde la v6.10b); la pausa del Step empieza al día siguiente · v7.00: el día anterior a step1.pausa_desde */
   ultimoStepF1: ${L(d.ultimoStepF1)},
+  /** v7.00: nº de sesiones USMLE de mantenimiento (USMLE_MANT_SESIONES) */
+  sesionesMant: ${d.sesionesMant},
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -1040,9 +1128,9 @@ export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
 }
 /** Fecha a RESERVAR guardada en el JSON (validada = DJ-1, o la regla de cálculo si fue más tardía) o, si el escenario no está, DJ-1. */
 export function reservaStep1(encaps: string = FECHAS_V6.encaps.examen): string { return FECHAS_V6.step1.reserva_por_encaps[encaps] ?? reservaDJ1(encaps); }
-/** STEP1_SEMANAS de un escenario = SEMANAS_F1 (${d.semanasF1}, derivado de f1.inicio → f1.fin; v6.00: 13) + semanas(lunes del reinicio → lunes del examen). */
+/** STEP1_SEMANAS de un escenario = SEMANAS_STEP_F1 (${d.semanasStepF1}: las semanas de F1 antes de step1.pausa_desde; hasta la v6.12, las de F1) + semanas(lunes del reinicio → lunes del examen). */
 export function step1SemanasDe(reinicio: string = FECHAS_V6.step1.reinicio, examen: string = FECHAS_V6.step1.examen): number {
-  return SEMANAS_F1 + _diff(_lunesDe(reinicio), _lunesDe(examen)) / 7;
+  return SEMANAS_STEP_F1 + _diff(_lunesDe(reinicio), _lunesDe(examen)) / 7;
 }
 /** Reinicio vigente del Step 1 (martes tras el lunes libre post-ENCAPS). */
 export function reinicioStep1(): string { return FECHAS_V6.step1.reinicio; }
@@ -1051,8 +1139,9 @@ export function reinicioStep1(): string { return FECHAS_V6.step1.reinicio; }
 export function esProtegido(iso: string): boolean { return DIAS_PROTEGIDOS.has(iso); }
 export function motivoProtegido(iso: string): string | null { return FECHAS_V6.protegidos.find((p) => p.fecha === iso)?.motivo ?? null; }
 export function esFeriado(iso: string): boolean { return FERIADOS_V6.has(iso); }
-/** Step 1 en PAUSA (transición + F2 ENCAPS + lunes libre): estado PAUSA en la app, sin fila «hoy» (§B2, §F). */
-export function enPausaStep1(iso: string): boolean { return iso > FECHAS_V6.f1.fin && iso < FECHAS_V6.step1.reinicio; }
+/** Step 1 en PAUSA (v7.00: desde step1.pausa_desde = ${f(F.step1.pausa_desde)} —F1, transición, F2 ENCAPS y lunes libre— hasta la víspera del reinicio): estado PAUSA en la app,
+ *  sin fila «hoy» (§B2, §F); solo mantenimiento (Anki + usmleMantDe). Hasta la v6.12 empezaba el día siguiente a f1.fin. */
+export function enPausaStep1(iso: string): boolean { return iso >= FECHAS_V6.step1.pausa_desde && iso < FECHAS_V6.step1.reinicio; }
 /**
  * ¿Es \`iso\` día de plan? Sin \`plan\`: L-V (L-S desde serums.inicio), desde el D1, sin SKIP ni protegidos.
  * Con \`plan\`: 'usmle' añade el ritual (fila T final) y quita la PAUSA y lo posterior al ritual; 'encaps' añade el D-1 hábil
@@ -1071,8 +1160,17 @@ export function esDiaPlan(iso: string, plan?: PlanV6): boolean {
   if (plan === 'encaps') return iso < FECHAS_V6.encaps.examen;
   return true;
 }
-/** v6.07 · ¿tiene el Step 1 mañana de plan en F1 este día de la semana? (step1.f1_dias_semana; fuera de F1, siempre true) */
-export function esDiaStepF1(iso: string): boolean { return iso < FECHAS_V6.f1.inicio || iso > FECHAS_V6.f1.fin || FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso)); }
+/** v6.07 · ¿tiene el Step 1 mañana de plan en F1 este día de la semana? (step1.f1_dias_semana; fuera de F1, siempre true) · v7.00: solo antes de
+ *  step1.pausa_desde (v7.00: false en toda F1, la mañana L-V es ENCAPS) */
+export function esDiaStepF1(iso: string): boolean { return iso < FECHAS_V6.f1.inicio || iso > FECHAS_V6.f1.fin || (iso < FECHAS_V6.step1.pausa_desde && FECHAS_V6.step1.f1_dias_semana.includes(_wd(iso))); }
+/** v7.00 · sesión USMLE de MANTENIMIENTO durante la pausa del Step 1 (step1.mantenimiento): fecha, franja, tramo ('f1' = F1 y la transición · 'f2' = la intensiva),
+ *  n (1… en el conjunto) y nTramo (1… dentro de su tramo). HOOK de la guía USMLE: plantillasV6 pinta el bloque «usmle-mant» con esta franja y TodayMission le pide
+ *  la guía a usmleGuia (guiaUsmleEnRango) en ella. ${d.sesionesMant} sesiones: ${sesionesUsmleMant(F).filter((x) => x.tramo === 'f1').length} de F1 y la transición (${f(sesionesUsmleMant(F).find((x) => x.tramo === 'f1')?.fecha)} → ${f(sesionesUsmleMant(F).filter((x) => x.tramo === 'f1').at(-1)?.fecha)}) · ${sesionesUsmleMant(F).filter((x) => x.tramo === 'f2').length} de la intensiva (${f(sesionesUsmleMant(F).find((x) => x.tramo === 'f2')?.fecha)} → ${f(sesionesUsmleMant(F).filter((x) => x.tramo === 'f2').at(-1)?.fecha)}). */
+export interface SesionUsmleMant { fecha: string; tramo: 'f1' | 'f2'; ini: string; fin: string; n: number; nTramo: number }
+export const USMLE_MANT_SESIONES: SesionUsmleMant[] = ${JSON.stringify(sesionesUsmleMant(F))};
+const _MANT = new Map<string, SesionUsmleMant>(USMLE_MANT_SESIONES.map((x) => [x.fecha, x]));
+/** v7.00 · la sesión USMLE de mantenimiento de \`iso\` o null (gemelo de gen_fechas_v6.usmleMantDe). */
+export function usmleMantDe(iso: string): SesionUsmleMant | null { return _MANT.get(iso) ?? null; }
 /** Fase v6 de una fecha. Antes del D1 (≤ ${fy(add(F.f1.inicio, -1))}) devuelve 'F1' (la app ya muestra F1 la víspera). */
 export function faseV6(iso: string): FaseV6 {
   if (iso < FECHAS_V6.f1.inicio) return 'F1';
@@ -1082,17 +1180,19 @@ export function faseV6(iso: string): FaseV6 {
 export function faseV6Info(iso: string): FaseV6Info { const id = faseV6(iso); return FASES_V6.find((x) => x.id === id) ?? (FASES_V6[0] as FaseV6Info); }
 
 // ── semana del Step 1 (definición única; antes en homeBriefing — §F, r2 · I7) ──
-/** Semanas de F1 (S1 = semana del ${f(lunesDe(F.f1.inicio))} → S${d.semanasF1} = semana del ${f(lunesDe(F.f1.fin))}). */
+/** Semanas de F1 (calendario: la del ${f(lunesDe(F.f1.inicio))} → la del ${f(lunesDe(F.f1.fin))}). */
 export const SEMANAS_F1 = ${d.semanasF1};
-/** ${d.step1Semanas} = ${d.semanasF1} (F1) + semanas(lunes del reinicio ${f(lunesDe(d.reinicio))} → lunes del examen ${f(lunesDe(F.step1.examen))}); la semana del examen queda fuera (etiqueta 'examen'). */
+/** v7.00 · semanas del Step 1 DENTRO de F1 (las de antes de step1.pausa_desde; ${d.semanasStepF1 ? `S1-S${d.semanasStepF1}` : 'v7.00: ninguna, F1 es pausa → la semana del reinicio es la S1'}). */
+export const SEMANAS_STEP_F1 = ${d.semanasStepF1};
+/** ${d.step1Semanas} = ${d.semanasStepF1} (Step en F1) + semanas(lunes del reinicio ${f(lunesDe(d.reinicio))} → lunes del examen ${f(lunesDe(F.step1.examen))}); la semana del examen queda fuera (etiqueta 'examen'). */
 export const STEP1_SEMANAS = ${d.step1Semanas};
 export interface SemanaStep1 {
-  /** 0 = antes del D1 · 1-${d.semanasF1} = F1 · ${d.semanasF1} durante la PAUSA (no avanza) · ${d.semanasF1 + 1}-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
+  /** 0 = antes del D1 · ${d.semanasStepF1 ? `1-${d.semanasStepF1} = F1 · ` : ''}${d.semanasStepF1} durante la PAUSA (no avanza) · ${d.semanasStepF1 + 1}-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
   n: number;
   /** STEP1_SEMANAS */
   total: number;
   lunes: string; viernes: string; sabado: string;
-  /** semanas de la pausa (${f(add(lunesDe(F.f1.fin), 7))} → semana del ENCAPS): semanaLabel = 'PAUSA · ENCAPS' */
+  /** semanas de la pausa (${d.semanasStepF1 ? f(add(lunesDe(F.f1.fin), 7)) : `el D1, ${f(F.f1.inicio)}`} → la semana anterior al reinicio): semanaLabel = 'PAUSA · ENCAPS' */
   pausa: boolean;
   /** semana del examen Step 1: semanaLabel = 'examen' */
   examen: boolean;
@@ -1108,16 +1208,18 @@ export interface SemanaStep1Extras {
   deloads?: { lunes: string; motivo: string }[];
 }
 /**
- * Semana del Step 1 (lunes→domingo; determinista, sin reloj): S1-S${d.semanasF1} = F1 · pausa (${f(add(lunesDe(F.f1.fin), 7))} → semana del ENCAPS) →
- * { pausa: true } · desde la semana del reinicio ${d.semanasF1} + k · semana del examen → { examen: true }.
+ * Semana del Step 1 (lunes→domingo; determinista, sin reloj): ${d.semanasStepF1 ? `S1-S${d.semanasStepF1} = F1 · pausa (${f(add(lunesDe(F.f1.fin), 7))} → semana del ENCAPS)` : `pausa desde el D1 (${f(F.f1.inicio)}; v7.00: F1 sin mañanas de Step) hasta la semana anterior al reinicio`} →
+ * { pausa: true } · desde la semana del reinicio ${d.semanasStepF1} + k · semana del examen → { examen: true }.
  */
 export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): SemanaStep1 {
   const lunes = _lunesDe(iso), lunRein = _lunesDe(FECHAS_V6.step1.reinicio);
+  // v7.00: semanas del Step dentro de F1 = las de antes de step1.pausa_desde (SEMANAS_STEP_F1; v7.00: 0)
+  const p = FECHAS_V6.step1.pausa_desde, lunFinStep = SEMANAS_STEP_F1 > 0 ? _lunesDe(p > FECHAS_V6.f1.fin ? FECHAS_V6.f1.fin : _add(p, -1)) : null;
   let n: number, pausa = false;
   if (iso < FECHAS_V6.f1.inicio) n = 0;                                   // pre-D1 (días de la semana 1 anteriores al D1)
-  else if (lunes <= _lunesDe(FECHAS_V6.f1.fin)) n = 1 + _diff(_lunesDe(FECHAS_V6.f1.inicio), lunes) / 7;
-  else if (lunes < lunRein) { n = SEMANAS_F1; pausa = true; }              // PAUSA · ENCAPS
-  else n = SEMANAS_F1 + 1 + _diff(lunRein, lunes) / 7;                    // tramo 2
+  else if (lunFinStep && lunes <= lunFinStep) n = 1 + _diff(_lunesDe(FECHAS_V6.f1.inicio), lunes) / 7;
+  else if (lunes < lunRein) { n = SEMANAS_STEP_F1; pausa = true; }         // PAUSA · ENCAPS
+  else n = SEMANAS_STEP_F1 + 1 + _diff(lunRein, lunes) / 7;               // tramo 2
   const examen = lunes === _lunesDe(FECHAS_V6.step1.examen);
   const domingo = _add(lunes, 6);
   const dl = (extras.deloads ?? []).find((x) => x.lunes === lunes);
@@ -1153,7 +1255,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
-  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom', 'usmle-mant'], mir: ['mir'], encaps: ['encaps', 'encaps-am', 'encaps-am2', 'encaps-pm', 'encaps-dom', 'encaps-rec', 'theomed-prep', 'theomed-vivo'], 'research-derma': ['rd'], aurum: ['aurum'],
   liviano: ['liv'], synapse: ['syn', 'syn-rec', 'syn-rec2', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
 };
 /** v6.07a: bloque PRINCIPAL de cada frente (en un reparto con varias partes del mismo frente, manda la que lo lleva). */
@@ -1296,6 +1398,8 @@ function compararTS(T, F, d) {
   eq('FASES_V6', T.FASES_V6, fasesV6(F, d));
   eq('STEP1_SEMANAS', T.STEP1_SEMANAS, d.step1Semanas);
   eq('SEMANAS_F1', T.SEMANAS_F1, d.semanasF1);
+  eq('SEMANAS_STEP_F1', T.SEMANAS_STEP_F1, d.semanasStepF1); // v7.00
+  eq('USMLE_MANT_SESIONES', T.USMLE_MANT_SESIONES, sesionesUsmleMant(F)); // v7.00
   eq('PLANES_SIN_DIA', T.PLANES_SIN_DIA, planesSinDia(F)); // v6.11
   eq('DIAS_PROTEGIDOS', [...T.DIAS_PROTEGIDOS], F.protegidos.map((p) => p.fecha));
   eq('BLOQUES_POR_FRENTE', T.BLOQUES_POR_FRENTE, BLOQUES_POR_FRENTE);
@@ -1306,14 +1410,15 @@ function compararTS(T, F, d) {
   eq('reservaStep1()', T.reservaStep1(), d.reservaActual);
   for (const [k, v] of Object.entries({ d1HabilEncaps: d.d1HabilEncaps, lunesLibre: d.lunesLibre, reinicio: d.reinicio, f3Fin: d.f3Fin, adaptacionHasta: d.adaptacionHasta,
     ultimoDiaEstudio: d.ultimoDiaEstudio, ritual: d.ritual, viajeD1: d.viajeD1, gonogo: d.gonogo, convocatoriaTope: d.convocatoriaTope, reserva: d.reservaActual,
-    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4, diasStepF1: d.diasStepF1, ultimoStepF1: d.ultimoStepF1 })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
+    semanasF1: d.semanasF1, step1Semanas: d.step1Semanas, diasF1: d.diasF1, diasF2: d.diasF2, diasF3: d.diasF3, diasF4: d.diasF4, diasStepF1: d.diasStepF1, ultimoStepF1: d.ultimoStepF1, semanasStepF1: d.semanasStepF1, sesionesMant: d.sesionesMant })) eq('DERIVADOS_V6.' + k, T.DERIVADOS_V6[k], v);
   // predicados, día a día
   const extras = { hitos: [{ fecha: '2026-12-22', nombre: 'NBME 28' }, { fecha: '2027-08-09', nombre: 'GO/NO-GO' }], deloads: [{ lunes: '2026-11-16', motivo: 'x' }] };
   for (const s of rango('2026-09-01', '2028-01-31')) {
     eq('faseV6 ' + s, T.faseV6(s), faseV6(s, F));
     eq('esProtegido ' + s, T.esProtegido(s), esProtegido(s, F));
     eq('enPausaStep1 ' + s, T.enPausaStep1(s), enPausaStep1(s, F));
-    eq('esDiaStepF1 ' + s, T.esDiaStepF1(s), s < F.f1.inicio || s > F.f1.fin || F.step1.f1_dias_semana.includes(wd(s))); // v6.07
+    eq('esDiaStepF1 ' + s, T.esDiaStepF1(s), esDiaStepF1(s, F)); // v6.07 · v7.00: con step1.pausa_desde
+    eq('usmleMantDe ' + s, T.usmleMantDe(s), usmleMantDe(s, F)); // v7.00
     for (const p of [undefined, 'usmle', 'encaps', 'mir', 'research', 'derma', 'aurum']) eq(`esDiaPlan ${s} ${p}`, T.esDiaPlan(s, p), esDiaPlan(s, p, F));
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
@@ -1346,7 +1451,7 @@ function compararTS(T, F, d) {
         eq(`viajeD1De ${E}`, T.viajeD1De(E), viajeD1De(E));
         eq(`ritualDe ${E} ${S}`, T.ritualDe(E, S, skip, []), ritualDe(E, S, skip, []));
         eq(`protegidosDe ${enc} ${E} ${S}`, T.protegidosDe(c), protegidosDe(c));
-        eq(`step1SemanasDe ${R} ${E}`, T.step1SemanasDe(R, E), step1SemanasDe(R, E, F.f1.inicio, F.f1.fin));
+        eq(`step1SemanasDe ${R} ${E}`, T.step1SemanasDe(R, E), step1SemanasDe(R, E, semanasStepF1De(F)));
       }
     }
   }
@@ -1378,7 +1483,7 @@ function main() {
     }
   }
   console.log('  fases: ' + fasesV6(F, d).map((x) => `${x.id} ${f(x.desde)}→${x.hasta ? f(x.hasta) : '…'}${x.diasPlan ? ' (' + x.diasPlan + ')' : ''}`).join(' · '));
-  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (F1 ${d.semanasF1}) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${diasSemanaTxt(F.step1.f1_dias_semana)} = ${d.diasStepF1} mañanas (v6.07; última ${f(d.ultimoStepF1)}, pausa desde el ${f(add(d.ultimoStepF1, 1))})`);
+  console.log(`  STEP1_SEMANAS ${d.step1Semanas} (semanas del Step en F1: ${d.semanasStepF1}; F1: ${d.semanasF1} semanas) · último día con estudio ${f(d.ultimoDiaEstudio)} · F3 fin ${f(d.f3Fin)} · Step 1 en F1: ${d.diasStepF1} mañanas (${diasSemanaTxt(F.step1.f1_dias_semana)} antes de la pausa; pausa desde el ${f(F.step1.pausa_desde)}, semanas del Step en F1 ${d.semanasStepF1}) · mantenimiento: ${d.sesionesMant} sesiones USMLE (${sesionesUsmleMant(F).map((x) => f(x.fecha)).join(' · ')})`);
   if (Object.keys(F.corrida_s1.extra || {}).length) console.log('  corrida_s1.extra (v6.10): ' + Object.entries(F.corrida_s1.extra).map(([dd, x]) => `${f(dd)} ${Object.entries(x).map(([k, v]) => `${k} ${typeof v === 'string' ? v : `${v.hora} (plan ${f(v.plan)})`}`).join(', ')}`).join(' · '));
   const ts = emitirTS(F, d);
   const T = cargarTS(ts);
@@ -1403,6 +1508,8 @@ module.exports = {
   JSON_FILE, OUT,
   // calendario
   add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase, diasStepF1De, ultimoStepF1De, diasSemanaTxt, VENTANAS_FINDE, // v6.10: + ultimoStepF1De, VENTANAS_FINDE
+  // v7.00: pausa del Step 1 desde step1.pausa_desde y sesiones USMLE de mantenimiento (step1.mantenimiento)
+  esDiaStepF1, semanasStepF1De, usmleMantDe, sesionesUsmleMant, comprobarMantenimiento, rachasTxt,
   // derivaciones §A4
   reinicioDe, lunesLibreDe, ultimoHabilAntes, f3FinDe, adaptacionHastaDe, gonogoDe, convocatoriaTopeDe, viajeD1De, ritualDe, protegidosDe,
   DJ1, DJ1_V600, EXAMENES_PRUEBA, dj1Texto, reservaDJ1, reservaCalculo, colchonPiso, semanasF1De, step1SemanasDe, RX_ADJUDICACION,

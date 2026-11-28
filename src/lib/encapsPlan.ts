@@ -103,6 +103,12 @@
 // diaActual() SUMA esos días de fin de semana (extraEncapsEntre): dom 29 → 9 · lun 30 → 10 · lun 4-ene → 33. Fallbacks: STUDY_D1 '2026-11-18' · 32.
 // v6.10c (17-nov-2026, decisión de Joseph de las 17:20: corrimiento LITERAL): el fin de semana que recupera pasa al SÁB 2-ENE 04:30-05:30 → lun 30 = 9 (IV-1)
 // … vie 4-dic = 13 (mini-sim #13) · vie 11 = 18 · vie 18-dic = 23 (CHECKPOINT DEL AÑO) · jue 31-dic = 31 · SÁB 2-ENE = 32 (V-2) · lun 4-ene = 33 (intensiva igual).
+// v7.00 (28-nov-2026, orden de Joseph «todo arranca el lun 30-nov», reorganización final): REBASE NATIVO, D1 = LUN 30-NOV-2026 (corrida_s1 vacía: sin
+// alias ni fines de semana que recuperan → extraEncapsEntre = 0) → MANTENIMIENTO dia 1-23: lun 30-nov = 1 (pre-test 1/2) · mar 1-dic = 2 (pre-test 2/2) · vie 4 = 5
+// (mini-sim) · vie 11 = 10 · vie 18-dic = 15 (CHECKPOINT DEL AÑO) · jue 31-dic = 23; INTENSIVA dia 24-73 (lun 4-ene → vie 12-mar, mismas fechas; pre-test 2026-II
+// vie 8-ene = dia 28; dress jue 11-mar = dia 72). + el CARRIL DOMINGO (extra.carril_domingo de la fila del viernes host, claves o_*, sim_n 2000 + dia: los
+// pendientes F1 de la v7.00 que no caben en el lun-jue, los sábados ni los viernes; 09:30-10:30, tras las clases en diferido del domingo). Fallbacks:
+// STUDY_D1 '2026-11-30' · STUDY_TOTAL_DAYS 23.
 // v6.02c (18-oct-2026, E4 · «qué · cuánto · cómo»): itemsMantenimiento lee la sesión de src/lib/encapsGuia.ts (GENERADO por
 // DATA/_scripts/gen_encaps_guia.js) cuando la fila viva cuadra (mismo dia y código): los ítems enlazan los RUNNERS de BANCO_PROPIO publicados
 // en la app (https://joseph-md-app.vercel.app/encaps/bp/…, sync_encaps_bp_web.js) en vez del banco genérico de QX (que queda de plan B), con las
@@ -127,7 +133,7 @@ export { subtemaCiego };
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
 // corrimiento); la app lo lee en useEncapsPlan → regimenDe(). Si Supabase no responde, se usa esta constante.
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-11-18',   // v6.10c (17-nov): D1 = mié 18-nov (el mar 17 tampoco se estudió; la 16:15 corre una ranura y su dia 32 va el sáb 2-ene 04:30; desde el dia 33, lun 4-ene, todo · v6.10: dom 29-nov 07:15 = dia 9, sin efecto igual) · v6.09 (16-nov): D1 = mar 17-nov (el lun 16 no se estudió; el jue 31-dic deja de ser SKIP y recupera el día) · MANTENIMIENTO 1-32 → jue 31-dic + INTENSIVA 33-82 sin cambio · v6.08 (14-nov): D1 = lun 16-nov (la semana del lun 9-nov no se estudió; semanas corridas v6.07a-e sin efecto) · MANTENIMIENTO 1-32 → mié 30-dic + INTENSIVA 33-82 (mismas fechas lun 4-ene → vie 12-mar) · v6.07 (8-nov): D1 = lun 9-nov (la semana del lun 2-nov no se estudió; corrida v6.06a-e sin efecto) · MANTENIMIENTO 1-37 → mié 30-dic + INTENSIVA 38-87 (mismas fechas lun 4-ene → vie 12-mar; contenido cerrado vie 26-feb + quincena final de SIM 100Q) + carril SÁBADO 09:30 (9) + carril VIERNES 16:15 (vie 5-mar) · (histórico) v6.06 (31-oct): D1 = lun 2-nov (corrimiento rígido; la semana del lun 26 al vie 30-oct no se estudió) · MANTENIMIENTO 1-42 → mié 30-dic + INTENSIVA 43-92 (mismas fechas lun 4-ene → vie 12-mar) + carril SÁBADO 09:30 (5 pendientes F1, 9-ene → 6-feb) · (histórico) v6.05 (24-oct): D1 = lun 26-oct (corrimiento rígido; la semana del 19 —mié 21, jue 22 y vie 23-oct— no se estudió; la corrida por alias v6.04a queda sin efecto) · MANTENIMIENTO 1-47 → mié 30-dic + INTENSIVA 48-97 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.03 (20-oct): D1 = mié 21-oct (corrimiento rígido; lun 19 y mar 20-oct no estudiados; la capa de alias v6.02d queda inerte) · MANTENIMIENTO 1-50 → mié 30-dic + INTENSIVA 51-100 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.02 (17-oct): D1 = lun 19-oct (corrimiento rígido; lun 12 → vie 16-oct no estudiados) · MANTENIMIENTO 1-52 → mié 30-dic + INTENSIVA 53-102 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.01 (10-oct): D1 = lun 12-oct (corrimiento rígido; mié 7, jue 8 y vie 9-oct no estudiados) · MANTENIMIENTO 1-57 → mié 30-dic + INTENSIVA 58-107 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.00 (6-oct): D1 sin cambio (mié 7-oct); MANTENIMIENTO 1-60 → mié 30-dic + INTENSIVA 61-110 lun 4-ene → vie 12-mar · examen dom 14-mar-2027 PROVISIONAL · (histórico) v6.18 MANTENIMIENTO 2027-I (D1=mié 7-oct; 31-ago→6-oct no estudiados; examen ENCAPS mié 10-mar-2027, intensiva mar 23-feb → mar 9-mar): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: examen ENCAPS 2027-I = MIÉ 10-MAR-2027 (FIJADO por Joseph el 6-oct; antes «fines de marzo»). 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva mar 23-feb → mar 9-mar, días 97-107, YA sembrada el 6-oct; se regenera con --pretest tras el pre-test del vie 26-feb). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1006 (v5.20 · régimen v6.18; v5.19: bk_1005 · v6.17 · v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
+  ENCAPS: '2026-11-30',   // v7.00 (28-nov): D1 = lun 30-nov (rebase nativo «todo arranca el lun 30-nov»; MANTENIMIENTO dia 1-23 = lun 30-nov → jue 31-dic; INTENSIVA dia 24-73, mismas fechas) · v6.10c (17-nov): D1 = mié 18-nov (el mar 17 tampoco se estudió; la 16:15 corre una ranura y su dia 32 va el sáb 2-ene 04:30; desde el dia 33, lun 4-ene, todo · v6.10: dom 29-nov 07:15 = dia 9, sin efecto igual) · v6.09 (16-nov): D1 = mar 17-nov (el lun 16 no se estudió; el jue 31-dic deja de ser SKIP y recupera el día) · MANTENIMIENTO 1-32 → jue 31-dic + INTENSIVA 33-82 sin cambio · v6.08 (14-nov): D1 = lun 16-nov (la semana del lun 9-nov no se estudió; semanas corridas v6.07a-e sin efecto) · MANTENIMIENTO 1-32 → mié 30-dic + INTENSIVA 33-82 (mismas fechas lun 4-ene → vie 12-mar) · v6.07 (8-nov): D1 = lun 9-nov (la semana del lun 2-nov no se estudió; corrida v6.06a-e sin efecto) · MANTENIMIENTO 1-37 → mié 30-dic + INTENSIVA 38-87 (mismas fechas lun 4-ene → vie 12-mar; contenido cerrado vie 26-feb + quincena final de SIM 100Q) + carril SÁBADO 09:30 (9) + carril VIERNES 16:15 (vie 5-mar) · (histórico) v6.06 (31-oct): D1 = lun 2-nov (corrimiento rígido; la semana del lun 26 al vie 30-oct no se estudió) · MANTENIMIENTO 1-42 → mié 30-dic + INTENSIVA 43-92 (mismas fechas lun 4-ene → vie 12-mar) + carril SÁBADO 09:30 (5 pendientes F1, 9-ene → 6-feb) · (histórico) v6.05 (24-oct): D1 = lun 26-oct (corrimiento rígido; la semana del 19 —mié 21, jue 22 y vie 23-oct— no se estudió; la corrida por alias v6.04a queda sin efecto) · MANTENIMIENTO 1-47 → mié 30-dic + INTENSIVA 48-97 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.03 (20-oct): D1 = mié 21-oct (corrimiento rígido; lun 19 y mar 20-oct no estudiados; la capa de alias v6.02d queda inerte) · MANTENIMIENTO 1-50 → mié 30-dic + INTENSIVA 51-100 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.02 (17-oct): D1 = lun 19-oct (corrimiento rígido; lun 12 → vie 16-oct no estudiados) · MANTENIMIENTO 1-52 → mié 30-dic + INTENSIVA 53-102 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.01 (10-oct): D1 = lun 12-oct (corrimiento rígido; mié 7, jue 8 y vie 9-oct no estudiados) · MANTENIMIENTO 1-57 → mié 30-dic + INTENSIVA 58-107 (mismas fechas lun 4-ene → vie 12-mar) · (histórico) v6.00 (6-oct): D1 sin cambio (mié 7-oct); MANTENIMIENTO 1-60 → mié 30-dic + INTENSIVA 61-110 lun 4-ene → vie 12-mar · examen dom 14-mar-2027 PROVISIONAL · (histórico) v6.18 MANTENIMIENTO 2027-I (D1=mié 7-oct; 31-ago→6-oct no estudiados; examen ENCAPS mié 10-mar-2027, intensiva mar 23-feb → mar 9-mar): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: examen ENCAPS 2027-I = MIÉ 10-MAR-2027 (FIJADO por Joseph el 6-oct; antes «fines de marzo»). 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva mar 23-feb → mar 9-mar, días 97-107, YA sembrada el 6-oct; se regenera con --pretest tras el pre-test del vie 26-feb). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1006 (v5.20 · régimen v6.18; v5.19: bk_1005 · v6.17 · v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -142,7 +148,7 @@ export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
 // v5.14 (19-sep): SOLO FALLBACK (antes fijo: 102 → 95 → 94 → 92). El valor vivo es study_metrics.extra.dias_ciclo (92 = mié 7-oct-2026
 // → mar 16-feb-2027 en v5.20; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb; desde v5.15 el corrimiento es RÍGIDO: el fin del ciclo SÍ se mueve y se amplía por detrás para no perder sesiones) y
 // crece solo con max(dia) de study_schedule cuando se siembre la FASE INTENSIVA (modo='INTENSIVO' · gen_encaps_intensivo_2027.js; v5.20: ya sembrada → max(dia) = 107).
-export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 32 }; // v6.09: 32 = D1-D32 (mar 17-nov → jue 31-dic) · v6.08: 32 = D1-D32 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 82) · v6.07: 37 = D1-D37 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 87) · v6.06: 42 = D1-D42 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 92) · v6.05: 47 = D1-D47 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 97) · v6.03: 50 = D1-D50 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 100) · v6.02: 52 = D1-D52 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 102) · v6.01: 57 = D1-D57 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 107) · v6.00: 60 = D1-D60 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 110 en el escenario 14-mar) · v5.20: siguen 92 de mantenimiento (el fin se alargó al mar 16-feb para NO perder sesiones; con la intensiva sembrada el total vivo es 107) · v5.19: lun 15-feb · v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
+export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 23 }; // v7.00: 23 = D1-D23 (lun 30-nov → jue 31-dic; con la intensiva sembrada el total vivo es max(dia) = 73) · v6.09: 32 = D1-D32 (mar 17-nov → jue 31-dic) · v6.08: 32 = D1-D32 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 82) · v6.07: 37 = D1-D37 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 87) · v6.06: 42 = D1-D42 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 92) · v6.05: 47 = D1-D47 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 97) · v6.03: 50 = D1-D50 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 100) · v6.02: 52 = D1-D52 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 102) · v6.01: 57 = D1-D57 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 107) · v6.00: 60 = D1-D60 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 110 en el escenario 14-mar) · v5.20: siguen 92 de mantenimiento (el fin se alargó al mar 16-feb para NO perder sesiones; con la intensiva sembrada el total vivo es 107) · v5.19: lun 15-feb · v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
 // Régimen vigente resuelto en runtime: study_metrics.extra.d1 / dias_ciclo → fila dia=1 de study_schedule → constantes.
 export interface StudyRegimen { d1: string; total: number; origenD1: 'study_metrics' | 'study_schedule' | 'fallback'; origenTotal: 'study_metrics' | 'study_schedule' | 'fallback' }
 const ISO_RE = /^20\d\d-\d\d-\d\d$/;
@@ -249,7 +255,8 @@ export function miniSimDias(days: StudyScheduleDay[]): StudyScheduleDay[] {
     if (d.tipo === 'mini_sim') return [d];
     const ps = carrilBDe(d)?.tipo === 'mini_sim' ? pseudoCarrilB(d) : null;
     const pSab = carrilSabadoDe(d)?.cb.tipo === 'mini_sim' ? pseudoCarrilSabado(d) : null; // v6.06: mini-sim F1 del carril SÁBADO (sim_n 1000 + dia)
-    return [...(ps ? [ps] : []), ...(pSab ? [pSab] : [])];
+    const pDom = carrilDomingoDe(d)?.cb.tipo === 'mini_sim' ? pseudoCarrilDomingo(d) : null; // v7.00: + el del carril DOMINGO (sim_n 2000 + dia)
+    return [...(ps ? [ps] : []), ...(pSab ? [pSab] : []), ...(pDom ? [pDom] : [])];
   });
 }
 export function miniSimSerie(days: StudyScheduleDay[], simScores: Record<number, StudySimScore>): MiniSimPunto[] {
@@ -402,33 +409,48 @@ export function esMiniSimRepuesto(day: StudyScheduleDay | null | undefined): boo
 // pendiente_f1 }. Se reutiliza el carril B (carrilBDe / pseudoCarrilB / itemsCarrilB) sobre una copia de la fila con carril_b = carril_sabado
 // y la fecha del sábado; claves D{dia del viernes}:s_* (sin colisión con las del SIM del viernes ni con las b_* del carril B).
 export interface CarrilSabado { fecha: string; ini: string; fin: string; hostDia: number; hostFecha: string; simN: number | null; cb: CarrilB }
-function filaCarrilSabado(day: StudyScheduleDay | null | undefined): StudyScheduleDay | null {
-  const cs = (day?.extra as Record<string, unknown> | undefined)?.carril_sabado;
+// v7.00 (28-nov-2026): + el CARRIL DOMINGO (extra.carril_domingo de la fila del viernes host; los pendientes F1 de la v7.00 que ya no caben en el lun-jue, los
+//   sábados ni los viernes; 09:30-10:30, tras las clases en diferido del domingo): mismo mecanismo con claves D{dia del viernes}:o_* y sim_n 2000 + dia
+type CarrilFinde = 'carril_sabado' | 'carril_domingo';
+function filaCarrilFinde(day: StudyScheduleDay | null | undefined, k: CarrilFinde): StudyScheduleDay | null {
+  const cs = (day?.extra as Record<string, unknown> | undefined)?.[k];
   if (!day || day.modo !== 'INTENSIVO' || !cs || typeof cs !== 'object') return null;
   const fecha = String((cs as Record<string, unknown>).fecha || '');
   if (!ISO_RE.test(fecha)) return null;
-  return { ...day, fecha, weekday: 'Sáb', extra: { ...(day.extra || {}), carril_b: cs } };
+  return { ...day, fecha, weekday: k === 'carril_domingo' ? 'Dom' : 'Sáb', extra: { ...(day.extra || {}), carril_b: cs } };
 }
-export function carrilSabadoDe(day: StudyScheduleDay | null | undefined): CarrilSabado | null {
-  const f = filaCarrilSabado(day);
+const filaCarrilSabado = (day: StudyScheduleDay | null | undefined): StudyScheduleDay | null => filaCarrilFinde(day, 'carril_sabado');
+export function carrilSabadoDe(day: StudyScheduleDay | null | undefined): CarrilSabado | null { return carrilFindeDe(day, 'carril_sabado'); }
+/** v7.00: el CARRIL DOMINGO de la fila del viernes host (null si no lo trae). */
+export function carrilDomingoDe(day: StudyScheduleDay | null | undefined): CarrilSabado | null { return carrilFindeDe(day, 'carril_domingo'); }
+/** v7.00: el carril del fin de semana que toca HOY en la fila del viernes host: el del domingo si hoy es su domingo; si no, el del sábado. */
+export function carrilFinDeHoy(day: StudyScheduleDay | null | undefined, hoyISO: string = todayLimaISO()): CarrilSabado | null {
+  const d = carrilDomingoDe(day);
+  return d && d.fecha === hoyISO ? d : carrilSabadoDe(day);
+}
+function carrilFindeDe(day: StudyScheduleDay | null | undefined, k: CarrilFinde): CarrilSabado | null {
+  const f = filaCarrilFinde(day, k);
   const cb = carrilBDe(f);
   if (!day || !f || !cb) return null;
-  const cs = (day.extra as Record<string, unknown>).carril_sabado as Record<string, unknown>;
+  const cs = (day.extra as Record<string, unknown>)[k] as Record<string, unknown>;
   const hhmm = (v: unknown, def: string) => (/^\d{2}:\d{2}$/.test(String(v ?? '')) ? String(v) : def);
   return { fecha: f.fecha, ini: hhmm(cs.ini, '09:30'), fin: hhmm(cs.fin, '10:30'), hostDia: day.dia, hostFecha: String(day.fecha).slice(0, 10),
     simN: cs.sim_n == null ? null : Number(cs.sim_n), cb };
 }
 /** Pseudo-fila MANTENIMIENTO del carril SÁBADO (fecha = el sábado; el mini-sim con sim_n = extra.carril_sabado.sim_n, no el dia del viernes). */
-export function pseudoCarrilSabado(day: StudyScheduleDay | null | undefined): StudyScheduleDay | null {
-  const s = carrilSabadoDe(day);
-  const ps = pseudoCarrilB(filaCarrilSabado(day));
+export function pseudoCarrilSabado(day: StudyScheduleDay | null | undefined): StudyScheduleDay | null { return pseudoCarrilFinde(day, 'carril_sabado'); }
+/** v7.00: pseudo-fila del carril DOMINGO (fecha = el domingo; el mini-sim con sim_n = extra.carril_domingo.sim_n). */
+export function pseudoCarrilDomingo(day: StudyScheduleDay | null | undefined): StudyScheduleDay | null { return pseudoCarrilFinde(day, 'carril_domingo'); }
+function pseudoCarrilFinde(day: StudyScheduleDay | null | undefined, k: CarrilFinde): StudyScheduleDay | null {
+  const s = carrilFindeDe(day, k);
+  const ps = pseudoCarrilB(filaCarrilFinde(day, k));
   if (!s || !ps) return null;
-  const extra = { ...(ps.extra || {}), carril_sabado: { fecha: s.fecha, ini: s.ini, fin: s.fin, host_dia: s.hostDia, host_fecha: s.hostFecha } } as Record<string, unknown>;
+  const extra = { ...(ps.extra || {}), [k]: { fecha: s.fecha, ini: s.ini, fin: s.fin, host_dia: s.hostDia, host_fecha: s.hostFecha } } as Record<string, unknown>;
   if (s.cb.tipo === 'mini_sim' && s.simN != null) extra.sim_n = s.simN;
   return { ...ps, extra };
 }
 const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-const fechaSabTxt = (iso: string) => `sáb ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`;
+const fechaSabTxt = (iso: string) => `${new Date(iso + 'T12:00:00Z').getUTCDay() === 0 ? 'dom' : 'sáb'} ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`; // v7.00: + el domingo
 /** «16:15–16:30» → la misma franja desplazada a la hora del carril SÁBADO (09:30 → «09:30–09:45»). */
 function horaASabado(txt: string | undefined, ini: string): string | undefined {
   if (!txt) return txt;
@@ -438,18 +460,22 @@ function horaASabado(txt: string | undefined, ini: string): string | undefined {
     .replace(/«Carril B \d{2}:\d{2}»/g, '«Carril B 16:15»'); // el NOMBRE del tipo de cierre (TipoRonda 'carril_b') no es una hora: no se desplaza
 }
 /** Ítems del carril SÁBADO (claves D{dia del viernes}:s_*): la rama del carril B con la hora, la fecha y el sim_n del sábado. */
-function itemsCarrilSabado(day: StudyScheduleDay): PlanItem[] {
-  const s = carrilSabadoDe(day);
-  const f = filaCarrilSabado(day);
+function itemsCarrilSabado(day: StudyScheduleDay): PlanItem[] { return itemsCarrilFinde(day, 'carril_sabado'); }
+/** v7.00: ítems del carril DOMINGO (claves D{dia del viernes}:o_*). */
+function itemsCarrilDomingo(day: StudyScheduleDay): PlanItem[] { return itemsCarrilFinde(day, 'carril_domingo'); }
+function itemsCarrilFinde(day: StudyScheduleDay, k: CarrilFinde): PlanItem[] {
+  const s = carrilFindeDe(day, k);
+  const f = filaCarrilFinde(day, k);
   if (!s || !f) return [];
-  const pre = `${fechaSabTxt(s.fecha)} ${s.ini} CARRIL SÁBADO · `;
+  const dom = k === 'carril_domingo', nom = dom ? 'DOMINGO' : 'SÁBADO', dia = dom ? 'domingo' : 'sábado';
+  const pre = `${fechaSabTxt(s.fecha)} ${s.ini} CARRIL ${nom} · `;
   return itemsCarrilB(f, esSimIntensivo(day) ? day : null).map((it) => ({
     ...it,
-    key: it.key.replace(/^D(\d+):b_/, 'D$1:s_'),
-    label: horaASabado(it.label.replace(/^16:15 CARRIL B · /, pre).replace('EVAL ANCLADA (lunes)', 'EVAL ANCLADA (sábado)')
+    key: it.key.replace(/^D(\d+):b_/, dom ? 'D$1:o_' : 'D$1:s_'),
+    label: horaASabado(it.label.replace(/^16:15 CARRIL B · /, pre).replace('EVAL ANCLADA (lunes)', `EVAL ANCLADA (${dia})`)
       .replace(`sim_n = ${day.dia}`, `sim_n = ${s.simN ?? day.dia}`), s.ini) ?? it.label,
-    detail: horaASabado(it.detail?.replace('se hace HOY en la hora del carril B (no es viernes)', `se hace el ${fechaSabTxt(s.fecha)} a las ${s.ini} (carril SÁBADO: los días de reposición lun-jue del carril B ya están ocupados)`)
-      .replace('cierre tipo «Carril B 16:15»', `cierre tipo «Carril B 16:15» con la fecha del sábado (${s.fecha})`), s.ini),
+    detail: horaASabado(it.detail?.replace('se hace HOY en la hora del carril B (no es viernes)', `se hace el ${fechaSabTxt(s.fecha)} a las ${s.ini} (carril ${nom}: los días de reposición lun-jue del carril B ya están ocupados${dom ? ', y los sábados y viernes del desborde también' : ''})`)
+      .replace('cierre tipo «Carril B 16:15»', `cierre tipo «Carril B 16:15» con la fecha del ${dia} (${s.fecha})`), s.ini),
     hora: horaASabado(it.hora, s.ini),
   }));
 }
@@ -1669,7 +1695,7 @@ function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): Pla
 export function itemsForDay(day0: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev0: StudyScheduleDay | null = null, metrics: StudyMetrics | null = null): PlanItem[] {
   // v6.10i: con el subtema ENTERO (el SQL de la intensiva lo trae cortado: «… hasta lo…»); solo cambia el texto, nunca las claves
   const day = conSubtemaCompleto(day0), prev = prev0 ? conSubtemaCompleto(prev0) : null;
-  return [...itemsBase(day, focusByCode, prev, metrics), ...itemsCarrilB(day, prev), ...itemsCarrilSabado(day)];
+  return [...itemsBase(day, focusByCode, prev, metrics), ...itemsCarrilB(day, prev), ...itemsCarrilSabado(day), ...itemsCarrilDomingo(day)]; // v7.00: + carril DOMINGO
 }
 /**
  * v6.10i (auditoría del volcado c13, hallazgo 4): el subtema de una fila de la intensiva sale del SQL sembrado (= Supabase), donde
@@ -1694,6 +1720,8 @@ function conSubtemaCompleto(d: StudyScheduleDay): StudyScheduleDay {
 }
 /** v6.06 (fix): ¿la clave es del CARRIL SÁBADO (D{dia del viernes host}:s_*)? */
 export const esClaveSabado = (key: string): boolean => /^D\d+:s_/.test(key);
+/** v7.00: ¿la clave es del CARRIL DOMINGO (D{dia del viernes host}:o_*)? */
+export const esClaveDomingo = (key: string): boolean => /^D\d+:o_/.test(key);
 /**
  * v6.06 (fix): ítems que cuentan en el TOTAL del día (checklist de misión · %). Las tareas del CARRIL SÁBADO (D{dia}:s_*) viajan en la fila
  * del VIERNES host, así que entraban en el total del viernes y el viernes nunca llegaba al 100 %: ahora NO cuentan salvo que hoy (Lima) sea
@@ -1701,8 +1729,9 @@ export const esClaveSabado = (key: string): boolean => /^D\d+:s_/.test(key);
  * itemsForDay no cambia (es la enumeración que comparte con el daemon, que tampoco las cuenta en el reporte del viernes).
  */
 export function itemsDelTotal(day: StudyScheduleDay | null | undefined, items: PlanItem[], hoyISO: string = todayLimaISO()): PlanItem[] {
-  const s = carrilSabadoDe(day);
-  return s && s.fecha === hoyISO ? items : items.filter((it) => !esClaveSabado(it.key));
+  // v7.00: igual con el CARRIL DOMINGO (claves o_*: cuentan solo el propio domingo)
+  const s = carrilSabadoDe(day), d = carrilDomingoDe(day);
+  return items.filter((it) => (!esClaveSabado(it.key) || (!!s && s.fecha === hoyISO)) && (!esClaveDomingo(it.key) || (!!d && d.fecha === hoyISO)));
 }
 
 // ── Queries Supabase ──
@@ -1858,9 +1887,11 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   // v6.06: + el mini-sim F1 del CARRIL SÁBADO (sáb 6-feb, pseudo-fila con fecha del sábado y sim_n 1000 + dia del viernes host), tras su viernes.
   const simDays = useMemo(() => days.flatMap(d => {
     const pSab = carrilSabadoDe(d)?.cb.tipo === 'mini_sim' ? pseudoCarrilSabado(d) : null;
-    if (d.simulacro || d.tipo === 'mini_sim' || esSimIntensivo(d)) return pSab ? [d, pSab] : [d];
+    const pDom = carrilDomingoDe(d)?.cb.tipo === 'mini_sim' ? pseudoCarrilDomingo(d) : null; // v7.00: + el mini-sim del carril DOMINGO
+    const fin = [...(pSab ? [pSab] : []), ...(pDom ? [pDom] : [])];
+    if (d.simulacro || d.tipo === 'mini_sim' || esSimIntensivo(d)) return [d, ...fin];
     const ps = carrilBDe(d)?.tipo === 'mini_sim' ? pseudoCarrilB(d) : null;
-    return [...(ps ? [ps] : []), ...(pSab ? [pSab] : [])];
+    return [...(ps ? [ps] : []), ...fin];
   }), [days]);
   const miniSims = useMemo(() => miniSimSerie(days, simScores), [days, simScores]);
   // study_progress + cierres locales que aún no llegaron (o que Supabase todavía no devolvió tras el refetch), sin duplicar por id.

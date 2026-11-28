@@ -135,6 +135,20 @@ const argv = process.argv.slice(2);
 const cicloArgIdx = argv.indexOf('--ciclo');
 const SOLO_CICLO = cicloArgIdx >= 0 ? Number(argv[cicloArgIdx + 1]) : 0; // 0 = ambos
 const fechas = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
+// v7.00 (28-nov-2026 · reorganización final): RESEARCH EN SUSPENSO (src/lib/researchData.ts › RESEARCH_SUSPENSO). El plan parte de una premisa vieja y se rediseña
+//   con Joseph antes de retomarlo: este generador NO escribe ni re-fecha nada (researchDailyPlan*.ts y researchGuia.ts se quedan como están; la app pinta sus días
+//   como «Research en suspenso · hueco libre»). Solo comprueba, en lectura, que los ficheros del plan existen. Para regenerar con el plan nuevo: RESEARCH_SUSPENSO = null
+//   (o, a propósito, --forzar-suspendido).
+{
+  const rdSrc = fs.readFileSync(path.join(ROOT, 'src/lib/researchData.ts'), 'utf8');
+  const mS = /export const RESEARCH_SUSPENSO[^=]*=\s*(null|\{[^}]*?desde:\s*'(20\d\d-\d\d-\d\d)')/.exec(rdSrc);
+  if (!mS) throw new Error('v7.00: researchData.ts no trae RESEARCH_SUSPENSO (null o { desde, motivo })');
+  if (mS[1] !== 'null' && !argv.includes('--forzar-suspendido')) {
+    for (const f of ['src/lib/researchDailyPlan.ts', 'src/lib/researchDailyPlan2027.ts', 'src/lib/researchGuia.ts']) if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`v7.00: falta ${f}`);
+    console.log(`⏸ Research EN SUSPENSO desde el ${mS[2]} (researchData.ts › RESEARCH_SUSPENSO): el plan no se regenera ni se re-fecha (rediseño con Joseph). Nada escrito${argv.includes('--check') ? ' (--check: OK)' : ''}.`);
+    process.exit(0);
+  }
+}
 if (SOLO_CICLO && ![1, 2].includes(SOLO_CICLO)) throw new Error('--ciclo debe ser 1 o 2');
 // v6.03 (verificación total, 20-oct): sin fecha, el ciclo 1 arranca en el D1 vigente de _fechas_v6.json (f1.inicio) — antes caía al
 // '2026-09-08' de v5.x y, sin argumentos, el script abortaba («no es día de plan … 2026-09-08»). Con la fecha explícita no cambia nada.

@@ -180,12 +180,14 @@ const QUIZ_HACER = 6, QUIZ_HACER_MAX = 8, SEG_COMENTARIO = 30;
 //     —la regla fija de lectura en español— suman 15,5-18,1′ con el recuadro (a 180, 13,5-15′): a 15′ había 5 días por encima de 1,15; a 16′, todos en 0,97-1,13.
 // v6.10 (17-nov-2026 · D1 = mié 18-nov): la ventana pasa de «fecha ≥ 18-nov» a «D ≥ 2 y fecha ≤ 3-ene» → los mismos días de plan (D2-D32) que en la
 //   v6.09b aunque sus fechas corran un día; el D1 (ARRANQUE, ahora mié 18) sigue con su estructura propia, auditada aparte (ver colaEvalDe y el quiz).
-const LOTE1T_HASTA = '2027-01-03', PPM_REGLA = 150;
-const enLote1t = (x) => !!x && x.d >= 2 && x.fecha <= LOTE1T_HASTA;
+// v7.00 (28-nov-2026 · D1 MIR lun 30-nov → los D24-D32 caen ya en enero): la ventana va por D (D2-D32, los mismos días de plan de la v6.09b-v6.12 y la fase 1
+//   de metodo_ravimedtest.json), no por fecha: con «fecha ≤ 3-ene» los D24-D32 perdían su lectura de base y su reparto. Mismo contenido por D; solo corren las fechas.
+const LOTE1T_HASTA_D = 32, PPM_REGLA = 150;
+const enLote1t = (x) => !!x && x.d >= 2 && x.d <= LOTE1T_HASTA_D;
 /** v6.10: el D1 (ARRANQUE, mié 18-nov) ya no está «en curso»: auditado con la regla fija, su pre-test 5Q (8′ = 0,80) pasa a 7′ y el minuto va a la
  *  LECTURA DIRIGIDA (16′, las mismas secciones medidas a 150 palabras/min), igual que el lote 1-ter en D2-D32; ARRANQUE, recuadro, 5Q ciegas extra
  *  (5 × 77 s = 6,4′ en 7′), quiz (6Q comentadas ≈ 10,7′ en 12′) y APEX no cambian. Sin material nuevo. */
-const lectF1 = (x) => enLote1t(x) || (!!x && x.d === 1 && x.fecha <= LOTE1T_HASTA);
+const lectF1 = (x) => enLote1t(x) || (!!x && x.d === 1); // v7.00: por D (antes «D1 y fecha ≤ 3-ene»)
 // v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter, hallazgo de las evals de 2-3Q): en F1 (D2, D3, D6, D7 = mié 18 · jue 19 · mar 24 ·
 //   mié 25-nov) la eval de 2-3Q ya no deja «los N′ que sobran, adelanta el Anki»: los 7′ son 4Q COMENTADAS (77 s + 30 s = 107 s/Q → 4 × 107 s = 7,1′) =
 //   las nQ ancladas + (4 − nQ) de la COLA del quiz del D-1 (la 7.ª-10.ª de su lista: material del plan que ya existe, sin tocar ningún otro día). El Anki

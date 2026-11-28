@@ -82,6 +82,28 @@ for (const b of MD.mirBloques()) {
 }
 for (const u of [MJ.anki.mazoBaseBusca, MJ.relacional.raviBusca, ...Object.values(MJ.videos).map((v) => v.url)]) if (!/^https:\/\//.test(u)) aborta(`metodo_ravimedtest.json: URL no válida ${u}`);
 if (!(MJ.relacional.min >= 1 && MJ.relacional.min1dia >= 1 && MJ.relacional.min * 2 <= 10 && MJ.relacional.min1dia * 2 <= 6)) aborta('metodo_ravimedtest.json: minutos del repaso relacional fuera de rango (salen del APEX de 10′)');
+// v7.00 (corrector, 28-nov-2026): las FECHAS de las fases (tramo y avance) se DERIVAN del plan, no se escriben a mano en metodo_ravimedtest.json (las 72
+//   guías del 30-nov al 11-mar decían «el lun 4-ene (D33)» y «el vie 5-mar-2027 (D77)», fechas de la v6.10-v6.12): {{D<n>}} = fecha real del D<n> en
+//   mirDailyPlan («vie 15-ene») · {{D<n>a}} = con año · {{asig:D<n>}} = su asignatura (sin «y Nutrición») · {{banqueo}} = 1.er día del banqueo (mirMantenimiento,
+//   con año) · {{handoff}} = último día del banqueo (MIR_MANT_META.fin, con año). Un token sin resolver o una fecha «… (D<n>» que no sea la del D<n>: ABORTA.
+const MMf = cargarModuloTS(path.join('src', 'lib', 'mirMantenimiento.ts'), cache);
+const DOWf = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'], MESf = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fdF = (iso, conAnio) => { const d = new Date(iso + 'T12:00:00Z'); return `${DOWf[d.getUTCDay()]} ${d.getUTCDate()}-${MESf[d.getUTCMonth()]}${conAnio ? `-${iso.slice(0, 4)}` : ''}`; };
+const diaMir = (n) => { const x = MD.MIR_DIAS.find((y) => y.d === n); if (!x) aborta(`metodo_ravimedtest.json: una fase cita el D${n}, que no está en mirDailyPlan`); return x; };
+const fasesTxt = (t) => {
+  const out = String(t || '').replace(/\{\{(?:(asig):)?D(\d+)(a)?\}\}|\{\{(banqueo|handoff)\}\}/g, (m, asig, n, a, k) => {
+    if (k === 'banqueo') return fdF(MMf.MIR_MANT_DIAS[0].fecha, true);
+    if (k === 'handoff') return fdF(MMf.MIR_MANT_META.fin, true);
+    const x = diaMir(Number(n));
+    return asig ? x.asignatura.replace(/ y Nutrición$/, '') : fdF(x.fecha, !!a);
+  });
+  if (/\{\{/.test(out)) aborta(`metodo_ravimedtest.json: token de fecha sin resolver en «${out.slice(0, 120)}»`);
+  for (const m of out.matchAll(/((?:dom|lun|mar|mié|jue|vie|sáb) \d{1,2}-[a-z]{3}(?:-\d{4})?) \(D(\d+)/g)) {
+    const x = diaMir(Number(m[2])), f = m[1].replace(/-\d{4}$/, '');
+    if (f !== fdF(x.fecha, false)) aborta(`metodo_ravimedtest.json: «${m[0]}» pero el D${m[2]} es el ${fdF(x.fecha, false)}`);
+  }
+  return out;
+};
 const metodo = {
   version: MJ._meta.version, doc: MJ._meta.doc,
   mazoPersonal: MJ.anki.mazoPersonal, mazoBase: MJ.anki.mazoBase, mazoBaseBusca: MJ.anki.mazoBaseBusca, presetBase: MJ.anki.presetBase,
@@ -90,7 +112,7 @@ const metodo = {
   relMin: MJ.relacional.min, relMin1dia: MJ.relacional.min1dia, raviCarpeta: MJ.relacional.raviCarpeta, raviBusca: MJ.relacional.raviBusca, seccionNota: MJ.relacional.seccionNota,
   videos: MJ.videos, asignaturas: metodoAsig,
   // v6.10 · base cero (18-nov-2026): fases de la 1.ª vuelta (nivel de aprovechamiento de cada pregunta + puerta de avance) → mirGuia.mirFaseDe
-  fases: (MJ.fases || []).map((f) => ({ n: f.n, id: f.id, nombre: f.nombre, dDesde: f.dDesde, dHasta: f.dHasta, banqueo: !!f.banqueo, tramo: f.tramo, pretest: f.pretest || '', lectura: f.lectura || '', quiz: f.quiz, apex: f.apex, avance: f.avance })),
+  fases: (MJ.fases || []).map((f) => ({ n: f.n, id: f.id, nombre: f.nombre, dDesde: f.dDesde, dHasta: f.dHasta, banqueo: !!f.banqueo, tramo: fasesTxt(f.tramo), pretest: f.pretest || '', lectura: f.lectura || '', quiz: f.quiz, apex: f.apex, avance: fasesTxt(f.avance) })),
 };
 // v6.10 · base cero: las fases cubren D1-D78 sin huecos ni solapes, en orden, y la última lleva el banqueo
 {

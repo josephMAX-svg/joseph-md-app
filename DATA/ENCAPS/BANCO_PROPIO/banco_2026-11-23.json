@@ -91,7 +91,9 @@
     "campos incompletos"
    ]
   ],
-  "pool_disponible_codigo": 1
+  "pool_disponible_codigo": 1,
+  "sustituido_por": "banco_2026-12-02",
+  "sustituido_motivo": "v7.00 (28-nov): la sesión pasa al 2026-12-02, con los mismos ítems"
  },
  "items": [
   {

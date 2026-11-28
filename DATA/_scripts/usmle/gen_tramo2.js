@@ -148,6 +148,31 @@ const habLS = (a, b, skip) => rango(a, b).filter((s) => wd(s) >= 1 && wd(s) <= 6
 
 // ── hitos 2027 por examen (ventana L-S + preferente, §B5) · [nombre, forma(dOrig|'UWSA3'), vIni, vFin, preferente] ──
 const HITOS = {
+  // v7.00 (28-nov-2026): examen lun 20-dic-2027 (Step 1 en pausa en F1: orden de Joseph «ENCAPS primero») · patrón de la v6.07 corrido 2 semanas:
+  //   NBME 30 y UWSA3 fijos (el NBME 30 solo se ancla sin --partir-de-cero: con él va en la cola, en su sitio v5.20); NBME 31/32, UWSA2, NBME 33 + 3
+  //   bloques y Free 120 (E-14) + 2 semanas · GO/NO-GO lun 1-nov (E-49), tras el NBME 32 y antes del UWSA2, como en la del 6-dic
+  //   v7.00 (fix, 28-nov): el ensayo de 7 bloques (07:00-16:30) solo cabe en un día SIN turno (plantilla H: la posta 12:20-19:00 lo pisa) y el lun 15-nov
+  //   lleva turno → patrón de la v6.04 (examen 25-oct): NBME 33 SOLO a E-28 (lun 22-nov) y FREE 120 + 4 BLOQUES en el feriado mié 8-dic (E-12)
+  '2027-12-20': [
+    ['NBME 30', 72, '2027-05-24', '2027-05-29', '2027-05-24'],
+    ['UWSA3 (opcional)', 'UWSA3', '2027-06-28', '2027-07-03', '2027-06-29'],
+    ['NBME 31', 82, '2027-10-18', '2027-10-23', '2027-10-18'],
+    ['NBME 32', 83, '2027-10-25', '2027-10-30', '2027-10-25'],
+    ['UWSA2', 77, '2027-11-01', '2027-11-06', '2027-11-02'],
+    ['NBME 33', 85, '2027-11-22', '2027-11-27', '2027-11-22'], // v7.00 (fix): E-28, solo (patrón v6.04); el ensayo de 7 bloques no cabe en un lunes con turno
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-08'], // v7.00 (fix): feriado mié 8-dic (E-12, sin turno)
+  ],
+  // v7.00 · plan B lun 27-dic-2027 (si el sáb 27-feb-2027 D2-D4 no están cerrados en el mantenimiento, o un NO-GO): + 3 semanas sobre la del 6-dic ·
+  //   GO/NO-GO lun 8-nov (E-49); el NBME 32 cae en el feriado lun 1-nov (sin turno)
+  '2027-12-27': [
+    ['NBME 30', 72, '2027-05-24', '2027-05-29', '2027-05-24'],
+    ['UWSA3 (opcional)', 'UWSA3', '2027-06-28', '2027-07-03', '2027-06-29'],
+    ['NBME 31', 82, '2027-10-25', '2027-10-30', '2027-10-25'],
+    ['NBME 32', 83, '2027-11-01', '2027-11-06', '2027-11-01'],
+    ['UWSA2', 77, '2027-11-08', '2027-11-13', '2027-11-09'],
+    ['NBME 33', 85, '2027-11-29', '2027-12-04', '2027-11-29'], // v7.00 (fix): E-28, solo (patrón v6.04)
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-09'], // v7.00 (fix): feriado jue 9-dic (E-18, sin turno)
+  ],
   '2027-12-06': [ // v6.07 (8-nov-2026): examen lun 6-dic-2027 · NBME 30 y UWSA3 fijos; NBME 31/32 y UWSA2 + 6 semanas (patrón v6.04); ensayo de 7 bloques en el feriado lun 1-nov y Free 120 a E-14 (patrón 27-sep)
     ['NBME 30',72,'2027-05-24','2027-05-29','2027-05-24'],
     ['UWSA3 (opcional)','UWSA3','2027-06-28','2027-07-03','2027-06-29'],
@@ -186,6 +211,12 @@ const HITOS = {
 };
 // Colas de hitos tras un NO-GO (§B5): solo formularios NO usados; NBME 31/32 ya rendidos no se repiten.
 const HITOS_NOGO = {
+  // v7.00: NO-GO del lun 1-nov (base 20-dic) → plan B 27-dic: el NBME 31 (18-oct) y el 32 (25-oct) ya se rindieron; quedan UWSA2, NBME 33 y Free 120
+  '2027-12-20>2027-12-27': [
+    ['UWSA2', 77, '2027-11-08', '2027-11-13', '2027-11-09'],
+    ['NBME 33', 85, '2027-11-29', '2027-12-04', '2027-11-29'],
+    ['Free 120 + 4 bloques (ensayo 7 bloques)', 87, '2027-12-06', '2027-12-11', '2027-12-09'],
+  ],
   '2027-08-31>2027-09-27': [ // NO-GO del mar 13-jul (adelanto) → base 27-sep
     ['UWSA3 (cola NO-GO)', 'UWSA3', '2027-07-26', '2027-07-31', '2027-07-28'],
     ['UWSA2', 77, '2027-08-02', '2027-08-07', '2027-08-06'],
@@ -293,7 +324,8 @@ function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x])
   const esHito = (o) => typeof o === 'number' && /^🎯/.test(byD[o].sub);
   const hitos = ORIGEN_F1_TEMARIO.filter(esHito);
   // v6.07: con menos slots que hitos ya no lanza (los hitos que no caben con su Day-After completo van al tramo 2)
-  if (!(Number.isInteger(n) && n >= 1 && n <= ORIGEN_F1.length)) throw new Error(`colocarF1: ${n} slots (válido 1-${ORIGEN_F1.length})`);
+  // v7.00 (28-nov-2026): 0 slots = F1 sin mañanas de Step (_fechas_v6.json step1.pausa_desde = el D1): todo el temario de F1, hitos incluidos, va al tramo 2
+  if (!(Number.isInteger(n) && n >= 0 && n <= ORIGEN_F1.length)) throw new Error(`colocarF1: ${n} slots (válido 0-${ORIGEN_F1.length})`);
   const enF1 = new Array(n).fill(null);
   const slots = slotsHitosF1(n, hitos, semana);
   slots.forEach((s, k) => { enF1[s - 1] = hitos[k]; });
@@ -365,10 +397,24 @@ function generarTramo2(o) {
   // v6.01: filas de temario de F1 que NO caben → desplazadas al tramo 2 con su dOrig (D# v5.20)
   // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.06 [42-54, 56, 57, 79] · v6.05 [47-54, 56, 57, 79] · v6.03 [50-54, 56, 57, 79] · v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
   const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
-  if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
+  // v7.00: 0 = F1 sin mañanas de Step (step1.pausa_desde = el D1; colocarF1(0) manda todo el temario de F1 al tramo 2)
+  if (!(Number.isInteger(F1FILAS) && F1FILAS >= 0 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (0-' + F1_FILAS_V600 + '): ' + o.f1Filas);
   const SEM = validarSemanaPlan(o.semanaPlan == null ? SEMANA_PLAN : Number(o.semanaPlan)); // v6.08: semana de plan de F1 (mar · jue = 2 · L-V = 5)
   const COL = colocarF1(F1FILAS, byD, SEM);
-  const DESPL = COL.desplazadas;
+  // v7.00 (28-nov-2026) · «partiendo de cero» (Step 1 en PAUSA en F1: _fechas_v6.json step1.pausa_desde = el D1). o.excluirF1 = D# v5.20 de F1 que NO
+  //   entran en la cola porque van en otro sitio (v7.00: D1 = UWSA1 → hueco del UWSA3, lo pone gen_usmle_v5.js · D2-D4 = Fundamentos + Inmunología,
+  //   hechos en el MANTENIMIENTO dic-2026 → feb-2027). Los sistemas de las excluidas que no son hito cuentan como estudiados para la 16:15.
+  const EXCL = [...new Set((o.excluirF1 || []).map(Number))].sort((a, b) => a - b);
+  for (const d of EXCL) if (!COL.desplazadas.includes(d)) throw new Error(`excluirF1: v5.20 D${d} no es una fila de F1 desplazada al tramo 2 (con ${F1FILAS} slots en F1)`);
+  const DESPL = COL.desplazadas.filter((d) => !EXCL.includes(d));
+  // v7.00 · o.partirDeCero: sin la REENTRADA de T1 ni el NBME 29 anclado en T2 (la «línea base tras la pausa» no tiene NBME previo con el que
+  //   compararse): los NBME 29 y 30 (v5.20 D65 y D72) van en la COLA en su sitio v5.20 (delante de D66 y D73) con su Day-After, como los NBME 25-28
+  //   desplazados → orden 25 → 30 (Palmerton: la forma activa de número más bajo primero) y el NBME 25 es la LÍNEA BASE. La fila del NBME 30 de la
+  //   tabla de hitos no se ancla.
+  const PARTIR = !!o.partirDeCero;
+  const HITOS_COLA = PARTIR ? [65, 72] : [];
+  const motivoDespl = PARTIR ? 'Step 1 en pausa en F1' : 'no cupo en F1 antes de la pausa ENCAPS';
+  const motivoDesplHito = PARTIR ? 'Step 1 en pausa en F1' : 'no cupo en F1 con su Day-After antes de la pausa ENCAPS';
   // v6.07: un hito de F1 solo sale de F1 si no cabe con su Day-After completo (colocarF1.hitosFuera); cualquier otro hito desplazado = error
   for (const dv of DESPL) if (/^🎯/.test(byD[dv].sub) && !COL.hitosFuera.includes(dv)) throw new Error(`fila desplazada de F1 que es un hito (D${dv} v5.20) y sí cabía en F1 con su Day-After`);
   // v6.07: el último NBME que queda en F1 (la línea base del NBME 29 tras la pausa se compara con él; v6.00-v6.06: el NBME 28)
@@ -415,7 +461,13 @@ function generarTramo2(o) {
       FWD_ALL.push(mk({ tipo: 'day_after', de: nombre, uid: 'DA' + d, desdeF1: posF1(d), dHito: d }));
     } else FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d, desdeF1: posF1(d) }));
   });
-  CONT.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d })));
+  // v7.00 (--partir-de-cero): los NBME 29 y 30 entran en la cola en su sitio v5.20 (unidad 'hito' H<D> + su Day-After DA<D>, como un hito desplazado)
+  [...CONT, ...HITOS_COLA].sort((a, b) => a - b).forEach((d) => {
+    if (!HITOS_COLA.includes(d)) { FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d })); return; }
+    const nombre = nombreHitoV520(byD[d].sub);
+    FWD_ALL.push(mk({ tipo: 'hito', dOrig: d, forma: d, nombre, ventana: null, uid: 'H' + d }));
+    FWD_ALL.push(mk({ tipo: 'day_after', de: nombre, uid: 'DA' + d, dHito: d }));
+  });
   REFUERZO.forEach((r, i) => FWD_ALL.push(mk({ tipo: 'refuerzo', ref: i, uid: 'REF' + i, ...r })));
   REACT.forEach(([sys, k, n]) => FWD_ALL.push(mk({ tipo: 'reactivacion', sistema: sys, k, n, uid: `RX-${sys}-${k}` })));
   RANDOM.forEach((x) => BWD_ALL.push(mk({ tipo: 'uw_random', dOrig: typeof x === 'number' ? x : null, nuevo: typeof x === 'string' ? x : null, uid: 'UR' + x })));
@@ -448,10 +500,11 @@ function generarTramo2(o) {
   const filas = new Map(); // fecha → fila
   const ancla = (s, a) => { if (!futuro(s)) return; if (filas.has(s)) throw new Error('choque de anclas ' + s + ' ' + JSON.stringify(a)); filas.set(s, a); };
   const sig = (s) => PLAN.find((x) => x > s);
-  ancla(R, { tipo: 'reentrada' });
-  ancla(F3[1], { tipo: 'hito', dOrig: 65, forma: 65, nombre: 'NBME 29', ventana: null });
+  if (!PARTIR) ancla(R, { tipo: 'reentrada' }); // v7.00: partiendo de cero no hay REENTRADA (T1 = la primera unidad de la cola)
+  if (!PARTIR) ancla(F3[1], { tipo: 'hito', dOrig: 65, forma: 65, nombre: 'NBME 29', ventana: null }); // v7.00: con --partir-de-cero, en la cola
   for (const [nombre, forma, vIni, vFin, pref] of TABLA) {
     if (pref < R) throw new Error('hito antes del reinicio: ' + nombre);
+    if (HITOS_COLA.includes(forma)) continue; // v7.00: el NBME 30 va en la cola (--partir-de-cero)
     if (!futuro(pref) || formasUsadas.has(String(forma))) continue;
     ancla(pref, { tipo: 'hito', dOrig: typeof forma === 'number' ? forma : null, forma, nombre, ventana: [vIni, vFin] });
     ancla(sig(pref), { tipo: 'day_after', de: nombre });
@@ -522,7 +575,9 @@ function generarTramo2(o) {
   //   estudiados; con los 9 estudiados = la rotación de siempre). T1 dice el número real («de los 7 sistemas de F1»). --rotacion-9 (o.rotacion9)
   //   conserva la rotación fija de antes: solo para reproducir byte a byte las referencias v6.03-v6.05 (v6.00-v6.02 salen iguales sin él).
   const ROT9 = !!o.rotacion9;
-  const SIS_F1 = ROT9 ? new Set(SISTEMAS_ROT_16) : sistemasRotacionF1(COL.enF1, byD, PEND_F1.filter((d) => d <= F1FILAS));
+  // v7.00: + los sistemas de las filas de F1 excluidas de la cola que no son hito (v7.00: Fundamentos y Immunology, D2-D4 del mantenimiento)
+  const SIS_F1 = ROT9 ? new Set(SISTEMAS_ROT_16) : new Set([...sistemasRotacionF1(COL.enF1, byD, PEND_F1.filter((d) => d <= F1FILAS)),
+    ...EXCL.filter((d) => !/^🎯/.test(byD[d].sub) && SISTEMAS_ROT_16.includes(byD[d].system)).map((d) => byD[d].system)]);
   const nSisF1 = SIS_F1.size;
   const ultF1 = {}; // sistema → fecha de su última fila T de contenido de F1
   const marcaF1 = (sis, s) => { if (!ultF1[sis] || s > ultF1[sis]) ultF1[sis] = s; };
@@ -559,9 +614,11 @@ function generarTramo2(o) {
         const ventana = a.ventana || (F4row && !o.hitoF4SinVentana ? [lunesDe(s), add(lunesDe(s), 5)] : null);
         const extra = (/\+ 3 bloques/.test(a.nombre) ? ' · + 3 bloques random = ENSAYO 7 bloques' : /\+ 4 bloques/.test(a.nombre) ? ' · + 4 bloques random = ENSAYO 7 bloques' : '')
           + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (ventana ? ` · ventana ${f(ventana[0])}→${f(ventana[1])}` : '') : '')
-          + (a.dOrig === 65 ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME_F1} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
+          + (a.dOrig === 65 && !PARTIR ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME_F1} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
+          + (PARTIR && a.dOrig === 10 ? ' · LÍNEA BASE (el 1.er NBME del plan; los NBME van en orden 25 → 30)' : '')
           + (NOTA_V6[a.dOrig] ? ' · ' + NOTA_V6[a.dOrig] : '')
-          + (a.desdeF1 ? ` · DE F1 → TRAMO 2 (no cupo en F1 con su Day-After antes de la pausa ENCAPS; ${origenDespl(a)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '');
+          + (a.desdeF1 ? ` · DE F1 → TRAMO 2 (${motivoDesplHito}; ${origenDespl(a)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '')
+          + (HITOS_COLA.includes(a.dOrig) && a.uid ? ` · en su orden v5.20 (NBME 25 → 30) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido: 18:00 de hoy + las 4 filas siguientes'}` : '');
         if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = v.sub.replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
         else Object.assign(fila, DEF.hitoUWSA3, { sub: `🎯 ${a.nombre} (${hora})` + extra });
         Object.assign(fila, { forma: a.forma, nombre: a.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana });
@@ -574,7 +631,7 @@ function generarTramo2(o) {
         const pos = (a.desdeF1 ? DESPL : CONT).filter((x) => byD[x].system === v.system).indexOf(a.dOrig) + 1;
         const viernes = wd(s) === 5;
         let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
-        const preF1 = a.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; ${origenDespl(a)}) · ` : '';
+        const preF1 = a.desdeF1 ? `DE F1 → TRAMO 2 (${motivoDespl}; ${origenDespl(a)}) · ` : '';
         if (a.parte) { // F4: contenido partido
           const [k4, n4] = a.parte.split('/').map(Number);
           if (n4 === 4) { // v6.05 · inducción (¼ de unidad por fila): partes 1-2 = la mitad «PARTE 1» (pre-test + deep prime), 3-4 = la «PARTE 2» (consolidación)
@@ -633,9 +690,10 @@ function generarTramo2(o) {
     `preguntas (piso): contenido ${qT((x) => x.tipo === 'contenido')} · refuerzo ${qT((x) => x.tipo === 'refuerzo')} · reactivación ${qT((x) => x.tipo === 'reactivacion')} · uw_random ${qT((x) => x.tipo === 'uw_random')} · incorrectas ${qT((x) => x.tipo === 'incorrectas')} · colchón ${qT((x) => x.tipo === 'colchon')} → uWorld FRESCO = contenido + refuerzo + uw_random = ${qT((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo))}`,
     // v6.06 (fix): rotación de la 16:15 REENTRADA (sistemas de F1 + cuándo entra cada desplazado)
     ROT9 ? '16:15 REENTRADA: rotación fija de los 9 sistemas (--rotacion-9, referencias v6.03-v6.05)'
-      : `16:15 REENTRADA: rotación de los ${nSisF1} sistemas de F1 (${SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)).join(' · ')})${SISTEMAS_ROT_16.filter((x) => !SIS_F1.has(x)).map((x) => { const p = out.find((y) => y.fase === 'F3' && (y.franjaNota || '').includes(`timed de ${x} +`)); return ` · ${x} entra tras su última fila T (${ultF1[x] ? f(ultF1[x]) : 'sin filas'}) → ${p ? `T${p.t} ${f(p.fecha)}` : 'no entra en F3'}`; }).join('')}`,
+      : `16:15 REENTRADA: rotación de los ${nSisF1} sistemas de F1${EXCL.length ? ' (+ mantenimiento)' : ''} (${SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)).join(' · ')})${SISTEMAS_ROT_16.filter((x) => !SIS_F1.has(x)).map((x) => { const p = out.find((y) => y.fase === 'F3' && (y.franjaNota || '').includes(`timed de ${x} +`)); return ` · ${x} entra tras su última fila T (${ultF1[x] ? f(ultF1[x]) : 'sin filas'}) → ${p ? `T${p.t} ${f(p.fecha)}` : 'no entra en F3'}`; }).join('')}`,
+    ...(EXCL.length || PARTIR ? [`v7.00 · fuera de la cola: ${EXCL.map((d) => 'v5.20 D' + d).join(', ') || '—'}${PARTIR ? ' · partiendo de cero: sin REENTRADA en T1; NBME 29 y 30 en la cola (orden 25 → 30; el NBME 25 = línea base)' : ''}`] : []),
   ];
-  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados, sistemasRot16F1: SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)), rotacion9: ROT9, semanaPlan: SEM };
+  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados, sistemasRot16F1: SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)), rotacion9: ROT9, semanaPlan: SEM, excluidasF1: EXCL, partirDeCero: PARTIR };
 }
 
 /** Tabla markdown del tramo 2 (mismo formato que la referencia: Anexo A de la espec). */
@@ -678,11 +736,22 @@ function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
     // v6.08: filas de una semana de plan de F1 (por defecto, mañanas de Step por semana del JSON; --semana-plan 5 = v6.06 L-V y v6.07)
     semanaPlan: opt('--semana-plan') != null ? Number(opt('--semana-plan')) : semanaPlanDe(F),
     hitoF4SinVentana: argv.includes('--hito-f4-sin-ventana'), // v6.08 (fix est2): regla v6.07 (hito desplazado en F4 sin ventana), solo referencias
+    // v7.00 (28-nov-2026): D# v5.20 de F1 fuera de la cola (--excluir-f1 1,2,3,4: UWSA1 al hueco del UWSA3 · D2-D4 hechos en el mantenimiento) y
+    //   --partir-de-cero (sin REENTRADA en T1; NBME 29 y 30 en la cola, orden 25 → 30)
+    excluirF1: lista('--excluir-f1').map(Number),
+    partirDeCero: argv.includes('--partir-de-cero'),
     json: opt('--json'), md: opt('--md'),
   };
 }
 
-module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, slotsHitosF1, nombreHitoV520,DAY_AFTER_FILAS, SEMANA_PLAN, semanaPlanDe, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE, SISTEMAS_ROT_16, RX_ROT_16, sistemasRotacionF1 };
+// v7.00 (28-nov-2026, DISEÑO D3): con el Step 1 en PAUSA desde el D1 (0 mañanas de Step en F1) estas filas v5.20 de F1 no van a la cola del tramo 2:
+//   D1 = UWSA1 (va al hueco del UWSA3 opcional, decisión de Joseph del 17-nov; gen_usmle_v5.js) · D2-D4 = Fundamentos (lesión/muerte celular,
+//   inflamación; neoplasia) + Inmunología (innata/adaptativa, MHC, T/B), que se hacen en el MANTENIMIENTO dic-2026 → feb-2027 (usmleGuia: sesiones
+//   USMLE mar · jue 18:00 y sáb 04:15). Si el sáb 27-feb-2027 D2-D4 no están cerrados → plan B (examen lun 27-dic) y vuelven a la cola (excluir solo 1).
+const EXCLUIR_F1_V700 = [1, 2, 3, 4];
+const MANT_F1_V700 = [2, 3, 4];
+
+module.exports = { EXCLUIR_F1_V700, MANT_F1_V700, generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, slotsHitosF1, nombreHitoV520,DAY_AFTER_FILAS, SEMANA_PLAN, semanaPlanDe, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE, SISTEMAS_ROT_16, RX_ROT_16, sistemasRotacionF1 };
 
 if (require.main === module) {
   const o = opcionesTramo2(process.argv.slice(2));

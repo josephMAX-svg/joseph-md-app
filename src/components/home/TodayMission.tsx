@@ -223,7 +223,8 @@ export function encapsLabelDe(iso: string): string | null {
   const bRec = recDia && !recDia.llegada && new Date(iso + 'T12:00:00Z').getUTCDay() !== 0 ? pc?.bloques.find((b) => b.id === 'encaps-rec') : undefined;
   const corto = (n: string): string => n.replace(/^ENCAPS · /, '').replace(/\s*\(.*$/, '').replace(/:.*$/, '');
   const am = pc ? (bAm ? encapsMananaDe(bAm.fechaPlan ?? iso) : null) : encapsMananaDe(iso);
-  const pre = am ? `ENCAPS mañana ${am.n}/${am.de} · ${am.resumen.split(' · ')[0]}` : null;
+  // v7.00 (corrector): el colchón (jue 24 y jue 31-dic) no es la «mañana 0/21»
+  const pre = am ? (am.fase === 'colchon' ? `ENCAPS COLCHÓN ${am.colchon ?? '?'}/${am.colchones ?? 2} · simulacro Theomed` : `ENCAPS mañana ${am.n}/${am.de} · ${am.resumen.split(' · ')[0]}`) : null;
   const s = pc ? (b16 ? sesionEncapsDe(b16.fechaPlan ?? iso) : null) : sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
     const tarde = s.tipo === 'pretest' ? `D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}` : s.tipo === 'minisim' ? `D${s.dia} · mini-sim 25Q` : `D${s.dia} · banco ${s.codigo ?? ''}`.trim();
@@ -249,7 +250,7 @@ export function encapsLabelDe(iso: string): string | null {
   const domE = encapsDomingoDe(iso); // v6.07d: la etiqueta sale de encapsManana (domingos de 2 h con banqueos o con el simulacro solo)
   // v6.09 (fix revisión 16-nov, joseph 4): domingo con recuperación FIJA (v6.09, 17-nov: dom 22-nov 15:00, domingo de llegada; antes dom 29-nov 07:15): va primero en la etiqueta
   const recE = encapsRecuperaDe(iso);
-  if (recE) return `ENCAPS ${recE.ini} recuperación del viaje (fija)${domE ? ` + ${domE.etiqueta.replace(/^ENCAPS · /, '')}` : ''}`;
+  if (recE) return `ENCAPS ${recE.ini} ${/clases en diferido/.test(recE.nombre) ? 'clases en diferido' : 'recuperación'} (fija)${domE ? ` + ${domE.etiqueta.replace(/^ENCAPS · /, '')}` : ''}`; // v7.00: + las clases en diferido de los domingos de F2
   if (domE) return domE.etiqueta;
   if (repo) return `ENCAPS · sáb ${sab!.ini} · ${repo}`;
   return plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps') ? 'ENCAPS · intensiva (ver plan)' : null;
@@ -432,6 +433,8 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
   return d && c.guias ? { ...c, guias: c.guias.map((g) => moverGuia(g, d)) } : c;
 }
 /** v6.07: bloque sin hora fija cuya hora es «flexible · …» (plantillasV6: domingo). */
+/** v7.00 · «27-feb» de una fecha ISO (banner del Step 1 en PAUSA). */
+const diaMesCorto = (iso: string): string => `${Number(iso.slice(8))}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][Number(iso.slice(5, 7)) - 1] ?? ''}`;
 const esFlexible = (b: BloqueV6): boolean => !b.ini && /^flexible/.test(b.hora);
 /** Contenido de un bloque en su fecha y hora de PLAN (lo que era contenidoBloque hasta v6.02c). */
 function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema: string; sub: string; acciones: Accion[]; guias?: GuiaBloque[] } {
@@ -480,6 +483,9 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
           acciones: [{ lbl: 'AnkiWeb ↗', color: GREEN, url: ANKIWEB, fill: true }, ...(vidA ? [{ lbl: 'Vídeo ↗', color: EDGE, url: vidA }] : [])], guias: gA };
       }
       if (b.frente === 'usmle-eval') return { tema: b.nombre.includes('hito') ? 'Registra el % del hito en 📏 Medición (Cola de hoy)' : 'Bloque timed mixto de temas vistos + corrección + APEX', sub: 'termómetro diario del Step 1 · anchoring pre-sueño · registra las horas netas del día (GO/NO-GO por horas)', acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }], guias: guiasEn(b.ini ?? '18:00', b.fin ?? '18:45') };
+      // v7.00: sesión USMLE de MANTENIMIENTO (plantillasV6 › bloqueUsmleMant, fechasV6.usmleMantDe: mar · jue 18:00 en F1 y la transición · sáb 04:15 en la intensiva):
+      //   su guía es la de usmleGuia en esa franja (la escribe gen_usmle_guia.js); sin guía, el detalle del bloque
+      if (b.id === 'usmle-mant') return { tema: b.detalle ?? b.nombre, sub: 'Step 1 en PAUSA · mantenimiento · Mehlman en Tutor, sin reloj (uWorld, reservado para el reinicio)', acciones: [{ lbl: 'Qbankly ↗', color: EDGE, url: QBQ, fill: true }], guias: guiasEn(b.ini ?? '18:00', b.fin ?? '18:45') };
       // v6.05 (24-oct): las filas desplazadas de F1 al tramo 2 (T3-T13, F3) traen guía también de la 16:15 REENTRADA (usmleGuia)
       if (b.id === 'reentrada') return { tema: us?.franjaNota ?? 'REENTRADA: 20Q timed del sistema de la rotación', sub: 'F3 · 16:15 · ≥80 % → el sistema sigue vivo', acciones: [], guias: guiasEn(b.ini ?? '16:15', b.fin ?? '17:15') };
       if (!us || b.frente == null) return { tema: b.detalle ?? '', sub: '', acciones: [] };
@@ -543,8 +549,9 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
         const gs = guiaEncapsMananaEnRango(iso, b.ini, b.fin);
         if (am && gs.length) return {
           // v6.08: jue 31-dic (día extra SOLO ENCAPS) y mar 5-ene (en la intensiva) = mañanas de F1 que no cupieron en F1 (am.diaExtra)
-          tema: `Mañana ${am.n}/${am.de} · ${am.diaExtra ? 'mañana de F1 fuera de F1 (no cupo)' : am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
-          sub: am.fase === 'cierre' ? 'simulacro 100Q en 2 h → corrección → reglas → tarjetas' : 'teoría (texto primero o vídeo 1,75×) → post-test ciego → banqueo 72 s/Q → corrección + norma → tarjetas',
+          // v7.00: + el COLCHÓN (simulacro Theomed 100Q + corrección mientras no se gasta)
+          tema: am.fase === 'colchon' ? am.resumen : `Mañana ${am.n}/${am.de} · ${am.diaExtra ? 'mañana de F1 fuera de F1 (no cupo)' : am.fase === 'recuperacion' ? 'recuperación del atraso de Theomed' : am.fase === 'cierre' ? 'cierre del año' : 'ciclo semanal'} · ${am.resumen}`,
+          sub: am.fase === 'cierre' || am.fase === 'colchon' ? 'simulacro 100Q en 2 h → corrección → reglas → tarjetas' : 'teoría (texto primero o vídeo 1,75×) → post-test ciego → banqueo 72 s/Q → corrección + norma → tarjetas',
           acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso, true),
             ...(am.teoria.some((t) => /^Banqueo|^Revisión normativa/.test(t.item)) ? [campus('Adicionales ↗', ENCAPS_MANANA_META.campus.adicionales)] : [])],
           guias: gs,
@@ -552,7 +559,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       }
       if (b.id === 'encaps-pm') {
         const g = guiaEncapsTardeDe(iso);
-        if (g) return { tema: g.titulo, sub: 'Anki ENCAPS::Flashcards + ENCAPS::Cifras · la norma del día', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso)], guias: [g] };
+        if (g) return { tema: g.titulo, sub: 'Anki APEX::ENCAPS + ENCAPS::Cifras · la norma del día', acciones: [campus('Campus ↗', ENCAPS_MANANA_META.campus.curso)], guias: [g] };
       }
       if (b.id === 'theomed-prep' || b.id === 'theomed-vivo') {
         const viv = theomedSabadoDe(iso);
@@ -587,7 +594,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
           return {
             tema: sab.tipo === 'mini_sim' ? `🔁 REPOSICIÓN F1 · 🔥 MINI-SIM 25Q · cola larga ${sab.colaLarga.join(' + ')} · sim_n ${sab.simN ?? sab.host.dia}`
               : `🔁 REPOSICIÓN F1 · 🎯 BANCO ${sab.codigo ?? ''} · ${sab.subEje ?? ''}${sab.secundarios.length ? ` + ${sab.secundarios.join(' + ')}` : ''}`,
-            sub: `carril SÁBADO · sesión de F1 que no cupo · ${sab.tipo === 'mini_sim' ? '72 s/Q → corrección → nota /25 (cierre mini_sim del sábado)' : `eval 5Q → banco ${sS?.principal ? `${sS.principal.n}Q` : '(runner por generar)'} → registro (cierre «Carril B» del sábado)`} · ítems D${sab.host.dia}:s_*`,
+            sub: `carril ${new Date(iso + 'T12:00:00Z').getUTCDay() === 0 ? 'DOMINGO' : 'SÁBADO'} · sesión de F1 que no cupo · ${sab.tipo === 'mini_sim' ? `72 s/Q → corrección → nota /25 (cierre mini_sim del ${new Date(iso + 'T12:00:00Z').getUTCDay() === 0 ? 'domingo' : 'sábado'})` : `eval 5Q → banco ${sS?.principal ? `${sS.principal.n}Q` : '(runner por generar)'} → registro (cierre «Carril B» del sábado)`} · ítems D${sab.host.dia}:s_*`,
             acciones: [
               ...(pri ? [{ lbl: sab.tipo === 'mini_sim' ? 'Mini-sim ↗' : 'Banco ↗', color: TEAL, url: pri, fill: true }] : []),
               ...(ev ? [{ lbl: 'Eval ↗', color: TEAL, url: ev }] : []),
@@ -629,6 +636,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     }
     case 'research-derma': {
       // v6.02c (E4 · Research): pausa de átomos → guía de 30′ «Research mínimo» con la franja real del bloque
+      // v7.00: RESEARCH EN SUSPENSO (plantillasV6.suspenderResearch) → hueco libre, sin guía ni botones
+      if (b.detalle && /^RESEARCH EN SUSPENSO/.test(b.nombre)) return { tema: b.detalle, sub: 'hueco libre · sin átomo ni tarea', acciones: [] };
       if (b.detalle) return { tema: b.detalle, sub: "30' (DJ-4) · sin átomo nuevo", acciones: [], ...(/RESEARCH · mínimo/.test(b.nombre) && b.ini && b.fin && hm(b.fin) - hm(b.ini) === GUIA_RESEARCH_MINIMO.totalMin ? { guias: [{ ...GUIA_RESEARCH_MINIMO, franja: `${b.ini}–${b.fin}` }] } : {}) };
       const r = [...RESEARCH_DIAS, ...RESEARCH_DIAS_2027].find((x) => x.fecha === iso);
       // v6.02c (E4 · Research): día-Research → guía del átomo (qué · cuánto · cómo) + botón al recurso 1 + ◆ Obsidian de la carpeta del entregable
@@ -826,11 +835,11 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           <Text style={st.modoInfo}>Sin MIR, Research, Derma ni AURUM. {p.titulo}</Text>
         </View>
       )}
-      {/* v6.00 · F2: el Step 1 está en PAUSA (§B2) */}
-      {fase === 'F2' && (
+      {/* v6.00 · F2: el Step 1 está en PAUSA (§B2) · v7.00: la pausa empieza el D1 (step1.pausa_desde) → también en F1 y la transición, con el mantenimiento de step1.mantenimiento */}
+      {(fase === 'F1' || fase === 'TRANSICION' || fase === 'F2') && iso >= FECHAS_V6.step1.pausa_desde && iso < FECHAS_V6.step1.reinicio && (
         <View style={[st.banner, { borderColor: GREEN + '66', backgroundColor: GREEN + '10' }]}>
-          <Text style={[st.bannerTxt, { color: GREEN }]}>🇺🇸 Step 1 en PAUSA — Anki 30' + sábado 20Q mezcladas</Text>
-          <Text style={st.modoInfo}>Anki USMLE 05:15-05:45 L-V (0 nuevas, FSRS 85 %) · sáb 04:15-05:45 STEP 1 VIVO (10 incorrectas UWorld + 10 AMBOSS) · reinicio mar {FECHAS_V6.step1.reinicio.slice(8)}-mar (NBME 29 al día siguiente).</Text>
+          <Text style={[st.bannerTxt, { color: GREEN }]}>🇺🇸 Step 1 en PAUSA — mantenimiento (Anki ≤10′ L-V + sesión USMLE)</Text>
+          <Text style={st.modoInfo}>Anki USMLE 05:00-05:10 L-V (solo vencidas o nuevas; FSRS 90 %) · sesión USMLE de mantenimiento {FECHAS_V6.step1.mantenimiento.f1.hora} los mar · jue de diciembre y {FECHAS_V6.step1.mantenimiento.f2.hora} los sábados de la intensiva (hasta el {diaMesCorto(FECHAS_V6.step1.mantenimiento.f2.hasta)}) · reinicio {dowCorto(FECHAS_V6.step1.reinicio)} {diaMesCorto(FECHAS_V6.step1.reinicio)}.</Text>
         </View>
       )}
       {/* v6.00 · F4: turno del día + rol semanal */}

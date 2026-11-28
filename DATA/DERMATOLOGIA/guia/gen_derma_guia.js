@@ -108,8 +108,15 @@ if (UW.size !== 6) aborta(`uWorld: esperaba 6 Systems de Dermatology, hay ${UW.s
 
 // velocidad de vídeo (regla E1 del Step 1): S1 = hasta el D5 · S2-S3 = hasta el D15 · desde el D16
 const fechaD = (d) => (U.DIAS.find((x) => x.d === d) || {}).fecha;
-const VEL0 = { s1Hasta: fechaD(5), s23Hasta: fechaD(15) || (U.DIAS.length && U.DIAS.length < 15 ? U.DIAS[U.DIAS.length - 1].fecha : undefined) }; // v6.08: F1 con < 15 filas → fin de la F1 (mar 29-dic)
-if (!VEL0.s1Hasta || !VEL0.s23Hasta) aborta('no encuentro D5/D15 en usmleStep1Daily');
+// v7.00 (28-nov-2026): el Step 1 no tiene mañanas en F1 (step1.pausa_desde = el D1) → usmleStep1Daily ya no trae D5/D15 en F1. Los cortes de velocidad de Derma
+//   pasan a su PROPIO d, los mismos d que en la v6.09-v6.12 (1,0× hasta el d5 · 1,25× hasta el d15 · 1,5× desde el d16), así cada sesión MEDIDA conserva su
+//   tiempo ↔ material; las fechas son las del remap de Derma (d1 lun 30-nov).
+const fechaDerma = (d) => (DD.DERMA_DIAS.find((x) => x.d === d) || {}).fecha;
+const VEL0 = { s1Hasta: fechaDerma(5), s23Hasta: fechaDerma(15) }; // v6.08-v6.12: D5 / D15 de usmleStep1Daily (o el fin de la F1 con < 15 filas)
+if (!VEL0.s1Hasta || !VEL0.s23Hasta) aborta('no encuentro los cortes de velocidad (D5/D15 del Step o d5/d15 de Derma)');
+/** v7.00: último día del «lote 1» de Derma (las sesiones medidas d1-d17 de F1; en la v6.09-v6.12, jue 31-dic) = la fecha de su d17 tras el remap */
+const LOTE1_HASTA = fechaDerma(17);
+if (!LOTE1_HASTA) aborta('no encuentro el d17 de Derma');
 // v6.10 (17-nov-2026): DERMA QUIETA. El Step 1 corre una ranura (D1 = UWSA1 jue 19-nov → D5 jue 3-dic · última fila de F1 sáb 2-ene) pero Derma no se
 //   mueve, y sus sesiones de F1 están MEDIDAS (lotes 1-bis / 1-ter) con los cortes de la v6.09 (1,0× hasta el mar 1-dic · 1,25× hasta el mar 29-dic):
 //   seguir el corrimiento cambiaría la velocidad —y el tiempo ↔ material— del d6 (mié 2-dic) y del d16-d17 (30 y 31-dic). Con el Step de la v6.10
@@ -133,7 +140,7 @@ const r2 = (x) => Math.round(x * 100) / 100;
 const vinetas = (m) => { const k = Math.round(m / 5); return { k, razon: m ? (k * 5) / m : 1 }; };
 const DERMNET_MEDIDO = {};
 for (const [fecha, s] of Object.entries(DN.sesiones)) {
-  if (!(fecha <= '2027-01-03')) aborta(`DermNet ${fecha}: fuera de F1`);
+  if (!(fecha <= LOTE1_HASTA)) aborta(`DermNet ${fecha}: fuera del lote 1 (d1-d17)`);
   const lecturas = s.lee.map((l) => {
     const tx = l.texto.map((t) => secDN(l.pag, t)); const im = (l.imagenes || []).map((t) => secDN(l.pag, t));
     if (l.de && !(DN.sesiones[l.de] && DN.sesiones[l.de].aOtroDia && DN.sesiones[l.de].aOtroDia.fecha === fecha && DN.sesiones[l.de].aOtroDia.pag === l.pag && JSON.stringify(DN.sesiones[l.de].aOtroDia.texto) === JSON.stringify(l.texto))) aborta(`DermNet ${fecha}: la lectura «de» ${l.de} no coincide con el aOtroDia de esa sesión`);
@@ -205,7 +212,7 @@ const UW_F1_TOTAL = { 1028: 24, 1031: 15 };
 // v6.10e (18-nov-2026): mapa de F1 con casos REALES (DermNet Quizzes) y lecturas reales medidas — comprobación de forma (el reparto se valida en validarTodo)
 for (const [d, q] of Object.entries(CAT.DERMA_QUIZ_F1)) {
   const fila = DD.DERMA_DIAS.find((x) => x.d === Number(d));
-  if (!fila || !(fila.fecha <= '2027-01-03')) aborta(`DERMA_QUIZ_F1 d${d}: no es una sesión de F1`);
+  if (!fila || !(fila.fecha <= LOTE1_HASTA)) aborta(`DERMA_QUIZ_F1 d${d}: no es una sesión del lote 1 (d1-d17)`);
   if (q.quiz && !(CAT.DERMNET_QUIZZES[q.quiz] && q.desde >= 1 && q.k >= 1 && q.desde + q.k - 1 <= CAT.DERMNET_QUIZZES[q.quiz].n)) aborta(`DERMA_QUIZ_F1 d${d}: quiz «${q.quiz}» desconocido o casos ${q.desde}-${q.desde + q.k - 1} fuera de rango`);
   if (q.lectura && !CAT.LECTURA_REAL[q.lectura]) aborta(`DERMA_QUIZ_F1 d${d}: lectura «${q.lectura}» sin medir`);
   if (!q.quiz && !(q.promir >= 1)) aborta(`DERMA_QUIZ_F1 d${d}: ni quiz ni ProMIR`);
@@ -405,7 +412,7 @@ function validarTodo(tsDatos) {
   //   reales por viñeta; ningún paso dice «no hoy»; lo que va a otro día lleva su fecha en los primeros 100 caracteres del «cómo» (corte del Calendar: 110)
   //   y la sesión destino nombra el origen; el total de la franja es 45′.
   let dnF1 = 0; const usadasDN = new Set();
-  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03' && x.atlasUrl && x.atlasUrl.startsWith('https://dermnetnz.org/'))) {
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= LOTE1_HASTA && x.atlasUrl && x.atlasUrl.startsWith('https://dermnetnz.org/'))) {
     const c = curada[dia.d]; if (c && c.fecha === dia.fecha) continue; // curadas d1-d5: su guion propio
     const slug = dia.atlasUrl.replace('https://dermnetnz.org/topics/', ''); const m = DERMNET_MEDIDO[dia.fecha];
     if (!m || m.atlas !== slug) { errores.push(`d${dia.d} ${dia.fecha}: atlas DermNet «${slug}» de F1 sin medir para esta fecha (falta en dermnet_medidas_f1.json › sesiones)`); continue; }
@@ -429,12 +436,12 @@ function validarTodo(tsDatos) {
   // v6.09b · lote 1-quater: en TODA sesión Derma de F1 (curadas y por regla, plan B de 45′) el Tutor va a 2,35′/Q, ningún paso sin medida queda sin acotar,
   //   y el reparto de uWorld de F1 consume por System lo mismo que antes (2027 recibe el mismo stock)
   let nTutorF1 = 0;
-  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03')) {
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= LOTE1_HASTA)) {
     const g = DG.dermaGuiaPar(dia).planB; const tag = `d${dia.d} ${dia.fecha}`;
     for (const e of [...pasosTutorMal(g.pasos), ...pasosSinMedidaMal(g.pasos)]) errores.push(`${tag}: ${e}`);
     nTutorF1 += g.pasos.filter((p) => /· \d+Q · Tutor/.test(p.que)).length;
   }
-  const f1Uw = {}; for (const [f, a] of DG.dermaUwAsignacion()) if (f <= '2027-01-03') f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
+  const f1Uw = {}; for (const [f, a] of DG.dermaUwAsignacion()) if (f <= LOTE1_HASTA) f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
   for (const [uw, n] of Object.entries(UW_F1_TOTAL)) if (f1Uw[uw] !== n) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 consume ${f1Uw[uw] || 0}Q y debe consumir ${n} (si no, cambia el stock de 2027)`);
   for (const uw of Object.keys(f1Uw)) if (!(uw in UW_F1_TOTAL)) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 lo usa y no está en UW_F1_TOTAL`);
   // v6.10e (18-nov-2026 · PREGUNTAS REALES): (1) ninguna sesión (F1 + 2027, plan A/B, 45′/30′) menciona el proyecto Claude ni pide preguntas/viñetas a una IA
@@ -448,7 +455,7 @@ function validarTodo(tsDatos) {
   const quizRe = /^DermNet Quizzes › «([^»]+)» · casos (\d+)-(\d+) \((\d+) casos REALES × ~(\d+)′ = (\d+)′/;
   const usados = new Map(); let nQuizF1 = 0, nCasosF1 = 0;
   for (const [dStr, q] of Object.entries(CAT.DERMA_QUIZ_F1)) {
-    const dia = D2.DERMA_DIAS_TODOS.find((x) => x.d === Number(dStr) && x.fecha <= '2027-01-03');
+    const dia = D2.DERMA_DIAS_TODOS.find((x) => x.d === Number(dStr) && x.fecha <= LOTE1_HASTA);
     const tag = `d${dStr} ${dia ? dia.fecha : '?'}`;
     if (!dia) { errores.push(`${tag}: DERMA_QUIZ_F1 sin sesión de F1`); continue; }
     const g = DG.dermaGuiaPar(dia).planB;
@@ -467,7 +474,7 @@ function validarTodo(tsDatos) {
     }
   }
   // (3) F1: todo paso que declara «(N′ medidos» (DermNet, PMC, StatPearls, lista de 3 puntos) cuadra en 0,85-1,15 (con su dibujo «(≈N′)» si lo hay)
-  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= '2027-01-03')) for (const p of DG.dermaGuiaPar(dia).planB.pasos) {
+  for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= LOTE1_HASTA)) for (const p of DG.dermaGuiaPar(dia).planB.pasos) {
     const mm = /(\d+(?:[.,]\d+)?)′ medidos/.exec(p.que); if (!mm) continue;
     const dib = /dibujo[^(]*\(≈(\d+(?:,\d+)?)′\)/.exec(p.que); const nec = Number(mm[1].replace(',', '.')) + (dib ? Number(dib[1].replace(',', '.')) : 0);
     if (!(nec / p.min >= 0.85 && nec / p.min <= 1.15)) errores.push(`d${dia.d} ${dia.fecha}: «${p.que.slice(0, 60)}…» ${p.min}′ para ${nec.toFixed(2)}′ medidos (fuera de 0,85-1,15)`);
