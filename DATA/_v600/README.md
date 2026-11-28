@@ -1,6 +1,21 @@
-# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026) · + ADDENDUM v6.02 (17-oct-2026) · + v6.03 (20-oct) · + v6.04 (21-oct-2026)
+# v6.00 · Reestructuración anual definitiva (6-oct-2026) · addenda v6.01 → v6.12 · **v7.00 (sáb 28-nov-2026): reorganización final**
 
-> ## ✅ ESTADO VIGENTE = ADDENDUM v6.04 de `V6_ESPEC.md` (mié 21-oct-2026) sobre el ADDENDUM v6.03 (mar 20-oct-2026)
+> ## ✅ ESTADO VIGENTE = v7.00 (sáb 28-nov-2026, commit 9cf3c62). Lo de abajo es historial donde lo contradiga.
+> Orden de Joseph: del mar 24 al dom 29-nov no se estudió, y **todo arranca el LUN 30-NOV-2026**. Prioridad absoluta: el 1.er puesto del ENCAPS (examen dom 14-mar-2027, fijo).
+> - **Fechas:** rebase nativo sin alias (`corrida_s1` vacía). F1 lun 30-nov → mié 30-dic (22 hábiles; el 8 y el 9-dic hay sesión, el vie 25-dic es SKIP) · transición jue 31-dic (día de plan) → dom 3-ene · F2 lun 4-ene → dom 14-mar, con las mismas fechas · reinicio del Step 1 mar 16-mar.
+> - **Mañanas L-V 07:15-12:00 = ENCAPS.** 21 mañanas más 2 colchones con simulacro Theomed (jue 24 y jue 31-dic). La intensiva se renumera a los días 24-73. Los pendientes de F1 van al carril DOMINGO 09:30-10:30 de F2. Supabase se volvió a sembrar el 28-nov, con respaldo en `study_schedule_bk_v700_20261128`.
+> - **Step 1 en PAUSA desde el 30-nov** (`step1.pausa_desde`). Mantenimiento (`step1.mantenimiento`):
+>   - 18 sesiones: mar·jue 18:00-18:45 en diciembre y sáb 04:15-05:45 del 9-ene al 27-feb.
+>   - Anki USMLE ≤10′ a las 05:00 (el lun 30, el preset «APEX USMLE»).
+>   - **Examen provisional lun 20-dic-2027** (plan B 27-dic). Tramo 2 desde cero, NBME 25 → 33.
+> - **Frentes de tarde** (vibecoding, SYNAPSE, Business, Derma, AURUM, MIR, LIVIANO): D1 = lun 30-nov. **Research EN SUSPENSO** (hueco libre).
+> - **Detalle:**
+>   - Fechas: `DATA/_scripts/_fechas_v6.json` (v7.00) → `gen_fechas_v6.js` → `src/lib/fechasV6.ts`.
+>   - ENCAPS: `DATA/ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md`.
+>   - Calendar: `cal/CAL_V6.md` (§ v7).
+>   - Ficheros archivados de la v6: `DATA/_ARCHIVO/2026-11-28_pre_v7/` (con `MANIFEST.tsv`).
+
+> ## ⏸ (historial) ESTADO v6.04 de `V6_ESPEC.md` (mié 21-oct-2026) sobre el ADDENDUM v6.03 (mar 20-oct-2026)
 > - **v6.03** (lun 19 y mar 20-oct sin estudio): F1 = **mié 21-oct → mié 30-dic** (50 sesiones; D50 = NBME 28; 8 filas al tramo 2, T3-T10) · ENCAPS F1 `dia` 1-50 +
 >   intensiva 51-100 + 10 pendientes F1 · secundarios +2 hábiles · Calendar `cal/CAL_V6.md` §14 — sus fechas de plan siguen siendo la base de F1.
 > - **v6.04a** (mié 21-oct sin estudio): semana corrida por alias en la consulta (jue 22 = plan del mié 21 · vie 23 = plan del jue 22 · el vie 23 repartido en
@@ -49,7 +64,7 @@ Receta completa del régimen v6.00 (D1 = mié 7-oct-2026 · Step 1 hasta el 30-d
 |---|---|
 | `V6_ESPEC.md` | Especificación ejecutable r2 (§0 números · §A calendario/protegidos · §B USMLE · §C ENCAPS · §D MIR · §E secundarios · §F app · §G Google Calendar · §H lotes y verificaciones V1-V7 · **§I disparadores: qué se regenera cuando salga la convocatoria del ENCAPS, el inicio real del SERUMS o un NO-GO**). |
 | `PROPUESTA_V6.md` | Propuesta de diseño que Joseph aprobó (decisiones DJ-1…DJ-4). |
-| `espec/` | Scripts de cálculo de solo lectura: `node a_tabla.js` reproduce la tabla de escenarios del ENCAPS (§A5) y la fecha del Step 1 a reservar; `SERUMS=2027-05-06 node a_tabla.js` la sensibilidad; `b_horas.js` el presupuesto de horas (§B4); `gen_tramo2_ref.js` el tramo 2 de referencia; `v1_check.js` la verificación V1 (multiset). Ejecutar desde esta carpeta. |
+| `espec/` | **Archivado el 28-nov-2026** en `DATA/_ARCHIVO/2026-11-28_pre_v7/DATA/_v600/espec/` (las copias vivas están en `DATA/_scripts/usmle/ref_v6/`). Eran scripts de cálculo de solo lectura: `node a_tabla.js` reproduce la tabla de escenarios del ENCAPS (§A5) y la fecha del Step 1 a reservar; `SERUMS=2027-05-06 node a_tabla.js` la sensibilidad; `b_horas.js` el presupuesto de horas (§B4); `gen_tramo2_ref.js` el tramo 2 de referencia; `v1_check.js` la verificación V1 (multiset). Ejecutar desde esta carpeta. |
 
 - La especificación se escribió en el scratchpad de la sesión: donde dice `v600/…` o `v600/espec/…`, léase esta carpeta (`DATA/_v600/…`).
 - La fuente única de fechas NO está aquí: es `DATA/_scripts/_fechas_v6.json` → `node DATA/_scripts/gen_fechas_v6.js` → `src/lib/fechasV6.ts` (generado).

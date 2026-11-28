@@ -19,13 +19,19 @@ aquí se **consolida en formato legible** y se **guarda la data que extraen los 
 3. **Guardar siempre aquí.** Todo chat, al terminar, deja su data en la carpeta de su
    dominio (sub-carpeta `_scrape/` para JSON crudo, MD para lo consolidado).
 
-## Ritmo de estudio (calendario real del usuario, hora Lima)
-- **USMLE Step 1** — **BLOQUE PRINCIPAL** desde la reestructuración del 31-ago (6h15/día L-V: 05:00 Anki AM · 07:15 repaso anclado ·
-  08:15 pre-test 10Q · 09:00 deep prime · 11:00 30Q · 18:00 eval). Régimen v5.20 (DEFINITIVO, 6-oct): D1 = mié 7-oct-2026 → D95 = vie 19-feb-2027
-  (último día del plan, D-1 hábil; finde libre, dom 21-feb = D-1 real) → examen target **lun 22-feb-2027** (`src/lib/usmleStep1Daily.ts`; v5.19: mar 6-oct → jue 18-feb, examen vie 19-feb). *(Hasta el 31-ago era el bloque 16:15–17:15.)*
-- **ENCAPS** — 1h/día de banqueo (16:15–17:15 L-V, mantenimiento 2027-I: mié 7-oct-2026 → mar 16-feb-2027, v5.20; v5.19: mar 6-oct → lun 15-feb; `DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md`) →
-  **fase intensiva mar 23-feb → mar 9-mar-2027** (sembrada en Supabase, días 97-107) → **examen ENCAPS/SERUMS 2027-I FIJADO el mié 10-mar-2027** (v5.20; antes «fines de marzo»; ⚠ confirmar día/hora en la convocatoria: los ENCAPS se rindieron siempre en domingo).
-- **MIR** — bloque diario 15:15–16:15 (prioridad España).
-- **Dermatología ↔ Research** — **interdiario alternando** (un día Derma, el siguiente
-  Research), en el bloque de estudio que corresponda. Ambos se construyen día-a-día con
-  el mismo motor (tema atómico/día, links reales, progreso real marcable).
+## Ritmo de estudio: v7.00 (sáb 28-nov-2026), reorganización final, hora Lima
+Todo arranca el **lun 30-nov-2026**. Fuente única de fechas: `DATA/_scripts/_fechas_v6.json` → `src/lib/fechasV6.ts`. Estado y detalle en [`_v600/README.md`](_v600/README.md).
+- **ENCAPS (PRIORIDAD: 1.er puesto, examen dom 14-mar-2027, fijo).**
+  - Mañanas L-V 07:15-12:00: 21 mañanas más 2 colchones (jue 24 y jue 31-dic).
+  - Rotación 16:15-17:15 · cifras y normas a las 18:00 (lun·mié·vie) o a las 12:00-12:20 (mar·jue).
+  - Intensiva del lun 4-ene al vie 12-mar. Plan: `ENCAPS/PLAN_PRIMER_PUESTO_2027-I.md`.
+- **USMLE Step 1: en PAUSA** del 30-nov al 15-mar, solo mantenimiento:
+  - Anki ≤10′ a las 05:00.
+  - mar·jue 18:00-18:45 en diciembre; sáb 04:15-05:45 del 9-ene al 27-feb.
+  - Reinicio el mar 16-mar · examen provisional **lun 20-dic-2027** (plan B 27-dic).
+- **Tardes L-V:** SYNAPSE 12:30 · Business 13:00 · Derma 13:30 · AURUM 14:15 · MIR 15:15 · LIVIANO 17:15.
+  - Vibecoding a las 04:15.
+  - Research ↔ Derma alternan; **Research está EN SUSPENSO** (su día queda como hueco libre).
+- **Reglas fijas:** rutina 05:45-07:15 intocable · 0 pantallas desde las 20:30.
+  - Sábado: gimnasio 08:30-14:00 y baile 17:00-20:00.
+  - Domingo: baile desde las 17:00.
