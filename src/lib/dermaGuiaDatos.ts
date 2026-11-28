@@ -569,8 +569,8 @@ export const DERMA_QUIZ_F1: Record<number, { quiz?: string; desde?: number; k?: 
   "foco": "¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»"
  },
  "15": {
-  "promir": 4,
-  "foco": "4 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test y a las 2 de la 2.ª pasada)"
+  "promir": 3,
+  "foco": "3 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test del capítulo)"
  },
  "16": {
   "quiz": "skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases",
@@ -768,8 +768,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 12,
-     "que": "uWorld Step 1 · System «Dermatology (Inflammatory dermatoses and bullous diseases)» · Unused · 5Q · Tutor (28 preguntas en el System)",
-     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 5 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (5Q ≈ 11,8′), en inglés · cuentan doble para el Step 1 (no se repiten después).",
+     "que": "uWorld Step 1 · System «Dermatology (Inflammatory dermatoses and bullous diseases)» · Unused · 4Q · Tutor (28 preguntas en el System)",
+     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 4 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3, en inglés · modo Tutor = 1′ para componer el test y tapar la pantalla + 2,35′/Q (90 s de pregunta + 0,85′ de explicación): 4Q ≈ 10,4′ de los 12′ del paso; el resto, a releer la explicación de tus fallos · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
       "t": "Qbankly › Question Bank Library (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
@@ -812,7 +812,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "Qbankly › Question Bank Library (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
-     "cantidad": "5Q"
+     "cantidad": "4Q"
     },
     {
      "t": "ProMIR · Dermatología cap. 1",
@@ -829,7 +829,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "cantidad": "5 casos"
     }
    ],
-   "hecho": "5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 5 casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.",
+   "hecho": "4Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + 5 casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.",
    "planB": "Casos #192 (Surgical Dermatology. Case 22) y #43 (Medical Dermatology. Case 013), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }
@@ -951,8 +951,8 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     },
     {
      "min": 9,
-     "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 4Q · Tutor (18 preguntas en el System)",
-     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 4 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (4Q ≈ 9,4′) · cuentan doble para el Step 1 (no se repiten después).",
+     "que": "uWorld Step 1 · System «Dermatology (Skin and soft tissue infections)» · Unused · 3Q · Tutor (18 preguntas en el System)",
+     "como": "Qbankly › Question Bank Library › uWorld - USMLE Step 1 › Select → «+ New Test» → Number of Questions: 3 (no 20) · Status: Unused · Tutor · SOLO ese System → BEGIN TEST · antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · modo Tutor = 1′ para componer el test y tapar la pantalla + 2,35′/Q (90 s de pregunta + 0,85′ de explicación): 3Q ≈ 8,1′ de los 9′ del paso; el resto, a releer la explicación de tus fallos · cuentan doble para el Step 1 (no se repiten después).",
      "enlace": {
       "t": "Qbankly › Question Bank Library (uWorld Step 1)",
       "url": "https://qbankly.app/qbanks"
@@ -1013,7 +1013,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "Qbankly › Question Bank Library (uWorld Step 1)",
      "url": "https://qbankly.app/qbanks",
-     "cantidad": "4Q"
+     "cantidad": "3Q"
     },
     {
      "t": "ProMIR · Dermatología cap. 1",
@@ -1038,7 +1038,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      "url": "https://dermnetnz.org/topics/dermoscopy"
     }
    ],
-   "hecho": "4Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.",
+   "hecho": "3Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.",
    "planB": "Casos #112 (Medical Dermatology. Case 082) y #166 (Pediatric Dermatology. Case 26), la imagen dermatoscópica y el Pictorial de hoy NO se pierden: al recuperar el acceso, cada sesión hace 1 caso pendiente en el slot del Pictorial (variable de ajuste) hasta ponerte al día; el tema del Pictorial de ese día pasa a la cola. El caso nunca se salta.",
    "aviso": "AccessDerma caducado: renueva el acceso remoto desde la red de tu institución (campus/VPN u «Sign in via OpenAthens/Shibboleth»); mientras, manda el PLAN B (sin casos, Pictorial ni libros AccessDerma)."
   }

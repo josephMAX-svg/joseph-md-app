@@ -75,7 +75,7 @@ la 1.ª del plan a las 07:15 (con `::Pathology`). **Al cerrar el bloque de las 0
 | Ajuste | Valor | Por qué / origen |
 |---|---|---|
 | **FSRS** | **Activado**. Si ya lo está (el interruptor vale para toda la colección), déjalo; si no, actívalo y pulsa **Optimize all presets** | [P «Give Me 30 Minutes…»]: con historial previo se activa y se optimiza; **solo quien es nuevo en Anki** usa el algoritmo por defecto ~1 mes antes de activarlo. Joseph ya tiene historial (mazos MIR/ENCAPS) → se activa desde el D1 |
-| **Optimize del preset «APEX USMLE»** | **sáb 19-dic** (1.er sábado ≥ 28 días tras el D2, con 4 semanas de repasos), en el Anki del sábado | [P] FSRS necesita datos tuyos (~1 mes); el preset nuevo empieza sin repasos propios · [R] `SYNC_ANKI_OBSIDIAN_APP.md` («Optimize» cuando haya datos) |
+| **Optimize del preset «APEX USMLE»** | **mar 13-abr-2027** (v7.00: 1.ª fila de contenido del tramo 2 ≥ 28 días tras el reinicio del mar 16-mar, con 4 semanas de repasos propios), en el Anki AM de las 05:00; en la pausa del 30-nov al 15-mar nacen ≤3 tarjetas por sesión y no hay historial útil | [P] FSRS necesita datos tuyos (~1 mes); el preset nuevo empieza sin repasos propios · [R] `SYNC_ANKI_OBSIDIAN_APP.md` («Optimize» cuando haya datos) |
 | **Desired retention** | **90 %** (Anki 25.02 la escribe en %, 70-99; «0,90» tecleado la deja en 70 %) | [P] pasar de 90 a 100 % cuesta ~5 veces más tiempo; rango sano 85-90 % |
 | **New cards/day** | **20** | [P] techo 50, 30-40 al empezar · [PLAN] 20 = el tope de creación diario (§5): todo lo creado un día se estudia al siguiente sin cola |
 | **Maximum reviews/day** | **9999** | [P] «You never want to cap» (las vencidas): un tope bajo esconde vencidas y crea backlog invisible. **Nunca 200** salvo en el protocolo de backlog (§7) |
@@ -243,7 +243,7 @@ para principiantes) y el preset a 30/día.
 | **18:00 Eval acumulativa** | sí | **≤ 5** (comprimida ≤ 3; reducida del D4 ≤ 3), misma ruta del error | `ESPECIALIDAD` de la pregunta · `SUBTEMA <D#>_eval` · `FUENTE UWorld` · `MODO estudio` |
 | **18:00 Day-After 3/6-6/6** | sí | **1 PC card por pregunta del drill** (3 · 3 · 3 · 1): el caso reescrito a mano en orden cronológico y en presente | como la fila del Day-After 2/6 |
 | **Hito (UWSA1/NBME)** | no | 05:00 = repasos antes del hito (Palmerton los hacía incluso los días de examen) [R §4.8]; el hito no se corrige en caliente | — |
-| **Sábado 19:00** | no | solo vencidas (nuevas = 0, como dice la plantilla del sábado) · `Save to All Subdecks` · telemetría + Stats · el **sáb 19-dic**: FSRS › Optimize | — |
+| **Sábado 19:00** | no | solo vencidas (nuevas = 0, como dice la plantilla del sábado) · `Save to All Subdecks` · telemetría + Stats · (v7.00: el Optimize ya no va en sábado; va el mar 13-abr-2027 en el Anki AM) | — |
 | **Domingo 17:00** | no | opcional (≤ 15′): solo vencidas | — |
 
 La ruta del error sale de Palmerton: *Educational Objective* como filtro y fuente de la tarjeta; PC card cuando el fallo fue no
@@ -355,7 +355,7 @@ de simulacros. **Lo que no:** First Aid solo al final y 80 preguntas/día en F1 
 | 5 | Palmerton: repasos todos los días | domingo opcional | decisión del calendario (domingo libre); la guía recomienda hacerlos |
 | 6 | `SYNC_ANKI_OBSIDIAN_APP.md` y `anki_telemetria.js`: nuevas/día = 10 | 20/día | 10 dejaba sin estudiar parte de lo creado (deep prime ≤ 10 + errores + PC) |
 | 7 | guía v6.02c (D1): Maximum reviews/day 200; «si > 200 vencidas, nuevas = 0» | 9999; el tope de 200 solo dentro del protocolo §7, con disparador ALARMA G | Palmerton: nunca capar vencidas |
-| 8 | `PALMERTON_METODO_COMPLETO.md` §4.2: no activar FSRS el primer mes «si eres nuevo» | FSRS desde la configuración + Optimize del preset el sáb 19-dic | Joseph no es nuevo en Anki (historial MIR/ENCAPS); el mes de datos se respeta para el preset nuevo |
+| 8 | `PALMERTON_METODO_COMPLETO.md` §4.2: no activar FSRS el primer mes «si eres nuevo» | FSRS desde la configuración + Optimize del preset el mar 13-abr-2027 (v7.00) | Joseph no es nuevo en Anki (historial MIR/ENCAPS); el mes de datos se respeta para el preset nuevo |
 | 9 | `ankiLinks.usmleAnkiDeck`: Fundamentos/Assessment → `APEX::USMLE::General` | `Pathology` / especialidad de la pregunta | el parser rechaza `General` |
 | 10 | sábado en la plantilla: «nuevas = 0» | se respeta (las del viernes esperan al lunes) | — |
 

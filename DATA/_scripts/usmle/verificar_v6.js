@@ -876,6 +876,24 @@ if (CERO) {
     const sinDom = domF1.filter((iso) => !G.guiaUsmleDe(iso).some((g) => g.franja === '16:45–17:00'));
     ok(malM.length === 0 && sinDom.length === 0 && semanas.size === 13, 'guía USMLE (v7.00) · mantenimiento: Anki 05:00-05:10 L-V de la pausa (el D1 = preset), sin vídeo · las sesiones de step1.mantenimiento dentro de su franja, solo Mehlman (System real, Unused; nunca uWorld), ≤3 tarjetas · 13 semanas · domingos de F1 con Anki opcional',
       [...malM, ...sinDom.map((d) => `domingo ${d} sin Anki opcional`)].slice(0, 8).join(' · ') || `${nA} Anki AM · ${nS} sesiones · ${semanas.size} semanas · ${domF1.length} domingos`);
+    // v7.00 (fix, 28-nov) · (1) USMLE::Vocabulario es un mazo APARTE (el Study Now de APEX::USMLE no lo trae): cada Anki AM desde el día siguiente a la 1.ª sesión de
+    //   mantenimiento le da su propio Study Now (pausa 05:00-05:10: vencidas o nuevas; tramo 2 05:00-05:45: vencidas) · (2) el 1.er «Optimize» FSRS de reglaAnki es
+    //   una fecha REAL ≥ 28 días tras el reinicio con su paso en el Anki AM de ese día · (3) ningún texto de META con «undefined» / «NaN»
+    {
+      const sinVoc = [];
+      for (const f of G.GUIA_USMLE_FECHAS.filter((x) => SES[0] && x > SES[0].fecha)) for (const g of G.guiaUsmleDe(f)) {
+        if (g.franja === '05:00–05:10' && /^ANKI USMLE · solo si/.test(g.titulo) && !g.pasos.some((q) => q.como.includes('USMLE::Vocabulario › Study Now si tiene vencidas o nuevas'))) sinVoc.push(`${f} 05:00-05:10`);
+        if (g.franja === '05:00–05:45' && /^ANKI AM/.test(g.titulo) && !g.pasos.some((q) => q.como.includes('USMLE::Vocabulario › Study Now si tiene vencidas'))) sinVoc.push(`${f} 05:00-05:45`);
+      }
+      const MESv = { ene: '01', feb: '02', mar: '03', abr: '04', may: '05', jun: '06', jul: '07', ago: '08', sep: '09', oct: '10', nov: '11', dic: '12' };
+      const mO = /1\.er «Optimize» FSRS del preset el (?:lun|mar|mié|jue|vie|sáb|dom) (\d{1,2})-([a-z]{3})-(\d{4})/.exec(M.reglaAnki || '');
+      const fO = mO && MESv[mO[2]] ? `${mO[3]}-${MESv[mO[2]]}-${mO[1].padStart(2, '0')}` : null;
+      const pasoO = fO && G.guiaUsmleDe(fO).some((g) => g.franja === '05:00–05:45' && g.pasos.some((q) => /FSRS › «Optimize» del preset «APEX USMLE» \(1\.ª vez\)/.test(q.que)));
+      const okO = !!fO && fO >= V6.add(F.step1.reinicio, 28) && pasoO;
+      const rotosM = Object.entries(M).filter(([, v]) => v === undefined || /\bundefined\b|\bNaN\b/.test(JSON.stringify(v))).map(([k]) => k);
+      ok(sinVoc.length === 0 && okO && rotosM.length === 0, 'guía USMLE (v7.00, fix 28-nov) · USMLE::Vocabulario con su propio Study Now en cada Anki AM tras la 1.ª sesión (mazo aparte) · el 1.er «Optimize» FSRS de reglaAnki = fecha real ≥ 28 días tras el reinicio, con su paso en el Anki AM · META sin «undefined»/«NaN»',
+        [...sinVoc.slice(0, 5).map((x) => `sin vocabulario ${x}`), ...(okO ? [] : [`Optimize: ${fO || 'sin fecha en reglaAnki'}${fO && !pasoO ? ' (sin paso en el Anki AM)' : ''}`]), ...rotosM.map((k) => `META.${k} roto`)].join(' · ') || `Optimize ${fO} · ${G.GUIA_USMLE_FECHAS.filter((x) => SES[0] && x > SES[0].fecha).length} fechas de la guía revisadas`);
+    }
   } else {
     const malA = [], malC = []; let nA = 0, nC = 0;
     const stepF = new Set(DIAS.map((x) => x.fecha)); const d1 = DIAS[0].fecha;

@@ -212,7 +212,9 @@ const chkRecV610 = () => { // la franja debe ser la de _fechas_v6.json › corri
 const AUDIT_F0_V610 = {
   fecha: '2026-11-18', ini: '12:30', min: 3, pendiente: '2026-11-17',
   que: 'AUDITORÍA F0 (pendiente del mar 17)',
-  como: '1) SIN abrir nada, escribe en el journal qué certificados crees tener (AI Fluency · Claude 101 · Claude Code 101 · Platform 101). 2) Abre https://academy.claude.com → Sign in (cuenta Claude con el mismo correo que usaste en Skilljar) → «Your learning»; si sale «Import your Skilljar progress», púlsalo (sin eso no salen tus certificados viejos; si alguno aún no aparece, míralo en https://anthropic.skilljar.com, que cierra a principios de diciembre). 3) Marca cada curso ✓ o pendiente. A las 12:33 pasa a la A aunque no hayas terminado.',
+  // v7.00 · ítem 2 de la auditoría F0 (sáb 28-nov · FAQ oficial academy.claude.com/help/faq, leída el 28-nov): la página es «Your journey» (no «Your learning») y el
+  //   import está en su banner «Import your Skilljar progress» o en Settings; Skilljar cierra «in early December» (sin fecha exacta) → si ya cerró, el paso 2 se salta
+  como: '1) SIN abrir nada, escribe en el journal qué certificados crees tener (AI Fluency · Claude 101 · Claude Code 101 · Platform 101). 2) Abre https://academy.claude.com → Sign in (cuenta Claude con el mismo correo que usaste en Skilljar) → «Your journey»; si sale el banner «Import your Skilljar progress» (o en Settings), púlsalo (sin eso no salen tus certificados viejos; si alguno aún no aparece y Skilljar sigue abierto, míralo en https://anthropic.skilljar.com). Si Skilljar ya cerró, este paso se salta (sin import). 3) Marca cada curso ✓ o pendiente. A las 12:33 pasa a la A aunque no hayas terminado.',
 };
 let DOM_RECUPERA = new Map(); // se fija tras leer el START (abajo)
 let REC = null; // v6.10: REC_V610 si la regla aplica (abajo)
@@ -361,20 +363,22 @@ function buildAUnits() {
   //   Introduction to MCP, Building with the Claude API, MCP Advanced Topics, AI Capabilities and Limitations y Claude Cowork dan «Completion badge» (insignia)
   //   con su quiz final; Introduction to Agent Skills e Introduction to Subagents dicen «No completion badge» y no traen quiz (antes, «CERTIFICADO» en 2027). Sin quiz oficial (Building Effective Agents, Karpathy, 3Blue1Brown) no se inventan preguntas: recall en blanco
   //   y Feynman (SYN_FASES_BC). Mismos minutos y fechas.
-  push('AI Fluency: Framework & Foundations', '"Conclusion" + «Course quiz» oficial de la Academy (preguntas reales) → insignia = GATE de la fase 1 (1.er entregable de F0)', U.aif);
+  // v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE de un curso es una CONDICIÓN, no una fecha → las 4 A-units de F0 con quiz lo dicen («al
+  //   terminar el curso, no por fecha»); la A sigue donde paró la última A y lo siguiente corre (rutinaGuia.pasoSyn · synFaseAvisoDe)
+  push('AI Fluency: Framework & Foundations', '"Conclusion" + «Course quiz» oficial de la Academy (preguntas reales) → insignia = GATE de la fase 1 (al terminar el curso, no por fecha; 1.er entregable de F0)', U.aif);
   push('Claude 101', 'Módulo "Meet Claude": What is Claude? · Your first conversation · Getting better results · Desktop app (Chat, Cowork, Code)', U.c101);
   push('Claude 101', 'Módulo "Organizing your work and knowledge": projects · artifacts · skills', U.c101);
   push('Claude 101', 'Módulo "Expanding Claude\'s reach": connecting your tools · enterprise search · research mode', U.c101);
-  push('Claude 101', '"Putting it all together" (use-cases by role · other ways to work) + "What\'s next?" + «Course quiz» oficial → insignia Claude 101 (1.er gate de la fase 2)', U.c101);
+  push('Claude 101', '"Putting it all together" (use-cases by role · other ways to work) + "What\'s next?" + «Course quiz» oficial → insignia Claude 101 (1.er gate de la fase 2, al terminar el curso, no por fecha)', U.c101);
   push('Claude Code 101', '"What is Claude Code?" + "How Claude Code works" — el agente con el que ya trabajas, por dentro', U.cc101);
   push('Claude Code 101', '"Installing Claude Code" + "Your first prompt"', U.cc101);
   push('Claude Code 101', 'Módulo "Daily workflows": the explore → plan → code → commit workflow · Context management · Code review', U.cc101);
-  push('Claude Code 101', 'Módulo "Customizing": CLAUDE.md · Subagents · Skills · MCP · Hooks + «Course quiz» oficial → insignia = GATE de la fase 2', U.cc101);
+  push('Claude Code 101', 'Módulo "Customizing": CLAUDE.md · Subagents · Skills · MCP · Hooks + «Course quiz» oficial → insignia = GATE de la fase 2 (al terminar el curso, no por fecha)', U.cc101);
   // v6.10c (17-nov-2026 · verificado en academy.claude.com): la lección se llama ahora «What is the Claude Platform?» y la Academy añade «Building with
   //   Claude Code» antes del quiz → va en la 3.ª A-unit de Platform 101 (su fecha; la plataforma guarda el progreso), sin añadir A-units (2027 igual)
   push('Claude Platform 101', '"What is the Claude Platform?" + "Your first API call" + "Choosing the right model"', U.cp101);
   push('Claude Platform 101', 'Módulo "Teaching your Agent": The agent loop explained · What is tool use? · What is thinking?', U.cp101);
-  push('Claude Platform 101', '"Extending your Agent" (built-in tools · skills · MCP · context) + "Managed Agents" + "Building with Claude Code" (lección nueva de la Academy) + «Claude Platform 101 quiz» oficial = GATE de la fase 3 → serie 101 COMPLETA', U.cp101);
+  push('Claude Platform 101', '"Extending your Agent" (built-in tools · skills · MCP · context) + "Managed Agents" + "Building with Claude Code" (lección nueva de la Academy) + «Claude Platform 101 quiz» oficial = GATE de la fase 3 (al terminar el curso, no por fecha) → serie 101 COMPLETA', U.cp101);
   push('Building Effective AI Agents (ensayo)', 'Parte I: "What are agents?" · "When (and when not) to use agents" · "When and how to use frameworks" · "The augmented LLM"', U.ensayo);
   // v6.10u (auditoría c19 · vetadas #16 y diffs #19): sin enumerar los 5 workflows (son la respuesta del recall en blanco de la 2.ª parte del GATE 3/6, que
   //   va en este mismo evento) y con sus minutos: 11′ de lectura + 4′ de recall al cerrar el A (antes «Parte II: los 5 workflows — Prompt chaining · …»)
@@ -440,7 +444,9 @@ function buildAUnits() {
   push('n8n docs — ' + n8nDoc(2).modulo, 'Node parameters: Webhook URLs · HTTP Method · Path · Supported authentication methods · Respond · Response Code · Response Data · Common issues. Es la puerta del bot WhatsApp (S10).', n8nDoc(2).url);
   push('n8n docs — ' + n8nDoc(3).modulo, 'AI Agent node: parámetros del nodo en la página + Templates and examples + Common issues. Compara con los 5 patrones de "Building Effective Agents" (F0).', n8nDoc(3).url);
   push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 1).titulo}" · "${acad('academy-cc-in-action', 2).titulo}" · "${acad('academy-cc-in-action', 3).titulo}" · "${acad('academy-cc-in-action', 4).titulo}"`, cur('academy-cc-in-action').url);
-  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 7).titulo}" · "${acad('academy-cc-in-action', 8).titulo}" · "${acad('academy-cc-in-action', 9).titulo}" · "${acad('academy-cc-in-action', 12).titulo}" → quiz final: «Course quiz» oficial (insignia de finalización)`, cur('academy-cc-in-action').url);
+  // integración v7.00 · ítem 46 (revisión de fidelidad): los quizzes e insignias de 2027 también son una CONDICIÓN («al terminar el curso, no por fecha»), como las 4
+  //   A-units de F0 con quiz; aquí y en las INSIGNIA de F2 (Introduction to MCP, Building with the Claude API, MCP Advanced Topics, AI Capabilities, Cowork)
+  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 7).titulo}" · "${acad('academy-cc-in-action', 8).titulo}" · "${acad('academy-cc-in-action', 9).titulo}" · "${acad('academy-cc-in-action', 12).titulo}" → quiz final: «Course quiz» oficial (insignia de finalización; al terminar el curso, no por fecha)`, cur('academy-cc-in-action').url);
   push('Claude Code docs — ' + ccDoc(13).modulo, 'Give Claude a way to verify its work · Explore first, then plan, then code · Add an adversarial review step · Avoid common failure patterns → CIERRE F1: relee tu synapse-journal de 12 semanas y anota los 3 hábitos que faltan.', ccDoc(13).url);
   if (A.length !== 70) throw new Error('Total A-units F0+F1 debe ser 70, hay ' + A.length);
 
@@ -481,27 +487,27 @@ function buildAUnits() {
   push(apiN, `Módulo 7 "${api(7).modulo}" (II): Prompt caching · Rules of prompt caching · Code execution and the Files API · Quiz — dominio Context Management (15%).`, apiU);
   push('Academy — ' + cur('academy-mcp').nombre, `Módulo Connecting with MCP clients: ${t(acad('academy-mcp', 7))} · ${t(acad('academy-mcp', 8))} · ${t(acad('academy-mcp', 9))}`, cur('academy-mcp').url);
   push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 10))} · ${t(acad('academy-mcp', 11))}`, cur('academy-mcp').url);
-  push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 12))} · ${t(acad('academy-mcp', 13))} → INSIGNIA Introduction to MCP («Final assessment on MCP»)`, cur('academy-mcp').url);
+  push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 12))} · ${t(acad('academy-mcp', 13))} → INSIGNIA Introduction to MCP («Final assessment on MCP»; al terminar el curso, no por fecha)`, cur('academy-mcp').url);
   push(mcpAN, `${t(mcpA(1))} · ${t(mcpA(2))} · ${t(mcpA(3))} · ${t(mcpA(4))} · ${t(mcpA(5))} (sampling: el servidor pide al cliente que llame al modelo)`, mcpAU);
   // sem 16 (4; v5.18-v5.20: el 31-dic y el 1-ene caen en la sem 13, no aquí) · API IV: apps · agentes y workflows · certificado
   push(apiN, `Módulo 9 "${api(9).modulo}": ${api(9).titulo}`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (I): Agents and workflows · Parallelization workflows · Chaining workflows · Routing workflows`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (II): Agents and tools · Environment inspection · Workflows vs agents · Quiz — dominio Agentic Architecture (27%), el de mayor peso.`, apiU);
-  push(apiN, `Módulos 11-12: "${api(11).modulo}" + "${api(12).modulo}" → INSIGNIA Building with the Claude API («Final Assessment»; cierre de año).`, apiU);
+  push(apiN, `Módulos 11-12: "${api(11).modulo}" + "${api(12).modulo}" → INSIGNIA Building with the Claude API («Final Assessment», al terminar el curso, no por fecha; cierre de año).`, apiU);
   // sem 17 (6 · Fase B · deload) · Academy restante: skills · subagentes · Claude Code in Action · MCP Advanced II-III
   push('Academy — ' + cur('academy-agent-skills').nombre, `${t(acad('academy-agent-skills', 3))} · ${t(acad('academy-agent-skills', 4))}`, cur('academy-agent-skills').url);
   push('Academy — ' + cur('academy-agent-skills').nombre + ' + ' + cur('academy-subagents').nombre, `${t(acad('academy-agent-skills', 5))} · ${t(acad('academy-agent-skills', 6))} + ${t(acad('academy-subagents', 4))} → fin de Agent Skills + Subagents (estos 2 cursos no dan insignia ni traen quiz: recall en blanco de lo visto)`, cur('academy-agent-skills').url);
   push('Academy — ' + cur('academy-cc-in-action').nombre, `${t(acad('academy-cc-in-action', 10))} · ${t(acad('academy-cc-in-action', 11))}`, cur('academy-cc-in-action').url);
   push('Academy — ' + cur('academy-cc-in-action').nombre + ' + Claude Code docs — ' + ccDoc(11).modulo, `${t(acad('academy-cc-in-action', 13))} + repaso de la doc de plugins (dominio Claude Code, 20%): ¿qué de YoCPMD ya es plugin?`, cur('academy-cc-in-action').url);
   push(mcpAN, `${t(mcpA(6))} · ${t(mcpA(7))} · ${t(mcpA(8))} · ${t(mcpA(9))} · ${t(mcpA(11))} · ${t(mcpA(12))}`, mcpAU);
-  push(mcpAN, `${t(mcpA(13))} · ${t(mcpA(14))} · ${t(mcpA(15))} · ${t(mcpA(16))} · ${t(mcpA(17))} · ${t(mcpA(18))} · ${t(mcpA(19))} → INSIGNIA MCP Advanced Topics («Assessment on MCP concepts»)`, mcpAU);
+  push(mcpAN, `${t(mcpA(13))} · ${t(mcpA(14))} · ${t(mcpA(15))} · ${t(mcpA(16))} · ${t(mcpA(17))} · ${t(mcpA(18))} · ${t(mcpA(19))} → INSIGNIA MCP Advanced Topics («Assessment on MCP concepts»; al terminar el curso, no por fecha)`, mcpAU);
   // sem 18 (6 · Fase B · deload) · los 3 ensayos + Academy nueva (AI Capabilities · Cowork)
   push('Anthropic Engineering — ensayo', 'Effective context engineering for AI agents: context rot · compaction · structured note-taking · just-in-time retrieval — dominio Context Management (15%) del CCA-F.', U.contextEng);
   push('Anthropic Engineering — ensayo', 'Effective harnesses for long-running agents: cómo se mantiene un agente horas sin perder el hilo (compáralo con tus workflows de agentes).', U.harnesses);
   push('Anthropic Engineering — ensayo', 'Equipping agents for the real world with Agent Skills: por qué las skills son ficheros y no prompts (tus .claude/skills a la luz del ensayo).', U.agentSkillsEssay);
   push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(3))} · ${t(cap(4))} · ${t(cap(5))} · ${t(cap(7))} · ${t(cap(9))} (con los "Try it out")`, cur('academy-ai-capabilities').url);
-  push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(11))} · ${t(cap(13))} · ${t(cap(14))} · ${t(cap(15))} → INSIGNIA AI Capabilities and Limitations («Course Quiz»)`, cur('academy-ai-capabilities').url);
-  push('Academy — ' + cur('academy-cowork').nombre, `${t(cow(1))} · ${t(cow(4))} · ${t(cow(6))} · ${t(cow(7))} · ${t(cow(9))} · ${t(cow(11))} · ${t(cow(15))} → INSIGNIA Introduction to Claude Cowork`, cur('academy-cowork').url);
+  push('Academy — ' + cur('academy-ai-capabilities').nombre, `${t(cap(11))} · ${t(cap(13))} · ${t(cap(14))} · ${t(cap(15))} → INSIGNIA AI Capabilities and Limitations («Course Quiz»; al terminar el curso, no por fecha)`, cur('academy-ai-capabilities').url);
+  push('Academy — ' + cur('academy-cowork').nombre, `${t(cow(1))} · ${t(cow(4))} · ${t(cow(6))} · ${t(cow(7))} · ${t(cow(9))} · ${t(cow(11))} · ${t(cow(15))} → INSIGNIA Introduction to Claude Cowork (al terminar el curso, no por fecha)`, cur('academy-cowork').url);
   // sem 19 (5 · Fase C · deload · última semana con SYNAPSE) · repaso por dominio del CCA-F · simulacro · cierre
   push('Prep CCA-F · dominios 1-2 (repaso)', 'Agentic Architecture (27%) = relee "Building Effective Agents" (5 workflows, cuándo NO usar agentes) · Claude Code (20%) = relee "Best practices". Sin apuntes: recall en blanco por dominio (los 5 workflows con su cuándo-usar · 5 best practices) y compáralo con los textos; preguntas, solo reales: las del simulacro de esta semana (quizzes oficiales de la Academy).', U.ensayo); // v6.10 · base cero: antes «10 preguntas propias por dominio» (inventadas → fuera)
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
@@ -965,7 +971,7 @@ if (REC) {
   const paraA = aHHg(aMing(AUDIT_F0_V610.ini) + 15 - RECALL_A);
   dA.bloques[iA] = { ...A0, min: 15 - AUDIT_F0_V610.min, med: 15 - AUDIT_F0_V610.min,
     guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `Sigue donde paró tu última A del curso (no el «Continue» de la web); para a las ${paraA} y haz ${RECALL_A}′ de recall. En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}), en el orden del curso: aunque el título de hoy nombre otra lección, empiezas donde quedó la última A de este curso (la 1.ª A de un curso, desde su inicio), no donde te lleve el «Continue» de la plataforma (si importas el progreso de Skilljar, salta lecciones). Para a las ${paraA} aunque la lección siga y anota en el journal la lección y el minuto: la próxima A del curso sigue desde ahí, no salta a la lección de su título; si la lección acaba antes, empieza la siguiente del curso. De ${paraA} a ${finA}: recall en blanco en el journal (sin mirar, lo que recuerdes). Base cero: aunque en la auditoría la marques ✓, se cursa entera.`, url: A0.url, t: 'A ↗' } };
-  dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que}: certificados de F0 en «Your learning» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
+  dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que}: certificados de F0 en «Your journey» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
     guia: { que: AUDIT_F0_V610.que, como: AUDIT_F0_V610.como, url: U.academyClaude, t: 'Academy' } });
 }
 // v7.00 (1): la AUDITORÍA F0 (A-unit 1) abre la 2.ª sesión del plan con sus 3′ (mismo texto y reglas que la tanda C de la v6.10, decidido con Joseph) y la A de
@@ -981,9 +987,11 @@ if (A_AUD_V7) {
   const A0 = dA.bloques[iA];
   const RECALL_A = 3;
   const paraA = aHHg(aMing(AUDIT_F0_V610.ini) + 15 - RECALL_A);
+  // v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE del curso es una CONDICIÓN («al terminar el curso»), no una fecha, y lo siguiente corre → la A
+  //   sigue donde paró la última A, en el orden del plan (= rutinaGuia.pasoSyn, tipo «curso»); el import de Skilljar hace saltar el «Continue»
   dA.bloques[iA] = { ...A0, min: 15 - AUDIT_F0_V610.min, med: 15 - AUDIT_F0_V610.min,
-    guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `Sigue donde paró tu última A del curso (no el «Continue» de la web); para a las ${paraA} y haz ${RECALL_A}′ de recall. En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}), en el orden del curso: aunque el título de hoy nombre otra lección, empiezas donde quedó la última A de este curso (la 1.ª A de un curso, desde su inicio), no donde te lleve el «Continue» de la Academy. Cierre: recall en blanco en el journal (sin mirar, lo que recuerdes).`, url: A0.url, t: 'Academy' } };
-  dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que.replace(/ \(pendiente del mar 17\)/, '')}: certificados de F0 en «Your learning» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
+    guia: { que: `${A0.material} › ${A0.leccion} (${15 - AUDIT_F0_V610.min}′, de ${pasa} a ${finA})`, como: `Sigue donde paró tu última A (no el «Continue» de la web); para a las ${paraA} y haz ${RECALL_A}′ de recall. En el PC, 1,0× con subtítulos en inglés, al terminar la auditoría (${pasa}), en el orden del plan: aunque el título de hoy nombre otra lección, empiezas donde quedó tu última A, no donde te lleve el «Continue» de la Academy (con el progreso importado salta lecciones). Para a las ${paraA} aunque la lección siga y anota en el journal la lección y el minuto: la próxima A sigue desde ahí. El «Course quiz» va al terminar la última lección del curso (el GATE no es una fecha) y, hasta entonces, lo siguiente corre. De ${paraA} a ${finA}: recall en blanco en el journal (sin mirar, lo que recuerdes).`, url: A0.url, t: 'Academy' } };
+  dA.bloques.splice(iA, 0, { tag: 'A', min: AUDIT_F0_V610.min, med: AUDIT_F0_V610.min, formato: 'pantalla', material: 'Anthropic Academy', leccion: `${AUDIT_F0_V610.que.replace(/ \(pendiente del mar 17\)/, '')}: certificados de F0 en «Your journey» (academy.claude.com)`, url: U.academyClaude, real: true, audit: true,
     guia: { que: AUDIT_F0_V610.que.replace(/ \(pendiente del mar 17\)/, ''), como: AUDIT_F0_V610.como, url: U.academyClaude, t: 'Academy' } });
   aDia[0] = dA.fecha;
 }
@@ -1375,8 +1383,9 @@ export interface SynFaseBC { id: string; corto: string; desde: string; hasta: st
   /** v6.10u: si está, la 2.ª fecha pide solo esto (\`hoy\`) y recuerda cuándo fue la 1.ª parte (\`previo\`), en vez del \`gate\` entero */
   gate2?: { hoy: string; previo: string } }
 export const SYN_FASES_BC: SynFaseBC[] = ${JSON.stringify(SYN_FASES_BC)};
-/** v6.10 · base cero: criterio de avance común a todas las fases (las fechas no se mueven) */
-export const SYN_AVANCE_BC = 'Las fechas no se mueven: la fase siguiente empieza en su fecha. Un quiz oficial no aprobado se repite en el PC del domingo siguiente (SHIP, flexible) hasta aprobarlo, solo con las lecciones falladas.';
+/** v6.10 · base cero: criterio de avance común a todas las fases · v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE es una CONDICIÓN, no una
+ *  fecha (\`gateFechas\` = el día en que el plan lo espera); la A sigue donde paró la última A y lo siguiente corre; ya nada va al PC del domingo */
+export const SYN_AVANCE_BC = 'El GATE de cada fase es una condición, no una fecha: su quiz oficial (o su recall en blanco) va al terminar su curso o su material, y hasta entonces la A sigue donde paró la última A y lo siguiente corre. Un quiz no aprobado: la A siguiente repasa solo lo fallado y lo repite (ya no va al PC del domingo).';
 /** v6.10 · base cero: fase del SYNAPSE de una fecha de PLAN. Fases 1-4 (F1, con alias): por sus \`fechas\` (desde / hasta = 1.ª y última sesión en orden REAL;
  *  un día sin A —domingo, feriado— toma la fase de la última fecha de plan anterior que sí la tiene). Fases 5-6 (2027): por rango. */
 export function synFaseBCDe(fechaISO: string): SynFaseBC | undefined {

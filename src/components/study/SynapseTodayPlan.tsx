@@ -125,8 +125,18 @@ function BloqueRow({ b }: { b: SynBloque }) {
  *  7-feb · taper S13 dom 14-feb · S14 21-feb · S15 28-feb · dom 7-mar = PC propio de S16 + PC 0' de S17 · S18 dom 21-mar (dom 14-mar = ENCAPS,
  *  PROTEGIDO; S19 y S20 cierran después del SYNAPSE, sin PC). El sábado ya no lleva PC. */
 function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void; vaEl?: string | null }) {
-  const p = vibeProyectoEnFecha(fecha);
-  const t = vibeTaperEnFecha(fecha);
+  const wd = (() => { try { return new Date(fecha + 'T12:00:00').getDay(); } catch { return 1; } })();
+  // v7.00 (sáb 28-nov, chat vibe · ítem 47-3): el SÁBADO la card es la del PC de MAÑANA (vibePCDomingo del domingo: SHIP · AVANCE · PC del taper), no la del proyecto
+  //   en curso: desde el sáb 2-ene cada proyecto cierra a media semana y vibeProyectoEnFecha daba el SIGUIENTE (sáb 2-ene «S5 … SHIP dom 10-ene» con el SHIP de S4
+  //   al día siguiente; sáb 27-feb, el taper S13 con el SHIP de S12). Sin PC mañana (o fuera del sábado), la de siempre
+  const manana = (() => { try { const d = new Date(fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); } catch { return fecha; } })();
+  const pcMan = wd === 6 ? vibePCDomingo(manana) : [];
+  const mMan = pcMan.length ? pcMan[pcMan.length - 1] : undefined;
+  const p = mMan ? mMan.proyecto : vibeProyectoEnFecha(fecha);
+  const t = mMan ? mMan.taper : vibeTaperEnFecha(fecha);
+  // el próximo paso del vibecoding tras ese domingo, si es de OTRO proyecto / taper (sáb 2-ene: S5 sigue el lun 4-ene)
+  const sigV = mMan ? VIBE_DIAS.find((y) => fechaRealDe(y.fecha, 'vibecoding') > manana) : undefined;
+  const sigTxt = sigV && sigV.semana !== mMan?.s ? ` S${sigV.semana} sigue el ${fmtFecha(fechaRealDe(sigV.fecha, 'vibecoding'))}.` : '';
   const pcSab = vibePCDomingo(fecha); // v6.07: el PC es el domingo (nombre de la variable, histórico)
   const pcMain = pcSab.length ? pcSab[pcSab.length - 1] : undefined;
   const pcExtra = pcSab.slice(0, -1).map((x) => x.taper ? (
@@ -139,7 +149,6 @@ function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibe
   const vdShips = (!vd ? enShipDe(fecha) : []).map((f) => vibeDiaDe(f)).filter((x): x is DiaVibe => !!x);
   const shipped = vibeShipped(vibeDone);
   const verificados = vibeShippedVerificado();
-  const wd = (() => { try { return new Date(fecha + 'T12:00:00').getDay(); } catch { return 1; } })();
   const accent = OBS;
   const journal = vibeJournalUrl(fecha);
   // v6.10y (revisión): el paso de hoy va OTRO día real (vaEl) → sin ✓ (lo marcarías el día que no es)
@@ -182,10 +191,14 @@ function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibe
         <Text style={st.vibeTitle}>{t.nombre}</Text>
         {vd ? (
           <Text style={st.vibeStep}>› {wdDe(fechaRealDe(vd.fecha, 'vibecoding'))} · {VIBE_TIPO_LABEL[vd.tipo]} ({vd.min}'): {vd.paso}</Text>
-        ) : wd === VIBE_META.diaShip ? (
+        ) : wd === VIBE_META.diaShip && pcSab.length ? (
           <Text style={st.vibeStep}>› DOMINGO (flexible): {t.shipTxt}</Text>
+        ) : wd === VIBE_META.diaShip ? (
+          <Text style={st.vibeStep}>› DOMINGO: sin PC del vibecoding (día protegido o sin sesión).{((x) => (x ? ` El vibecoding sigue el ${fmtFecha(fechaRealDe(x.fecha, 'vibecoding'))} (S${x.semana}).` : ''))(VIBE_DIAS.find((y) => fechaRealDe(y.fecha, 'vibecoding') > fecha))}</Text>
         ) : wd === 6 ? (
-          <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). El PC opcional va el domingo.</Text>
+          // integración v7.00 (revisión de regresiones): el sábado de un taper de deload dice lo mismo que el domingo (su shipTxt): «PC opcional y sin bloque: solo si es
+          //   día VERDE, hasta 30′ de verify --sensores» (sáb 3, 10 y 17-abr) o, con «Sin PC» (S20, sáb 24-abr), que mañana no hay PC; antes «PC de 0′ (deload total)»
+          <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). {mMan && !(t.tipo !== 'mantenimiento' && /^Sin PC/.test(t.shipTxt)) ? `${t.tipo === 'mantenimiento' ? `El PC opcional (30′) va mañana (${fmtFecha(manana)})` : `Mañana (${fmtFecha(manana)}), ${t.shipTxt.replace(/\s*\([^()]*\)\.?$/, '').replace(/\.$/, '').replace(/^Opcional/, 'PC opcional')}`}.${sigTxt}` : 'Mañana domingo no hay PC del vibecoding.'}</Text>
         ) : (
           <Text style={st.vibeStep}>› Hoy no hay paso del vibecoding (feriado).</Text>
         )}
@@ -224,7 +237,10 @@ function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibe
         <Text style={st.vibeStep}>› DOMINGO PC (2 h, a la hora que puedas) = {((xs) => (xs.length === 1 ? `primero el paso ${xs[0]!.k}/5 de S${p.s} (${VIBE_TIPO_LABEL[xs[0]!.tipo]}: commit [S${p.s}] + verify ${p.s}; márcalo con su botón), después el `
           : xs.length ? `primero los pasos ${xs.map((x, i) => `${x.k}/5 (${VIBE_TIPO_LABEL[x.tipo]}${i === xs.length - 1 ? `: commit [S${p.s}] + verify ${p.s}` : ''})`).join(' y ')} de S${p.s}, en ese orden (márcalos con su botón); después el ` : ''))(vdShips.filter((x) => x.semana === p.s))}SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}. Después, Feynman (10′, opcional): explica en voz alta qué construiste.</Text>
       ) : wd === 6 ? (
-        <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). El SHIP de S{p.s} es el domingo {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.</Text>
+        <Text style={st.vibeStep}>› SÁBADO: sin vibecoding (15:00-17:00 es la clase EN VIVO de Theomed). {mMan?.tipo === 'avance'
+          ? `Mañana (${fmtFecha(manana)}), AVANCE de S${p.s} (aún no termina: último día ${fmtFecha(fechaRealDe(p.fin, 'vibecoding'))} · SHIP ${fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}).`
+          : mMan ? `Mañana (${fmtFecha(manana)}), el SHIP de S${p.s} (flexible).${sigTxt}`
+          : `El SHIP de S${p.s} es el domingo ${fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.`}</Text>
       ) : (
         <Text style={st.vibeStep}>› Hoy no hay paso del vibecoding (feriado). SHIP de S{p.s}: {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}.</Text>
       )}
@@ -233,7 +249,7 @@ function VibeCard({ fecha, vibeDone, onToggleVibe, vaEl }: { fecha: string; vibe
       <Text style={[st.vibeSub, { color: verifyColor }]} numberOfLines={2}>
         {verify
           ? `último verify ${verify.fecha} ${verify.hora}: ${verify.criterios_ok}/${verify.total} · ${verify.shipped ? 'SHIPPED ✅' : 'NO shipped'} · ${verify.resumen}`
-          : `sin verify todavía: node DATA/_scripts/verify_vibecoding.js ${p.s} (sáb PC, antes de marcar) · commits [S${p.s}] …`}
+          : `sin verify todavía: node DATA/_scripts/verify_vibecoding.js ${p.s} (SHIP del domingo, antes de marcar) · commits [S${p.s}] …`}
       </Text>
       <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
         {btnDia}
@@ -310,7 +326,8 @@ function HoyView({ dia, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSyna
 
       {/* v6.02c (E5) · guías del día (formato común): 04:15 vibecoding · SYNAPSE de L-V · sábado PC (SHIP + A/B/C) · domingo Feynman */}
       {(() => {
-        const fV = vibeFechaDe(dia.fecha);
+        // v7.00 · ítem 46 (bajo): la MISMA fecha de plan del vibecoding que la VibeCard (fV de arriba); antes se recalculaba con vibeFechaDe(dia.fecha) y, terminado el
+        //   SYNAPSE (vie 23-abr-2027), la VibeCard enseñaba el paso de hoy y la guía seguía en la del último día del SYNAPSE
         // un día sin vibecoding (su paso va otro día real: vibeVaOtroDia, la misma condición que la VibeCard) no pinta la guía de ese paso
         const otroDia = !!vibeVaOtroDia(dia.fecha, fV);
         const gs = [otroDia ? null : guiaVibeDe(fV), guiaShipDe(fV), guiaFeynmanDe(fV), guiaSynapseDe(dia.fecha)].filter((g): g is NonNullable<typeof g> => !!g);

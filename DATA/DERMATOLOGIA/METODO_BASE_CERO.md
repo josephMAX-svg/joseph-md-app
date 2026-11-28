@@ -17,14 +17,15 @@
    las 103 sesiones** (viñetas, «dictado inverso», tabla y las «8 preguntas de verificación» las generaba una IA).
 3. **Si un tema no tiene banco real abierto** (estética, dermatopatología, cirugía), el paso es **PRÁCTICA SIN PREGUNTAS**: recall en blanco
    a papel, contraste con la lectura del día, explicación en voz alta y tarjetas. Nunca preguntas inventadas.
-4. **Pocas preguntas y en Tutor al principio**: 3-5 uWorld por sesión en modo Tutor (2,35′/Q), 4-8 casos DermNet de ~2′ y el test ProMIR del
-   capítulo (8Q) una sesión de cada tres.
+4. **Pocas preguntas y en Tutor al principio**: 1-4 uWorld por sesión en modo Tutor (v7.00: 1′ para componer el test y tapar la pantalla +
+   2,35′/Q → nº = floor((min − 1) / 2,35); antes 3-5 a 2,35′/Q), 4-8 casos DermNet de ~2′ y el test ProMIR del capítulo (8Q) una sesión de cada tres.
 5. **Para pasar de fase se exige un dominio del 80 % en 10 casos o preguntas seguidos**, la regla de Palmerton (abajo, §2). Si no llegas, las
    fechas no se mueven: se ajusta el método en este orden: recursos → comprensión → aplicación → memoria.
 6. **Mismas horas y fechas.** 13:30-14:15 en días alternos con Research. Solo cambia el contenido del paso que ocupaba el proyecto Claude, y
    con los mismos minutos.
 7. **Tiempo ↔ material, en el intervalo [0,85; 1,15]**: casos DermNet a ~2′ por caso (lo dice el propio quiz) · lectura en inglés a 100 palabras/min
-   + 0,25′ por figura · ProMIR a 77 s/Q · uWorld Tutor a 2,35′/Q. El `--check` lo comprueba.
+   + 0,25′ por figura · ProMIR a 77 s/Q · uWorld Tutor con nº EXACTO = floor((min − 1) / 2,35) (v7.00, fix del chat Derma verificado en vivo con
+   el d1: 12′ → 4Q, 9′ → 3Q, 7′ → 2Q). El `--check` lo comprueba.
 8. **Con el alias v6.10d, el día real es el hábil siguiente a la fecha del plan**: d1 tiene fecha de plan mié 18-nov y se hace el jue 19-nov.
    Las fechas del plan no se tocan: el alias lo integra otro flujo.
 
@@ -48,8 +49,8 @@ Palmerton del Step 1, aplicada aquí: es una **síntesis**, no una cita de las f
 
 | Banco | Qué hay (verificado) | Uso |
 |---|---|---|
-| uWorld Step 1 › Dermatology (Qbankly) | 6 Systems, 99 Q (`DATA/USMLE/qbankly_uworld_step1_filtros.tsv`) | Plan B: 3-5 Q en Tutor por sesión, sin pasarse del stock (validado) |
-| ProMIR Dermatología | Preguntas **MIR oficiales** por capítulo (cap. 1-10) | Test de 8Q del capítulo una sesión de cada tres + las 2Q de la 2.ª pasada + d15 (4Q) |
+| uWorld Step 1 › Dermatology (Qbankly) | 6 Systems, 99 Q (`DATA/USMLE/qbankly_uworld_step1_filtros.tsv`) | Plan B: 1-4 Q en Tutor por sesión = floor((min − 1) / 2,35) (v7.00; antes 3-5), sin pasarse del stock (validado) |
+| ProMIR Dermatología | Preguntas **MIR oficiales** por capítulo (cap. 1-10) | Test de 8Q del capítulo una sesión de cada tres + las 2Q de la 2.ª pasada + d15 (3Q desde la v7.00; antes 4Q) |
 | **DermNet Quizzes** (dermnetnz.org/quizzes) | 57 quizzes públicos y gratuitos de DermNet, con imagen real y la respuesta tras «Show Answers». Cada quiz declara su tiempo: ~2′ por caso (~5′ en «Mixed diagnoses» 3-11). Leídos el 18-nov-2026: título, nº de casos y minutos (`DERMNET_QUIZZES`) | **Sustituye al proyecto Claude**: F1 con un rango fijo de casos por sesión, sin repetir; 2027 con el quiz afín |
 | DermNet «Three-point checklist» (curso CME) | 372 palabras + 44 imágenes = 14,72′ (medido el 18-nov) | d6: el algoritmo para no expertos antes de los casos |
 | StatPearls «Anatomy, Head and Neck: Facial Artery» (NBK536932) | 852 palabras + Figura 1 = 8,77′ (leído en Chrome el 18-nov) | d5: base real de la tabla de arterias, que haces tú |
@@ -99,11 +100,11 @@ DermNet y cierre) **no cambian**.
 | d12 · vie 18 → lun 21 | 10′ «≈2 viñetas» | 10′ «Cutaneous adverse reactions – 10 cases», casos 1-5 |
 | d13 · mar 22 → mié 23 | 10′ «≈2 viñetas» | 10′ «Different causes of purpura – 10 cases», casos 1-5 |
 | d14 · jue 24 → lun 28 | 11′ «≈2 viñetas» | 11′ «Leg rashes and unwell – 10 cases», casos 1-6 (12′; 1,09): ¿es celulitis o no? |
-| d15 · lun 28 → mar 29 | 5′ «≈1 viñeta» | 5′ ProMIR cap. 2: 4Q MIR oficiales más (5,13′; 1,03), porque 5′ no cuadra con casos de 2′ |
+| d15 · lun 28 → mar 29 | 5′ «≈1 viñeta» | 5′ ProMIR cap. 2: 4Q MIR oficiales más (5,13′; 1,03), porque 5′ no cuadra con casos de 2′ · v7.00: la 2.ª pasada del B&B pasa a 1Q de uWorld en 4′ (sobrante de «Skin and soft tissue infections») y el hueco queda en 4′ = 3Q (3,85′; 0,96) |
 | d16 · mié 30 → jue 31 | 10′ «≈2 viñetas» | 10′ «Skin conditions due to fungi, bacteria and viruses», casos 1-5 |
 | d17 · jue 31 → vie 1-ene | 10′ «≈2 viñetas» | 10′ «Fungal infections – 12 cases», casos 1-5 |
 
-En F1 hay 64 casos reales de DermNet en 11 pasos, sin repetir ningún caso (validado) + 4Q de ProMIR. **La fase de cada sesión ya figura en el
+En F1 hay 64 casos reales de DermNet en 11 pasos, sin repetir ningún caso (validado) + 4Q de ProMIR (3Q desde la v7.00). **La fase de cada sesión ya figura en el
 aviso de su guía** (d1-d6: fase 1 · d7-d13: fase 2 · d14-d17: fase 3).
 
 **Fix del 18-nov (revisión de los frentes):** el aviso de la fase 1 decía «preguntas en Tutor, sin reloj» y el TEST 8Q ProMIR del d3 (plan 24-nov →

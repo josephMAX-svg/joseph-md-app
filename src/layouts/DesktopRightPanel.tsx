@@ -5,7 +5,7 @@ import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { Icon } from '../components/icons';
 import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
 import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from '../lib/synapseData';
-import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL } from '../lib/synapseDailyPlan';
+import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL, type SynBloque } from '../lib/synapseDailyPlan';
 import { synTodayISO } from '../components/study/SynapseTodayPlan';
 import { planHoyD } from '../lib/studyProgress';
 import { useDone } from '../lib/useDone';
@@ -642,6 +642,14 @@ function ResearchRightPanel() {
 // ═══════════════════════════════════════════════
 // SYNAPSE: Fase actual + protocolo 30' + quick links
 // ═══════════════════════════════════════════════
+/** v7.00 · ítem 46 (bajo): rótulo de un bloque de la misión de hoy con sus minutos REALES. Antes SYN_TAG_LABEL fijo («A · 15' lección»): el mar 1-dic pintaba
+ *  dos «A · 15' lección» (auditoría F0 de 3′ + A de 12′), y una A de 16-17′ o una fila libre de 0′ también salían con el rótulo de siempre. */
+function synRotuloDe(b: SynBloque): string {
+  if (b.tag === 'PC') return SYN_TAG_LABEL.PC;
+  if (b.tag === 'R') return b.min ? `Feynman · ${b.min}' (opcional)` : 'libre';
+  const que = b.tag === 'A' ? (/^AUDITORÍA F0/.test(b.leccion) ? 'auditoría' : 'pantalla') : b.tag === 'B' ? 'audio' : 'lectura';
+  return `${b.tag} · ${b.min}' ${que}`;
+}
 function SynapseRightPanel() {
   const INDIGO = SYNAPSE_META.accent;
   const hoyReal = useHoyReal(); // c45 (A): la misión de hoy cambia sola al cambiar el día con la pestaña abierta
@@ -669,7 +677,7 @@ function SynapseRightPanel() {
           >
             <Text style={{ fontSize: 11, width: 16 }}>{SYN_FORMATO_ICON[b.formato]}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 10, fontWeight: '800', color: INDIGO }}>{SYN_TAG_LABEL[b.tag]}</Text>
+              <Text style={{ fontSize: 10, fontWeight: '800', color: INDIGO }}>{synRotuloDe(b)}</Text>
               <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant }} numberOfLines={2}>
                 {b.material}{b.url ? ' ↗' : ''}
               </Text>

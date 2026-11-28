@@ -30,6 +30,8 @@
  *   + respuesta de DermNet tras «Show Answers»; ~2′/caso según el propio quiz) con su rango de casos por sesión (DERMA_QUIZ_F1), una lectura real medida
  *   (d5: StatPearls «Facial Artery»; d6: DermNet «Three-point checklist», el algoritmo para no expertos) o ProMIR (MIR oficiales) cuando el hueco no
  *   cuadra con casos de 2′ (d15). Mismos minutos y fechas; síntesis del método en DATA/DERMATOLOGIA/METODO_BASE_CERO.md.
+ * v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1: los 12′ no dan para 5Q, caben 4 antes de las 13:43): uWorld = 1′ para componer el
+ *   test y tapar la pantalla + 2,35′/Q → UWQ(min) = floor((min − 1) / 2,35): d1 5Q → 4Q y d2 4Q → 3Q en sus mismos 12′ y 9′ (hecho y recursos con la cifra).
  */
 'use strict';
 
@@ -103,7 +105,9 @@ const DERMA_QUIZ_F1 = {
   12: { quiz: 'cutaneous-adverse-reactions-10-cases', desde: 1, k: 5, foco: 'reacción a fármacos: morfología + latencia + signos de alarma (mucosas, despegamiento) antes de «Show Answers»' },
   13: { quiz: 'different-causes-of-purpura-10-cases', desde: 1, k: 5, foco: 'púrpura palpable (vasculitis) vs no palpable: describe y da 3 causas antes de «Show Answers»' },
   14: { quiz: 'led-rashes-and-unwell-10-cases', desde: 1, k: 5, foco: '¿es celulitis o no?: unilateral/bilateral, borde, dolor, fiebre antes de «Show Answers»' },
-  15: { promir: 4, foco: '4 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test y a las 2 de la 2.ª pasada)' },
+  // v7.00 · fix del chat Derma (regla uWorld floor((min − 1) / 2,35)): la 2.ª pasada del B&B ya no da 2Q de ProMIR en 3′ sino 1Q de uWorld «Skin and soft
+  //   tissue infections» en sus 4′ (el lote 1 consume menos y ese System tiene sobrante) → el hueco baja de 5′ a 4′: 4Q → 3Q (3,85′; 0,96)
+  15: { promir: 3, foco: '3 preguntas MIR oficiales más del cap. 2 (las siguientes a las del test del capítulo)' },
   16: { quiz: 'skin-conditions-due-to-fungi-bacteria-and-viruses-10-cases', desde: 1, k: 5, foco: '¿virus, bacteria u hongo?: lesión elemental + agrupación (herpetiforme, umbilicada…) antes de «Show Answers»' },
   17: { quiz: 'fungal-infection-12-cases', desde: 1, k: 5, foco: 'tiña vs candida vs versicolor: borde activo, satélites, escama antes de «Show Answers»' },
 };
@@ -196,8 +200,11 @@ const PASSMED = (doc) => `https://qbankly.app/library?e=3&doc=${doc}`;
 const DN_NEC = (palabras, figuras = 0) => palabras / 100 + figuras * 0.25;
 const DN_MIN = (palabras, figuras = 0) => Math.max(1, Math.round(DN_NEC(palabras, figuras)));
 const DN_TXT = (x) => `${String(Math.round(x * 100) / 100).replace('.', ',')}′ medidos`;
-/** v6.09b · lote 1-quater (17-nov-2026): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (antes «~3′/Q»). */
-const TUTOR = (n) => `modo Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (${n}Q ≈ ${String(Math.round(n * 2.35 * 10) / 10).replace('.', ',')}′)`;
+/** v6.09b · lote 1-quater (17-nov-2026): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (antes «~3′/Q»).
+ *  v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1): + 1′ por test para componerlo y tapar la pantalla → un paso de `min` minutos lleva
+ *  UWQ(min) = floor((min − 1) / 2,35) preguntas (12′ → 4Q · 9′ → 3Q), la misma regla que dermaGuia.ts para el resto de sesiones. */
+const UWQ = (min) => Math.max(0, Math.floor((min - 1) / 2.35 + 1e-9));
+const TUTOR = (n, min) => `modo Tutor = 1′ para componer el test y tapar la pantalla + 2,35′/Q (90 s de pregunta + 0,85′ de explicación): ${n}Q ≈ ${String(Math.round((1 + n * 2.35) * 10) / 10).replace('.', ',')}′ de los ${min}′ del paso${min - 1 - n * 2.35 >= 0.5 ? '; el resto, a releer la explicación de tus fallos' : ''}`;
 /** Lectura de ProMIR a la regla fija en español (prosa a 150 palabras/min; tablas a 90 y 0,5′ por figura, como la medición E2). */
 const PMD_TXT = (p) => (p.minFig // v6.10 · tanda C: figuras contadas en vivo con su regla por figura (d1: 24 × 0,25′)
   ? `${String(p.min150).replace('.', ',')}′ medidos: ${p.palabras} palabras a 150 palabras/min + ${p.figs} figuras × ${String(p.minFig).replace('.', ',')}′`
@@ -298,7 +305,8 @@ function curadas(C) {
       planB: B(1, `DERMA d1 · ${x.sub.split(':')[0]} — PLAN B (AccessDerma caducado)`, [
         anki(C, 1),
         // v6.09b · lote 1-quater: 4Q → 5Q en los mismos 12′ (regla del Tutor: 5 × 2,35′ = 11,75′); el total de F1 de este System no cambia (UW_TUTOR_F1)
-        uworld(C, 1028, 5, 12, `en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3 · ${TUTOR(5)}, en inglés`),
+        // v7.00 · fix del chat Derma (verificado en vivo): 5Q → UWQ(12) = 4Q en los mismos 12′ (1′ de componer + 4 × 2,35′ = 10,4′: caben antes de las 13:43)
+        uworld(C, 1028, UWQ(12), 12, `en cada imagen, ANTES de las opciones: lesión 1ª + 2ª + color + distribución (8 ejes del dictado) y diferencial de 3, en inglés · ${TUTOR(UWQ(12), 12)}`),
         // v6.10 · tanda C (corrección de hecho del chat Derma): §2.1-2.2 = 24 figuras (no 11) a 0,25′ → la lectura pasa de 9′ a 10′; la variable de ajuste es el
         //   dictado (11′ → 10′ = 5 rondas de ~2′). Ubicación en GoodNotes aprobada por Joseph: DERMATOLOGIA › A_Fundamentos › 01_d01_… y 02_d01_…
         { min: Math.round(pmd.min150), que: `LECTURA (español) · ProMIR Dermatología › cap. 1 «Introducción. Conceptos generales» › ${pmd.secciones} (${PMD_TXT(pmd)})`, como: 'ANTES de abrir ProMIR (allí el nombre sale antes que la foto): nombra cada figura en tu PDF de solo fotos de GoodNotes · después lee y corrige · Whole Page Rule (apartado entero) · al Shopping List: los términos que fallaste en el pre-test · notas en GoodNotes › DERMATOLOGIA › A_Fundamentos › «01_d01_ProMIR_cap1_lesiones_primarias_secundarias».', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
@@ -308,11 +316,11 @@ function curadas(C) {
         quizPaso(DERMA_QUIZ_F1[1].quiz, DERMA_QUIZ_F1[1].desde, kD1, mD1, DERMA_QUIZ_F1[1].foco),
         cierre(2, `≤3 tarjetas de MECANISMO en ${C.deck('A')}.`),
       ], [
-        { ...QB_ENLACE_UW, cantidad: '5Q' },
+        { ...QB_ENLACE_UW, cantidad: `${UWQ(12)}Q` },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` },
         { t: `DermNet Quiz · ${DERMNET_QUIZZES[DERMA_QUIZ_F1[1].quiz].t}`, url: DN_QUIZ_URL(DERMA_QUIZ_F1[1].quiz), cantidad: `${kD1} casos` },
-      ], `5Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + ${kD1} casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.`,
+      ], `${UWQ(12)}Q de uWorld respondidas describiendo la imagen antes de las opciones + §2.1-2.2 de ProMIR leídas + 3 apartados de DermNet + ${kD1} casos DermNet con la lesión elemental nombrada antes de «Show Answers» + ≤3 tarjetas.`,
       pendientes(C, x.casoIds), AVISO_B),
     };
   }
@@ -343,7 +351,8 @@ function curadas(C) {
         // v6.10p (auditoría c18 · barrido de quizzes): «anular = tiña, herpetiforme = HSV, dermatomal = zóster» daba, ANTES de las 4Q de «Skin and soft tissue
         //   infections», el diagnóstico que esas preguntas piden → aquí solo el vocabulario de la configuración; las equivalencias, en el paso DermNet «Terminology»
         //   (después de las 4Q), detrás del corte del Calendar
-        uworld(C, 1031, 4, 9, `antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · ${TUTOR(4)}`),
+        // v7.00 · fix del chat Derma: 4Q → UWQ(9) = 3Q en los mismos 9′ (1′ de componer + 3 × 2,35′ = 8,05′)
+        uworld(C, 1031, UWQ(9), 9, `antes de las opciones nombra la configuración (anular, herpetiforme, dermatomal…) y el color · ${TUTOR(UWQ(9), 9)}`),
         { min: 6, que: `LECTURA (español) · ProMIR Dermatología › cap. 1 › ${pmd.secciones} (${PMD_TXT(pmd)} · tabla 1-1 de signos)`, como: 'Whole Page Rule; los signos de la tabla 1-1 (Darier, Nikolsky, Koebner…) → 1 tarjeta cada uno que no supieras.', enlace: { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1 } },
         { min: DN_MIN(381 + 97 + 193), que: `DermNet › «Terminology» › Distribution + Configuration of lesions + Colour (671 palabras = ${DN_TXT(DN_NEC(671))})`, como: '~100 palabras/min · completa tu tabla de configuraciones con los términos en inglés y su ejemplo clásico (anular = tiña, herpetiforme = HSV, dermatomal = zóster).', enlace: { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` } },
         bbVideo(C, 74, x.fecha, 'color y distribución de las lesiones vasculares (por título; contenido no verificado)'),
@@ -354,11 +363,11 @@ function curadas(C) {
         { min: 2, que: 'IMAGEN DERMATOSCÓPICA CIEGA · Dermoscopedia › «Pigment network» (pública)', como: 'Tapa título y pies: describe la red antes de leer · registra ✓/✗ en ①b · si no carga: DermNet «Dermoscopy (Dermatoscopy)» (en los recursos), mismas estructuras con imágenes.', enlace: { t: 'Dermoscopedia · Pigment network', url: `${DSC}/Pigment_network` } },
         cierre(2, `≤3 tarjetas en ${C.deck('A')}.`), // v6.09b · lote 1-ter: 3′ → 2′ (como todas las sesiones): el minuto lo pide el «Terminology» a 100 palabras/min
       ], [
-        { ...QB_ENLACE_UW, cantidad: '4Q' },
+        { ...QB_ENLACE_UW, cantidad: `${UWQ(9)}Q` },
         { t: 'ProMIR · Dermatología cap. 1', url: C.url.pmd1, min: pmd.min150 },
         { t: `B&B · ${C.bb(74).nombre}`, url: VIDEOS, min: C.bbMin(74, x.fecha).min },
         { t: 'DermNet · Terminology', url: `${DERMNET}/topics/terminology` }, { t: 'DermNet · Blaschko lines', url: `${DERMNET}/topics/blaschko-lines` }, R_DSC,
-      ], '4Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.',
+      ], `${UWQ(9)}Q de uWorld + §2.3 de ProMIR + 3 apartados de DermNet + vídeo B&B visto con su free recall + dibujo de Blaschko + 1 imagen dermatoscópica + ≤3 tarjetas.`,
       pendientes(C, x.casoIds), AVISO_B),
     };
   }

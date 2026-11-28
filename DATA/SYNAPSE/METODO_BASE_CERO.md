@@ -70,6 +70,13 @@ el día del gate, qué se aprueba. La app lo muestra en un chip («fase n/6 · �
 | 5 · Stack del vibecoding (2027) | Docs de Claude Code (memoria, skills, hooks, subagentes, MCP, headless), Supabase (RLS, select, triggers, webhooks, Edge Functions) y n8n | mar 12-ene → sáb 6-feb | «Course quiz» final de *Claude Code in Action* (sáb 6-feb) + SHIP S9-S11 4/4 | Quiz aprobado |
 | 6 · Academy restante + CCA-F (2027) | *Building with the Claude API*, MCP (intro y avanzado), agent skills, subagentes, *AI Capabilities and Limitations*, Cowork, 3 ensayos de contexto | lun 8-feb → jue 1-abr | Simulacro con los quizzes oficiales (Final assessment de *Building with the Claude API* + quiz de *Claude Code in Action*), mié 31-mar | % por dominio en el journal; decisión de fecha CCA-F post-Step 1 |
 
+**El GATE es una condición, no una fecha (v7.00, ítem 46, decidido por el chat de plan el 24-nov).** Manda sobre la columna «Criterio de avance» y sobre
+las fechas de gate de la tabla, que eran de la v6.10. El quiz oficial de cada curso, o su recall en blanco si no hay quiz, se hace al terminar la última
+lección del curso. La A sigue donde paró la última A, en el orden del plan, y lo siguiente corre: el curso siguiente empieza cuando el anterior se cierra
+con su quiz. Si el quiz no sale, la A siguiente repasa solo lo fallado y lo repite; ya no va al PC del domingo. Sin PC, ese día no hay A y la próxima A
+sigue donde paraste. La fecha de gate del plan (`SYN_FASES_BC.gateFechas`) es solo el día en que el plan lo espera. Código: `rutinaGuia.ts` (`pasoSyn` y
+`synFaseAvisoDe`) y `SYN_AVANCE_BC`.
+
 **Carriles B y C.** B (audio: No Priors, Dwarkesh, Lex #452, The Batch, canal de Anthropic) es exposición: vocabulario y criterio, no se evalúa. C
 (lectura) es la base técnica desde el capítulo 1 (The Python Tutorial, *Automate the Boring Stuff* 3.ª ed., Pro Git) más seguridad de agentes
 (Willison) e investigación de Anthropic; en F1 no lleva preguntas (5′ medidos por sesión). *Automate the Boring Stuff* trae al final de cada capítulo

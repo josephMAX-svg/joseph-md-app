@@ -642,7 +642,9 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     // v6.03: por PASO de S1, no por fecha · v6.10 · BASE CERO: + S2 y S3 (fase 1 «guiado», PRIMM predice → corre → investiga), solo en F1
     const cur = dia.semana === 1 ? vibeS1(dia.k) : dia.semana === 2 && textosQSDe(iso) ? vibeS2(dia.k) : dia.semana === 3 && textosQSDe(iso) ? vibeS3(dia.k) : undefined;
     // v6.09b lote 1-quater FX1: si el plan B del SHIP del domingo anterior manda aquí el verify y lo rojo, este paso lo dice con sus minutos (CONSTRUIR baja a 25′)
-    const domPB = textosQSDe(iso) ? [addDias(iso, -1), addDias(iso, -2)].find((x) => shipPBDestDe(x) === iso) : undefined;
+    // v7.00 (sáb 28-nov, chat vibe · ítem 47-3): F1 se mira en el DOMINGO del SHIP, no en este día: el plan B del dom 3-ene (SHIP S4, último domingo de la
+    //   transición) manda el verify al lun 4-ene, que ya es F2 → antes ese lunes no lo decía
+    const domPB = [addDias(iso, -1), addDias(iso, -2)].find((x) => textosQSDe(x) && shipPBDestDe(x) === iso);
     const pPB = domPB ? (vibePCDomingo(domPB).at(-1)?.proyecto ?? null) : null;
     const pbTxt = domPB && pPB ? `Si el ${fCorta(domPB)} no hubo PC: primero el verify (10′) y lo rojo de S${pPB.s} (node DATA/_scripts/verify_vibecoding.js ${pPB.s}); hoy CONSTRUIR = 25′. ` : '';
     // v6.10 · base cero: con sub-pasos (S2/S3) y plan B del domingo, el verify va delante (en el «cómo» del 1.º) y el último sub-paso (10′) se salta
@@ -718,8 +720,10 @@ const ES_TRIFECTA = (b: SynBloque): boolean => b.tag === 'C' && b.material === '
 const NO_PRIORS_BROCKMAN = 'https://podcasts.apple.com/us/podcast/the-changing-physics-of-cybersecurity-and/id1668002688?i=1000796472163';
 const SYN_CUR_PIEZAS: Array<{ tag: 'A' | 'B' | 'C'; es: (b: SynBloque) => boolean; n?: number; cur: SynCur }> = [
   { tag: 'A', es: (b) => b.material === 'Anthropic Academy' && /^AUDITORÍA F0/.test(b.leccion),
-    // v6.10 · tanda C (corrección de hecho, FAQ de academy.claude.com): la página es «Your learning» (no «My courses») y los certificados viejos solo salen tras «Import your Skilljar progress»
-    cur: { que: 'Anthropic Academy › «Your learning»: auditoría F0 — anota qué certificados ya tienes (AI Fluency · Claude 101 · Claude Code 101 · Platform 101)', como: 'academy.claude.com (inicias sesión tú) → «Your learning»; si sale «Import your Skilljar progress», púlsalo (sin eso no salen tus certificados viejos). Lista ✓/pendiente en el journal; la 1.ª pendiente es la lección A de mañana.', url: ACADEMY, t: 'Academy' } },
+    // v6.10 · tanda C (corrección de hecho, FAQ de academy.claude.com): los certificados viejos solo salen tras «Import your Skilljar progress»
+    // v7.00 · auditoría F0 (sáb 28-nov · FAQ oficial academy.claude.com/help/faq): la página es «Your journey» (no «Your learning»; antes «My courses») y el import
+    //   está en su banner o en Settings; si Skilljar ya cerró, el import se salta y la A sigue
+    cur: { que: 'Anthropic Academy › «Your journey»: auditoría F0 — anota qué certificados ya tienes (AI Fluency · Claude 101 · Claude Code 101 · Platform 101)', como: 'academy.claude.com (inicias sesión tú) → «Your journey»; si sale el banner «Import your Skilljar progress» (o en Settings), púlsalo (sin eso no salen tus certificados viejos; si Skilljar ya cerró, se salta: sin import). Lista ✓/pendiente en el journal; la A sigue donde paró tu última A.', url: ACADEMY, t: 'Academy' } },
   { tag: 'C', es: (b) => /^Pro Git/.test(b.material),
     cur: { que: 'Pro Git › 1.1 «About Version Control» (≈800 palabras) → las primeras ≈500', como: '5′ a 100 palabras/min. Marca dónde quedas: lo sigues en el próximo C libre.', url: 'https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control', t: 'Pro Git 1.1' } },
   { tag: 'B', es: (b) => /^Dwarkesh — Dario Amodei/.test(b.material) && /Tramo 1\/3/.test(b.leccion),
@@ -854,7 +858,35 @@ const synHechoDe = (check: string | null): string => `A, B y C con su parada ano
 /** c47 (mar 24-nov · chat SYNAPSE, ítem 44): minutos del recall en blanco DENTRO de una A de F1 sin reparto propio (15′ = 12′ de curso + 3′ de recall). El
  *  mismo valor usa gen_synapse_plan.js (RECALL_A) en la A que sigue a la auditoría F0. */
 const SYN_RECALL_A = 3;
+/** v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): la A sigue donde paró la última A y lo siguiente corre (un GATE es una condición, no una fecha). */
+const SYN_A_CORRE = 'Si tu última A dejó algo a medias (un curso, un vídeo o una lectura), lo terminas primero y esto corre.';
+/** v7.00 · ítem 46 (bajos): tipo de una A sin tramo medido → qué regla dice su «cómo»: 'curso' (curso de la Academy: lecciones en orden, «Continue» de la web,
+ *  progreso importado, quiz oficial al final) · 'video' (3Blue1Brown, Karpathy, canal Anthropic) · 'texto' (ensayos de Anthropic Engineering o «Building
+ *  Effective Agents», páginas de docs de Claude Code / Supabase / n8n) · 'tarea' (repaso, simulacro y cierre del CCA-F). Antes todas decían «tu última A del curso». */
+type SynATipo = 'curso' | 'video' | 'texto' | 'tarea';
+const synATipoDe = (b: SynBloque): SynATipo => (/^Prep CCA-F/.test(b.material) ? 'tarea'
+  : /^(?:AI Fluency|Claude 101|Claude Code 101|Claude Platform 101)\b|\(Anthropic Academy\)/.test(b.material) ? 'curso'
+    : /^(?:3Blue1Brown|Karpathy|Canal Anthropic)/.test(b.material) ? 'video' : 'texto');
+/** v7.00 · ítem 46: nombre corto del material de la A de una fecha de plan («AI Fluency», «Claude 101», «Building Effective AI Agents», «Karpathy») para decir
+ *  CUÁNDO va un GATE («al terminar …»), que ya no es una fecha. */
+function synANombreDe(fecha: string): string {
+  const a = synDiaDe(fecha)?.bloques.find((b) => b.tag === 'A' && !/^AUDITORÍA F0/.test(b.leccion));
+  if (!a) return 'su material';
+  return a.material.replace(/: Framework & Foundations$/, '').replace(/ \(ensayo\)$/, '').replace(/^Academy — /, '').replace(/ \(Anthropic Academy\)/g, '').split(' — ')[0]!.trim();
+}
 const SYN_HECHO = synHechoDe(SYN_CHECK);
+/** v7.00 (sábado de comodines): recursos de una sesión A/B/C = el enlace de cada bloque o, si el bloque no lo trae (comodín de audio / de lectura del sábado),
+ *  el de su paso (curaduría o tramo medido), con el nombre del paso sin el tramo («B · Comodín de audio · No Priors (Greg Brockman)»). Antes solo los bloques
+ *  con url: el sábado de comodines listaba solo el A. */
+function synRecursosDe(abc: SynBloque[], pasos: GuiaPaso[]): GuiaRecurso[] {
+  return abc.flatMap((b, i) => {
+    if (b.url) return [R(`${b.tag} · ${b.material}`, b.url, { min: b.min })];
+    const p = pasos[i], e = p?.enlace;
+    if (!p || !e) return [];
+    const nombre = (p.que.replace(/^[ABC](?: \((?:pantalla|audio|lectura)\))? · /u, '').split(' → ')[0] ?? b.material).replace(/ \(\d{1,2}-\p{L}{3}-\d{4}[^()]*\)$/u, '').trim();
+    return [R(`${b.tag} · ${nombre || b.material}`, e.url, { min: b.min })];
+  });
+}
 function pasoSyn(b: SynBloque, iso: string, origen?: string): GuiaPaso {
   // v6.10w: la curaduría se busca con la fila ORIGINAL del contenido (cadenas); la sesión a hora fija de una cadena pasa su fila de origen
   const cur = synCurDe(origen ?? CAD_ORIG.get(iso) ?? iso, b.tag);
@@ -864,25 +896,46 @@ function pasoSyn(b: SynBloque, iso: string, origen?: string): GuiaPaso {
   //   curaduría (tramo exacto, velocidad, palabras y adónde va el resto, con fecha); fuera de F1 los bloques no traen `guia` y todo sigue igual
   // v6.10 · tanda C (decidido con Joseph en el chat SYNAPSE): la AUDITORÍA F0 (3′ al abrir la 1.ª sesión) se pinta con su texto exacto, sin «A · »
   if (b.guia && b.audit && /^AUDITORÍA F0/.test(b.guia.que)) return P(b.min, b.guia.que, b.guia.como, b.guia.url ? { t: b.guia.t ?? 'Academy', url: b.guia.url } : undefined);
-  if (b.guia) return P(b.min, `${b.tag} · ${b.guia.que}${rec}`, b.guia.como, b.guia.url ? { t: b.guia.t ?? `${b.tag} ↗`, url: b.guia.url } : b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined);
+  // v7.00 · ítem 46: una A con tramo medido (Karpathy, 3Blue1Brown) también corre si la A anterior dejó algo a medias (la A que sigue a la auditoría ya lo dice)
+  if (b.guia) return P(b.min, `${b.tag} · ${b.guia.que}${rec}`, b.tag === 'A' && !/^Sigue donde paró/.test(b.guia.como) ? `${b.guia.como} ${SYN_A_CORRE}` : b.guia.como, b.guia.url ? { t: b.guia.t ?? `${b.tag} ↗`, url: b.guia.url } : b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined);
   if (cur) return P(b.min, `${b.tag} · ${cur.que}${rec}`, cur.como, { t: cur.t, url: cur.url });
   const enl = b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined;
   // v6.10u (auditoría c19 · diffs #19): una A que reparte sus minutos entre lectura y recall en blanco («… (11′). Al cerrar, 4′: …», la 2.ª parte del
   //   GATE 3/6) lo dice así en el «cómo», no «para en el minuto 15» (que dejaba el recall sin tiempo)
   const rc = b.tag === 'A' ? /\((\d+)′\)\. Al cerrar, (\d+)′: /u.exec(b.leccion) : null;
   if (rc) return P(b.min, `A (pantalla) · ${b.material} › ${b.leccion}`,
-    `En el PC: ${rc[1]}′ de lectura (para en el minuto ${rc[1]} aunque no acabes) y ${rc[2]}′ de recall en blanco en el journal, sin mirar; después corrígelo contra el texto.${b.audit ? ' Base cero: aunque ya la cursaras en jun-ago, se cursa entera (el ✓ es de hoy).' : ''}`, enl);
+    `En el PC: ${rc[1]}′ de lectura (para en el minuto ${rc[1]} aunque no acabes) y ${rc[2]}′ de recall en blanco en el journal, sin mirar; después corrígelo contra el texto. ${SYN_A_CORRE}${b.audit ? ' Base cero: aunque ya la cursaras en jun-ago, se cursa entera (el ✓ es de hoy).' : ''}`, enl);
   // v6.10 · BASE CERO (18-nov-2026): antes «F0 = auditoría: si ya la cursaste, márcala ✓ y adelanta la siguiente pendiente» (también en 2027: F0 llega al lun
   //   11-ene) · en F1 el cierre es recall en blanco (práctica de recuperación), no «anota 1 idea»
   // c47 (mar 24-nov · chat SYNAPSE, ítem 44): (1) una lección que no cabe en su A (Intro 15′ + Why 7′ = 22′ en 15′; «The 4D Framework», 45′) no se recorta ni
   //   se salta: la A sigue su curso donde lo dejó la última A de ese curso, en su orden, aunque su título nombre otra lección, y «para en el minuto N» deja la lección a medias
   //   para la A siguiente (no salta a la siguiente lección); la regla va delante (dentro del corte de 110 del Calendar) · (2) en F1 el recall en blanco tiene sus
   //   minutos DENTRO de la A (SYN_RECALL_A), como en las A repartidas (antes «para en el minuto 15» y el recall, sin tiempo)
+  // v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE de un curso es una CONDICIÓN («al terminar el curso»), no una fecha, y lo siguiente corre →
+  //   la A sigue donde paró la ÚLTIMA A (no «la última A de este curso»: el curso siguiente espera a que acabe el anterior, con su quiz) · bajos: la regla «del
+  //   curso» (el «Continue» de la web, el progreso importado, «la siguiente del curso») solo en los cursos de la Academy (synATipoDe); los ensayos, las páginas
+  //   de docs, los vídeos sueltos y el repaso / simulacro / cierre del CCA-F dicen lo suyo
   if (b.tag === 'A') {
     const f1 = iso <= FECHAS_V6.transicion.hasta;
     const r = f1 && b.min >= 10 ? SYN_RECALL_A : 0, para = b.min - r;
-    return P(b.min, `A (pantalla) · ${b.material} › ${b.leccion}`,
-      `Sigue donde paró tu última A del curso (no el «Continue» de la web); para en el minuto ${para}${r ? ` y haz ${r}′ de recall` : ''}. En el PC, 1,0× con subtítulos en inglés, en el orden del curso: aunque el título de hoy nombre otra lección, empiezas donde quedó la última A de este curso (la 1.ª A de un curso, desde su inicio), no donde te lleve el «Continue» de la plataforma (con el progreso importado salta lecciones). Para en el minuto ${para} aunque la lección siga y anota en el journal la lección y el minuto: la próxima A del curso sigue desde ahí, no salta a la lección de su título${f1 ? '; si la lección acaba antes, empieza la siguiente del curso' : ''}.${f1 ? ` ${r ? `Minutos ${para}-${b.min}` : 'Cierre'}: recall en blanco en el journal (sin mirar, lo que recuerdes).` : ' Anota 1 idea en el journal.'}${b.audit ? ' Base cero: aunque ya la cursaras en jun-ago, se cursa entera (el ✓ es de hoy).' : ''}`, enl);
+    const tipo = synATipoDe(b);
+    const cierre = f1 ? ` ${r ? `Minutos ${para}-${b.min}` : 'Cierre'}: recall en blanco en el journal (sin mirar, lo que recuerdes).` : ' Anota 1 idea en el journal.';
+    const base0 = b.audit ? ' Base cero: aunque ya la cursaras en jun-ago, se cursa entera (el ✓ es de hoy).' : '';
+    const que = `A (pantalla) · ${b.material} › ${b.leccion}`;
+    if (tipo === 'tarea') return P(b.min, que,
+      `Hoy no es una lección: ${b.min}′ en el PC para lo que dice el título, y lo que salga, al journal. ${SYN_A_CORRE}`, enl);
+    const para0 = `para en el minuto ${para}${r ? ` y haz ${r}′ de recall` : ''}`;
+    // integración v7.00 (revisión de regresiones): Introduction to agent skills e Introduction to subagents no traen quiz ni insignia (gen_synapse_plan.js ›
+    //   buildAUnits) → su A no habla del quiz (antes, el 28-ene, 2-feb, 5-abr y 6-abr-2027 decía «El quiz del curso va al terminar…», y el título del 6-abr, que no trae)
+    const sinQuiz = b.material.split(' + ').every((m) => /Introduction to (?:agent skills|subagents)\b/i.test(m));
+    const quizTxt = sinQuiz
+      ? `${b.material.includes(' + ') ? 'Estos cursos no traen' : 'Este curso no trae'} quiz ni insignia (al terminar su última lección, recall en blanco de lo visto) y, hasta entonces, lo siguiente corre.`
+      : 'El quiz del curso va al terminar su última lección (el GATE no es una fecha) y, hasta entonces, lo siguiente corre.';
+    if (tipo === 'curso') return P(b.min, que,
+      `Sigue donde paró tu última A (no el «Continue» de la web); ${para0}. En el PC, 1,0× con subtítulos en inglés, en el orden del plan: aunque el título de hoy nombre otra lección u otro curso, empiezas donde quedó tu última A (un curso nuevo, desde su inicio), no donde te lleve el «Continue» de la plataforma (con el progreso importado salta lecciones). Para en el minuto ${para} aunque la lección siga y anota en el journal la lección y el minuto: la próxima A sigue desde ahí${f1 ? '; si la lección acaba antes, empieza la siguiente' : ''}. ${quizTxt}${cierre}${base0}`, enl);
+    return P(b.min, que, tipo === 'video'
+      ? `Vídeo en el PC, 1,0× con subtítulos en inglés; ${para0}. ${SYN_A_CORRE} Para en el minuto ${para} aunque el vídeo siga y anota en el journal el vídeo y el minuto: la próxima A sigue desde ahí.${cierre}${base0}`
+      : `Lectura en el PC (no es un curso); ${para0}. ${SYN_A_CORRE} Para en el minuto ${para} aunque no acabes y anota en el journal hasta dónde llegaste: la próxima A sigue desde ahí.${cierre}${base0}`, enl);
   }
   if (b.tag === 'B') return P(b.min, `B (audio) · ${b.material} — ${b.leccion}`,
     `Auriculares, 1,0×. Exactamente ${b.min}′ ${b.dur ? `(${b.dur})` : 'desde donde quedaste'}; anota el minuto donde paras.`, enl);
@@ -1020,7 +1073,7 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     ? { franja: franjaDesde(lleg.fin, min), aviso: `Domingo de llegada: este A/B/C recupera el ${rcTxt ?? 'día sin sesión'} a hora fija, tras la recuperación ENCAPS del viaje (${lleg.ini}-${lleg.fin}); nada de estudio desde las 17:00. ${(() => { const p1 = vibeProyectoDe(1); return p1 ? `SHIP S1 del vibecoding: ${fCorta(p1.ship)}.` : 'El SHIP S1 del vibecoding, el domingo que viene.'; })()}` }
     : synFranjaDe(iso, min, planDelDiaReal(iso, 'synapse')); // v6.11 fase 2: franja y aviso con el formato del día real (NBME)
   const pasos = abc.map((b) => pasoSyn(b, iso));
-  const recursos = abc.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min }));
+  const recursos = synRecursosDe(abc, pasos);
   // v6.09 (joseph 9): 1.ª sesión del plan con días SIN SESIÓN antes (lun 16-nov) → sale como «día 2» en el hub (Misión del día N): se explica
   // v6.10 (17-nov-2026): con el lun 16 y el mar 17 sin sesión la 1.ª sesión es el mié 18 = «día 3»; el aviso nombra los días sin sesión y adónde va la
   //   sesión del mar 17 (SYN_REC_F1: la auditoría F0, sáb 28-nov 07:15)
@@ -1045,7 +1098,8 @@ export function guiaSynapseDe(iso: string): GuiaBloque | null {
     //   quedaba en «· Usar …» / «· gate: …») y la 1.ª parte de un gate con 2 fechas. Tras la línea de fase, el sábado va con lo esencial delante (A/B/C a
     //   las 21:00, el Anki de las 21:30), luego el horario del día («Hoy: gimnasio …»; antes, entre paréntesis en medio: el corte lo dejaba abierto) y
     //   al final el recordatorio del domingo («El SHIP del vibecoding es el domingo.»: el corte lo dejaba sin verbo)
-    { aviso: ((fa) => (/GATE de la fase|parte del GATE/.test(fa) || (fa && w === 6 && textosQSDe(iso)) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las (?:21:00, al volver del baile|07:15, tras la rutina de la mañana)) \(([^()]+)\)([^.]*\.)(.*)$/u, '$1$3 Hoy: $2.$4') /* v7.00: + la variante de las 07:15 */, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
+    // v7.00 · ítem 46: la línea del GATE empieza por «Base cero · GATE n/6» (antes «Base cero · hoy, GATE de la fase …» / «… parte del GATE …»)
+    { aviso: ((fa) => (/^Base cero · GATE /.test(fa) || (fa && w === 6 && textosQSDe(iso)) ? [d2, fa, aviso && aviso.replace(/^(Sábado(?: de la intensiva)?: A\/B\/C a las (?:21:00, al volver del baile|07:15, tras la rutina de la mañana)) \(([^()]+)\)([^.]*\.)(.*)$/u, '$1$3 Hoy: $2.$4') /* v7.00: + la variante de las 07:15 */, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : ''] : [d2, aviso, s.deload ? 'Semana DELOAD: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO).' : '', fa]))(synFaseAvisoDe(iso)).filter(Boolean).join(' ') || undefined,
       planB: synPlanBDe(iso) });
 }
 /** v6.10 (17-nov-2026): SESIÓN DE RECUPERACIÓN del SYNAPSE a hora fija (synapseDailyPlan.SYN_REC_F1, gen_synapse_plan.js › REC_V610 = _fechas_v6.json ›
@@ -1075,17 +1129,18 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
     //   app no traduce esa fecha: con el alias global, «la sesión del vie 20-nov» se leía «del jue 26-nov»)
     //   · remate r24: «plan del lun 23-nov» (synCadenaNombreDe: el plan sin día hábil cuya sesión va hoy; el vie 27 ya es «plan del vie 20-nov»)
     return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · ${synCadenaNombreDe(r)} — A pantalla · B audio · C lectura`, abcC.map((b) => pasoSyn(b, r.fecha, r.plan)),
-      abcC.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })),
+      synRecursosDe(abcC, abcC.map((b) => pasoSyn(b, r.fecha, r.plan))),
       synHechoDe(null), // ronda c40 (remate): sin ✓ — la fila de su día de plan ya la marca la sesión de las 21:00 de ese día (la cadena es su cola)
       // v6.11 (revisión c32): sin el porqué de la cadena (bitácora) y sin «las fechas de siempre» (el dom 29-nov el alias sigue hasta el vie 1-ene)
       // v6.11 (mar 24-nov): un SÁBADO (sáb 28-nov 04:15) nombra la sesión del sábado (21:00) y la de mañana a hora fija, y el SYNAPSE vuelve a su hora el lunes
       { aviso: `Hoy, a hora fija (${r.ini}-${r.fin}, antes de la rutina de las 05:45): la sesión del SYNAPSE que toca en orden (la que no tuvo sitio en su día). ${otraRec ? `Aparte, a las ${otraRec.ini}, la otra sesión de hoy. ` : dow(iso) === 6 ? (() => { const man = SYN_REC_F1.filter((x) => x.fecha === addDias(iso, 1)); return `Aparte, a las ${synFranjaDe(iso).franja.split('–')[0]}, la del sábado${man.length ? `, y mañana a las ${man[0]!.ini}, la siguiente` : ''}. `; })() : ''}Desde ${dow(iso) === 6 ? 'el lunes' : 'mañana'}, el SYNAPSE vuelve a su hora.`,
-        planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC ${dow(iso) === 6 ? 'de mañana' : 'de hoy'} (SHIP del vibecoding, flexible).` }); // remate r24: el sábado no tiene SHIP (sáb 28-nov 04:15)
+        // v7.00 · ítem 46: sin A ese día; la próxima A sigue donde paraste (antes «el A al PC de hoy / de mañana (SHIP del vibecoding)»)
+        planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00); hoy no hay A y la próxima A sigue donde paraste.` });
   }
   const abc = r.bloques.filter((b) => b.tag === 'A' || b.tag === 'B' || b.tag === 'C');
   if (!abc.length) return null;
   const pasos = abc.map((b) => pasoSyn(b, iso));
-  const recursos = abc.filter((b) => b.url).map((b) => R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min }));
+  const recursos = synRecursosDe(abc, pasos);
   // v6.10c · FIX r1 (hallazgo 1 de la revisión): la A de la sesión ya no es «la siguiente lección de F0 sin ✓» (el 3-ene no queda ninguna en la Academy):
   //   el aviso nombra el material real de la A (el vídeo que el comodín de ayer dejó a medias, medido por el generador)
   const aR = abc.find((b) => b.tag === 'A');
@@ -1093,7 +1148,6 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
   const antes = SYN_REC_F1.find((x) => x.fecha === iso && x !== r && x.ini < r.ini);
   const aTxt = aR && !aR.audit ? `${aR.min}′ en pantalla de ${aR.material.replace(/^Canal Anthropic · /, '')}, donde lo dejó el comodín ${antes ? `de la sesión de las ${antes.ini} de hoy` : 'de ayer a las 21:00'}` : '15′ de la siguiente lección de F0 sin ✓; la auditoría F0 abrió la sesión del mié 18-nov';
   const cuandoTxt = aMin(r.ini) < aMin('05:45') ? 'Antes de la rutina de la mañana (05:45-07:15).' : `Hoy va a las ${r.ini}, tras las sesiones de la mañana; nada de estudio desde las 17:00.`;
-  const pc = vibePCDomingo(addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso))).length ? addDias(iso, dow(iso) === 0 ? 7 : 7 - dow(iso)) : null;
   return bloque(`${r.ini}–${r.fin}`, 'synapse', `SYNAPSE · recuperación del ${fCorta(r.plan)} — A pantalla · B audio · C lectura`, pasos, recursos,
     synHechoDe(null), // ronda c40 (remate): sin fila propia (la de su día de plan fue «sin sesión»): sin ✓
     // v6.10c (cadena del carril del martes, decisión de Joseph del 17-nov 17:20): la sesión va el dom 3-ene 05:00 con las piezas del ÚLTIMO martes de F1
@@ -1101,13 +1155,9 @@ export function guiaSynapseRecDe(iso: string, ini?: string | null): GuiaBloque |
     { aviso: r.semana > 2
       ? `Hoy, a hora fija (${r.ini}-${r.fin}), la sesión del SYNAPSE que el ${fCorta(r.plan)} no tuvo (fue sin sesión): su A (${aTxt}) y las piezas del carril del martes de la semana del ${fCorta(addDias(r.plan, 7 * (r.semana - 1)))}: el carril corrió una semana y esta es su última pieza de F1. ${cuandoTxt}`
       : `Hoy, a hora fija (${r.ini}-${r.fin}), la sesión del SYNAPSE del ${fCorta(r.plan)}, que fue sin sesión: su A (${aTxt}) y las piezas del martes que siguen a las del ${fCorta(addDias(r.plan, 7))}. Es aparte de la sesión de hoy a las 21:00. Tras la rutina de la mañana (05:45-07:15) y antes del gimnasio (08:30).`,
-      planB: dow(iso) === 0 && vibePCDomingo(iso).length
-        ? `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 17:00) y el A al PC de hoy (SHIP del vibecoding, flexible).`
-        : `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las 21:00) y el A ${pc ? `al PC del ${fCorta(pc)} (SHIP del vibecoding, flexible)` : 'al bloque PC de la semana'}.` });
+      // v7.00 · ítem 46: sin A ese día; la próxima A sigue donde paraste (antes «el A al PC de hoy / del dom … (SHIP del vibecoding)» o «al bloque PC de la semana»)
+      planB: `Si a las ${r.ini} no puedes: B y C en el móvil en cualquier tiempo muerto de hoy (antes de las ${dow(iso) === 0 && vibePCDomingo(iso).length ? '17:00' : '21:00'}); hoy no hay A y la próxima A sigue donde paraste.` });
 }
-/** v6.09b lote 1-quater (QS · hallazgo e de R2): plan B del SYNAPSE. En F1 (hasta el 3-ene) dice a qué PC va el A con fecha: el del PRIMER domingo
- *  posterior con PC (SHIP / avance del vibecoding, 2 h flexibles, que ya absorbe A/B/C de recuperación sin restarle minutos: dom 29-nov); antes «el bloque
- *  PC de la semana» y «deja A para mañana» (sin fecha y con el A de mañana ya lleno). Fuera de F1, el texto de siempre (2027 idéntico). */
 /** v6.10 · BASE CERO (mié 18-nov-2026 · orden de Joseph «todos partimos de cero»): línea de FASE del SYNAPSE al FINAL del aviso (synapseDailyPlan ›
  *  SYN_FASES_BC; método y fuentes en DATA/SYNAPSE/METODO_BASE_CERO.md): en qué fase estás, cuándo es su gate y, el día del gate, qué se aprueba (preguntas
  *  solo REALES: «Course quiz» oficial de la Academy; sin quiz oficial, recall en blanco / Feynman) y adónde va si no sale. Solo F1 (hasta el 3-ene): las
@@ -1117,47 +1167,38 @@ function synFaseAvisoDe(iso: string): string {
   const f = synFaseBCDe(iso);
   if (!f) return '';
   const n = SYN_FASES_BC.length;
-  // v6.10p (rev. c18, diffs #17/#18): gate en 2 fechas → en la 1.ª solo lo de hoy (el quiz oficial, con su consecuencia) y lo que falta con la fecha de
-  //   la 2.ª (de PLAN: corridaTexto la pasa al día real); en la 2.ª, el gate entero (abajo). Antes las 2 fechas pedían el gate entero: el jue 10-dic, «los
-  //   5 workflows de memoria» antes del ensayo que los enseña; el 2-dic, el quiz de Claude Code 101 antes de su curso
-  const g1 = f.gate1 && f.gateFechas.length === 2 && f.gateFechas[0] === iso ? f.gate1 : undefined;
-  if (g1) return `Base cero · hoy, 1.ª parte del GATE ${f.id}/${n} · ${f.corto}: ${g1.hoy}${g1.quiz ? ' (si no apruebas: al PC del domingo, solo lo fallado)' : ''}; el ${fCorta(f.gateFechas[1]!)}, ${g1.resto}.`; // la fecha antes del carácter 230 (control 26j)
-  // v6.10u (auditoría c19 · diffs #19): en la 2.ª fecha, solo lo que falta (con sus minutos) y cuándo fue la 1.ª parte (fecha de PLAN, pasada: corridaTexto
-  //   la pasa al día real); antes el gate entero, que volvía a pedir el quiz de la 1.ª
-  if (f.gate2 && f.gateFechas.length === 2 && f.gateFechas[1] === iso) return `Base cero · hoy, 2.ª parte del GATE ${f.id}/${n} · ${f.corto}: ${f.gate2.hoy}; ${f.gate2.previo} ya fue el ${fCorta(f.gateFechas[0]!)}.`;
-  if (f.gateFechas.includes(iso)) {
-    // sin fechas futuras: va al final del aviso y el Calendar lo corta en 240 (control 26j); «el PC del domingo» = el siguiente (SHIP, flexible)
-    // v6.10l (rev. c15, cambios #18): la regla del suspenso delante y corta (el corte en 240 dejaba «Si no lo apruebas: se repite en el PC …»)
-    // v6.10m (rev. c16, diffs #25): «Si no apruebas» (en Perú «suspendido» se lee como cancelado); corta para que «PC del domingo» quepa en los 240 del 10-dic
-    // remate v6.10m (rev. c16 · verdad #3): sin el paréntesis final («(la fase siguiente empieza en su fecha)»), que el corte de 240 dejaba abierto el 27-nov
-    //   («… solo lo fallado (la fase …»); esa regla la dicen el paso 0) del PC del domingo («la fase siguiente ya empezó en su fecha») y SYN_AVANCE_BC
-    // v6.10o (rev. c17, cambios #4 · vetadas #12): el 10-dic (fase 3/6: quiz + los 5 workflows con su paréntesis) el aviso pasaba de 240 y el corte dejaba
-    //   «Si no apruebas: al PC del domingo, …» → con un 2.º requisito («quiz … aprobado + …»), la consecuencia va pegada al quiz, que es lo que se aprueba
-    //   («… quiz» oficial aprobado (si no apruebas: al PC del domingo, solo lo fallado) + los 5 workflows …»); con uno solo, al final, como estaba. El
-    //   paréntesis final del 2.º requisito («(recall en blanco; el ensayo no trae quiz)») no va en el aviso (con él pasaba de 240 y el corte lo dejaba
-    //   abierto): lo dicen el paso A del ensayo (sáb 12-dic) y la fase en la app (SYN_FASES_BC.gate)
-    // v6.10p (rev. c18, diffs #17): el 2.º requisito puede llevar su paréntesis corto dentro («+ los 5 workflows de memoria (recall en blanco) en el
-    //   journal»); el paréntesis FINAL sigue fuera del aviso
-    if (/^«/.test(f.gate)) {
-      const m = /^(«[^»]+»[^+]*? aprobados?)( \+ (?:[^()]|\([^()]{1,30}\))*?)(?: \([^()]*\))?\.$/u.exec(f.gate);
-      return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${m ? `${m[1]} (si no apruebas: al PC del domingo, solo lo fallado)${m[2]}.` : `${f.gate} Si no apruebas: al PC del domingo, solo lo fallado.`}`;
-    }
-    return `Base cero · hoy, GATE de la fase ${f.id}/${n} · ${f.corto}: ${f.gate}`;
+  // v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE es una CONDICIÓN («al terminar el curso»), no una fecha. El día en que el plan lo espera
+  //   (gateFechas) dice CUÁNDO va (al terminar su material: synANombreDe), que lo siguiente corre y qué pasa si el quiz no sale (la A siguiente repasa lo fallado
+  //   y lo repite; ya no va al PC del domingo). Sin fechas: cada parte de un gate partido va al terminar lo suyo (antes «el jue 17-dic, el de Claude Code 101» y
+  //   «ya fue el lun 21-dic»). Historia: v6.10p (gate en 2 fechas: gate1 = la 1.ª parte) · v6.10u (gate2 = solo lo que falta en la 2.ª) · v6.10l-o (la regla
+  //   del suspenso delante, dentro del corte de 240 del Calendar). La línea va DELANTE del aviso el día del gate (guiaSynapseDe: /^Base cero · GATE /).
+  const NO = 'si no apruebas: lo fallado y el quiz, en la A siguiente';
+  const cuando = (g: string): string => `al terminar ${synANombreDe(g)} (no por fecha; lo siguiente corre)`;
+  // integración v7.00 (revisión de regresiones · corte de 240 del Calendar): la OTRA parte de un gate partido dice primero CUÁNDO va («la 2.ª, al terminar «…»») y
+  //   el nombre entre «» (el corte no deja abierto un nombre entre comillas: entra entero) → el 12-dic, 21-dic y 23-dic el Calendar ya no deja «la 2.ª, los 5
+  //   workflows de memoria …» sin su cuándo ni «el «Claude Platform 101 quiz», …» colgando; si lo que falta es el quiz de ese mismo curso, «(su quiz)»
+  const otra = (cual: string, g: string, que: string): string => { const nm = synANombreDe(g); return `la ${cual}, al terminar «${nm}»${que.includes(nm) ? ' (su quiz)' : `: ${que}`}.`; };
+  const [gA, gB] = f.gateFechas;
+  if (f.gate1 && gA && gB && gA === iso) return `Base cero · GATE ${f.id}/${n} (1.ª parte), ${cuando(gA)}: ${f.gate1.hoy}${f.gate1.quiz ? ` (${NO})` : ''}; ${otra('2.ª', gB, f.gate1.resto)}`;
+  if (f.gate1 && gA && gB && gB === iso) {
+    if (f.gate2) return `Base cero · GATE ${f.id}/${n} (2.ª parte), ${cuando(gB)}: ${f.gate2.hoy}; ${otra('1.ª', gA, f.gate2.previo)}`;
+    const quizB = (synDiaDe(gB)?.bloques ?? []).some((b) => b.tag === 'A' && /quiz/i.test(b.leccion));
+    return `Base cero · GATE ${f.id}/${n} (2.ª parte), ${cuando(gB)}: ${quizB ? `su «Course quiz» oficial aprobado → insignia (${NO})` : f.gate.replace(/\.$/, '')}; la 1.ª, al terminar «${synANombreDe(gA)}».`;
   }
-  return `Base cero · fase ${f.id}/${n}${f.desde === iso ? ' (empieza hoy)' : ''} · ${f.corto} · gate: ${f.gateCorto}.`;
+  if (f.gateFechas.includes(iso)) return `Base cero · GATE ${f.id}/${n}, ${cuando(iso)}: ${f.gate.replace(/\.$/, '')}${/^«/.test(f.gate) ? ` (${NO})` : ''}.`;
+  // un día sin gate: la fase y su gate, con CUÁNDO va (al terminar …); su 1.er día de plan no «empieza hoy» si el GATE anterior sigue pendiente (lo siguiente corre)
+  const prev = SYN_FASES_BC[SYN_FASES_BC.indexOf(f) - 1];
+  const nombres = [...new Set(f.gateFechas.map(synANombreDe))].join(' y ');
+  return `Base cero · fase ${f.id}/${n}${f.desde === iso ? (prev ? ` (su fecha es hoy; empieza al cerrar el GATE ${prev.id}/${n})` : ' (empieza hoy)') : ''} · ${f.corto} · gate al terminar ${nombres}: ${f.gateCorto}.`;
 }
+/** v7.00 · ítem 46 (decidido por el chat de plan el 24-nov, consecuencia de «la A sigue donde paraste»): plan B del SYNAPSE = sin PC, ese día no hay A y la PRÓXIMA A
+ *  sigue donde paraste (como el plan B de la 1.ª sesión de la v6.11); ya no se manda el A al PC del domingo (antes «el A pasa al PC del dom …» en F1 y «al bloque PC
+ *  de la semana» / «deja A para mañana» en 2027). Mismo texto en todo el plan. Auditoría F0 (sáb 28-nov · FAQ de academy.claude.com): si Skilljar ya cerró, el
+ *  import se salta y la A sigue. */
+const SYN_PLAN_B = 'Sin PC: B y C en el móvil; hoy no hay A y la próxima A sigue donde paraste (no pasa al PC del domingo: lo siguiente corre). Academy caída: igual, B y C hoy y la A en la próxima sesión.';
 function synPlanBDe(iso: string): string {
-  // v6.11 fase 2 (chat SYNAPSE): la 1.ª sesión del plan (los días anteriores, sin sesión) no manda su A al PC del domingo: las A de las sesiones siguientes son las
-  //   lecciones siguientes del mismo curso → el A pendiente va PRIMERO en la sesión siguiente, en orden del curso
-  const s1 = synDiaDe(iso);
-  const prev1 = s1 ? SYN_DIAS.filter((x) => x.d < s1.d) : [];
-  const sigA = s1 && s1.d > 1 && prev1.length && prev1.every((x) => perdidoDelPlan(x.fecha)) ? SYN_DIAS.find((x) => x.fecha > iso && x.bloques.some((b) => b.tag === 'A')) : undefined;
-  if (sigA) return `Sin PC: B y C en el móvil y el A va PRIMERO en la sesión siguiente (el ${fCorta(sigA.fecha)}), antes de la suya: las lecciones van en orden del curso. Academy/Skilljar caído: adelanta B + C y el A, igual.`;
-  let pc: string | undefined;
-  // v6.10d (18-nov-2026): el domingo siguiente al día REAL (con el alias, la sesión del vie 27-nov se hace el lun 30: su PC es el del dom 6-dic, no el del 29)
-  if (textosQSDe(iso)) for (let d = siguienteDow(fechaRealDe(iso, 'synapse'), 0), i = 0; i < 3 && !pc; d = addDias(d, 7), i++) if (vibePCDomingo(d).length) pc = d;
-  return pc ? `Sin PC: B y C en el móvil y el A pasa al PC del ${fCorta(pc)} (SHIP del vibecoding, flexible). Academy/Skilljar caído: adelanta B + C y el A va también a ese PC del ${fCorta(pc)}.`
-    : 'Sin PC: B y C en el móvil y A pasa al bloque PC de la semana. Academy/Skilljar caído: adelanta B + C y deja A para mañana.';
+  const aud = (synDiaDe(iso)?.bloques ?? []).some((b) => b.tag === 'A' && /^AUDITORÍA F0/.test(b.leccion));
+  return `${SYN_PLAN_B}${aud ? ' Skilljar ya cerrado: el import de la auditoría se salta (sin import) y la A sigue.' : ''}`;
 }
 /** v6.09b lote 1-ter (S3 · hallazgo 1 de la revisión R): COLA del SYNAPSE de F1 con FRANJA REAL (synapseDailyPlan.synColaDe, generada por
  *  gen_synapse_plan.js › synapse_f1_tramos.js) — (a) SYN_COLA_F1: hueco de F1 con hora (sáb 26-dic 07:15-07:42: los 26:42 finales del deep dive, que no
@@ -1307,24 +1348,9 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     //   de PLAN, que la app pintaba «jue 3-dic», ya en la 4.ª sesión del proyecto siguiente)
     : `Sin PC el domingo: ${textosQSDe(iso) ? `el ${fCorta(VIBE_DIAS.map((x) => x.fecha).filter((x) => fechaRealDe(x, 'vibecoding') > iso).sort((a, b) => (fechaRealDe(a, 'vibecoding') < fechaRealDe(b, 'vibecoding') ? -1 : 1))[0] ?? addDias(iso, 1))} a las 04:15` : 'el lunes 04:15'} empieza con el verify (10′) y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`;
   const journal = { t: '📓 journal', url: vibeJournalUrl(iso) };
-  // v6.10 · fix 18-nov (revisión de los frentes): el aviso del GATE del SYNAPSE (synFaseAvisoDe) manda el quiz oficial suspendido «al PC del domingo»; en F1
-  //   este SHIP lo recoge: el domingo siguiente al día REAL de un gate con quiz oficial, el paso de cerrar/avanzar empieza por repetirlo (solo lo fallado), a
-  //   cuenta de sus minutos (flexibles). Fechas de PLAN en el texto (corridaTexto las pasa al día real).
-  const gatesQuiz = textosQSDe(iso)
-    ? SYN_FASES_BC.flatMap((f) => (/^«/.test(f.gate) ? f.gateFechas.map((g) => ({ f, g, real: fechaRealDe(g, 'synapse') })) : []))
-      .filter((x) => x.real < iso && x.real >= addDias(iso, -6) && (synDiaDe(x.g)?.bloques ?? []).some((b) => /quiz/i.test(b.leccion ?? '') && !/no trae quiz/i.test(b.leccion ?? ''))) // solo los gates cuyo día trae el quiz
-    : [];
-  // v6.10e (revisión del 18-nov · regresiones-5): «fase n/6 del SYNAPSE» (en una guía de vibecoding, «fase 2» chocaba con sus fases PRIMM «fase 2/3»)
-  // v6.10m (rev. c16, diffs #25 · vetadas #18): «no aprobado» (en Perú «suspendido» se lee como cancelado) y «solo lo fallado» dentro del corte de 110 del
-  //   Calendar (antes «quedó suspendido: repítelo solo …»); el detalle (las lecciones falladas, sus minutos), detrás
-  // v6.10o (rev. c17, diffs #16): la CONDICIÓN delante («0) Si no aprobaste el quiz oficial del SYNAPSE (GATE …): repite solo lo fallado»): con 2 gates (dom
-  //   13-dic) el corte de 110 caía antes de «no aprobado: repite solo lo fallado» y el paso 0 se leía como obligatorio; las fechas, dentro del paréntesis.
-  //   Más corto («(las lecciones, …)»): con 1 gate el criterio (1) del «CERRAR» vuelve a caer antes del carácter 250 y el Calendar lo enseña (limCerrar)
-  const gateTxt = (min: number): string => (gatesQuiz.length
-    // v6.11: el día del gate es el REAL del SYNAPSE (alias global), escrito como la fecha de PLAN del vibecoding de ese día real: el SHIP se traduce con el alias
-    //   PROPIO del vibecoding (desde el lun 30 ≠ global) y «${fCorta(x.g)}» salía con el día del vibecoding, no con el del SYNAPSE
-    ? `0) Si no aprobaste el quiz oficial del SYNAPSE (GATE ${gatesQuiz.map((x) => `${x.f.id}/${SYN_FASES_BC.length}, ${fCorta(fechaPlanDe(x.real, 'vibecoding'))}`).join(', o ')}): repite solo lo fallado (las lecciones, ≈ 5-10′${gatesQuiz.length > 1 ? ' cada uno' : ''}, a cuenta de estos ${min}′; la fase siguiente ya empezó en su fecha). `
-    : '');
+  // v7.00 · ítem 46 (decidido por el chat de plan el 24-nov): el GATE del SYNAPSE es una condición, no una fecha, y un quiz no aprobado se repite en la A siguiente;
+  //   el SHIP ya no lo recoge (antes, desde la v6.10 fix 18-nov, «0) Si no aprobaste el quiz oficial del SYNAPSE (GATE …): repite solo lo fallado …» al abrir el
+  //   CERRAR / AVANZAR) ni las A del plan B del SYNAPSE («cada A del SYNAPSE, 15′»: sin PC, ese día no hay A y la próxima sigue donde paraste)
   if (main && (main.tipo === 'ship' || main.tipo === 'avance') && main.proyecto) {
     const p = main.proyecto;
     // v6.09: el domingo es flexible → el A/B/C del SYNAPSE (dom 29-nov, domingo de recuperación) va APARTE, sin restarle minutos al SHIP (hasta la v6.06 el
@@ -1365,7 +1391,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
         { ...commit, que: `${etq} · ${commit.que}` },
         P(10, `${etq} · VERIFY: node DATA/_scripts/verify_vibecoding.js ${p.s} → x/${p.verificacion.length}`, `Desde D:\\joseph-md-app. Esperado: ${p.verificacion.length - manual.length}/${p.verificacion.length}${manual.length ? ` (el ${manual.join(' y el ')}.º es MANUAL: se acepta al final de este SHIP con --ok-manual ${manual.join(',')}, tras mirarlo)` : ''}. Anota en el journal qué criterio falla.`),
         ...(mTest ? [P(mTest, '[TEST S1] → is_test (con tu OK) + la predicción «segura» fallada → 1 tarjeta', 'Primero, solo lectura: Claude Code hace un select de las filas «TEST S1» en apex_blocks y apex_reports y te enseña cuántas son. Con tu OK, un update de is_test = true SOLO en esas filas (nada se borra). La predicción que marcaste «segura» y falló → 1 tarjeta en Anki (el mazo lo decides tú; se crea hoy, con esa 1.ª tarjeta).')] : []),
-        P(mC, 'CERRAR lo que el verify marque en rojo', `${gateTxt(mC)}${textosQSDe(iso) ? `Si hubo días sin PC, su plan B (si no lo hiciste ya antes del ${previos.length ? `paso ${previos[0]!.k}` : 'commit'}) va primero. Luego, en orden` : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? (previos.length ? ` El plan B (cada A del SYNAPSE, 15′; cada paso de vibecoding, 35′) va antes del paso ${previos[0]!.k} y sale de los ${shipMin}′ del SHIP: lo que no quepa, queda escrito como no cerrado.` : ` El plan B sale de estos ${mC}′: cada A del SYNAPSE, 15′; cada paso de vibecoding, 35′.`) : ''} Del paso ${pasoEn.k}: sin commit → repite el commit con [S${p.s}]; test rojo → mira el nombre del caso. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
+        P(mC, 'CERRAR lo que el verify marque en rojo', `${textosQSDe(iso) ? `Si hubo días sin PC, su plan B (si no lo hiciste ya antes del ${previos.length ? `paso ${previos[0]!.k}` : 'commit'}) va primero. Luego, en orden` : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? (previos.length ? ` El plan B (cada paso de vibecoding, 35′) va antes del paso ${previos[0]!.k} y sale de los ${shipMin}′ del SHIP: lo que no quepa, queda escrito como no cerrado.` : ` El plan B sale de estos ${mC}′: cada paso de vibecoding, 35′.`) : ''} Del paso ${pasoEn.k}: sin commit → repite el commit con [S${p.s}]; test rojo → mira el nombre del caso. Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
         P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
           manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
             : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
@@ -1393,7 +1419,7 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
         ...(mTest ? [P(mTest, '[TEST S1] → is_test (con tu OK) + la predicción «segura» fallada → 1 tarjeta', 'Primero, solo lectura: Claude Code hace un select de las filas «TEST S1» en apex_blocks y apex_reports y te enseña cuántas son. Con tu OK, un update de is_test = true SOLO en esas filas (nada se borra). La predicción que marcaste «segura» y falló → 1 tarjeta en Anki (el mazo lo decides tú; se crea hoy, con esa 1.ª tarjeta).')] : []),
         // v6.10l (rev. c15, cambios #17 · diffs #37): en F1 la prioridad del plan B va delante en una cláusula corta y su detalle (minutos de cada pendiente)
         //   detrás de los criterios, para que el Calendar (corte del «cómo» a 110) enseñe el criterio (1) y no «… a cuenta de estos 80′: los A …»
-        P(shipMin - 40 - mTest, 'CERRAR lo que el verify marque en rojo', `${gateTxt(shipMin - 40 - mTest)}${textosQSDe(iso) ? 'Si hubo días sin PC, su plan B va primero. Luego, en orden' : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? ` El plan B sale de estos ${shipMin - 40 - mTest}′: cada A del SYNAPSE, 15′; cada paso de vibecoding, 35′.` : ''} Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
+        P(shipMin - 40 - mTest, 'CERRAR lo que el verify marque en rojo', `${textosQSDe(iso) ? 'Si hubo días sin PC, su plan B va primero. Luego, en orden' : 'En el orden de los criterios'}: ${((l) => (/…$/.test(l) ? l : `${l}.`))(p.aceptacion.map((a, i) => `(${i + 1}) ${critCorto(a)}`).join(' · '))}${textosQSDe(iso) ? ` El plan B sale de estos ${shipMin - 40 - mTest}′: cada paso de vibecoding, 35′.` : ''} Si todo está verde, el tiempo que sobra es libre (o haces el Feynman).`),
         P(10, manual.length ? `VERIFY definitivo con el criterio manual ${manual.join(',')} visto` : `VERIFY definitivo: node DATA/_scripts/verify_vibecoding.js ${p.s}`,
           manual.length ? `${p.verificacion[manual[0] - 1]?.resumen ?? 'comprobación manual'} → si lo viste: \`node DATA/_scripts/verify_vibecoding.js ${p.s} --ok-manual ${manual.join(',')}\` → SHIPPED ${p.verificacion.length}/${p.verificacion.length}. Pega en la consola de la app el one-liner que imprime (guarda 'jmd-vibe-ship').`
             : 'Escribe el resultado en DATA/SYNAPSE/_vibecoding_ship.json; pega en la consola de la app el one-liner que imprime.'),
@@ -1417,12 +1443,18 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
         else planB = `Sin PC el domingo: el ${fCorta(lunSig)} a las 04:15 empieza con el verify (10′) de S${p.s} y cierra lo rojo; lo que no cierre queda escrito como no shipped. Nunca se arrastra al proyecto siguiente.`; // v6.09b lote 1-quater (QS · e): con fecha (antes «el lunes 04:15»: dom 27-dic y 3-ene)
       }
     } else {
+      // v7.00 (sáb 28-nov, chat vibe): AVANCE del domingo (v7.00: dom 27-dic, S4 cierra el lun 28-dic y hace SHIP el dom 3-ene). journal_hoy.js ya le crea su sección
+      //   («## Dom 27-dic · AVANCE S4»; antes decía SIN VIBECODING) · fechas cortas (antes ISO: «termina el 2026-12-28») · sin el «A las 04:55 paras» del 04:15 (el
+      //   domingo es flexible) · plan B propio: hoy no hay verify, así que el del SHIP («el lun 28-dic empieza con el verify … no shipped») no aplica
+      const rV = (x: string): string => fechaRealDe(x, 'vibecoding');
+      const sigAv = VIBE_DIAS.filter((y) => y.semana === p.s && rV(y.fecha) > iso).map((y) => y.fecha).sort((a, b) => (rV(a) < rV(b) ? -1 : rV(a) > rV(b) ? 1 : 0))[0];
       pasos.push(
-        P(5, 'ABRIR el journal y ver qué paso del proyecto falta', `\`${JOURNAL_CMD}\`; el proyecto termina el ${p.fin} y su SHIP es el ${p.ship}.`, journal),
-        P(shipMin - 15, `AVANZAR S${p.s}: los pasos que faltan`, `${gateTxt(shipMin - 15)}${VIBE_COMO_TIPO.construir} Hoy no hay verify (aún no termina).`),
-        P(10, 'JOURNAL · qué avanzó + qué falta', '3 líneas.', journal),
+        P(5, 'ABRIR el journal y ver qué paso del proyecto falta', `S${p.s} termina el ${fCorta(rV(p.fin))} y su SHIP es el ${fCorta(rV(p.ship))}: \`${JOURNAL_CMD}\` (hoy crea la sección «AVANCE S${p.s}»).`, journal), // fechas delante: el Calendar corta el «cómo» en 100
+        P(shipMin - 15, `AVANZAR S${p.s}: los pasos que faltan`, `${VIBE_COMO_TIPO.construir.replace(/ A las 04:55 paras aunque falte\./, '')} Hoy no hay verify (aún no termina).`),
+        P(10, 'JOURNAL · qué avanzó + qué falta', '3 líneas en la sección «AVANCE»: qué avanzó, qué falta y el cierre (commit selectivo o nota de estado; nunca git stash).', journal),
       );
       hecho = `avance del proyecto escrito en el journal${masABC}`;
+      planB = `Sin PC el domingo: el avance no se recupera aparte; lo que falte de S${p.s} sigue en orden ${sigAv ? `el ${fCorta(rV(sigAv))} a las 04:15${sigAv === p.fin ? ' (su último día: doc + commit + preparar SHIP)' : ''}` : 'en su próximo paso'} y lo rojo, en el SHIP del ${fCorta(rV(p.ship))}. Nunca se arrastra al proyecto siguiente.`;
     }
     if (abcMin) aviso = (aviso ? `${aviso} ` : '') + `Hoy, además del ${main.tipo === 'ship' ? 'SHIP' : 'avance'} (${shipMin}′), el SYNAPSE trae ${abcMin}′ de A/B/C${(() => { const m = abc.map((b) => /· recupera el (.+)$/.exec(b.leccion)).find(Boolean); return m ? ` (recupera el ${m[1]})` : ''; })()}: van al final y por separado (el domingo es flexible). Si el verify da verde antes, el resto es libre.`;
   } else if (pcs.length) {
@@ -1475,7 +1507,8 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
   const feyIni = alEmpezar ? shipEjemploIni(iso) : aHHMM(aMin(shipEjemploIni(iso)) - r.min);
   return bloque(franjaDesde(feyIni, r.min), 'vibecoding', `FEYNMAN (opcional) · ${r.material.replace(/^Feynman · /, '')}`, [
     P(Math.ceil(r.min / 2), `Explica en voz alta ${quePy} y CÓMO funciona (sin mirar el código)`, 'Grábate 1 toma en el móvil (≤5 min). Si te trabas en un punto, ese es el hueco real.'),
-    P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', 'Sección «Cierre de semana» del journal.', journal),
+    // v7.00 (chat vibe): el domingo de AVANCE (dom 27-dic, S4) la línea «qué falta» va en su sección «AVANCE S<n>» (journal_hoy.js ya la crea), no en el cierre
+    P(r.min - Math.ceil(r.min / 2), 'Journal: línea «qué falta» + 3 líneas de Feynman', main?.tipo === 'avance' && main.s === sFey ? `«qué falta», en la sección «AVANCE S${sFey}» del journal; las 3 líneas de Feynman, en «Cierre de semana».` : 'Sección «Cierre de semana» del journal.', journal),
   ], [R(`journal ${vibeJournalSemanaDe(iso)}.md`, vibeJournalUrl(iso))], 'la grabación hecha y la línea «qué falta» escrita (opcional: si descansas, márcalo ✓ igual)', {
     aviso: `Opcional y sin hora fija (${franjaDesde(feyIni, r.min).replace('–', '-')} es solo un ejemplo): ${alEmpezar ? 'mejor al empezar el SHIP' : 'mejor justo antes del SHIP'} del vibecoding, porque lo que no sabes explicar es lo que falta.`,
   });

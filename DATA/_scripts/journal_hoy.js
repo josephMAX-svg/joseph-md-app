@@ -7,9 +7,11 @@
 //
 // Qué hace:
 //   1) Calcula la semana ISO de la fecha (hoy o --fecha) y crea journal/<semana>.md desde la plantilla si no existe
-//      (cabecera con la semana del Step 1, el proyecto S<n> de la semana leído de src/lib/vibecodingPlan.ts y sus criterios).
+//      (cabecera con la semana del Step 1 —v7.00: «Step 1 en pausa (mantenimiento)» del 30-nov al reinicio del 16-mar—, el proyecto S<n> de la semana leído de
+//      src/lib/vibecodingPlan.ts y sus criterios).
 //   2) Añade la sección del día ("## Lun 14-sep · D1 · S1 · <proyecto>") si aún no está, con los 6 campos + freno. El domingo de SHIP (o de PC opcional
-//      del taper) sin paso del proyecto no lleva sección: se escribe en «Cierre de semana».
+//      del taper) sin paso del proyecto no lleva sección: se escribe en «Cierre de semana». v7.00: el domingo de AVANCE (proyecto en curso que no hace
+//      SHIP ese día; dom 27-dic = S4) sí la lleva: «## Dom 27-dic · AVANCE S4», con los 6 campos + «qué falta» + cierre (sin el freno de las 04:55).
 //   3) --abrir: abre el fichero en VS Code (code) o, si no hay `code`, con el programa por defecto de Windows.
 //
 // Uso:
@@ -51,8 +53,17 @@ const _own = (o, k) => !!o && Object.prototype.hasOwnProperty.call(o, k);
 const SIN_SESION_HOY = (_C1.sin_sesion || []).includes(REAL) && !_own(_C1.alias, REAL) && !_own(_C1.reparto, REAL)
   && !(_V6.extraListaDe ? _V6.extraListaDe(REAL, _F6) : []).some((x) => x.frente === 'vibecoding');
 if (SIN_SESION_HOY) {
-  const r = _REAL(FECHA);
-  console.log(`SIN SESIÓN ${REAL} (corrida_s1.sin_sesion ${_C1.version || ''}): hoy no hay vibecoding ni entrada en el journal · la próxima sesión (plan ${FECHA}) se hace el ${r}${r !== FECHA ? '' : ' (su propio día)'}: node DATA/_scripts/journal_hoy.js --fecha ${r}`);
+  let plan = FECHA, r = _REAL(FECHA);
+  // v7.00 (sáb 28-nov, chat vibe): sin alias ni reparto (corrida_s1 vacía salvo sin_sesion: sáb 28 y dom 29-nov) fechaPlanDe devuelve el MISMO día y el aviso decía
+  //   «la próxima sesión (plan 2026-11-28) se hace el 2026-11-28 (su propio día)» → la próxima sesión = el 1.er paso del plan cuyo día real es posterior (lun 30-nov)
+  if (plan === REAL) {
+    try {
+      const vp = fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8');
+      const sig = [...vp.matchAll(/\{d:\d+,fecha:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => m[1]).filter((f) => _REAL(f) > REAL).sort((a, b) => (_REAL(a) < _REAL(b) ? -1 : _REAL(a) > _REAL(b) ? 1 : 0))[0];
+      if (sig) { plan = sig; r = _REAL(sig); }
+    } catch { /* sin plan: el aviso de siempre */ }
+  }
+  console.log(`SIN SESIÓN ${REAL} (corrida_s1.sin_sesion ${_C1.version || ''}): hoy no hay vibecoding ni entrada en el journal · la próxima sesión (plan ${plan}) se hace el ${r}${r !== plan ? '' : ' (su propio día)'}: node DATA/_scripts/journal_hoy.js --fecha ${r}`);
   process.exit(0);
 }
 // v6.10y (revisión): con el alias PROPIO del vibecoding, el día real cuyo plan GLOBAL es una fecha que ese alias hace OTRO día (lun 23-nov: plan del mié 18, cuyo
@@ -109,14 +120,22 @@ const diaHoy = DIAS.find((x) => x.fecha === FECHA) || null;
 //   el pcSab de un proyecto (SHIP) o de un taper de mantenimiento (PC opcional, 30′), en el día del SHIP (diaShip) y fuera de los días protegidos o sin
 //   sesión. Un taper de deload total (PC de 0′: dom 28-mar, 4-abr y 11-abr-2027) no tiene bloque (plantillasV6 solo lo nombra en las notas) → no cuenta.
 //   El rango del plan sigue cerrando en el último ship del .ts (esos domingos siguen dentro: no escriben nada).
-//   Límite conocido (sin caso en el plan actual): un domingo de «avance» (proyecto en curso, sin SHIP) tampoco está en _ships → daría SIN VIBECODING.
 const _setTS = (n) => { try { return JSON.parse((VP.match(new RegExp(`const ${n} = new Set<string>\\((\\[[^\\]]*\\])\\)`)) || [])[1] || '[]'); } catch { return []; } };
 const _sinPC = new Set([..._setTS('VIBE_PROTEGIDOS'), ..._setTS('VIBE_SIN_SESION')]);
 const _diaShip = Number((VP.match(/diaShip:\s*(\d)/) || [])[1] || 0);
 const _conPC = (p) => !!p.pcSab && dow(p.pcSab) === _diaShip && !_sinPC.has(p.pcSab);
 const _ships = new Set([...PROY, ...TAPER.filter((t) => t.tipo === 'mantenimiento')].filter(_conPC).map((p) => p.pcSab));
+// v7.00 (sáb 28-nov, chat vibe): el domingo de AVANCE (vibePCDomingo › entrada «en curso», tipo 'avance': un PROYECTO entre su 1.er hábil y su SHIP que no hace
+//   SHIP ese día; v7.00: dom 27-dic = AVANCE S4, que cierra el lun 28-dic y hace SHIP el dom 3-ene) es un día con PC: la app pinta «AVANCE S4 (aún no termina)» con
+//   «journal_hoy.js --abrir» → aquí se crea su sección («## Dom 27-dic · AVANCE S4»), no «SIN VIBECODING» (antes, el límite conocido de c38). Misma regla que
+//   vibePCDomingo: domingo de diaShip, fuera de los días protegidos o sin sesión, ningún pcSab ese día y la PRIMERA entrada (proyectos y luego taper, en el orden
+//   del .ts) con pcSab ≠ '' e ini ≤ fecha ≤ ship. Límite conocido (sin caso en el plan actual): si esa entrada es un taper (PC opcional «en curso»), no se escribe.
+const _todosPC = [...PROY, ...TAPER];
+const _enCursoDe = (f) => (dow(f) !== _diaShip || _sinPC.has(f) || _todosPC.some((p) => p.pcSab === f) ? null
+  : _todosPC.find((p) => p.pcSab !== '' && p.ini <= f && f <= p.ship) || null);
+const AVANCE = !diaHoy && !PASOS_SHIP.length ? ((x) => (x && !x.tipo ? x : null))(_enCursoDe(FECHA)) : null;
 const _rango = DIAS.length ? [DIAS.map((x) => x.fecha).sort()[0], [...DIAS.map((x) => x.fecha), ...[...PROY, ...TAPER].map((p) => p.ship)].sort().pop()] : null;
-if (!diaHoy && _rango && FECHA >= _rango[0] && FECHA <= _rango[1] && !_ships.has(FECHA)) {
+if (!diaHoy && _rango && FECHA >= _rango[0] && FECHA <= _rango[1] && !_ships.has(FECHA) && !AVANCE) {
   console.log(`SIN VIBECODING ${REAL}: ${fmt(REAL)} no tiene bloque de vibecoding en el plan (ni paso ni SHIP) · hoy no se escribe nada en el journal`);
   process.exit(0);
 }
@@ -124,7 +143,7 @@ if (!diaHoy && _rango && FECHA >= _rango[0] && FECHA <= _rango[1] && !_ships.has
 //   la app); si no, la semana ISO de la fecha de plan. El lunes y el domingo de la cabecera, los de esa semana. v6.10u: la tabla sale del .ts generado
 //   (VIBE_JOURNAL_SEMANA, { n: «YYYY-Www» }; gen_vibecoding_plan.js › JOURNAL_SEM), no de _fechas_v6.json
 const _JSEM = (() => { try { return Object.fromEntries(Object.entries(JSON.parse((VP.match(/const VIBE_JOURNAL_SEMANA: Record<number, string> = (\{[^}]*\});/) || [])[1] || '{}')).map(([n, w]) => [`S${n}`, w])); } catch { return {}; } })();
-const _sHoy = diaHoy ? diaHoy.semana : (PROY.find((p) => p.ship === FECHA) || {}).s;
+const _sHoy = diaHoy ? diaHoy.semana : (PROY.find((p) => p.ship === FECHA) || AVANCE || {}).s; // v7.00: + el proyecto del domingo de AVANCE (= vibeJournalSemanaDe)
 const SEM = (_sHoy != null && _JSEM[`S${_sHoy}`]) || semanaISO(REAL); // v6.10w: la semana del DÍA REAL (S1 = lun 23 → vie 27-nov, 2026-W48)
 const lunesDeSemana = (w) => { const [y, n] = w.split('-W').map(Number); const e4 = `${y}-01-04`; return addDays(addDays(e4, -((dow(e4) + 6) % 7)), (n - 1) * 7); };
 const LUNES = SEM === semanaISO(REAL) ? addDays(REAL, -((dow(REAL) + 6) % 7)) : lunesDeSemana(SEM);
@@ -133,6 +152,14 @@ const DOMINGO = addDays(LUNES, 6);
 const semanaDias = DIAS.filter((x) => LUNES <= _REAL(x.fecha) && _REAL(x.fecha) <= addDays(LUNES, 4) && (!_JSEM[`S${x.semana}`] || _JSEM[`S${x.semana}`] === SEM)); // v6.10w: por día REAL
 const proySemana = semanaDias.length ? (PROY.find((p) => p.s === semanaDias[0].semana) || TAPER.find((t) => t.s === semanaDias[0].semana) || null) : null;
 const nStep1 = D1 ? Math.floor((fromISO(LUNES) - fromISO(D1)) / 86400000 / 7) + 1 : null;
+// v7.00 (sáb 28-nov, chat vibe): con el Step 1 en PAUSA (_fechas_v6.json › step1.pausa_desde ≤ día < step1.reinicio; v7.00: lun 30-nov-2026 → mar 16-mar-2027, solo
+//   mantenimiento) la cabecera no cuenta «Step 1 S<n>/20» (es la semana del vibecoding desde su D1, que en la v7 coincide con el inicio de la pausa): dice «Step 1 en
+//   pausa (mantenimiento)» y, si la semana la abre o la cierra a media semana, desde / hasta cuándo. Fuera de la pausa, la de siempre.
+const _st1 = _F6.step1 || {};
+const _pausaSem = !!(_st1.pausa_desde && _st1.reinicio && LUNES < _st1.reinicio && DOMINGO >= _st1.pausa_desde);
+const STEP1_TXT = _pausaSem
+  ? ` · Step 1 en pausa (mantenimiento)${_st1.pausa_desde > LUNES ? ` desde el ${fmt(_st1.pausa_desde)}` : ''}${_st1.reinicio <= DOMINGO ? ` hasta el reinicio del ${fmt(_st1.reinicio)}` : ''}`
+  : nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : '';
 
 // ─── fichero de la semana ───
 const dir = path.join(JOURNAL, 'journal');
@@ -149,7 +176,7 @@ const CIERRE = [
 ];
 if (!fs.existsSync(file)) {
   const L = [];
-  L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${nStep1 != null && nStep1 >= 1 && nStep1 <= 20 ? ` · Step 1 S${nStep1}/20` : ''}`);
+  L.push(`# ${SEM} · ${fmt(LUNES)} → ${fmt(DOMINGO)} ${LUNES.slice(0, 4)}${STEP1_TXT}`);
   L.push('');
   if (proySemana) {
     L.push(`**Proyecto de la semana**: S${proySemana.s} · ${proySemana.nombre}${proySemana.tipo ? ` (taper · ${proySemana.tipo})` : ''} · ${_REAL(proySemana.ini) !== proySemana.ini || [0, 6].includes(dow(_REAL(proySemana.ini))) ? 'días' : 'L-V'} ${fmt(_REAL(proySemana.ini))} → ${fmt(_REAL(proySemana.fin))}${proySemana.tipo ? '' : ` · SHIP ${fmt(_REAL(proySemana.ship))} (PC del domingo, flexible) → \`node DATA/_scripts/verify_vibecoding.js ${proySemana.s}\``}`);
@@ -184,21 +211,34 @@ const _esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const FECHAS_SEC = SOLO_ABRIR ? [] : PASOS_SHIP.length ? PASOS_SHIP : [FECHA]; // SOLO_ABRIR: hoy sin vibecoding, ninguna sección
 for (const FX of FECHAS_SEC) {
 const diaX = DIAS.find((x) => x.fecha === FX) || null;
-const titulo = `## ${fmt(FX)}${REAL !== FX ? ` (hecho el ${fmt(REAL)})` : ''}${diaX ? ` · D${diaX.d} · S${diaX.semana}` : ''}`;
-const yaPlan = new RegExp(`^## ${_esc(fmt(FX))}(?= |$)`, 'm').test(txt);
-if (!SOLO_CIERRE && yaPlan && !txt.includes(titulo)) console.log(`⚠ ya hay una sección del plan ${fmt(FX)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
-if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
+const avX = !diaX && AVANCE && FX === FECHA ? AVANCE : null; // v7.00: el domingo de AVANCE
+const titulo = `## ${fmt(FX)}${REAL !== FX ? ` (hecho el ${fmt(REAL)})` : ''}${diaX ? ` · D${diaX.d} · S${diaX.semana}` : avX ? ` · AVANCE S${avX.s}` : ''}`;
+// v7.00 (sáb 28-nov, chat vibe · ítem 47-4): «ya hay sección de este plan» = un título que crea ESTE script para esa fecha, con o sin «(hecho el …)»: «· D<n> · S<n>»
+//   un día de paso, «· AVANCE S<n>» el domingo de avance y, fuera del plan, el título solo (hasta el fin de línea). Antes valía cualquier «## <fecha> …»: un
+//   encabezado propio («## Lun 21-dic notas») tapaba la sección del día
+const yaPlan = new RegExp(`^## ${_esc(fmt(FX))}(?: \\(hecho el [^)]*\\))?${diaX ? ' · D\\d+ · S\\d+' : avX ? ' · AVANCE S\\d+' : '[ \\t\\r]*$'}`, 'm').test(txt);
+// integración v7.00 (revisión de regresiones · resto del ítem 47-4): fuera del plan el título es solo «## <fecha>» y buscarlo como subcadena (txt.includes) lo
+//   encontraba dentro de un encabezado propio («## Sáb 01-may notas») y no se añadía la sección → ahí, el título como línea entera; con «· D<n> · S<n>» o
+//   «· AVANCE S<n>» el título ya es específico y sigue valiendo la subcadena
+const tieneTit = diaX || avX ? txt.includes(titulo) : new RegExp(`^${_esc(titulo)}[ \\t\\r]*$`, 'm').test(txt);
+if (!SOLO_CIERRE && yaPlan && !tieneTit) console.log(`⚠ ya hay una sección del plan ${fmt(FX)} en ${SEM}.md (escrita otro día real): se usa esa, no se añade otra`);
+if (!SOLO_CIERRE && !tieneTit && !yaPlan) {
   const S = [];
   S.push(titulo);
   S.push('');
   if (diaX) S.push(`- paso del día (${diaX.tipo}${diaX.min !== 45 ? ` · ${diaX.min}'` : ''}${diaX.deload ? ' · deload' : ''}): ${diaX.paso}`);
+  // v7.00: el domingo de AVANCE = lo que pinta la app (guiaShipDe: «AVANZAR S<n>: los pasos que faltan · hoy no hay verify» + «JOURNAL · qué avanzó + qué falta»)
+  if (avX) S.push(`- avance (PC del domingo, flexible; aún no termina, hoy sin verify): S${avX.s} · ${avX.nombre} · los pasos que faltan · último día ${fmt(_REAL(avX.fin))} · SHIP ${fmt(_REAL(avX.ship))}`);
   S.push('- objetivo del día (5\'): ');
   S.push('- qué construí: ');
   S.push('- commit / URL: ');
   S.push('- qué aprendí: ');
   S.push('- % del código que entiendo: __ %');
   S.push('- bloqueo: ');
-  S.push('- freno 04:55 commit selectivo o nota de estado (nunca git stash): ☐ sí ☐ no · 1ª review Anki: __:__ (verde ≤05:10 · ámbar >05:10 · rojo sin review)');
+  if (avX) {
+    S.push(`- qué falta (para el ${fmt(_REAL(avX.fin))} y el SHIP del ${fmt(_REAL(avX.ship))}): `);
+    S.push(`- cierre: commit selectivo [S${avX.s}] o nota de estado (nunca git stash): ☐ sí ☐ no`); // domingo flexible: sin el freno de las 04:55 ni la review de las 05:00
+  } else S.push('- freno 04:55 commit selectivo o nota de estado (nunca git stash): ☐ sí ☐ no · 1ª review Anki: __:__ (verde ≤05:10 · ámbar >05:10 · rojo sin review)');
   S.push('');
   // insertar antes de "## Cierre de semana" para que el cierre quede al final
   const i = txt.indexOf('## Cierre de semana');
@@ -211,7 +251,7 @@ if (!SOLO_CIERRE && !txt.includes(titulo) && !yaPlan) {
 const rel = path.relative(JOURNAL, file).replace(/\\/g, '/');
 if (SOLO_ABRIR) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)} sin vibecoding: hoy no se añade sección (la del paso del ${fmt(FECHA)} la añade el ${fmt(_REAL(FECHA))})`);
 else if (SOLO_CIERRE) console.log(`${creado ? 'CREADO' : 'OK'} ${file} · ${fmt(REAL)}, ${PC_TXT}: hoy no se añade sección de día · escribe en «Cierre de semana»`);
-else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadidas.length ? ' · +sección ' + anadidas.join(' + ') : ` · ${FECHAS_SEC.length > 1 ? 'secciones' : 'sección'} de hoy ya existía${FECHAS_SEC.length > 1 ? 'n' : ''}`}${diaHoy ? ` · ${FECHAS_SEC.map((fx) => DIAS.find((x) => x.fecha === fx)).filter(Boolean).map((x) => `D${x.d}`).join(' + ')} S${diaHoy.semana} ${diaHoy.proyecto}${PASOS_SHIP.length ? ' (dentro del SHIP)' : ''}` : ' · fuera del plan'}`);
+else console.log(`${creado ? 'CREADO' : 'OK'} ${file}${anadidas.length ? ' · +sección ' + anadidas.join(' + ') : ` · ${FECHAS_SEC.length > 1 ? 'secciones' : 'sección'} de hoy ya existía${FECHAS_SEC.length > 1 ? 'n' : ''}`}${diaHoy ? ` · ${FECHAS_SEC.map((fx) => DIAS.find((x) => x.fecha === fx)).filter(Boolean).map((x) => `D${x.d}`).join(' + ')} S${diaHoy.semana} ${diaHoy.proyecto}${PASOS_SHIP.length ? ' (dentro del SHIP)' : ''}` : AVANCE ? ` · AVANCE S${AVANCE.s} ${AVANCE.id} (domingo; aún no termina, SHIP ${fmt(_REAL(AVANCE.ship))})` : ' · fuera del plan'}`);
 if (has('--print')) console.log('\n' + fs.readFileSync(file, 'utf8'));
 if (has('--abrir')) {
   try { cp.execSync(`code "${file}"`, { stdio: 'ignore', timeout: 15000, windowsHide: true }); console.log('abierto en VS Code'); }

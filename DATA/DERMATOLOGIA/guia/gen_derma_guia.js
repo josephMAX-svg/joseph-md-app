@@ -60,6 +60,11 @@
 //   primero en el aviso (dermaGuia.dermaGuiaPar) · (3) DermNet: +3 «Dermoscopy quiz (n of 3)» (20 casos, sinTiempo) y k = floor(min/2) en el mapa de F1 (+1′ de
 //   ledger) · (4) --check valida TODO el plan (F1 + 2027, plan B en su franja): cada paso «DermNet Quizzes ›» con quiz real, rango de casos dentro del quiz,
 //   0 casos repetidos en el plan, aritmética = minutos del paso y «cómo» que abre en su primer caso (el cursor vive en dermaGuia.dermnetAsignacion).
+// v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1 del lun 30-nov: los 12′ de uWorld no dan para 5Q, caben 4 antes de las 13:43): la regla
+//   del Tutor no contaba el minuto de componer el test y tapar la pantalla → nº de preguntas de cada paso uWorld = floor((min − 1) / 2,35) en TODAS las sesiones
+//   (curadas d1 4Q en 12′ · d2 3Q en 9′; la regla de dermaGuia.ts, con los mismos minutos por paso). El --check exige la regla exacta (y su texto) en todo el
+//   plan (plan B, 45′ y 30′), UW_F1_TOTAL con el consumo nuevo del lote 1 (reparto + 2.ªs pasadas), que cada «quedan N antes de hoy» sea el real en orden de
+//   fecha, e informa de las Unused consumidas hasta el dom 3-ene y el mar 16-mar.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -174,16 +179,21 @@ for (const [fecha, s] of Object.entries(DN.sesiones)) {
 for (const [fecha, m] of Object.entries(DERMNET_MEDIDO)) if (m.aOtroDia && !(DERMNET_MEDIDO[m.aOtroDia.fecha] && DERMNET_MEDIDO[m.aOtroDia.fecha].lecturas.some((l) => l.de === fecha))) aborta(`DermNet ${fecha}: su aOtroDia (${m.aOtroDia.fecha}) no lo recibe`);
 
 // v6.09b · lote 1-quater (17-nov-2026, revisión R2 del lote 1-ter · pendientes de U2): reglas fijas que el --check exige en F1 (curadas y por regla)
-/** Modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q: cada paso «· nQ · Tutor» cuadra en 0,85-1,15 y su texto dice «2,35′/Q». */
-const TUTOR_MIN_Q = 2.35;
+/** Modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q: cada paso «· nQ · Tutor» cuadra en 0,85-1,15 y su texto dice «2,35′/Q».
+ *  v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1: los 12′ no dan para 5Q, caben 4 antes de las 13:43): + 1′ por test para componerlo y
+ *  tapar la pantalla → cada paso uWorld (Unused · nQ · Tutor, y el TAPER «Status Incorrect · hasta nQ») lleva EXACTAMENTE n = floor((min − 1) / 2,35) y su
+ *  «cómo» dice la regla (el minuto de componer y los 2,35′/Q). Lo exige en TODAS las sesiones (F1 + 2027, plan B, 45′ y 30′), no solo en F1. */
+const TUTOR_MIN_Q = 2.35, UW_COMPONER_MIN = 1;
+const uwQ = (min) => Math.max(0, Math.floor((min - UW_COMPONER_MIN) / TUTOR_MIN_Q + 1e-9));
+const UW_PASO_RE = /^(?:TAPER · )?uWorld Step 1 · System «[^»]+» · (?:Unused · (\d+)Q · Tutor|Status Incorrect · hasta (\d+)Q)/;
 function pasosTutorMal(pasos) {
   const e = [];
   for (const p of pasos) {
     if (/~3′\/Q/.test(`${p.que} ${p.como}`)) e.push(`«${p.que.slice(0, 50)}…» sigue a ~3′/Q (la regla del Tutor es 2,35′/Q)`);
-    const m = /· (\d+)Q · Tutor/.exec(p.que); if (!m || /Status Incorrect/.test(p.que)) continue;
-    const r = (+m[1] * TUTOR_MIN_Q) / p.min;
-    if (!(r >= 0.85 && r <= 1.15)) e.push(`uWorld ${m[1]}Q Tutor en ${p.min}′ (${m[1]} × 2,35′ / ${p.min} = ${r.toFixed(2)}, fuera de 0,85-1,15)`);
-    if (!/2,35′\/Q/.test(p.como)) e.push(`uWorld ${m[1]}Q Tutor: el «cómo» no dice la regla (2,35′/Q)`);
+    const m = UW_PASO_RE.exec(p.que); if (!m) continue;
+    const n = +(m[1] || m[2]);
+    if (n !== uwQ(p.min)) e.push(`uWorld ${n}Q en ${p.min}′ (la regla da floor((${p.min} − 1) / 2,35) = ${uwQ(p.min)}Q)`);
+    if (!/2,35′\/Q/.test(p.como) || !/1′ para componer el test/.test(p.como)) e.push(`uWorld ${n}Q en ${p.min}′: el «cómo» no dice la regla (1′ para componer el test + 2,35′/Q)`);
   }
   return e;
 }
@@ -206,8 +216,11 @@ function pasosSinMedidaMal(pasos) {
   return e;
 }
 /** Total de Unused que F1 (≤ 3-ene-2027) consume por System con el reparto anterior (4Q por sesión de regla + d1 4Q + d2 3Q): el de ahora debe ser el mismo
- *  para que 2027 reciba el mismo stock (Inflammatory 28 − 24 = 4 · Skin and soft tissue infections 18 − 15 = 3). */
-const UW_F1_TOTAL = { 1028: 24, 1031: 15 };
+ *  para que 2027 reciba el mismo stock (Inflammatory 28 − 24 = 4 · Skin and soft tissue infections 18 − 15 = 3).
+ *  v7.00 · fix del chat Derma: con la regla floor((min − 1) / 2,35) y los mismos minutos por paso, el lote 1 (d1-d17, ≤ LOTE1_HASTA) consume menos y 2027
+ *  recibe MÁS stock: Inflammatory 18 = d1 4 + d7 4 + d8 4 + d10 2 + d11 2 + d13 2 (28 − 18 = 10 para 2027: d29 4 · d31 4 · d37 2) · Skin and soft tissue
+ *  infections 12 = d2 3 + d14 4 + d15 1 (2.ª pasada) + d16 2 + d17 2 (18 − 12 = 6 para 2027: d35 4, quedan 2). Cuenta el reparto y las 2.ªs pasadas. */
+const UW_F1_TOTAL = { 1028: 18, 1031: 12 };
 
 // v6.10e (18-nov-2026): mapa de F1 con casos REALES (DermNet Quizzes) y lecturas reales medidas — comprobación de forma (el reparto se valida en validarTodo)
 for (const [d, q] of Object.entries(CAT.DERMA_QUIZ_F1)) {
@@ -391,6 +404,9 @@ function validarTodo(tsDatos) {
   const quedan = new Map(Object.entries(uwDerm).map(([id, x]) => [Number(id), x.q]));
   const uwRe = /uWorld Step 1 · System «([^»]+)» · Unused · (\d+)Q/;
   let agotadas = 0; const pmd = [];
+  // v7.00 · fix del chat Derma: + el «quedan N antes de hoy según este plan» de cada paso = las Unused que quedan de verdad en ese orden de fecha, y los
+  //   contadores del informe (Unused consumidas hasta el dom 3-ene y hasta el mar 16-mar)
+  const uwHasta = { '2027-01-03': 0, '2027-03-16': 0 }; let uwTotal = 0;
   for (const dia of [...D2.DERMA_DIAS_TODOS].sort((a, b) => (a.fecha < b.fecha ? -1 : 1))) {
     const min = F6.faseV6(dia.fecha) === 'F4' ? 30 : 45;
     const par = DG.dermaGuiaPar(dia, min === 30 ? { minutos: 30 } : {});
@@ -398,7 +414,9 @@ function validarTodo(tsDatos) {
       const r = uwRe.exec(p.que); if (!r) continue;
       const id = Number(Object.entries(uwDerm).find(([, x]) => x.nombre === r[1])?.[0]); const q = quedan.get(id) ?? 0; const k = Number(r[2]);
       if (k > q) errores.push(`d${dia.d} ${dia.fecha} plan B: uWorld «${r[1]}» pide ${k}Q y solo quedan ${q} (stock ${uwDerm[id] ? uwDerm[id].q : '?'})`);
-      quedan.set(id, q - k);
+      const qt = /quedan (\d+) antes de hoy/.exec(p.que); if (qt && +qt[1] !== q) errores.push(`d${dia.d} ${dia.fecha} plan B: uWorld «${r[1]}» dice «quedan ${qt[1]} antes de hoy» y en este orden de fecha quedan ${q}`);
+      quedan.set(id, q - k); uwTotal += k;
+      for (const f of Object.keys(uwHasta)) if (dia.fecha <= f) uwHasta[f] += k;
     }
     if (par.planB.pasos.some((p) => /relleno: uWorld «/.test(p.que))) agotadas++;
     if (dia.promir) {
@@ -438,10 +456,17 @@ function validarTodo(tsDatos) {
   let nTutorF1 = 0;
   for (const dia of D2.DERMA_DIAS_TODOS.filter((x) => x.fecha <= LOTE1_HASTA)) {
     const g = DG.dermaGuiaPar(dia).planB; const tag = `d${dia.d} ${dia.fecha}`;
-    for (const e of [...pasosTutorMal(g.pasos), ...pasosSinMedidaMal(g.pasos)]) errores.push(`${tag}: ${e}`);
+    for (const e of pasosSinMedidaMal(g.pasos)) errores.push(`${tag}: ${e}`);
     nTutorF1 += g.pasos.filter((p) => /· \d+Q · Tutor/.test(p.que)).length;
   }
-  const f1Uw = {}; for (const [f, a] of DG.dermaUwAsignacion()) if (f <= LOTE1_HASTA) f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
+  // v7.00 · fix del chat Derma: la regla de uWorld (n = floor((min − 1) / 2,35) + su texto) en TODAS las sesiones (F1 + 2027, plan B, 45′ y 30′)
+  let nTutor = 0;
+  for (const dia of D2.DERMA_DIAS_TODOS) for (const opts of [{}, { minutos: 30 }]) {
+    const g = DG.dermaGuiaPar(dia, opts).planB;
+    for (const e of pasosTutorMal(g.pasos)) errores.push(`d${dia.d} ${dia.fecha} ${opts.minutos || 45}′: ${e}`);
+    nTutor += g.pasos.filter((p) => UW_PASO_RE.test(p.que)).length;
+  }
+  const f1Uw = {}; for (const mapa of [DG.dermaUwAsignacion(), DG.dermaUwExtra()]) for (const [f, a] of mapa) if (f <= LOTE1_HASTA) f1Uw[a.uw] = (f1Uw[a.uw] || 0) + a.toma;
   for (const [uw, n] of Object.entries(UW_F1_TOTAL)) if (f1Uw[uw] !== n) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 consume ${f1Uw[uw] || 0}Q y debe consumir ${n} (si no, cambia el stock de 2027)`);
   for (const uw of Object.keys(f1Uw)) if (!(uw in UW_F1_TOTAL)) errores.push(`uWorld ${uwDerm[uw].nombre}: F1 lo usa y no está en UW_F1_TOTAL`);
   // v6.10e (18-nov-2026 · PREGUNTAS REALES): (1) ninguna sesión (F1 + 2027, plan A/B, 45′/30′) menciona el proyecto Claude ni pide preguntas/viñetas a una IA
@@ -511,7 +536,7 @@ function validarTodo(tsDatos) {
       nCasosDN += nCas;
     }
   }
-  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1, nIA, nQuizF1, nCasosF1, nPasosDN, nCasosDN, nSegunda };
+  const resumen = { agotadas, quedan: Object.fromEntries([...quedan].map(([id, q]) => [uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, ''), q])), pmd: pmd.length, dnF1, nTutorF1, nTutor, uwHasta, uwTotal, f1Uw, nIA, nQuizF1, nCasosF1, nPasosDN, nCasosDN, nSegunda };
   return { errores, n, resumen };
 }
 const v = validarTodo(out);
@@ -519,7 +544,7 @@ if (v.errores.length) { console.error(v.errores.slice(0, 40).join('\n')); aborta
 const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
 if (CHECK) {
   if (actual !== out) { console.error('✗ src/lib/dermaGuiaDatos.ts NO está al día → node DATA/DERMATOLOGIA/guia/gen_derma_guia.js'); process.exit(1); }
-  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutorF1} pasos uWorld Tutor de F1 a 2,35′/Q (mismo total por System que antes) · 0 pasos con preguntas/viñetas de IA en ${v.resumen.nIA} bloques · F1 con ${v.resumen.nQuizF1} pasos DermNet Quizzes (${v.resumen.nCasosF1} casos REALES, sin repetir) + ProMIR · todo el plan: ${v.resumen.nPasosDN} pasos DermNet con quiz y rango REAL (${v.resumen.nCasosDN} casos, 0 repetidos${v.resumen.nSegunda ? `, ${v.resumen.nSegunda} de 2.ª pasada` : ""})`);
+  console.log(`✓ dermaGuiaDatos.ts al día · ${v.n} bloques validados (103 sesiones × plan A/B × 45′/30′) · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total} · uWorld del plan B sin pasarse del stock (${v.resumen.agotadas} sesiones con relleno ProMIR; quedan ${JSON.stringify(v.resumen.quedan)}) · test ProMIR igual en A y B en ${v.resumen.pmd} sesiones PMD · ${v.resumen.dnF1} atlas DermNet de F1 medidos · ${v.resumen.nTutor} pasos uWorld con n = floor((min − 1) / 2,35) en todo el plan (${v.resumen.nTutorF1} en F1, que consume ${Object.entries(v.resumen.f1Uw).map(([id, n]) => `${uwDerm[id].nombre.replace(/^Dermatology \(|\)$/g, '')} ${n}`).join(' · ')} = UW_F1_TOTAL) · Unused del plan B: ${v.resumen.uwHasta['2027-01-03']} hasta el dom 3-ene, ${v.resumen.uwHasta['2027-03-16']} hasta el mar 16-mar, ${v.resumen.uwTotal} en todo el plan · 0 pasos con preguntas/viñetas de IA en ${v.resumen.nIA} bloques · F1 con ${v.resumen.nQuizF1} pasos DermNet Quizzes (${v.resumen.nCasosF1} casos REALES, sin repetir) + ProMIR · todo el plan: ${v.resumen.nPasosDN} pasos DermNet con quiz y rango REAL (${v.resumen.nCasosDN} casos, 0 repetidos${v.resumen.nSegunda ? `, ${v.resumen.nSegunda} de 2.ª pasada` : ""})`);
 } else {
   fs.writeFileSync(OUT, out);
   console.log(`✓ escrito src/lib/dermaGuiaDatos.ts (${(out.length / 1024).toFixed(1)} KB) · ${v.n} bloques validados · curadas d${meta.curadas.join(',d')} · Pictorial ${meta.pictorial.asignadas}/${meta.pictorial.total}`);

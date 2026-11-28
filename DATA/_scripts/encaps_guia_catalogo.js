@@ -563,10 +563,14 @@ const FUGA = {
   itemsRealesDe: (t) => [...String(t || '').matchAll(RE_ITEM_REAL)].map((m) => `${m[1]}-Q${m[2]}`),
   /** fila → ítems de un runner que la fila RESPONDE por su concepto aunque su «Fuente verificada» no los cite (lista MANUAL, fila a fila, la decide el chat
    *  ENCAPS): cada ítem cuenta igual que uno de la fuente. #102 (método científico, enfoque sistemático) responde R-2024-2A-Q46 (v7.00: en el mini-sim 3/3 del vie 18-dic).
-   *  La #103 no va aquí (decisión del chat ENCAPS). v7.00 (corrector): los mini-sims 4/5 y 5/5 que protegía el cruce c46 pasan a la intensiva (dom 28-feb y
+   *  v7.00 (chat de plan, decisión A, sáb 28-nov): + #103 («solo mide la magnitud y la distribución» = descriptivo; tarjeta 175) → da la pista conceptual de
+   *  2025-1A-Q35 del pre-test 2/2 (pretest_arranque_2026-12-01, mar 1-dic 16:15-17:15): fuera de toda lista de cifras hasta que termine (la del lun 30-nov 18:00
+   *  y la del mar 1-dic 12:00-12:20 incluidas) y vuelve la primera en el siguiente paso de cifras (mié 2-dic 18:00). Antes (c38) no iba aquí: el chat ENCAPS
+   *  suspendía la tarjeta 175 en Anki, pero la fila seguía saliendo en la lista de las 18:00.
+   *  v7.00 (corrector): los mini-sims 4/5 y 5/5 que protegía el cruce c46 pasan a la intensiva (dom 28-feb y
    *  sáb 6-mar, pendientes F1) y sus filas ya salen en las cifras de F1 → al generarlos, gen_encaps_minisim aplica también a ellos el filtro de CIFRAS (esMinisimF1):
    *  los ítems ligados quedan fuera de esos runners y siguen ciegos. */
-  CONCEPTOS_LIGADOS: { 98: ['2025-2-Q28'], 102: ['2024-2A-Q46', '2025-1A-Q56'], 147: ['2025-1A-Q6', '2025-1A-Q28'], 179: ['2025-2-Q92'], 196: ['2025-1A-Q17'], 211: ['2025-2-Q28'] }, // c46: cruce por concepto del chat ENCAPS (mini-sims 4/5 y 5/5): se aparta la FILA hasta su runner; el ítem se queda en el runner
+  CONCEPTOS_LIGADOS: { 98: ['2025-2-Q28'], 102: ['2024-2A-Q46', '2025-1A-Q56'], 103: ['2025-1A-Q35'], 147: ['2025-1A-Q6', '2025-1A-Q28'], 179: ['2025-2-Q92'], 196: ['2025-1A-Q17'], 211: ['2025-2-Q28'] }, // c46: cruce por concepto del chat ENCAPS (mini-sims 4/5 y 5/5): se aparta la FILA hasta su runner; el ítem se queda en el runner
   /** filas de CIFRAS_CRITICAS_2027-I.md §3 → [{ n, cod, items }] (items = los ítems reales de su «Fuente verificada» + los de CONCEPTOS_LIGADOS); lanza un
    *  Error si la tabla no se lee entera o si CONCEPTOS_LIGADOS no cuadra */
   filasCifras: (texto) => {

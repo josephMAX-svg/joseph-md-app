@@ -49,6 +49,11 @@
  *  · FASES (base cero): `DERMA_FASES` / `dermaFaseDe` — cada guía (plan A y B) lleva en su aviso la fase, qué se hace en ella y el criterio para pasar a la
  *    siguiente (Palmerton: 80 % en 10 consecutivas, Tutor y sin reloj al principio; si no se llega, los Four Critical Adjustments, nunca mover fechas).
  *    Síntesis con fuentes: DATA/DERMATOLOGIA/METODO_BASE_CERO.md.
+ * v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1: el paso de 12′ no da para 5Q; caben 4 antes de las 13:43): la regla del Tutor no contaba
+ *  el minuto de componer el test y tapar la pantalla → nº de preguntas de un paso uWorld = floor((min − 1) / 2,35) en TODAS las sesiones (curadas d1 12′ → 4Q ·
+ *  d2 9′ → 3Q; por regla F1 12′ → 4Q · 7′ → 2Q; 2027 12′ → 4Q; SERUMS 9′ → 3Q) con los MISMOS minutos de cada paso. F1 consume menos (UW_F1_TOTAL del
+ *  generador) y 2027 recibe más stock (d31 y d37 vuelven a uWorld); la 2.ª pasada de un B&B toma del sobrante en orden de fecha y descontado (dermaUwExtra) y
+ *  «quedan N antes de hoy» cuenta también esas.
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
@@ -129,17 +134,28 @@ const bbMinReserva = (id: number, fecha: string): number => {
 /** Minutos del B&B a la velocidad de reserva (1,25×), con el mismo factor de pausas que la velocidad del día. */
 const bbMin125 = (id: number, fecha: string): number => { const v = BB_DERM[id]; const k = vel(fecha); return v ? Math.round((v.s / 60 / 1.25) * k.f) : 0; };
 /** v6.09b · lote 1-quater (revisión R2 · pendiente de U2): regla FIJA del modo Tutor de uWorld = 90 s de pregunta + 0,85′ de explicación = 2,35′/Q (la guía
- *  daba ~3′/Q: 4Q en 12′ = 0,78). Solo F1 (≤ LOTE1_HASTA); 2027 sigue con 4Q en 12′ (otro lote). */
+ *  daba ~3′/Q: 4Q en 12′ = 0,78). Solo F1 (≤ LOTE1_HASTA); 2027 sigue con 4Q en 12′ (otro lote).
+ *  v7.00 · fix del chat Derma (28-nov-2026, verificado en vivo con el d1): esa regla no contaba el minuto de COMPONER el test («+ New Test» → System · Unused ·
+ *  Tutor) ni el de tapar la pantalla → los 12′ del d1 no dan para 5Q (caben 4 antes de las 13:43). Regla de TODAS las sesiones (F1, 2027 y el SERUMS, curadas y
+ *  por regla): un paso uWorld de `min` minutos lleva floor((min − 1) / 2,35) preguntas (12′ → 4Q · 9′ → 3Q · 7′ → 2Q · 4′ → 1Q). Los minutos de cada paso NO
+ *  cambian (casos DermNet, atlas medidos y franjas siguen igual): cambia el nº de preguntas, y lo que sobra del paso (< 2,35′) es para releer la explicación
+ *  de tus fallos. */
 const TUTOR_MIN_Q = 1.5 + 0.85;
-const tutorMin = (n: number): number => Math.round(n * TUTOR_MIN_Q);
-const tutorTxt = (n: number): string => `Tutor = 90 s de pregunta + 0,85′ de explicación ≈ 2,35′/Q (${n}Q ≈ ${String(Math.round(n * TUTOR_MIN_Q * 10) / 10).replace('.', ',')}′)`;
-/** Unused de uWorld por sesión de F1 (plan B por regla) con la regla del Tutor: los minutos de cada sesión cuadran (5Q en 12′ = 0,98 · 3Q en 7′ = 1,01, y lo
- *  que suelta el paso de 12′ va al proyecto Claude con k = round(min/5) viñetas en 0,85-1,15) y el TOTAL de F1 por System es el mismo que con 4Q por sesión
- *  (Inflammatory 24 = 5 + 5 + 5 + 3 + 3 + 3 con el d1 curado · Skin and soft tissue infections 15 = 4 + 5 + 3 + 3 con el d2 curado), así que 2027 recibe el
- *  mismo stock y no cambia. El 4 y el 8-dic no tienen proyecto Claude (el atlas DermNet medido llena la franja): 5Q en los 12′. */
-const UW_TUTOR_F1: Record<string, number> = { '2026-12-16': 5, '2026-12-18': 5, '2026-12-24': 3, '2026-12-28': 3, '2027-01-05': 3, '2027-01-07': 5, '2027-01-13': 3, '2027-01-15': 3 }; // v7.00: mismas sesiones (por d) con las fechas del remap de Derma (antes 4, 8, 14, 16, 22, 24, 30 y 31-dic)
-/** Nº de Unused que pide la regla en una sesión de 45′ (4 fuera de F1). */
-const uwPideRegla = (fecha: string): number => (fecha <= LOTE1_HASTA ? UW_TUTOR_F1[fecha] ?? 4 : 4);
+/** Minuto de componer el test y tapar la pantalla (uno por test, se pague con 1 o con 5 preguntas). */
+const UW_COMPONER_MIN = 1;
+/** Nº de preguntas uWorld que caben en un paso de `min` minutos: floor((min − 1) / 2,35) (el 1e-9 evita que 47/2,35 = 19,999… pierda una). */
+const uwPreguntasEn = (min: number): number => Math.max(0, Math.floor((min - UW_COMPONER_MIN) / TUTOR_MIN_Q + 1e-9));
+/** Minutos mínimos de un paso uWorld de `n` preguntas con esa regla (1Q 4′ · 2Q 6′ · 3Q 9′ · 4Q 11′ · 5Q 13′). */
+const uwMinPara = (n: number): number => Math.ceil(UW_COMPONER_MIN + n * TUTOR_MIN_Q - 1e-9);
+const tutorTxt = (n: number, min: number): string => `Tutor = 1′ para componer el test y tapar la pantalla + 2,35′/Q (90 s de pregunta + 0,85′ de explicación): ${n}Q ≈ ${String(Math.round((UW_COMPONER_MIN + n * TUTOR_MIN_Q) * 10) / 10).replace('.', ',')}′ de los ${min}′ del paso${min - UW_COMPONER_MIN - n * TUTOR_MIN_Q >= 0.5 ? '; el resto, a releer la explicación de tus fallos' : ''}`;
+/** Minutos del paso uWorld por sesión de F1 (plan B por regla). v6.09b · lote 1-quater: 12′ (5Q) o 7′ (3Q) para que cada franja cuadrara con el mismo total
+ *  por System que con 4Q por sesión. v7.00 (fix del chat Derma): los MISMOS minutos por sesión (el resto de la franja no se toca) y el nº de preguntas sale
+ *  de la regla (12′ → 4Q · 7′ → 2Q): F1 consume menos (Inflammatory 18 = 4 + 4 + 4 + 2 + 2 + 2 con el d1 curado · Skin and soft tissue infections 12 = 3 + 4
+ *  + 1 + 2 + 2 con el d2 curado y la 2.ª pasada del d15) y 2027 recibe más stock (UW_F1_TOTAL del generador). Fechas del remap de Derma de la v7.00 (antes
+ *  4, 8, 14, 16, 22, 24, 30 y 31-dic). Sin entrada en F1: 9′ (→ 3Q). */
+const UW_MIN_F1: Record<string, number> = { '2026-12-16': 12, '2026-12-18': 12, '2026-12-24': 7, '2026-12-28': 7, '2027-01-05': 7, '2027-01-07': 12, '2027-01-13': 7, '2027-01-15': 7 };
+/** Minutos del paso uWorld por regla: SERUMS (30′) 9′ · F1 (≤ LOTE1_HASTA) los de UW_MIN_F1 (9′ si no está) · 2027 12′. */
+const uwMinRegla = (fecha: string, corto: boolean): number => (corto ? 9 : fecha <= LOTE1_HASTA ? UW_MIN_F1[fecha] ?? 9 : 12);
 /** a2-8: 2.ª pasada de un B&B ya visto en una sesión anterior = 2× sin pausas + recall de 60 s. */
 const bb2aMin = (id: number): number => { const v = BB_DERM[id]; return v ? Math.round(v.s / 60 / 2) + 1 : 0; };
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -166,8 +182,6 @@ function bbAparicion(fecha: string): { n: number; primera: string } | null {
   }
   return BB_APAR.get(fecha) ?? null;
 }
-/** Unused de un System de uWorld de Dermatology que el reparto del plan B NO usa en ninguna sesión (stock − lo repartido). */
-const uwSobranteDelPlan = (uw: number): number => { let usado = 0; for (const a of dermaUwAsignacion().values()) if (a.uw === uw) usado += a.toma; return Math.max(0, (UW_DERM[uw]?.q ?? 0) - usado); };
 
 // ── v6.09b · lote 1-ter (17-nov-2026, revisión R del lote 1-bis, hallazgos 4 · 5 · 8): paso DermNet de F1 MEDIDO por fecha ──────────────────────
 const dec = (x: number): string => String(x).replace('.', ',');
@@ -538,16 +552,36 @@ function uwPedidoRegla(dia: DiaDerma): [number, number] | null {
   if (esPMD(dia) || dermaTaperEfectivo(dia)) return null;
   const a = afinDe(dia);
   if (!a.uw || !UW_DERM[a.uw]) return null;
-  return [a.uw, faseV6(dia.fecha) === 'F4' ? 3 : uwPideRegla(dia.fecha)];
+  // v7.00 (fix del chat Derma): nº = floor((min − 1) / 2,35) con los minutos del paso (SERUMS 9′ → 3Q · F1 12′/7′/9′ → 4/2/3Q · 2027 12′ → 4Q)
+  return [a.uw, uwPreguntasEn(uwMinRegla(dia.fecha, faseV6(dia.fecha) === 'F4'))];
 }
+/** v7.00: lo que pide de uWorld la 2.ª PASADA de un B&B (v6.09 · lote 1, solo F1 en su franja de 45′) con los minutos que libera: [System, nº ≤ 2] con la
+ *  regla de siempre (floor((libre − 1) / 2,35)) · null si no hay 2.ª pasada, si no da ni 1Q o si la sesión ya abre su test de uWorld (un 2.º test en la misma
+ *  sesión pagaría otra vez el minuto de componer: esos minutos van a ProMIR, como antes). */
+function uw2aPasadaPedido(dia: DiaDerma, yaTieneUW: boolean): [number, number] | null {
+  if (yaTieneUW || faseV6(dia.fecha) === 'F4' || dia.fecha > LOTE1_HASTA) return null;
+  const a = afinDe(dia);
+  if (!a.bb || !BB_DERM[a.bb] || !a.uw || !UW_DERM[a.uw]) return null;
+  const ap = bbAparicion(dia.fecha);
+  if (!ap || ap.n < 2) return null;
+  const k = Math.min(2, uwPreguntasEn(bbMinReserva(a.bb, dia.fecha) - bb2aMin(a.bb)));
+  return k >= 1 ? [a.uw, k] : null;
+}
+/** v7.00: Unused que toma la 2.ª pasada de un B&B (fecha → System · nº · Unused que quedan antes de esa sesión). Solo del sobrante del plan (lo que el reparto
+ *  no usa en ninguna sesión), en orden de fecha y DESCONTADO (antes cada sesión miraba el sobrante entero y dos 2.ªs pasadas podían contar las mismas). */
+let UW_EXTRA: Map<string, DermaUwAsig> | null = null;
+export function dermaUwExtra(): Map<string, DermaUwAsig> { if (!UW_EXTRA) dermaUwAsignacion(); return UW_EXTRA!; }
 /** Reparto en orden de fecha (peor caso: TODAS las sesiones por plan B; el plan A no toca uWorld): curadas d1-d5 (lo que piden sus pasos) +
- *  regla (4Q; 3Q en el SERUMS, 30′). `toma` < `pide` = el System se agotó → el paso pasa a ProMIR. */
+ *  regla (floor((min − 1) / 2,35) con los minutos del paso: 4Q en 12′, 3Q en 9′ en el SERUMS). `toma` < `pide` = el System se agotó → el paso pasa a ProMIR.
+ *  v7.00: + la 2.ª pasada de un B&B (dermaUwExtra) con el sobrante, y `quedanAntes` = las Unused que quedan de verdad antes de esa sesión (con las 2.ªs pasadas). */
 export function dermaUwAsignacion(): Map<string, DermaUwAsig> {
   if (UW_ASIG) return UW_ASIG;
-  const quedan = new Map<number, number>(Object.entries(UW_DERM).map(([id, v]) => [Number(id), v.q]));
+  const stock = () => new Map<number, number>(Object.entries(UW_DERM).map(([id, v]) => [Number(id), v.q]));
+  const quedan = stock();
   const idDe = (nombre: string) => Number(Object.entries(UW_DERM).find(([, v]) => v.nombre === nombre)?.[0] ?? NaN);
+  const dias = [...DERMA_DIAS_TODOS].sort((x, y) => (x.fecha < y.fecha ? -1 : x.fecha > y.fecha ? 1 : 0));
   const m = new Map<string, DermaUwAsig>();
-  for (const dia of [...DERMA_DIAS_TODOS].sort((x, y) => (x.fecha < y.fecha ? -1 : x.fecha > y.fecha ? 1 : 0))) {
+  for (const dia of dias) {
     const c = DERMA_GUIA_CURADA[dia.d];
     let pedido: [number, number] | null = null;
     if (c && c.fecha === dia.fecha) {
@@ -558,7 +592,20 @@ export function dermaUwAsignacion(): Map<string, DermaUwAsig> {
     m.set(dia.fecha, { uw, pide, toma, quedanAntes: q });
     quedan.set(uw, q - toma);
   }
-  UW_ASIG = m;
+  // 2.ª pasada de un B&B: del sobrante (`quedan` tras el reparto), en orden de fecha y descontándolo · las curadas llevan su guion (sin 2.ª pasada)
+  const ex = new Map<string, DermaUwAsig>();
+  for (const dia of dias) {
+    const c = DERMA_GUIA_CURADA[dia.d];
+    if (c && c.fecha === dia.fecha) continue;
+    const pedido = uw2aPasadaPedido(dia, (m.get(dia.fecha)?.toma ?? 0) > 0);
+    if (!pedido) continue;
+    const [uw, pide] = pedido; const s = quedan.get(uw) ?? 0; const toma = Math.min(pide, s);
+    if (toma >= 1) { ex.set(dia.fecha, { uw, pide, toma, quedanAntes: 0 }); quedan.set(uw, s - toma); }
+  }
+  // Unused que quedan de verdad antes de cada sesión (el reparto + las 2.ªs pasadas anteriores): lo que cita el paso («quedan N antes de hoy»)
+  const real = stock();
+  for (const dia of dias) for (const a of [m.get(dia.fecha), ex.get(dia.fecha)]) if (a) { const q = real.get(a.uw) ?? 0; a.quedanAntes = q; real.set(a.uw, q - a.toma); }
+  UW_ASIG = m; UW_EXTRA = ex;
   return m;
 }
 
@@ -624,15 +671,16 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     }
   } else if (a.uw && UW_DERM[a.uw]) {
     // v6.09b · lote 1-quater: en F1 la regla del Tutor (2,35′/Q) y el reparto UW_TUTOR_F1; 2027 (y el SERUMS, 30′) sin cambio
-    const f1T = !corto && dia.fecha <= LOTE1_HASTA;
-    const s = UW_DERM[a.uw]!; const pide = corto ? 3 : uwPideRegla(dia.fecha); const minUW = corto ? 9 : f1T ? tutorMin(pide) : 12;
-    if (taper) pasos.push({ min: minUW, que: `TAPER · uWorld Step 1 · System «${s.nombre}» · Status Incorrect · hasta ${pide}Q (0 nuevas)`, como: `${QB_RUTA_UW} → Number of Questions: ${pide} (no 20) · Status: Incorrect · Tutor · SOLO ese System · re-test de tus fallos; si no tienes incorrectas en ese System, repasa los fallos del ledger · la semana de examen no se abren preguntas nuevas.`, enlace: QB_ENLACE_UW });
+    // v7.00 (fix del chat Derma): en TODAS las sesiones, nº = floor((min − 1) / 2,35) con los minutos de siempre del paso (uwMinRegla) y la regla en el «cómo»
+    const s = UW_DERM[a.uw]!; const minUW = uwMinRegla(dia.fecha, corto); const pide = uwPreguntasEn(minUW);
+    if (taper) pasos.push({ min: minUW, que: `TAPER · uWorld Step 1 · System «${s.nombre}» · Status Incorrect · hasta ${pide}Q (0 nuevas)`, como: `${QB_RUTA_UW} → Number of Questions: ${pide} (no 20) · Status: Incorrect · Tutor · SOLO ese System · ${tutorTxt(pide, minUW)} · re-test de tus fallos; si no tienes incorrectas en ese System, repasa los fallos del ledger · la semana de examen no se abren preguntas nuevas.`, enlace: QB_ENLACE_UW });
     else {
       // v6.02c F2 (E6): reparto de las Unused en orden de fecha; si el System se agota → relleno CONCRETO en ProMIR (capítulo afín)
       const asig = dermaUwAsignacion().get(dia.fecha);
-      const toma = Math.min(pide, asig ? asig.toma : pide);
-      const minQ = toma === pide ? minUW : f1T ? tutorMin(toma) : toma * 3;
-      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `${QB_RUTA_UW} → Number of Questions: ${toma} (no 20) · Status: Unused · Tutor · SOLO ese System${f1T ? ` · ${tutorTxt(toma)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si «+ New Test» muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: QB_ENLACE_UW });
+      // v7.00: en su franja (la del reparto) toma lo repartido; en otra duración (p. ej. 30′ un día de 45′), lo que pide esa duración hasta las Unused que quedan
+      const toma = !asig ? pide : asig.pide === pide ? asig.toma : Math.min(pide, asig.quedanAntes);
+      const minQ = toma === pide ? minUW : uwMinPara(toma);
+      if (toma > 0) pasos.push({ min: minQ, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${toma}Q · Tutor (${s.q} en el System${asig ? ` · quedan ${asig.quedanAntes} antes de hoy según este plan` : ''})`, como: `${QB_RUTA_UW} → Number of Questions: ${toma} (no 20) · Status: Unused · Tutor · SOLO ese System · ${tutorTxt(toma, minQ)} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · cuentan doble para el Step 1${toma < pide ? ' · son las últimas Unused del System: el resto del paso, en ProMIR (paso siguiente)' : ' · si «+ New Test» muestra menos Unused (las usaste en otro test), haz las que haya y completa con ProMIR Dermatología del capítulo afín a 77 s/Q'}.`, enlace: QB_ENLACE_UW });
       if (toma < pide) {
         const c = PROMIR_DERMA_CAPS[(a.pmd ?? UW_A_PMD[a.uw] ?? 1) - 1]!;
         const mR = minUW - (toma > 0 ? minQ : 0); const nR = Math.max(2, Math.floor((mR * 60) / SEG_Q));
@@ -649,14 +697,19 @@ function planBBase(dia: DiaDerma, total: number): PlanBBase {
     pasos.push({ min: m2, que: `B&B Step 1 › ${v.ruta.replace(' > ', ' › ')} › «${v.nombre}» (${mmss(v.s)}) — 2.ª PASADA a 2× (${ap.n}.ª vez en el plan; la 1.ª, el ${fdc(ap.primera)})`, como: `Qbankly › Video Library › B&B Step 1 · 2× sin pausas = ${Math.round(v.s / 60 / 2)}′ + recall de 60 s: sin mirar, 3 ideas del vídeo aplicadas al átomo de hoy (ya lo viste: solo lo que conecta con «${dia.sub.split(/[:(—·]/)[0]!.trim()}»).`, enlace: { t: `B&B · ${v.nombre}`, url: VIDEOS } });
     const s = a.uw ? UW_DERM[a.uw] : undefined;
     // v6.09b · lote 1-quater: en F1 con la regla del Tutor (2,35′/Q); en F1 no ocurre (Inflammatory y Skin and soft tissue infections van repartidos enteros)
-    const f1T = dia.fecha <= LOTE1_HASTA;
-    const kUW = s && a.uw ? Math.min(2, Math.floor(libre / (f1T ? TUTOR_MIN_Q : 3)), uwSobranteDelPlan(a.uw)) : 0;
-    if (kUW >= 1 && s) pasos.push({ min: f1T ? tutorMin(kUW) : kUW * 3, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; el plan deja ${uwSobranteDelPlan(a.uw!)} sin repartir)`, como: `${QB_RUTA_UW} → Number of Questions: ${kUW} (no 20) · Status: Unused · Tutor · SOLO ese System${f1T ? ` · ${tutorTxt(kUW)}` : ''} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones.`, enlace: QB_ENLACE_UW });
+    // v7.00 (fix del chat Derma): la regla de siempre (floor((libre − 1) / 2,35), máx. 2) del sobrante del plan, en orden de fecha y descontado (dermaUwExtra);
+    //   sin 2.º test si hoy ya abres el tuyo de uWorld. Con F1 consumiendo menos, el sobrante ya no es 0 en Skin and soft tissue infections (d15: 1Q en 4′).
+    const ex = s && a.uw ? dermaUwExtra().get(dia.fecha) : undefined;
+    const kUW = ex && ex.uw === a.uw ? ex.toma : 0;
+    if (kUW >= 1 && s && ex) { const mK = uwMinPara(kUW); pasos.push({ min: mK, que: `uWorld Step 1 · System «${s.nombre}» · Unused · ${kUW}Q · Tutor (con los minutos que libera la 2.ª pasada; ${s.q} en el System · quedan ${ex.quedanAntes} antes de hoy según este plan)`, como: `${QB_RUTA_UW} → Number of Questions: ${kUW} (no 20) · Status: Unused · Tutor · SOLO ese System · ${tutorTxt(kUW, mK)} · en cada imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · son Unused que el resto del plan no reparte.`, enlace: QB_ENLACE_UW }); }
     else {
       const c = PROMIR_DERMA_CAPS[(a.pmd ?? (a.uw ? UW_A_PMD[a.uw] : undefined) ?? 1) - 1]!;
       const k = Math.min(2, Math.floor((libre * 60) / SEG_Q));
       const delTest = !!(dia.promir && cap && cap.n === c.n);
-      if (k >= 1) pasos.push({ min: Math.ceil((k * SEG_Q) / 60), que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${k}Q más a 77 s/Q (con los minutos que libera la 2.ª pasada${s ? `; uWorld «${s.nombre}» ya está repartido entero en este plan` : ''})`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${k} preguntas${delTest ? ' · las siguientes de la lista, después del test del capítulo' : ''} · en las de imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · si una ya la hiciste, sáltala y toma la siguiente · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } });
+      // v7.00: el motivo REAL de no hacer uWorld (antes siempre «ya está repartido entero», cierto solo con el sobrante a 0)
+      const hoyUW = (dermaUwAsignacion().get(dia.fecha)?.toma ?? 0) > 0;
+      const porQue = !s ? '' : hoyUW ? '; hoy ya abres tu test de uWorld: un 2.º test pagaría otra vez el minuto de componerlo' : libre < uwMinPara(1) ? `; ${libre}′ no dan para un test de uWorld (1′ de componer + 2,35′/Q)` : `; uWorld «${s.nombre}» ya está repartido entero en este plan`;
+      if (k >= 1) pasos.push({ min: Math.ceil((k * SEG_Q) / 60), que: `ProMIR Dermatología › cap. ${c.n} «${c.t}» · ${k}Q más a 77 s/Q (con los minutos que libera la 2.ª pasada${porQue})`, como: `ProMIR › Entrenar (creador de tests) → Dermatología · cap. ${c.n} · ${k} preguntas${delTest ? ' · las siguientes de la lista, después del test del capítulo' : ''} · en las de imagen describe (8 ejes) y da 3 diagnósticos ANTES de las opciones · si una ya la hiciste, sáltala y toma la siguiente · registra el neto (kind derma10Q).`, enlace: { t: `ProMIR · Derma cap. ${c.n}`, url: pm(c.capId) } });
     }
   } else if (!corto && a.bb && BB_DERM[a.bb]) {
     const v = BB_DERM[a.bb]!; const m = bbMinReserva(a.bb, dia.fecha); const res = m !== bbMin(a.bb, dia.fecha);
