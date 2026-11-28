@@ -125,6 +125,9 @@ export default function UsmleHub() {
 
 // ── v6.00 · cuenta atrás al examen (PROVISIONAL) y al GO/NO-GO (E-49) ──
 const diasEntre = (a: string, b: string): number => Math.round((new Date(b + 'T12:00:00Z').getTime() - new Date(a + 'T12:00:00Z').getTime()) / 86400000);
+// v7.00 (28-nov-2026, revisión adversarial de los textos de hitos 2027): plan B posterior al examen dentro de la elegibilidad (lun 27-dic-2027),
+//   como usmleScores.PLANB_V6 · null = no queda fecha posterior (DJ-1 v6.04: NO-GO → extensión; el texto de entonces sale igual)
+const PLAN_B = FECHAS_V6.step1.planB > FECHAS_V6.step1.examen ? FECHAS_V6.step1.planB : null;
 function CuentaAtras({ iso, pausa }: { iso: string; pausa: boolean }) {
   const dEx = diasEntre(iso, DAILY_META.examenTarget), dGo = diasEntre(iso, DAILY_META.gonogo);
   const reserva = reservaStep1();
@@ -186,7 +189,7 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
           <Text style={[st.hitoEstado, { color: color(h.estado) }]}>{h.estado === 'on-track' ? '✓' : h.estado === 'bajo' ? '✗' : h.estado === 'registrado' ? '●' : '○'}</Text>
         </View>
       ))}
-      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño); la fecha la decide el GO/NO-GO ({DAILY_META.gonogo}: examen {DAILY_META.examenTarget}, DJ-1 v6.04; un NO-GO ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño); la fecha la decide el GO/NO-GO ({DAILY_META.gonogo}: examen {DAILY_META.examenTarget}{PLAN_B ? `; un NO-GO va al plan B ${PLAN_B}, el último lunes de la elegibilidad; después, extensión, §B5` : ', DJ-1 v6.04; un NO-GO ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5'}).</Text>
       {/* #12 · lectura del UWSA1 por tramos (no es gate) */}
       {(['UWSA1', 'NBME 28'] as const).flatMap((clave) => (HITOS_ONTRACK.find((h) => h.clave === clave)?.tramos || []).map((t, i) => (
         <Text key={`${clave}-${i}`} style={[st.smallNote, { marginTop: 4 }]}><Text style={{ color: i === 0 ? Colors.coral : i === 1 ? Colors.gold : Colors.green, fontWeight: '800' }}>{clave} {t.label}</Text> → {t.accion}</Text>
@@ -208,7 +211,7 @@ function WorstCaseCard() {
       <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{PROTOCOLO_BLOQUE.worstCase}</Text>
       <TextInput
         style={st.worstInput} multiline value={txt} onChangeText={(t) => { setTxt(t); setGuardado(false); }}
-        placeholder={`Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: GO/NO-GO del ${DAILY_META.gonogo} → examen ${DAILY_META.examenTarget} o extensión de la elegibilidad (DJ-1 v6.04), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...`}
+        placeholder={`Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: GO/NO-GO del ${DAILY_META.gonogo} → examen ${DAILY_META.examenTarget} ${PLAN_B ? `o plan B ${PLAN_B} (el último lunes de la elegibilidad; después, extensión)` : 'o extensión de la elegibilidad (DJ-1 v6.04)'}, protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...`}
         placeholderTextColor={Colors.muted}
       />
       <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: Spacing.sm, flexWrap: 'wrap' }}>

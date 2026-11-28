@@ -362,9 +362,14 @@ const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : NB
 // v6.10b: el UWSA1 vive en el tramo 2 (la fila del hueco del UWSA3 opcional) → su fila real «T<n> <fecha>»
 const UWSA1_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && /UWSA1/.test(x.sub));
 const UWSA1_TXT = UWSA1_T2 && esFilaT2(UWSA1_T2) ? `T${UWSA1_T2.t} ${fCorta(UWSA1_T2.fecha)}` : 'tramo 2';
+// v7.00 (28-nov-2026, revisión del constructor del Calendar 2027): si el Free 120 es el ensayo de 7 bloques lo dice SU fila («ENSAYO 7 bloques»:
+//   v6.04-v7.00 = Free 120 + 4 bloques en feriado; v6.00-v6.03 = el NBME 33 + 3 bloques) → la nota ya no lleva la etiqueta «v6.04:»
+const FREE120_T2 = DIAS_TODOS.find((x) => esFilaT2(x) && x.tipo === 'hito' && /FREE 120/i.test(x.sub));
+const FREE120_ENSAYO = !!FREE120_T2 && /ENSAYO 7 bloques/.test(FREE120_T2.sub);
+const FREE120_TXT = FREE120_T2 && esFilaT2(FREE120_T2) ? `T${FREE120_T2.t} ${fCorta(FREE120_T2.fecha)}` : 'tramo 2';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
   // v6.10b (decisión 4 de Joseph, 17-nov): prueba de resistencia del tramo 2 (su fila real), formativa — ya no es la baseline del D1 ni se lee por tramos
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `prueba de resistencia del tramo 2 (${UWSA1_TXT}, con ≥3 sistemas en nivel 3): formativa, sin mínimo; el UWSA sobreestima 10-15 puntos (§9.1). Ya no es la baseline del D1 (v6.10b): la línea base es el NBME 25 (${NBME25_TXT})` },
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `prueba de resistencia del tramo 2 (${UWSA1_TXT}, con ≥3 sistemas en nivel 3): formativa, sin mínimo; el UWSA sobreestima 10-15 puntos (§9.1). No es la línea base: esa es el NBME 25 (${NBME25_TXT})` }, // v7.00: sin la etiqueta «(v6.10b)»
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
@@ -387,7 +392,7 @@ export const HITOS_ONTRACK: HitoOnTrack[] = [
   // v6.04: con el examen 25-oct el ensayo de 7 bloques es el Free 120 + 4 bloques (vie 8-oct, feriado) y el NBME 33 va solo (lun 27-sep, E-28);
   //   v6.00-v6.03 (examen 27-sep): NBME 33 + 3 bloques (lun 30-ago) y < 65 % → 25-oct pagando recargo.
   { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: `E-28 (base ${EXAMEN_V6}) · < 65 % → mover la fecha pagando recargo (${PLANB_V6 ? `plan B ${PLANB_V6}, el último lunes de la elegibilidad; después, extensión` : 'DJ-1 v6.04: ya no hay fecha posterior dentro de la elegibilidad → extensión'}, §B5)` },
-  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria, no cifra Palmerton · v6.04: es el ensayo de 7 bloques (Free 120 + 4 bloques) · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)' },
+  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: `≥70% = heurística comunitaria, no cifra Palmerton${FREE120_ENSAYO ? ` · es el ensayo de 7 bloques (Free 120 + 4 bloques, ${FREE120_TXT}, en feriado o día sin turno)` : ''} · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)` },
   { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: `DECISIÓN (E-49, ${GONOGO_V6}): horas reales ≥ umbral (B4.5: ${UMBRAL_V6} h al ${EXAMEN_V6}) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = mover la fecha (gratis antes del E-46; ${PLANB_V6 ? `plan B ${PLANB_V6}` : 'con la DJ-1 v6.04 no queda fecha posterior dentro de la elegibilidad → extensión'}, §B5)` },
 ];
 /** Ficha on-track de un hito por su `uw` (o nombre). */
@@ -517,7 +522,7 @@ export const BURNOUT_PROTOCOLO = {
     'Mantenimiento mínimo: 30-45 min/día de Anki viejo (la franja de las 05:00) y nada más',
     'Recuperación con flow: 3-5 días de descanso activo (correr, journaling, meditación, cenas familiares); Palmerton da 3-7',
     'Cada día parado = una fila atrasada que se hace en la próxima fila COLCHÓN (F1: pasa al tramo 2 el jue 31-dic, disparador (f)): el temario no se toca y el examen no se mueve por un día perdido (§B7.1)',
-    `Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → lo decide el GO/NO-GO (E-49, ${GONOGO_V6}): examen ${EXAMEN_V6} (DJ-1 v6.04) o, con NO-GO, extensión de la elegibilidad (nov-dic-ene, §B5); nunca se recorta temario`,
+    `Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → lo decide el GO/NO-GO (E-49, ${GONOGO_V6}): examen ${EXAMEN_V6} ${PLANB_V6 ? `o, con NO-GO, plan B ${PLANB_V6} (el último lunes de la elegibilidad; después, extensión, §B5)` : '(DJ-1 v6.04) o, con NO-GO, extensión de la elegibilidad (nov-dic-ene, §B5)'}; nunca se recorta temario`, // v7.00: con plan B (lun 27-dic), sin la etiqueta «DJ-1 v6.04»
     'Burnout ≠ depresión (Palmerton): si el deseo cumplido lo disolvería es burnout; si no, buscar ayuda profesional (sábado, nunca sacrificando sueño)',
   ],
   fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §9.12 · PALMERTON_DIVERGENCIAS_PLAN.md #29 y §E-7 · README §3b',

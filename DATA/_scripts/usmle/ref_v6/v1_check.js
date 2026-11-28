@@ -20,6 +20,10 @@
 // v6.10b (17-nov-2026, decisión 4 de Joseph): el UWSA1 (v5.20 D1) SALE DE F1 y va al tramo 2 en el hueco del UWSA3 opcional, como PRUEBA DE RESISTENCIA
 //   (ya no es la baseline): esa fila (dOrig 1, sub «🎯 UWSA1 — PRUEBA DE RESISTENCIA …») conserva el texto v5.20 en subV520 pero no en el sub visible, y no
 //   cuenta en la regla de «los últimos hitos de F1» (no sale por falta de sitio: la sacó Joseph). Sin esa fila, todo igual.
+// v7.00 (28-nov-2026, revisión del constructor del Calendar 2027): con --partir-de-cero el NBME 30 (D72) y el NBME 31 (D82) llevan su título
+//   VIGENTE en el sub visible (gen_tramo2_ref.js › TITULO_V700: sin «cierre Fase A … plan Fase B» ni «+ decisión GO/NO-GO de fecha de examen»);
+//   el texto v5.20 sigue en subV520 (el multiset no cambia). Cambio declarado: el sub de esas filas debe EMPEZAR por el título vigente (hora aparte).
+//   Las referencias v6.00-v6.08 llevan el texto v5.20 y no se ven afectadas.
 // Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.06)
 const V = require('./dias_v520.json');
 const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_25oct_v606.json');
@@ -42,10 +46,12 @@ const hitosF1 = ORIGEN_F1_TEMARIO.filter(esHito), desplH = despl.filter(esHito),
 const prefijo = JSON.stringify(desplN) === JSON.stringify(noHito.slice(noHito.length - desplN.length)) && JSON.stringify(desplH) === JSON.stringify(hitosF1.slice(hitosF1.length - desplH.length));
 if (!prefijo) console.log('las filas de F1 en el tramo 2 no son las últimas de temario no-hito del orden D1-D57 · D79 más los últimos hitos de F1: ' + despl.join(','));
 const tramos = F1.reduce((a, d) => { const u = a[a.length - 1]; if (u && u[1] === d - 1) u[1] = d; else a.push([d, d]); return a; }, []).map(([a, b]) => (a === b ? 'D' + a : `D${a}-D${b}`)).join(' + ');
+const TITULO_V700 = { 72: '🎯 NBME 30 (07:15-11:00) + revisión de errores + Anki de gaps', 82: '🎯 NBME 31 (07:15-11:00) + revisión de errores + Anki de gaps' }; // v7.00 (= gen_tramo2_ref.js)
+const tituloV700 = (r) => r.tipo === 'hito' && TITULO_V700[r.dOrig] != null && normSub(r.sub).startsWith(normSub(TITULO_V700[r.dOrig]));
 const seen = new Set(); let noIncluye = 0;
 for (const r of T2) {
   if (!r.dOrig) continue;
-  if (!normSub(r.sub).includes(normSub(r.subV520)) && !(UWSA1_T2 && r.dOrig === 1)) { noIncluye++; console.log('sub no contiene v5.20:', 'T' + r.t, 'D' + r.dOrig); }
+  if (!normSub(r.sub).includes(normSub(r.subV520)) && !(UWSA1_T2 && r.dOrig === 1) && !tituloV700(r)) { noIncluye++; console.log('sub no contiene v5.20:', 'T' + r.t, 'D' + r.dOrig); }
   if (seen.has(r.dOrig)) continue; seen.add(r.dOrig); inc(B, key(r, r.subV520));
 }
 let dif = 0; for (const k of new Set([...Object.keys(A), ...Object.keys(B)])) if ((A[k] || 0) !== (B[k] || 0)) { dif++; if (dif <= 8) console.log('DIF', A[k] || 0, 'vs', B[k] || 0, k.slice(0, 140)); }

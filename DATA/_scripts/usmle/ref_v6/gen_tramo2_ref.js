@@ -412,6 +412,11 @@ const DEF = {
 };
 const CAMPOS_V520 = ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm'];
 const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la Fase A)', 82: 'v6: la decisión GO/NO-GO es en E-49, tras el NBME 32' };
+// v7.00 (28-nov-2026, revisión del constructor del Calendar 2027) · con --partir-de-cero (DE_CERO = la v7.00) el NBME 30 y el NBME 31 llevan su
+//   título VIGENTE en el sub visible (el v5.20 decía «cierre Fase A … plan Fase B» y «+ decisión GO/NO-GO de fecha de examen»: el NBME 30 cae a
+//   mitad del temario y el GO/NO-GO es el E-49, después del NBME 32), sin la nota «v6:» de NOTA_V6; el NBME 31 dice para qué GO/NO-GO cuenta
+//   (si va antes de él). subV520 = el texto v5.20 exacto (v1_check.js acepta el cambio declarado). Las referencias v6.00-v6.08 no cambian.
+const TITULO_V700 = { 72: '🎯 NBME 30 (07:15-11:00) + revisión de errores + Anki de gaps', 82: '🎯 NBME 31 (07:15-11:00) + revisión de errores + Anki de gaps' };
 // v6.05 (24-oct, verificación adversarial): horas de una fila PARTIDA = la fracción de unidad que cabe: ¼ en la inducción (1,3125 h) · ½ en el
 //   resto de F4 (2,625 h) — también refuerzo / uw_random / incorrectas / consolidación (antes 2,625 h en la inducción); uw_random e incorrectas
 //   en la inducción 1×20Q (antes 1×40Q en 79′). Las referencias v6.00-v6.04 no cambian (en su inducción solo hay reactivación).
@@ -466,10 +471,11 @@ for (const s of PLAN) {
         + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (ventana ? ` · ventana ${f(ventana[0])}→${f(ventana[1])}` : '') : '')
         + (o.dOrig === 65 && !DE_CERO ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
         + (DE_CERO && o.dOrig === 10 ? ' · LÍNEA BASE (el 1.er NBME del plan; los NBME van en orden 25 → 30)' : '')
-        + (NOTA_V6[o.dOrig] ? ' · ' + NOTA_V6[o.dOrig] : '')
+        + (NOTA_V6[o.dOrig] && !DE_CERO ? ' · ' + NOTA_V6[o.dOrig] : '') // v7.00: con --partir-de-cero, sin la nota «v6:» (TITULO_V700)
+        + (DE_CERO && o.dOrig === 82 && s < GONOGO ? ` · con el NBME 32, cuenta para el GO/NO-GO del ${f(GONOGO)} (E-49)` : '') // v7.00
         + (o.desdeF1 ? ` · DE F1 → TRAMO 2 (${MOTIVO_H}; ${ETQ_DESPL(o)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '') // v6.07
         + (o.uid && NBME_EN_COLA.includes(o.dOrig) ? ` · en su orden v5.20 (NBME 25 → 30) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido: 18:00 de hoy + las 4 filas siguientes'}` : ''); // v7.00
-      if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = v.sub.replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
+      if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = ((DE_CERO && TITULO_V700[o.dOrig]) || v.sub).replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
       else Object.assign(fila, DEF.hitoUWSA3, { sub: `🎯 ${o.nombre} (${hora})` + extra });
       Object.assign(fila, { forma: o.forma, nombre: o.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana });
       break;

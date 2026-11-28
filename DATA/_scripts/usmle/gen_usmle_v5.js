@@ -307,6 +307,8 @@ const CONTENT = [
 //  (checkpoint de fecha, §B5) con horario NUEVO 07:00-12:30 (4×50Q×75' = 5 h netas; ese día sin las 30Q de las 11:00).
 //  2027 (D65 NBME 29 · D72 NBME 30 · D77 UWSA2 · D82 NBME 31 · D83 NBME 32 · D85 NBME 33 · D87 Free 120): texto v5.20 LITERAL (con su
 //  hora v5.20); viven solo en la secuencia virtual v5.20 y el tramo 2 los usa como subV520 y les pone la hora nueva dentro del paréntesis.
+//  v7.00 (28-nov-2026): el texto de D72 («cierre Fase A … plan Fase B») y D82 («+ decisión GO/NO-GO de fecha de examen») NO se toca aquí (es la
+//  v5.20 congelada, ref_v6/dias_v520.json): con --partir-de-cero el tramo 2 pone en el sub visible el título vigente (gen_tramo2.js › TITULO_V700).
 //  (Historia: v5.20 casi todos en MARTES · v5.19 lunes · v5.18 viernes — fecha → entrada.)
 const SIMS = {
   1: ['Assessment', 'CORE', '🎯 UWSA1 — BASELINE (160Q, 09:00-13:00) + revisión completa por la tarde', 'Assessment', '—', 'uWorld Self-Assessment 1', 'uWorld UWSA1', 'clin'],

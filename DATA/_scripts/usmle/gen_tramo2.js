@@ -365,6 +365,14 @@ const DEF = {
 };
 const CAMPOS_V520 = ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm'];
 const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la Fase A)', 82: 'v6: la decisión GO/NO-GO es en E-49, tras el NBME 32' };
+// v7.00 (28-nov-2026, revisión del constructor del Calendar 2027) · títulos VIGENTES del NBME 30 y del NBME 31 SOLO con o.partirDeCero
+//   (--partir-de-cero = la v7.00: Step 1 en pausa en F1). Su texto v5.20 ya no vale: el NBME 30 cae a mitad del temario (la Fase A cierra en
+//   el 1.er uw_random, después de la reactivación; la nota v6 lo corregía con una etiqueta «v6:») y el GO/NO-GO es el E-49, DESPUÉS del NBME 32
+//   (v7.00: lun 1-nov-2027), no el día del NBME 31. Con PARTIR: el sub visible sale de TITULO_V700 (mismo formato que los NBME 25-29; la hora
+//   se pone igual que en el v5.20), sin la nota NOTA_V6, y el NBME 31 dice para qué GO/NO-GO cuenta (si va antes de él). subV520 conserva el
+//   texto v5.20 exacto (V1: ref_v6/v1_check.js acepta este cambio declarado). Sin --partir-de-cero (v6.00-v6.08) todo sale como antes.
+//   Mismo cambio en ref_v6/gen_tramo2_ref.js (port = referencia).
+const TITULO_V700 = { 72: '🎯 NBME 30 (07:15-11:00) + revisión de errores + Anki de gaps', 82: '🎯 NBME 31 (07:15-11:00) + revisión de errores + Anki de gaps' };
 /**
  * v6.06 (fix) · sistemas de la rotación 16:15 que F1 ESTUDIA de verdad: los de SISTEMAS_ROT_16 con al menos un slot de temario (no hito)
  * en F1 que no esté pendiente (--pendientes-f1). v6.06: Cardiovascular · Respiratory · Renal · Gastrointestinal · Endocrine · Fundamentos ·
@@ -616,10 +624,11 @@ function generarTramo2(o) {
           + (F4row ? (q >= 280 ? ' · SOLO en feriado/día sin turno (si hay turno: el NBME en un día T y los bloques random en el siguiente día T de la ventana)' : ' · día con turno TARDE o feriado sin turno') + (ventana ? ` · ventana ${f(ventana[0])}→${f(ventana[1])}` : '') : '')
           + (a.dOrig === 65 && !PARTIR ? ` · NUEVA LÍNEA BASE tras la pausa (≥ ${ULT_NBME_F1} − 5; caída >8 → +2 semanas de reactivación pagadas con colchón)` : '')
           + (PARTIR && a.dOrig === 10 ? ' · LÍNEA BASE (el 1.er NBME del plan; los NBME van en orden 25 → 30)' : '')
-          + (NOTA_V6[a.dOrig] ? ' · ' + NOTA_V6[a.dOrig] : '')
+          + (NOTA_V6[a.dOrig] && !PARTIR ? ' · ' + NOTA_V6[a.dOrig] : '') // v7.00: con PARTIR, sin la nota «v6:» (TITULO_V700)
+          + (PARTIR && a.dOrig === 82 && s < GONOGO ? ` · con el NBME 32, cuenta para el GO/NO-GO del ${f(GONOGO)} (E-49)` : '') // v7.00
           + (a.desdeF1 ? ` · DE F1 → TRAMO 2 (${motivoDesplHito}; ${origenDespl(a)}) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido como en F1: 18:00 de hoy + las 4 filas siguientes'}` : '')
           + (HITOS_COLA.includes(a.dOrig) && a.uid ? ` · en su orden v5.20 (NBME 25 → 30) · ${F4row ? 'su Day-After va en la fila siguiente' : 'su Day-After va repartido: 18:00 de hoy + las 4 filas siguientes'}` : '');
-        if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = v.sub.replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
+        if (v) { CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); fila.sub = ((PARTIR && TITULO_V700[a.dOrig]) || v.sub).replace(/\(([^()]*?)\d{2}:\d{2}-\d{2}:\d{2}\)/, (m, pre) => `(${pre}${hora})`) + extra; fila.subV520 = v.sub; }
         else Object.assign(fila, DEF.hitoUWSA3, { sub: `🎯 ${a.nombre} (${hora})` + extra });
         Object.assign(fila, { forma: a.forma, nombre: a.nombre, qDia: q, nivelUW: 5, h: q >= 280 ? 8.5 : q === 200 ? 5.25 : q === 160 ? 4.25 : 3.2, ventana });
         break;

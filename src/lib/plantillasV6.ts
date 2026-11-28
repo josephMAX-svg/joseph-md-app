@@ -887,7 +887,7 @@ function conAurumF4(iso: string, bs: BloqueV6[], notas: string[]): BloqueV6[] {
   const b = v
     ? { ...bloque('aurum', v.ini, v.fin, `AURUM · 30' ${v.tm ? 'en tiempo muerto de la posta, tras el R↔D' : 'tras el R↔D'} (cierre del plan · DJ-4)`, 'aurum', 'aurum', undefined, 30, v.tm ? `${v.ini}–${v.fin} (tiempo muerto)` : undefined), min: 30 }
     : bloque('aurum', null, null, "AURUM · 30' en tiempo muerto de la guardia (cierre del plan · DJ-4)", 'aurum', 'aurum', undefined, 30, 'tiempo muerto');
-  notas.push(`AURUM cierra el ${fCorta(AURUM_PLAN_META.fin)}: sus últimas sesiones van a 30′ ${v ? `desde las ${v.ini}` : 'en tiempo muerto'}, justo después del R↔D (corrimientos v6.05-v6.06, nada se recorta).`);
+  notas.push(`AURUM cierra el ${fCorta(AURUM_PLAN_META.fin)}: sus últimas sesiones van a 30′ ${v ? `desde las ${v.ini}` : 'en tiempo muerto'}, justo después del R↔D (nada se recorta).`); // v7.00: sin la etiqueta «corrimientos v6.05-v6.06»
   return [...bs, b];
 }
 /** v6.05 (fix 24-oct): R↔D de F4 en un día cuyo ciclo ya CERRÓ (v6.06: Derma c2 → mié 4-ago-2027 · Research c2 → sáb 11-sep-2027; v6.05: vie 30-jul ·
